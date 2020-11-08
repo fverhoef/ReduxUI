@@ -1,0 +1,12 @@
+## Interface: 11305
+## Notes: Retail-style dungeon journal.
+## Title: Modern Classic: |cff00c3ffDungeon Journal|r
+## Author: Neyama
+## Version: 0.1
+## Dependencies: ModernClassic
+## SavedVariables: ModernClassic_DungeonJournal_DB
+
+Init.lua
+Config.lua
+Database.lua
+Core.lua

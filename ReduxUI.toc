@@ -1,0 +1,8 @@
+## Interface: 11305
+## Title: |cff00c3ffRedux|r |cffd78219UI|r
+## Notes: Redux UI.
+## Version: 0.1
+## Author: Neya
+## SavedVariables: ReduxUI_DB
+
+ReduxUI.xml

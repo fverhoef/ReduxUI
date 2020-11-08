@@ -1,0 +1,9 @@
+## Interface: 11304
+## Title: oUF OfflineIcon
+## Author: Astromech
+## Version: 1.6.8-8
+## Notes: Adds offline icon to oUF
+## RequiredDeps: oUF
+## X-oUF: oUF
+
+oUF_OfflineIcon.lua

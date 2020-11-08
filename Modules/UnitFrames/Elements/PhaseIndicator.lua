@@ -1,0 +1,16 @@
+local AddonName, AddonTable = ...
+local Addon = AddonTable[1]
+local UF = Addon.Modules.UnitFrames
+
+UF.CreatePhaseIndicator = function(self)
+    self.PhaseIndicator = self:CreateTexture("$parentPhaseIcon", "OVERLAY")
+    self.PhaseIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM")
+
+    if self.IsMainFrame then
+        self.PhaseIndicator:SetSize(26, 26)
+    else
+        self.PhaseIndicator:SetSize(18, 18)
+    end
+
+    return self.PhaseIndicator
+end
