@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local MM = Addon.Modules.Minimap
 
 Addon.config.defaults.profile.modules.minimap = {
+    enabled = true,
     point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -5, -13},
     enableMailGlow = false, 
     buttonFrame = {
@@ -39,13 +40,6 @@ Addon.config.options.args.minimap = {
                 end
             end
         },
-        lineBreak = {type = "header", name = "", order = 1}
+        lineBreak = {type = "header", name = "", order = 2}
     }
 }
-
-function MM:SetupConfig()
-    MM.config = {}
-    MM.config.db = {
-        profile = Addon.config.defaults.profile.modules.minimap
-    }
-end

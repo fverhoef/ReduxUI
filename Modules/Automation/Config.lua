@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local AM = Addon.Modules.Automation
 
 Addon.config.defaults.profile.modules.automation = {
+    enabled = true,
     fastLoot = true,
     standDismount = true,
     vendorGrays = true,
@@ -167,10 +168,3 @@ Addon.config.options.args.automation = {
         }
     }
 }
-
-function AM:SetupConfig()
-    AM.config = {}
-    AM.config.db = {
-        profile = Addon.config.db.profile.modules.automation
-    }
-end

@@ -33,7 +33,10 @@ CB.database = {
         ConjureGem = {759, 3552, 10053, 10054},
         PolymorphSheep = {118, 12824, 12825, 12826},
         PolymorphPig = {28272},
-        PolymorphTurtle = {28271}
+        PolymorphTurtle = {28271},
+        FrostArmor = {168, 7300, 7301},
+        IceArmor = {7302, 7320, 10219, 10220},
+        MageArmor = {6117, 22782, 22783}
     },
     Shaman = {
         FireTotems = {
@@ -80,24 +83,38 @@ CB.database = {
     }
 }
 
-local spellRankTables = {CB.database.Mage.ConjureFood, CB.database.Mage.ConjureWater, CB.database.Mage.ConjureGem, CB.database.Mage.PolymorphSheep}
-for i, totemRankTable in next, CB.database.Shaman.FireTotems do
-    table.insert(spellRankTables, totemRankTable)
+local spellRankTables = {CB.database.Mage.ConjureFood, CB.database.Mage.ConjureWater, CB.database.Mage.ConjureGem, CB.database.Mage.PolymorphSheep, CB.database.Mage.MageArmor}
+
+local frostAndIceArmor = {}
+for i, id in next, CB.database.Mage.FrostArmor do
+    table.insert(frostAndIceArmor, id)
 end
-for i, totemRankTable in next, CB.database.Shaman.EarthTotems do
-    table.insert(spellRankTables, totemRankTable)
+for i, id in next, CB.database.Mage.IceArmor do
+    table.insert(frostAndIceArmor, id)
 end
-for i, totemRankTable in next, CB.database.Shaman.WaterTotems do
-    table.insert(spellRankTables, totemRankTable)
+table.insert(spellRankTables, frostAndIceArmor)
+
+for i, totem in next, CB.database.Shaman.FireTotems do
+    table.insert(spellRankTables, totem)
 end
-for i, totemRankTable in next, CB.database.Shaman.AirTotems do
-    table.insert(spellRankTables, totemRankTable)
+for i, totem in next, CB.database.Shaman.EarthTotems do
+    table.insert(spellRankTables, totem)
 end
-for i, totemRankTable in next, CB.database.Shaman.WeaponEnchants do
-    table.insert(spellRankTables, totemRankTable)
+for i, totem in next, CB.database.Shaman.WaterTotems do
+    table.insert(spellRankTables, totem)
+end
+for i, totem in next, CB.database.Shaman.AirTotems do
+    table.insert(spellRankTables, totem)
+end
+for i, totem in next, CB.database.Shaman.WeaponEnchants do
+    table.insert(spellRankTables, totem)
 end
 
 function CB:GetMaxKnownRank(spellId)
+    if not spellId then
+        return
+    end
+
     local maxKnownRank
     for i, rankTable in next, spellRankTables do
         local matchedSpell
@@ -119,6 +136,10 @@ function CB:GetMaxKnownRank(spellId)
 end
 
 function CB:IsMaxKnownRank(spellId)
+    if not spellId then
+        return false
+    end
+
     return CB:GetMaxKnownRank(spellId) == spellId
 end
 

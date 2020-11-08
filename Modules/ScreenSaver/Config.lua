@@ -1,37 +1,38 @@
 local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
-local DJ = Addon.Modules.DungeonJournal
+local SS = Addon.Modules.ScreenSaver
 
-Addon.config.defaults.profile.modules.dungeonJournal = {
+Addon.config.defaults.profile.modules.screenSaver = {
     enabled = true,
+    fader = Addon.config.faders.onShow
 }
 
-Addon.config.options.args.dungeonJournal = {    
+Addon.config.options.args.screenSaver = {    
     type = "group",
-    name = "Dungeon Journal",
-    order = 8,
+    name = "Screen Saver",
+    order = 9,
     args = {
-        header = {type = "header", name = Addon.title .. " > Dungeon Journal", order = 0},
+        header = {type = "header", name = Addon.title .. " > Screen Saver", order = 0},
         enabled = {
             type = "toggle",
             name = "Enabled",
             order = 1,
             confirm = function()
-                if DJ.config.db.profile.enabled then
+                if SS.config.db.profile.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return DJ.config.db.profile.enabled
+                return SS.config.db.profile.enabled
             end,
             set = function(_, val)
-                DJ.config.db.profile.enabled = val
+                SS.config.db.profile.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    Addon.Modules.DungeonJournal:OnInitialize()
+                    Addon.Modules.ScreenSaver:OnInitialize()
                 end
             end
         },

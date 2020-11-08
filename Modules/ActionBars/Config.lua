@@ -22,6 +22,7 @@ AB.themes = {
 }
 
 Addon.config.defaults.profile.modules.actionBars = {
+    enabled = true,
     mainMenuBar = {
         theme = AB.themes.Default,
         fader = Addon.config.faders.onShow
@@ -62,10 +63,10 @@ Addon.config.options.args.actionBars = {
                 return "Disabling this module requires a UI reload. Proceed?"
             end,
             get = function()
-                return true
+                return AB.config.db.profile.enabled
             end,
             set = function(_, val)
-                AB:Disable()
+                AB.config.db.profile.enabled = val
                 ReloadUI()
             end,
             order = 1
@@ -96,10 +97,3 @@ Addon.config.options.args.actionBars = {
         }
     }
 }
-
-function AB:SetupConfig()
-    AB.config = {}
-    AB.config.db = {
-        profile = Addon.config.db.profile.modules.actionBars
-    }
-end

@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local B = Addon.Modules.Bags
 
 Addon.config.defaults.profile.modules.bags = {
+    enabled = true,
     inventory = {slotSize = 40, columns = 8}, 
     bank = {slotSize = 40, columns = 8}, 
     colors = {
@@ -118,10 +119,3 @@ Addon.config.options.args.bags = {
         }
     }
 }
-
-function B:SetupConfig()
-    B.config = {}
-    B.config.db = {
-        profile = Addon.config.db.profile.modules.bags
-    }
-end

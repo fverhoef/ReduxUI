@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local BS = Addon.Modules.Buttons
 
 Addon.config.defaults.profile.modules.buttons = {
+    enabled = true,
     outOfRangeColoring = "button",
     colors = {
         outOfRange = {0.8, 0.1, 0.1},
@@ -63,13 +64,6 @@ Addon.config.options.args.buttons = {
                 end
             end
         },
-        lineBreak = {type = "header", name = "", order = 1}
+        lineBreak = {type = "header", name = "", order = 2}
     }
 }
-
-function BS:SetupConfig()
-    BS.config = {}
-    BS.config.db = {
-        profile = Addon.config.db.profile.modules.buttons
-    }
-end

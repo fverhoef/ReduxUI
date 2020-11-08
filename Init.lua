@@ -53,10 +53,6 @@ function Addon:OnInitialize()
     Addon:SetupConfig()
     Addon:UpdateBlizzardFonts()
 
-    RAID_CLASS_COLORS["SHAMAN"]["r"] = 0.0
-    RAID_CLASS_COLORS["SHAMAN"]["g"] = 0.44
-    RAID_CLASS_COLORS["SHAMAN"]["b"] = 0.87
-
     Addon.Libs.AceConsole:RegisterChatCommand(Addon.shortcut, function(args)
         if args:match "unlock" then
             Addon:UnlockFrames()

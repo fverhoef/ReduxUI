@@ -54,11 +54,22 @@ function CB:CreateMageBar(masqueGroup)
     table.insert(polymorphs, CB.database.Mage.PolymorphPig[1])
     table.insert(polymorphs, CB.database.Mage.PolymorphTurtle[1])
 
+    local armor = {}
+    for i, id in next, CB.database.Mage.FrostArmor do
+        table.insert(armor, id)
+    end
+    for i, id in next, CB.database.Mage.IceArmor do
+        table.insert(armor, id)
+    end
+    for i, id in next, CB.database.Mage.MageArmor do
+        table.insert(armor, id)
+    end
+
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", AddonName .. "_MageBar", UIParent)
     frame.buttonSize = config.buttonSize
     frame.buttonSpacing = config.buttonSpacing
-    frame:SetSize(6 * config.buttonSize + 5 * config.buttonSpacing, config.buttonSize)
+    frame:SetSize(7 * config.buttonSize + 6 * config.buttonSpacing, config.buttonSize)
     frame.buttons = {}
     frame.buttons[1] = CB:CreateSpellFlyout("Teleports", frame, {
         size = config.buttonSize,
@@ -105,6 +116,14 @@ function CB:CreateMageBar(masqueGroup)
         direction = "UP",
         actions = polymorphs,
         defaultActionIndex = #polymorphs,
+        showOnlyMaxRank = true,
+        masqueGroup = masqueGroup
+    })
+    frame.buttons[7] = CB:CreateSpellFlyout("Armor", frame, {
+        size = config.buttonSize,
+        direction = "UP",
+        actions = armor,
+        defaultActionIndex = 1,
         showOnlyMaxRank = true,
         masqueGroup = masqueGroup
     })
@@ -169,14 +188,8 @@ function CB:CreateShamanBar(masqueGroup)
     frame.buttonSpacing = config.buttonSpacing
     frame:SetSize(5 * config.buttonSize + 4 * config.buttonSpacing, config.buttonSize)
     frame.buttons = {}
-    frame.buttons[1] = CB:CreateSpellFlyout("FireTotems", frame, {
-        size = config.buttonSize,
-        direction = "UP",
-        actions = fire,
-        defaultActionIndex = 1,
-        showOnlyMaxRank = true,
-        masqueGroup = masqueGroup
-    })
+    frame.buttons[1] = CB:CreateSpellFlyout("FireTotems", frame,
+                                            {size = config.buttonSize, direction = "UP", actions = fire, defaultActionIndex = 1, showOnlyMaxRank = true, masqueGroup = masqueGroup})
     frame.buttons[2] = CB:CreateSpellFlyout("EarthTotems", frame, {
         size = config.buttonSize,
         direction = "UP",
@@ -193,14 +206,8 @@ function CB:CreateShamanBar(masqueGroup)
         showOnlyMaxRank = true,
         masqueGroup = masqueGroup
     })
-    frame.buttons[4] = CB:CreateSpellFlyout("AirTotems", frame, {
-        size = config.buttonSize,
-        direction = "UP",
-        actions = air,
-        defaultActionIndex = 1,
-        showOnlyMaxRank = true,
-        masqueGroup = masqueGroup
-    })
+    frame.buttons[4] = CB:CreateSpellFlyout("AirTotems", frame,
+                                            {size = config.buttonSize, direction = "UP", actions = air, defaultActionIndex = 1, showOnlyMaxRank = true, masqueGroup = masqueGroup})
     frame.buttons[5] = CB:CreateSpellFlyout("WeaponEnchants", frame, {
         size = config.buttonSize,
         direction = "UP",
@@ -296,6 +303,11 @@ function CB:UpdateClassBar(bar)
 end
 
 function CB:CreateSpellFlyout(name, parent, config)
+    if #config.actions == 0 then
+        print("Empty action array.")
+        return
+    end
+
     local defaultAction = config.actions[config.defaultActionIndex or 1]
 
     -- create parent frame
@@ -498,28 +510,27 @@ function CB:UpdateSpellFlyout(button)
 
         -- if the default is not max rank, set it to max rank
         if button.showOnlyMaxRank then
-            local maxRank = CB:GetMaxKnownRank(defaultAction)
-            if maxRank then
-                defaultAction = maxRank
-            end
+            defaultAction = CB:GetMaxKnownRank(defaultAction) or defaultAction
         end
 
-        -- if the default is an unknown spell, try to find one that we do know
-        if not IsSpellKnown(defaultAction) then
-            for i, action in next, button.actions do
-                if IsSpellKnown(action) then
-                    defaultAction = action
+        if defaultAction then
+            -- if the default is an unknown spell, try to find one that we do know
+            if not IsSpellKnown(defaultAction) then
+                for i, action in next, button.actions do
+                    if IsSpellKnown(action) then
+                        defaultAction = action
+                    end
                 end
             end
-        end
 
-        -- set current action
-        if IsSpellKnown(defaultAction) then
-            local spellName, _, icon = GetSpellInfo(defaultAction)
-            button.CurrentAction.icon:SetTexture(icon)
-            button.CurrentAction.icon:Show()
-            button.CurrentAction:SetAttribute("spell", spellName)
-            button.CurrentAction.spellID = defaultAction
+            -- set current action
+            if IsSpellKnown(defaultAction) then
+                local spellName, _, icon = GetSpellInfo(defaultAction)
+                button.CurrentAction.icon:SetTexture(icon)
+                button.CurrentAction.icon:Show()
+                button.CurrentAction:SetAttribute("spell", spellName)
+                button.CurrentAction.spellID = defaultAction
+            end
         end
 
         button.defaultAction = defaultAction

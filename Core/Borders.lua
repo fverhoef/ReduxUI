@@ -27,7 +27,7 @@ Addon.CreateBorder = function(self, borderSize, R, G, B, uL1, ...)
     if not self.Border then
         self.Border = {}
         for i = 1, 8 do
-            self.Border[i] = self:CreateTexture(nil, "BORDER")
+            self.Border[i] = self:CreateTexture(nil, "OVERLAY")
             self.Border[i]:SetParent(self)
             self.Border[i]:SetTexture(Addon.media.textures.BorderNormal)
             self.Border[i]:SetSize(borderSize, borderSize)

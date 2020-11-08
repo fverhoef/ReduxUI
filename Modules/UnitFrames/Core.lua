@@ -6,7 +6,13 @@ local oUF = AddonTable.oUF or oUF
 function UF:OnEnable()
     oUF.colors.power["MANA"] = UF.config.db.profile.colors.mana
     oUF.colors.health = UF.config.db.profile.health
-    oUF.colors.class["SHAMAN"] = {0.0, 0.44, 0.87}
+
+    if UF.config.db.profile.colors.overrideShamanColor then
+        RAID_CLASS_COLORS["SHAMAN"]["r"] = 0.0
+        RAID_CLASS_COLORS["SHAMAN"]["g"] = 0.44
+        RAID_CLASS_COLORS["SHAMAN"]["b"] = 0.87
+        oUF.colors.class["SHAMAN"] = {0.0, 0.44, 0.87}
+    end
 
     -- Spawn frames
     UF.frames = {}
@@ -23,7 +29,7 @@ function UF:OnEnable()
     UF:SpawnBoss()
 
     UF:RegisterEvent("PLAYER_ENTERING_WORLD", UF.SetupMasque)
-    --UF:SecureHook("AuraButton_UpdateDuration", UF.UpdateAuraCooldown)
+    -- UF:SecureHook("AuraButton_UpdateDuration", UF.UpdateAuraCooldown)
 end
 
 function UF:SpawnFrame(name, unit, func, config, defaultConfig)

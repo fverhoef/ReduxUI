@@ -3,7 +3,7 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreateRaidTargetIndicator = function(self)
-    self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "ARTWORK")
+    self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "OVERLAY")
     if self.Portrait then
         self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
     else

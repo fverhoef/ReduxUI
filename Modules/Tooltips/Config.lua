@@ -16,6 +16,7 @@ local TOOLTIP_ANCHORS = {
 }
 
 Addon.config.defaults.profile.modules.tooltips = {
+    enabled = true,
     colors = {
         text = {100 / 255, 100 / 255, 100 / 255},
         boss = {255 / 255, 0 / 255, 0 / 255},
@@ -160,30 +161,6 @@ Addon.config.options.args.tooltips = {
                 TT.config.db.profile.showItemId = val
             end
         },
-        showNextRank = {
-            type = "toggle",
-            name = "Show Next Available Rank",
-            order = 17,
-            width = "full",
-            get = function()
-                return TT.config.db.profile.showNextRank
-            end,
-            set = function(_, val)
-                TT.config.db.profile.showNextRank = val
-            end
-        },
-        modifySpellDamage = {
-            type = "toggle",
-            name = "Update Spell Damage",
-            order = 18,
-            width = "full",
-            get = function()
-                return TT.config.db.profile.modifySpellDamage
-            end,
-            set = function(_, val)
-                TT.config.db.profile.modifySpellDamage = val
-            end
-        },
         lineBreak2 = {type = "header", name = "", order = 20},
         font = {
             type = "group",
@@ -300,10 +277,3 @@ Addon.config.options.args.tooltips = {
         }
     }
 }
-
-function TT:SetupConfig()
-    TT.config = {}
-    TT.config.db = {
-        profile = Addon.config.db.profile.modules.tooltips
-    }
-end

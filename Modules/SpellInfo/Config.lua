@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local SI = Addon.Modules.SpellInfo
 
 Addon.config.defaults.profile.modules.spellInfo = {
+    enabled = true,
     modifySpellDamage = true,
     showNextRank = true
 }
@@ -36,13 +37,30 @@ Addon.config.options.args.spellInfo = {
                 end
             end
         },
-        lineBreak = {type = "header", name = "", order = 1}
+        lineBreak = {type = "header", name = "", order = 2},
+        showNextRank = {
+            type = "toggle",
+            name = "Show Next Available Rank",
+            order = 11,
+            width = "full",
+            get = function()
+                return SI.config.db.profile.showNextRank
+            end,
+            set = function(_, val)
+                SI.config.db.profile.showNextRank = val
+            end
+        },
+        modifySpellDamage = {
+            type = "toggle",
+            name = "Update Spell Damage",
+            order = 12,
+            width = "full",
+            get = function()
+                return SI.config.db.profile.modifySpellDamage
+            end,
+            set = function(_, val)
+                SI.config.db.profile.modifySpellDamage = val
+            end
+        },
     }
 }
-
-function SI:SetupConfig()
-    SI.config = {}
-    SI.config.db = {
-        profile = Addon.config.db.profile.modules.spellInfo
-    }
-end

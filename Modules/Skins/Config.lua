@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local S = Addon.Modules.Skins
 
 Addon.config.defaults.profile.modules.skins = {
+    enabled = true,
     colors = {
         normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
         highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight
@@ -58,13 +59,6 @@ Addon.config.options.args.skins = {
                 end
             end
         },
-        lineBreak = {type = "header", name = "", order = 1}
+        lineBreak = {type = "header", name = "", order = 2}
     }
 }
-
-function S:SetupConfig()
-    S.config = {}
-    S.config.db = {
-        profile = Addon.config.db.profile.modules.skins
-    }
-end

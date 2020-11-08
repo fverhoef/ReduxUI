@@ -9,13 +9,16 @@ CB.dockLocations = {
 }
 
 Addon.config.defaults.profile.modules.classBars = {
+    enabled = true,
     mageBar = {
+        enabled = true,
         buttonSize = 36,
         buttonSpacing = 6,
         dock = CB.dockLocations.MainActionBar_Left,
         fader = Addon.config.faders.OnShow
     },
     shamanBar = {
+        enabled = true,
         buttonSize = 36,
         buttonSpacing = 6,
         dock = CB.dockLocations.MainActionBar_Left,
@@ -52,13 +55,6 @@ Addon.config.options.args.classBars = {
                 end
             end
         },
-        lineBreak = {type = "header", name = "", order = 1}
+        lineBreak = {type = "header", name = "", order = 2}
     }
 }
-
-function CB:SetupConfig()
-    CB.config = {}
-    CB.config.db = {
-        profile = Addon.config.db.profile.modules.classBars
-    }
-end

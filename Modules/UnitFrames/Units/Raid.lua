@@ -120,4 +120,9 @@ function UF:CreateRaidStyle()
             end
         end
     }
+
+    -- debuff highlight
+    self.DebuffHighlightBackdrop = true
+    self.DebuffHighlightAlpha = 0.5
+    self.DebuffHighlightFilter = true
 end

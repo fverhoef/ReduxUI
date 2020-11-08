@@ -3,13 +3,15 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 Addon.config.defaults.profile.modules.unitFrames = {
+    enabled = true,
     font = Addon.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     statusbar = Addon.Libs.SharedMedia:Fetch("statusbar", "Redux"),
     colors = {
         health = {49 / 255, 207 / 255, 37 / 255},
         mana = {0 / 255, 140 / 255, 255 / 255},
         castbar = {255 / 255, 175 / 255, 0 / 255},
-        castbar_Shielded = {175 / 255, 175 / 255, 175 / 255}
+        castbar_Shielded = {175 / 255, 175 / 255, 175 / 255},
+        overrideShamanColor = true
     },
     player = {
         enabled = true,
@@ -69,7 +71,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
     },
     raid = {
         enabled = true,
-        size = {110, 26},
+        size = {80, 22},
         point = "TOP",
         xOffset = 0,
         yOffset = -5,
@@ -94,7 +96,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
         },
         power = {
             enabled = true,
-            height = 10
+            height = 6
         },
         scale = 1
     },
@@ -164,10 +166,10 @@ Addon.config.options.args.unitFrames = {
                 return "Disabling this module requires a UI reload. Proceed?"
             end,
             get = function()
-                return true
+                return UF.config.db.profile.enabled
             end,
             set = function(_, val)
-                UF:Disable()
+                UF.config.db.profile.enabled = val
                 ReloadUI()
             end
         },
@@ -259,6 +261,21 @@ Addon.config.options.args.unitFrames = {
                         color[2] = g
                         color[3] = b
                     end
+                },
+                overrideShamanColor = {
+                    type = "toggle",
+                    name = "Use Blue Shaman Color",
+                    order = 10,
+                    confirm = function()
+                        return "Disabling this module requires a UI reload. Proceed?"
+                    end,
+                    get = function()
+                        return UF.config.db.profile.colors.overrideShamanColor
+                    end,
+                    set = function(_, val)
+                        UF.config.db.profile.colors.overrideShamanColor = val
+                        ReloadUI()
+                    end
                 }
             }
         },
@@ -324,8 +341,3 @@ Addon.config.options.args.unitFrames = {
         }
     }
 }
-
-function UF:SetupConfig()
-    UF.config = {}
-    UF.config.db = {profile = Addon.config.db.profile.modules.unitFrames}
-end

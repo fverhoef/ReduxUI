@@ -22,7 +22,11 @@ Addon.config.defaults = {
             grayFont = {127 / 255, 127 / 255, 127 / 255}, -- GameFontGray
             darkGrayFont = {89 / 255, 89 / 255, 89 / 255} -- GameFontDarkGray
         },
-        modules = {}
+        modules = {
+            ["*"] = {
+                enabled = true
+            }
+        }
     },
     char = {modules = {}},
     realm = {inventory = {}, modules = {}}

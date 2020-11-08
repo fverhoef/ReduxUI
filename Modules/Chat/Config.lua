@@ -3,6 +3,7 @@ local Addon = AddonTable[1]
 local C = Addon.Modules.Chat
 
 Addon.config.defaults.profile.modules.chat = {
+    enabled = true,
     font = {Addon.config.defaults.profile.fonts.normal, 13, "OUTLINE"},
     maxMessageCount = 500,
     maxHistoryCount = 500,
@@ -174,11 +175,3 @@ Addon.config.options.args.chat = {
         }
     }
 }
-
-function C:SetupConfig()
-    C.config = {}
-    C.config.db = {
-        profile = Addon.config.db.profile.modules.chat,
-        char = Addon.config.db.char.modules.chat,
-    }
-end
