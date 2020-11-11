@@ -1,6 +1,8 @@
 local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
+local BS = Addon.Modules.Buttons
+local CD = Addon.Modules.Cooldowns
 
 UF.CreateAuras = function(self)
     local cfg = self.cfg.auras
@@ -61,19 +63,31 @@ UF.PostCreateAura = function(self, button)
     if LibStub("Masque", true) then
         UF.MasqueGroups.AuraGroup:AddButton(button)
     end
+    -- CD:RegisterCooldown(button.cd)
+    BS:StyleAuraButton(button)
 end
 
 UF.PostUpdateAura = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
-    local name, _, _, _, duration, expirationTime, caster, _, _, spellID, _, _ = UnitAura(unit, index, button.filter)
+    local name, duration, expiration, caster, spellID
+    if Addon.IsClassic and Addon.Libs.ClassicDurations and not UnitIsUnit("player", unit) then
+        local durationNew, expirationTimeNew
+        name, _, _, _, duration, expiration, caster, _, _, spellID = Addon.Libs.ClassicDurations:UnitAura(unit, index, button.filter)
 
-    if UF.IsClassic and duration == 0 and expirationTime == 0 and Addon.Libs.ClassicDurations then
-        duration, expirationTime = Addon.Libs.ClassicDurations:GetAuraDurationByUnit(unit, spellID, caster, name)
+        if spellID then
+            durationNew, expirationTimeNew = Addon.Libs.ClassicDurations:GetAuraDurationByUnit(unit, spellID, caster, name)
+        end
+
+        if durationNew and durationNew > 0 then
+            duration, expiration = durationNew, expirationTimeNew
+        end
+    else
+        name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
     end
 
     if button then
         if button.cd then
             if (duration and duration > 0) then
-                button.cd:SetCooldown(expirationTime - duration, duration)
+                button.cd:SetCooldown(expiration - duration, duration)
                 button.cd:Show()
             else
                 button.cd:Hide()

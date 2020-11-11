@@ -2,10 +2,16 @@ local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
+UF.themes = {
+    Blizzard = "Blizzard",
+    Custom = "Custom"
+}
+
 Addon.config.defaults.profile.modules.unitFrames = {
     enabled = true,
     font = Addon.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     statusbar = Addon.Libs.SharedMedia:Fetch("statusbar", "Redux"),
+    theme = UF.themes.Blizzard,
     colors = {
         health = {49 / 255, 207 / 255, 37 / 255},
         mana = {0 / 255, 140 / 255, 255 / 255},
@@ -155,7 +161,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
 Addon.config.options.args.unitFrames = {
     type = "group",
     name = "Unit Frames",
-    order = 12,
+    order = 15,
     args = {
         header = {type = "header", name = Addon.title .. " > Unit Frames", order = 0},
         enabled = {
@@ -174,11 +180,28 @@ Addon.config.options.args.unitFrames = {
             end
         },
         lineBreak = {type = "header", name = "", order = 2},
+        theme = {
+            type = "select",
+            name = "Theme",
+            order = 3,
+            values = UF.themes,
+            get = function()
+                for key, val in pairs(UF.themes) do
+                    if UF.config.db.profile.theme == val then
+                        return val
+                    end
+                end
+            end,
+            set = function(_, key)
+                UF.config.db.profile.theme = UF.themes[key]
+                UF:OnUpdate()
+            end
+        },
         statusbar = {
             type = "select",
-            name = "Status Bar",
+            name = "Status Bars",
             desc = "Set the texture to use for status bars.",
-            order = 3,
+            order = 4,
             dialogControl = "LSM30_Statusbar",
             values = Addon.Libs.SharedMedia:HashTable("statusbar"),
             get = function()
@@ -195,7 +218,7 @@ Addon.config.options.args.unitFrames = {
         colors = {
             type = "group",
             name = "Colors",
-            order = 4,
+            order = 5,
             inline = true,
             args = {
                 health = {

@@ -26,10 +26,15 @@ function UF:OnEnable()
     UF:SpawnNameplates()
     UF.frames.partyHeader = UF:SpawnParty()
     UF:SpawnRaid()
+    UF:SpawnTank()
+    UF:SpawnAssist()
     UF:SpawnBoss()
 
     UF:RegisterEvent("PLAYER_ENTERING_WORLD", UF.SetupMasque)
     -- UF:SecureHook("AuraButton_UpdateDuration", UF.UpdateAuraCooldown)
+end
+
+function UF:OnUpdate()
 end
 
 function UF:SpawnFrame(name, unit, func, config, defaultConfig)

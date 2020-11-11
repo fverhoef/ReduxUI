@@ -9,7 +9,7 @@ Addon.config.defaults.profile.modules.dungeonJournal = {
 Addon.config.options.args.dungeonJournal = {    
     type = "group",
     name = "Dungeon Journal",
-    order = 8,
+    order = 9,
     args = {
         header = {type = "header", name = Addon.title .. " > Dungeon Journal", order = 0},
         enabled = {

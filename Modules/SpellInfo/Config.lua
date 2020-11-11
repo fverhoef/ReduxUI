@@ -11,7 +11,7 @@ Addon.config.defaults.profile.modules.spellInfo = {
 Addon.config.options.args.spellInfo = {    
     type = "group",
     name = "Spell Info",
-    order = 10,
+    order = 13,
     args = {
         header = {type = "header", name = Addon.title .. " > Spell Info", order = 0},
         enabled = {

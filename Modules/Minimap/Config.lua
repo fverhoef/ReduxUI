@@ -14,7 +14,7 @@ Addon.config.defaults.profile.modules.minimap = {
 Addon.config.options.args.minimap = {    
     type = "group",
     name = "Minimap",
-    order = 9,
+    order = 10,
     args = {
         header = {type = "header", name = Addon.title .. " > Minimap", order = 0},
         enabled = {

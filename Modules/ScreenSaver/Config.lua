@@ -10,7 +10,7 @@ Addon.config.defaults.profile.modules.screenSaver = {
 Addon.config.options.args.screenSaver = {    
     type = "group",
     name = "Screen Saver",
-    order = 9,
+    order = 11,
     args = {
         header = {type = "header", name = Addon.title .. " > Screen Saver", order = 0},
         enabled = {

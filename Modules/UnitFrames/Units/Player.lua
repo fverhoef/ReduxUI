@@ -97,7 +97,7 @@ function UF:CreatePlayerStyle()
     UF.CreateRaidTargetIndicator(self)
 
     -- phase
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreatePhaseIndicator(self)
     end
 
@@ -108,7 +108,7 @@ function UF:CreatePlayerStyle()
     UF.CreateReadyCheckIndicator(self)
 
     -- role
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreateGroupRoleIndicator(self)
         self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
     end
@@ -160,7 +160,7 @@ end
 
 UF.Player_OnEvent = function(self, event, ...)
     -- in classic, hide additional mana bar in caster form
-    if UF.IsClassic and Addon.PlayerClass == "DRUID" and UF.frames.player.AdditionalPower then
+    if Addon.IsClassic and Addon.PlayerClass == "DRUID" and UF.frames.player.AdditionalPower then
         local form = GetShapeshiftForm()
         if form == 1 or form == 3 then
             UF.frames.player.AdditionalPower:Show()

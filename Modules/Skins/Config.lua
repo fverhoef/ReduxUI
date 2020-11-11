@@ -33,7 +33,7 @@ Addon.config.defaults.profile.modules.skins = {
 Addon.config.options.args.skins = {    
     type = "group",
     name = "Skins",
-    order = 10,
+    order = 12,
     args = {
         header = {type = "header", name = Addon.title .. " > Skins", order = 0},
         enabled = {

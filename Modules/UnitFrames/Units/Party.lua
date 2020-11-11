@@ -101,7 +101,7 @@ function UF:CreatePartyStyle()
     self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, 2)
 
     -- phase
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreatePhaseIndicator(self)
     end
 
@@ -113,7 +113,7 @@ function UF:CreatePartyStyle()
     UF.CreateReadyCheckIndicator(self)
 
     -- role
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreateGroupRoleIndicator(self)
         self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
     end

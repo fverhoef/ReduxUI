@@ -613,7 +613,7 @@ local function Enable(self)
 			buffs:Show()
 
 			if not UnitIsUnit("player", self.unit) and LCD then
-				LCD.RegisterCallback('ElvUI', "UNIT_BUFF", function(event, unit)
+				LCD.RegisterCallback(self, "UNIT_BUFF", function(event, unit)
 					Update(buffs, "UNIT_AURA", unit)
 				end)
 			end

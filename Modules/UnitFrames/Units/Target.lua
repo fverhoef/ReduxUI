@@ -89,7 +89,7 @@ function UF:CreateTargetStyle()
     UF.CreateRaidTargetIndicator(self)
 
     -- phase
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreatePhaseIndicator(self)
     end
 
@@ -103,7 +103,7 @@ function UF:CreateTargetStyle()
     UF.CreateResurrectIndicator(self)
 
     -- role
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreateGroupRoleIndicator(self)
         self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
     end
@@ -150,7 +150,7 @@ function UF:CreateTargetStyle()
     }
 
     -- quest indicator
-    if not UF.IsClassic then
+    if not Addon.IsClassic then
         UF.CreateQuestIndicator(self)
     end
 

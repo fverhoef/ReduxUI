@@ -5,6 +5,7 @@
     <Include file="Buttons\Buttons.xml"/>
     <Include file="Chat\Chat.xml"/>
     <Include file="ClassBars\ClassBars.xml"/>
+    <Include file="Cooldowns\Cooldowns.xml"/>
     <Include file="DungeonJournal\DungeonJournal.xml"/>
     <Include file="Minimap\Minimap.xml"/>
     <Include file="ScreenSaver\ScreenSaver.xml"/>
