@@ -3,17 +3,16 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 local oUF = AddonTable.oUF or oUF
 
-function UF:SpawnNameplates()
+function UF:SpawnNamePlates()
     local config = UF.config.db.profile.nameplates
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Nameplate", UF.CreateNamePlateStyle)
+        oUF:RegisterStyle(AddonName .. "Nameplate", UF.CreateNamePlate)
         oUF:SetActiveStyle(AddonName .. "Nameplate")
         oUF:SpawnNamePlates(AddonName, UF.NamePlate_Callback, config.cvars)
     end
 end
 
-function UF:CreateNamePlateStyle()
-    -- config
+function UF:CreateNamePlate()
     self.cfg = UF.config.db.profile.nameplates
 
     self:SetSize(unpack(self.cfg.size))
@@ -24,7 +23,7 @@ function UF:CreateNamePlateStyle()
     self:SetScale(1 * UIParent:GetScale())
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(self:GetWidth(), 16)
     if not self.cfg.showPower then
         self.Health:SetPoint("CENTER", self, 0, 0)
@@ -36,7 +35,7 @@ function UF:CreateNamePlateStyle()
 
     -- power
     if self.cfg.showPower then
-        UF.CreatePowerBar(self)
+        UF.CreatePower(self)
         self.Power:SetHeight(6)
         self:SetHeight(self:GetHeight() + 8)
     end
@@ -102,10 +101,10 @@ function UF:CreateNamePlateStyle()
     -- raid target
     UF.CreateRaidTargetIndicator(self)
 
-    -- combat feedback
-    if self.cfg.combatfeedback.enabled then
-        UF.CreateCombatFeedback(self)
-        self.CombatFeedbackText:SetPoint("CENTER", self.Health, "CENTER", 0, 30)
+    UF.CreateCombatFeedback(self)
+    self.CombatFeedbackText:SetPoint("CENTER", self.Health, "CENTER", 0, 30)
+    if not self.cfg.combatfeedback.enabled then
+        self.CombatFeedbackText:Hide()
     end
 
     -- threat glow
@@ -113,6 +112,9 @@ function UF:CreateNamePlateStyle()
 
     -- target indicator
     UF.CreateTargetIndicator(self)
+end
+
+function UF:UpdateNamePlates()
 end
 
 UF.NamePlate_Callback = function(self, event, unit)

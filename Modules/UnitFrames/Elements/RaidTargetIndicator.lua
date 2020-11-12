@@ -9,8 +9,7 @@ UF.CreateRaidTargetIndicator = function(self)
     else
         self.RaidTargetIndicator:SetPoint("RIGHT", self.Health, "LEFT", -5, 0)
     end
-    local size = (self.Portrait and self.Portrait:GetSize() / 3) or 24
-    self.RaidTargetIndicator:SetSize(size, size)
+    self.RaidTargetIndicator:SetSize(24, 24)
 
     return self.RaidTargetIndicator
 end

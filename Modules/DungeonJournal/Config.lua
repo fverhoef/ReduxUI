@@ -10,6 +10,7 @@ Addon.config.options.args.dungeonJournal = {
     type = "group",
     name = "Dungeon Journal",
     order = 9,
+    hidden = Addon.IsRetail,
     args = {
         header = {type = "header", name = Addon.title .. " > Dungeon Journal", order = 0},
         enabled = {

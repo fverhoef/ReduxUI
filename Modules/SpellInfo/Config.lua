@@ -12,6 +12,7 @@ Addon.config.options.args.spellInfo = {
     type = "group",
     name = "Spell Info",
     order = 13,
+    hidden = Addon.IsRetail,
     args = {
         header = {type = "header", name = Addon.title .. " > Spell Info", order = 0},
         enabled = {

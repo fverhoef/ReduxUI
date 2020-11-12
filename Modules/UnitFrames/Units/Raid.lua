@@ -8,7 +8,7 @@ function UF:SpawnRaid()
     local default = Addon.config.defaults.profile.modules.unitFrames.raid
 
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Raid", UF.CreateRaidStyle)
+        oUF:RegisterStyle(AddonName .. "Raid", UF.CreateRaid)
         oUF:SetActiveStyle(AddonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
             -- config needs to provide 8 point tables, one for each raid group
@@ -33,7 +33,7 @@ function UF:SpawnRaid()
     end
 end
 
-function UF:CreateRaidStyle()
+function UF:CreateRaid()
     self.cfg = UF.config.db.profile.raid
 
     local width, height = unpack(self.cfg.size)
@@ -54,7 +54,7 @@ function UF:CreateRaidStyle()
     end
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(width, height)
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT")
     self.Health.Value:ClearAllPoints()
@@ -62,7 +62,7 @@ function UF:CreateRaidStyle()
 
     -- power
     if self.cfg.power.enabled then
-        UF.CreatePowerBar(self)
+        UF.CreatePower(self)
         self.Power:SetHeight(self.cfg.power.height)
         self.Power.Value:Hide()
 
@@ -125,4 +125,7 @@ function UF:CreateRaidStyle()
     self.DebuffHighlightBackdrop = true
     self.DebuffHighlightAlpha = 0.5
     self.DebuffHighlightFilter = true
+end
+
+function UF:UpdateRaid()
 end

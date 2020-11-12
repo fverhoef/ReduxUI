@@ -6,5 +6,8 @@ local oUF = AddonTable.oUF or oUF
 function UF:SpawnTank()
 end
 
-function UF:CreateTankStyle()
+function UF:CreateTank()
+end
+
+function UF:UpdateTank()
 end

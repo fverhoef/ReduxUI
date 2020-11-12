@@ -7,13 +7,13 @@ function UF:SpawnFocusTarget()
     local config = UF.config.db.profile.focustarget
     local default = Addon.config.defaults.profile.modules.unitFrames.focustarget
 
-    if UF.IsRetail and config.enabled then
-        return UF:SpawnFrame("FocusTarget", "focustarget", UF.CreateFocusTargetStyle, config, default)
+    if Addon.IsRetail and config.enabled then
+        return UF:SpawnFrame("FocusTarget", "focustarget", UF.CreateFocusTarget, config, default)
     end
 end
 
-function UF:CreateFocusTargetStyle()
-    self.cfg = UF.config.db.profile.focus
+function UF:CreateFocusTarget()
+    self.cfg = UF.config.db.profile.focustarget
 
     local focus = UF.frames.focus
 
@@ -30,13 +30,13 @@ function UF:CreateFocusTargetStyle()
     self.Texture:SetAllPoints(self)
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(46, 7)
     self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePowerBar(self)
+    UF.CreatePower(self)
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
@@ -49,4 +49,11 @@ function UF:CreateFocusTargetStyle()
     UF.CreatePortrait(self)
     self.Portrait:SetSize(35, 35)
     self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
+end
+
+function UF:UpdateFocusTarget()
+    local self = UF.frames.focustarget
+    if self then
+        UF:UpdateFrame(self)
+    end
 end

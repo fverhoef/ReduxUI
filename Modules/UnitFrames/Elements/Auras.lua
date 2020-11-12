@@ -104,3 +104,11 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
         UF.MasqueGroups.AuraGroup:ReSkin()
     end
 end
+
+UF.UpdateAuras = function(self)
+    if self.cfg.auras.enabled then
+        self:EnableElement("Auras")
+    else
+        self:DisableElement("Auras")
+    end
+end

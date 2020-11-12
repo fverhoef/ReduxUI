@@ -8,7 +8,7 @@ function UF:SpawnParty()
     local default = UF.config.db.profile.party
 
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Party", UF.CreatePartyStyle)
+        oUF:RegisterStyle(AddonName .. "Party", UF.CreateParty)
         oUF:SetActiveStyle(AddonName .. "Party")
         local partyHeader = oUF:SpawnHeader(AddonName .. "PartyHeader", nil, (config.showInRaid and "party,raid") or "party", "showPlayer", config.showPlayer, "showSolo",
                                             config.showSolo, "showParty", true, "showRaid", config.showInRaid, "point", "BOTTOM", "xOffset", config.xOffset, "yOffset",
@@ -21,7 +21,7 @@ function UF:SpawnParty()
         partyHeader:SetFrameStrata("LOW")
         partyHeader:Show()
         partyHeader.cfg = config
-        
+
         if config.fader and config.fader.enabled then
             Addon:CreateFrameFader(partyHeader, config.fader)
         end
@@ -32,8 +32,7 @@ function UF:SpawnParty()
     end
 end
 
-function UF:CreatePartyStyle()
-    -- config
+function UF:CreateParty()
     self.cfg = UF.config.db.profile.party
 
     self:SetSize(unpack(self.cfg.size))
@@ -50,13 +49,13 @@ function UF:CreatePartyStyle()
     self.Texture:SetPoint("TOPLEFT", self, 0, -2)
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(70, 7)
     self.Health:SetPoint("TOPLEFT", self.Texture, 47, -12)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePowerBar(self)
+    UF.CreatePower(self)
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
@@ -70,11 +69,7 @@ function UF:CreatePartyStyle()
     UF.CreatePortrait(self)
     self.Portrait:SetSize(37, 37)
     self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
-
-    -- combat feedback
-    if self.cfg.combatfeedback.enabled then
-        UF.CreateCombatFeedback(self)
-    end
+    UF.CreateCombatFeedback(self)
 
     -- pvp
     UF.CreatePvPIndicator(self)
@@ -166,4 +161,16 @@ function UF:CreatePartyStyle()
             end
         end
     }
+end
+
+function UF:UpdateParty()
+    local header = UF.frames.partyHeader
+    local self = nil
+    if self then
+        UF:UpdateFrame(self)
+
+        if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+        else
+        end
+    end
 end

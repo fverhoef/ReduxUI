@@ -21,10 +21,10 @@ Addon.config.options.args.cooldowns = {
                 return "Disabling this module requires a UI reload. Proceed?"
             end,
             get = function()
-                return UF.config.db.profile.enabled
+                return CD.config.db.profile.enabled
             end,
             set = function(_, val)
-                UF.config.db.profile.enabled = val
+                CD.config.db.profile.enabled = val
                 ReloadUI()
             end
         }

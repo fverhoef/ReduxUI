@@ -4,11 +4,6 @@ local UF = Addon.Modules.UnitFrames
 
 UF.CreateStatusFlash = function(self)
     self.StatusFlash = self:CreateTexture("$parentStatusFlash", "ARTWORK")
-    if self.cfg.largerHealth then
-        self.StatusFlash:SetTexture(Addon.media.textures.PlayerStatus_LargerHealth)
-    else
-        self.StatusFlash:SetTexture(Addon.media.textures.PlayerStatus)
-    end
     self.StatusFlash:SetTexCoord(0, 0.74609375, 0, 0.53125)
     self.StatusFlash:SetBlendMode("ADD")
     self.StatusFlash:SetSize(192, 66)

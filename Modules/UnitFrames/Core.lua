@@ -3,38 +3,71 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 local oUF = AddonTable.oUF or oUF
 
+UF.frames = {}
+
 function UF:OnEnable()
-    oUF.colors.power["MANA"] = UF.config.db.profile.colors.mana
-    oUF.colors.health = UF.config.db.profile.health
+    UF:UpdateColors()
 
-    if UF.config.db.profile.colors.overrideShamanColor then
-        RAID_CLASS_COLORS["SHAMAN"]["r"] = 0.0
-        RAID_CLASS_COLORS["SHAMAN"]["g"] = 0.44
-        RAID_CLASS_COLORS["SHAMAN"]["b"] = 0.87
-        oUF.colors.class["SHAMAN"] = {0.0, 0.44, 0.87}
-    end
-
-    -- Spawn frames
-    UF.frames = {}
     UF.frames.player = UF:SpawnPlayer()
     UF.frames.target = UF:SpawnTarget()
     UF.frames.targetTarget = UF:SpawnTargetTarget()
     UF.frames.pet = UF:SpawnPet()
     UF.frames.focus = UF:SpawnFocus()
     UF.frames.focusTarget = UF:SpawnFocusTarget()
-    UF.frames.mouseOver = UF:SpawnMouseOver()
-    UF:SpawnNameplates()
+    UF.frames.mouseover = UF:SpawnMouseOver()
+
     UF.frames.partyHeader = UF:SpawnParty()
     UF:SpawnRaid()
     UF:SpawnTank()
     UF:SpawnAssist()
     UF:SpawnBoss()
+    UF:SpawnArena()
+
+    UF:SpawnNamePlates()
 
     UF:RegisterEvent("PLAYER_ENTERING_WORLD", UF.SetupMasque)
     -- UF:SecureHook("AuraButton_UpdateDuration", UF.UpdateAuraCooldown)
+
+    UF:OnUpdate()
 end
 
 function UF:OnUpdate()
+    UF:UpdateColors()
+
+    UF:UpdatePlayer()
+    UF:UpdateTarget()
+    UF:UpdateTargetTarget()
+    UF:UpdatePet()
+    UF:UpdateFocus()
+    UF:UpdateFocusTarget()
+    UF:UpdateMouseover()
+
+    UF:UpdateParty()
+    UF:UpdateRaid()
+    UF:UpdateTank()
+    UF:UpdateAssist()
+    UF:UpdateBoss()
+    UF:UpdateArena()
+
+    UF:UpdateNamePlates()
+end
+
+function UF:UpdateColors()
+    oUF.colors.health = UF.config.db.profile.health
+    oUF.colors.power["MANA"] = UF.config.db.profile.colors.mana
+    oUF.colors.power["RAGE"] = UF.config.db.profile.colors.rage
+    oUF.colors.power["ENERGY"] = UF.config.db.profile.colors.energy
+    oUF.colors.power["FOCUS"] = UF.config.db.profile.colors.focus
+    oUF.colors.power["COMBO_POINTS"] = UF.config.db.profile.colors.comboPoints
+
+    for key, value in next, UF.config.db.profile.colors.class do
+        if RAID_CLASS_COLORS[key] then
+            RAID_CLASS_COLORS[key]["r"] = value[1]
+            RAID_CLASS_COLORS[key]["g"] = value[2]
+            RAID_CLASS_COLORS[key]["b"] = value[3]
+        end
+        oUF.colors.class[key] = value
+    end
 end
 
 function UF:SpawnFrame(name, unit, func, config, defaultConfig)
@@ -50,4 +83,16 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     Addon:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
 
     return frame
+end
+
+function UF:UpdateFrame(self)
+    self:UpdateAllElements("OnUpdate")
+
+    UF.UpdateHealth(self)
+    UF.UpdatePower(self)
+    UF.UpdatePowerPrediction(self)
+    UF.UpdateAdditionalPower(self)
+    UF.UpdateCastbar(self)
+    UF.UpdateAuras(self)
+    UF.UpdateCombatFeedback(self)
 end

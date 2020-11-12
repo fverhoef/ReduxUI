@@ -2,9 +2,9 @@ local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
-UF.CreateHealthBar = function(self)
+UF.CreateHealth = function(self)
     self.Health = CreateFrame("StatusBar", nil, self)
-    self.Health:SetStatusBarTexture(UF.config.db.profile.statusbar)
+    self.Health:SetStatusBarTexture(UF.config.db.profile.statusbars.health)
     self.Health:SetFrameLevel(self:GetFrameLevel() - 1)
     self.Health:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Health:SetBackdropColor(0, 0, 0, 0.70)
@@ -20,7 +20,7 @@ UF.CreateHealthBar = function(self)
     self.Health.Value = self:CreateFontString("$parentHealthText", "OVERLAY")
     self.Health.Value:SetShadowOffset(1, -1)
     self.Health.Value:SetFont(UF.config.db.profile.font, 11)
-    self.Health.Value:SetPoint("CENTER", self.Health, 0, (self.cfg.largerHealth and -7) or 1)
+    self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
 
     self:Tag(self.Health.Value, "[curhp_status]")
 
@@ -42,8 +42,14 @@ UF.CreateHealthBar = function(self)
     absorbBar:SetPoint("LEFT", otherBar:GetStatusBarTexture(), "RIGHT")
     absorbBar:SetWidth(125)
 
-    -- Register with oUF
     self.HealthPrediction = {myBar = myBar, otherBar = otherBar, absorbBar = absorbBar, maxOverflow = 1}
+	self.HealthPrediction.frequentUpdates = true
 
     return self.Health
+end
+
+UF.UpdateHealth = function(self)
+    if self.Health then
+        self.Health:SetStatusBarTexture(UF.config.db.profile.statusbars.health)
+    end
 end

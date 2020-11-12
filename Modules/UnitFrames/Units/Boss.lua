@@ -7,8 +7,8 @@ function UF:SpawnBoss()
     local config = UF.config.db.profile.boss
     local default = Addon.config.defaults.profile.modules.unitFrames.boss
     
-    if UF.IsRetail and config.enabled then
-        oUF:RegisterStyle(AddonName .. "Boss", UF.CreateBossStyle)
+    if Addon.IsRetail and config.enabled then
+        oUF:RegisterStyle(AddonName .. "Boss", UF.CreateBoss)
         oUF:SetActiveStyle(AddonName .. "Boss")
         for i = 1, MAX_BOSS_FRAMES do
             local boss = oUF:Spawn("boss" .. i, AddonName .. "Boss" .. i)
@@ -27,6 +27,16 @@ function UF:SpawnBoss()
     end
 end
 
-function UF:CreateBossStyle()
+function UF:CreateBoss()
     self.cfg = UF.config.db.profile.boss
+end
+
+function UF:UpdateBoss()    
+    if Addon.IsRetail then
+        for i = 1, MAX_BOSS_FRAMES do
+            local self = UF.frames["boss" .. i]
+            if self then
+            end
+        end
+    end
 end

@@ -6,5 +6,8 @@ local oUF = AddonTable.oUF or oUF
 function UF:SpawnAssist()
 end
 
-function UF:CreateAssistStyle()
+function UF:CreateAssist()
+end
+
+function UF:UpdateAssist()
 end

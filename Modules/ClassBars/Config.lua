@@ -30,6 +30,7 @@ Addon.config.options.args.classBars = {
     type = "group",
     name = "Class Bars",
     order = 7,
+    hidden = Addon.IsRetail,
     args = {
         header = {type = "header", name = Addon.title .. " > Class Bars", order = 0},
         enabled = {

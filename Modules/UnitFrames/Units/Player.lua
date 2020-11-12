@@ -8,12 +8,11 @@ function UF:SpawnPlayer()
     local default = Addon.config.defaults.profile.modules.unitFrames.player
 
     if config.enabled then
-        return UF:SpawnFrame("Player", "player", UF.CreatePlayerStyle, config, default)
+        return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, default)
     end
 end
 
-function UF:CreatePlayerStyle()
-    -- config
+function UF:CreatePlayer()
     self.cfg = UF.config.db.profile.player
 
     self:SetSize(unpack(self.cfg.size))
@@ -25,128 +24,46 @@ function UF:CreatePlayerStyle()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-    -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
-    if self.cfg.largerHealth then
-        self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth)
-    else
-        self.Texture:SetTexture(Addon.media.textures.TargetFrame)
-    end
-    self.Texture:SetTexCoord(1, 0.09375, 0, 0.78125)
-    self.Texture:SetSize(232, 100)
-    self.Texture:SetPoint("CENTER", self, -20, -7)
 
-    -- health
-    UF.CreateHealthBar(self)
-    if self.cfg.largerHealth then
-        self.Health:SetSize(119, 28)
-        self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
-    else
-        self.Health:SetSize(119, 12)
-        self.Health:SetPoint("TOPLEFT", self.Texture, 107, -41)
-    end
+    UF.CreateHealth(self)
+    UF.CreatePower(self)
 
-    -- power
-    UF.CreatePowerBar(self)
-    self.Power:SetHeight(10)
-
-    -- additional power (druid mana)
     if Addon.PlayerClass == "DRUID" then
-        UF.CreateAdditionalPowerBar(self)
+        UF.CreateAdditionalPower(self)
     end
 
-    -- regen
+    UF.CreatePowerPrediction(self)
     UF.CreateEnergyManaRegen(self)
-
-    -- name
     UF.CreateName(self)
-    self.Name:SetWidth(110)
-    self.Name:SetPoint("CENTER", self.Texture, 50, 19)
-
-    -- level
     UF.CreateLevel(self)
-    self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -17)
-
-    -- portrait
     UF.CreatePortrait(self)
-    self.Portrait:SetSize(64, 64)
-    self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
+    UF.CreateCombatFeedback(self)
 
-    -- combat feedback
-    if self.cfg.combatfeedback.enabled then
-        UF.CreateCombatFeedback(self)
-    end
-
-    -- pvp
     UF.CreatePvPIndicator(self)
-    self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
-
-    -- leader
     UF.CreateLeaderIndicator(self)
-    self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
-
-    -- assistant
     UF.CreateAssistantIndicator(self)
-    self.AssistantIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
-
-    -- master loot
     UF.CreateMasterLooterIndicator(self)
-    self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
-
-    -- raid target
     UF.CreateRaidTargetIndicator(self)
 
-    -- phase
     if not Addon.IsClassic then
         UF.CreatePhaseIndicator(self)
-    end
-
-    -- offline
-    UF.CreateOfflineIcon(self)
-
-    -- ready check
-    UF.CreateReadyCheckIndicator(self)
-
-    -- role
-    if not Addon.IsClassic then
         UF.CreateGroupRoleIndicator(self)
         self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
     end
 
-    -- resting
+    UF.CreateOfflineIcon(self)
+    UF.CreateReadyCheckIndicator(self)
+
     UF.CreateRestingIndicator(self)
-
-    -- combat
     UF.CreateCombatIndicator(self)
-
-    -- resurrect
     UF.CreateResurrectIndicator(self)
-
-    -- status flash
     UF.CreateStatusFlash(self)
-
-    -- threat glow
     UF.CreateThreatIndicator(self)
-
-    -- group indicator tab
     UF.CreateTab(self)
 
-    -- auras
-    if self.cfg.auras.enabled then
-        UF.CreateAuras(self)
-    end
-
-    -- castbar
-    if self.cfg.castbar.enabled then
-        UF.CreateCastbar(self)
-        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-            local _, height = unpack(self.cfg.castbar.size)
-            local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", leftPadding / 2, 160)
-        else
-            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", 0, 160)
-        end
-    end
+    UF.CreateAuras(self)
+    UF.CreateCastbar(self)
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD", UF.Player_OnEvent, true)
     self:RegisterEvent("PLAYER_REGEN_ENABLED", UF.Player_OnEvent, true)
@@ -156,6 +73,77 @@ function UF:CreatePlayerStyle()
     self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", UF.Player_OnEvent, true)
     self:RegisterEvent("GROUP_ROSTER_UPDATE", UF.Player_OnEvent, true)
     self:RegisterEvent("CINEMATIC_STOP", UF.Player_OnEvent, true)
+end
+
+function UF:UpdatePlayer()
+    local self = UF.frames.player
+    if self then
+        UF:UpdateFrame(self)
+        
+        if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+            self.Health:ClearAllPoints()
+            self.Health.Value:ClearAllPoints()
+            self.Power:ClearAllPoints()
+            if UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+                self.Health:SetSize(119, 28)
+                self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
+                self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
+                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
+                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
+                self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth)
+                self.StatusFlash:SetTexture(Addon.media.textures.PlayerStatus_LargerHealth)
+            else
+                self.Health:SetSize(119, 12)
+                self.Health:SetPoint("TOPLEFT", self.Texture, 107, -41)
+                self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
+                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
+                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
+                self.Texture:SetTexture(Addon.media.textures.TargetFrame)
+                self.StatusFlash:SetTexture(Addon.media.textures.PlayerStatus)
+            end
+
+            self.Texture:ClearAllPoints()
+            self.Texture:SetTexCoord(1, 0.09375, 0, 0.78125)
+            self.Texture:SetSize(232, 100)
+            self.Texture:SetPoint("CENTER", self, -20, -7)
+
+            self.Power:SetHeight(10)
+
+            self.Name:ClearAllPoints()
+            self.Name:SetWidth(110)
+            self.Name:SetPoint("CENTER", self.Texture, 50, 19)
+
+            self.Level:ClearAllPoints()
+            self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -17)
+
+            self.Portrait:ClearAllPoints()
+            self.Portrait:SetSize(64, 64)
+            self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
+
+            self.PvPIndicator:ClearAllPoints()
+            self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
+
+            self.LeaderIndicator:ClearAllPoints()
+            self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
+
+            self.AssistantIndicator:ClearAllPoints()
+            self.AssistantIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
+
+            self.MasterLooterIndicator:ClearAllPoints()
+            self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
+
+            self.Castbar:ClearAllPoints()
+            if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
+                local _, height = unpack(self.cfg.castbar.size)
+                local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
+                self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", leftPadding / 2, 160)
+            else
+                self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", 0, 160)
+            end
+        else
+            self.Texture:SetTexture(nil)
+        end
+    end
 end
 
 UF.Player_OnEvent = function(self, event, ...)

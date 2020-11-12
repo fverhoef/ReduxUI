@@ -8,11 +8,11 @@ function UF:SpawnPet()
     local default = Addon.config.defaults.profile.modules.unitFrames.pet
 
     if config.enabled then
-        return UF:SpawnFrame("Pet", "pet", UF.CreatePetStyle, config, default)
+        return UF:SpawnFrame("Pet", "pet", UF.CreatePet, config, default)
     end
 end
 
-function UF:CreatePetStyle()
+function UF:CreatePet()
     -- config
     self.cfg = UF.config.db.profile.pet
 
@@ -36,13 +36,13 @@ function UF:CreatePetStyle()
     end
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(70, 9)
     self.Health:SetPoint("TOPLEFT", self.Texture, 45, -20)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePowerBar(self)
+    UF.CreatePower(self)
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
@@ -56,11 +56,7 @@ function UF:CreatePetStyle()
     UF.CreatePortrait(self)
     self.Portrait:SetSize(37, 37)
     self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
-
-    -- combat feedback
-    if self.cfg.combatfeedback.enabled then
-        UF.CreateCombatFeedback(self)
-    end
+    UF.CreateCombatFeedback(self)
 
     -- raid target
     UF.CreateRaidTargetIndicator(self)
@@ -104,4 +100,11 @@ function UF:CreatePetStyle()
             end
         end
     }
+end
+
+function UF:UpdatePet()
+    local self = UF.frames.pet
+    if self then
+        UF:UpdateFrame(self)
+    end
 end

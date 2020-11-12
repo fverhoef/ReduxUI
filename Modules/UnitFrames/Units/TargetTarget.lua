@@ -8,11 +8,11 @@ function UF:SpawnTargetTarget()
     local default = Addon.config.defaults.profile.modules.unitFrames.targettarget
 
     if config.enabled then
-        return UF:SpawnFrame("TargetTarget", "targettarget", UF.CreateTargetTargetStyle, config, default)
+        return UF:SpawnFrame("TargetTarget", "targettarget", UF.CreateTargetTarget, config, default)
     end
 end
 
-function UF:CreateTargetTargetStyle()
+function UF:CreateTargetTarget()
     -- config
     self.cfg = UF.config.db.profile.targettarget
 
@@ -34,13 +34,13 @@ function UF:CreateTargetTargetStyle()
     self.Texture:SetAllPoints(self)
 
     -- health
-    UF.CreateHealthBar(self)
+    UF.CreateHealth(self)
     self.Health:SetSize(46, 7)
     self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePowerBar(self)
+    UF.CreatePower(self)
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
@@ -70,4 +70,11 @@ function UF:CreateTargetTargetStyle()
             end
         end
     }
+end
+
+function UF:UpdateTargetTarget()
+    local self = UF.frames.targettarget
+    if self then
+        UF:UpdateFrame(self)
+    end
 end
