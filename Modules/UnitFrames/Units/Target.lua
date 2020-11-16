@@ -49,7 +49,6 @@ function UF:CreateTarget()
 
     if not Addon.IsClassic then
         UF.CreateGroupRoleIndicator(self)
-        self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
     end
 
     UF.CreateThreatIndicator(self)
@@ -98,7 +97,7 @@ function UF:UpdateTarget()
     if self then
         UF:UpdateFrame(self)
 
-        if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+        if UF:IsBlizzardTheme() then
             self.Health:ClearAllPoints()
             self.Health.Value:ClearAllPoints()
             if UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
@@ -142,6 +141,10 @@ function UF:UpdateTarget()
 
             self.MasterLooterIndicator:ClearAllPoints()
             self.MasterLooterIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
+
+            if not Addon.IsClassic then
+                self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
+            end
         
             local leftPadding = 0
             if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then

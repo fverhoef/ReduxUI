@@ -11,8 +11,9 @@ UF.CreatePower = function(self)
 
     self.Power.frequentUpdates = true
     self.Power.colorPower = true
-    self.Power.colorClass = false
-    self.Power.colorSmooth = false
+    self.Power.colorClass = UF.config.db.profile.colors.colorPowerClass
+    self.Power.colorSmooth = UF.config.db.profile.colors.colorPowerSmooth
+    self.Power.colorDisconnected = UF.config.db.profile.colors.colorPowerDisconnected
     self.Power.Smooth = true
 
     self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
@@ -30,7 +31,22 @@ end
 
 UF.UpdatePower = function(self)
     if self.Power then
-        self.Power:SetStatusBarTexture(UF.config.db.profile.statusbars.power)
+        local cfg = self.cfg.power
+        if cfg.enabled then
+            self:EnableElement("Power")
+
+            self.Power:SetStatusBarTexture(UF.config.db.profile.statusbars.power)
+            self.Power.colorClass = UF.config.db.profile.colors.colorPowerClass
+            self.Power.colorSmooth = UF.config.db.profile.colors.colorPowerSmooth
+            self.Power.colorDisconnected = UF.config.db.profile.colors.colorPowerDisconnected
+            
+            self.Power.Value:SetFont(UF.config.db.profile.font, 10)
+            if self.cfg.power.value and self.cfg.power.value.tag ~= nil then
+                self:Tag(self.Power.Value, self.cfg.power.value.tag)
+            end
+        else
+            self:DisableElement("Power")
+        end
     end
 end
 

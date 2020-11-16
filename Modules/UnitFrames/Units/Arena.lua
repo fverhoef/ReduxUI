@@ -36,6 +36,11 @@ function UF:UpdateArena()
         for i = 1, MAX_ARENA_FRAMES do
             local self = UF.frames["arena" .. i]
             if self then
+                UF:UpdateFrame(self)
+
+                if UF:IsBlizzardTheme() then
+                else
+                end
             end
         end
     end

@@ -20,5 +20,9 @@ function UF:UpdateFocus()
     local self = UF.frames.focus
     if self then
         UF:UpdateFrame(self)
+
+        if UF:IsBlizzardTheme() then
+        else
+        end
     end
 end

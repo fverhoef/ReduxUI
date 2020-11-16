@@ -86,7 +86,7 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
 end
 
 function UF:UpdateFrame(self)
-    self:UpdateAllElements("OnUpdate")
+    self:SetScale(self.cfg.scale or 1)
 
     UF.UpdateHealth(self)
     UF.UpdatePower(self)
@@ -95,4 +95,6 @@ function UF:UpdateFrame(self)
     UF.UpdateCastbar(self)
     UF.UpdateAuras(self)
     UF.UpdateCombatFeedback(self)
+
+    self:UpdateAllElements("OnUpdate")
 end

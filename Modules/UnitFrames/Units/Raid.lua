@@ -63,10 +63,10 @@ function UF:CreateRaid()
     -- power
     if self.cfg.power.enabled then
         UF.CreatePower(self)
-        self.Power:SetHeight(self.cfg.power.height)
+        self.Power:SetHeight(self.cfg.power.size[2])
         self.Power.Value:Hide()
 
-        self.Health:SetHeight(height - self.cfg.power.height)
+        self.Health:SetHeight(height - self.cfg.power.size[2])
     end
 
     -- name

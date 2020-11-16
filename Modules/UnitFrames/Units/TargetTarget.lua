@@ -76,5 +76,9 @@ function UF:UpdateTargetTarget()
     local self = UF.frames.targettarget
     if self then
         UF:UpdateFrame(self)
+
+        if UF:IsBlizzardTheme() then
+        else
+        end
     end
 end

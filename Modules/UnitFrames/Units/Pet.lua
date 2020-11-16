@@ -106,5 +106,9 @@ function UF:UpdatePet()
     local self = UF.frames.pet
     if self then
         UF:UpdateFrame(self)
+
+        if UF:IsBlizzardTheme() then
+        else
+        end
     end
 end

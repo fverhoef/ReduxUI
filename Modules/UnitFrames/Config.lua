@@ -5,6 +5,10 @@ local oUF = AddonTable.oUF or oUF
 
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
 
+function UF:IsBlizzardTheme()
+    return UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth
+end
+
 Addon.config.defaults.profile.modules.unitFrames = {
     enabled = true,
     font = Addon.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -40,14 +44,22 @@ Addon.config.defaults.profile.modules.unitFrames = {
             ["SHAMAN"] = {0.0, 0.44, 0.87},
             ["WARLOCK"] = oUF.colors.class["WARLOCK"],
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
-        }
+        },
+        colorHealthClass = true,
+        colorHealthSmooth = false,
+        colorHealthDisconnected = true,
+        colorPowerClass = false,
+        colorPowerSmooth = false,
+        colorPowerDisconnected = true
     },
     player = {
         enabled = true,
         size = {175, 42},
+        scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {250, 25}, showIcon = true, showIconOutside = false, showSafeZone = true, borderSize = 6, fontSize = 12},
         combatfeedback = {enabled = true},
@@ -56,9 +68,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     target = {
         enabled = true,
         size = {175, 42},
+        scale = 1,
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
@@ -67,9 +81,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     targettarget = {
         enabled = true,
         size = {93, 45},
+        scale = 1,
         point = {"TOPRIGHT", AddonName .. "Target", "BOTTOMRIGHT", 15, 0},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = false},
@@ -78,9 +94,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     pet = {
         enabled = true,
         size = {175, 42},
+        scale = 1,
         point = {"TOPRIGHT", AddonName .. "Player", "BOTTOMRIGHT", 34, 5},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = true, showDuration = false, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
@@ -89,9 +107,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     focus = {
         enabled = Addon.IsRetail,
         size = {93, 45},
+        scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
@@ -100,9 +120,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     focustarget = {
         enabled = Addon.IsRetail,
         size = {175, 42},
+        scale = 1,
         point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = false},
@@ -112,9 +134,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
     party = {
         enabled = true,
         size = {105, 30},
+        scale = 1,
         point = {"BOTTOM", "UIParent", "BOTTOM", -550, 320},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
         auras = {
             enabled = true,
             showDuration = true,
@@ -138,6 +162,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
     raid = {
         enabled = true,
         size = {80, 22},
+        scale = 1,
         point = "TOP",
         points = { -- list of 8 points, one for each raid group
             {"TOPLEFT", 20, -20},
@@ -149,8 +174,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
             {"TOP", AddonName .. "RaidHeader6", "BOTTOM", 0, -10},
             {"TOP", AddonName .. "RaidHeader7", "BOTTOM", 0, -10}
         },
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = false},
         auras = {enabled = false},
         castbar = {enabled = false},
         border = {enabled = true, size = 6},
@@ -165,14 +191,48 @@ Addon.config.defaults.profile.modules.unitFrames = {
         showParty = false,
         showRaid = true
     },
-    boss = {enabled = Addon.IsRetail},
-    tank = {enabled = true},
-    assist = {enabled = true},
+    boss = {
+        enabled = Addon.IsRetail,
+        size = {175, 42},
+        scale = 1,
+        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
+        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
+        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
+        combatfeedback = {enabled = false}
+    },
+    tank = {
+        enabled = true,
+        size = {175, 42},
+        scale = 1,
+        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
+        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
+        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
+        combatfeedback = {enabled = false}
+    },
+    assist = {
+        enabled = true,
+        size = {175, 42},
+        scale = 1,
+        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = true},
+        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
+        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
+        combatfeedback = {enabled = false}
+    },
     nameplates = {
         enabled = true,
         size = {150, 16},
-        health = {statusbar = nil},
-        power = {enabled = true, height = 6},
+        health = {enabled = true, height = 16, value = {tag = "[curhp_status]"}},
+        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        portrait = {enabled = false},
         auras = {enabled = true, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = true, size = {150, 12}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = false, ignoreImmune = true, ignoreDamage = true, ignoreHeal = false, ignoreEnergize = true, ignoreOther = true},
@@ -214,6 +274,155 @@ Addon.config.defaults.profile.modules.unitFrames = {
     }
 }
 
+function UF:CreateStatusBarTextureOption(name, desc, option, order)
+    return {
+        type = "select",
+        name = name,
+        desc = desc,
+        order = order,
+        dialogControl = "LSM30_Statusbar",
+        values = Addon.Libs.SharedMedia:HashTable("statusbar"),
+        get = function()
+            for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
+                if UF.config.db.profile.statusbars[option] == texture then
+                    return key
+                end
+            end
+        end,
+        set = function(_, key)
+            UF.config.db.profile.statusbars[option] = Addon.Libs.SharedMedia:Fetch("statusbar", key)
+            UF:OnUpdate()
+        end
+    }
+end
+
+function UF:CreateStatusBarColorOption(name, option, order)
+    return {
+        type = "color",
+        name = name,
+        order = order,
+        hasAlpha = false,
+        get = function()
+            local color = UF.config.db.profile.colors[option]
+            return color[1], color[2], color[3], 1
+        end,
+        set = function(_, r, g, b, a)
+            local color = UF.config.db.profile.colors[option]
+            color[1] = r
+            color[2] = g
+            color[3] = b
+            UF:OnUpdate()
+        end
+    }
+end
+
+function UF:CreateClassColorOption(class, name, order, hidden)
+    return {
+        type = "color",
+        name = name,
+        order = order,
+        hidden = hidden,
+        hasAlpha = false,
+        get = function()
+            local color = UF.config.db.profile.colors.class[class]
+            return color[1], color[2], color[3], 1
+        end,
+        set = function(_, r, g, b, a)
+            local color = UF.config.db.profile.colors.class[class]
+            color[1] = r
+            color[2] = g
+            color[3] = b
+            UF:OnUpdate()
+        end
+    }
+end
+
+function UF:CreateUnitEnabledOption(unit, order)
+    return {
+        type = "toggle",
+        name = "Enabled",
+        order = order,
+        confirm = function()
+            return "Disabling this unit requires a UI reload. Proceed?"
+        end,
+        get = function()
+            return UF.config.db.profile[unit].enabled
+        end,
+        set = function(_, val)
+            UF.config.db.profile[unit].enabled = val
+            ReloadUI()
+        end
+    }
+end
+
+function UF:CreateUnitSizeOption(unit, order, inline)
+    return {
+        type = "group",
+        name = "Size",
+        order = order,
+        inline = inline,
+        args = {
+            width = {
+                type = "range",
+                name = "Width",
+                order = 1,
+                min = 10,
+                softMax = 400,
+                step = 1,
+                get = function()
+                    return UF.config.db.profile[unit].size[1]
+                end,
+                set = function(_, val)
+                    UF.config.db.profile[unit].size[1] = val
+                    UF:OnUpdate()
+                end
+            },
+            height = {
+                type = "range",
+                name = "Height",
+                order = 2,
+                min = 10,
+                softMax = 400,
+                step = 1,
+                get = function()
+                    return UF.config.db.profile[unit].size[2]
+                end,
+                set = function(_, val)
+                    UF.config.db.profile[unit].size[2] = val
+                    UF:OnUpdate()
+                end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitHealthOption(unit, order, inline)
+    return {
+        type = "group",
+        name = "Health",
+        order = order,
+        inline = inline,
+        args = {
+            height = {
+                type = "range",
+                name = "Height",
+                desc = "The height of the unit's health bar. Note the width is always equal to the frame's width.",
+                order = 1,
+                min = 1,
+                softMax = 400,
+                step = 1,
+                get = function()
+                    return UF.config.db.profile[unit].health.height
+                end,
+                set = function(_, val)
+                    UF.config.db.profile[unit].health.height = val
+                    UF:OnUpdate()
+                end
+            }
+        }
+    }
+end
+
 Addon.config.options.args.unitFrames = {
     type = "group",
     name = "Unit Frames",
@@ -252,289 +461,106 @@ Addon.config.options.args.unitFrames = {
             end
         },
         lineBreak2 = {type = "header", name = "", order = 4},
-        statusbars = {
+        statusbarTextures = {
             type = "group",
             name = "Status Bar Textures",
             order = 5,
             inline = true,
             args = {
-                health = {
-                    type = "select",
-                    name = "Health",
-                    desc = "Set the texture to use for health bars.",
-                    order = 1,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.health == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.health = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                healthPrediction = {
-                    type = "select",
-                    name = "Health Prediction (Healing)",
-                    desc = "Set the texture to use for health prediction bars.",
-                    order = 2,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.healthPrediction == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.healthPrediction = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                lineBreak1 = {type = "header", name = "", order = 10},
-                power = {
-                    type = "select",
-                    name = "Power",
-                    desc = "Set the texture to use for power bars.",
-                    order = 11,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.power == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.power = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                powerPrediction = {
-                    type = "select",
-                    name = "Power Prediction (Power Cost)",
-                    desc = "Set the texture to use for power prediction bars.",
-                    order = 12,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.powerPrediction == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.powerPrediction = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                lineBreak2 = {type = "header", name = "", order = 20},
-                additionalPower = {
-                    type = "select",
-                    name = "Additional Power",
-                    desc = "Set the texture to use for power bars.",
-                    order = 21,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.additionalPower == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.additionalPower = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                additionalPowerPrediction = {
-                    type = "select",
-                    name = "Additional Power Prediction (Power Cost)",
-                    desc = "Set the texture to use for additional power prediction bars.",
-                    order = 22,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.additionalPowerPrediction == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.additionalPowerPrediction = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                },
-                lineBreak3 = {type = "header", name = "", order = 30},
-                castbar = {
-                    type = "select",
-                    name = "Cast Bars",
-                    desc = "Set the texture to use for cast bars.",
-                    order = 31,
-                    dialogControl = "LSM30_Statusbar",
-                    values = Addon.Libs.SharedMedia:HashTable("statusbar"),
-                    get = function()
-                        for key, texture in pairs(Addon.Libs.SharedMedia:HashTable("statusbar")) do
-                            if UF.config.db.profile.statusbars.castbar == texture then
-                                return key
-                            end
-                        end
-                    end,
-                    set = function(_, key)
-                        UF.config.db.profile.statusbars.castbar = Addon.Libs.SharedMedia:Fetch("statusbar", key)
-                        UF:OnUpdate()
-                    end
-                }
+                health = UF:CreateStatusBarTextureOption("Health", "Set the texture to use for health bars.", "health", 1),
+                healthPrediction = UF:CreateStatusBarTextureOption("Health Prediction (Healing)", "Set the texture to use for health prediction bars.", "healthPrediction", 2),
+                power = UF:CreateStatusBarTextureOption("Power", "Set the texture to use for power bars.", "power", 11),
+                powerPrediction = UF:CreateStatusBarTextureOption("Power Prediction (Power Cost)", "Set the texture to use for power prediction bars.", "powerPrediction", 12),
+                additionalPower = UF:CreateStatusBarTextureOption("Additional Power", "Set the texture to use for power bars.", "additionalPower", 21),
+                additionalPowerPrediction = UF:CreateStatusBarTextureOption("Additional Power Prediction (Power Cost)",
+                                                                            "Set the texture to use for additional power prediction bars.", "additionalPowerPrediction", 22),
+                castbar = UF:CreateStatusBarTextureOption("Cast Bars", "Set the texture to use for cast bars.", "castbar", 31)
             }
         },
-        colors = {
+        statusBarColors = {
             type = "group",
             name = "Status Bar Colors",
             order = 6,
             inline = true,
             args = {
-                health = {
-                    type = "color",
-                    name = "Health",
-                    order = 1,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.health
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.health
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                mana = {
-                    type = "color",
-                    name = "Mana",
-                    order = 2,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.mana
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.mana
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                rage = {
-                    type = "color",
-                    name = "Rage",
-                    order = 3,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.rage
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.rage
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                energy = {
-                    type = "color",
-                    name = "Energy",
-                    order = 4,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.energy
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.energy
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                focus = {
-                    type = "color",
-                    name = "Focus",
-                    order = 5,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.focus
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.focus
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                comboPoints = {
-                    type = "color",
-                    name = "Combo Points",
-                    order = 6,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.comboPoints
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.comboPoints
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                castbar = {
-                    type = "color",
-                    name = "Castbar",
+                health = UF:CreateStatusBarColorOption("Health", "health", 1),
+                mana = UF:CreateStatusBarColorOption("Mana", "mana", 2),
+                rage = UF:CreateStatusBarColorOption("Rage", "rage", 3),
+                energy = UF:CreateStatusBarColorOption("Energy", "energy", 4),
+                focus = UF:CreateStatusBarColorOption("Focus", "focus", 5),
+                comboPoints = UF:CreateStatusBarColorOption("Combo Points", "comboPoints", 6),
+                castbar = UF:CreateStatusBarColorOption("Castbar", "castbar", 7),
+                castbar_Shielded = UF:CreateStatusBarColorOption("Castbar (Shielded)", "castbar_Shielded", 8),
+                lineBreak1 = {type = "header", name = "", order = 15},
+                colorHealthClass = {
+                    type = "toggle",
+                    name = "Color Health by Class",
                     order = 20,
-                    hasAlpha = false,
                     get = function()
-                        local color = UF.config.db.profile.colors.castbar
-                        return color[1], color[2], color[3], 1
+                        return UF.config.db.profile.colors.colorHealthClass
                     end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.castbar
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorHealthClass = val
                         UF:OnUpdate()
                     end
                 },
-                castbar_Shielded = {
-                    type = "color",
-                    name = "Castbar (Shielded)",
+                colorHealthSmooth = {
+                    type = "toggle",
+                    name = "Color Health by Value",
                     order = 21,
-                    hasAlpha = false,
                     get = function()
-                        local color = UF.config.db.profile.colors.castbar_Shielded
-                        return color[1], color[2], color[3], 1
+                        return UF.config.db.profile.colors.colorHealthSmooth
                     end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.castbar_Shielded
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorHealthSmooth = val
+                        UF:OnUpdate()
+                    end
+                },
+                colorHealthDisconnected = {
+                    type = "toggle",
+                    name = "Color Health when Disconnected",
+                    order = 22,
+                    get = function()
+                        return UF.config.db.profile.colors.colorHealthDisconnected
+                    end,
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorHealthDisconnected = val
+                        UF:OnUpdate()
+                    end
+                },
+                colorPowerClass = {
+                    type = "toggle",
+                    name = "Color Power by Class",
+                    order = 30,
+                    get = function()
+                        return UF.config.db.profile.colors.colorPowerClass
+                    end,
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorPowerClass = val
+                        UF:OnUpdate()
+                    end
+                },
+                colorPowerSmooth = {
+                    type = "toggle",
+                    name = "Color Power by Value",
+                    order = 31,
+                    get = function()
+                        return UF.config.db.profile.colors.colorPowerSmooth
+                    end,
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorPowerSmooth = val
+                        UF:OnUpdate()
+                    end
+                },
+                colorPowerDisconnected = {
+                    type = "toggle",
+                    name = "Color Power when Disconnected",
+                    order = 32,
+                    get = function()
+                        return UF.config.db.profile.colors.colorPowerDisconnected
+                    end,
+                    set = function(_, val)
+                        UF.config.db.profile.colors.colorPowerDisconnected = val
                         UF:OnUpdate()
                     end
                 }
@@ -546,487 +572,59 @@ Addon.config.options.args.unitFrames = {
             order = 7,
             inline = true,
             args = {
-                deathKnight = {
-                    type = "color",
-                    name = "Death Knight",
-                    order = 0,
-                    hidden = Addon.IsClassic,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.DEATHKNIGHT
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.DEATHKNIGHT
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                demonHunter = {
-                    type = "color",
-                    name = "Demon Hunter",
-                    order = 1,
-                    hidden = Addon.IsClassic,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.DEMONHUNTER
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.DEMONHUNTER
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                druid = {
-                    type = "color",
-                    name = "Druid",
-                    order = 2,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.DRUID
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.DRUID
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                hunter = {
-                    type = "color",
-                    name = "Hunter",
-                    order = 3,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.HUNTER
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.HUNTER
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                mage = {
-                    type = "color",
-                    name = "Mage",
-                    order = 4,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.MAGE
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.MAGE
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                monk = {
-                    type = "color",
-                    name = "Monk",
-                    order = 5,
-                    hidden = Addon.IsClassic,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.MONK
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.MONK
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                paladin = {
-                    type = "color",
-                    name = "Paladin",
-                    order = 6,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.PALADIN
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.PALADIN
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                priest = {
-                    type = "color",
-                    name = "Priest",
-                    order = 7,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.PRIEST
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.PRIEST
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                rogue = {
-                    type = "color",
-                    name = "Rogue",
-                    order = 8,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.ROGUE
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.ROGUE
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                shaman = {
-                    type = "color",
-                    name = "Shaman",
-                    order = 9,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.SHAMAN
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.SHAMAN
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                warlock = {
-                    type = "color",
-                    name = "Warlock",
-                    order = 10,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.WARLOCK
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.WARLOCK
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                },
-                warrior = {
-                    type = "color",
-                    name = "Warrior",
-                    order = 11,
-                    hasAlpha = false,
-                    get = function()
-                        local color = UF.config.db.profile.colors.class.WARRIOR
-                        return color[1], color[2], color[3], 1
-                    end,
-                    set = function(_, r, g, b, a)
-                        local color = UF.config.db.profile.colors.class.WARRIOR
-                        color[1] = r
-                        color[2] = g
-                        color[3] = b
-                        UF:OnUpdate()
-                    end
-                }
+                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", Addon:LocalizedClassName("Death Knight"), 0, Addon.IsClassic),
+                demonHunter = UF:CreateClassColorOption("DEMONHUNTER", Addon:LocalizedClassName("Demon Hunter"), 1, Addon.IsClassic),
+                druid = UF:CreateClassColorOption("DRUID", Addon:LocalizedClassName("Druid"), 2),
+                hunter = UF:CreateClassColorOption("HUNTER", Addon:LocalizedClassName("Hunter"), 3),
+                mage = UF:CreateClassColorOption("MAGE", Addon:LocalizedClassName("Mage"), 4),
+                monk = UF:CreateClassColorOption("MONK", Addon:LocalizedClassName("Monk"), 5, Addon.IsClassic),
+                paladin = UF:CreateClassColorOption("PALADIN", Addon:LocalizedClassName("Paladin"), 6),
+                priest = UF:CreateClassColorOption("PRIEST", Addon:LocalizedClassName("Priest"), 7),
+                rogue = UF:CreateClassColorOption("ROGUE", Addon:LocalizedClassName("Rogue"), 8),
+                shaman = UF:CreateClassColorOption("SHAMAN", Addon:LocalizedClassName("Shaman"), 9),
+                warlock = UF:CreateClassColorOption("WARLOCK", Addon:LocalizedClassName("Warlock"), 10),
+                warrior = UF:CreateClassColorOption("WARRIOR", Addon:LocalizedClassName("Warrior"), 11)
             }
         },
-        player = {
-            type = "group",
-            name = "Player",
-            order = 12,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.player.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.player.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
-        target = {
-            type = "group",
-            name = "Target",
-            order = 13,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.target.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.target.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
+        player = {type = "group", name = "Player", order = 12, args = {enabled = UF:CreateUnitEnabledOption("player", 0), size = UF:CreateUnitSizeOption("player", 10, true)}},
+        target = {type = "group", name = "Target", order = 13, args = {enabled = UF:CreateUnitEnabledOption("target", 0), size = UF:CreateUnitSizeOption("target", 10, true)}},
         targettarget = {
             type = "group",
             name = "Target's Target",
             order = 14,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.targettarget.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.targettarget.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
+            args = {enabled = UF:CreateUnitEnabledOption("targettarget", 0), size = UF:CreateUnitSizeOption("targettarget", 10, true)}
         },
-        pet = {
-            type = "group",
-            name = "Pet",
-            order = 15,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.pet.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.pet.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
+        pet = {type = "group", name = "Pet", order = 15, args = {enabled = UF:CreateUnitEnabledOption("pet", 0), size = UF:CreateUnitSizeOption("pet", 10, true)}},
         focus = {
             type = "group",
             name = "Focus Target",
             order = 16,
             hidden = Addon.IsClassic,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.focus.enabled
-                    end,
-                    set = function(_, val)
-                        if Addon.IsRetail then
-                            UF.config.db.profile.focus.enabled = val
-                            ReloadUI()
-                        end
-                    end
-                }
-            }
+            args = {enabled = UF:CreateUnitEnabledOption("focus", 0), size = UF:CreateUnitSizeOption("focus", 10, true)}
         },
         focustarget = {
             type = "group",
             name = "Focus Target's Target",
             order = 17,
             hidden = Addon.IsClassic,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.focustarget.enabled
-                    end,
-                    set = function(_, val)
-                        if Addon.IsRetail then
-                            UF.config.db.profile.focustarget.enabled = val
-                            ReloadUI()
-                        end
-                    end
-                }
-            }
+            args = {enabled = UF:CreateUnitEnabledOption("focustarget", 0), size = UF:CreateUnitSizeOption("focustarget", 10, true)}
         },
-        party = {
-            type = "group",
-            name = "Party",
-            order = 18,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.party.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.party.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
-        raid = {
-            type = "group",
-            name = "Raid",
-            order = 19,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.raid.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.raid.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
-        tank = {
-            type = "group",
-            name = "Tanks",
-            order = 20,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.tank.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.tank.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
-        assist = {
-            type = "group",
-            name = "Assist",
-            order = 21,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.assist.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.assist.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
-        },
+        party = {type = "group", name = "Party", order = 18, args = {enabled = UF:CreateUnitEnabledOption("party", 0), size = UF:CreateUnitSizeOption("party", 10, true)}},
+        raid = {type = "group", name = "Raid", order = 19, args = {enabled = UF:CreateUnitEnabledOption("raid", 0), size = UF:CreateUnitSizeOption("raid", 10, true)}},
+        tank = {type = "group", name = "Tanks", order = 20, args = {enabled = UF:CreateUnitEnabledOption("tank", 0), size = UF:CreateUnitSizeOption("tank", 10, true)}},
+        assist = {type = "group", name = "Assist", order = 21, args = {enabled = UF:CreateUnitEnabledOption("assist", 0), size = UF:CreateUnitSizeOption("assist", 10, true)}},
         boss = {
             type = "group",
             name = "Boss",
             order = 22,
             hidden = Addon.IsClassic,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.boss.enabled
-                    end,
-                    set = function(_, val)
-                        if Addon.IsRetail then
-                            UF.config.db.profile.boss.enabled = val
-                            ReloadUI()
-                        end
-                    end
-                }
-            }
+            args = {enabled = UF:CreateUnitEnabledOption("boss", 0), size = UF:CreateUnitSizeOption("boss", 10, true)}
         },
         nameplates = {
             type = "group",
             name = "Nameplates",
             order = 23,
-            args = {
-                enabled = {
-                    type = "toggle",
-                    name = "Enabled",
-                    order = 0,
-                    confirm = function()
-                        return "Disabling this unit requires a UI reload. Proceed?"
-                    end,
-                    get = function()
-                        return UF.config.db.profile.nameplates.enabled
-                    end,
-                    set = function(_, val)
-                        UF.config.db.profile.nameplates.enabled = val
-                        ReloadUI()
-                    end
-                }
-            }
+            args = {enabled = UF:CreateUnitEnabledOption("nameplates", 0), size = UF:CreateUnitSizeOption("nameplates", 10, true)}
         }
     }
 }

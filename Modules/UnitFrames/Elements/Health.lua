@@ -10,19 +10,19 @@ UF.CreateHealth = function(self)
     self.Health:SetBackdropColor(0, 0, 0, 0.70)
 
     self.Health.frequentUpdates = true
-    self.Health.Smooth = true
-    self.Health.colorDisconnected = true
-    self.Health.colorTapping = true
-    self.Health.colorClass = true
     self.Health.colorHealth = true
+    self.Health.colorClass = UF.config.db.profile.colors.colorHealthClass
+    self.Health.colorSmooth = UF.config.db.profile.colors.colorHealthSmooth
+    self.Health.colorDisconnected = UF.config.db.profile.colors.colorHealthDisconnected
+    self.Health.colorTapping = true
     self.Health.colorReaction = true
+    self.Health.colorHappiness = false
+    self.Health.Smooth = true
 
     self.Health.Value = self:CreateFontString("$parentHealthText", "OVERLAY")
-    self.Health.Value:SetShadowOffset(1, -1)
     self.Health.Value:SetFont(UF.config.db.profile.font, 11)
+    self.Health.Value:SetShadowOffset(1, -1)
     self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
-
-    self:Tag(self.Health.Value, "[curhp_status]")
 
     local myBar = CreateFrame("StatusBar", nil, self.Health)
     myBar:SetPoint("TOP")
@@ -43,7 +43,9 @@ UF.CreateHealth = function(self)
     absorbBar:SetWidth(125)
 
     self.HealthPrediction = {myBar = myBar, otherBar = otherBar, absorbBar = absorbBar, maxOverflow = 1}
-	self.HealthPrediction.frequentUpdates = true
+    self.HealthPrediction.frequentUpdates = true
+    
+    self:Tag(self.Health.Value, "[curhp_status]")
 
     return self.Health
 end
@@ -51,5 +53,13 @@ end
 UF.UpdateHealth = function(self)
     if self.Health then
         self.Health:SetStatusBarTexture(UF.config.db.profile.statusbars.health)
+        self.Health.colorClass = UF.config.db.profile.colors.colorHealthClass
+        self.Health.colorSmooth = UF.config.db.profile.colors.colorHealthSmooth
+        self.Health.colorDisconnected = UF.config.db.profile.colors.colorHealthDisconnected
+        
+        self.Health.Value:SetFont(UF.config.db.profile.font, 11)
+        if self.cfg.health.value and self.cfg.health.value.tag ~= nil then
+            self:Tag(self.Health.Value, self.cfg.health.value.tag)
+        end
     end
 end

@@ -49,7 +49,6 @@ function UF:CreatePlayer()
     if not Addon.IsClassic then
         UF.CreatePhaseIndicator(self)
         UF.CreateGroupRoleIndicator(self)
-        self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
     end
 
     UF.CreateOfflineIcon(self)
@@ -64,6 +63,10 @@ function UF:CreatePlayer()
 
     UF.CreateAuras(self)
     UF.CreateCastbar(self)
+
+    if not Addon.IsClassic then
+        UF.CreateComboFrame(self)
+    end
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD", UF.Player_OnEvent, true)
     self:RegisterEvent("PLAYER_REGEN_ENABLED", UF.Player_OnEvent, true)
@@ -80,7 +83,7 @@ function UF:UpdatePlayer()
     if self then
         UF:UpdateFrame(self)
         
-        if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+        if UF:IsBlizzardTheme() then
             self.Health:ClearAllPoints()
             self.Health.Value:ClearAllPoints()
             self.Power:ClearAllPoints()
@@ -131,6 +134,10 @@ function UF:UpdatePlayer()
 
             self.MasterLooterIndicator:ClearAllPoints()
             self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
+
+            if not Addon.IsClassic then
+                self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
+            end
 
             self.Castbar:ClearAllPoints()
             if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then

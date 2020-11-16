@@ -4,6 +4,9 @@ local Addon = AddonTable[1]
 Addon.PlayerName = UnitName("player")
 Addon.PlayerClass = select(2, UnitClass("player"))
 Addon.PlayerFaction = UnitFactionGroup("player")
+Addon.PlayerSex = UnitSex("player")
+Addon.PlayerIsMale = Addon.PlayerSex == 2
+Addon.PlayerIsFemale = Addon.PlayerSex == 3
 
 Addon.HiddenFrame = CreateFrame("Frame")
 Addon.HiddenFrame:Hide()
@@ -18,6 +21,10 @@ end
 
 function Addon:UnlocalizedClassName(className)
     return (className and className ~= "") and Addon.UnlocalizedClasses[className]
+end
+
+function Addon:LocalizedClassName(className)
+    return (className and className ~= "") and (Addon.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or Addon.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
 end
 
 function Addon:Print(value, ...)

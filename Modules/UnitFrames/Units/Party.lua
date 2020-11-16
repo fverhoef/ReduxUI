@@ -169,7 +169,7 @@ function UF:UpdateParty()
     if self then
         UF:UpdateFrame(self)
 
-        if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
+        if UF:IsBlizzardTheme() then
         else
         end
     end
