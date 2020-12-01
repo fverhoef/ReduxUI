@@ -175,7 +175,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
             {"TOP", AddonName .. "RaidHeader7", "BOTTOM", 0, -10}
         },
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        power = {enabled = true, detached = false, size = {150, 8}, value = {tag = "[curpp]"}},
         portrait = {enabled = false},
         auras = {enabled = false},
         castbar = {enabled = false},

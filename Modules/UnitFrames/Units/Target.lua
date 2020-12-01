@@ -104,11 +104,15 @@ function UF:UpdateTarget()
                 self.Health:SetSize(119, 28)
                 self.Health:SetPoint("TOPRIGHT", self.Texture, -108, -23)
                 self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
+                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
+                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
                 self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth)
             else
                 self.Health:SetSize(119, 12)
                 self.Health:SetPoint("TOPRIGHT", self.Texture, -108, -41)
                 self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
+                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
+                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
                 self.Texture:SetTexture(Addon.media.textures.TargetFrame)
             end
 

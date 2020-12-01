@@ -86,6 +86,10 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
 end
 
 function UF:UpdateFrame(self)
+    if not self then
+        return
+    end
+
     self:SetScale(self.cfg.scale or 1)
 
     UF.UpdateHealth(self)

@@ -85,23 +85,24 @@ end
 
 UF.CreatePowerPrediction = function(self)
     local mainBar = CreateFrame("StatusBar", nil, self.Power)
-    mainBar:SetStatusBarTexture(UF.config.db.profile.statusbars.additionalPowerPrediction)
+    mainBar:SetStatusBarTexture(UF.config.db.profile.statusbars.powerPrediction)
     mainBar:SetFrameLevel(self:GetFrameLevel() - 1)
     mainBar:SetReverseFill(true)
-    mainBar:SetPoint("TOP")
-    mainBar:SetPoint("BOTTOM")
+    mainBar:SetPoint("TOP", self.Power, "TOP")
+    mainBar:SetPoint("BOTTOM", self.Power, "BOTTOM")
     mainBar:SetPoint("RIGHT", self.Power:GetStatusBarTexture(), "RIGHT")
-    mainBar:SetWidth(self.Power:GetWidth())
+    mainBar:SetSize(self.Power:GetWidth(), 0)
 
-    if self.AdditionalPower then
-        local altBar = CreateFrame("StatusBar", nil, self.AdditionalPower)
+    local altBar
+    if self.AdditionalPower then 
+        altBar = CreateFrame("StatusBar", nil, self.AdditionalPower)
         altBar:SetStatusBarTexture(UF.config.db.profile.statusbars.additionalPowerPrediction)
         altBar:SetFrameLevel(self:GetFrameLevel())
         altBar:SetReverseFill(true)
-        altBar:SetPoint("TOP")
-        altBar:SetPoint("BOTTOM")
+        altBar:SetPoint("TOP", self.AdditionalPower, "TOP")
+        altBar:SetPoint("BOTTOM", self.AdditionalPower, "BOTTOM")
         altBar:SetPoint("RIGHT", self.AdditionalPower:GetStatusBarTexture(), "RIGHT")
-        altBar:SetWidth(self.AdditionalPower:GetWidth())
+        altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
     end
 
     self.PowerPrediction = {mainBar = mainBar, altBar = altBar}
@@ -111,12 +112,12 @@ end
 
 UF.UpdatePowerPrediction = function(self)
     if self.PowerPrediction then
-        self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.db.profile.statusbars.additionalPowerPrediction)
-        self.PowerPrediction.mainBar:SetWidth(self.Power:GetWidth())
+        self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.db.profile.statusbars.powerPrediction)
+        self.PowerPrediction.mainBar:SetSize(self.Power:GetWidth(), 0)
 
         if self.PowerPrediction.altBar then
             self.PowerPrediction.altBar:SetStatusBarTexture(UF.config.db.profile.statusbars.additionalPowerPrediction)
-            self.PowerPrediction.altBar:SetWidth(self.Power:GetWidth())
+            self.PowerPrediction.altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
         end
     end
 end

@@ -111,6 +111,7 @@ function UF:UpdatePlayer()
             self.Texture:SetPoint("CENTER", self, -20, -7)
 
             self.Power:SetHeight(10)
+            UF.UpdatePowerPrediction(self)
 
             self.Name:ClearAllPoints()
             self.Name:SetWidth(110)
