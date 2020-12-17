@@ -4,6 +4,7 @@ local SS = Addon.Modules.ScreenSaver
 
 Addon.config.defaults.profile.modules.screenSaver = {
     enabled = true,
+    font = {Addon.config.defaults.profile.fonts.normal, 20, "OUTLINE"},
     fader = Addon.config.faders.onShow
 }
 

@@ -4,6 +4,7 @@ local Addon = AddonTable[1]
 Addon.PlayerName = UnitName("player")
 Addon.PlayerClass = select(2, UnitClass("player"))
 Addon.PlayerFaction = UnitFactionGroup("player")
+Addon.PlayerRealm = GetRealmName()
 Addon.PlayerSex = UnitSex("player")
 Addon.PlayerIsMale = Addon.PlayerSex == 2
 Addon.PlayerIsFemale = Addon.PlayerSex == 3
