@@ -262,9 +262,15 @@ function C:SkinChatFrame(frame)
     frame:SetMaxLines(C.config.db.profile.maxMessageCount)
 
     -- style hyperlinks
-    C:HookScript(frame, "OnHyperlinkEnter")
-    C:HookScript(frame, "OnHyperlinkLeave")
-    C:HookScript(frame, "OnMouseWheel")
+    if not frame.scriptsSet then
+        C:HookScript(frame, "OnHyperlinkEnter")
+        C:HookScript(frame, "OnHyperlinkLeave")
+        C:HookScript(frame, "OnMouseWheel")
+        frame:SetScript("OnMouseWheel", C.ChatFrame_OnMouseWheel)
+        C:SecureHook(frame, "SetScript", C.ChatFrame_SetScript)
+
+        frame.scriptsSet = true
+    end
 end
 
 function C:GetFrameHistory(frame)
@@ -356,5 +362,36 @@ function C:OnMouseWheel(frame)
     if C.HyperLinkFrame == frame then
         C.HyperLinkFrame = nil
         _G.GameTooltip:Hide()
+    end
+end
+
+function C:ChatFrame_SetScript(script, func)
+    if script == "OnMouseWheel" and func ~= C.ChatFrame_OnMouseScroll then
+        self:SetScript(script, C.ChatFrame_OnMouseWheel)
+    end
+end
+
+function C:ChatFrame_OnMouseWheel(delta)
+    local numScrollMessages = 3
+    if delta < 0 then
+        if IsShiftKeyDown() then
+            self:ScrollToBottom()
+        elseif IsAltKeyDown() then
+            self:ScrollDown()
+        else
+            for _ = 1, numScrollMessages do
+                self:ScrollDown()
+            end
+        end
+    elseif delta > 0 then
+        if IsShiftKeyDown() then
+            self:ScrollToTop()
+        elseif IsAltKeyDown() then
+            self:ScrollUp()
+        else
+            for _ = 1, numScrollMessages do
+                self:ScrollUp()
+            end
+        end
     end
 end
