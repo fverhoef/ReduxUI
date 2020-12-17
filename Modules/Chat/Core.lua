@@ -2,6 +2,21 @@ local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
 local C = Addon.Modules.Chat
 
+C.HyperlinkTypes = {
+    achievement = true,
+    apower = true,
+    currency = true,
+    enchant = true,
+    glyph = true,
+    instancelock = true,
+    item = true,
+    keystone = true,
+    quest = true,
+    spell = true,
+    talent = true,
+    unit = true
+}
+
 function C:OnEnable()
     C.chatMessages = C.config.db.char.chatMessages
 
@@ -117,7 +132,7 @@ function C:OnEnable()
             end
         end
 
-        C:OnEnableChatHistory(chatframe)
+        C:LoadChatHistory(chatframe)
     end
 
     -- skin temporary chat windows
@@ -245,6 +260,11 @@ function C:SkinChatFrame(frame)
 
     -- set max lines
     frame:SetMaxLines(C.config.db.profile.maxMessageCount)
+
+    -- style hyperlinks
+    C:HookScript(frame, "OnHyperlinkEnter")
+    C:HookScript(frame, "OnHyperlinkLeave")
+    C:HookScript(frame, "OnMouseWheel")
 end
 
 function C:GetFrameHistory(frame)
@@ -256,7 +276,7 @@ function C:GetFrameHistory(frame)
     return C.chatMessages[frameName]
 end
 
-function C:OnEnableChatHistory(frame)
+function C:LoadChatHistory(frame)
     local db = C:GetFrameHistory(frame)
 
     if db and #db > 0 then
@@ -308,5 +328,33 @@ function C:StoreChatMessage(frame, text, ...)
         for i = 1, countOverMax do
             table.remove(db, 1)
         end
+    end
+end
+
+function C:OnHyperlinkEnter(frame, refString)
+    if InCombatLockdown() then
+        return
+    end
+
+    local linkToken = strmatch(refString, "^([^:]+)")
+    if C.HyperlinkTypes[linkToken] then
+        _G.GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
+        _G.GameTooltip:SetHyperlink(refString)
+        _G.GameTooltip:Show()
+        C.HyperLinkFrame = frame
+    end
+end
+
+function C:OnHyperlinkLeave()
+    if C.HyperLinkFrame then
+        C.HyperLinkFrame = nil
+        _G.GameTooltip:Hide()
+    end
+end
+
+function C:OnMouseWheel(frame)
+    if C.HyperLinkFrame == frame then
+        C.HyperLinkFrame = nil
+        _G.GameTooltip:Hide()
     end
 end

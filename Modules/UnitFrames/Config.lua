@@ -455,7 +455,6 @@ Addon.config.options.args.unitFrames = {
                 return UF.themes[UF.config.db.profile.theme]
             end,
             set = function(_, key)
-                print(key)
                 UF.config.db.profile.theme = UF.themes[key]
                 UF:OnUpdate()
             end

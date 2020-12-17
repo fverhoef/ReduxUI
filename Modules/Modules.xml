@@ -6,11 +6,9 @@
     <Include file="Chat\Chat.xml"/>
     <Include file="ClassBars\ClassBars.xml"/>
     <Include file="Cooldowns\Cooldowns.xml"/>
-    <Include file="DungeonJournal\DungeonJournal.xml"/>
     <Include file="Minimap\Minimap.xml"/>
     <Include file="ScreenSaver\ScreenSaver.xml"/>
     <Include file="Skins\Skins.xml"/>
-    <Include file="SpellInfo\SpellInfo.xml"/>
     <Include file="Tooltips\Tooltips.xml"/>
     <Include file="UnitFrames\UnitFrames.xml"/>
 </Ui>

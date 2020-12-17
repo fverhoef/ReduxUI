@@ -4,7 +4,7 @@ local C = Addon.Modules.Chat
 
 Addon.config.defaults.profile.modules.chat = {
     enabled = true,
-    font = {Addon.config.defaults.profile.fonts.normal, 13, "OUTLINE"},
+    font = {Addon.config.defaults.profile.fonts.normal, 12, "OUTLINE"},
     maxMessageCount = 500,
     maxHistoryCount = 500,
     showClassColors = true,
