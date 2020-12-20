@@ -121,10 +121,8 @@ function UF:CreateRaid()
         end
     }
 
-    -- debuff highlight
-    self.DebuffHighlightBackdrop = true
-    self.DebuffHighlightAlpha = 0.5
-    self.DebuffHighlightFilter = true
+    -- aura highlight
+    UF.CreateAuraHighlight(self)
 end
 
 function UF:UpdateRaid()

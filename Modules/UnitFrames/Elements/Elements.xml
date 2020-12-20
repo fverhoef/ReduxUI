@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="AssistantIndicator.lua"/>
+    <Script file="AuraHighlight.lua"/>
     <Script file="Auras.lua"/>
     <Script file="Castbar.lua"/>
     <Script file="CombatIndicator.lua"/>

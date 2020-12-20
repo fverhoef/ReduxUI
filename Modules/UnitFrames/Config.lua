@@ -45,6 +45,13 @@ Addon.config.defaults.profile.modules.unitFrames = {
             ["WARLOCK"] = oUF.colors.class["WARLOCK"],
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
         },
+        auraHighlight = {
+            Magic = { 0.2,  0.6, 1, 0.45},
+            Curse = { 0.6, 0, 1, 0.45},
+            Disease = { 0.6, 0.4, 0, 0.45},
+            Poison = { 0, 0.6, 0, 0.45},
+            blendMode = "ADD"
+        },
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,
@@ -189,7 +196,11 @@ Addon.config.defaults.profile.modules.unitFrames = {
         showPlayer = false,
         showSolo = false,
         showParty = false,
-        showRaid = true
+        showRaid = true,
+        auraHighlight = {
+            enabled = true,
+            mode = "FILL"
+        }
     },
     boss = {
         enabled = Addon.IsRetail,

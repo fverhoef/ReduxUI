@@ -97,6 +97,7 @@ function UF:UpdateFrame(self)
     UF.UpdatePowerPrediction(self)
     UF.UpdateAdditionalPower(self)
     UF.UpdateCastbar(self)
+    UF.UpdateAuraHighlight(self)
     UF.UpdateAuras(self)
     UF.UpdateCombatFeedback(self)
 

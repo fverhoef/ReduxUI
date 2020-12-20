@@ -7,6 +7,8 @@ Addon.media = {
         ExpresswayFree = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"
     },
     textures = {
+        Blank = [[Interface\Buttons\WHITE8X8]],
+
         Arrow = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\Arrow",
         BorderNormal = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderNormal",
         BorderNormalGloss = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderNormalGloss",
@@ -22,7 +24,7 @@ Addon.media = {
         StatusBar_Kait2 = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Kait2",
         StatusBar_Melli = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Melli",
         StatusBar_MelliDark = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\MelliDark",
-        
+
         -- ActionBars
         MainMenuBar = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\MainMenuBar",
         MainMenuBar_Alliance = "Interface\\PLAYERACTIONBARALT\\ALLIANCE",
@@ -94,12 +96,12 @@ Addon.media = {
         buttonBorderWhite = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\ButtonBorderWhite",
         buttonBorderWhiteThin = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\ButtonBorderWhiteThin",
         buttonBackdrop = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\ButtonBackdrop",
-        buttonBackdropBorder = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\ButtonBackdropBorder",
+        buttonBackdropBorder = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\ButtonBackdropBorder"
     }
 }
 
 -- register shared media
-Addon.Libs.SharedMedia:Register("font", "Adventure", Addon.media.fonts.Adventure )
+Addon.Libs.SharedMedia:Register("font", "Adventure", Addon.media.fonts.Adventure)
 Addon.Libs.SharedMedia:Register("font", "Expressway Free", Addon.media.fonts.ExpresswayFree)
 Addon.Libs.SharedMedia:Register("statusbar", "Redux", Addon.media.textures.StatusBar_Redux)
 Addon.Libs.SharedMedia:Register("statusbar", "Redux (One Pixel)", Addon.media.textures.StatusBar_OnePixel)
