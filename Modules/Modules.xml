@@ -6,6 +6,7 @@
     <Include file="Chat\Chat.xml"/>
     <Include file="ClassBars\ClassBars.xml"/>
     <Include file="Cooldowns\Cooldowns.xml"/>
+    <Include file="InventoryDatabase\InventoryDatabase.xml"/>
     <Include file="Minimap\Minimap.xml"/>
     <Include file="ScreenSaver\ScreenSaver.xml"/>
     <Include file="Skins\Skins.xml"/>

@@ -340,79 +340,6 @@ function B:UnhighlightBagButtons(frame)
     B:HighlightBagButtons(frame, nil)
 end
 
-function B:UpdateInventoryDatabase()
-    local db = Addon.config.db.realm.inventory[Addon.PlayerName]
-    if not db then
-        Addon.config.db.realm.inventory[Addon.PlayerName] = {}
-        db = Addon.config.db.realm.inventory[Addon.PlayerName]
-    end
-
-    db.class = Addon.PlayerClass
-    db.money = GetMoney()
-    db.bags = {}
-
-    for _, bag in ipairs(B.Inventory.Bags) do
-        local bagID = bag:GetID()
-        local slots = GetContainerNumSlots(bagID)
-        for slot, button in ipairs(bag.Buttons) do
-            if slot <= slots then
-                local _, itemCount, _, _, _, _, _, _, _, itemId = GetContainerItemInfo(bagID, slot)
-                if itemId then
-                    db.bags["" .. itemId] = (db.bags["" .. itemId] or 0) + itemCount
-                end
-            end
-        end
-    end
-
-    if B.Bank:IsShown() then
-        db.bank = {}
-        for _, bag in ipairs(B.Bank.Bags) do
-            local bagID = bag:GetID()
-            local slots = GetContainerNumSlots(bagID)
-            for slot, button in ipairs(bag.Buttons) do
-                if slot <= slots then
-                    local _, itemCount, _, _, _, _, _, _, _, itemId = GetContainerItemInfo(bagID, slot)
-                    if itemId then
-                        db.bank["" .. itemId] = (db.bank["" .. itemId] or 0) + itemCount
-                    end
-                end
-            end
-        end
-    end
-
-    db.equipped = {}
-    local slots = {
-        "HeadSlot",
-        "NeckSlot",
-        "ShoulderSlot",
-        "BackSlot",
-        "ChestSlot",
-        "ShirtSlot",
-        "TabardSlot",
-        "WristSlot",
-        "HandsSlot",
-        "WaistSlot",
-        "LegsSlot",
-        "FeetSlot",
-        "Finger0Slot",
-        "Finger1Slot",
-        "Trinket0Slot",
-        "Trinket1Slot",
-        "MainHandSlot",
-        "SecondaryHandSlot",
-        "RangedSlot"
-    }
-    for i, slot in next, slots do
-        local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
-        if link then
-            local itemId = Addon:GetItemIdFromLink(link)
-            if itemId then
-                db.equipped["" .. itemId] = 1
-            end
-        end
-    end
-end
-
 function B:CreateInventoryFrame()
     local frame = CreateFrame("Frame", AddonName .. "Inventory", UIParent, "ButtonFrameTemplate")
     frame:EnableMouse(true)
@@ -507,8 +434,6 @@ function B:UpdateInventory()
     if B.Bank:IsShown() then
         B:UpdateBank()
     end
-
-    B:UpdateInventoryDatabase()
 end
 
 function B:UpdateChecked()

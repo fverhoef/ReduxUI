@@ -434,28 +434,7 @@ function BS:StyleAllMicroButtons()
 end
 
 function BS:StyleAllCharacterSlots()
-    local slots = {
-        "HeadSlot",
-        "NeckSlot",
-        "ShoulderSlot",
-        "BackSlot",
-        "ChestSlot",
-        "ShirtSlot",
-        "TabardSlot",
-        "WristSlot",
-        "HandsSlot",
-        "WaistSlot",
-        "LegsSlot",
-        "FeetSlot",
-        "Finger0Slot",
-        "Finger1Slot",
-        "Trinket0Slot",
-        "Trinket1Slot",
-        "MainHandSlot",
-        "SecondaryHandSlot",
-        "RangedSlot"
-    }
-    for i, slot in next, slots do
+    for i, slot in next, Addon.EquipmentSlots do
         BS:StyleItemButton(_G["Character" .. slot])
     end
 end

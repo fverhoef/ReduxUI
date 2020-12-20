@@ -3,27 +3,6 @@ local Addon = AddonTable[1]
 local S = Addon.Modules.Skins
 
 S.attributeIndex = {["STRENGTH"] = 1, ["AGILITY"] = 2, ["STAMINA"] = 3, ["INTELLECT"] = 4, ["SPIRIT"] = 5}
-S.itemSlots = {
-    "HeadSlot",
-    "NeckSlot",
-    "ShoulderSlot",
-    "BackSlot",
-    "ChestSlot",
-    "ShirtSlot",
-    "TabardSlot",
-    "WristSlot",
-    "HandsSlot",
-    "WaistSlot",
-    "LegsSlot",
-    "FeetSlot",
-    "Finger0Slot",
-    "Finger1Slot",
-    "Trinket0Slot",
-    "Trinket1Slot",
-    "MainHandSlot",
-    "SecondaryHandSlot",
-    "RangedSlot"
-}
 
 function S:DressUpTexturePath(raceFileName)
     if not raceFileName then
@@ -141,7 +120,7 @@ function S:StylePaperDollFrame()
     -- register item slots with Masque
     if LibStub("Masque", true) then
         local masqueGroup = LibStub("Masque", true):Group(Addon.title, "Character Frame", true)
-        for _, slot in next, S.itemSlots do
+        for _, slot in next, Addon.EquipmentSlots do
             local button = _G["Character" .. slot]
             if button then
                 masqueGroup:AddButton(button)
@@ -1137,7 +1116,7 @@ function S:UpdatePaperDollFrame()
     S:UpdateDefense(PaperDollFrame.CharacterStatsPane.Enhancements.Defenses.Defense, S.Stats.defense.defense)
 
     -- update item rarity
-    for _, slot in next, S.itemSlots do
+    for _, slot in next, Addon.EquipmentSlots do
         local button = _G["Character" .. slot]
         if button then
             local border = Addon:FindButtonBorder(button)

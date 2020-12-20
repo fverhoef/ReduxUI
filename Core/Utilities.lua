@@ -20,12 +20,38 @@ for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do
     Addon.UnlocalizedClasses[v] = k
 end
 
+Addon.EquipmentSlots = {
+    "HeadSlot",
+    "NeckSlot",
+    "ShoulderSlot",
+    "BackSlot",
+    "ChestSlot",
+    "ShirtSlot",
+    "TabardSlot",
+    "WristSlot",
+    "HandsSlot",
+    "WaistSlot",
+    "LegsSlot",
+    "FeetSlot",
+    "Finger0Slot",
+    "Finger1Slot",
+    "Trinket0Slot",
+    "Trinket1Slot",
+    "MainHandSlot",
+    "SecondaryHandSlot"
+}
+
+if Addon.IsClassic then
+    table.insert(Addon.EquipmentSlots, "RangedSlot")
+end
+
 function Addon:UnlocalizedClassName(className)
     return (className and className ~= "") and Addon.UnlocalizedClasses[className]
 end
 
 function Addon:LocalizedClassName(className)
-    return (className and className ~= "") and (Addon.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or Addon.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
+    return (className and className ~= "") and
+               (Addon.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or Addon.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
 end
 
 function Addon:Print(value, ...)
@@ -187,7 +213,7 @@ function Addon:GetSize(frame)
     if not frame then
         return
     end
-    return { frame:GetWidth(), frame:GetHeight() }
+    return {frame:GetWidth(), frame:GetHeight()}
 end
 
 function Addon:SetOutside(obj, anchor, xOffset, yOffset, anchor2)

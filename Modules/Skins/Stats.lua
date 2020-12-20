@@ -438,29 +438,10 @@ local function GetShapeshiftForm()
 end
 
 local function GetPlayerItemLevel()
-    local slots = {
-        "HeadSlot",
-        "NeckSlot",
-        "ShoulderSlot",
-        "BackSlot",
-        "ChestSlot",
-        "WristSlot",
-        "HandsSlot",
-        "WaistSlot",
-        "LegsSlot",
-        "FeetSlot",
-        "Finger0Slot",
-        "Finger1Slot",
-        "Trinket0Slot",
-        "Trinket1Slot",
-        "MainHandSlot",
-        "SecondaryHandSlot",
-        "RangedSlot"
-    }
     local totalItemLevel = 0
     local count = 0
     local hasTwoHander = false
-    for i, slot in next, slots do
+    for i, slot in next, Addon.EquipmentSlots do
         local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
         if link then
             local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
