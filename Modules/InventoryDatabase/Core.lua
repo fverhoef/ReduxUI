@@ -1,5 +1,6 @@
 local AddonName, AddonTable = ...
 local Addon = AddonTable[1]
+local B = Addon.Modules.Bags
 local ID = Addon.Modules.InventoryDatabase
 
 function ID:OnEnable()
