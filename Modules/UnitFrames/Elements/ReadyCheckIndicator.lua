@@ -3,7 +3,10 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreateReadyCheckIndicator = function(self)
-    self.ReadyCheckIndicator = self:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
+    self.ReadyCheckIndicatorParent = CreateFrame("Frame", nil, self)
+    self.ReadyCheckIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
+    self.ReadyCheckIndicator = self.ReadyCheckIndicatorParent:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
     self.ReadyCheckIndicator:SetPoint("TOPRIGHT", self.Portrait, -7, -7)
     self.ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Portrait, 7, 7)
     self.ReadyCheckIndicator.delayTime = 2

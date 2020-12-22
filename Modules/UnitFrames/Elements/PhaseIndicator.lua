@@ -3,7 +3,10 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreatePhaseIndicator = function(self)
-    self.PhaseIndicator = self:CreateTexture("$parentPhaseIcon", "OVERLAY")
+    self.PhaseIndicatorParent = CreateFrame("Frame", nil, self)
+    self.PhaseIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
+    self.PhaseIndicator = self.PhaseIndicatorParent:CreateTexture("$parentPhaseIcon", "OVERLAY")
     self.PhaseIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM")
 
     if self.IsMainFrame then

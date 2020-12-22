@@ -3,7 +3,10 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreateGroupRoleIndicator = function(self)
-    self.GroupRoleIndicator = self:CreateTexture("$parentGroupRoleIcon", "OVERLAY", nil, 7)
+    self.GroupRoleIndicatorParent = CreateFrame("Frame", nil, self)
+    self.GroupRoleIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
+    self.GroupRoleIndicator = self.GroupRoleIndicatorParent:CreateTexture("$parentGroupRoleIcon", "OVERLAY", nil, 7)
     self.GroupRoleIndicator:SetSize(20, 20)
 
     if unit == "player" then

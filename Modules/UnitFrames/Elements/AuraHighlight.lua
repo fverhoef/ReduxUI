@@ -49,7 +49,7 @@ end
 
 function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
 	if debuffType and not wasFiltered then
-		local color = UF.config.db.profile.colors.debuffHighlight[debuffType]
+		local color = UF.config.db.profile.colors.auraHighlight[debuffType]
 		if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
 			object.AuraHightlightGlow:SetBackdropBorderColor(unpack(color))
 		else

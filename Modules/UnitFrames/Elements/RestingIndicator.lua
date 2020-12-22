@@ -3,7 +3,10 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreateRestingIndicator = function(self)
-    self.RestingIndicator = self:CreateTexture("$parentRestingIcon", "OVERLAY")
+    self.RestingIndicatorParent = CreateFrame("Frame", nil, self)
+    self.RestingIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
+    self.RestingIndicator = self.RestingIndicatorParent:CreateTexture("$parentRestingIcon", "OVERLAY")
     self.RestingIndicator:SetPoint("TOPLEFT", self.Texture, 39, -50)
     self.RestingIndicator:SetSize(31, 31) -- 31,34
 

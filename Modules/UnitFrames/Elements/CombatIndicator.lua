@@ -3,7 +3,10 @@ local Addon = AddonTable[1]
 local UF = Addon.Modules.UnitFrames
 
 UF.CreateCombatIndicator = function(self)
-    self.CombatIndicator = self:CreateTexture("$parentCombatIcon", "OVERLAY")
+    self.CombatIndicatorParent = CreateFrame("Frame", nil, self)
+    self.CombatIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
+    self.CombatIndicator = self.CombatIndicatorParent:CreateTexture("$parentCombatIcon", "OVERLAY")
     self.CombatIndicator:SetDrawLayer("OVERLAY", 7)
     self.CombatIndicator:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
     self.CombatIndicator:SetSize(32, 31)
