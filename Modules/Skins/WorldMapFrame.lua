@@ -64,6 +64,9 @@ function S:StyleWorldMapFrame()
         S:CancelTimer(WorldMapFrame.Timer)
         WorldMapFrame.Timer = nil
     end)
+
+    -- register as a special frame so we can close with ESC key
+    tinsert(UISpecialFrames, WorldMapFrame:GetName())
 end
 
 local worldMapTitleRegion

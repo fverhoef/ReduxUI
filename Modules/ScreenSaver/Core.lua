@@ -124,15 +124,6 @@ function SS:OnEnable()
 end
 
 function SS:OnEvent()
-    local event = self
-    if event == "PLAYER_LOGIN" then
-        SS.Canvas.Model:SetUnit("player")
-        SS.Canvas.Model:SetRotation(math.rad(-110))
-        SS.Canvas.Galaxy:SetDisplayInfo(67918)
-        SS.Canvas.Galaxy:SetCamDistanceScale(2.2)
-        -- self.galaxy:SetRotation(math.rad(180))
-        return
-    end
     SS:Toggle()
 end
 

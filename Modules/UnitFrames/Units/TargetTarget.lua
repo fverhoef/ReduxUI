@@ -33,6 +33,10 @@ function UF:CreateTargetTarget()
     self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
     self.Texture:SetAllPoints(self)
 
+    if self.Texture then
+        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
+    end
+
     -- health
     UF.CreateHealth(self)
     self.Health:SetSize(46, 7)

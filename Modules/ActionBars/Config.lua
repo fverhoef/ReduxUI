@@ -31,9 +31,9 @@ Addon.config.defaults.profile.modules.actionBars = {
     multiBarLeft = {fader = Addon.config.faders.mouseOver},
     multiBarRight = {fader = Addon.config.faders.mouseOver},
     microButtonAndBags = {
-        lowLatencyTreshold = 50,
+        lowLatencyTreshold = 70,
         lowLatencyColor = {0 / 255, 175 / 255, 0 / 255},
-        mediumLatencyTreshold = 100,
+        mediumLatencyTreshold = 120,
         mediumLatencyColor = {225 / 255, 150 / 255, 0 / 255},
         highLatencyColor = {225 / 255, 0 / 255, 0 / 255},
         lowFpsTreshold = 20,

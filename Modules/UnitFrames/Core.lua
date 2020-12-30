@@ -101,5 +101,9 @@ function UF:UpdateFrame(self)
     UF.UpdateAuras(self)
     UF.UpdateCombatFeedback(self)
 
+    if self.Texture then
+        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
+    end
+
     self:UpdateAllElements("OnUpdate")
 end

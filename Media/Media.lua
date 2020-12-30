@@ -55,9 +55,9 @@ Addon.media = {
         PartyFrame = "Interface\\TARGETINGFRAME\\UI-PartyFrame",
 
         TargetFrame_LargerHealth = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrame",
-        TargetFrame_LargerHealth_Elite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameElite",
-        TargetFrame_LargerHealth_Rare = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRare",
-        TargetFrame_LargerHealth_RareElite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRareElite",
+        TargetFrame_Elite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameElite",
+        TargetFrame_Rare = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRare",
+        TargetFrame_RareElite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRareElite",
 
         TargetFrame_Flash = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-Flash",
         PartyFrame_Flash = "Interface\\TARGETINGFRAME\\UI-PartyFrame-Flash",

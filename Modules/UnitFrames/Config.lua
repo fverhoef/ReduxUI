@@ -45,13 +45,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
             ["WARLOCK"] = oUF.colors.class["WARLOCK"],
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
         },
-        auraHighlight = {
-            Magic = { 0.2,  0.6, 1, 0.45},
-            Curse = { 0.6, 0, 1, 0.45},
-            Disease = { 0.6, 0.4, 0, 0.45},
-            Poison = { 0, 0.6, 0, 0.45},
-            blendMode = "ADD"
-        },
+        auraHighlight = {Magic = {0.2, 0.6, 1, 0.45}, Curse = {0.6, 0, 1, 0.45}, Disease = {0.6, 0.4, 0, 0.45}, Poison = {0, 0.6, 0, 0.45}, blendMode = "ADD"},
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,
@@ -70,7 +64,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = false, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {250, 25}, showIcon = true, showIconOutside = false, showSafeZone = true, borderSize = 6, fontSize = 12},
         combatfeedback = {enabled = true},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     target = {
         enabled = true,
@@ -83,7 +79,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     targettarget = {
         enabled = true,
@@ -96,7 +94,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = false},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     pet = {
         enabled = true,
@@ -109,7 +109,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = true, showDuration = false, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     focus = {
         enabled = Addon.IsRetail,
@@ -122,7 +124,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
         castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     focustarget = {
         enabled = Addon.IsRetail,
@@ -135,7 +139,9 @@ Addon.config.defaults.profile.modules.unitFrames = {
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = false},
-        fader = Addon.config.faders.onShow
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     mouseover = {enabled = false},
     party = {
@@ -159,6 +165,8 @@ Addon.config.defaults.profile.modules.unitFrames = {
         castbar = {enabled = true, size = {89, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 6},
         combatfeedback = {enabled = true, fontSize = 14},
         fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1},
 
         xOffset = 0,
         yOffset = 50,
@@ -197,10 +205,7 @@ Addon.config.defaults.profile.modules.unitFrames = {
         showSolo = false,
         showParty = false,
         showRaid = true,
-        auraHighlight = {
-            enabled = true,
-            mode = "FILL"
-        }
+        auraHighlight = {enabled = true, mode = "FILL"}
     },
     boss = {
         enabled = Addon.IsRetail,
@@ -212,7 +217,10 @@ Addon.config.defaults.profile.modules.unitFrames = {
         portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
-        combatfeedback = {enabled = false}
+        combatfeedback = {enabled = false},
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     tank = {
         enabled = true,
@@ -224,7 +232,10 @@ Addon.config.defaults.profile.modules.unitFrames = {
         portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
-        combatfeedback = {enabled = false}
+        combatfeedback = {enabled = false},
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     assist = {
         enabled = true,
@@ -236,7 +247,10 @@ Addon.config.defaults.profile.modules.unitFrames = {
         portrait = {enabled = true},
         auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
         castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 6},
-        combatfeedback = {enabled = false}
+        combatfeedback = {enabled = false},
+        fader = Addon.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
     },
     nameplates = {
         enabled = true,

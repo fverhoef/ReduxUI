@@ -25,6 +25,12 @@ function UF:CreateTarget()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
+    self.EliteTexture = self:CreateTexture("$parentFrameEliteTexture", "BORDER")
+    self.EliteTexture:SetTexture(Addon.media.textures.TargetFrame_Elite)
+    self.RareTexture = self:CreateTexture("$parentFrameRareTexture", "BORDER")
+    self.RareTexture:SetTexture(Addon.media.textures.TargetFrame_Rare)
+    self.RareEliteTexture = self:CreateTexture("$parentFrameRareEliteTexture", "BORDER")
+    self.RareEliteTexture:SetTexture(Addon.media.textures.TargetFrame_RareElite)
 
     UF.CreateHealth(self)
     UF.CreatePower(self)
@@ -120,6 +126,18 @@ function UF:UpdateTarget()
             self.Texture:SetTexCoord(0.09375, 1, 0, 0.78125)
             self.Texture:SetSize(232, 100)
             self.Texture:SetPoint("CENTER", self, 20, -7)
+            self.RareTexture:ClearAllPoints()
+            self.RareTexture:SetTexCoord(0.09375, 1, 0, 0.78125)
+            self.RareTexture:SetSize(232, 100)
+            self.RareTexture:SetAllPoints(self.Texture)
+            self.EliteTexture:ClearAllPoints()
+            self.EliteTexture:SetTexCoord(0.09375, 1, 0, 0.78125)
+            self.EliteTexture:SetSize(232, 100)
+            self.EliteTexture:SetAllPoints(self.Texture)
+            self.RareEliteTexture:ClearAllPoints()
+            self.RareEliteTexture:SetTexCoord(0.09375, 1, 0, 0.78125)
+            self.RareEliteTexture:SetSize(232, 100)
+            self.RareEliteTexture:SetAllPoints(self.Texture)
 
             self.Power:SetHeight(10)
 
@@ -186,27 +204,22 @@ end
 UF.UpdateTargetFrameTexture = function(self)
     if UF.config.db.profile.theme == UF.themes.Blizzard or UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
         local classification = UnitClassification(self.unit)
-
-        if UF.config.db.profile.theme == UF.themes.Blizzard_LargeHealth then
-            if (classification == "rare") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth_Rare)
-            elseif (classification == "rareelite") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth_RareElite)
-            elseif (classification == "elite" or classification == "worldboss" or classification == "boss") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth_Elite)
-            else
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_LargerHealth)
-            end
+        if (classification == "rare") then
+            self.RareTexture:Show()
+            self.EliteTexture:Hide()
+            self.RareEliteTexture:Hide()
+        elseif (classification == "rareelite") then
+            self.RareEliteTexture:Show()
+            self.EliteTexture:Hide()
+            self.RareTexture:Hide()
+        elseif (classification == "elite" or classification == "worldboss" or classification == "boss") then
+            self.EliteTexture:Show()
+            self.RareTexture:Hide()
+            self.RareEliteTexture:Hide()
         else
-            if (classification == "rare") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_Rare)
-            elseif (classification == "rareelite") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_RareElite)
-            elseif (classification == "elite" or classification == "worldboss" or classification == "boss") then
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame_Elite)
-            else
-                self.Texture:SetTexture(Addon.media.textures.TargetFrame)
-            end
+            self.EliteTexture:Hide()
+            self.RareTexture:Hide()
+            self.RareEliteTexture:Hide()
         end
     end
 

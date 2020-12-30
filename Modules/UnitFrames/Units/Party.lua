@@ -48,6 +48,10 @@ function UF:CreateParty()
     self.Texture:SetSize(128, 64)
     self.Texture:SetPoint("TOPLEFT", self, 0, -2)
 
+    if self.Texture then
+        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
+    end
+
     -- health
     UF.CreateHealth(self)
     self.Health:SetSize(70, 7)
