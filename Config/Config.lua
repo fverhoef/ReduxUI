@@ -165,7 +165,7 @@ local function FindPanel(name, parent)
 end
 
 local function AddLogo(frame)
-    local logo = CreateFrame("Frame", nil, frame)
+    local logo = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
     logo:SetFrameLevel(4)
     logo:SetSize(64, 64)
     logo:SetPoint("TOPRIGHT", 8, 24)

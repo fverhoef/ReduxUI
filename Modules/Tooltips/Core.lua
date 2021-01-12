@@ -38,7 +38,7 @@ function TT:OnEnable()
     TT:SecureHook("GameTooltip_SetDefaultAnchor", TT.SetDefaultAnchor)
     TT:SecureHook("GameTooltip_SetBackdropStyle", TT.SetBackdropStyle)
     GameTooltip:HookScript("OnTooltipSetUnit", TT.OnTooltipSetUnit)
-    
+
     TT:UpdateFonts()
     TT:UpdateScale()
 
@@ -85,7 +85,7 @@ function TT:OnEnable()
     TT:HookSetSpell(GameTooltip)
     TT:HookSetSpell(ItemRefTooltip)
 
-    --TT:HookOnShow(GameTooltip)
+    -- TT:HookOnShow(GameTooltip)
 end
 
 function TT:GetTarget(unit)
@@ -254,6 +254,8 @@ function TT:SetDefaultAnchor(owner)
         return
     end
     local anchor = TT.config.db.profile.anchor
+    local offsetX = TT.config.db.profile.offsetX
+    local offsetY = TT.config.db.profile.offsetY
 
     -- override anchor for action bar buttons
     local parent = owner:GetParent()
@@ -267,7 +269,11 @@ function TT:SetDefaultAnchor(owner)
         end
     end
 
-    self:SetOwner(owner, anchor)
+    if anchor == "ANCHOR_CURSOR" then
+        self:SetOwner(owner, anchor, offsetX, offsetY)
+    else
+        self:SetOwner(owner, anchor)
+    end
 end
 
 function TT:InsertLine(tooltip, position, line)
@@ -406,7 +412,7 @@ function TT:HookSetItem(tip)
                 TT:AddItemCount(tooltip, itemId)
                 TT:AddItemID(tooltip, itemId)
             end
-            
+
             tooltip:Show()
         end
     end)

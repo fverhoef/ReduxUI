@@ -38,6 +38,8 @@ Addon.config.defaults.profile.modules.tooltips = {
     smallFontSize = 11,
     healthFontSize = 12,
     anchor = "ANCHOR_CURSOR",
+    offsetX = 20,
+    offsetY = 20,
     showHealthValues = true,
     showIcons = true,
     showSpellId = false,
@@ -266,13 +268,41 @@ Addon.config.options.args.tooltips = {
         anchor = {
             type = "select",
             name = "Anchor",
-            order = 23,
+            order = 31,
             values = TOOLTIP_ANCHORS,
             get = function()
                 return TT.config.db.profile.anchor
             end,
             set = function(_, key)
                 TT.config.db.profile.anchor = key
+            end
+        },
+        offsetX = {
+            type = "range",
+            name = "Offset X",
+            order = 32,
+            min = -100,
+            softMax = 100,
+            step = 1,
+            get = function()
+                return TT.config.db.profile.offsetX
+            end,
+            set = function(_, val)
+                TT.config.db.profile.offsetX = val
+            end
+        },
+        offsetY = {
+            type = "range",
+            name = "Offset Y",
+            order = 32,
+            min = -100,
+            softMax = 100,
+            step = 1,
+            get = function()
+                return TT.config.db.profile.offsetY
+            end,
+            set = function(_, val)
+                TT.config.db.profile.offsetY = val
             end
         }
     }
