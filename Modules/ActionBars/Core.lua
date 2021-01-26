@@ -1114,7 +1114,7 @@ function AB:AddSystemInfo(tooltip)
                     end
                 end
                 if mem then
-                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, cpu[3], Addon.SystemInfo:FormatMemory(mem[3])), labelColor[1], labelColor[2], labelColor[3], red,
+                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, cpu[3], Addon.SystemInfo:FormatMemory(mem)), labelColor[1], labelColor[2], labelColor[3], red,
                                           green + .5, 0)
                 else
                     tooltip:AddDoubleLine(cpu[2], format(cpuString, cpu[3]), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
