@@ -1,0 +1,9 @@
+local AddonName, AddonTable = ...
+local R = _G.ReduxUI
+
+local L = R.GetLocales("koKR")
+if not L then
+    return
+end
+
+L["Chained Spirit"] = "구속된 영혼"

@@ -1,0 +1,19 @@
+local AddonName, AddonTable = ...
+local R = _G.ReduxUI
+
+R.media.textures.MainMenuBar = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\MainMenuBar"
+R.media.textures.MainMenuBar_Alliance = "Interface\\PLAYERACTIONBARALT\\ALLIANCE"
+R.media.textures.MainMenuBar_Amber = "Interface\\PLAYERACTIONBARALT\\Amber"
+R.media.textures.MainMenuBar_Bamboo = "Interface\\PLAYERACTIONBARALT\\BAMBOO"
+R.media.textures.MainMenuBar_Darkmoon = "Interface\\PLAYERACTIONBARALT\\Darkmoon"
+R.media.textures.MainMenuBar_Fancy = "Interface\\PLAYERACTIONBARALT\\FANCY"
+R.media.textures.MainMenuBar_Generic = "Interface\\PLAYERACTIONBARALT\\GENERICWOW"
+R.media.textures.MainMenuBar_Horde = "Interface\\PLAYERACTIONBARALT\\HORDE"
+R.media.textures.MainMenuBar_Mechanical = "Interface\\PLAYERACTIONBARALT\\Mechanical"
+R.media.textures.MainMenuBar_Mechanical2 = "Interface\\PLAYERACTIONBARALT\\MECHANICAL2"
+R.media.textures.MainMenuBar_Natural = "Interface\\PLAYERACTIONBARALT\\Natural"
+R.media.textures.MainMenuBar_PandarenWood = "Interface\\PLAYERACTIONBARALT\\PandarenWood"
+R.media.textures.MainMenuBar_Stone = "Interface\\PLAYERACTIONBARALT\\STONE"
+R.media.textures.MainMenuBar_Tree = "Interface\\PLAYERACTIONBARALT\\TREE"
+R.media.textures.MainMenuBar_Wood = "Interface\\PLAYERACTIONBARALT\\WOOD"
+R.media.textures.PerformanceBar = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\PerformanceBar"

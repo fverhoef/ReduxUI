@@ -1,0 +1,8 @@
+## Interface: 11306
+## Title: |cff00c3ffRedux|r |cffd78219UI|r: Action Bars
+## Notes: Redux UI: Action Bars.
+## Version: 0.1
+## Author: Neya
+## RequiredDeps: ReduxUI
+
+ReduxUI_ActionBars.xml
