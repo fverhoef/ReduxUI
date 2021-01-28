@@ -1,0 +1,288 @@
+local addonName, ns = ...
+local R = _G.ReduxUI
+
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
+    xOffset = xOffset or 6
+    yOffset = yOffset or 6
+    anchor = anchor or obj:GetParent()
+
+    if obj:GetPoint() then
+        obj:ClearAllPoints()
+    end
+
+    obj:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
+    obj:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
+end
+
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
+    xOffset = xOffset or 6
+    yOffset = yOffset or 6
+    anchor = anchor or obj:GetParent()
+
+    if obj:GetPoint() then
+        obj:ClearAllPoints()
+    end
+
+    obj:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
+    obj:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
+end
+
+local function Offset(frame, offsetX, offsetY)
+    if frame then
+        local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint()
+        if not frame.originalPoint then
+            frame.originalPoint = {
+                point = point,
+                relativeTo = relativeTo,
+                relativePoint = relativePoint,
+                xOfs = xOfs,
+                yOfs = yOfs
+            }
+        end
+        frame:SetPoint(frame.originalPoint.point, frame.originalPoint.relativeTo, frame.originalPoint.relativePoint, frame.originalPoint.xOfs + offsetX,
+                       frame.originalPoint.yOfs + offsetY)
+    end
+end
+
+local function CreateBorder(self, size, texture, color, left, right, top, bottom)
+    if self.Border then
+        return
+    end
+
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
+    end
+
+    if not self.Border then
+        size = size or R.config.db.profile.borders.size
+        texture = texture or R.config.db.profile.borders.texture
+        color = color or R.config.db.profile.borders.color
+
+        self.Border = {}
+        self.Border.size = size
+        self.Border.color = color
+        self.Border.texture = texture
+        self.Border.padding = {left, right, top, bottom}
+
+        for i = 1, 8 do
+            self.Border[i] = self:CreateTexture(nil, "OVERLAY")
+            self.Border[i]:SetParent(self)
+            self.Border[i]:SetSize(size, size)
+            self.Border[i]:SetTexture(texture)
+            self.Border[i]:SetVertexColor(unpack(color))
+        end
+
+        self.Border[1]:SetTexCoord(0, 1 / 3, 0, 1 / 3)
+        self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
+
+        self.Border[2]:SetTexCoord(2 / 3, 1, 0, 1 / 3)
+        self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
+
+        self.Border[3]:SetTexCoord(0, 1 / 3, 2 / 3, 1)
+        self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
+
+        self.Border[4]:SetTexCoord(2 / 3, 1, 2 / 3, 1)
+        self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
+
+        self.Border[5]:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
+        self.Border[5]:SetPoint("TOPLEFT", self.Border[1], "TOPRIGHT")
+        self.Border[5]:SetPoint("TOPRIGHT", self.Border[2], "TOPLEFT")
+
+        self.Border[6]:SetTexCoord(1 / 3, 2 / 3, 2 / 3, 1)
+        self.Border[6]:SetPoint("BOTTOMLEFT", self.Border[3], "BOTTOMRIGHT")
+        self.Border[6]:SetPoint("BOTTOMRIGHT", self.Border[4], "BOTTOMLEFT")
+
+        self.Border[7]:SetTexCoord(0, 1 / 3, 1 / 3, 2 / 3)
+        self.Border[7]:SetPoint("TOPLEFT", self.Border[1], "BOTTOMLEFT")
+        self.Border[7]:SetPoint("BOTTOMLEFT", self.Border[3], "TOPLEFT")
+
+        self.Border[8]:SetTexCoord(2 / 3, 1, 1 / 3, 2 / 3)
+        self.Border[8]:SetPoint("TOPRIGHT", self.Border[2], "BOTTOMRIGHT")
+        self.Border[8]:SetPoint("BOTTOMRIGHT", self.Border[4], "TOPRIGHT")
+    end
+end
+
+local function SetBorderPadding(self, left, right, top, bottom)
+    if not self.Border then
+        return
+    end
+
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
+    end
+
+    if self.Border.padding[1] ~= left or self.Border.padding[2] ~= right or self.Border.padding[3] ~= top or self.Border.padding[4] ~= bottom then
+        self.Border.padding = {left, right, top, bottom}
+
+        self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
+        self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
+        self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
+        self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
+    end
+end
+
+local function SetBorderColor(self, r, g, b, a)
+    if not self.Border then
+        return
+    end
+
+    for i = 1, 8 do
+        self.Border[i]:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
+    end
+end
+
+local function SetBorderSize(self, size)
+    if not self.Border then
+        return
+    end
+
+    for i = 1, 8 do
+        self.Border[i]:SetSize(size, size)
+    end
+end
+
+local function SetBorderTexture(self, texture)
+    if not self.Border then
+        return
+    end
+
+    for i = 1, 8 do
+        self.Border[i]:SetTexture(texture)
+    end
+end
+
+local function CreateShadow(frame, size, edgeSize, pass, color)
+    if not pass and frame.Shadow then
+        return
+    end
+
+    size = size or 5
+    edgeSize = edgeSize or (size + 2)
+    color = color or {0,0,0,0.7}
+    if not color[4] then
+        color[4] = 0.7
+    end
+
+    local shadow = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
+    shadow.size = size
+    shadow.edgeSize = edgeSize
+
+    shadow:SetFrameLevel(1)
+    shadow:SetFrameStrata(frame:GetFrameStrata())
+    shadow:SetOutside(frame, size, size)
+    shadow:SetBackdrop({edgeFile = R.media.textures.backdrops.glow, edgeSize = edgeSize})
+    shadow:SetBackdropColor(0, 0, 0, 0)
+    shadow:SetBackdropBorderColor(unpack(color))
+
+    if not pass then
+        frame.Shadow = shadow
+    end
+
+    return shadow
+end
+
+local function SetShadowPadding(self, left, right, top, bottom)
+    if not self.Shadow then
+        return
+    end
+
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
+    end
+
+    self.Shadow:SetPoint("TOPLEFT", self, "TOPLEFT", -self.Shadow.size - left, self.Shadow.size + top)
+    self.Shadow:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.Shadow.size + right, -self.Shadow.size - bottom)
+end
+
+local function SetShadowColor(frame, color)
+    if not frame.Shadow then
+        return
+    end
+
+    if not color[4] then
+        color[4] = 0.7
+    end
+
+    frame.Shadow:SetBackdropBorderColor(unpack(color))
+end
+
+local function AddApi(object)
+    local mt = getmetatable(object).__index
+    if not object.SetInside then
+        mt.SetInside = SetInside
+    end
+    if not object.SetOutside then
+        mt.SetOutside = SetOutside
+    end
+    if not object.Offset then
+        mt.Offset = Offset
+    end
+    if not object.CreateBackdrop then
+        mt.CreateBackdrop = CreateBackdrop
+    end
+    if not object.CreateBorder then
+        mt.CreateBorder = CreateBorder
+    end
+    if not object.SetBorderPadding then
+        mt.SetBorderPadding = SetBorderPadding
+    end
+    if not object.SetBorderColor then
+        mt.SetBorderColor = SetBorderColor
+    end
+    if not object.SetBorderSize then
+        mt.SetBorderSize = SetBorderSize
+    end
+    if not object.SetBorderTexture then
+        mt.SetBorderTexture = SetBorderTexture
+    end
+    if not object.CreateShadow then
+        mt.CreateShadow = CreateShadow
+    end
+    if not object.SetShadowPadding then
+        mt.SetShadowPadding = SetShadowPadding
+    end
+    if not object.SetShadowColor then
+        mt.SetShadowColor = SetShadowColor
+    end
+end
+
+local handled = {["Frame"] = true}
+local object = CreateFrame("Frame")
+AddApi(object)
+AddApi(object:CreateTexture())
+AddApi(object:CreateFontString())
+AddApi(object:CreateMaskTexture())
+
+object = EnumerateFrames()
+while object do
+    if not object:IsForbidden() and not handled[object:GetObjectType()] then
+        AddApi(object)
+        handled[object:GetObjectType()] = true
+    end
+
+    object = EnumerateFrames(object)
+end
+
+AddApi(_G.GameFontNormal)
+AddApi(CreateFrame("ScrollFrame"))

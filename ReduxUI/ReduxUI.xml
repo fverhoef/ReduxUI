@@ -1,8 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Include file="Libs\Libs.xml"/>
-    <Script file="Init.lua"/>
-    <Include file="Media\Media.lua"/>
-    <Include file="Localization\Localization.xml"/>
-    <Include file="Core\Core.xml"/>
-    <Script file="Config.lua"/>
-</Ui>
