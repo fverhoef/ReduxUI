@@ -76,7 +76,7 @@ function R:OnEnable()
         if module.Initialize and not module.initialized then
             module.Initialize()
             module.initialized = true
-            R:Print("Module " .. name .. " initialized.")
+            --R:Print("Module " .. name .. " initialized.")
         end
     end
 

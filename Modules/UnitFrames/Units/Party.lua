@@ -117,6 +117,10 @@ function UF:CreateParty()
         self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
     end
 
+    -- raid role
+    UF.CreateRaidRoleIndicator(self)
+    self.RaidRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
+
     -- resurrect
     UF.CreateResurrectIndicator(self)
 

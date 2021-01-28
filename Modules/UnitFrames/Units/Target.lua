@@ -43,6 +43,7 @@ function UF:CreateTarget()
     UF.CreateLeaderIndicator(self)
     UF.CreateAssistantIndicator(self)
     UF.CreateMasterLooterIndicator(self)
+    UF.CreateRaidRoleIndicator(self)
     UF.CreateRaidTargetIndicator(self)
 
     if not R.isClassic then
@@ -165,8 +166,11 @@ function UF:UpdateTarget()
             self.MasterLooterIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 
             if not R.isClassic then
+                self.GroupRoleIndicator:ClearAllPoints()
                 self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
             end
+            self.RaidRoleIndicator:ClearAllPoints()
+            self.RaidRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
         
             local leftPadding = 0
             if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then

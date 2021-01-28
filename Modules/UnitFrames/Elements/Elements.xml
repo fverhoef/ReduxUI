@@ -15,9 +15,11 @@
     <Script file="OfflineIcon.lua"/>
     <Script file="PhaseIndicator.lua"/>
     <Script file="Portrait.lua"/>
-    <Script file="Power.lua"/>
+    <Script file="Power.lua"/> 
+    <Script file="PvPClassificationIndicator.lua"/>
     <Script file="PVPIndicator.lua"/>
     <Script file="QuestIndicator.lua"/>
+    <Script file="RaidRoleIndicator.lua"/>
     <Script file="RaidTargetIndicator.lua"/>
     <Script file="ReadyCheckIndicator.lua"/>
     <Script file="ResurrectIndicator.lua"/>

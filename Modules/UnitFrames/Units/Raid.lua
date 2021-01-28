@@ -88,6 +88,12 @@ function UF:CreateRaid()
     self.MasterLooterIndicator:ClearAllPoints()
     self.MasterLooterIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", 10, 5)
 
+    -- raid role
+    UF.CreateRaidRoleIndicator(self)
+    self.RaidRoleIndicator:SetSize(14, 14)
+    self.RaidRoleIndicator:ClearAllPoints()
+    self.RaidRoleIndicator:SetPoint("TOPRIGHT", self, "TOPRIGHT", 6, 5)
+
     -- raid target
     UF.CreateRaidTargetIndicator(self)
     self.RaidTargetIndicator:SetSize(20, 20)

@@ -44,11 +44,13 @@ function UF:CreatePlayer()
     UF.CreateLeaderIndicator(self)
     UF.CreateAssistantIndicator(self)
     UF.CreateMasterLooterIndicator(self)
+    UF.CreateRaidRoleIndicator(self)
     UF.CreateRaidTargetIndicator(self)
 
     if not R.isClassic then
         UF.CreatePhaseIndicator(self)
         UF.CreateGroupRoleIndicator(self)
+        UF.CreatePvPClassificationIndicator(self)
     end
 
     UF.CreateOfflineIcon(self)
@@ -137,8 +139,11 @@ function UF:UpdatePlayer()
             self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
 
             if not R.isClassic then
-                self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
+                self.GroupRoleIndicator:ClearAllPoints()
+                self.GroupRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
             end
+            self.RaidRoleIndicator:ClearAllPoints()
+            self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait,  10, -2)
 
             self.Castbar:ClearAllPoints()
             if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
