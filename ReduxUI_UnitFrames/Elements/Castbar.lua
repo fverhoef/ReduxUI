@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 
@@ -87,11 +87,12 @@ UF.UpdateCastbar = function(self)
             if cfg.showIconOutside then
                 self.Castbar.Icon:SetPoint("RIGHT", self.Castbar, "LEFT", -8, 0)
                 self.Castbar.IconOverlay:Show()
+                self.Castbar:SetBorderPadding(0, 2, 0, 0)
             else
                 self.Castbar:SetWidth(width - iconSize)
                 self.Castbar.Icon:SetPoint("RIGHT", self.Castbar, "LEFT", 0, 0)
                 self.Castbar.IconOverlay:Hide()
-                self.Castbar:SetBorderPadding(height - 2, 0, 0, 0, height - 2, 0, 0, 0, 0)
+                self.Castbar:SetBorderPadding(iconSize + 2, 2, 0, 0)
             end
         else
             self.Castbar.Icon:Hide()

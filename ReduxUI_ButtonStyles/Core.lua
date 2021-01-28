@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R:AddModule("ButtonStyles", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
@@ -7,6 +7,41 @@ function BS:Initialize()
     BS:StyleAllAuraButtons()
     BS:StyleAllBagButtons()
     BS:StyleAllCharacterSlots()
+    BS:SecureHook(nil, "SetItemButtonQuality", function(button, quality, itemIDOrLink, suppressOverlays)
+        button.quality = quality
+        button.itemIDOrLink = itemIDOrLink
+        BS:StyleItemButton(button)
+    end)
+end
+
+function BS:StyleAllActionButtons()
+    -- action bar buttons
+    for i = 1, NUM_ACTIONBAR_BUTTONS do
+        BS:StyleActionButton(_G["ActionButton" .. i])
+        BS:StyleActionButton(_G["MultiBarBottomLeftButton" .. i])
+        BS:StyleActionButton(_G["MultiBarBottomRightButton" .. i])
+        BS:StyleActionButton(_G["MultiBarRightButton" .. i])
+        BS:StyleActionButton(_G["MultiBarLeftButton" .. i])
+    end
+
+    -- petbar buttons
+    for i = 1, NUM_PET_ACTION_SLOTS do
+        BS:StyleActionButton(_G["PetActionButton" .. i])
+    end
+
+    -- stancebar buttons
+    for i = 1, NUM_STANCE_SLOTS do
+        BS:StyleActionButton(_G["StanceButton" .. i])
+    end
+
+    -- vehicle leave
+    local cfg = R.config.db.profile.modules.buttons.actionBars
+    MainMenuBarVehicleLeaveButton:CreateBorder(cfg.borderSize)
+
+    -- show reagent counts for spells
+    BS:SecureHook("ActionButton_UpdateCount", BS.ActionBarButton_UpdateCount)
+    BS:SecureHook("ActionButton_UpdateUsable", BS.ActionButton_UpdateUsable)
+    BS:SecureHook("ActionButton_UpdateRangeIndicator", BS.ActionButton_UpdateRangeIndicator)
 end
 
 function BS:StyleActionButton(button)
@@ -14,6 +49,7 @@ function BS:StyleActionButton(button)
         return
     end
     if button.__styled then
+        BS:UpdateActionButton(button)
         return
     end
     local buttonName = button:GetName()
@@ -131,11 +167,74 @@ function BS:StyleActionButton(button)
     button.__styled = true
 end
 
+function BS:UpdateActionButton(button)
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleActionButton(button)
+        return
+    end
+
+    if button.spellID then
+        button.isUsable, button.notEnoughMana = IsUsableSpell(button.spellID)
+    elseif button.action then
+        button.isUsable, button.notEnoughMana = IsUsableAction(button.action)
+    end
+
+    if button.isUsable and UnitOnTaxi("player") then
+        button.isUsable = false
+    end
+
+    if button.inRange ~= nil and not button.inRange then
+        R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttons.colors.outOfRange)
+    else
+        if button.isUsable then
+            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttons.colors.usable)
+        elseif button.notEnoughMana then
+            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttons.colors.notEnoughMana)
+        else
+            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttons.colors.notUsable)
+        end
+    end
+
+    -- update charges
+    if button.spellID then
+        button.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(button.spellID)
+    elseif button.action then
+        local actionType, id, subType = GetActionInfo(button.action)
+        if actionType == "spell" then
+            button.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(id)
+        end
+    end
+    if button.reagentCount ~= nil then
+        button.Count:SetText(button.reagentCount)
+    end
+end
+
+function BS:StyleAllAuraButtons()
+    BS:SecureHook("BuffFrame_Update", function()
+        local button
+        for i = 1, BUFF_MAX_DISPLAY do
+            BS:StyleAuraButton(_G["BuffButton" .. i])
+        end
+        for i = 1, DEBUFF_MAX_DISPLAY do
+            BS:StyleAuraButton(_G["DebuffButton" .. i])
+        end
+        for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+            button = _G["TempEnchant" .. i]
+            button.isTempEnchant = true
+            BS:StyleAuraButton(button)
+        end
+    end)
+end
+
 function BS:StyleAuraButton(button)
     if not button then
         return
     end
     if button.__styled then
+        BS:UpdateAuraButton(button)
         return
     end
     local buttonName = button:GetName()
@@ -149,11 +248,12 @@ function BS:StyleAuraButton(button)
         icon:SetInside(button, 2, 2)
     end
 
-    -- create border if none exists (debuffs have borders)
+    -- create border, hiding any none existing one (debuffs have borders)
     local border = _G[buttonName .. "Border"]
-    if not border then
-        button:CreateBorder(cfg.borderSize)
+    if border then
+        border:Hide()
     end
+    button:CreateBorder(cfg.borderSize)
 
     -- shadow
     button:CreateShadow()
@@ -182,11 +282,49 @@ function BS:StyleAuraButton(button)
     button.__styled = true
 end
 
+function BS:UpdateAuraButton(button)
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleAuraButton(button)
+    end
+
+    local borderColor = R.config.db.profile.borders.color
+    if button.isDebuff and button.debuffType ~= "none" then
+        local debuffColor = button.filter == "HARMFUL" and _G.DebuffTypeColor[button.debuffType]
+        if debuffColor then
+            borderColor = {debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1}
+        end
+    end
+    if button.isTempEnchant then
+        local quality = GetInventoryItemQuality("player", button:GetID())
+        if quality and quality > 1 then
+            borderColor = { GetItemQualityColor(quality) }
+        end
+    end
+    button:SetBorderColor(unpack(borderColor))
+end
+
+function BS:StyleAllBagButtons()
+    local itemButtons = {
+        "MainMenuBarBackpackButton",
+        "CharacterBag0Slot",
+        "CharacterBag1Slot",
+        "CharacterBag2Slot",
+        "CharacterBag3Slot"
+    }
+    for _, buttonName in next, itemButtons do
+        BS:StyleBagButton(_G[buttonName])
+    end
+end
+
 function BS:StyleBagButton(button)
     if not button then
         return
     end
     if button.__styled then
+        BS:UpdateBagButton(button)
         return
     end
     local buttonName = button:GetName()
@@ -260,11 +398,41 @@ function BS:StyleBagButton(button)
     button.__styled = true
 end
 
+function BS:UpdateBagButton(button)
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleBagButton(button)
+        return
+    end
+end
+
+function BS:StyleAllCharacterSlots()
+    for i, slot in next, R.EquipmentSlots do
+        BS:StyleItemButton(_G["Character" .. slot])
+    end
+
+    BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", BS.UpdateAllCharacterSlots)
+    _G.CharacterFrame:HookScript("OnShow", BS.UpdateAllCharacterSlots)
+end
+
+function BS:UpdateAllCharacterSlots()
+    for i, slot in next, R.EquipmentSlots do
+        local button = _G["Character" .. slot]
+        if button then
+            button.itemIDOrLink = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
+            BS:UpdateItemButton(button)
+        end
+    end
+end
+
 function BS:StyleItemButton(button)
     if not button then
         return
     end
     if button.__styled then
+        BS:UpdateItemButton(button)
         return
     end
 
@@ -295,7 +463,7 @@ function BS:StyleItemButton(button)
         R:ApplyTexCoords(icon, {0.1, 0.9, 0.1, 0.9})
     end
 
-    -- setup icon texture
+    -- setup icon border texture
     local iconBorder = _G[buttonName .. "IconBorder"] or button.IconBorder
     if iconBorder then
         iconBorder:SetTexture(R.media.textures.buttonBorderWhite)
@@ -303,22 +471,28 @@ function BS:StyleItemButton(button)
 
     -- setup normal texture
     local normalTexture = button:GetNormalTexture()
-    normalTexture:SetPoint("TOPLEFT", 0, 0)
-    normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    R:ApplyVertexColor(normalTexture, {1, 1, 1, 1})
-    R:ApplyNormalTexture(button, R.media.textures.buttonNormal)
+    if normalTexture then
+        normalTexture:SetPoint("TOPLEFT", 0, 0)
+        normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        R:ApplyVertexColor(normalTexture, {1, 1, 1, 1})
+        R:ApplyNormalTexture(button, R.media.textures.buttonNormal)
+    end
 
     -- setup pushed texture
     local pushedTexture = button:GetPushedTexture()
-    pushedTexture:SetPoint("TOPLEFT", 0, 0)
-    pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    R:ApplyPushedTexture(button, R.media.textures.buttonPushed)
+    if pushedTexture then
+        pushedTexture:SetPoint("TOPLEFT", 0, 0)
+        pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        R:ApplyPushedTexture(button, R.media.textures.buttonPushed)
+    end
 
     -- setup highlight texture
     local highlightTexture = button:GetHighlightTexture()
-    highlightTexture:SetPoint("TOPLEFT", 0, 0)
-    highlightTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    R:ApplyHighlightTexture(button, R.media.textures.buttonHighlight)
+    if highlightTexture then
+        highlightTexture:SetPoint("TOPLEFT", 0, 0)
+        highlightTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        R:ApplyHighlightTexture(button, R.media.textures.buttonHighlight)
+    end
 
     -- setup check texture
     local checkedTexture = nil
@@ -344,6 +518,43 @@ function BS:StyleItemButton(button)
     button.__styled = true
 end
 
+function BS:UpdateItemButton(button)
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleItemButton(button)
+    end
+
+    local border = R:FindButtonBorder(button)
+    if border then
+        if button.itemIDOrLink then
+            local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
+            if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+                border:SetVertexColor(unpack(R.config.db.profile.modules.bags.colors.questItem))
+                border:SetTexture(R.media.textures.buttonBorderWhite)
+                border:Show()
+            elseif itemRarity and itemRarity > 1 then
+                border:SetVertexColor(GetItemQualityColor(itemRarity))
+                border:SetTexture(R.media.textures.buttonBorderWhite)
+                border:Show()
+            else
+                border:SetVertexColor(1, 1, 1)
+                border:SetTexture(R.media.textures.buttonBorder)
+                border:Show()
+            end
+        else
+            border:Hide()
+        end
+    end
+end
+
+function BS:StyleAllMicroButtons()
+    for _, buttonName in next, MICRO_BUTTONS do
+        BS:StyleActionButton(_G[buttonName])
+    end
+end
+
 function BS:StyleMicroButton(button)
     if not button then
         return
@@ -358,141 +569,19 @@ function BS:StyleMicroButton(button)
     button.__styled = true
 end
 
-BS.buffButtonIndex = 1
-function BS:StyleBuffButtons()
-    BS:SecureHook("BuffFrame_UpdateAllBuffAnchors", function()
-        if BS.buffButtonIndex > BUFF_MAX_DISPLAY then
-            return
-        end
-        for i = BS.buffButtonIndex, BUFF_MAX_DISPLAY do
-            local button = _G["BuffButton" .. i]
-            if button then
-                BS:StyleAuraButton(button)
-                if button.__styled then
-                    BS.buffButtonIndex = i + 1
-                end
-            end
-        end
-    end)
-end
-
-function BS:StyleDebuffButtons()
-    BS:SecureHook("DebuffButton_UpdateAnchors", function(buttonName, i)
-        BS:StyleAuraButton(_G["DebuffButton" .. i])
-    end)
-end
-
-function BS:StyleTempEnchants()
-    BS:StyleAuraButton(_G["TempEnchant1"])
-    BS:StyleAuraButton(_G["TempEnchant2"])
-    BS:StyleAuraButton(_G["TempEnchant3"])
-end
-
-function BS:StyleAllActionButtons()
-    -- action bar buttons
-    for i = 1, NUM_ACTIONBAR_BUTTONS do
-        BS:StyleActionButton(_G["ActionButton" .. i])
-        BS:StyleActionButton(_G["MultiBarBottomLeftButton" .. i])
-        BS:StyleActionButton(_G["MultiBarBottomRightButton" .. i])
-        BS:StyleActionButton(_G["MultiBarRightButton" .. i])
-        BS:StyleActionButton(_G["MultiBarLeftButton" .. i])
-    end
-
-    -- petbar buttons
-    for i = 1, NUM_PET_ACTION_SLOTS do
-        BS:StyleActionButton(_G["PetActionButton" .. i])
-    end
-
-    -- stancebar buttons
-    for i = 1, NUM_STANCE_SLOTS do
-        BS:StyleActionButton(_G["StanceButton" .. i])
-    end
-
-    -- vehicle leave
-    local cfg = R.config.db.profile.modules.buttons.actionBars
-    MainMenuBarVehicleLeaveButton:CreateBorder(cfg.borderSize)
-
-    -- show reagent counts for spells
-    BS:SecureHook("ActionButton_UpdateCount", BS.ActionBarButton_UpdateCount)
-    BS:SecureHook("ActionButton_UpdateUsable", BS.ActionButton_UpdateUsable)
-    BS:SecureHook("ActionButton_UpdateRangeIndicator", BS.ActionButton_UpdateRangeIndicator)
-end
-
-function BS:StyleAllAuraButtons()
-    BS:StyleBuffButtons()
-    BS:StyleDebuffButtons()
-    BS:StyleTempEnchants()
-end
-
-function BS:StyleAllBagButtons()
-    local itemButtons = {"MainMenuBarBackpackButton", "CharacterBag0Slot", "CharacterBag1Slot", "CharacterBag2Slot", "CharacterBag3Slot"}
-    for _, buttonName in next, itemButtons do
-        BS:StyleBagButton(_G[buttonName])
-    end
-end
-
-function BS:StyleAllMicroButtons()
-    for _, buttonName in next, MICRO_BUTTONS do
-        BS:StyleActionButton(_G[buttonName])
-    end
-end
-
-function BS:StyleAllCharacterSlots()
-    for i, slot in next, R.EquipmentSlots do
-        BS:StyleItemButton(_G["Character" .. slot])
-    end
-end
-
 function BS:ActionButton_UpdateUsable()
     if (self.action or self.spellID) and (self.inRange == nil or self.inRange) then
-        BS:Update(self)
+        BS:UpdateActionButton(self)
     end
 end
 
 function BS:ActionButton_UpdateRangeIndicator()
     if R.config.db.profile.modules.buttons.outOfRangeColoring == "button" and (self.action or self.spellID) then
         self.inRange = self.spellID and IsSpellInRange(self.spellID) or IsActionInRange(self.action)
-        BS:Update(self)
+        BS:UpdateActionButton(self)
     end
 end
 
 function BS:ActionBarButton_UpdateCount()
-    BS:Update(self)
-end
-
-function BS:Update(self)
-    if self.spellID then
-        self.isUsable, self.notEnoughMana = IsUsableSpell(self.spellID)
-    elseif self.action then
-        self.isUsable, self.notEnoughMana = IsUsableAction(self.action)
-    end
-
-    if self.isUsable and UnitOnTaxi("player") then
-        self.isUsable = false
-    end
-
-    if self.inRange ~= nil and not self.inRange then
-        R:ApplyVertexColor(self.icon, R.config.db.profile.modules.buttons.colors.outOfRange)
-    else
-        if self.isUsable then
-            R:ApplyVertexColor(self.icon, R.config.db.profile.modules.buttons.colors.usable)
-        elseif self.notEnoughMana then
-            R:ApplyVertexColor(self.icon, R.config.db.profile.modules.buttons.colors.notEnoughMana)
-        else
-            R:ApplyVertexColor(self.icon, R.config.db.profile.modules.buttons.colors.notUsable)
-        end
-    end
-
-    -- update charges
-    if self.spellID then
-        self.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(self.spellID)
-    elseif self.action then
-        local actionType, id, subType = GetActionInfo(self.action)
-        if actionType == "spell" then
-            self.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(id)
-        end
-    end
-    if self.reagentCount ~= nil then
-        self.Count:SetText(self.reagentCount)
-    end
+    BS:UpdateActionButton(self)
 end

@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local MM = R:AddModule("Minimap", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
@@ -254,7 +254,7 @@ function MM:StyleMinimap()
     TimeManagerClockTicker:SetTextColor(0.8, 0.8, 0.6, 1)
 
     -- InformationFrame
-    Minimap.InformationFrame = CreateFrame("FRAME", AddonName .. "MinimapInformationFrame", Minimap)
+    Minimap.InformationFrame = CreateFrame("FRAME", addonName .. "MinimapInformationFrame", Minimap)
     Minimap.InformationFrame:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
     Minimap.InformationFrame:SetSize(192, 40)
 
@@ -293,7 +293,7 @@ function MM:StyleMinimap()
     end
 
     -- queue/garrison
-    if R.IsRetail then
+    if R.isRetail then
         GarrisonLandingPageMinimapButton:SetParent(Minimap.InformationFrame)
         GarrisonLandingPageMinimapButton:ClearAllPoints()
         GarrisonLandingPageMinimapButton:SetPoint("TOPLEFT", 5, 2)
@@ -324,7 +324,7 @@ function MM:StyleMinimap()
     MiniMapTrackingIcon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
 
     -- button frame toggle
-    Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", AddonName .. "MinimapButtonFrameToggle", Minimap.InformationFrame)
+    Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", addonName .. "MinimapButtonFrameToggle", Minimap.InformationFrame)
     Minimap.InformationFrame.ButtonFrameToggle:SetSize(16, 16)
     Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -5, 4)
     Minimap.InformationFrame.ButtonFrameToggle:SetChecked(not R.config.defaults.profile.modules.minimap.buttonFrame.collapsed)

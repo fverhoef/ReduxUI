@@ -1,7 +1,7 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 oUF.Tags.Events["difficultycolor"] = "UNIT_LEVEL PLAYER_LEVEL_UP"
 oUF.Tags.Methods["difficultycolor"] = function(unit)

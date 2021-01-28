@@ -1,7 +1,7 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
     local config = R.config.db.profile.modules.unitFrames.target
@@ -45,7 +45,7 @@ function UF:CreateTarget()
     UF.CreateMasterLooterIndicator(self)
     UF.CreateRaidTargetIndicator(self)
 
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreatePhaseIndicator(self)
     end
 
@@ -53,7 +53,7 @@ function UF:CreateTarget()
     UF.CreateReadyCheckIndicator(self)
     UF.CreateResurrectIndicator(self)
 
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreateGroupRoleIndicator(self)
     end
 
@@ -77,11 +77,11 @@ function UF:CreateTarget()
         end
     }
 
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreateQuestIndicator(self)
     end
 
-    if R.IsClassic then
+    if R.isClassic then
         UF.CreateComboFrame(self)
     end
 
@@ -164,7 +164,7 @@ function UF:UpdateTarget()
             self.MasterLooterIndicator:ClearAllPoints()
             self.MasterLooterIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 
-            if not R.IsClassic then
+            if not R.isClassic then
                 self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
             end
         

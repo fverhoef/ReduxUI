@@ -1,7 +1,7 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnPlayer()
     local config = R.config.db.profile.modules.unitFrames.player
@@ -46,7 +46,7 @@ function UF:CreatePlayer()
     UF.CreateMasterLooterIndicator(self)
     UF.CreateRaidTargetIndicator(self)
 
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreatePhaseIndicator(self)
         UF.CreateGroupRoleIndicator(self)
     end
@@ -64,7 +64,7 @@ function UF:CreatePlayer()
     UF.CreateAuras(self)
     UF.CreateCastbar(self)
 
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreateComboFrame(self)
     end
 
@@ -136,7 +136,7 @@ function UF:UpdatePlayer()
             self.MasterLooterIndicator:ClearAllPoints()
             self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
 
-            if not R.IsClassic then
+            if not R.isClassic then
                 self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
             end
 
@@ -156,7 +156,7 @@ end
 
 UF.Player_OnEvent = function(self, event, ...)
     -- in classic, hide additional mana bar in caster form
-    if R.IsClassic and R.PlayerClass == "DRUID" and UF.frames.player.AdditionalPower then
+    if R.isClassic and R.PlayerClass == "DRUID" and UF.frames.player.AdditionalPower then
         local form = GetShapeshiftForm()
         if form == 1 or form == 3 then
             UF.frames.player.AdditionalPower:Show()

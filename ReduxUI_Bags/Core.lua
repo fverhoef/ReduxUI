@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R:AddModule("Bags", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
@@ -42,7 +42,7 @@ function B:FindBag(bagID)
 end
 
 function B:CreateContainerFrame(bagID, parent)
-    local bag = CreateFrame("Frame", AddonName .. "InventoryContainerFrame" .. bagID, parent)
+    local bag = CreateFrame("Frame", addonName .. "InventoryContainerFrame" .. bagID, parent)
     bag:SetID(bagID)
     bag.Buttons = {}
     bag.Hidden = bagID == KEYRING_CONTAINER
@@ -54,7 +54,7 @@ function B:CreateContainerFrame(bagID, parent)
 end
 
 function B:CreateContainerButton(bagID, slot, parent)
-    local button = CreateFrame("Button", AddonName .. "Container" .. bagID .. "Button" .. slot, parent,
+    local button = CreateFrame("Button", addonName .. "Container" .. bagID .. "Button" .. slot, parent,
                                bagID == -1 and "BankItemButtonGenericTemplate" or "ContainerFrameItemButtonTemplate")
     button:SetSize(37, 37)
     button:SetID(slot)
@@ -219,10 +219,6 @@ function B:UpdateItemButton(bag, slot)
         return
     end
 
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleItemButton(button)
-    end
-
     local texture, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemId = GetContainerItemInfo(bagID, slot)
     local itemClassID = itemId and select(12, GetItemInfo(itemId)) or nil
 
@@ -230,29 +226,6 @@ function B:UpdateItemButton(bag, slot)
     SetItemButtonQuality(button, quality, itemId)
     SetItemButtonCount(button, itemCount)
     SetItemButtonDesaturated(button, locked)
-
-    -- TODO: Handle this through ButtonStyles module
-    if itemId then
-        local border = R:FindButtonBorder(button)
-        if border then
-            if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-                border:SetVertexColor(unpack(R.config.db.profile.modules.bags.colors.questItem))
-                if R.media.textures.buttonBorderWhite then
-                    border:SetTexture(R.media.textures.buttonBorderWhite)
-                end
-                border:Show()
-            elseif quality > 1 then
-                local r, g, b = GetItemQualityColor(quality)
-                border:SetVertexColor(r, g, b)
-                if R.media.textures.buttonBorderWhite then
-                    border:SetTexture(R.media.textures.buttonBorderWhite)
-                end
-                border:Show()
-            else
-                -- border:SetTexture(R.media.textures.buttonBorderWhiteThin)
-            end
-        end
-    end
 
     button.readable = readable
     if texture then
@@ -286,6 +259,10 @@ function B:UpdateItemButton(bag, slot)
         else
             GameTooltip:Hide()
         end
+    end
+
+    if R.Modules.ButtonStyles then
+        R.Modules.ButtonStyles:StyleItemButton(button)
     end
 end
 
@@ -346,7 +323,7 @@ function B:UnhighlightBagButtons(frame)
 end
 
 function B:CreateInventoryFrame()
-    local frame = CreateFrame("Frame", AddonName .. "Inventory", UIParent, "ButtonFrameTemplate")
+    local frame = CreateFrame("Frame", addonName .. "Inventory", UIParent, "ButtonFrameTemplate")
     frame:EnableMouse(true)
     frame:SetMovable(true)
     frame:SetFrameStrata("MEDIUM")
@@ -373,7 +350,7 @@ function B:CreateInventoryFrame()
         end
     end
 
-    frame.Money = CreateFrame("Frame", AddonName .. "InventoryCurrency", frame, "MoneyFrameTemplate")
+    frame.Money = CreateFrame("Frame", addonName .. "InventoryCurrency", frame, "MoneyFrameTemplate")
     frame.Money:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 5)
     frame.Money:SetScale(0.8)
     _G[frame.Money:GetName() .. "CopperButton"].Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
@@ -510,7 +487,7 @@ function B:ToggleBag(id)
 end
 
 function B:CreateBankFrame()
-    local frame = CreateFrame("Frame", AddonName .. "Bank", UIParent, "ButtonFrameTemplate")
+    local frame = CreateFrame("Frame", addonName .. "Bank", UIParent, "ButtonFrameTemplate")
     frame:EnableMouse(true)
     frame:SetMovable(true)
     frame:SetFrameStrata("MEDIUM")

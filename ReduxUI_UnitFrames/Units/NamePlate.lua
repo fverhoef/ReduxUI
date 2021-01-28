@@ -1,14 +1,14 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnNamePlates()
     local config = R.config.db.profile.modules.unitFrames.nameplates
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Nameplate", UF.CreateNamePlate)
-        oUF:SetActiveStyle(AddonName .. "Nameplate")
-        oUF:SpawnNamePlates(AddonName, UF.NamePlate_Callback, config.cvars)
+        oUF:RegisterStyle(addonName .. "Nameplate", UF.CreateNamePlate)
+        oUF:SetActiveStyle(addonName .. "Nameplate")
+        oUF:SpawnNamePlates(addonName, UF.NamePlate_Callback, config.cvars)
     end
 end
 
@@ -134,18 +134,18 @@ UF.CreateTargetIndicator = function(self)
     self.TargetIndicator:SetFrameLevel(0)
 
     self.TargetIndicator.Shadow = CreateFrame("Frame", nil, self.TargetIndicator)
-    self.TargetIndicator.Shadow:SetBackdrop({edgeFile = R.media.textures.Glow, edgeSize = 5})
+    self.TargetIndicator.Shadow:SetBackdrop({edgeFile = R.media.textures.backdrops.glow, edgeSize = 5})
     self.TargetIndicator.Shadow:Hide()
 
     self.TargetIndicator.Left = self.TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-    self.TargetIndicator.Left:SetTexture(R.media.textures.Arrow)
+    self.TargetIndicator.Left:SetTexture(R.media.textures.arrow)
     self.TargetIndicator.Left:SetRotation(-math.pi / 2)
     self.TargetIndicator.Left:SetSize(16, 16)
     self.TargetIndicator.Left:SetPoint("RIGHT", self.Health, "LEFT", 0, 0)
     self.TargetIndicator.Left:Hide()
 
     self.TargetIndicator.Right = self.TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-    self.TargetIndicator.Right:SetTexture(R.media.textures.Arrow)
+    self.TargetIndicator.Right:SetTexture(R.media.textures.arrow)
     self.TargetIndicator.Right:SetRotation(math.pi / 2)
     self.TargetIndicator.Right:SetSize(16, 16)
     self.TargetIndicator.Right:SetPoint("LEFT", self.Health, "RIGHT", 0, 0)

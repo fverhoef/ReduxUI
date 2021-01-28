@@ -1,14 +1,14 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 UF.frames = {}
 
 function UF:Initialize()
-    if R.IsClassic then
+    if R.isClassic then
         R:AddLib("ClassicDurations", "LibClassicDurations")
-        R.Libs.ClassicDurations:Register(AddonName)
+        R.Libs.ClassicDurations:Register(addonName)
         R.Libs.ClassicDurations:Register(R.name)
     end
     
@@ -76,10 +76,10 @@ function UF:UpdateColors()
 end
 
 function UF:SpawnFrame(name, unit, func, config, defaultConfig)
-    oUF:RegisterStyle(AddonName .. name, func)
-    oUF:SetActiveStyle(AddonName .. name)
+    oUF:RegisterStyle(addonName .. name, func)
+    oUF:SetActiveStyle(addonName .. name)
 
-    local frame = oUF:Spawn(unit, AddonName .. name)
+    local frame = oUF:Spawn(unit, addonName .. name)
 
     if config.fader and config.fader.enabled then
         R:CreateFrameFader(frame, config.fader)

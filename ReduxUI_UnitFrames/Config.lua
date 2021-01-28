@@ -1,7 +1,7 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
 
@@ -194,7 +194,13 @@ R.config.defaults.profile.modules.unitFrames = {
             ["WARLOCK"] = oUF.colors.class["WARLOCK"],
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
         },
-        auraHighlight = {Magic = {0.2, 0.6, 1, 0.45}, Curse = {0.6, 0, 1, 0.45}, Disease = {0.6, 0.4, 0, 0.45}, Poison = {0, 0.6, 0, 0.45}, blendMode = "ADD"},
+        auraHighlight = {
+            Magic = {0.2, 0.6, 1, 0.45},
+            Curse = {0.6, 0, 1, 0.45},
+            Disease = {0.6, 0.4, 0, 0.45},
+            Poison = {0, 0.6, 0, 0.45},
+            blendMode = "ADD"
+        },
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,
@@ -210,8 +216,24 @@ R.config.defaults.profile.modules.unitFrames = {
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
-        castbar = {enabled = true, size = {250, 25}, showIcon = true, showIconOutside = false, showSafeZone = true, borderSize = 12, fontSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 16,
+            onlyShowPlayerBuffs = false,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = false,
+            showDebuffsOnTop = true
+        },
+        castbar = {
+            enabled = true,
+            size = {250, 25},
+            showIcon = true,
+            showIconOutside = false,
+            showSafeZone = true,
+            borderSize = 12,
+            fontSize = 12
+        },
         combatfeedback = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -225,8 +247,23 @@ R.config.defaults.profile.modules.unitFrames = {
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
-        castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = true,
+            showDuration = true,
+            numBuffs = 16,
+            onlyShowPlayerBuffs = false,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = false,
+            showDebuffsOnTop = true
+        },
+        castbar = {
+            enabled = true,
+            size = {113, 15},
+            showIcon = true,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -236,12 +273,27 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {93, 45},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Target", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = false},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -251,42 +303,87 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Player", "BOTTOMRIGHT", 34, 5},
+        point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = true, showDuration = false, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
-        castbar = {enabled = true, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = true,
+            showDuration = false,
+            numBuffs = 16,
+            onlyShowPlayerBuffs = false,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = false,
+            showDebuffsOnTop = true
+        },
+        castbar = {
+            enabled = true,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
     },
     focus = {
-        enabled = R.IsRetail,
+        enabled = R.isRetail,
         size = {93, 45},
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = true, showDuration = true, numBuffs = 16, onlyShowPlayerBuffs = false, numDebuffs = 16, onlyShowPlayerDebuffs = false, showDebuffsOnTop = true},
-        castbar = {enabled = true, size = {113, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = true,
+            showDuration = true,
+            numBuffs = 16,
+            onlyShowPlayerBuffs = false,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = false,
+            showDebuffsOnTop = true
+        },
+        castbar = {
+            enabled = true,
+            size = {113, 15},
+            showIcon = true,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
     },
     focustarget = {
-        enabled = R.IsRetail,
+        enabled = R.isRetail,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = false},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -311,7 +408,14 @@ R.config.defaults.profile.modules.unitFrames = {
             showDebuffsOnTop = true,
             iconSize = 16
         },
-        castbar = {enabled = true, size = {89, 15}, showIcon = true, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        castbar = {
+            enabled = true,
+            size = {89, 15},
+            showIcon = true,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = true, fontSize = 14},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -330,13 +434,13 @@ R.config.defaults.profile.modules.unitFrames = {
         point = "TOP",
         points = { -- list of 8 points, one for each raid group
             {"TOPLEFT", 20, -20},
-            {"TOP", AddonName .. "RaidHeader1", "BOTTOM", 0, -10},
-            {"TOP", AddonName .. "RaidHeader2", "BOTTOM", 0, -10},
-            {"TOP", AddonName .. "RaidHeader3", "BOTTOM", 0, -10},
-            {"TOPLEFT", AddonName .. "RaidHeader1", "TOPRIGHT", 10, 0},
-            {"TOP", AddonName .. "RaidHeader5", "BOTTOM", 0, -10},
-            {"TOP", AddonName .. "RaidHeader6", "BOTTOM", 0, -10},
-            {"TOP", AddonName .. "RaidHeader7", "BOTTOM", 0, -10}
+            {"TOP", addonName .. "RaidHeader1", "BOTTOM", 0, -10},
+            {"TOP", addonName .. "RaidHeader2", "BOTTOM", 0, -10},
+            {"TOP", addonName .. "RaidHeader3", "BOTTOM", 0, -10},
+            {"TOPLEFT", addonName .. "RaidHeader1", "TOPRIGHT", 10, 0},
+            {"TOP", addonName .. "RaidHeader5", "BOTTOM", 0, -10},
+            {"TOP", addonName .. "RaidHeader6", "BOTTOM", 0, -10},
+            {"TOP", addonName .. "RaidHeader7", "BOTTOM", 0, -10}
         },
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 8}, value = {tag = "[curpp]"}},
@@ -357,15 +461,30 @@ R.config.defaults.profile.modules.unitFrames = {
         auraHighlight = {enabled = true, mode = "GLOW"}
     },
     boss = {
-        enabled = R.IsRetail,
+        enabled = R.isRetail,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = false},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -375,12 +494,27 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = false},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -390,12 +524,27 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", AddonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = true},
-        auras = {enabled = false, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = false, size = {89, 15}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
+        auras = {
+            enabled = false,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
         combatfeedback = {enabled = false},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -407,9 +556,31 @@ R.config.defaults.profile.modules.unitFrames = {
         health = {enabled = true, height = 16, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = false},
-        auras = {enabled = true, showDuration = true, numBuffs = 0, onlyShowPlayerBuffs = true, numDebuffs = 16, onlyShowPlayerDebuffs = true, showDebuffsOnTop = false},
-        castbar = {enabled = true, size = {150, 12}, showIcon = false, showIconOutside = false, showSafeZone = false, borderSize = 12},
-        combatfeedback = {enabled = false, ignoreImmune = true, ignoreDamage = true, ignoreHeal = false, ignoreEnergize = true, ignoreOther = true},
+        auras = {
+            enabled = true,
+            showDuration = true,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = true,
+            size = {150, 12},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12
+        },
+        combatfeedback = {
+            enabled = false,
+            ignoreImmune = true,
+            ignoreDamage = true,
+            ignoreHeal = false,
+            ignoreEnergize = true,
+            ignoreOther = true
+        },
         fader = R.config.faders.onShow,
 
         showBorder = true,
@@ -596,12 +767,12 @@ R.config.options.args.unitFrames = {
             order = 7,
             inline = true,
             args = {
-                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 0, R.IsClassic),
-                demonHunter = UF:CreateClassColorOption("DEMONHUNTER", R:LocalizedClassName("Demon Hunter"), 1, R.IsClassic),
+                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 0, R.isClassic),
+                demonHunter = UF:CreateClassColorOption("DEMONHUNTER", R:LocalizedClassName("Demon Hunter"), 1, R.isClassic),
                 druid = UF:CreateClassColorOption("DRUID", R:LocalizedClassName("Druid"), 2),
                 hunter = UF:CreateClassColorOption("HUNTER", R:LocalizedClassName("Hunter"), 3),
                 mage = UF:CreateClassColorOption("MAGE", R:LocalizedClassName("Mage"), 4),
-                monk = UF:CreateClassColorOption("MONK", R:LocalizedClassName("Monk"), 5, R.IsClassic),
+                monk = UF:CreateClassColorOption("MONK", R:LocalizedClassName("Monk"), 5, R.isClassic),
                 paladin = UF:CreateClassColorOption("PALADIN", R:LocalizedClassName("Paladin"), 6),
                 priest = UF:CreateClassColorOption("PRIEST", R:LocalizedClassName("Priest"), 7),
                 rogue = UF:CreateClassColorOption("ROGUE", R:LocalizedClassName("Rogue"), 8),
@@ -610,38 +781,79 @@ R.config.options.args.unitFrames = {
                 warrior = UF:CreateClassColorOption("WARRIOR", R:LocalizedClassName("Warrior"), 11)
             }
         },
-        player = {type = "group", name = "Player", order = 12, args = {enabled = UF:CreateUnitEnabledOption("player", 0), size = UF:CreateUnitSizeOption("player", 10, true)}},
-        target = {type = "group", name = "Target", order = 13, args = {enabled = UF:CreateUnitEnabledOption("target", 0), size = UF:CreateUnitSizeOption("target", 10, true)}},
+        player = {
+            type = "group",
+            name = "Player",
+            order = 12,
+            args = {enabled = UF:CreateUnitEnabledOption("player", 0), size = UF:CreateUnitSizeOption("player", 10, true)}
+        },
+        target = {
+            type = "group",
+            name = "Target",
+            order = 13,
+            args = {enabled = UF:CreateUnitEnabledOption("target", 0), size = UF:CreateUnitSizeOption("target", 10, true)}
+        },
         targettarget = {
             type = "group",
             name = "Target's Target",
             order = 14,
-            args = {enabled = UF:CreateUnitEnabledOption("targettarget", 0), size = UF:CreateUnitSizeOption("targettarget", 10, true)}
+            args = {
+                enabled = UF:CreateUnitEnabledOption("targettarget", 0),
+                size = UF:CreateUnitSizeOption("targettarget", 10, true)
+            }
         },
-        pet = {type = "group", name = "Pet", order = 15, args = {enabled = UF:CreateUnitEnabledOption("pet", 0), size = UF:CreateUnitSizeOption("pet", 10, true)}},
+        pet = {
+            type = "group",
+            name = "Pet",
+            order = 15,
+            args = {enabled = UF:CreateUnitEnabledOption("pet", 0), size = UF:CreateUnitSizeOption("pet", 10, true)}
+        },
         focus = {
             type = "group",
             name = "Focus Target",
             order = 16,
-            hidden = R.IsClassic,
+            hidden = R.isClassic,
             args = {enabled = UF:CreateUnitEnabledOption("focus", 0), size = UF:CreateUnitSizeOption("focus", 10, true)}
         },
         focustarget = {
             type = "group",
             name = "Focus Target's Target",
             order = 17,
-            hidden = R.IsClassic,
-            args = {enabled = UF:CreateUnitEnabledOption("focustarget", 0), size = UF:CreateUnitSizeOption("focustarget", 10, true)}
+            hidden = R.isClassic,
+            args = {
+                enabled = UF:CreateUnitEnabledOption("focustarget", 0),
+                size = UF:CreateUnitSizeOption("focustarget", 10, true)
+            }
         },
-        party = {type = "group", name = "Party", order = 18, args = {enabled = UF:CreateUnitEnabledOption("party", 0), size = UF:CreateUnitSizeOption("party", 10, true)}},
-        raid = {type = "group", name = "Raid", order = 19, args = {enabled = UF:CreateUnitEnabledOption("raid", 0), size = UF:CreateUnitSizeOption("raid", 10, true)}},
-        tank = {type = "group", name = "Tanks", order = 20, args = {enabled = UF:CreateUnitEnabledOption("tank", 0), size = UF:CreateUnitSizeOption("tank", 10, true)}},
-        assist = {type = "group", name = "Assist", order = 21, args = {enabled = UF:CreateUnitEnabledOption("assist", 0), size = UF:CreateUnitSizeOption("assist", 10, true)}},
+        party = {
+            type = "group",
+            name = "Party",
+            order = 18,
+            args = {enabled = UF:CreateUnitEnabledOption("party", 0), size = UF:CreateUnitSizeOption("party", 10, true)}
+        },
+        raid = {
+            type = "group",
+            name = "Raid",
+            order = 19,
+            args = {enabled = UF:CreateUnitEnabledOption("raid", 0), size = UF:CreateUnitSizeOption("raid", 10, true)}
+        },
+        tank = {
+            type = "group",
+            name = "Tanks",
+            order = 20,
+            args = {enabled = UF:CreateUnitEnabledOption("tank", 0), size = UF:CreateUnitSizeOption("tank", 10, true)}
+        },
+        assist = {
+            type = "group",
+            name = "Assist",
+            order = 21,
+            args = {enabled = UF:CreateUnitEnabledOption("assist", 0), size = UF:CreateUnitSizeOption("assist", 10, true)}
+        },
         boss = {
             type = "group",
             name = "Boss",
             order = 22,
-            hidden = R.IsClassic,
+            hidden = R.isClassic,
             args = {enabled = UF:CreateUnitEnabledOption("boss", 0), size = UF:CreateUnitSizeOption("boss", 10, true)}
         },
         nameplates = {

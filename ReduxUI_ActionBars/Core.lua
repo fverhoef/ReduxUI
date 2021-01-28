@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R:AddModule("ActionBars", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 AB.bars = {}
@@ -206,7 +206,7 @@ function AB:CreateMicroButtonAndBagsBar()
     end
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MicroMenuBar", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MicroMenuBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(298 - widthOffset, 88)
     frame:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
 
@@ -274,7 +274,7 @@ function AB:CreateMicroButtonAndBagsBar()
         R:CreateButtonFrameFader(frame, buttonList, config.fader)
     end
 
-    if R.IsClassic then
+    if R.isClassic then
         MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, MainMenuMicroButton)
         MainMenuMicroButton.PerformanceBar:SetSize(28, 58)
         MainMenuMicroButton.PerformanceBar:SetPoint("BOTTOM", MainMenuMicroButton, "BOTTOM", 0, 0)
@@ -297,7 +297,7 @@ function AB:CreateMicroButtonAndBagsBar()
         else
             MainMenuMicroButton.lastUpdate = MainMenuMicroButton.customUpdateInterval or PERFORMANCEBAR_UPDATE_INTERVAL
 
-            if R.IsClassic then
+            if R.isClassic then
                 R.SystemInfo:Update(false)
                 if self.hover then
                     MicroButton_OnEnter(self)
@@ -344,7 +344,7 @@ function AB:CreateMainMenuBar()
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MainMenuBar", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MainMenuBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(552, 51)
     frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
 
@@ -353,7 +353,7 @@ function AB:CreateMainMenuBar()
     frame.Texture:SetSize(552, 92)
     frame.Texture:SetAllPoints()
 
-    local overlay = CreateFrame("Frame", AddonName .. "MainMenuBarOverlay", frame)
+    local overlay = CreateFrame("Frame", addonName .. "MainMenuBarOverlay", frame)
     overlay:SetFrameLevel(10)
     overlay:SetAllPoints()
 
@@ -575,7 +575,7 @@ function AB:UpdateMainMenuBarTextures()
 end
 
 function AB:CreateExperienceBar()
-    local frame = CreateFrame("Frame", AddonName .. "ExperienceBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "ExperienceBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(804, 11)
     frame:SetPoint("BOTTOM", AB.bars.MainMenuBar, "BOTTOM", 0, -10)
 
@@ -610,7 +610,7 @@ function AB:UpdateExperienceBarTextures()
 end
 
 function AB:CreateReputationBar()
-    local frame = CreateFrame("Frame", AddonName .. "ReputationBar", AB.bars.ExperienceBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "ReputationBar", AB.bars.ExperienceBar, "SecureHandlerStateTemplate")
     frame:SetSize(804, 11)
     frame:SetPoint("BOTTOM", AB.bars.ExperienceBar, "TOP", 0, -3)
 
@@ -665,7 +665,7 @@ function AB:UpdateReputationBarTextures()
 end
 
 function AB:CreateMaxLevelBar()
-    local frame = CreateFrame("Frame", AddonName .. "MaxLevelBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MaxLevelBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(804, 11)
     frame:SetPoint("BOTTOM", AB.bars.MainMenuBar, "BOTTOM", 0, -10)
 
@@ -707,7 +707,7 @@ function AB:CreateMultiBarBottomLeft()
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MultiBarBottomLeft", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MultiBarBottomLeft", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, -5)
 
@@ -750,7 +750,7 @@ function AB:CreateMultiBarBottomRight()
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MultiBarBottomRight", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MultiBarBottomRight", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "BOTTOMRIGHT", 38, 0)
 
@@ -796,7 +796,7 @@ function AB:CreateMultiBarRight()
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MultiBarRight", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MultiBarRight", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", UIParent, "RIGHT", 0, 0)
 
@@ -843,9 +843,9 @@ function AB:CreateMultiBarLeft()
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "MultiBarLeft", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MultiBarLeft", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(36, 498)
-    frame:SetPoint("RIGHT", AddonName .. "MultiBarRight", "LEFT", -2, 0)
+    frame:SetPoint("RIGHT", addonName .. "MultiBarRight", "LEFT", -2, 0)
 
     local masqueGroup
     if LibStub("Masque", true) then
@@ -886,9 +886,9 @@ function AB:CreateStanceBar()
     local config = R.config.db.profile.modules.actionBars.stanceBar
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(29, 32)
-    frame:SetPoint("BOTTOMLEFT", AddonName .. "MainMenuBar", "TOPLEFT", 30, 40)
+    frame:SetPoint("BOTTOMLEFT", addonName .. "MainMenuBar", "TOPLEFT", 30, 40)
     frame.__blizzardBar = StanceBarFrame
 
     if config.frameVisibility then
@@ -942,9 +942,9 @@ function AB:CreatePetActionBar()
     local config = R.config.db.profile.modules.actionBars.petActionBar
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(509, 43)
-    frame:SetPoint("BOTTOMLEFT", AddonName .. "MainMenuBar", "TOPLEFT", 40, 40)
+    frame:SetPoint("BOTTOMLEFT", addonName .. "MainMenuBar", "TOPLEFT", 40, 40)
     frame.__blizzardBar = PetActionBarFrame
 
     if config.frameVisibility then
@@ -993,9 +993,9 @@ function AB:CreateVehicleExitBar()
     local config = R.config.db.profile.modules.actionBars.vehicleExitBar
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(36, 36)
-    frame:SetPoint("BOTTOMRIGHT", AddonName .. "MainMenuBar", "TOPRIGHT", -24, 40)
+    frame:SetPoint("BOTTOMRIGHT", addonName .. "MainMenuBar", "TOPRIGHT", -24, 40)
 
     MainMenuBarVehicleLeaveButton:ClearAllPoints()
     MainMenuBarVehicleLeaveButton:SetParent(frame)

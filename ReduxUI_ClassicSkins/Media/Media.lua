@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.media.textures.TargetFrame = "Interface\\TARGETINGFRAME\\UI-TargetingFrame"
@@ -8,15 +8,15 @@ R.media.textures.TargetFrame_RareElite = "Interface\\TARGETINGFRAME\\UI-Targetin
 R.media.textures.TargetTargetFrame = "Interface\\TARGETINGFRAME\\UI-TargetofTargetFrame"
 R.media.textures.SmallTargetingFrame = "Interface\\TARGETINGFRAME\\UI-SmallTargetingFrame"
 R.media.textures.PartyFrame = "Interface\\TARGETINGFRAME\\UI-PartyFrame"
-R.media.textures.TargetFrame_LargerHealth = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrame"
-R.media.textures.TargetFrame_Elite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameElite"
-R.media.textures.TargetFrame_Rare = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRare"
-R.media.textures.TargetFrame_RareElite = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameRareElite"
+R.media.textures.TargetFrame_LargerHealth = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\TargetFrame"
+R.media.textures.TargetFrame_Elite = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\TargetFrameElite"
+R.media.textures.TargetFrame_Rare = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\TargetFrameRare"
+R.media.textures.TargetFrame_RareElite = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\TargetFrameRareElite"
 R.media.textures.TargetFrame_Flash = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-Flash"
 R.media.textures.PartyFrame_Flash = "Interface\\TARGETINGFRAME\\UI-PartyFrame-Flash"
-R.media.textures.Nameplate_Flash = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\NameplateFlash"
+R.media.textures.Nameplate_Flash = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\NameplateFlash"
 R.media.textures.PlayerStatus = "Interface\\CharacterFrame\\UI-Player-Status"
-R.media.textures.PlayerStatus_LargerHealth = "Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\TargetFrameStatus"
+R.media.textures.PlayerStatus_LargerHealth = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\TargetFrameStatus"
 R.media.textures.GroupIndicator = "Interface\\CharacterFrame\\UI-CHARACTERFRAME-GROUPINDICATOR"
 R.media.textures.ComboFrameBackground = "Interface\\COMBOFRAME\\ComboFrameBackground"
 R.media.textures.ComboPoint = "Interface\\COMBOFRAME\\COMBOPOINT"

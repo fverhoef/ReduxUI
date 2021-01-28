@@ -1,11 +1,10 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local BS = R.Modules.ButtonStyles
 
 UF.CreateAuras = function(self)
     local cfg = self.cfg.auras
-    local iconSize = cfg.iconSize or 20
+    local iconSize = cfg.iconSize or 25
     if cfg.showDebuffsOnTop then
         self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
         self.Debuffs.gap = true
@@ -19,6 +18,7 @@ UF.CreateAuras = function(self)
         self.Debuffs.num = cfg.numDebuffs
         self.Debuffs.onlyShowPlayer = cfg.onlyShowPlayerDebuffs
         self.Debuffs.spacing = 2 -- 4.5
+        self.Debuffs.showDebuffType = true
         self.Debuffs.PostCreateIcon = UF.PostCreateAura
         self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
 
@@ -35,6 +35,7 @@ UF.CreateAuras = function(self)
         self.Buffs.onlyShowPlayer = cfg.onlyShowPlayerBuffs
         self.Buffs.spacing = 2 -- 4.5
         self.Buffs.showStealableBuffs = true
+        self.Buffs.showBuffType = false
         self.Buffs.PostCreateIcon = UF.PostCreateAura
         self.Buffs.PostUpdateIcon = UF.PostUpdateAura
     else
@@ -52,6 +53,8 @@ UF.CreateAuras = function(self)
         self.Auras.onlyShowPlayer = cfg.onlyShowPlayer
         self.Auras.spacing = 2 -- 4.5
         self.Auras.showStealableBuffs = true
+        self.Auras.showBuffType = false
+        self.Auras.showDebuffType = true
         self.Auras.debuffFilter = "HARMFUL|INCLUDE_NAME_PLATE_ONLY"
         self.Auras.PostCreateIcon = UF.PostCreateAura
         self.Auras.PostUpdateIcon = UF.PostUpdateAura
@@ -61,13 +64,14 @@ end
 UF.PostCreateAura = function(self, button)
     if LibStub("Masque", true) then
         UF.MasqueGroups.AuraGroup:AddButton(button)
+    elseif R.Modules.ButtonStyles then
+        R.Modules.ButtonStyles:StyleAuraButton(button)
     end
-    BS:StyleAuraButton(button)
 end
 
 UF.PostUpdateAura = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
     local name, duration, expiration, caster, spellID
-    if R.IsClassic and R.Libs.ClassicDurations and not UnitIsUnit("player", unit) then
+    if R.isClassic and R.Libs.ClassicDurations and not UnitIsUnit("player", unit) then
         local durationNew, expirationTimeNew
         name, _, _, _, duration, expiration, caster, _, _, spellID = R.Libs.ClassicDurations:UnitAura(unit, index, button.filter)
 
@@ -82,24 +86,22 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
         name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
     end
 
-    if button then
-        if button.cd then
-            if (duration and duration > 0) then
-                button.cd:SetCooldown(expiration - duration, duration)
-                button.cd:Show()
-            else
-                button.cd:Hide()
-            end
+    if button and button.cd then
+        if (duration and duration > 0) then
+            button.cd:SetCooldown(expiration - duration, duration)
+            button.cd:Show()
+        else
+            button.cd:Hide()
         end
-    end
-    if self.__owner and self.__owner.cfg then
-        if not self.__owner.cfg.showAuraDuration then
-            button.cd:SetHideCountdownNumbers(true)
+        if self.__owner and self.__owner.cfg then
+            button.cd:SetHideCountdownNumbers(not self.__owner.cfg.auras.showDuration)
         end
     end
 
     if LibStub("Masque", true) then
         UF.MasqueGroups.AuraGroup:ReSkin()
+    elseif R.Modules.ButtonStyles then
+        R.Modules.ButtonStyles:UpdateAuraButton(button)
     end
 end
 

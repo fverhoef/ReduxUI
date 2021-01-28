@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
@@ -44,39 +44,52 @@ local function Offset(frame, offsetX, offsetY)
     end
 end
 
-local function CreateBorder(self, size, texture, r, g, b, a, uL1, ...)
+local function CreateBorder(self, size, texture, color, left, right, top, bottom)
     if self.Border then
         return
     end
 
-    local uL2, uR1, uR2, bL1, bL2, bR1, bR2 = ...
-    if (uL1) then
-        if (not uL2 and not uR1 and not uR2 and not bL1 and not bL2 and not bR1 and not bR2) then
-            uL2, uR1, uR2, bL1, bL2, bR1, bR2 = uL1, uL1, uL1, uL1, uL1, uL1, uL1
-        end
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
     end
 
     if not self.Border then
+        size = size or R.config.db.profile.borders.size
+        texture = texture or R.config.db.profile.borders.texture
+        color = color or R.config.db.profile.borders.color
+
         self.Border = {}
+        self.Border.size = size
+        self.Border.color = color
+        self.Border.texture = texture
+        self.Border.padding = {left, right, top, bottom}
+
         for i = 1, 8 do
             self.Border[i] = self:CreateTexture(nil, "OVERLAY")
             self.Border[i]:SetParent(self)
-            self.Border[i]:SetTexture(texture or R.media.textures.BorderNormal)
             self.Border[i]:SetSize(size, size)
-            self.Border[i]:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
+            self.Border[i]:SetTexture(texture)
+            self.Border[i]:SetVertexColor(unpack(color))
         end
 
         self.Border[1]:SetTexCoord(0, 1 / 3, 0, 1 / 3)
-        self.Border[1]:SetPoint("TOPLEFT", self, -(uL1 or 0), uL2 or 0)
+        self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
 
         self.Border[2]:SetTexCoord(2 / 3, 1, 0, 1 / 3)
-        self.Border[2]:SetPoint("TOPRIGHT", self, uR1 or 0, uR2 or 0)
+        self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
 
         self.Border[3]:SetTexCoord(0, 1 / 3, 2 / 3, 1)
-        self.Border[3]:SetPoint("BOTTOMLEFT", self, -(bL1 or 0), -(bL2 or 0))
+        self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
 
         self.Border[4]:SetTexCoord(2 / 3, 1, 2 / 3, 1)
-        self.Border[4]:SetPoint("BOTTOMRIGHT", self, bR1 or 0, -(bR2 or 0))
+        self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
 
         self.Border[5]:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
         self.Border[5]:SetPoint("TOPLEFT", self.Border[1], "TOPRIGHT")
@@ -96,22 +109,30 @@ local function CreateBorder(self, size, texture, r, g, b, a, uL1, ...)
     end
 end
 
-local function SetBorderPadding(self, uL1, ...)
+local function SetBorderPadding(self, left, right, top, bottom)
     if not self.Border then
         return
     end
 
-    local uL2, uR1, uR2, bL1, bL2, bR1, bR2 = ...
-    if uL1 then
-        if (not uL2 and not uR1 and not uR2 and not bL1 and not bL2 and not bR1 and not bR2) then
-            uL2, uR1, uR2, bL1, bL2, bR1, bR2 = uL1, uL1, uL1, uL1, uL1, uL1, uL1
-        end
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
     end
 
-    self.Border[1]:SetPoint("TOPLEFT", self, -(uL1 or 0), uL2 or 0)
-    self.Border[2]:SetPoint("TOPRIGHT", self, uR1 or 0, uR2 or 0)
-    self.Border[3]:SetPoint("BOTTOMLEFT", self, -(bL1 or 0), -(bL2 or 0))
-    self.Border[4]:SetPoint("BOTTOMRIGHT", self, bR1 or 0, -(bR2 or 0))
+    if self.Border.padding[1] ~= left or self.Border.padding[2] ~= right or self.Border.padding[3] ~= top or self.Border.padding[4] ~= bottom then
+        self.Border.padding = {left, right, top, bottom}
+
+        self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
+        self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
+        self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
+        self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
+    end
 end
 
 local function SetBorderColor(self, r, g, b, a)
@@ -156,7 +177,7 @@ local function CreateShadow(frame, size, edgeSize, pass)
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(frame:GetFrameStrata())
     shadow:SetOutside(frame, size, size)
-    shadow:SetBackdrop({edgeFile = R.media.textures.Glow, edgeSize = edgeSize})
+    shadow:SetBackdrop({edgeFile = R.media.textures.backdrops.glow, edgeSize = edgeSize})
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(0, 0, 0, 0.7)
 

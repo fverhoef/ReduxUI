@@ -1,17 +1,17 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnBoss()
     local config = R.config.db.profile.modules.unitFrames.boss
     local default = R.config.defaults.profile.modules.unitFrames.boss
     
-    if R.IsRetail and config.enabled then
-        oUF:RegisterStyle(AddonName .. "Boss", UF.CreateBoss)
-        oUF:SetActiveStyle(AddonName .. "Boss")
+    if R.isRetail and config.enabled then
+        oUF:RegisterStyle(addonName .. "Boss", UF.CreateBoss)
+        oUF:SetActiveStyle(addonName .. "Boss")
         for i = 1, MAX_BOSS_FRAMES do
-            local boss = oUF:Spawn("boss" .. i, AddonName .. "Boss" .. i)
+            local boss = oUF:Spawn("boss" .. i, addonName .. "Boss" .. i)
             if (i == 1) then
                 boss:SetPoint(unpack(config.point))
             else
@@ -32,7 +32,7 @@ function UF:CreateBoss()
 end
 
 function UF:UpdateBoss()    
-    if R.IsRetail then
+    if R.isRetail then
         for i = 1, MAX_BOSS_FRAMES do
             local self = UF.frames["boss" .. i]
             if self then

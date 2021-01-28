@@ -1,13 +1,13 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnFocus()
     local config = R.config.db.profile.modules.unitFrames.focus
     local default = R.config.defaults.profile.modules.unitFrames.focus
     
-    if R.IsRetail and config.enabled then
+    if R.isRetail and config.enabled then
         return UF:SpawnFrame("Focus", "focus", UF.CreateFocus, config, default)
     end
 end

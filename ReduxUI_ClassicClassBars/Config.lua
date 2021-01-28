@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local CB = R.Modules.ClassicClassBars
 
@@ -30,7 +30,7 @@ R.config.options.args.classicClassBars = {
     type = "group",
     name = "Classic Class Bars",
     order = 7,
-    hidden = R.IsRetail,
+    hidden = R.isRetail,
     args = {
         header = {type = "header", name = R.title .. " > Classic Class Bars", order = 0},
         enabled = {

@@ -1,17 +1,17 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnArena()
     local config = R.config.db.profile.modules.unitFrames.arena
     local default = R.config.defaults.profile.modules.unitFrames.arena
 
-    if R.IsRetail and config.enabled then
-        oUF:RegisterStyle(AddonName .. "Arena", UF.CreateArena)
-        oUF:SetActiveStyle(AddonName .. "Arena")
+    if R.isRetail and config.enabled then
+        oUF:RegisterStyle(addonName .. "Arena", UF.CreateArena)
+        oUF:SetActiveStyle(addonName .. "Arena")
         for i = 1, MAX_ARENA_FRAMES do
-            local arena = oUF:Spawn("arena" .. i, AddonName .. "Arena" .. i)
+            local arena = oUF:Spawn("arena" .. i, addonName .. "Arena" .. i)
             if (i == 1) then
                 arena:SetPoint(unpack(config.point))
             else
@@ -32,7 +32,7 @@ function UF:CreateArena()
 end
 
 function UF:UpdateArena()
-    if R.IsRetail then
+    if R.isRetail then
         for i = 1, MAX_ARENA_FRAMES do
             local self = UF.frames["arena" .. i]
             if self then

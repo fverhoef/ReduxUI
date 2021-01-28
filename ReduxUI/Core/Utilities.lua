@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.PlayerName = UnitName("player")
@@ -41,7 +41,7 @@ R.EquipmentSlots = {
     "SecondaryHandSlot"
 }
 
-if R.IsClassic then
+if R.isClassic then
     table.insert(R.EquipmentSlots, "RangedSlot")
 end
 

@@ -1,11 +1,11 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 
 UF.CreateAuraHighlight = function(self)
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
     self.AuraHighlight:SetInside(self)
-    self.AuraHighlight:SetTexture(R.media.textures.Blank)
+    self.AuraHighlight:SetTexture(R.media.textures.blank)
     self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
     self.AuraHighlight:SetBlendMode("ADD")
     self.AuraHighlight.PostUpdate = UF.PostUpdate_AuraHighlight

@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local CB = R:AddModule("ClassicClassBars", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
@@ -66,7 +66,7 @@ function CB:CreateMageBar(masqueGroup)
     end
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "_MageBar", UIParent)
+    local frame = CreateFrame("Frame", addonName .. "_MageBar", UIParent)
     frame.buttonSize = config.buttonSize
     frame.buttonSpacing = config.buttonSpacing
     frame:SetSize(7 * config.buttonSize + 6 * config.buttonSpacing, config.buttonSize)
@@ -183,7 +183,7 @@ function CB:CreateShamanBar(masqueGroup)
     end
 
     -- create new parent frame for buttons
-    local frame = CreateFrame("Frame", AddonName .. "_ShamanBar", UIParent)
+    local frame = CreateFrame("Frame", addonName .. "_ShamanBar", UIParent)
     frame.buttonSize = config.buttonSize
     frame.buttonSpacing = config.buttonSpacing
     frame:SetSize(5 * config.buttonSize + 4 * config.buttonSpacing, config.buttonSize)
@@ -720,7 +720,7 @@ function CB:UpdateSpellFlyoutChild(button, child)
     if child.spellID then
         if R.Modules.ButtonStyles then
             R.Modules.ButtonStyles:StyleActionButton(child)
-            R.Modules.ButtonStyles:Update(child)
+            R.Modules.ButtonStyles:UpdateActionButton(child)
         else
             child.isUsable, child.notEnoughMana = IsUsableSpell(child.spellID)
 
@@ -767,12 +767,12 @@ function CB:UpdateSpellFlyoutChild(button, child)
 end
 
 function CB:CreateSpellOverlay(config)
-    local spellOverlay = CreateFrame("Frame", AddonName .. "_SpellOverlay", UIParent)
+    local spellOverlay = CreateFrame("Frame", addonName .. "_SpellOverlay", UIParent)
     spellOverlay:SetPoint("CENTER", UIParent, "CENTER")
     spellOverlay:SetSize(128, 256)
 
     spellOverlay.Texture = spellOverlay:CreateTexture(nil, "BACKGROUND")
-    spellOverlay.Texture:SetTexture("Interface\\Addons\\" .. AddonName .. "\\Media\\Textures\\Arcane_Missiles")
+    spellOverlay.Texture:SetTexture("Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\Arcane_Missiles")
     spellOverlay.Texture:SetAllPoints()
 
     spellOverlay:Hide()

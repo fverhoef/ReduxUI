@@ -1,18 +1,18 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnRaid()
     local config = R.config.db.profile.modules.unitFrames.raid
     local default = R.config.defaults.profile.modules.unitFrames.raid
 
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Raid", UF.CreateRaid)
-        oUF:SetActiveStyle(AddonName .. "Raid")
+        oUF:RegisterStyle(addonName .. "Raid", UF.CreateRaid)
+        oUF:SetActiveStyle(addonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
             -- config needs to provide 8 point tables, one for each raid group
-            local raidGroup = oUF:SpawnHeader(AddonName .. "RaidHeader" .. i, nil, nil, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty,
+            local raidGroup = oUF:SpawnHeader(addonName .. "RaidHeader" .. i, nil, nil, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty,
                                               "showRaid", config.showRaid, "point", config.point, "xOffset", config.xOffset, "yOffset", config.yOffset, "groupFilter", tostring(i),
                                               "unitsPerColumn", 5, "oUF-initialConfigFunction", ([[
                     self:SetWidth(%d)

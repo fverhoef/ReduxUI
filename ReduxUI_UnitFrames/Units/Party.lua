@@ -1,16 +1,16 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
-local oUF = AddonTable.oUF or oUF
+local oUF = ns.oUF or oUF
 
 function UF:SpawnParty()
     local config = R.config.db.profile.modules.unitFrames.party
     local default = R.config.db.profile.modules.unitFrames.party
 
     if config.enabled then
-        oUF:RegisterStyle(AddonName .. "Party", UF.CreateParty)
-        oUF:SetActiveStyle(AddonName .. "Party")
-        local partyHeader = oUF:SpawnHeader(AddonName .. "PartyHeader", nil, (config.showInRaid and "party,raid") or "party", "showPlayer", config.showPlayer, "showSolo",
+        oUF:RegisterStyle(addonName .. "Party", UF.CreateParty)
+        oUF:SetActiveStyle(addonName .. "Party")
+        local partyHeader = oUF:SpawnHeader(addonName .. "PartyHeader", nil, (config.showInRaid and "party,raid") or "party", "showPlayer", config.showPlayer, "showSolo",
                                             config.showSolo, "showParty", true, "showRaid", config.showInRaid, "point", "BOTTOM", "xOffset", config.xOffset, "yOffset",
                                             config.yOffset, "sortMethod", "NAME", "oUF-initialConfigFunction", ([[
                 self:SetWidth(%d)
@@ -100,7 +100,7 @@ function UF:CreateParty()
     self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, 2)
 
     -- phase
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreatePhaseIndicator(self)
     end
 
@@ -112,7 +112,7 @@ function UF:CreateParty()
     UF.CreateReadyCheckIndicator(self)
 
     -- role
-    if not R.IsClassic then
+    if not R.isClassic then
         UF.CreateGroupRoleIndicator(self)
         self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
     end

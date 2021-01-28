@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local S = R.Modules.Skins
 
@@ -21,7 +21,7 @@ function S:StylePaperDollFrame()
     local race, raceFileName = UnitRace("player");
     local texturePath = S:DressUpTexturePath(raceFileName)
 
-    CharacterModelFrame.Background = CreateFrame("Frame", AddonName .. "CharacterModelFrameBackground", CharacterModelFrame)
+    CharacterModelFrame.Background = CreateFrame("Frame", addonName .. "CharacterModelFrameBackground", CharacterModelFrame)
     CharacterModelFrame.Background:SetSize(231, 320)
     CharacterModelFrame.Background:SetAllPoints()
     CharacterModelFrame.Background:SetFrameLevel(5)
@@ -130,11 +130,11 @@ function S:StylePaperDollFrame()
 end
 
 function S:CreateCharacterStatsPane()
-    local frame = CreateFrame("Frame", AddonName .. "CharacterStatsPane", PaperDollFrame)
+    local frame = CreateFrame("Frame", addonName .. "CharacterStatsPane", PaperDollFrame)
     frame:SetSize(150 + 128, 512)
     frame:SetPoint("TOPRIGHT", PaperDollFrame, "TOPRIGHT", 0, -1)
 
-    frame.Background = CreateFrame("Frame", AddonName .. "CharacterStatsPaneBackground", frame)
+    frame.Background = CreateFrame("Frame", addonName .. "CharacterStatsPaneBackground", frame)
     frame.Background:SetAllPoints()
 
     frame.Background.Top = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
@@ -177,7 +177,7 @@ function S:CreateCharacterStatsPane()
     frame.Background.Inset:SetTexture([[Interface\PaperDollInfoFrame\PaperDollInfoPart1]])
     frame.Background.Inset:SetTexCoord(0 / 1024, 199 / 1024, 0 / 1024, 357 / 1024)
 
-    frame.ClassBackground = CreateFrame("Frame", AddonName .. "CharacterStatsPaneClassBackground", frame)
+    frame.ClassBackground = CreateFrame("Frame", addonName .. "CharacterStatsPaneClassBackground", frame)
     frame.ClassBackground:SetSize(199, 357)
     frame.ClassBackground:SetPoint("TOPLEFT", frame.Background, "TOPLEFT", 35, -74)
     frame.ClassBackground.Background = frame.ClassBackground:CreateTexture(nil, "BACKGROUND", nil, 2)
@@ -190,11 +190,11 @@ function S:CreateCharacterStatsPane()
 end
 
 function S:CreateCharacterStatsPane_ItemLevel(parent)
-    local frame = CreateFrame("Frame", AddonName .. "CharacterStatsPaneItemLevel", parent)
+    local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevel", parent)
     frame:SetSize(198, 71)
     frame:SetPoint("TOPLEFT", parent.Background.Inset, "TOPLEFT", 0, 0)
 
-    frame.Header = CreateFrame("Frame", AddonName .. "CharacterStatsPaneItemLevelLabel", parent)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", parent)
     frame.Header:SetSize(198, 42)
     frame.Header:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     frame.Header.Background = frame.Header:CreateTexture("BACKGROUND")
@@ -209,7 +209,7 @@ function S:CreateCharacterStatsPane_ItemLevel(parent)
     frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
     frame.Header.Text:SetText(STAT_AVERAGE_ITEM_LEVEL)
 
-    frame.Value = CreateFrame("Frame", AddonName .. "CharacterStatsPaneItemLevelLabel", parent)
+    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", parent)
     frame.Value:SetSize(145, 27)
     frame.Value:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
     frame.Value.Background = frame.Value:CreateTexture("BACKGROUND")
@@ -228,11 +228,11 @@ function S:CreateCharacterStatsPane_ItemLevel(parent)
 end
 
 function S:CreateCharacterStatsPane_Attributes(parent)
-    local frame = CreateFrame("Frame", AddonName .. "CharacterStatsPaneAttributes", parent)
+    local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributes", parent)
     frame:SetSize(198, 71)
     frame:SetPoint("TOP", parent.ItemLevel.Value, "BOTTOM", 0, 0)
 
-    frame.Header = CreateFrame("Frame", AddonName .. "CharacterStatsPaneAttributesHeader", parent)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributesHeader", parent)
     frame.Header:SetSize(198, 42)
     frame.Header:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     frame.Header.Background = frame.Header:CreateTexture("BACKGROUND")
@@ -257,7 +257,7 @@ function S:CreateCharacterStatsPane_Attributes(parent)
 end
 
 function S:CreateCharacterStatsPane_AttributeEntry(attribute, frame, parent, showBackground, point)
-    local entry = CreateFrame("Frame", AddonName .. "CharacterStatsPaneAttributeLabel" .. attribute, parent)
+    local entry = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributeLabel" .. attribute, parent)
     entry.attributeName = strupper(attribute)
     entry.attributeIndex = S.attributeIndex[entry.attributeName]
     entry:SetSize(165, 17)
@@ -301,11 +301,11 @@ function S:CreateCharacterStatsPane_AttributeEntry(attribute, frame, parent, sho
 end
 
 function S:CreateCharacterStatsPane_Enhancements(parent)
-    local frame = CreateFrame("Frame", AddonName .. "CharacterStatsPaneEnhancements", parent)
+    local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancements", parent)
     frame:SetSize(198, 71)
     frame:SetPoint("TOP", PaperDollFrame.CharacterStatsPane.Attributes.Spirit, "BOTTOM", 0, 0)
 
-    frame.Header = CreateFrame("Frame", AddonName .. "CharacterStatsPaneEnhancementsHeader", parent)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancementsHeader", parent)
     frame.Header:SetSize(198, 42)
     frame.Header:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     frame.Header.Background = frame.Header:CreateTexture("BACKGROUND")
@@ -319,7 +319,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     frame.Header.Text:SetShadowOffset(1, -1)
     frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
     frame.Header.Text:SetText(STAT_CATEGORY_ENHANCEMENTS)
-    frame.Header.ButtonPrevious = CreateFrame("Button", AddonName .. "CharacterStatsPaneEnhancementsPrevious", frame.Header)
+    frame.Header.ButtonPrevious = CreateFrame("Button", addonName .. "CharacterStatsPaneEnhancementsPrevious", frame.Header)
     frame.Header.ButtonPrevious:SetNormalTexture(R.media.textures.arrowDown_Up)
     frame.Header.ButtonPrevious:SetPushedTexture(R.media.textures.arrowDown_Down)
     frame.Header.ButtonPrevious:SetSize(16, 16)
@@ -335,7 +335,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     frame.Header.ButtonPrevious:SetScript("OnClick", function()
         frame.PreviousCategory()
     end)
-    frame.Header.ButtonNext = CreateFrame("Button", AddonName .. "CharacterStatsPaneEnhancementsNext", frame.Header)
+    frame.Header.ButtonNext = CreateFrame("Button", addonName .. "CharacterStatsPaneEnhancementsNext", frame.Header)
     frame.Header.ButtonNext:SetNormalTexture(R.media.textures.arrowUp_Up)
     frame.Header.ButtonNext:SetPushedTexture(R.media.textures.arrowUp_Down)
     frame.Header.ButtonNext:SetSize(16, 16)
@@ -352,7 +352,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
         frame.NextCategory()
     end)
 
-    frame.Melee = CreateFrame("Frame", AddonName .. "CharacterStatsPaneMelee", parent)
+    frame.Melee = CreateFrame("Frame", addonName .. "CharacterStatsPaneMelee", parent)
     frame.Melee:SetSize(198, 85)
     frame.Melee:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
     frame.Melee.categoryName = PLAYERSTAT_MELEE_COMBAT
@@ -362,7 +362,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     S:CreateCharacterStatsPane_EnhancementEntry("Crit", STAT_CRITICAL_STRIKE .. ":", frame.Melee, true, {"TOP", frame.Melee.AttackRating, "BOTTOM", 0, 0})
     S:CreateCharacterStatsPane_EnhancementEntry("Hit", STAT_HIT_CHANCE .. ":", frame.Melee, false, {"TOP", frame.Melee.Crit, "BOTTOM", 0, 0})
 
-    frame.Ranged = CreateFrame("Frame", AddonName .. "CharacterStatsPaneRanged", parent)
+    frame.Ranged = CreateFrame("Frame", addonName .. "CharacterStatsPaneRanged", parent)
     frame.Ranged:SetSize(198, 85)
     frame.Ranged:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
     frame.Ranged.categoryName = PLAYERSTAT_RANGED_COMBAT
@@ -372,7 +372,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     S:CreateCharacterStatsPane_EnhancementEntry("Crit", STAT_CRITICAL_STRIKE .. ":", frame.Ranged, true, {"TOP", frame.Ranged.AttackRating, "BOTTOM", 0, 0})
     S:CreateCharacterStatsPane_EnhancementEntry("Hit", STAT_HIT_CHANCE .. ":", frame.Ranged, false, {"TOP", frame.Ranged.Crit, "BOTTOM", 0, 0})
 
-    frame.Magic = CreateFrame("Frame", AddonName .. "CharacterStatsPaneMagic", parent)
+    frame.Magic = CreateFrame("Frame", addonName .. "CharacterStatsPaneMagic", parent)
     frame.Magic:SetSize(198, 85)
     frame.Magic:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
     frame.Magic.categoryName = PLAYERSTAT_SPELL_COMBAT
@@ -382,7 +382,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     S:CreateCharacterStatsPane_EnhancementEntry("SpellHit", STAT_HIT_CHANCE .. ":", frame.Magic, true, {"TOP", frame.Magic.SpellCrit, "BOTTOM", 0, 0})
     S:CreateCharacterStatsPane_EnhancementEntry("ManaRegen", MANA_REGEN .. ":", frame.Magic, false, {"TOP", frame.Magic.SpellHit, "BOTTOM", 0, 0})
 
-    frame.Defenses = CreateFrame("Frame", AddonName .. "CharacterStatsPaneDefense", parent)
+    frame.Defenses = CreateFrame("Frame", addonName .. "CharacterStatsPaneDefense", parent)
     frame.Defenses:SetSize(198, 85)
     frame.Defenses:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
     frame.Defenses.categoryName = PLAYERSTAT_DEFENSES
@@ -425,7 +425,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
 end
 
 function S:CreateCharacterStatsPane_EnhancementEntry(enhancement, label, frame, showBackground, point)
-    local entry = CreateFrame("Frame", AddonName .. "CharacterStatsPaneEnhancementLabel" .. enhancement, frame)
+    local entry = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancementLabel" .. enhancement, frame)
     entry:SetSize(165, 17)
     entry:SetPoint(unpack(point))
     if showBackground then
@@ -1114,27 +1114,4 @@ function S:UpdatePaperDollFrame()
     S:UpdateParry(PaperDollFrame.CharacterStatsPane.Enhancements.Defenses.Parry, S.Stats.parry)
     S:UpdateBlock(PaperDollFrame.CharacterStatsPane.Enhancements.Defenses.Block, S.Stats.block, S.Stats.blockValue)
     S:UpdateDefense(PaperDollFrame.CharacterStatsPane.Enhancements.Defenses.Defense, S.Stats.defense.defense)
-
-    -- update item rarity
-    for _, slot in next, R.EquipmentSlots do
-        local button = _G["Character" .. slot]
-        if button then
-            local border = R:FindButtonBorder(button)
-            if border then
-                local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
-                if link then
-                    local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
-                    if itemName then
-                        local r, g, b = GetItemQualityColor(itemRarity)
-                        border:SetVertexColor(r, g, b)
-                        border:Show()
-                    else
-                        border:Hide()
-                    end
-                else
-                    border:Hide()
-                end
-            end
-        end
-    end
 end

@@ -1,11 +1,11 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local TT = R:AddModule("Tooltips", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 TT.classColors = {}
 TT.factionColors = {}
 
-function TT:Initialize()    
+function TT:Initialize()
     -- hex class colors
     for class, color in next, RAID_CLASS_COLORS do
         TT.classColors[class] = R:Hex(color)
@@ -212,10 +212,11 @@ function TT:SetBackdropStyle()
 
     self:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8x8",
+        -- edgeFile = R.media.textures.backdrops.beautycase,
         tile = false,
         tileEdge = false,
         tileSize = 16,
-        edgeSize = 16,
+        edgeSize = 24,
         insets = {left = 2, right = 2, top = 2, bottom = 2}
     })
     self:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
@@ -457,24 +458,22 @@ function TT:HookOnShow(tip)
                 -- TODO: this only works if the player had the item in their inventory at some point; consider creating a database with icons?
                 local itemName, _, _, _, _, itemType, itemSubType, _, _, itemIcon = GetItemInfo(text)
                 if itemIcon then
-                    --TT:AddIcon(tooltip, itemIcon)
+                    -- TT:AddIcon(tooltip, itemIcon)
                 end
             end
         end
 
         if R.config.db.profile.modules.tooltips.colorBorderByRarity then
-            local r, g, b, a = 1, 1, 1, 1
-            local texture = R.media.textures.BorderNormal
+            local color = R.config.db.profile.borders.color
+            local texture = R.media.textures.borders.beautycase
             if link then
                 local _, _, itemRarity = GetItemInfo(link)
 
                 if itemRarity and itemRarity > 1 then
-                    r, g, b, a = GetItemQualityColor(itemRarity)
-                    texture = R.media.textures.BorderNormalWhite
+                    color = {GetItemQualityColor(itemRarity)}
                 end
             end
-            tooltip:SetBorderColor(r, g, b, a)
-            tooltip:SetBorderTexture(texture)
+            tooltip:SetBorderColor(unpack(color))
         end
     end)
 end

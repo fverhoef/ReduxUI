@@ -1,46 +1,56 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.media = {
     fonts = {
-        Adventure = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Fonts\\Adventure.ttf",
-        ExpresswayFree = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"
+        adventure = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\Adventure.ttf",
+        expresswayFree = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"
     },
     textures = {
-        Blank = [[Interface\Buttons\WHITE8X8]],
+        blank = [[Interface\Buttons\WHITE8X8]],
 
-        Arrow = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\Arrow",
-        BorderNormal = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderNormal",
-        BorderNormalGloss = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderNormalGloss",
-        BorderNormalWhite = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderNormalWhite",
-        BorderShadow = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\BorderShadow",
-        Glow = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\Glow",
-        Logo = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\Logo",
-        StatusBar_Redux = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Redux",
-        StatusBar_OnePixel = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\OnePixel",
-        StatusBar_Empty = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Empty",
-        StatusBar_Flat = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Flat",
-        StatusBar_Kait1 = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Kait1",
-        StatusBar_Kait2 = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Kait2",
-        StatusBar_Melli = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\Melli",
-        StatusBar_MelliDark = "Interface\\AddOns\\" .. AddonName .. "\\Media\\Textures\\StatusBars\\MelliDark",
+        arrow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Arrow",
+        logo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Logo",
 
         -- Blizzard Arrows
         arrowDown_Down = "Interface\\BUTTONS\\Arrow-Down-Down",
         arrowDown_Up = "Interface\\BUTTONS\\Arrow-Down-Up",
         arrowUp_Down = "Interface\\BUTTONS\\Arrow-Up-Down",
-        arrowUp_Up = "Interface\\BUTTONS\\Arrow-Up-Up"
+        arrowUp_Up = "Interface\\BUTTONS\\Arrow-Up-Up",
+
+        backdrops = {
+            beautycase = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Beautycase",
+            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Glow"
+        },
+
+        borders = {
+            beautycase = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Beautycase",
+            beautycaseGloss = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseGloss",
+            beautycaseWhite = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseWhite",
+            beautycaseShadow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseShadow"
+        },
+
+        statusBars = {
+            redux = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Redux",
+            onePixel = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\OnePixel",
+            empty = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Empty",
+            flat = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Flat",
+            kait1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Kait1",
+            kait2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Kait2",
+            melli = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Melli",
+            melliDark = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\MelliDark"
+        }
     }
 }
 
 -- register shared media
-R.Libs.SharedMedia:Register("font", "Adventure", R.media.fonts.Adventure)
-R.Libs.SharedMedia:Register("font", "Expressway Free", R.media.fonts.ExpresswayFree)
-R.Libs.SharedMedia:Register("statusbar", "Redux", R.media.textures.StatusBar_Redux)
-R.Libs.SharedMedia:Register("statusbar", "Redux (One Pixel)", R.media.textures.StatusBar_OnePixel)
-R.Libs.SharedMedia:Register("statusbar", "Empty", R.media.textures.StatusBar_Empty)
-R.Libs.SharedMedia:Register("statusbar", "Flat", R.media.textures.StatusBar_Flat)
-R.Libs.SharedMedia:Register("statusbar", "Kait1", R.media.textures.StatusBar_Kait1)
-R.Libs.SharedMedia:Register("statusbar", "Kait2", R.media.textures.StatusBar_Kait2)
-R.Libs.SharedMedia:Register("statusbar", "Melli", R.media.textures.StatusBar_Melli)
-R.Libs.SharedMedia:Register("statusbar", "MelliDark", R.media.textures.StatusBar_MelliDark)
+R.Libs.SharedMedia:Register("font", "Adventure", R.media.fonts.adventure)
+R.Libs.SharedMedia:Register("font", "Expressway Free", R.media.fonts.expresswayFree)
+R.Libs.SharedMedia:Register("statusbar", "Redux", R.media.textures.statusBars.redux)
+R.Libs.SharedMedia:Register("statusbar", "Redux (One Pixel)", R.media.textures.statusBars.onePixel)
+R.Libs.SharedMedia:Register("statusbar", "Empty", R.media.textures.statusBars.empty)
+R.Libs.SharedMedia:Register("statusbar", "Flat", R.media.textures.statusBars.flat)
+R.Libs.SharedMedia:Register("statusbar", "Kait1", R.media.textures.statusBars.kait1)
+R.Libs.SharedMedia:Register("statusbar", "Kait2", R.media.textures.statusBars.kait2)
+R.Libs.SharedMedia:Register("statusbar", "Melli", R.media.textures.statusBars.melli)
+R.Libs.SharedMedia:Register("statusbar", "MelliDark", R.media.textures.statusBars.melliDark)

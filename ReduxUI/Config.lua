@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.FONT_OUTLINES = {["NONE"] = "NONE", ["OUTLINE"] = "OUTLINE", ["THICKOUTLINE"] = "THICKOUTLINE"}
@@ -14,6 +14,11 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
+        borders = {
+            size = 5,
+            texture = R.media.textures.borders.beautycaseWhite,
+            color = {89 / 255, 89 / 255, 89 / 255}
+        },
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
             highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight
@@ -23,9 +28,6 @@ R.config.defaults = {
             darkGrayFont = {89 / 255, 89 / 255, 89 / 255} -- GameFontDarkGray
         },
         modules = {
-            ["*"] = {
-                enabled = true
-            }
         }
     },
     char = {modules = {}},
@@ -85,6 +87,7 @@ R.config.options = {
                                 R:UpdateBlizzardFonts()
                             end
                         },
+                        -- TODO: warn that changing this option requires a relog
                         damage = {
                             name = "Damage",
                             type = "select",
@@ -103,6 +106,7 @@ R.config.options = {
                                 R:UpdateBlizzardFonts()
                             end
                         },
+                        -- TODO: warn that changing this option requires a relog
                         unitName = {
                             name = "Unit Names",
                             type = "select",
@@ -169,21 +173,21 @@ local function AddLogo(frame)
     logo:SetFrameLevel(4)
     logo:SetSize(64, 64)
     logo:SetPoint("TOPRIGHT", 8, 24)
-    logo:SetBackdrop({bgFile = R.media.textures.Logo})
+    logo:SetBackdrop({bgFile = R.media.textures.logo})
 
     frame.logo = logo
 end
 
 function R:SetupConfig()
-    R.config.db = R.Libs.AceDB:New(AddonName .. "_DB", R.config.defaults)
+    R.config.db = R.Libs.AceDB:New(addonName .. "_DB", R.config.defaults)
 
     R.config.options.args.profiles = R.Libs.AceDBOptions:GetOptionsTable(R.config.db)
     R.config.options.args.profiles.order = 99
 
-    R.Libs.AceConfigRegistry:RegisterOptionsTable(AddonName, R.config.options)
-    R.config.dialog = R.Libs.AceConfigDialog:AddToBlizOptions(AddonName, R.title)
+    R.Libs.AceConfigRegistry:RegisterOptionsTable(addonName, R.config.options)
+    R.config.dialog = R.Libs.AceConfigDialog:AddToBlizOptions(addonName, R.title)
     R.config.dialog:HookScript("OnShow", function()
-        local p = FindPanel(AddOnName)
+        local p = FindPanel(addonName)
         if p and p.element.collapsed then
             OptionsListButtonToggle_OnClick(p.toggle)
         end

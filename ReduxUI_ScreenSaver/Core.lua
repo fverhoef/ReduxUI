@@ -1,4 +1,4 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 local R = _G.ReduxUI
 local SS = R:AddModule("ScreenSaver", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 local L = R.L
@@ -11,12 +11,7 @@ if IsMacClient() then
     printKeys[_G.KEY_PRINTSCREEN_MAC] = true
 end
 
-function SS:Initialize()
-    SS.config = {}
-    SS.config.db = {
-        profile = R.config.db.profile.modules.screenSaver
-    }
-    
+function SS:Initialize()    
     local config = R.config.db.profile.modules.screenSaver
 
     SS.Canvas = CreateFrame("Frame", "ScreenSaverCanvas")
@@ -43,7 +38,7 @@ function SS:Initialize()
     SS.Canvas.Bottom:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
     SS.Canvas.Bottom.Border = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
-    SS.Canvas.Bottom.Border:SetTexture(R.media.textures.BorderNormal)
+    SS.Canvas.Bottom.Border:SetTexture(R.media.textures.borders.beautycase)
     SS.Canvas.Bottom.Border:SetParent(SS.Canvas.Bottom)
     SS.Canvas.Bottom.Border:SetHeight(6)
     SS.Canvas.Bottom.Border:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
@@ -51,7 +46,7 @@ function SS:Initialize()
     SS.Canvas.Bottom.Border:SetPoint("TOPRIGHT", SS.Canvas.Bottom, "TOPRIGHT")
 
     SS.Canvas.Bottom.BorderShadow = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
-    SS.Canvas.Bottom.BorderShadow:SetTexture(R.media.textures.BorderShadow)
+    SS.Canvas.Bottom.BorderShadow:SetTexture(R.media.textures.borders.shadow)
     SS.Canvas.Bottom.BorderShadow:SetVertexColor(0, 0, 0, 1)
     SS.Canvas.Bottom.BorderShadow:SetParent(SS.Canvas.Bottom)
     SS.Canvas.Bottom.BorderShadow:SetHeight(6)
@@ -78,19 +73,19 @@ function SS:Initialize()
 
     local classColor = _G.RAID_CLASS_COLORS[R.PlayerClass]
     SS.Canvas.Bottom.Name = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
-    SS.Canvas.Bottom.Name:SetFont(unpack(R.config.db.profile.modules.screenSaver.font))
+    SS.Canvas.Bottom.Name:SetFont(unpack(config.font))
     SS.Canvas.Bottom.Name:SetFormattedText("%s-%s", R.PlayerName, R.PlayerRealm)
     SS.Canvas.Bottom.Name:SetPoint("TOPLEFT", SS.Canvas.Bottom.Faction, "TOPRIGHT", nameOffsetX, nameOffsetY)
     SS.Canvas.Bottom.Name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
     SS.Canvas.Bottom.Guild = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
-    SS.Canvas.Bottom.Guild:SetFont(unpack(R.config.db.profile.modules.screenSaver.font))
+    SS.Canvas.Bottom.Guild:SetFont(unpack(config.font))
     SS.Canvas.Bottom.Guild:SetText(L["No Guild"])
     SS.Canvas.Bottom.Guild:SetPoint("TOPLEFT", SS.Canvas.Bottom.Name, "BOTTOMLEFT", 0, -6)
     SS.Canvas.Bottom.Guild:SetTextColor(0.7, 0.7, 0.7)
 
     SS.Canvas.Bottom.Time = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
-    SS.Canvas.Bottom.Time:SetFont(unpack(R.config.db.profile.modules.screenSaver.font))
+    SS.Canvas.Bottom.Time:SetFont(unpack(config.font))
     SS.Canvas.Bottom.Time:SetText("00:00")
     SS.Canvas.Bottom.Time:SetPoint("TOPLEFT", SS.Canvas.Bottom.Guild, "BOTTOMLEFT", 0, -6)
     SS.Canvas.Bottom.Time:SetTextColor(0.7, 0.7, 0.7)

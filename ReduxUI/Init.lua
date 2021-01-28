@@ -1,16 +1,15 @@
-local AddonName, AddonTable = ...
+local addonName, ns = ...
 
-local AceAddon = _G.LibStub("AceAddon-3.0")
-local R = AceAddon:NewAddon(AddonName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
-AddonTable[1] = R
-_G[AddonName] = R
+local R = _G.LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+ns[1] = R
+_G[addonName] = R
 
-R.name = R.name or AddonName
+R.name = R.name or addonName
 R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
 R.shortcut = "rui"
 
-R.IsClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-R.IsRetail = not R.IsClassic
+R.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+R.isRetail = not R.isClassic
 
 R.Libs = {}
 function R:AddLib(name, major, minor)
@@ -29,7 +28,7 @@ R:AddLib("AceConfigDialog", "AceConfigDialog-3.0")
 R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
-if R.IsClassic then
+if R.isClassic then
     R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0")
 end
 
@@ -65,6 +64,14 @@ function R:OnInitialize()
             R:Print("/" .. R.shortcut .. " reset|r, to reset all frames")
         end
     end)
+
+    if _G.ReduxUI_DB and _G.ReduxUI_DB.profile and _G.ReduxUI_DB.profile.fonts then
+        local damageFont = _G.ReduxUI_DB.profile.fonts.damage or R.config.defaults.profile.fonts.damage
+        local unitNameFont = _G.ReduxUI_DB.profile.fonts.unitName or R.config.defaults.profile.fonts.unitName
+
+        DAMAGE_TEXT_FONT = damageFont or DAMAGE_TEXT_FONT
+        UNIT_NAME_FONT = unitNameFont or UNIT_NAME_FONT
+    end
 end
 
 function R:OnEnable()
