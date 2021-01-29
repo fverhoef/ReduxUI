@@ -246,7 +246,7 @@ function R:FixNormalTextureSize(button)
 end
 
 function R:ApplyTexCoords(texture, texCoord)
-    if not texture or not texCoord then
+    if not texture or not texCoord or texture.__texCoord == texCoord then
         return
     end
     texture.__texCoord = texCoord
@@ -263,7 +263,7 @@ function R:ApplyTexCoords(texture, texCoord)
 end
 
 function R:ApplyTexture(texture, file)
-    if not texture or not file then
+    if not texture or not file or texture.__textureFile == file then
         return
     end
     texture.__textureFile = file
@@ -280,7 +280,7 @@ function R:ApplyTexture(texture, file)
 end
 
 function R:ApplyNormalTexture(button, file)
-    if not button or not file then
+    if not button or not file or button.__normalTextureFile == file then
         return
     end
     button.__normalTextureFile = file
@@ -297,7 +297,7 @@ function R:ApplyNormalTexture(button, file)
 end
 
 function R:ApplyPushedTexture(button, file)
-    if not button or not file then
+    if not button or not file or button.__pushedTextureFile == file then
         return
     end
     button.__pushedTextureFile = file
@@ -314,7 +314,7 @@ function R:ApplyPushedTexture(button, file)
 end
 
 function R:ApplyHighlightTexture(button, file)
-    if not button or not file then
+    if not button or not file or button.__highlightTextureFile == file then
         return
     end
     button.__highlightTextureFile = file
@@ -331,7 +331,7 @@ function R:ApplyHighlightTexture(button, file)
 end
 
 function R:ApplyCheckedTexture(button, file)
-    if not button or not file then
+    if not button or not file or button.__checkedTextureFile == file then
         return
     end
     button.__checkedTextureFile = file
@@ -348,7 +348,7 @@ function R:ApplyCheckedTexture(button, file)
 end
 
 function R:ApplyVertexColor(texture, color)
-    if not color then
+    if not color or texture.__vertexColor == color then
         return
     end
     if texture.__vertexColor and

@@ -3,6 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 
 UF.CreateStatusFlash = function(self)
+    self.StatusFlashParent = CreateFrame("Frame", nil, self)
     self.StatusFlash = self:CreateTexture("$parentStatusFlash", "ARTWORK")
     self.StatusFlash:SetTexCoord(0, 0.74609375, 0, 0.53125)
     self.StatusFlash:SetBlendMode("ADD")
@@ -12,7 +13,7 @@ UF.CreateStatusFlash = function(self)
 
     self.StatusFlash.counter = 0
     self.StatusFlash.sign = -1
-    self.StatusFlash.updateInterval = 0.04 -- 25 times per second
+    self.StatusFlash.updateInterval = 0.01 -- 25 times per second
     self.StatusFlash.timeSinceLastUpdate = 0
 
     UF.UpdateStatusFlashVisibility(self)
@@ -41,13 +42,13 @@ UF.UpdateStatusFlashVisibility = function(self)
     end
 
     if self.StatusFlash:IsShown() then
-        if not UF:IsHooked(self, "OnUpdate") then
-            UF:HookScript(self, "OnUpdate", function(self, elapsed)
+        if not UF:IsHooked(self.StatusFlashParent, "OnUpdate") then
+            UF:HookScript(self.StatusFlashParent, "OnUpdate", function(parent, elapsed)
                 UF.UpdateStatusFlash(self, elapsed)
             end)
         end
     else
-        UF:Unhook(self, "OnUpdate")
+        UF:Unhook(self.StatusFlashParent, "OnUpdate")
     end
 end
 
