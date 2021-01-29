@@ -50,8 +50,8 @@ function R:UnlocalizedClassName(className)
 end
 
 function R:LocalizedClassName(className)
-    return (className and className ~= "") and
-               (R.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
+    return (className and className ~= "") and (R.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or
+               className
 end
 
 function R:Print(value, ...)
@@ -351,20 +351,23 @@ function R:ApplyVertexColor(texture, color)
     if not color then
         return
     end
+    if texture.__vertexColor and
+        (color[1] == texture.__vertexColor[1] and color[2] == texture.__vertexColor[2] and color[3] == texture.__vertexColor[3] and (color[4] or 1) ==
+            (texture.__vertexColor[4] or 1)) then
+        return
+    end
+
     texture.__vertexColor = color
     texture:SetVertexColor(unpack(color))
+
     if not texture.hookedSetVertexColor then
         texture.hookedSetVertexColor = true
         R:SecureHook(texture, "SetVertexColor", function(self, r, g, b, a)
             if not self.__vertexColor then
                 return
             end
-            local r2, g2, b2, a2 = unpack(self.__vertexColor)
-            if not a2 then
-                a2 = 1
-            end
-            if r ~= r2 or g ~= g2 or b ~= b2 or a ~= a2 then
-                self:SetVertexColor(r2, g2, b2, a2)
+            if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or ((a or 1) ~= (self.__vertexColor[4] or 1)) then
+                self:SetVertexColor(unpack(self.__vertexColor))
             end
         end)
     end

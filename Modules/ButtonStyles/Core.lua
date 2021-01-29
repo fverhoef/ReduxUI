@@ -56,9 +56,9 @@ function BS:StyleActionButton(button)
         BS:UpdateActionButton(button)
         return
     end
-    local buttonName = button:GetName()
 
-    local cfg = R.config.db.profile.modules.buttonStyles.actionBars
+    local buttonName = button:GetName()
+    button.cfg = R.config.db.profile.modules.buttonStyles.actionBars
 
     -- hide floating background
     local floatingBG = _G[buttonName .. "FloatingBG"]
@@ -125,13 +125,13 @@ function BS:StyleActionButton(button)
     -- flash:SetPoint("TOPLEFT", 1, -1)
     -- flash:SetPoint("BOTTOMRIGHT", -1, 1)
     R:ApplyTexture(flash, nil)
-    -- SetupTexture(flash, cfg.flash, "SetTexture", flash)
+    -- SetupTexture(flash, button.cfg.flash, "SetTexture", flash)
 
     -- local flyoutBorder = _G[buttonName .. "FlyoutBorder"]
-    -- SetupTexture(flyoutBorder, cfg.flyoutBorder, "SetTexture", flyoutBorder)
+    -- SetupTexture(flyoutBorder, button.cfg.flyoutBorder, "SetTexture", flyoutBorder)
 
     -- local flyoutBorderShadow = _G[buttonName .. "FlyoutBorderShadow"]
-    -- SetupTexture(flyoutBorderShadow, cfg.flyoutBorderShadow, "SetTexture", flyoutBorderShadow)
+    -- SetupTexture(flyoutBorderShadow, button.cfg.flyoutBorderShadow, "SetTexture", flyoutBorderShadow)
 
     -- local flyoutArrow = _G[buttonName .. "FlyoutArrow"]
     -- local NewActionTexture = button.NewActionTexture
@@ -149,21 +149,21 @@ function BS:StyleActionButton(button)
     local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
-        count:SetFont(unpack(cfg.font))
+        count:SetFont(unpack(button.cfg.font))
     end
     local hotkey = _G[buttonName .. "HotKey"]
     if hotkey then
         hotkey:SetParent(overlay)
-        hotkey:SetFont(unpack(cfg.font))
-        if cfg.hideKeybindText then
+        hotkey:SetFont(unpack(button.cfg.font))
+        if button.cfg.hideKeybindText then
             hotkey:SetAlpha(0)
         end
     end
     local name = _G[buttonName .. "Name"]
     if name then
         name:SetParent(overlay)
-        name:SetFont(unpack(cfg.font))
-        if cfg.hideMacroText then
+        name:SetFont(unpack(button.cfg.font))
+        if button.cfg.hideMacroText then
             name:SetAlpha(0)
         end
     end
@@ -180,17 +180,7 @@ function BS:UpdateActionButton(button)
         return
     end
 
-    if button.spellID then
-        button.isUsable, button.notEnoughMana = IsUsableSpell(button.spellID)
-    elseif button.action then
-        button.isUsable, button.notEnoughMana = IsUsableAction(button.action)
-    end
-
-    if button.isUsable and UnitOnTaxi("player") then
-        button.isUsable = false
-    end
-
-    if button.inRange ~= nil and not button.inRange then
+    if button.checksRange and not button.inRange then
         R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttonStyles.colors.outOfRange)
     else
         if button.isUsable then
@@ -202,15 +192,6 @@ function BS:UpdateActionButton(button)
         end
     end
 
-    -- update charges
-    if button.spellID then
-        button.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(button.spellID)
-    elseif button.action then
-        local actionType, id, subType = GetActionInfo(button.action)
-        if actionType == "spell" then
-            button.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(id)
-        end
-    end
     if button.reagentCount ~= nil then
         button.Count:SetText(button.reagentCount)
     end
@@ -574,18 +555,39 @@ function BS:StyleMicroButton(button)
 end
 
 function BS:ActionButton_UpdateUsable()
-    if (self.action or self.spellID) and (self.inRange == nil or self.inRange) then
+    if (self.action or self.spellID) and (not self.checksRange or self.inRange) then
+        if self.spellID then
+            self.isUsable, self.notEnoughMana = IsUsableSpell(self.spellID)
+        elseif self.action then
+            self.isUsable, self.notEnoughMana = IsUsableAction(self.action)
+        end
+    
+        if self.isUsable and UnitOnTaxi("player") then
+            self.isUsable = false
+        end
+
         BS:UpdateActionButton(self)
     end
 end
 
-function BS:ActionButton_UpdateRangeIndicator()
+function BS:ActionButton_UpdateRangeIndicator(checksRange, inRange)
     if R.config.db.profile.modules.buttonStyles.outOfRangeColoring == "button" and (self.action or self.spellID) then
-        self.inRange = self.spellID and IsSpellInRange(self.spellID) or IsActionInRange(self.action)
+        self.checksRange = checksRange
+        self.inRange = inRange
+
         BS:UpdateActionButton(self)
     end
 end
 
 function BS:ActionBarButton_UpdateCount()
+    if self.spellID then
+        self.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(self.spellID)
+    elseif self.action then
+        local actionType, id, subType = GetActionInfo(self.action)
+        if actionType == "spell" then
+            self.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(id)
+        end
+    end
+
     BS:UpdateActionButton(self)
 end
