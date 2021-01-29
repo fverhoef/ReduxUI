@@ -36,7 +36,7 @@ R.config.options.args.minimap = {
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Minimap:OnInitialize()
+                    R.Modules.Minimap:Initialize()
                 end
             end
         },

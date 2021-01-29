@@ -144,3 +144,5 @@ end
 
 for k, object in ipairs(oUF.objects) do addCombat(object) end
 oUF:RegisterInitCallback(addCombat)
+
+-- TODO: Support Enable/Disable and make this a proper addon

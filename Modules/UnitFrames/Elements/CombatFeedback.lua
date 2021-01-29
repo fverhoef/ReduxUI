@@ -21,9 +21,9 @@ UF.CreateCombatFeedback = function(self)
 end
 
 UF.UpdateCombatFeedback = function(self)
-    if self.cfg.combatfeedback.enabled then -- TODO: enable/disable this properly
-        self.CombatFeedbackText:Show()
+    if self.cfg.combatfeedback.enabled then
+        self:EnableElement("CombatFeedbackText")
     else
-        self.CombatFeedbackText:Hide()
+        self:DisableElement("CombatFeedbackText")
     end
 end

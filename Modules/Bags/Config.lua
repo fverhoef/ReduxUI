@@ -36,7 +36,7 @@ R.config.options.args.bags = {
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Bags:OnInitialize()
+                    R.Modules.Bags:Initialize()
                 end
             end
         },

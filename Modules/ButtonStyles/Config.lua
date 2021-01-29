@@ -60,7 +60,7 @@ R.config.options.args.buttons = {
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.ButtonStyles:OnInitialize()
+                    R.Modules.ButtonStyles:Initialize()
                 end
             end
         },

@@ -170,16 +170,29 @@ UF.Player_OnEvent = function(self, event, ...)
         end
     end
 
-    if event == "PLAYER_ENTERING_WORLD" then
-        UF.UpdateStatusFlash(self)
-    elseif event == "PLAYER_REGEN_ENABLED" then
-        UF.UpdateStatusFlash(self)
+    local arg1 = ...
+    if event == "UNIT_LEVEL" and arg1 == self.unit then
+        UF.UpdateStatusFlashVisibility(self)
+    elseif event == "PLAYER_ENTERING_WORLD" then
+		self.inCombat = nil
+		self.onHateList = nil
+        UF.UpdateStatusFlashVisibility(self)
+    elseif event == "PLAYER_ENTER_COMBAT" then
+		self.inCombat = 1
+        UF.UpdateStatusFlashVisibility(self)
+    elseif event == "PLAYER_LEAVE_COMBAT" then
+		self.inCombat = nil
+        UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_REGEN_DISABLED" then
-        UF.UpdateStatusFlash(self)
+		self.onHateList = 1
+        UF.UpdateStatusFlashVisibility(self)
+    elseif event == "PLAYER_REGEN_ENABLED" then
+		self.onHateList = nil
+        UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_UPDATE_RESTING" then
-        UF.UpdateStatusFlash(self)
+        UF.UpdateStatusFlashVisibility(self)
     elseif event == "CINEMATIC_STOP" then
-        UF.UpdateStatusFlash(self)
+        UF.UpdateStatusFlashVisibility(self)
     elseif event == "GROUP_ROSTER_UPDATE" then
         UF.UpdateTab(self)
     elseif event == "PLAYER_TARGET_CHANGED" then
@@ -188,6 +201,4 @@ UF.Player_OnEvent = function(self, event, ...)
             UF.frames.target.SpellRange:ForceUpdate()
         end
     end
-
-    UF.UpdateStatusFlash(self, elapsed)
 end

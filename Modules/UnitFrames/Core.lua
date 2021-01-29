@@ -9,12 +9,6 @@ function UF:Initialize()
     if not R.config.db.profile.modules.unitFrames.enabled then
         return
     end
-
-    if R.isClassic then
-        R:AddLib("ClassicDurations", "LibClassicDurations")
-        R.Libs.ClassicDurations:Register(addonName)
-        R.Libs.ClassicDurations:Register(R.name)
-    end
     
     UF:UpdateColors()
 
@@ -80,6 +74,21 @@ function UF:UpdateColors()
 end
 
 function UF:SpawnFrame(name, unit, func, config, defaultConfig)
+    oUF:RegisterStyle(addonName .. name, func)
+    oUF:SetActiveStyle(addonName .. name)
+
+    local frame = oUF:Spawn(unit, addonName .. name)
+
+    if config.fader and config.fader.enabled then
+        R:CreateFrameFader(frame, config.fader)
+    end
+
+    R:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
+
+    return frame
+end
+
+function UF:SpawnHeader(name, unit, func, config, defaultConfig)
     oUF:RegisterStyle(addonName .. name, func)
     oUF:SetActiveStyle(addonName .. name)
 

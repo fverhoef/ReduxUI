@@ -630,14 +630,22 @@ R.config.options.args.unitFrames = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                return "Disabling this module requires a UI reload. Proceed?"
+                if R.config.db.profile.modules.unitFrames.enabled then
+                    return "Disabling this module requires a UI reload. Proceed?"
+                else
+                    return false
+                end
             end,
             get = function()
                 return R.config.db.profile.modules.unitFrames.enabled
             end,
             set = function(_, val)
                 R.config.db.profile.modules.unitFrames.enabled = val
-                ReloadUI()
+                if not val then
+                    ReloadUI()
+                else
+                    R.Modules.UnitFrames:Initialize()
+                end
             end
         },
         lineBreak1 = {type = "header", name = "", order = 2},

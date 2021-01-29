@@ -33,7 +33,7 @@ R.config.options.args.screenSaver = {
                 if not val then
                     ReloadUI()
                 else
-                    SS:Initialize()
+                    R.Modules.ScreenSaver:Initialize()
                 end
             end
         },

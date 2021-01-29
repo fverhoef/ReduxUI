@@ -295,7 +295,7 @@ function BS:UpdateAuraButton(button)
     end
 
     local borderColor = R.config.db.profile.borders.color
-    if button.isDebuff and button.debuffType ~= "none" then
+    if button.isDebuff then
         local debuffColor = button.filter == "HARMFUL" and _G.DebuffTypeColor[button.debuffType]
         if debuffColor then
             borderColor = {debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1}

@@ -30,6 +30,8 @@ R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
 if R.isClassic then
     R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0")
+    R:AddLib("ClassicDurations", "LibClassicDurations")
+    R.Libs.ClassicDurations:Register(addonName)
 end
 
 R.Modules = {}

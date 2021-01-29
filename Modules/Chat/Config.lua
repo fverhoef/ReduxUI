@@ -41,7 +41,7 @@ R.config.options.args.chat = {
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Chat:OnInitialize()
+                    R.Modules.Chat:Initialize()
                 end
             end
         },

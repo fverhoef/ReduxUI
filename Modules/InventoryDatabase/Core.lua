@@ -8,7 +8,11 @@ local bagIDs =
     bank = {-1, 5, 6, 7, 8, 9, 10}
 } 
 
-function ID:Initialize()    
+function ID:Initialize()   
+    if not R.config.db.profile.modules.chat.inventoryDatabase then
+        return
+    end
+
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
     ID:RegisterEvent("BAG_UPDATE", ID.Update)
     ID:RegisterEvent("BAG_UPDATE_COOLDOWN", ID.Update)

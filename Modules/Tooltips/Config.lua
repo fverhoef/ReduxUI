@@ -75,7 +75,7 @@ R.config.options.args.tooltips = {
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Tooltips:OnInitialize()
+                    R.Modules.Tooltips:Initialize()
                 end
             end
         },

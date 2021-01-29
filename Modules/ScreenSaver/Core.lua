@@ -22,8 +22,7 @@ function SS:Initialize()
     SS.Canvas:SetFrameLevel(1)
     SS.Canvas:SetScale(_G.UIParent:GetScale())
     SS.Canvas:SetAllPoints(_G.UIParent)
-    SS.Canvas:EnableKeyboard(true)
-    SS.Canvas:SetScript("OnKeyDown", SS.OnKeyDown)
+    SS.Canvas:SetAlpha(0)
     SS.Canvas:Hide()
 
     SS.Canvas.Bottom = CreateFrame("Frame", nil, SS.Canvas, BackdropTemplateMixin and "BackdropTemplate")
@@ -104,18 +103,8 @@ function SS:Initialize()
     SS.Canvas.Bottom.Model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) -- YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
     SS.Canvas.Bottom.Model:SetCamDistanceScale(4.5) -- Since the model frame is huge, we need to zoom out quite a bit.
     SS.Canvas.Bottom.Model:SetFacing(6)
-    SS.Canvas.Bottom.Model:SetScript("OnUpdate", function(model)
-        if SS.isActive and not model.isIdle then
-            local timePassed = GetTime() - model.startTime
-            if timePassed > model.duration then
-                model:SetAnimation(0)
-                model.isIdle = true
-                SS.animTimer = SS:ScheduleTimer("LoopAnimations", model.idleDuration)
-            end
-        end
-    end)
 
-    R:CreateFrameFader(SS.Canvas, config.fader)
+    --R:CreateFrameFader(SS.Canvas, config.fader)
 
     SS:Toggle()
 
@@ -144,6 +133,18 @@ function SS:OnKeyDown(key)
     end
 end
 
+function SS:OnUpdateModel()
+    local model = self
+    if SS.isActive and not model.isIdle then
+        local timePassed = GetTime() - model.startTime
+        if timePassed > model.duration then
+            model:SetAnimation(0)
+            model.isIdle = true
+            SS.animTimer = SS:ScheduleTimer("LoopAnimations", model.idleDuration)
+        end
+    end
+end
+
 function SS:Toggle()
     if UnitIsAFK("player") then
         SS:Show()
@@ -161,6 +162,8 @@ function SS:Show()
 
     MoveViewLeftStart(CAMERA_SPEED)
     SS.Canvas:Show()
+    SS.Canvas:EnableKeyboard(true)
+    SS.Canvas:SetScript("OnKeyDown", SS.OnKeyDown)
     _G.UIParent:Hide()
     CloseAllWindows()
 
@@ -180,10 +183,12 @@ function SS:Show()
     SS.Canvas.Bottom.Model.isIdle = nil
     SS.Canvas.Bottom.Model:SetAnimation(67)
     SS.Canvas.Bottom.Model.idleDuration = 40
+    SS.Canvas.Bottom.Model:SetScript("OnUpdate", SS.OnUpdateModel)
     SS.startTime = GetTime()
 
     SS.timer = SS:ScheduleRepeatingTimer("UpdateTimer", 1)
-    R:StartFadeIn(SS.Canvas)
+    UIFrameFadeIn(SS.Canvas, 1, 0, 1)
+    --R:StartFadeIn(SS.Canvas)
 
     SetCVar("autoClearAFK", "1")
 end
@@ -200,10 +205,15 @@ function SS:Hide()
 
     MoveViewLeftStop()
     SS.Canvas:Hide()
+    SS.Canvas:EnableKeyboard(false)
+    SS.Canvas:SetScript("OnKeyDown", nil)
+    SS.Canvas.Bottom.Model:SetScript("OnUpdate", nil)
     _G.UIParent:Show()
 
     SS:CancelTimer(SS.timer)
-    R:StartFadeOut(SS.Canvas)
+    SS.timer = nil
+    UIFrameFadeOut(SS.Canvas, 0.2, 1, 0)
+    --R:StartFadeOut(SS.Canvas)
 end
 
 function SS:UpdateTimer()

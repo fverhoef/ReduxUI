@@ -71,14 +71,15 @@ local function UpdateCPU()
     return totalCPU
 end
 
-local function LiteUpdate()
+function R.SystemInfo:Update(fullUpdate)
     local _, _, homePing, worldPing = GetNetStats()
     R.SystemInfo.homePing = homePing
     R.SystemInfo.worldPing = worldPing
-end
 
-local function FullUpdate()
-    LiteUpdate()
+    if not fullUpdate then
+        return
+    end
+
     RebuildAddonList()
 
     local cpuProfiling = GetCVar("scriptProfile") == "1"
@@ -104,14 +105,6 @@ local function FullUpdate()
     R.SystemInfo.totalCPU = totalCPU
     R.SystemInfo.bandwidth = bandwidth
     R.SystemInfo.framerate = framerate
-end
-
-function R.SystemInfo:Update(fullUpdate)
-    if fullUpdate then
-        FullUpdate()
-    else
-        LiteUpdate()
-    end
 end
 
 function R.SystemInfo:ToggleCPUProfiling()

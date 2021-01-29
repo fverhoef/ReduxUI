@@ -106,12 +106,6 @@ function UF:CreateNamePlate()
     -- raid target
     UF.CreateRaidTargetIndicator(self)
 
-    UF.CreateCombatFeedback(self)
-    self.CombatFeedbackText:SetPoint("CENTER", self.Health, "CENTER", 0, 30)
-    if not self.cfg.combatfeedback.enabled then
-        self.CombatFeedbackText:Hide()
-    end
-
     -- threat glow
     UF.CreateThreatIndicator(self)
 

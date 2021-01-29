@@ -10,18 +10,17 @@ UF.CreateStatusFlash = function(self)
     self.StatusFlash:SetPoint("TOPLEFT", self.Texture, 35, -9)
     self.StatusFlash:SetAlpha(0)
 
-    UF.UpdateStatusFlash(self)
+    self.StatusFlash.counter = 0
+    self.StatusFlash.sign = -1
+    self.StatusFlash.updateInterval = 0.04 -- 25 times per second
+    self.StatusFlash.timeSinceLastUpdate = 0
 
-    self.statusCounter = 0
-    self.statusSign = -1
-    self:HookScript("OnUpdate", function(self, elapsed)
-        UF.UpdateStatusFlash(self, elapsed)
-    end)
+    UF.UpdateStatusFlashVisibility(self)
 
     return self.StatusFlash
 end
 
-UF.UpdateStatusFlash = function(self, elapsed)
+UF.UpdateStatusFlashVisibility = function(self)
     if not self.StatusFlash then
         return
     end
@@ -31,34 +30,45 @@ UF.UpdateStatusFlash = function(self, elapsed)
         return
     end
 
-    local inCombat = UnitAffectingCombat("player")
     if IsResting() then
-        if inCombat then
-            self.StatusFlash:SetVertexColor(1.0, 0.0, 0.0, 1.0)
-            self.StatusFlash:Show()
-        else
-            self.StatusFlash:SetVertexColor(1.0, 0.88, 0.25, 1.0)
-            self.StatusFlash:Show()
-        end
-    elseif inCombat then
+        self.StatusFlash:SetVertexColor(1.0, 0.88, 0.25, 1.0)
+        self.StatusFlash:Show()
+    elseif self.inCombat then
         self.StatusFlash:SetVertexColor(1.0, 0.0, 0.0, 1.0)
         self.StatusFlash:Show()
     else
         self.StatusFlash:Hide()
     end
 
-    if elapsed then
+    if self.StatusFlash:IsShown() then
+        if not UF:IsHooked(self, "OnUpdate") then
+            UF:HookScript(self, "OnUpdate", function(self, elapsed)
+                UF.UpdateStatusFlash(self, elapsed)
+            end)
+        end
+    else
+        UF:Unhook(self, "OnUpdate")
+    end
+end
+
+UF.UpdateStatusFlash = function(self, elapsed)
+    if not self.StatusFlash then
+        return
+    end
+    self.StatusFlash.timeSinceLastUpdate = self.StatusFlash.timeSinceLastUpdate + elapsed
+
+    if (self.StatusFlash.timeSinceLastUpdate > self.StatusFlash.updateInterval) then
         if self.StatusFlash:IsShown() then
             local alpha = 255
-            local counter = self.statusCounter + elapsed
-            local sign = self.statusSign
+            local counter = self.StatusFlash.counter + elapsed
+            local sign = self.StatusFlash.sign
 
             if counter > 0.5 then
                 sign = -sign
-                self.statusSign = sign
+                self.StatusFlash.sign = sign
             end
             counter = mod(counter, 0.5)
-            self.statusCounter = counter
+            self.StatusFlash.counter = counter
 
             if sign == 1 then
                 alpha = (55 + (counter * 400)) / 255
@@ -87,5 +97,7 @@ UF.UpdateStatusFlash = function(self, elapsed)
             self.CombatIndicator.Glow:Hide()
             self.Level:SetAlpha(1)
         end
+
+        self.StatusFlash.timeSinceLastUpdate = 0
     end
 end
