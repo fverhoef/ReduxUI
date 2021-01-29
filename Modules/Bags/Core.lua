@@ -15,13 +15,38 @@ function B:Initialize()
     B.Inventory = B:CreateInventoryFrame()
     B.Bank = B:CreateBankFrame()
 
-    B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", B.UpdateInventory)
-    B:RegisterEvent("BAG_UPDATE", B.UpdateInventory)
-    B:RegisterEvent("BAG_UPDATE_COOLDOWN", B.UpdateInventory)
-    B:RegisterEvent("BAG_NEW_ITEMS_UPDATED", B.UpdateInventory)
-    B:RegisterEvent("QUEST_ACCEPTED", B.UpdateInventory)
-    B:RegisterEvent("QUEST_REMOVED", B.UpdateInventory)
-    B:RegisterEvent("ITEM_LOCK_CHANGED", B.UpdateLocked)
+    B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", B.OnEvent)
+    B:RegisterEvent("BAG_UPDATE", B.OnEvent)
+    B:RegisterEvent("BAG_UPDATE_COOLDOWN", B.OnEvent)
+    B:RegisterEvent("BAG_NEW_ITEMS_UPDATED", B.OnEvent)
+    B:RegisterEvent("QUEST_ACCEPTED", B.OnEvent)
+    B:RegisterEvent("QUEST_REMOVED", B.OnEvent)
+    B:RegisterEvent("ITEM_LOCK_CHANGED", B.OnEvent)
+    B:RegisterEvent("BANKFRAME_OPENED", B.OnEvent)
+    B:RegisterEvent("BANKFRAME_CLOSED", B.OnEvent)
+    B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED", B.OnEvent)
+    B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", B.OnEvent)
+end
+
+function B:OnEvent(...)
+    local event = self
+    if event == "ITEM_LOCK_CHANGED" then
+        B:UpdateLocked()
+    elseif event == "BANKFRAME_OPENED" then
+        B:ShowBank()
+    elseif event == "BANKFRAME_CLOSED" then
+        B:HideBank()
+    elseif event == "BANK_BAG_SLOT_FLAGS_UPDATED" or event == "PLAYERBANKBAGSLOTS_CHANGED" then
+        B:UpdateBank()
+    elseif event == "BAG_UPDATE_COOLDOWN" then
+        if B.Inventory:IsShown() then
+            B:UpdateInventory()
+        elseif B.Bank:IsShown() then
+            B:UpdateBank()
+        end
+    else
+        B:UpdateInventory()
+    end
 end
 
 function B:DisableBlizzardFrames()
@@ -224,7 +249,6 @@ function B:UpdateItemButton(bag, slot)
     end
 
     local texture, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemId = GetContainerItemInfo(bagID, slot)
-    local itemClassID = itemId and select(12, GetItemInfo(itemId)) or nil
 
     SetItemButtonTexture(button, texture)
     SetItemButtonQuality(button, quality, itemId)
@@ -242,6 +266,7 @@ function B:UpdateItemButton(bag, slot)
 
     local questTexture = _G[button:GetName() .. "IconQuestTexture"]
     if questTexture then
+        local itemClassID = itemId and select(12, GetItemInfo(itemId)) or nil
         questTexture:SetShown(itemClassID == LE_ITEM_CLASS_QUESTITEM)
     end
     local battlepayItemTexture = button.BattlepayItemTexture
@@ -388,22 +413,6 @@ function B:CreateInventoryFrame()
     B:SecureHook("ToggleAllBags", B.ToggleBackpack)
     B:SecureHook("ToggleBackpack", B.ToggleBackpack)
 
-    -- register events
-    frame:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
-    frame:RegisterEvent("BAG_UPDATE")
-    frame:RegisterEvent("BAG_UPDATE_COOLDOWN")
-    frame:RegisterEvent("BAG_NEW_ITEMS_UPDATED")
-    frame:RegisterEvent("QUEST_ACCEPTED")
-    frame:RegisterEvent("QUEST_REMOVED")
-    frame:RegisterEvent("ITEM_LOCK_CHANGED")
-    frame:SetScript("OnEvent", function(self, event, ...)
-        if event == "ITEM_LOCK_CHANGED" then
-            B:UpdateLocked()
-        else
-            B:UpdateInventory()
-        end
-    end)
-
     frame:SetScript("OnHide", function()
         CloseBackpack()
         for i = 1, NUM_BAG_FRAMES do
@@ -522,24 +531,6 @@ function B:CreateBankFrame()
 
     -- register as a special frame so we can close with ESC key
     tinsert(UISpecialFrames, frame:GetName())
-
-    frame:RegisterEvent("BANKFRAME_OPENED")
-    frame:RegisterEvent("BANKFRAME_CLOSED")
-    frame:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
-    frame:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-    frame:RegisterEvent("BAG_UPDATE")
-    frame:RegisterEvent("BAG_UPDATE_COOLDOWN")
-    frame:RegisterEvent("BAG_NEW_ITEMS_UPDATED")
-    frame:RegisterEvent("ITEM_LOCK_CHANGED")
-    frame:SetScript("OnEvent", function(self, event, ...)
-        if event == "BANKFRAME_OPENED" then
-            B:ShowBank()
-        elseif event == "BANKFRAME_CLOSED" then
-            B:HideBank()
-        else
-            B:UpdateBank()
-        end
-    end)
 
     frame:SetScript("OnHide", function()
         CloseBankFrame()
