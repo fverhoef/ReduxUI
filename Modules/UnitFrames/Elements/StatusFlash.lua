@@ -13,7 +13,7 @@ UF.CreateStatusFlash = function(self)
 
     self.StatusFlash.counter = 0
     self.StatusFlash.sign = -1
-    self.StatusFlash.updateInterval = 0.01 -- 25 times per second
+    self.StatusFlash.updateInterval = 0.01
     self.StatusFlash.timeSinceLastUpdate = 0
 
     UF.UpdateStatusFlashVisibility(self)
@@ -49,6 +49,21 @@ UF.UpdateStatusFlashVisibility = function(self)
         end
     else
         UF:Unhook(self.StatusFlashParent, "OnUpdate")
+    end
+
+    -- TODO: move this to player frame?
+    if self.RestingIndicator:IsShown() then
+        self.RestingIndicator.Glow:Show()
+        self.CombatIndicator:Hide()
+        self.CombatIndicator.Glow:Hide()
+        self.Level:SetAlpha(0.01)
+    elseif self.CombatIndicator:IsShown() then
+        self.CombatIndicator.Glow:Show()
+        self.Level:SetAlpha(0.01)
+    else
+        self.RestingIndicator.Glow:Hide()
+        self.CombatIndicator.Glow:Hide()
+        self.Level:SetAlpha(1)
     end
 end
 

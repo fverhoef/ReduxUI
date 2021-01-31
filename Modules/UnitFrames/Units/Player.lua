@@ -84,7 +84,7 @@ function UF:UpdatePlayer()
     local self = UF.frames.player
     if self then
         UF:UpdateFrame(self)
-        
+
         if UF:IsBlizzardTheme() then
             self.Health:ClearAllPoints()
             self.Health.Value:ClearAllPoints()
@@ -143,7 +143,7 @@ function UF:UpdatePlayer()
                 self.GroupRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
             end
             self.RaidRoleIndicator:ClearAllPoints()
-            self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait,  10, -2)
+            self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
 
             self.Castbar:ClearAllPoints()
             if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
@@ -174,20 +174,20 @@ UF.Player_OnEvent = function(self, event, ...)
     if event == "UNIT_LEVEL" and arg1 == self.unit then
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_ENTERING_WORLD" then
-		self.inCombat = nil
-		self.onHateList = nil
+        self.inCombat = nil
+        self.onHateList = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_ENTER_COMBAT" then
-		self.inCombat = 1
+        self.inCombat = 1
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_LEAVE_COMBAT" then
-		self.inCombat = nil
+        self.inCombat = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_REGEN_DISABLED" then
-		self.onHateList = 1
+        self.onHateList = 1
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_REGEN_ENABLED" then
-		self.onHateList = nil
+        self.onHateList = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_UPDATE_RESTING" then
         UF.UpdateStatusFlashVisibility(self)
@@ -197,8 +197,8 @@ UF.Player_OnEvent = function(self, event, ...)
         UF.UpdateTab(self)
     elseif event == "PLAYER_TARGET_CHANGED" then
         UF.UpdateTargetFrameTexture(UF.frames.target)
-        if UF.frames.target.SpellRange.ForceUpdate then
-            UF.frames.target.SpellRange:ForceUpdate()
+        if UF.frames.target.Range and UF.frames.target.Range.ForceUpdate then
+            --UF.frames.target.Range:ForceUpdate()
         end
     end
 end

@@ -115,18 +115,18 @@ function UF:CreateRaid()
     UF.CreateResurrectIndicator(self)
 
     -- range check
-    self.SpellRange = {
+    self.Range = {
         insideAlpha = 1,
         outsideAlpha = 0.5,
-        Update = function(self, inRange)
+        Update = function(self, inRange, checkedRange, connected)
             if self.fader and not self:IsShown() then
                 R:StartFadeIn(self, {
-                    fadeInAlpha = self.SpellRange[inRange and "insideAlpha" or "outsideAlpha"],
+                    fadeInAlpha = self.Range[inRange and "insideAlpha" or "outsideAlpha"],
                     fadeInDuration = self.faderConfig.fadeInDuration,
                     fadeInSmooth = self.faderConfig.fadeInSmooth
                 })
             else
-                self:SetAlpha(self.SpellRange[inRange and "insideAlpha" or "outsideAlpha"])
+                self:SetAlpha(self.Range[inRange and "insideAlpha" or "outsideAlpha"])
             end
         end
     }
