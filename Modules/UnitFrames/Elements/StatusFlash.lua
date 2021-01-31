@@ -50,21 +50,6 @@ UF.UpdateStatusFlashVisibility = function(self)
     else
         UF:Unhook(self.StatusFlashParent, "OnUpdate")
     end
-
-    -- TODO: move this to player frame?
-    if self.RestingIndicator:IsShown() then
-        self.RestingIndicator.Glow:Show()
-        self.CombatIndicator:Hide()
-        self.CombatIndicator.Glow:Hide()
-        self.Level:SetAlpha(0.01)
-    elseif self.CombatIndicator:IsShown() then
-        self.CombatIndicator.Glow:Show()
-        self.Level:SetAlpha(0.01)
-    else
-        self.RestingIndicator.Glow:Hide()
-        self.CombatIndicator.Glow:Hide()
-        self.Level:SetAlpha(1)
-    end
 end
 
 UF.UpdateStatusFlash = function(self, elapsed)
@@ -93,25 +78,11 @@ UF.UpdateStatusFlash = function(self, elapsed)
             end
             self.StatusFlash:SetAlpha(alpha)
 
-            if self.RestingIndicator.Glow:IsShown() then
+            if self.RestingIndicator and self.RestingIndicator.Glow:IsShown() then
                 self.RestingIndicator.Glow:SetAlpha(alpha)
-            elseif self.CombatIndicator.Glow:IsShown() then
+            elseif self.CombatIndicator and self.CombatIndicator.Glow:IsShown() then
                 self.CombatIndicator.Glow:SetAlpha(alpha)
             end
-        end
-
-        if self.RestingIndicator:IsShown() then
-            self.RestingIndicator.Glow:Show()
-            self.CombatIndicator:Hide()
-            self.CombatIndicator.Glow:Hide()
-            self.Level:SetAlpha(0.01)
-        elseif self.CombatIndicator:IsShown() then
-            self.CombatIndicator.Glow:Show()
-            self.Level:SetAlpha(0.01)
-        else
-            self.RestingIndicator.Glow:Hide()
-            self.CombatIndicator.Glow:Hide()
-            self.Level:SetAlpha(1)
         end
 
         self.StatusFlash.timeSinceLastUpdate = 0

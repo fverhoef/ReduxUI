@@ -57,7 +57,23 @@ function UF:CreatePlayer()
     UF.CreateReadyCheckIndicator(self)
 
     UF.CreateRestingIndicator(self)
+    self.RestingIndicator.PostUpdate = function()
+        self.RestingIndicator.Glow:SetShown(self.RestingIndicator:IsShown())
+        if self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown() then
+            self.Level:SetAlpha(0.01)
+        else
+            self.Level:SetAlpha(1)
+        end
+    end
     UF.CreateCombatIndicator(self)
+    self.CombatIndicator.PostUpdate = function()
+        self.CombatIndicator.Glow:SetShown(self.CombatIndicator:IsShown())
+        if self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown() then
+            self.Level:SetAlpha(0.01)
+        else
+            self.Level:SetAlpha(1)
+        end
+    end
     UF.CreateResurrectIndicator(self)
     UF.CreateStatusFlash(self)
     UF.CreateThreatIndicator(self)
@@ -198,7 +214,7 @@ UF.Player_OnEvent = function(self, event, ...)
     elseif event == "PLAYER_TARGET_CHANGED" then
         UF.UpdateTargetFrameTexture(UF.frames.target)
         if UF.frames.target.Range and UF.frames.target.Range.ForceUpdate then
-            --UF.frames.target.Range:ForceUpdate()
+            -- UF.frames.target.Range:ForceUpdate()
         end
     end
 end

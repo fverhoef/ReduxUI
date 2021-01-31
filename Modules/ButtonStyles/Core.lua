@@ -3,7 +3,9 @@ local R = _G.ReduxUI
 local BS = R:AddModule("ButtonStyles", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 function BS:Initialize()
-    if not R.config.db.profile.modules.buttonStyles.enabled then
+    BS.config = R.config.db.profile.modules.buttonStyles
+    BS.colors = BS.config.colors
+    if not BS.config.enabled then
         return
     end
 
@@ -39,8 +41,7 @@ function BS:StyleAllActionButtons()
     end
 
     -- vehicle leave
-    local cfg = R.config.db.profile.modules.buttonStyles.actionBars
-    MainMenuBarVehicleLeaveButton:CreateBorder(cfg.borderSize)
+    MainMenuBarVehicleLeaveButton:CreateBorder(BS.config.borderSize)
 
     -- show reagent counts for spells
     BS:SecureHook("ActionButton_UpdateCount", BS.ActionBarButton_UpdateCount)
@@ -58,7 +59,7 @@ function BS:StyleActionButton(button)
     end
 
     local buttonName = button:GetName()
-    button.cfg = R.config.db.profile.modules.buttonStyles.actionBars
+    button.cfg = BS.config.actionBars
 
     -- hide floating background
     local floatingBG = _G[buttonName .. "FloatingBG"]
@@ -181,18 +182,18 @@ function BS:UpdateActionButton(button)
     end
 
     if button.checksRange and not button.inRange then
-        R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttonStyles.colors.outOfRange)
+        R:ApplyVertexColor(button.icon, BS.colors.outOfRange)
     else
         if button.isUsable then
-            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttonStyles.colors.usable)
+            R:ApplyVertexColor(button.icon, BS.colors.usable)
         elseif button.notEnoughMana then
-            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttonStyles.colors.notEnoughMana)
+            R:ApplyVertexColor(button.icon, BS.colors.notEnoughMana)
         else
-            R:ApplyVertexColor(button.icon, R.config.db.profile.modules.buttonStyles.colors.notUsable)
+            R:ApplyVertexColor(button.icon, BS.colors.notUsable)
         end
     end
 
-    if button.reagentCount ~= nil then
+    if button.reagentCount ~= button.previousReagentCount then
         button.Count:SetText(button.reagentCount)
     end
 end
@@ -561,7 +562,7 @@ function BS:ActionButton_UpdateUsable()
         elseif self.action then
             self.isUsable, self.notEnoughMana = IsUsableAction(self.action)
         end
-    
+
         if self.isUsable and UnitOnTaxi("player") then
             self.isUsable = false
         end
@@ -571,7 +572,7 @@ function BS:ActionButton_UpdateUsable()
 end
 
 function BS:ActionButton_UpdateRangeIndicator(checksRange, inRange)
-    if R.config.db.profile.modules.buttonStyles.outOfRangeColoring == "button" and (self.action or self.spellID) then
+    if BS.config.outOfRangeColoring == "button" and (self.action or self.spellID) then
         self.checksRange = checksRange
         self.inRange = inRange
 
