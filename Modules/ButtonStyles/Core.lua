@@ -42,6 +42,7 @@ function BS:StyleAllActionButtons()
 
     -- vehicle leave
     MainMenuBarVehicleLeaveButton:CreateBorder(BS.config.borderSize)
+    MainMenuBarVehicleLeaveButton:CreateShadow()
 
     -- show reagent counts for spells
     BS:SecureHook("ActionButton_UpdateCount", BS.ActionBarButton_UpdateCount)
