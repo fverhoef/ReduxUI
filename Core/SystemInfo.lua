@@ -15,7 +15,7 @@ R.SystemInfo = {
     cpuTable = {}
 }
 
-local function RebuildAddonList()
+function R.SystemInfo:RebuildAddonList()
     local addOnCount = GetNumAddOns()
     if (addOnCount == #R.SystemInfo.memoryTable) then
         return
@@ -36,7 +36,7 @@ local sortByMemoryOrCPU = function(a, b)
     end
 end
 
-local function UpdateMemory()
+function R.SystemInfo:UpdateMemory()
     -- Update the memory usages of the addons
     UpdateAddOnMemoryUsage()
 
@@ -53,7 +53,7 @@ local function UpdateMemory()
     return totalMemory
 end
 
-local function UpdateCPU()
+function R.SystemInfo:UpdateCPU()
     -- Update the CPU usages of the addons
     UpdateAddOnCPUUsage()
 
@@ -80,14 +80,14 @@ function R.SystemInfo:Update(fullUpdate)
         return
     end
 
-    RebuildAddonList()
+    R.SystemInfo:RebuildAddonList()
 
     local cpuProfiling = GetCVar("scriptProfile") == "1"
     local totalCPU = 0
     if cpuProfiling then
-        totalCPU = UpdateCPU()
+        totalCPU = R.SystemInfo:UpdateCPU()
     end
-    local totalMemory = UpdateMemory()
+    local totalMemory = R.SystemInfo:UpdateMemory()
     local bandwidth = GetAvailableBandwidth()
     local framerate = floor(GetFramerate())
     local useIPv6 = GetCVarBool("useIPv6")

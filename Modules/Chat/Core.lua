@@ -73,105 +73,116 @@ function C:Initialize()
 
     -- parse links for alt-click invite and url copy
     local SetItemRef_Base = SetItemRef
-    SetItemRef = function(link, ...)
-        local type, value = link:match("(%a+):(.+)")
-        if IsAltKeyDown() and type == "player" then
-            InviteUnit(value:match("([^:]+)"))
-        elseif (type == "url") then
-            local eb = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
-            if not eb then
-                return
-            end
-            eb:SetText(value)
-            eb:SetFocus()
-            eb:HighlightText()
-            if not eb:IsShown() then
-                eb:Show()
-            end
-        else
-            return SetItemRef_Base(link, ...)
-        end
-    end
+    SetItemRef = C.SetItemRef
 
     for i = 1, NUM_CHAT_WINDOWS do
         local chatframe = _G["ChatFrame" .. i]
 
         if (i ~= 2) then
             chatframe.AddMessage_Base = chatframe.AddMessage
-            chatframe.AddMessage = function(frame, text, ...)
-                -- store text in DB
-                C:StoreChatMessage(chatframe, text, ...)
-
-                text = text:gsub("(|h%[%d+%. .-%]|h)", function(s)
-                    local index = s:match("|h%[(%d+)%.")
-                    local channel = s:match("|h%[%d+%. (.-)%]|h")
-
-                    -- replace "General - Orgrimmar" with "General", and similarly for Trade, LocalDefense etc
-                    local general = channel:match("(.+) %- .+")
-                    if general then
-                        channel = general
-                    else
-                        -- abbreviate channel names using only their uppercased letters
-                        local abbr = ""
-                        for letter in string.gmatch(channel, "%u") do
-                            abbr = abbr .. letter
-                        end
-                        if abbr ~= "" then
-                            channel = abbr
-                        else
-                            channel = channel:sub(1, 1):upper()
-                        end
-                    end
-
-                    return "|h" .. index .. ". " .. channel .. "|h"
-                end)
-
-                -- style urls
-                text = text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r")
-
-                -- TODO: support emojis
-                -- TODO: support [inv] links
-
-                return frame.AddMessage_Base(frame, text, ...)
-            end
+            chatframe.AddMessage = C.ChatFrame_AddMessage
         end
 
         C:LoadChatHistory(chatframe)
     end
 
     -- skin temporary chat windows
-    C:SecureHook("FCF_OpenTemporaryWindow", function()
-        for _, name in next, CHAT_FRAMES do
-            local chatframe = _G[name]
-            if (chatframe.isTemporary) then
-                C:SkinChatFrame(chatframe)
-            end
-        end
-    end)
+    C:SecureHook("FCF_OpenTemporaryWindow", C.FloatingChatFrame_OpenTemporaryWindow)
 
     -- fix weird combat log background issues
-    C:SecureHook("FloatingChatFrame_UpdateBackgroundAnchors", function(chatframe)
-        chatframe:SetClampRectInsets(0, 0, 0, 0)
-    end)
+    C:SecureHook("FloatingChatFrame_UpdateBackgroundAnchors", C.FloatingChatFrame_UpdateBackgroundAnchors)
 
     -- holding shift scrolls to top/bottom
-    FloatingChatFrame_OnMouseScroll = function(chatframe, dir)
-        if (dir > 0) then
-            if (IsShiftKeyDown()) then
-                chatframe:ScrollToTop()
-            else
-                chatframe:ScrollUp()
-            end
-        else
-            if (IsShiftKeyDown()) then
-                chatframe:ScrollToBottom()
-            else
-                chatframe:ScrollDown()
-            end
-        end
-    end
+    FloatingChatFrame_OnMouseScroll = C.FloatingChatFrame_OnMouseScroll
 
     C:UpdateChatFrames()
+end
+
+local SetItemRef_Base = SetItemRef
+function C:SetItemRef(...)
+    local type, value = self:match("(%a+):(.+)")
+    if IsAltKeyDown() and type == "player" then
+        InviteUnit(value:match("([^:]+)"))
+    elseif (type == "url") then
+        local editBox = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
+        if not editBox then
+            return
+        end
+        editBox:SetText(value)
+        editBox:SetFocus()
+        editBox:HighlightText()
+        if not editBox:IsShown() then
+            editBox:Show()
+        end
+    else
+        return SetItemRef_Base(self, ...)
+    end
+end
+
+function C:ChatFrame_AddMessage(text, ...)
+    -- store text in DB
+    C:StoreChatMessage(self, text, ...)
+
+    text = text:gsub("(|h%[%d+%. .-%]|h)", function(s)
+        local index = s:match("|h%[(%d+)%.")
+        local channel = s:match("|h%[%d+%. (.-)%]|h")
+
+        -- replace "General - Orgrimmar" with "General", and similarly for Trade, LocalDefense etc
+        local general = channel:match("(.+) %- .+")
+        if general then
+            channel = general
+        else
+            -- abbreviate channel names using only their uppercased letters
+            local abbr = ""
+            for letter in string.gmatch(channel, "%u") do
+                abbr = abbr .. letter
+            end
+            if abbr ~= "" then
+                channel = abbr
+            else
+                channel = channel:sub(1, 1):upper()
+            end
+        end
+
+        return "|h" .. index .. ". " .. channel .. "|h"
+    end)
+
+    -- style urls
+    text = text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r")
+
+    -- TODO: support emojis
+    -- TODO: support [inv] links
+
+    return self.AddMessage_Base(self, text, ...)
+end
+
+function C:FloatingChatFrame_OpenTemporaryWindow()
+    for _, name in next, CHAT_FRAMES do
+        local chatframe = _G[name]
+        if (chatframe.isTemporary) then
+            C:SkinChatFrame(chatframe)
+        end
+    end
+end
+
+function C:FloatingChatFrame_UpdateBackgroundAnchors()
+    self:SetClampRectInsets(0, 0, 0, 0)
+end
+
+function C:FloatingChatFrame_OnMouseScroll(dir)
+    if (dir > 0) then
+        if (IsShiftKeyDown()) then
+            self:ScrollToTop()
+        else
+            self:ScrollUp()
+        end
+    else
+        if (IsShiftKeyDown()) then
+            self:ScrollToBottom()
+        else
+            self:ScrollDown()
+        end
+    end
 end
 
 function C:UpdateChatFrames()

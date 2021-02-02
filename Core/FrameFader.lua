@@ -37,21 +37,6 @@ function R:StartFadeOut(frame, config)
     frame.fader:Play()
 end
 
-local function FrameHandler(frame)
-    if MouseIsOver(frame) then
-        R:StartFadeIn(frame)
-    else
-        R:StartFadeOut(frame)
-    end
-end
-
-local function OffFrameHandler(frame)
-    if not frame.__faderParent then
-        return
-    end
-    FrameHandler(frame.__faderParent)
-end
-
 function R:CreateFrameFader(frame, faderConfig)
     if not frame or frame.faderConfig then
         return
@@ -66,33 +51,19 @@ function R:CreateFrameFader(frame, faderConfig)
     frame.fader.direction = nil
     frame.fader.setToFinalAlpha = false
     frame.fader.anim = frame.fader:CreateAnimation("Alpha")
-    frame.fader:HookScript("OnFinished", function(me)
-        if me.finalAlpha ~= nil then
-            me.__owner:SetAlpha(me.finalAlpha)
-        end
-    end)
-    frame.fader:HookScript("OnUpdate", function(me)
-        me.__owner:SetAlpha(me.__animFrame:GetAlpha())
-    end)
+    frame.fader:HookScript("OnFinished", R.FrameFader_OnFinished)
+    frame.fader:HookScript("OnUpdate", R.FrameFader_OnUpdate)
 
     if faderConfig.trigger and faderConfig.trigger == "OnShow" then
-        frame:HookScript("OnShow", function(me)
-            if me.fader then
-                R:StartFadeIn(me)
-            end
-        end)
+        frame:HookScript("OnShow", R.FrameFader_OnShow)
         -- I know setting the alpha on a hidden frame does not really make sense but we need to set the fader to "out"
         -- sadly a delay on the OnHide is impossible. we get the benefit of the fadeIn though.
-        frame:HookScript("OnHide", function(me)
-            if me.fader then
-                R:StartFadeOut(me)
-            end
-        end)
+        frame:HookScript("OnHide", R.FrameFader_OnHide)
     else
         frame:EnableMouse(true)
-        frame:HookScript("OnEnter", FrameHandler)
-        frame:HookScript("OnLeave", FrameHandler)
-        FrameHandler(frame)
+        frame:HookScript("OnEnter", R.FrameFader_FrameHandler)
+        frame:HookScript("OnLeave", R.FrameFader_FrameHandler)
+        R.FrameFader_FrameHandler(frame)
     end
 end
 
@@ -109,8 +80,45 @@ function R:CreateButtonFrameFader(frame, buttonList, faderConfig)
     for _, button in next, buttonList do
         if not button.__faderParent then
             button.__faderParent = frame
-            button:HookScript("OnEnter", OffFrameHandler)
-            button:HookScript("OnLeave", OffFrameHandler)
+            button:HookScript("OnEnter", R.FrameFader_OffFrameHandler)
+            button:HookScript("OnLeave", R.FrameFader_OffFrameHandler)
         end
     end
+end
+
+function R:FrameFader_OnFinished()
+    if self.finalAlpha ~= nil then
+        self.__owner:SetAlpha(self.finalAlpha)
+    end
+end
+
+function R:FrameFader_OnUpdate()
+    self.__owner:SetAlpha(self.__animFrame:GetAlpha())
+end
+
+function R:FrameFader_OnShow()
+    if self.fader then
+        R:StartFadeIn(self)
+    end
+end
+
+function R:FrameFader_OnHide()
+    if self.fader then
+        R:StartFadeOut(self)
+    end
+end
+
+function R:FrameFader_FrameHandler()
+    if MouseIsOver(self) then
+        R:StartFadeIn(self)
+    else
+        R:StartFadeOut(self)
+    end
+end
+
+function R:FrameFader_OffFrameHandler()
+    if not self.__faderParent then
+        return
+    end
+    R.FrameFader_FrameHandler(self.__faderParent)
 end

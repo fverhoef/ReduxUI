@@ -10,14 +10,11 @@ function BS:Initialize()
     end
 
     BS:StyleAllActionButtons()
-    BS:StyleAllAuraButtons()
     BS:StyleAllBagButtons()
     BS:StyleAllCharacterSlots()
-    BS:SecureHook(nil, "SetItemButtonQuality", function(button, quality, itemIDOrLink, suppressOverlays)
-        button.quality = quality
-        button.itemIDOrLink = itemIDOrLink
-        BS:StyleItemButton(button)
-    end)
+
+    BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
+    BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
 end
 
 function BS:StyleAllActionButtons()
@@ -200,20 +197,6 @@ function BS:UpdateActionButton(button)
 end
 
 function BS:StyleAllAuraButtons()
-    BS:SecureHook("BuffFrame_Update", function()
-        local button
-        for i = 1, BUFF_MAX_DISPLAY do
-            BS:StyleAuraButton(_G["BuffButton" .. i])
-        end
-        for i = 1, DEBUFF_MAX_DISPLAY do
-            BS:StyleAuraButton(_G["DebuffButton" .. i])
-        end
-        for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-            button = _G["TempEnchant" .. i]
-            button.isTempEnchant = true
-            BS:StyleAuraButton(button)
-        end
-    end)
 end
 
 function BS:StyleAuraButton(button)
@@ -592,4 +575,25 @@ function BS:ActionBarButton_UpdateCount()
     end
 
     BS:UpdateActionButton(self)
+end
+
+function BS:BuffFrame_Update()
+    local button
+    for i = 1, BUFF_MAX_DISPLAY do
+        BS:StyleAuraButton(_G["BuffButton" .. i])
+    end
+    for i = 1, DEBUFF_MAX_DISPLAY do
+        BS:StyleAuraButton(_G["DebuffButton" .. i])
+    end
+    for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+        button = _G["TempEnchant" .. i]
+        button.isTempEnchant = true
+        BS:StyleAuraButton(button)
+    end
+end
+
+function BS:SetItemButtonQuality(quality, itemIDOrLink, suppressOverlays)
+    self.quality = quality
+    self.itemIDOrLink = itemIDOrLink
+    BS:StyleItemButton(self)
 end

@@ -253,13 +253,15 @@ function R:ApplyTexCoords(texture, texCoord)
     texture:SetTexCoord(unpack(texCoord))
     if not texture.hookedSetTexCoord then
         texture.hookedSetTexCoord = true
-        R:SecureHook(texture, "SetTexCoord", function(self, texCoord)
-            if not self.__texCoord or texCoord == self.__texCoord then
-                return
-            end
-            self:SetTexCoord(unpack(self.__texCoord))
-        end)
+        R:SecureHook(texture, "SetTexCoord", R.ResetTexCoord)
     end
+end
+
+function R:ResetTexCoord(texCoord)
+    if not self.__texCoord or texCoord == self.__texCoord then
+        return
+    end
+    self:SetTexCoord(unpack(self.__texCoord))
 end
 
 function R:ApplyTexture(texture, file)
@@ -270,13 +272,15 @@ function R:ApplyTexture(texture, file)
     texture:SetTexture(file)
     if not texture.hookedSetTexture then
         texture.hookedSetTexture = true
-        R:SecureHook(texture, "SetTexture", function(self, file)
-            if not self.__textureFile or file == self.__textureFile then
-                return
-            end
-            self:SetTexture(self.__textureFile)
-        end)
+        R:SecureHook(texture, "SetTexture", R.ResetTexture)
     end
+end
+
+function R:ResetTexture(file)
+    if not self.__textureFile or file == self.__textureFile then
+        return
+    end
+    self:SetTexture(self.__textureFile)
 end
 
 function R:ApplyNormalTexture(button, file)
@@ -287,13 +291,15 @@ function R:ApplyNormalTexture(button, file)
     button:SetNormalTexture(file)
     if not button.hookedSetNormalTexture then
         button.hookedSetNormalTexture = true
-        R:SecureHook(button, "SetNormalTexture", function(self, file)
-            if not self.__normalTextureFile or file == self.__normalTextureFile then
-                return
-            end
-            self:SetNormalTexture(self.__normalTextureFile)
-        end)
+        R:SecureHook(button, "SetNormalTexture", R.ResetNormalTexture)
     end
+end
+
+function R:ResetNormalTexture(file)
+    if not self.__normalTextureFile or file == self.__normalTextureFile then
+        return
+    end
+    self:SetNormalTexture(self.__normalTextureFile)
 end
 
 function R:ApplyPushedTexture(button, file)
@@ -304,13 +310,15 @@ function R:ApplyPushedTexture(button, file)
     button:SetPushedTexture(file)
     if not button.hookedSetPushedTexture then
         button.hookedSetPushedTexture = true
-        R:SecureHook(button, "SetPushedTexture", function(self, file)
-            if not self.__pushedTextureFile or file == self.__pushedTextureFile then
-                return
-            end
-            self:SetPushedTexture(self.__pushedTextureFile)
-        end)
+        R:SecureHook(button, "SetPushedTexture", R.ResetPushedTexture)
     end
+end
+
+function R:ResetPushedTexture(file)
+    if not self.__pushedTextureFile or file == self.__pushedTextureFile then
+        return
+    end
+    self:SetPushedTexture(self.__pushedTextureFile)
 end
 
 function R:ApplyHighlightTexture(button, file)
@@ -321,13 +329,15 @@ function R:ApplyHighlightTexture(button, file)
     button:SetHighlightTexture(file)
     if not button.hookedSetHighlightTexture then
         button.hookedSetHighlightTexture = true
-        R:SecureHook(button, "SetHighlightTexture", function(self, file)
-            if not self.__highlightTextureFile or file == self.__highlightTextureFile then
-                return
-            end
-            self:SetHighlightTexture(self.__highlightTextureFile)
-        end)
+        R:SecureHook(button, "SetHighlightTexture", R.ResetHighlightTexture)
     end
+end
+
+function R:ResetHighlightTexture(file)
+    if not self.__highlightTextureFile or file == self.__highlightTextureFile then
+        return
+    end
+    self:SetHighlightTexture(self.__highlightTextureFile)
 end
 
 function R:ApplyCheckedTexture(button, file)
@@ -338,13 +348,15 @@ function R:ApplyCheckedTexture(button, file)
     button:SetCheckedTexture(file)
     if not button.hookedSetCheckedTexture then
         button.hookedSetCheckedTexture = true
-        R:SecureHook(button, "SetCheckedTexture", function(self, file)
-            if not self.__checkedTextureFile or file == self.__checkedTextureFile then
-                return
-            end
-            self:SetCheckedTexture(self.__checkedTextureFile)
-        end)
+        R:SecureHook(button, "SetCheckedTexture", R.ResetCheckedTexture)
     end
+end
+
+function R:ResetCheckedTexture(file)
+    if not self.__checkedTextureFile or file == self.__checkedTextureFile then
+        return
+    end
+    self:SetCheckedTexture(self.__checkedTextureFile)
 end
 
 function R:ApplyVertexColor(texture, color)
@@ -362,13 +374,15 @@ function R:ApplyVertexColor(texture, color)
 
     if not texture.hookedSetVertexColor then
         texture.hookedSetVertexColor = true
-        R:SecureHook(texture, "SetVertexColor", function(self, r, g, b, a)
-            if not self.__vertexColor then
-                return
-            end
-            if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or ((a or 1) ~= (self.__vertexColor[4] or 1)) then
-                self:SetVertexColor(unpack(self.__vertexColor))
-            end
-        end)
+        R:SecureHook(texture, "SetVertexColor", R.ResetVertexColor)
+    end
+end
+
+function R:ResetVertexColor(r, g, b, a)
+    if not self.__vertexColor then
+        return
+    end
+    if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or ((a or 1) ~= (self.__vertexColor[4] or 1)) then
+        self:SetVertexColor(unpack(self.__vertexColor))
     end
 end

@@ -13,90 +13,99 @@ function AM:Initialize()
         return
     end
 
-    -- Auto stand/dismount
-    AM:RegisterEvent("UI_ERROR_MESSAGE", function(event, messageType, msg)
-        if R.config.db.profile.modules.automation.standDismount then
-            if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
-                DoEmote("stand")
+    AM:RegisterEvent("UI_ERROR_MESSAGE")
+    AM:RegisterEvent("LOOT_READY")
+    AM:RegisterEvent("MERCHANT_SHOW")
+    AM:RegisterEvent("MERCHANT_CLOSED")
+    AM:RegisterEvent("RESURRECT_REQUEST")
+    AM:RegisterEvent("CONFIRM_SUMMON")
+    AM:RegisterEvent("CONFIRM_LOOT_ROLL")
+    AM:RegisterEvent("LOOT_BIND_CONFIRM")
+    AM:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
+    AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
+end
+
+function AM:UI_ERROR_MESSAGE(msg)
+    if R.config.db.profile.modules.automation.standDismount then
+        if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
+            DoEmote("stand")
+            UIErrorsFrame:Clear()
+        elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg == ERR_TAXIPLAYERALREADYMOUNTED or msg ==
+            SPELL_FAILED_NOT_MOUNTED then
+            if IsMounted() then
+                Dismount()
                 UIErrorsFrame:Clear()
-            elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg == ERR_TAXIPLAYERALREADYMOUNTED or msg ==
-                SPELL_FAILED_NOT_MOUNTED then
-                if IsMounted() then
-                    Dismount()
-                    UIErrorsFrame:Clear()
-                end
             end
         end
-    end)
+    end
+end
 
-    -- Fast loot
-    AM:RegisterEvent("LOOT_READY", function()
-        if R.config.db.profile.modules.automation.fastLoot then
-            if GetTime() - fastLootDelay >= 0.3 then
+function AM:LOOT_READY()
+    if R.config.db.profile.modules.automation.fastLoot then
+        if GetTime() - fastLootDelay >= 0.3 then
+            fastLootDelay = GetTime()
+            if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
+                for i = GetNumLootItems(), 1, -1 do
+                    LootSlot(i)
+                end
                 fastLootDelay = GetTime()
-                if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
-                    for i = GetNumLootItems(), 1, -1 do
-                        LootSlot(i)
-                    end
-                    fastLootDelay = GetTime()
-                end
             end
         end
-    end)
+    end
+end
 
-    -- Vendor Grays
-    AM:RegisterEvent("MERCHANT_SHOW", function()
-        if R.config.db.profile.modules.automation.repair then
-            AM:Repair()
-        end
-        if R.config.db.profile.modules.automation.vendorGrays then
-            stopVendoring = false
-            totalVendorPrice = 0
-            wipe(vendorList)
-            AM:VendorGrays()
-        end
-    end)
-    AM:RegisterEvent("MERCHANT_CLOSED", function()
-        stopVendoring = true
-    end)
+function AM:MERCHANT_SHOW()
+    if R.config.db.profile.modules.automation.repair then
+        AM:Repair()
+    end
+    if R.config.db.profile.modules.automation.vendorGrays then
+        stopVendoring = false
+        totalVendorPrice = 0
+        wipe(vendorList)
+        AM:VendorGrays()
+    end
+end
 
-    AM:RegisterEvent("RESURRECT_REQUEST", function(unit)
-        if R.config.db.profile.modules.automation.acceptResurrection then
-            AM:AcceptResurrection(unit)
-        end
-    end)
+function AM:MERCHANT_CLOSED()
+    stopVendoring = true
+end
 
-    AM:RegisterEvent("CONFIRM_SUMMON", function()
-        if R.config.db.profile.modules.automation.acceptSummon then
-            AM:AcceptSummon()
-        end
-    end)
+function AM:RESURRECT_REQUEST()
+    if R.config.db.profile.modules.automation.acceptResurrection then
+        AM:AcceptResurrection(self)
+    end
+end
 
-    AM:RegisterEvent("CONFIRM_LOOT_ROLL", function(event, arg1, arg2)
-        if R.config.db.profile.modules.automation.disableLootRollConfirmation then
-            ConfirmLootRoll(arg1, arg2)
-            StaticPopup_Hide("CONFIRM_LOOT_ROLL")
-        end
-    end)
+function AM:CONFIRM_SUMMON()
+    if R.config.db.profile.modules.automation.acceptSummon then
+        AM:AcceptSummon()
+    end
+end
 
-    AM:RegisterEvent("LOOT_BIND_CONFIRM", function(event, arg1, arg2, ...)
-        if R.config.db.profile.modules.automation.disableLootBindConfirmation then
-            ConfirmLootSlot(arg1, arg2)
-            StaticPopup_Hide("LOOT_BIND", ...)
-        end
-    end)
+function AM:CONFIRM_LOOT_ROLL(arg1, arg2)
+    if R.config.db.profile.modules.automation.disableLootRollConfirmation then
+        ConfirmLootRoll(arg1, arg2)
+        StaticPopup_Hide("CONFIRM_LOOT_ROLL")
+    end
+end
 
-    AM:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL", function()
-        if R.config.db.profile.modules.automation.disableVendorRefundWarning then
-            SellCursorItem()
-        end
-    end)
+function AM:LOOT_BIND_CONFIRM(arg1, arg2, ...)
+    if R.config.db.profile.modules.automation.disableLootBindConfirmation then
+        ConfirmLootSlot(arg1, arg2)
+        StaticPopup_Hide("LOOT_BIND", ...)
+    end
+end
 
-    AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS", function(event, arg1)
-        if R.config.db.profile.modules.automation.disableMailRefundWarning then
-            RespondMailLockSendItem(arg1, true)
-        end
-    end)
+function AM:MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL()
+    if R.config.db.profile.modules.automation.disableVendorRefundWarning then
+        SellCursorItem()
+    end
+end
+
+function AM:MAIL_LOCK_SEND_ITEMS(arg1)
+    if R.config.db.profile.modules.automation.disableMailRefundWarning then
+        RespondMailLockSendItem(arg1, true)
+    end
 end
 
 function AM:Repair()

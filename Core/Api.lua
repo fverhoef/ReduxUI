@@ -1,50 +1,44 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
+function R:SetInside(anchor, xOffset, yOffset, anchor2)
     xOffset = xOffset or 6
     yOffset = yOffset or 6
-    anchor = anchor or obj:GetParent()
+    anchor = anchor or self:GetParent()
 
-    if obj:GetPoint() then
-        obj:ClearAllPoints()
+    if self:GetPoint() then
+        self:ClearAllPoints()
     end
 
-    obj:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
-    obj:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
+    self:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
+    self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
+function R:SetOutside(anchor, xOffset, yOffset, anchor2)
     xOffset = xOffset or 6
     yOffset = yOffset or 6
-    anchor = anchor or obj:GetParent()
+    anchor = anchor or self:GetParent()
 
-    if obj:GetPoint() then
-        obj:ClearAllPoints()
+    if self:GetPoint() then
+        self:ClearAllPoints()
     end
 
-    obj:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
-    obj:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
+    self:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
+    self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
 end
 
-local function Offset(frame, offsetX, offsetY)
-    if frame then
-        local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint()
-        if not frame.originalPoint then
-            frame.originalPoint = {
-                point = point,
-                relativeTo = relativeTo,
-                relativePoint = relativePoint,
-                xOfs = xOfs,
-                yOfs = yOfs
-            }
+function R:Offset(offsetX, offsetY)
+    if self then
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint()
+        if not self.originalPoint then
+            self.originalPoint = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, xOfs = xOfs, yOfs = yOfs}
         end
-        frame:SetPoint(frame.originalPoint.point, frame.originalPoint.relativeTo, frame.originalPoint.relativePoint, frame.originalPoint.xOfs + offsetX,
-                       frame.originalPoint.yOfs + offsetY)
+        self:SetPoint(self.originalPoint.point, self.originalPoint.relativeTo, self.originalPoint.relativePoint,
+                      self.originalPoint.xOfs + offsetX, self.originalPoint.yOfs + offsetY)
     end
 end
 
-local function CreateBorder(self, size, texture, color, left, right, top, bottom)
+function R:CreateBorder(size, texture, color, left, right, top, bottom)
     if self.Border then
         return
     end
@@ -109,7 +103,7 @@ local function CreateBorder(self, size, texture, color, left, right, top, bottom
     end
 end
 
-local function SetBorderPadding(self, left, right, top, bottom)
+function R:SetBorderPadding(left, right, top, bottom)
     if not self.Border then
         return
     end
@@ -125,7 +119,8 @@ local function SetBorderPadding(self, left, right, top, bottom)
         bottom = top or left
     end
 
-    if self.Border.padding[1] ~= left or self.Border.padding[2] ~= right or self.Border.padding[3] ~= top or self.Border.padding[4] ~= bottom then
+    if self.Border.padding[1] ~= left or self.Border.padding[2] ~= right or self.Border.padding[3] ~= top or
+        self.Border.padding[4] ~= bottom then
         self.Border.padding = {left, right, top, bottom}
 
         self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
@@ -135,7 +130,7 @@ local function SetBorderPadding(self, left, right, top, bottom)
     end
 end
 
-local function SetBorderColor(self, r, g, b, a)
+function R:SetBorderColor(r, g, b, a)
     if not self.Border then
         return
     end
@@ -145,7 +140,7 @@ local function SetBorderColor(self, r, g, b, a)
     end
 end
 
-local function SetBorderSize(self, size)
+function R:SetBorderSize(size)
     if not self.Border then
         return
     end
@@ -155,7 +150,7 @@ local function SetBorderSize(self, size)
     end
 end
 
-local function SetBorderTexture(self, texture)
+function R:SetBorderTexture(texture)
     if not self.Border then
         return
     end
@@ -165,37 +160,37 @@ local function SetBorderTexture(self, texture)
     end
 end
 
-local function CreateShadow(frame, size, edgeSize, pass, color)
-    if not pass and frame.Shadow then
+function R:CreateShadow(size, edgeSize, pass, color)
+    if not pass and self.Shadow then
         return
     end
 
     size = size or 5
     edgeSize = edgeSize or (size + 2)
-    color = color or {0,0,0,0.7}
+    color = color or {0, 0, 0, 0.7}
     if not color[4] then
         color[4] = 0.7
     end
 
-    local shadow = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
+    local shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
     shadow.size = size
     shadow.edgeSize = edgeSize
 
     shadow:SetFrameLevel(1)
-    shadow:SetFrameStrata(frame:GetFrameStrata())
-    shadow:SetOutside(frame, size, size)
+    shadow:SetFrameStrata(self:GetFrameStrata())
+    shadow:SetOutside(self, size, size)
     shadow:SetBackdrop({edgeFile = R.media.textures.backdrops.glow, edgeSize = edgeSize})
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(unpack(color))
 
     if not pass then
-        frame.Shadow = shadow
+        self.Shadow = shadow
     end
 
     return shadow
 end
 
-local function SetShadowPadding(self, left, right, top, bottom)
+function R:SetShadowPadding(left, right, top, bottom)
     if not self.Shadow then
         return
     end
@@ -215,8 +210,8 @@ local function SetShadowPadding(self, left, right, top, bottom)
     self.Shadow:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.Shadow.size + right, -self.Shadow.size - bottom)
 end
 
-local function SetShadowColor(frame, color)
-    if not frame.Shadow then
+function R:SetShadowColor(color)
+    if not self.Shadow then
         return
     end
 
@@ -224,46 +219,46 @@ local function SetShadowColor(frame, color)
         color[4] = 0.7
     end
 
-    frame.Shadow:SetBackdropBorderColor(unpack(color))
+    self.Shadow:SetBackdropBorderColor(unpack(color))
 end
 
 local function AddApi(object)
     local mt = getmetatable(object).__index
     if not object.SetInside then
-        mt.SetInside = SetInside
+        mt.SetInside = R.SetInside
     end
     if not object.SetOutside then
-        mt.SetOutside = SetOutside
+        mt.SetOutside = R.SetOutside
     end
     if not object.Offset then
-        mt.Offset = Offset
+        mt.Offset = R.Offset
     end
     if not object.CreateBackdrop then
-        mt.CreateBackdrop = CreateBackdrop
+        mt.CreateBackdrop = R.CreateBackdrop
     end
     if not object.CreateBorder then
-        mt.CreateBorder = CreateBorder
+        mt.CreateBorder = R.CreateBorder
     end
     if not object.SetBorderPadding then
-        mt.SetBorderPadding = SetBorderPadding
+        mt.SetBorderPadding = R.SetBorderPadding
     end
     if not object.SetBorderColor then
-        mt.SetBorderColor = SetBorderColor
+        mt.SetBorderColor = R.SetBorderColor
     end
     if not object.SetBorderSize then
-        mt.SetBorderSize = SetBorderSize
+        mt.SetBorderSize = R.SetBorderSize
     end
     if not object.SetBorderTexture then
-        mt.SetBorderTexture = SetBorderTexture
+        mt.SetBorderTexture = R.SetBorderTexture
     end
     if not object.CreateShadow then
-        mt.CreateShadow = CreateShadow
+        mt.CreateShadow = R.CreateShadow
     end
     if not object.SetShadowPadding then
-        mt.SetShadowPadding = SetShadowPadding
+        mt.SetShadowPadding = R.SetShadowPadding
     end
     if not object.SetShadowColor then
-        mt.SetShadowColor = SetShadowColor
+        mt.SetShadowColor = R.SetShadowColor
     end
 end
 

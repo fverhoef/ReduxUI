@@ -64,32 +64,21 @@ function TT:Initialize()
         end
     end
 
-    TT:SecureHook(GameTooltip, "SetUnitBuff", function(tooltip, ...)
-        TT:AddSpellID(tooltip, select(10, UnitBuff(...)))
-    end)
+    TT:SecureHook(GameTooltip, "SetUnitBuff", TT.SetUnitBuff)
+    TT:SecureHook(GameTooltip, "SetUnitDebuff", TT.SetUnitDebuff)
+    TT:SecureHook(GameTooltip, "SetUnitAura", TT.SetUnitAura)
+    TT:SecureHook("SetItemRef", TT.SetItemRef)
 
-    TT:SecureHook(GameTooltip, "SetUnitDebuff", function(tooltip, ...)
-        TT:AddSpellID(tooltip, select(10, UnitDebuff(...)))
-    end)
+    GameTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
+    GameTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
+    
+    ItemRefTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
+    ItemRefTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
 
-    TT:SecureHook(GameTooltip, "SetUnitAura", function(tooltip, ...)
-        TT:AddSpellID(tooltip, select(10, UnitAura(...)))
-    end)
+    GameTooltip:HookScript("OnShow", TT.OnShow)
 
-    TT:SecureHook("SetItemRef", function(link)
-        local type, value = link:match("(%a+):(.+)")
-        if type == "spell" then
-            TT:AddSpellID(ItemRefTooltip, value:match("([^:]+)"))
-        end
-    end)
-
-    TT:HookSetItem(GameTooltip)
-    TT:HookSetItem(ItemRefTooltip)
-
-    TT:HookSetSpell(GameTooltip)
-    TT:HookSetSpell(ItemRefTooltip)
-
-    TT:HookOnShow(GameTooltip)
+    TT.SetBackdropStyle(GameTooltip)
+    TT.SetBackdropStyle(ItemRefTooltip)
 end
 
 function TT:GetTarget(unit)
@@ -102,6 +91,26 @@ function TT:GetTarget(unit)
         return ("%s%s|r"):format(TT.factionColors[UnitReaction(unit, "player")], UnitName(unit))
     else
         return ("|cffffffff%s|r"):format(UnitName(unit))
+    end
+end
+
+function TT:SetUnitBuff(...)
+    TT:AddSpellID(self, select(10, UnitBuff(...)))
+end
+
+function TT:SetUnitDebuff(...)
+    TT:AddSpellID(self, select(10, UnitDebuff(...)))
+end
+
+function TT:SetUnitAura(...)
+    TT:AddSpellID(self, select(10, UnitAura(...)))
+end
+
+function TT:SetItemRef(...)
+    local link = self
+    local type, value = link:match("(%a+):(.+)")
+    if type == "spell" then
+        TT:AddSpellID(ItemRefTooltip, value:match("([^:]+)"))
     end
 end
 
@@ -202,7 +211,69 @@ function TT:OnTooltipSetUnit()
 
     -- target line
     if (UnitExists(unit .. "target")) then
-        GameTooltip:AddDoubleLine(("%s%s|r"):format(R:Hex(R.config.db.profile.modules.tooltips.colors.target), "Target"), TT:GetTarget(unit .. "target") or "Unknown")
+        GameTooltip:AddDoubleLine(("%s%s|r"):format(R:Hex(R.config.db.profile.modules.tooltips.colors.target), "Target"),
+                                  TT:GetTarget(unit .. "target") or "Unknown")
+    end
+end
+
+function TT:OnTooltipSetItem()
+    local itemName, link = self:GetItem()
+    if link then
+        local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc,
+              itemIcon, sellPrice, classID = GetItemInfo(link)
+        TT:AddIcon(self, itemIcon)
+        if itemEquipLoc and itemEquipLoc ~= "" then
+            TT:AddItemLevel(self, itemLevel)
+        end
+        TT:AddVendorPrice(self, sellPrice, classID)
+
+        local itemId = R:GetItemIdFromLink(itemLink)
+        if itemId then
+            TT:AddItemCount(self, itemId)
+            TT:AddItemID(self, itemId)
+        end
+
+        self:Show()
+    end
+end
+
+function TT:OnTooltipSetSpell()
+    local spellName, spellId = self:GetSpell()
+    if spellName then
+        local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellId)
+
+        TT:AddIcon(self, icon)
+        TT:AddSpellID(self, spellId)
+
+        self:Show()
+    end
+end
+
+function TT:OnShow()
+    local itemName, link = self:GetItem()
+    local spellName, spellId = self:GetSpell()
+    if not link and not spellId then
+        local text = _G[self:GetName() .. "TextLeft1"]:GetText()
+        if text then
+            -- TODO: this only works if the player had the item in their inventory at some point; consider creating a database with icons?
+            local itemName, _, _, _, _, itemType, itemSubType, _, _, itemIcon = GetItemInfo(text)
+            if itemIcon then
+                -- TT:AddIcon(self, itemIcon)
+            end
+        end
+    end
+
+    if R.config.db.profile.modules.tooltips.colorBorderByRarity then
+        local color = R.config.db.profile.borders.color
+        local texture = R.media.textures.borders.beautycase
+        if link then
+            local _, _, itemRarity = GetItemInfo(link)
+
+            if itemRarity and itemRarity > 1 then
+                color = {GetItemQualityColor(itemRarity)}
+            end
+        end
+        self:SetBorderColor(unpack(color))
     end
 end
 
@@ -274,10 +345,13 @@ function TT:SetDefaultAnchor(owner)
     local parent = owner:GetParent()
     if parent then
         if parent == MultiBarBottomRight or parent == MultiBarRight or parent == MultiBarLeft or
-            (AB and (parent == AB.Bars.MultiBarBottomRight or parent == AB.Bars.MultiBarRight or parent == AB.Bars.MultiBarLeft or parent == AB.Bars.MicroButtonAndBagsBar)) then
+            (AB and
+                (parent == AB.Bars.MultiBarBottomRight or parent == AB.Bars.MultiBarRight or parent == AB.Bars.MultiBarLeft or
+                    parent == AB.Bars.MicroButtonAndBagsBar)) then
             anchor = "ANCHOR_LEFT"
-        elseif parent == MainMenuBar or parent == MultiBarBottomLeft or parent == StanceBarFrame or PetActionBarFrame or
-            (AB and (parent == AB.Bars.MainMenuBar or parent == AB.Bars.MultiBarBottomLeft or parent == AB.Bars.StanceBar or AB.Bars.PetActionBar or AB.Bars.VehicleExitBar)) then
+        elseif parent == MainMenuBar or parent == MultiBarBottomLeft or parent == StanceBarFrame or PetActionBarFrame or (AB and
+            (parent == AB.Bars.MainMenuBar or parent == AB.Bars.MultiBarBottomLeft or parent == AB.Bars.StanceBar or
+                AB.Bars.PetActionBar or AB.Bars.VehicleExitBar)) then
             anchor = "ANCHOR_RIGHT"
         end
     end
@@ -312,8 +386,8 @@ function TT:InsertLine(tooltip, position, line)
     end
 
     if line.right then
-        tooltip:AddDoubleLine(line.left.text, line.right.text, unpack(line.left.color or {1, 1, 1}), unpack(
-                                  line.right.color or {1, 1, 1}))
+        tooltip:AddDoubleLine(line.left.text, line.right.text, unpack(line.left.color or {1, 1, 1}),
+                              unpack(line.right.color or {1, 1, 1}))
     else
         tooltip:AddLine(line.left.text, unpack(line.left.color))
     end
@@ -416,72 +490,6 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
     end
 end
 
-function TT:HookSetItem(tip)
-    tip:HookScript("OnTooltipSetItem", function(tooltip)
-        local itemName, link = tooltip:GetItem()
-        if link then
-            local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, sellPrice, classID = GetItemInfo(link)
-            TT:AddIcon(tooltip, itemIcon)
-            if itemEquipLoc and itemEquipLoc ~= "" then
-                TT:AddItemLevel(tooltip, itemLevel)
-            end
-            TT:AddVendorPrice(tooltip, sellPrice, classID)
-
-            local itemId = R:GetItemIdFromLink(itemLink)
-            if itemId then
-                TT:AddItemCount(tooltip, itemId)
-                TT:AddItemID(tooltip, itemId)
-            end
-
-            tooltip:Show()
-        end
-    end)
-end
-
-function TT:HookSetSpell(tip)
-    tip:HookScript("OnTooltipSetSpell", function(tooltip)
-        local spellName, spellId = tooltip:GetSpell()
-        if spellName then
-            local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellId)
-
-            TT:AddIcon(tooltip, icon)
-            TT:AddSpellID(tooltip, spellId)
-
-            tooltip:Show()
-        end
-    end)
-end
-
-function TT:HookOnShow(tip)
-    tip:HookScript("OnShow", function(tooltip)
-        local itemName, link = tooltip:GetItem()
-        local spellName, spellId = tooltip:GetSpell()
-        if not link and not spellId then
-            local text = _G[tooltip:GetName() .. "TextLeft1"]:GetText()
-            if text then
-                -- TODO: this only works if the player had the item in their inventory at some point; consider creating a database with icons?
-                local itemName, _, _, _, _, itemType, itemSubType, _, _, itemIcon = GetItemInfo(text)
-                if itemIcon then
-                    -- TT:AddIcon(tooltip, itemIcon)
-                end
-            end
-        end
-
-        if R.config.db.profile.modules.tooltips.colorBorderByRarity then
-            local color = R.config.db.profile.borders.color
-            local texture = R.media.textures.borders.beautycase
-            if link then
-                local _, _, itemRarity = GetItemInfo(link)
-
-                if itemRarity and itemRarity > 1 then
-                    color = {GetItemQualityColor(itemRarity)}
-                end
-            end
-            tooltip:SetBorderColor(unpack(color))
-        end
-    end)
-end
-
 function TT:UpdateScale()
     local tooltips = {
         GameTooltip,
@@ -506,7 +514,8 @@ function TT:UpdateScale()
 end
 
 function TT:UpdateFonts()
-    GameTooltipHeaderText:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.headerFontSize, "NONE")
+    GameTooltipHeaderText:SetFont(R.config.db.profile.modules.tooltips.fontFamily,
+                                  R.config.db.profile.modules.tooltips.headerFontSize, "NONE")
     GameTooltipHeaderText:SetShadowOffset(1, -2)
     GameTooltipHeaderText:SetShadowColor(0, 0, 0, 0.75)
 
@@ -514,10 +523,12 @@ function TT:UpdateFonts()
     GameTooltipText:SetShadowOffset(1, -2)
     GameTooltipText:SetShadowColor(0, 0, 0, 0.75)
 
-    Tooltip_Small:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.smallFontSize, "NONE")
+    Tooltip_Small:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.smallFontSize,
+                          "NONE")
     Tooltip_Small:SetShadowOffset(1, -2)
     Tooltip_Small:SetShadowColor(0, 0, 0, 0.75)
 
-    GameTooltipStatusBar.text:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.healthFontSize, "OUTLINE")
+    GameTooltipStatusBar.text:SetFont(R.config.db.profile.modules.tooltips.fontFamily,
+                                      R.config.db.profile.modules.tooltips.healthFontSize, "OUTLINE")
 end
 

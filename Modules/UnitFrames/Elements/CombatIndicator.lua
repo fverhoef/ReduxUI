@@ -17,7 +17,7 @@ UF.CreateCombatIndicator = function(self)
     self.CombatIndicator.Glow:SetVertexColor(1.0, 0.0, 0.0)
     self.CombatIndicator.Glow:SetBlendMode("ADD")
     self.CombatIndicator.Glow:SetSize(32, 32)
-    self.CombatIndicator.Glow:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
+    self.CombatIndicator.Glow:SetPoint("TOPLEFT", self.CombatIndicator, 1, 1)
     self.CombatIndicator.Glow:SetAlpha(0)
     self.CombatIndicator.Glow:Hide()
 

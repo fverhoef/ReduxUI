@@ -75,7 +75,7 @@ function UF:CreatePlayer()
         end
     end
     UF.CreateResurrectIndicator(self)
-    UF.CreateStatusFlash(self)
+    -- UF.CreateStatusFlash(self)
     UF.CreateThreatIndicator(self)
     UF.CreateTab(self)
 
@@ -112,7 +112,9 @@ function UF:UpdatePlayer()
                 self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
                 self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
                 self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame_LargerHealth)
-                self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus_LargerHealth)
+                if self.StatusFlash then
+                    self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus_LargerHealth)
+                end
             else
                 self.Health:SetSize(119, 12)
                 self.Health:SetPoint("TOPLEFT", self.Texture, 107, -41)
@@ -120,7 +122,9 @@ function UF:UpdatePlayer()
                 self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
                 self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
                 self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame)
-                self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus)
+                if self.StatusFlash then
+                    self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus)
+                end
             end
 
             self.Texture:ClearAllPoints()

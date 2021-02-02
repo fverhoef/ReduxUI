@@ -306,56 +306,41 @@ function AB:CreateMicroButtonAndBagsBar()
         MainMenuMicroButton.PerformanceBar.Texture:SetTexture(R.media.textures.actionBars.performanceBar)
     end
 
-    AB:SecureHook("MicroButton_OnEnter", function(self)
-        if self == MainMenuMicroButton then
-            AB:AddSystemInfo(GameTooltip)
-        end
-    end)
-
-    MainMenuMicroButton.lastUpdate = 0
-    MainMenuMicroButton:HookScript("OnUpdate", function(self, elapsed)
-        if (MainMenuMicroButton.lastUpdate > 0) then
-            MainMenuMicroButton.lastUpdate = MainMenuMicroButton.lastUpdate - elapsed
-        else
-            MainMenuMicroButton.lastUpdate = MainMenuMicroButton.customUpdateInterval or PERFORMANCEBAR_UPDATE_INTERVAL
-
-            if R.isClassic then
-                R.SystemInfo:Update(false)
-                if self.hover then
-                    MicroButton_OnEnter(self)
-                end
-
-                local latencyColor
-                local latency = R.SystemInfo.homePing > R.SystemInfo.worldPing and R.SystemInfo.homePing or R.SystemInfo.worldPing
-                if latency > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyTreshold then
-                    latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.highLatencyColor
-                elseif latency > R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyTreshold then
-                    latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyColor
-                else
-                    latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyColor
-                end
-
-                MainMenuMicroButton.PerformanceBar.Texture:SetVertexColor(unpack(latencyColor))
-            end
-        end
-
-        if IsShiftKeyDown() then
-            if not MainMenuMicroButton.isShiftKeyDown then
-                MainMenuMicroButton.updateInterval = 0
-                MainMenuMicroButton.isShiftKeyDown = true
-                MainMenuMicroButton.customUpdateInterval = 1
-            end
-        elseif MainMenuMicroButton.isShiftKeyDown then
-            MainMenuMicroButton.updateInterval = 0
-            MainMenuMicroButton.isShiftKeyDown = false
-        end
-
-        if not IsShiftKeyDown() then
-            MainMenuMicroButton.customUpdateInterval = nil
-        end
-    end)
+    AB:SecureHook("MicroButton_OnEnter", AB.MicroButton_OnEnter)
+    AB:MainMenuMicroButton_Update()
 
     return frame
+end
+
+function AB:MicroButton_OnEnter()
+    if self == MainMenuMicroButton then
+        AB:AddSystemInfo(GameTooltip)
+    end
+end
+
+function AB:MainMenuMicroButton_Update()
+    if R.isClassic then
+        if MainMenuMicroButton.hover then
+            MicroButton_OnEnter(MainMenuMicroButton)
+        else
+            R.SystemInfo:Update(false)
+        end
+
+        local latencyColor
+        local latency = R.SystemInfo.homePing > R.SystemInfo.worldPing and R.SystemInfo.homePing or R.SystemInfo.worldPing
+        if latency > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyTreshold then
+            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.highLatencyColor
+        elseif latency > R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyTreshold then
+            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyColor
+        else
+            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyColor
+        end
+
+        MainMenuMicroButton.PerformanceBar.Texture:SetVertexColor(unpack(latencyColor))
+    end
+
+    AB:ScheduleTimer("MainMenuMicroButton_Update",
+                     (MainMenuMicroButton.hover and IsShiftKeyDown() and 1) or PERFORMANCEBAR_UPDATE_INTERVAL)
 end
 
 function AB:CreateMainMenuBar()
@@ -580,8 +565,10 @@ function AB:UpdateMainMenuBarTextures()
         AB.bars.MainMenuBar.TopEndCap:SetHorizTile(true)
         AB.bars.MainMenuBar.TopEndCap:SetHeight(16)
         AB.bars.MainMenuBar.TopEndCap:SetWidth(AB.bars.MainMenuBar:GetWidth())
-        AB.bars.MainMenuBar.TopEndCap:SetPoint("TOPLEFT", AB.bars.MainMenuBar.LeftEndCap, "TOPRIGHT", -30, (isExpBarShown and isRepBarShown and -25) or -38)
-        AB.bars.MainMenuBar.TopEndCap:SetPoint("TOPRIGHT", AB.bars.MainMenuBar.RightEndCap, "TOPLEFT", 30, (isExpBarShown and isRepBarShown and -25) or -38)
+        AB.bars.MainMenuBar.TopEndCap:SetPoint("TOPLEFT", AB.bars.MainMenuBar.LeftEndCap, "TOPRIGHT", -30,
+                                               (isExpBarShown and isRepBarShown and -25) or -38)
+        AB.bars.MainMenuBar.TopEndCap:SetPoint("TOPRIGHT", AB.bars.MainMenuBar.RightEndCap, "TOPLEFT", 30,
+                                               (isExpBarShown and isRepBarShown and -25) or -38)
         AB.bars.MainMenuBar.TopEndCap:SetDrawLayer("BACKGROUND", 0)
 
         AB.bars.MainMenuBar.LeftEndCap:SetTexture(texture)
@@ -1083,7 +1070,8 @@ function AB:AddSystemInfo(tooltip)
         latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyColor
     end
 
-    tooltip:AddDoubleLine("Latency:", R.SystemInfo.homePing, labelColor[1], labelColor[2], labelColor[3], latencyColor[1], latencyColor[2], latencyColor[3])
+    tooltip:AddDoubleLine("Latency:", R.SystemInfo.homePing, labelColor[1], labelColor[2], labelColor[3], latencyColor[1],
+                          latencyColor[2], latencyColor[3])
 
     local fpsColor
     if R.SystemInfo.framerate > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumFpsTreshold then
@@ -1094,28 +1082,30 @@ function AB:AddSystemInfo(tooltip)
         fpsColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowFpsColor
     end
 
-    tooltip:AddDoubleLine("FPS:", R.SystemInfo.framerate, labelColor[1], labelColor[2], labelColor[3], fpsColor[1], fpsColor[2], fpsColor[3])
+    tooltip:AddDoubleLine("FPS:", R.SystemInfo.framerate, labelColor[1], labelColor[2], labelColor[3], fpsColor[1], fpsColor[2],
+                          fpsColor[3])
 
     if R.SystemInfo.useIPv6 then
-        tooltip:AddDoubleLine("Home Protocol:", ipTypes[R.SystemInfo.ipTypeHome or 0] or UNKNOWN, labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2],
-                              valueColor[3])
-        tooltip:AddDoubleLine("World Protocol:", ipTypes[R.SystemInfo.ipTypeWorld or 0] or UNKNOWN, labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2],
-                              valueColor[3])
+        tooltip:AddDoubleLine("Home Protocol:", ipTypes[R.SystemInfo.ipTypeHome or 0] or UNKNOWN, labelColor[1], labelColor[2],
+                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine("World Protocol:", ipTypes[R.SystemInfo.ipTypeWorld or 0] or UNKNOWN, labelColor[1], labelColor[2],
+                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     end
 
     if R.SystemInfo.bandwidth ~= 0 then
-        tooltip:AddDoubleLine("Bandwidth", format(bandwidthString, R.SystemInfo.bandwidth), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
-        tooltip:AddDoubleLine("Download", format(percentageString, GetDownloadedPercentage() * 100), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2],
-                              valueColor[3])
+        tooltip:AddDoubleLine("Bandwidth", format(bandwidthString, R.SystemInfo.bandwidth), labelColor[1], labelColor[2],
+                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine("Download", format(percentageString, GetDownloadedPercentage() * 100), labelColor[1], labelColor[2],
+                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
         tooltip:AddLine(" ")
     end
 
-    tooltip:AddDoubleLine("Total Memory:", R.SystemInfo:FormatMemory(R.SystemInfo.totalMemory), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2],
-                          valueColor[3])
+    tooltip:AddDoubleLine("Total Memory:", R.SystemInfo:FormatMemory(R.SystemInfo.totalMemory), labelColor[1], labelColor[2],
+                          labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     local totalCPU
     if R.SystemInfo.cpuProfiling then
-        tooltip:AddDoubleLine("Total CPU:", format(homeLatencyString, R.SystemInfo.totalCPU), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2],
-                              valueColor[3])
+        tooltip:AddDoubleLine("Total CPU:", format(homeLatencyString, R.SystemInfo.totalCPU), labelColor[1], labelColor[2],
+                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     end
 
     tooltip:AddLine(" ")
@@ -1139,10 +1129,11 @@ function AB:AddSystemInfo(tooltip)
                     end
                 end
                 if mem then
-                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, cpu[3], R.SystemInfo:FormatMemory(mem)), labelColor[1], labelColor[2], labelColor[3], red, green + .5,
-                                          0)
+                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, cpu[3], R.SystemInfo:FormatMemory(mem)),
+                                          labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
                 else
-                    tooltip:AddDoubleLine(cpu[2], format(cpuString, cpu[3]), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
+                    tooltip:AddDoubleLine(cpu[2], format(cpuString, cpu[3]), labelColor[1], labelColor[2], labelColor[3], red,
+                                          green + .5, 0)
                 end
             end
         end
@@ -1157,7 +1148,8 @@ function AB:AddSystemInfo(tooltip)
             if ele and IsAddOnLoaded(ele[1]) then
                 local red = ele[3] / R.SystemInfo.totalMemory
                 local green = 1 - red
-                tooltip:AddDoubleLine(ele[2], R.SystemInfo:FormatMemory(ele[3]), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
+                tooltip:AddDoubleLine(ele[2], R.SystemInfo:FormatMemory(ele[3]), labelColor[1], labelColor[2], labelColor[3], red,
+                                      green + .5, 0)
             end
         end
     end

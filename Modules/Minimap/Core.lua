@@ -231,14 +231,7 @@ function MM:StyleMinimap()
 
     -- zoom
     Minimap:EnableMouseWheel()
-    local function Zoom(self, direction)
-        if (direction > 0) then
-            Minimap_ZoomIn()
-        else
-            Minimap_ZoomOut()
-        end
-    end
-    Minimap:SetScript("OnMouseWheel", Zoom)
+    Minimap:SetScript("OnMouseWheel", MM.Minimap_OnMouseWheel)
 
     -- hide regions
     MinimapBorder:Hide()
@@ -332,25 +325,9 @@ function MM:StyleMinimap()
     Minimap.InformationFrame.ButtonFrameToggle:SetSize(16, 16)
     Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -5, 4)
     Minimap.InformationFrame.ButtonFrameToggle:SetChecked(not R.config.defaults.profile.modules.minimap.buttonFrame.collapsed)
-    Minimap.InformationFrame.ButtonFrameToggle.UpdateTooltip = function()
-        GameTooltip:SetOwner(Minimap.InformationFrame.ButtonFrameToggle, "ANCHOR_TOPLEFT")
-        GameTooltip:ClearLines()
-        GameTooltip:AddLine("Minimap", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-        if Minimap.InformationFrame.ButtonFrameToggle:GetChecked() then
-            GameTooltip:AddLine("Hide minimap buttons", 1, 1, 1)
-        else
-            GameTooltip:AddLine("Show minimap buttons", 1, 1, 1)
-        end
-        GameTooltip:Show()
-    end
-    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnEnter", Minimap.InformationFrame.ButtonFrameToggle.UpdateTooltip)
-    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnClick", function()
-        Minimap.InformationFrame.ButtonFrameToggle.UpdateTooltip()
-        MM:ToggleButtonFrame()
-    end)
+    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnEnter", MM.ButtonFrameToggle_OnEnter)
+    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnLeave", MM.ButtonFrameToggle_OnLeave)
+    Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnClick", MM.ButtonFrameToggle_OnClick)
 
     -- button frame
     Minimap.ButtonFrame = CreateFrame("Frame", "MinimapButtonFrame", UIParent)
@@ -370,6 +347,43 @@ function MM:StyleMinimap()
         R:CreateFrameFader(Minimap.ButtonFrame, R.config.defaults.profile.modules.minimap.fader)
     end
 
+    MM:ToggleButtonFrame()
+end
+
+function MM:Minimap_OnMouseWheel(direction)
+    if (direction > 0) then
+        Minimap_ZoomIn()
+    else
+        Minimap_ZoomOut()
+    end
+end
+
+function MM:ButtonFrameToggle_UpdateTooltip()
+    if not Minimap.InformationFrame.ButtonFrameToggle then
+        return
+    end
+
+    GameTooltip:SetOwner(Minimap.InformationFrame.ButtonFrameToggle, "ANCHOR_TOPLEFT")
+    GameTooltip:ClearLines()
+    GameTooltip:AddLine("Minimap", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+    if Minimap.InformationFrame.ButtonFrameToggle:GetChecked() then
+        GameTooltip:AddLine("Hide minimap buttons", 1, 1, 1)
+    else
+        GameTooltip:AddLine("Show minimap buttons", 1, 1, 1)
+    end
+    GameTooltip:Show()
+end
+
+function MM:ButtonFrameToggle_OnEnter()
+    MM:ButtonFrameToggle_UpdateTooltip()
+end
+
+function MM:ButtonFrameToggle_OnLeave()
+    GameTooltip:Hide()
+end
+
+function MM:ButtonFrameToggle_OnClick()
+    MM:ButtonFrameToggle_UpdateTooltip()
     MM:ToggleButtonFrame()
 end
 

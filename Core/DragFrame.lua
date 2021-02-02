@@ -2,55 +2,6 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 R.dragFrames = {}
 
-local function OnDragStart(self, button)
-    if IsShiftKeyDown() then
-        if button == "LeftButton" then
-            self.frame:StartMoving()
-        end
-        if button == "RightButton" then
-            self.frame:StartSizing()
-        end
-    end
-end
-
-local function OnDragStop(self)
-    self.frame:StopMovingOrSizing()
-    if self.frame.cfg and self.frame.cfg.point then
-        local _, _, _, x, y = self.frame:GetPoint()
-        self.frame.cfg.point[1] = "CENTER"
-        self.frame.cfg.point[2] = "UIParent"
-        self.frame.cfg.point[3] = "CENTER"
-        self.frame.cfg.point[4] = x
-        self.frame.cfg.point[5] = y
-    end
-end
-
-local function OnEnter(self)
-    GameTooltip:SetOwner(self, "ANCHOR_TOP")
-    GameTooltip:AddLine(self.frame:GetName(), 0, 1, 0.5, 1, 1, 1)
-    GameTooltip:AddLine("Hold SHIFT+LeftButton to drag!", 1, 1, 1, 1, 1, 1)
-    if self.frame.__resizable then
-        GameTooltip:AddLine("Hold SHIFT+RightButton to resize!", 1, 1, 1, 1, 1, 1)
-    end
-    GameTooltip:Show()
-end
-
-local function OnLeave(self)
-    GameTooltip:Hide()
-end
-
-local function OnShow(self)
-    if self.frame.fader then
-        R:StartFadeIn(dragFrame.frame)
-    end
-end
-
-local function OnHide(self)
-    if self.frame.fader then
-        R:StartFadeOut(dragFrame.frame)
-    end
-end
-
 function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
     if not frame then
         return
@@ -75,12 +26,12 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
     dragFrame:EnableMouse(true)
     dragFrame:SetMovable(true)
     dragFrame:RegisterForDrag("LeftButton")
-    dragFrame:SetScript("OnDragStart", OnDragStart)
-    dragFrame:SetScript("OnDragStop", OnDragStop)
-    dragFrame:SetScript("OnEnter", OnEnter)
-    dragFrame:SetScript("OnLeave", OnLeave)
-    dragFrame:SetScript("OnShow", OnShow)
-    dragFrame:SetScript("OnHide", OnHide)
+    dragFrame:SetScript("OnDragStart", R.DragFrame_OnDragStart)
+    dragFrame:SetScript("OnDragStop", R.DragFrame_OnDragStop)
+    dragFrame:SetScript("OnEnter", R.DragFrame_OnEnter)
+    dragFrame:SetScript("OnLeave", R.DragFrame_OnLeave)
+    dragFrame:SetScript("OnShow", R.DragFrame_OnShow)
+    dragFrame:SetScript("OnHide", R.DragFrame_OnHide)
     dragFrame:Hide()
 
     -- overlay texture
@@ -105,6 +56,55 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
         frame:SetResizable(true)
         frame.__resizable = true
         frame.DragFrame:RegisterForDrag("LeftButton", "RightButton")
+    end
+end
+
+function R:DragFrame_OnDragStart(button)
+    if IsShiftKeyDown() then
+        if button == "LeftButton" then
+            self.frame:StartMoving()
+        end
+        if button == "RightButton" then
+            self.frame:StartSizing()
+        end
+    end
+end
+
+function R:DragFrame_OnDragStop()
+    self.frame:StopMovingOrSizing()
+    if self.frame.cfg and self.frame.cfg.point then
+        local _, _, _, x, y = self.frame:GetPoint()
+        self.frame.cfg.point[1] = "CENTER"
+        self.frame.cfg.point[2] = "UIParent"
+        self.frame.cfg.point[3] = "CENTER"
+        self.frame.cfg.point[4] = x
+        self.frame.cfg.point[5] = y
+    end
+end
+
+function R:DragFrame_OnEnter()
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    GameTooltip:AddLine(self.frame:GetName(), 0, 1, 0.5, 1, 1, 1)
+    GameTooltip:AddLine("Hold SHIFT+LeftButton to drag!", 1, 1, 1, 1, 1, 1)
+    if self.frame.__resizable then
+        GameTooltip:AddLine("Hold SHIFT+RightButton to resize!", 1, 1, 1, 1, 1, 1)
+    end
+    GameTooltip:Show()
+end
+
+function R:DragFrame_OnLeave()
+    GameTooltip:Hide()
+end
+
+function R:DragFrame_OnShow()
+    if self.frame.fader then
+        R:StartFadeIn(dragFrame.frame)
+    end
+end
+
+function R:DragFrame_OnHide()
+    if self.frame.fader then
+        R:StartFadeOut(dragFrame.frame)
     end
 end
 

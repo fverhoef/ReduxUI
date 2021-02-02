@@ -31,7 +31,8 @@ end
 function B:OnEvent(...)
     local event = self
     if event == "ITEM_LOCK_CHANGED" then
-        B:UpdateLocked()
+        local slotIndex = ...
+        B:UpdateLocked(self, slotIndex)
     elseif event == "BANKFRAME_OPENED" then
         B:ShowBank()
     elseif event == "BANKFRAME_CLOSED" then
@@ -117,75 +118,85 @@ function B:CreateBagSlotButton(bagID, parent)
 
     button:RegisterForDrag("LeftButton")
     button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    button:SetScript("OnDragStart", function()
-        if button.bagID ~= BACKPACK_CONTAINER and button.bagID ~= BANK_CONTAINER and button.bagID ~= KEYRING_CONTAINER then
-            PickupBagFromSlot(button.slotID)
-        end
-    end)
-    button:SetScript("OnReceiveDrag", function()
-        if CursorHasItem() then
-            if button.bagID == BACKPACK_CONTAINER then
-                PutItemInBackpack()
-            elseif not button.purchaseCost then
-                PutItemInBag(button.slotID)
-            end
-        end
-        B:UpdateBagSlotButton(button)
-    end)
-    button:SetScript("OnClick", function()
-        if not CursorHasItem() and button.purchaseCost then
-            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
-            BankFrame.nextSlotCost = button.purchaseCost
-            StaticPopup_Show("CONFIRM_BUY_BANK_SLOT")
-        else
-            local bag = B:FindBag(bagID)
-            bag.Hidden = not bag.Hidden
-            button:SetChecked(not bag.Hidden)
-        end
-        B:UpdateBagSlotButton(button)
-        B:UpdateItemButtons(parent)
-    end)
-    button:SetScript("OnEnter", function()
-        B:UpdateBagSlotButton(button)
-        B:HighlightBagButtons(parent, button.bagID)
-
-        GameTooltip:SetOwner(button, "ANCHOR_LEFT")
-        if button.bagID == BACKPACK_CONTAINER then
-            GameTooltip:SetText(BACKPACK_TOOLTIP)
-        elseif button.bagID == BANK_CONTAINER then
-            GameTooltip:SetText(BANK_BAG)
-        elseif button.bagID == KEYRING_CONTAINER then
-            GameTooltip:SetText(KEYRING)
-        else
-            local hasItem = GameTooltip:SetInventoryItem("player", button.slotID)
-            if not hasItem then
-                if button.purchaseCost then
-                    GameTooltip:ClearLines()
-                    GameTooltip:AddLine(BANK_BAG_PURCHASE)
-                    GameTooltip:AddDoubleLine(COSTS_LABEL, GetCoinTextureString(button.purchaseCost))
-                elseif button.isBank then
-                    if button.bagID > GetNumBankSlots() + 4 then
-                        GameTooltip:SetText(BANK_BAG_PURCHASE)
-                    else
-                        GameTooltip:SetText(BANK_BAG)
-                    end
-                else
-                    GameTooltip:SetText(BAGSLOT)
-                end
-            end
-        end
-        GameTooltip:Show()
-    end)
-    button:SetScript("OnLeave", function()
-        B:UnhighlightBagButtons(parent)
-
-        GameTooltip:Hide()
-        ResetCursor()
-    end)
+    button:SetScript("OnDragStart", B.BagSlotButton_OnDragStart)
+    button:SetScript("OnReceiveDrag", B.BagSlotButton_OnReceiveDrag)
+    button:SetScript("OnClick", B.BagSlotButton_OnClick)
+    button:SetScript("OnEnter", B.BagSlotButton_OnEnter)
+    button:SetScript("OnLeave", B.BagSlotButton_OnLeave)
 
     B:UpdateBagSlotButton(button)
 
     return button
+end
+
+function B:BagSlotButton_OnDragStart()
+    if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then
+        PickupBagFromSlot(self.slotID)
+    end
+end
+
+function B:BagSlotButton_OnReceiveDrag()
+    if CursorHasItem() then
+        if self.bagID == BACKPACK_CONTAINER then
+            PutItemInBackpack()
+        elseif not self.purchaseCost then
+            PutItemInBag(self.slotID)
+        end
+    end
+    B:UpdateBagSlotButton(self)
+end
+
+function B:BagSlotButton_OnClick()
+    if not CursorHasItem() and self.purchaseCost then
+        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+        BankFrame.nextSlotCost = self.purchaseCost
+        StaticPopup_Show("CONFIRM_BUY_BANK_SLOT")
+    else
+        local bag = B:FindBag(self.bagID)
+        bag.Hidden = not bag.Hidden
+        self:SetChecked(not bag.Hidden)
+    end
+    B:UpdateBagSlotButton(self)
+    B:UpdateItemButtons(self:GetParent())
+end
+
+function B:BagSlotButton_OnEnter()
+    B:UpdateBagSlotButton(self)
+    B:HighlightBagButtons(self:GetParent(), self.bagID)
+
+    GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+    if self.bagID == BACKPACK_CONTAINER then
+        GameTooltip:SetText(BACKPACK_TOOLTIP)
+    elseif self.bagID == BANK_CONTAINER then
+        GameTooltip:SetText(BANK_BAG)
+    elseif self.bagID == KEYRING_CONTAINER then
+        GameTooltip:SetText(KEYRING)
+    else
+        local hasItem = GameTooltip:SetInventoryItem("player", self.slotID)
+        if not hasItem then
+            if self.purchaseCost then
+                GameTooltip:ClearLines()
+                GameTooltip:AddLine(BANK_BAG_PURCHASE)
+                GameTooltip:AddDoubleLine(COSTS_LABEL, GetCoinTextureString(self.purchaseCost))
+            elseif self.isBank then
+                if self.bagID > GetNumBankSlots() + 4 then
+                    GameTooltip:SetText(BANK_BAG_PURCHASE)
+                else
+                    GameTooltip:SetText(BANK_BAG)
+                end
+            else
+                GameTooltip:SetText(BAGSLOT)
+            end
+        end
+    end
+    GameTooltip:Show()
+end
+
+function B:BagSlotButton_OnLeave()
+    B:UnhighlightBagButtons(self:GetParent())
+
+    GameTooltip:Hide()
+    ResetCursor()
 end
 
 function B:UpdateBagSlotButton(button)
@@ -386,20 +397,7 @@ function B:CreateInventoryFrame()
     _G[frame.Money:GetName() .. "SilverButton"].Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
     _G[frame.Money:GetName() .. "GoldButton"].Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
 
-    frame.Money:SetScript("OnEnter", function()
-        GameTooltip:SetOwner(frame.Money, "ANCHOR_TOPRIGHT")
-        GameTooltip:AddLine("Money")
-        local total = 0
-        for i, char in next, R.config.db.realm.inventory do
-            if char.money then
-                total = total + char.money
-
-                GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "FULL", false), 1, 1, 1, 1, 1, 1)
-            end
-        end
-        GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "FULL", false), 1, 1, 1, 1, 1, 1)
-        GameTooltip:Show()
-    end)
+    frame.Money:SetScript("OnEnter", B.InventoryMoney_OnEnter)
 
     SetPortraitToTexture(frame.portrait, "Interface\\ICONS\\INV_Misc_Bag_08")
 
@@ -413,15 +411,32 @@ function B:CreateInventoryFrame()
     B:SecureHook("ToggleAllBags", B.ToggleBackpack)
     B:SecureHook("ToggleBackpack", B.ToggleBackpack)
 
-    frame:SetScript("OnHide", function()
-        CloseBackpack()
-        for i = 1, NUM_BAG_FRAMES do
-            CloseBag(i)
-        end
-        B:UpdateChecked()
-    end)
+    frame:SetScript("OnHide", B.Inventory_OnHide)
 
     return frame
+end
+
+function B:Inventory_OnHide()
+    CloseBackpack()
+    for i = 1, NUM_BAG_FRAMES do
+        CloseBag(i)
+    end
+    B:UpdateChecked()
+end
+
+function B:InventoryMoney_OnEnter()
+    GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+    GameTooltip:AddLine("Money")
+    local total = 0
+    for i, char in next, R.config.db.realm.inventory do
+        if char.money then
+            total = total + char.money
+
+            GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "FULL", false), 1, 1, 1, 1, 1, 1)
+        end
+    end
+    GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "FULL", false), 1, 1, 1, 1, 1, 1)
+    GameTooltip:Show()
 end
 
 function B:UpdateInventory()

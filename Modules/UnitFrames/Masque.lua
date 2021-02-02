@@ -15,13 +15,17 @@ function UF:SetupMasque()
         UF:AddDebuffButtonsToMasque()
         UF:AddTempEnchantsToMasque()
 
-        UF:SecureHook("BuffFrame_UpdateAllBuffAnchors", function()
-            UF:AddBuffButtonsToMasque()
-        end)
-        UF:SecureHook("DebuffButton_UpdateAnchors", function(buttonName, i)
-            UF:AddDebuffButtonToMasque(i)
-        end)
+        UF:SecureHook("BuffFrame_UpdateAllBuffAnchors", UF.BuffFrame_UpdateAllBuffAnchors)
+        UF:SecureHook("DebuffButton_UpdateAnchors", UF.DebuffButton_UpdateAnchors)
     end
+end
+
+function UF:BuffFrame_UpdateAllBuffAnchors()
+    UF:AddBuffButtonsToMasque()
+end
+
+function UF:DebuffButton_UpdateAnchors(i)
+    UF:AddDebuffButtonToMasque(i)
 end
 
 function UF:AddBuffButtonsToMasque()
