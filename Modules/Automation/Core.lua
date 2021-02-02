@@ -25,7 +25,7 @@ function AM:Initialize()
     AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
 end
 
-function AM:UI_ERROR_MESSAGE(msg)
+function AM:UI_ERROR_MESSAGE(event, errorType, msg)
     if R.config.db.profile.modules.automation.standDismount then
         if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
             DoEmote("stand")
@@ -40,7 +40,7 @@ function AM:UI_ERROR_MESSAGE(msg)
     end
 end
 
-function AM:LOOT_READY()
+function AM:LOOT_READY(event)
     if R.config.db.profile.modules.automation.fastLoot then
         if GetTime() - fastLootDelay >= 0.3 then
             fastLootDelay = GetTime()
@@ -54,7 +54,7 @@ function AM:LOOT_READY()
     end
 end
 
-function AM:MERCHANT_SHOW()
+function AM:MERCHANT_SHOW(event)
     if R.config.db.profile.modules.automation.repair then
         AM:Repair()
     end
@@ -66,45 +66,45 @@ function AM:MERCHANT_SHOW()
     end
 end
 
-function AM:MERCHANT_CLOSED()
+function AM:MERCHANT_CLOSED(event)
     stopVendoring = true
 end
 
-function AM:RESURRECT_REQUEST()
+function AM:RESURRECT_REQUEST(event)
     if R.config.db.profile.modules.automation.acceptResurrection then
         AM:AcceptResurrection(self)
     end
 end
 
-function AM:CONFIRM_SUMMON()
+function AM:CONFIRM_SUMMON(event)
     if R.config.db.profile.modules.automation.acceptSummon then
         AM:AcceptSummon()
     end
 end
 
-function AM:CONFIRM_LOOT_ROLL(arg1, arg2)
+function AM:CONFIRM_LOOT_ROLL(event, rollID, rollType, confirmReason)
     if R.config.db.profile.modules.automation.disableLootRollConfirmation then
-        ConfirmLootRoll(arg1, arg2)
+        ConfirmLootRoll(rollID, rollType)
         StaticPopup_Hide("CONFIRM_LOOT_ROLL")
     end
 end
 
-function AM:LOOT_BIND_CONFIRM(arg1, arg2, ...)
+function AM:LOOT_BIND_CONFIRM(event, lootSlot)
     if R.config.db.profile.modules.automation.disableLootBindConfirmation then
-        ConfirmLootSlot(arg1, arg2)
-        StaticPopup_Hide("LOOT_BIND", ...)
+        ConfirmLootSlot(lootSlot)
+        StaticPopup_Hide("LOOT_BIND")
     end
 end
 
-function AM:MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL()
+function AM:MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL(event)
     if R.config.db.profile.modules.automation.disableVendorRefundWarning then
         SellCursorItem()
     end
 end
 
-function AM:MAIL_LOCK_SEND_ITEMS(arg1)
+function AM:MAIL_LOCK_SEND_ITEMS(event, attachSlot, itemLink)
     if R.config.db.profile.modules.automation.disableMailRefundWarning then
-        RespondMailLockSendItem(arg1, true)
+        RespondMailLockSendItem(attachSlot, true)
     end
 end
 
