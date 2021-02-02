@@ -15,39 +15,70 @@ function B:Initialize()
     B.Inventory = B:CreateInventoryFrame()
     B.Bank = B:CreateBankFrame()
 
-    B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", B.OnEvent)
-    B:RegisterEvent("BAG_UPDATE", B.OnEvent)
-    B:RegisterEvent("BAG_UPDATE_COOLDOWN", B.OnEvent)
-    B:RegisterEvent("BAG_NEW_ITEMS_UPDATED", B.OnEvent)
-    B:RegisterEvent("QUEST_ACCEPTED", B.OnEvent)
-    B:RegisterEvent("QUEST_REMOVED", B.OnEvent)
-    B:RegisterEvent("ITEM_LOCK_CHANGED", B.OnEvent)
-    B:RegisterEvent("BANKFRAME_OPENED", B.OnEvent)
-    B:RegisterEvent("BANKFRAME_CLOSED", B.OnEvent)
-    B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED", B.OnEvent)
-    B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", B.OnEvent)
+    B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
+    B:RegisterEvent("BAG_UPDATE")
+    B:RegisterEvent("BAG_UPDATE_COOLDOWN")
+    B:RegisterEvent("BAG_NEW_ITEMS_UPDATED")
+    B:RegisterEvent("QUEST_ACCEPTED")
+    B:RegisterEvent("QUEST_REMOVED")
+    B:RegisterEvent("ITEM_LOCK_CHANGED")
+    B:RegisterEvent("BANKFRAME_OPENED")
+    B:RegisterEvent("BANKFRAME_CLOSED")
+    B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
+    B:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+    B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 end
 
-function B:OnEvent(...)
-    local event = self
-    if event == "ITEM_LOCK_CHANGED" then
-        local slotIndex = ...
-        B:UpdateLocked(self, slotIndex)
-    elseif event == "BANKFRAME_OPENED" then
-        B:ShowBank()
-    elseif event == "BANKFRAME_CLOSED" then
-        B:HideBank()
-    elseif event == "BANK_BAG_SLOT_FLAGS_UPDATED" or event == "PLAYERBANKBAGSLOTS_CHANGED" then
-        B:UpdateBank()
-    elseif event == "BAG_UPDATE_COOLDOWN" then
-        if B.Inventory:IsShown() then
-            B:UpdateInventory()
-        elseif B.Bank:IsShown() then
-            B:UpdateBank()
-        end
-    else
-        B:UpdateInventory()
-    end
+function B:BAG_SLOT_FLAGS_UPDATED(event, slot)
+    -- TODO: only update one slot
+    B:UpdateInventory()
+end
+
+function B:BAG_UPDATE(event, bagID)
+    -- TODO: only update one bag
+    B:UpdateInventory()
+end
+
+function B:BAG_UPDATE_COOLDOWN(event)
+    B:UpdateInventory()
+end
+
+function B:BAG_NEW_ITEMS_UPDATED(event)
+    B:UpdateInventory()
+end
+
+function B:ITEM_LOCK_CHANGED(event, bagID, slotIndex)
+    B:UpdateLocked(bagID, slotIndex)
+end
+
+function B:QUEST_ACCEPTED(event)
+    B:UpdateInventory()
+end
+
+function B:QUEST_REMOVED(event)
+    B:UpdateInventory()
+end
+
+function B:BANKFRAME_OPENED(event)
+    B:ShowBank()
+end
+
+function B:BANKFRAME_CLOSED(event)
+    B:HideBank()
+end
+
+function B:BANK_BAG_SLOT_FLAGS_UPDATED(event, slot)
+    -- TODO: only update one slot
+    B:UpdateBank()
+end
+
+function B:PLAYERBANKSLOTS_CHANGED(event, slot)
+    -- TODO: only update one slot
+    B:UpdateBank()
+end
+
+function B:PLAYERBANKBAGSLOTS_CHANGED(event)
+    B:UpdateBank()
 end
 
 function B:DisableBlizzardFrames()

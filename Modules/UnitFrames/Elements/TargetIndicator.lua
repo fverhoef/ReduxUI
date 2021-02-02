@@ -21,9 +21,7 @@ UF.CreateTargetIndicator = function(self)
     self.TargetIndicator.Right:SetPoint("LEFT", self.Health, "RIGHT", 0, 0)
     self.TargetIndicator.Right:Hide()
 
-    self:RegisterEvent("PLAYER_TARGET_CHANGED", function(self)
-        UF.UpdateTargetIndicator(self)
-    end, true)
+    self:RegisterEvent("PLAYER_TARGET_CHANGED", UF.UpdateTargetIndicator, true)
 
     UF.UpdateTargetIndicator(self)
 
