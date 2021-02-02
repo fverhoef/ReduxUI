@@ -12,7 +12,8 @@ R.SystemInfo = {
     worldPing = 0,
     framerate = 0,
     memoryTable = {},
-    cpuTable = {}
+    cpuTable = {},
+    lastUpdate = GetTime()
 }
 
 function R.SystemInfo:RebuildAddonList()
@@ -80,6 +81,10 @@ function R.SystemInfo:Update(fullUpdate)
         return
     end
 
+    R.SystemInfo.time = GetTime() 
+    R.SystemInfo.elapsed = R.SystemInfo.time - R.SystemInfo.lastUpdate
+    R.SystemInfo.lastUpdate = R.SystemInfo.time
+
     R.SystemInfo:RebuildAddonList()
 
     local cpuProfiling = GetCVar("scriptProfile") == "1"
@@ -103,6 +108,7 @@ function R.SystemInfo:Update(fullUpdate)
     R.SystemInfo.cpuProfiling = cpuProfiling
     R.SystemInfo.totalMemory = totalMemory
     R.SystemInfo.totalCPU = totalCPU
+    R.SystemInfo.cpuPerSecond = totalCPU / R.SystemInfo.elapsed
     R.SystemInfo.bandwidth = bandwidth
     R.SystemInfo.framerate = framerate
 end

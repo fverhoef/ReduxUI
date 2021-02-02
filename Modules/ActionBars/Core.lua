@@ -1118,7 +1118,8 @@ function AB:AddSystemInfo(tooltip)
 
             local cpu = R.SystemInfo.cpuTable[i]
             if cpu and IsAddOnLoaded(cpu[1]) then
-                local red = cpu[3] / R.SystemInfo.totalCPU
+                local addonCpuUsage = cpu[3] -- / R.SystemInfo.elapsed
+                local red = addonCpuUsage / R.SystemInfo.totalCPU
                 local green = 1 - red
 
                 local mem
@@ -1129,10 +1130,10 @@ function AB:AddSystemInfo(tooltip)
                     end
                 end
                 if mem then
-                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, cpu[3], R.SystemInfo:FormatMemory(mem)),
+                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, addonCpuUsage, R.SystemInfo:FormatMemory(mem)),
                                           labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
                 else
-                    tooltip:AddDoubleLine(cpu[2], format(cpuString, cpu[3]), labelColor[1], labelColor[2], labelColor[3], red,
+                    tooltip:AddDoubleLine(cpu[2], format(cpuString, addonCpuUsage), labelColor[1], labelColor[2], labelColor[3], red,
                                           green + .5, 0)
                 end
             end
