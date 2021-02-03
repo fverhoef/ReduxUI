@@ -44,22 +44,30 @@ function UF:UpdateRaidHeader()
 
         for j = 1, group:GetNumChildren() do
             local child = group:GetAttribute("child" .. j)
-            -- child:ClearAllPoints()
+            child:ClearAllPoints()
             UF:UpdateRaid(child)
         end
 
         group:SetAttribute("point", group.cfg.unitAnchorPoint)
-        group:SetAttribute("xOffset", group.cfg.xOffset)
-        group:SetAttribute("yOffset", group.cfg.yOffset)
-        group:SetAttribute("columnSpacing", group.cfg.columnSpacing)
-        group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
-        group:SetAttribute("maxColumns", group.cfg.maxColumns)
-        group:SetAttribute("unitsPerColumn", group.cfg.unitsPerColumn)
+        if group.cfg.unitAnchorPoint == "LEFT" or group.cfg.unitAnchorPoint == "RIGHT" then
+            group:SetAttribute("xOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "RIGHT" and -1 or 1))
+            group:SetAttribute("yOffset", 0)
+            group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+        else
+            group:SetAttribute("xOffset", 0)
+            group:SetAttribute("yOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "TOP" and -1 or 1))
+            group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+        end
+
+        --group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
+
+        group:SetAttribute("maxColumns", group.cfg.raidWideSorting and 40 or 1)
+        group:SetAttribute("unitsPerColumn", group.cfg.raidWideSorting and 40 or 5)
+
         group:SetAttribute("groupBy", group.cfg.groupBy)
         group:SetAttribute("groupingOrder", group.cfg.groupingOrder)
         group:SetAttribute("sortMethod", group.cfg.sortMethod)
         group:SetAttribute("sortDir", group.cfg.sortDir)
-        group:SetAttribute("showPlayer", group.cfg.showPlayer)
 
         if not group.isForced then
             if not group.initialized then
@@ -71,9 +79,35 @@ function UF:UpdateRaidHeader()
         end
 
         if i == 1 then
-            group:SetPoint("TOPLEFT", UF.frames.raidHeader, "TOPLEFT")
+            local groupAnchorPoint
+            if group.cfg.groupAnchorPoint == "LEFT" then
+                groupAnchorPoint = group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT" or "TOPLEFT"
+            elseif group.cfg.groupAnchorPoint == "RIGHT" then
+                groupAnchorPoint = group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT" or "TOPRIGHT"
+            elseif group.cfg.groupAnchorPoint == "TOP" then
+                groupAnchorPoint = group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT" or "TOPLEFT"
+            elseif group.cfg.groupAnchorPoint == "BOTTOM" then
+                groupAnchorPoint = group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT" or "TOPLEFT"
+            end
+
+            group:SetPoint(groupAnchorPoint, UF.frames.raidHeader, groupAnchorPoint)
         else
-            group:SetPoint("TOPLEFT", UF.frames.raidHeader.groups[i - 1], "BOTTOMLEFT")
+            local groupRelativeAnchorPoint, xOffset, yOffset
+            if group.cfg.groupAnchorPoint == "LEFT" then
+                groupRelativeAnchorPoint = "RIGHT"
+                xOffset = group.cfg.groupSpacing
+            elseif group.cfg.groupAnchorPoint == "RIGHT" then
+                groupRelativeAnchorPoint = "LEFT"
+                xOffset = -group.cfg.groupSpacing
+            elseif group.cfg.groupAnchorPoint == "TOP" then
+                groupRelativeAnchorPoint = "BOTTOM"
+                yOffset = -group.cfg.groupSpacing
+            elseif group.cfg.groupAnchorPoint == "BOTTOM" then
+                groupRelativeAnchorPoint = "TOP"
+                yOffset = group.cfg.groupSpacing
+            end
+
+            group:SetPoint(group.cfg.groupAnchorPoint, UF.frames.raidHeader.groups[i - 1], groupRelativeAnchorPoint, xOffset or 0, yOffset or 0)
         end
     end
 end
@@ -175,9 +209,11 @@ function UF:CreateRaid()
     UF.CreateAuraHighlight(self)
 end
 
-function UF:UpdateRaid(frame)
-    if not frame then
+function UF:UpdateRaid(self)
+    if not self then
         return
     end
 
+    local width, height = unpack(self.cfg.size)
+    self:SetSize(width, height)
 end

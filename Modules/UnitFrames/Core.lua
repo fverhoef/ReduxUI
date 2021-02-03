@@ -95,8 +95,7 @@ function UF:SpawnHeader(name, index, func, config, defaultConfig)
 
     local header = oUF:SpawnHeader(addonName .. name .. "Header" .. index, nil, config.visibility, "showPlayer",
                                    config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty, "showRaid",
-                                   config.showRaid, "point", config.unitAnchorPoint, "xOffset", config.xOffset, "yOffset",
-                                   config.yOffset, "groupFilter", tostring(index), "oUF-initialConfigFunction", ([[
+                                   config.showRaid, "point", config.unitAnchorPoint, "groupFilter", tostring(index), "oUF-initialConfigFunction", ([[
             self:SetWidth(%d)
             self:SetHeight(%d)
             self:GetParent():SetScale(%f)

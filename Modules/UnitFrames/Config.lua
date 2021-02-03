@@ -4,6 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
+UF.anchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 
 function UF:IsBlizzardTheme()
     return R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard or R.config.db.profile.modules.unitFrames.theme ==
@@ -91,10 +92,10 @@ function UF:CreateUnitEnabledOption(unit, order)
     }
 end
 
-function UF:CreateUnitSizeOption(unit, order, inline)
+function UF:CreateUnitSizeOption(unit, order, inline, name)
     return {
         type = "group",
-        name = "Size",
+        name = name or "Size",
         order = order,
         inline = inline,
         args = {
@@ -451,13 +452,11 @@ R.config.defaults.profile.modules.unitFrames = {
         border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
 
-        unitAnchorPoint = "TOP",
-        xOffset = 0,
-        yOffset = 0,
-        columnSpacing = 0,
-        columnAnchorPoint = "LEFT",
-        maxColumns = 5,
-        unitsPerColumn = 1,
+        raidWideSorting = false,
+        unitAnchorPoint = "LEFT",
+        unitSpacing = 0,
+        groupAnchorPoint = "TOP",
+        groupSpacing = 0,
         groupBy = "GROUP", -- GROUP, CLASS, ROLE
         groupingOrder = "1,2,3,4,5,6,7,8",
         sortMethod = "INDEX", -- NAME, INDEX
@@ -465,9 +464,9 @@ R.config.defaults.profile.modules.unitFrames = {
         showPlayer = false,
         showSolo = false,
         showParty = false,
-        showRaid = true,
+        showRaid = true
 
-        --visibility = "[group:raid] show"
+        -- visibility = "[group:raid] show"
     },
     boss = {
         enabled = R.isRetail,
@@ -865,7 +864,9 @@ R.config.options.args.unitFrames = {
                 forceShow = {
                     order = 2,
                     type = "execute",
-                    name = "Force Show/Hide",
+                    name = function()
+                        return UF.forceShowRaid and "Hide Frames" or "Show Frames"
+                    end,
                     desc = "Forcibly show/hide the raid frames.",
                     func = function()
                         if not UF.forceShowRaid then
@@ -875,7 +876,79 @@ R.config.options.args.unitFrames = {
                         end
                     end
                 },
-                size = UF:CreateUnitSizeOption("raid", 10, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 3,
+                    inline = true,
+                    args = {
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.anchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.anchors) do
+                                    if R.config.db.profile.modules.unitFrames.raid.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                R.config.db.profile.modules.unitFrames.raid.unitAnchorPoint = UF.anchors[key]
+                                UF:UpdateRaidHeader()
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return R.config.db.profile.modules.unitFrames.raid.unitSpacing
+                            end,
+                            set = function(_, val)
+                                R.config.db.profile.modules.unitFrames.raid.unitSpacing = val
+                                UF:UpdateRaidHeader()
+                            end
+                        },
+                        groupAnchorPoint = {
+                            type = "select",
+                            name = "Group Anchor Point",
+                            order = 5,
+                            values = UF.anchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.anchors) do
+                                    if R.config.db.profile.modules.unitFrames.raid.groupAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                R.config.db.profile.modules.unitFrames.raid.groupAnchorPoint = UF.anchors[key]
+                                UF:UpdateRaidHeader()
+                            end
+                        },
+                        groupSpacing = {
+                            type = "range",
+                            name = "Group Spacing",
+                            order = 6,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return R.config.db.profile.modules.unitFrames.raid.groupSpacing
+                            end,
+                            set = function(_, val)
+                                R.config.db.profile.modules.unitFrames.raid.groupSpacing = val
+                                UF:UpdateRaidHeader()
+                            end
+                        }
+                    }
+                },
+                size = UF:CreateUnitSizeOption("raid", 4, true, "Unit Size")
             }
         },
         tank = {
