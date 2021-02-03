@@ -50,8 +50,9 @@ function R:UnlocalizedClassName(className)
 end
 
 function R:LocalizedClassName(className)
-    return (className and className ~= "") and (R.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.PlayerIsFemale and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or
-               className
+    return (className and className ~= "") and
+               (R.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.PlayerIsFemale and
+                   _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
 end
 
 function R:Print(value, ...)
@@ -221,7 +222,8 @@ function R:ParseItemLink(itemLink)
         return {}
     end
     local _, _, color, Ltype, itemId, Enchant, Gem1, Gem2, Gem3, Gem4, Suffix, Unique, LinkLvl, Name =
-        string.find(itemLink, "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+        string.find(itemLink,
+                    "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
 
     return {itemId = itemId, color = color}
 end
@@ -364,8 +366,8 @@ function R:ApplyVertexColor(texture, color)
         return
     end
     if texture.__vertexColor and
-        (color[1] == texture.__vertexColor[1] and color[2] == texture.__vertexColor[2] and color[3] == texture.__vertexColor[3] and (color[4] or 1) ==
-            (texture.__vertexColor[4] or 1)) then
+        (color[1] == texture.__vertexColor[1] and color[2] == texture.__vertexColor[2] and color[3] == texture.__vertexColor[3] and
+            (color[4] or 1) == (texture.__vertexColor[4] or 1)) then
         return
     end
 
@@ -382,7 +384,8 @@ function R:ResetVertexColor(r, g, b, a)
     if not self.__vertexColor then
         return
     end
-    if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or ((a or 1) ~= (self.__vertexColor[4] or 1)) then
+    if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or
+        ((a or 1) ~= (self.__vertexColor[4] or 1)) then
         self:SetVertexColor(unpack(self.__vertexColor))
     end
 end

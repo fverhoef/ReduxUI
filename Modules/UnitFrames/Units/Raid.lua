@@ -59,7 +59,7 @@ function UF:UpdateRaidHeader()
             group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
         end
 
-        --group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
+        -- group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
 
         group:SetAttribute("maxColumns", group.cfg.raidWideSorting and 40 or 1)
         group:SetAttribute("unitsPerColumn", group.cfg.raidWideSorting and 40 or 5)
@@ -92,22 +92,35 @@ function UF:UpdateRaidHeader()
 
             group:SetPoint(groupAnchorPoint, UF.frames.raidHeader, groupAnchorPoint)
         else
-            local groupRelativeAnchorPoint, xOffset, yOffset
+            local groupAnchorPoint, groupRelativeAnchorPoint, xOffset, yOffset
             if group.cfg.groupAnchorPoint == "LEFT" then
-                groupRelativeAnchorPoint = "RIGHT"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
+                                       (group.cfg.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
+                                               (group.cfg.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
                 xOffset = group.cfg.groupSpacing
             elseif group.cfg.groupAnchorPoint == "RIGHT" then
-                groupRelativeAnchorPoint = "LEFT"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
+                                       (group.cfg.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
+                                               (group.cfg.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
                 xOffset = -group.cfg.groupSpacing
             elseif group.cfg.groupAnchorPoint == "TOP" then
-                groupRelativeAnchorPoint = "BOTTOM"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPLEFT") or
+                                       (group.cfg.unitAnchorPoint == "LEFT" and "TOPRIGHT") or "TOP"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMLEFT") or
+                                               (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMRIGHT") or "BOTTOM"
                 yOffset = -group.cfg.groupSpacing
             elseif group.cfg.groupAnchorPoint == "BOTTOM" then
-                groupRelativeAnchorPoint = "TOP"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMLEFT") or
+                                       (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMRIGHT") or "BOTTOM"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPLEFT") or
+                                               (group.cfg.unitAnchorPoint == "LEFT" and "TOPRIGHT") or "TOP"
                 yOffset = group.cfg.groupSpacing
             end
 
-            group:SetPoint(group.cfg.groupAnchorPoint, UF.frames.raidHeader.groups[i - 1], groupRelativeAnchorPoint, xOffset or 0, yOffset or 0)
+            group:SetPoint(groupAnchorPoint, UF.frames.raidHeader.groups[i - 1], groupRelativeAnchorPoint, xOffset or 0,
+                           yOffset or 0)
         end
     end
 end
