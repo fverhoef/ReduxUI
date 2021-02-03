@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-R.SystemInfo = {
+local SI = {
     updateInterval = 30,
     ipTypeHome = "IPv4",
     ipTypeWorld = "IPv4",
@@ -15,112 +15,113 @@ R.SystemInfo = {
     cpuTable = {},
     lastUpdate = GetTime()
 }
+R.SystemInfo = SI
 
-function R.SystemInfo:RebuildAddonList()
+function SI:RebuildAddonList()
     local addOnCount = GetNumAddOns()
-    if (addOnCount == #R.SystemInfo.memoryTable) then
+    if (addOnCount == #SI.memoryTable) then
         return
     end
 
     -- Number of loaded addons changed, create new memoryTable for all addons
-    wipe(R.SystemInfo.memoryTable)
-    wipe(R.SystemInfo.cpuTable)
+    wipe(SI.memoryTable)
+    wipe(SI.cpuTable)
     for i = 1, addOnCount do
-        R.SystemInfo.memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
-        R.SystemInfo.cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
+        SI.memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
+        SI.cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
     end
 end
 
-local sortByMemoryOrCPU = function(a, b)
+SI.SortByMemoryOrCPU = function(a, b)
     if a and b then
         return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
     end
 end
 
-function R.SystemInfo:UpdateMemory()
+function SI:UpdateMemory()
     -- Update the memory usages of the addons
     UpdateAddOnMemoryUsage()
 
     -- Load memory usage in table
     local totalMemory = 0
-    for i = 1, #R.SystemInfo.memoryTable do
-        R.SystemInfo.memoryTable[i][3] = GetAddOnMemoryUsage(R.SystemInfo.memoryTable[i][1])
-        totalMemory = totalMemory + R.SystemInfo.memoryTable[i][3]
+    for i = 1, #SI.memoryTable do
+        SI.memoryTable[i][3] = GetAddOnMemoryUsage(SI.memoryTable[i][1])
+        totalMemory = totalMemory + SI.memoryTable[i][3]
     end
 
     -- Sort the table to put the largest addon on top
-    sort(R.SystemInfo.memoryTable, sortByMemoryOrCPU)
+    sort(SI.memoryTable, SI.SortByMemoryOrCPU)
 
     return totalMemory
 end
 
-function R.SystemInfo:UpdateCPU()
+function SI:UpdateCPU()
     -- Update the CPU usages of the addons
     UpdateAddOnCPUUsage()
 
     -- Load cpu usage in table
     local totalCPU = 0
-    for i = 1, #R.SystemInfo.cpuTable do
-        local addonCPU = GetAddOnCPUUsage(R.SystemInfo.cpuTable[i][1])
-        R.SystemInfo.cpuTable[i][3] = addonCPU
+    for i = 1, #SI.cpuTable do
+        local addonCPU = GetAddOnCPUUsage(SI.cpuTable[i][1])
+        SI.cpuTable[i][3] = addonCPU
         totalCPU = totalCPU + addonCPU
     end
 
     -- Sort the table to put the largest addon on top
-    sort(R.SystemInfo.cpuTable, sortByMemoryOrCPU)
+    sort(SI.cpuTable, SI.SortByMemoryOrCPU)
 
     return totalCPU
 end
 
-function R.SystemInfo:Update(fullUpdate)
+function SI:Update(fullUpdate)
     local _, _, homePing, worldPing = GetNetStats()
-    R.SystemInfo.homePing = homePing
-    R.SystemInfo.worldPing = worldPing
+    SI.homePing = homePing
+    SI.worldPing = worldPing
 
     if not fullUpdate then
         return
     end
 
-    R.SystemInfo.time = GetTime() 
-    R.SystemInfo.elapsed = R.SystemInfo.time - R.SystemInfo.lastUpdate
-    R.SystemInfo.lastUpdate = R.SystemInfo.time
+    SI.time = GetTime() 
+    SI.elapsed = SI.time - SI.lastUpdate
+    SI.lastUpdate = SI.time
 
-    R.SystemInfo:RebuildAddonList()
+    SI:RebuildAddonList()
 
     local cpuProfiling = GetCVar("scriptProfile") == "1"
     local totalCPU = 0
     if cpuProfiling then
-        totalCPU = R.SystemInfo:UpdateCPU()
+        totalCPU = SI:UpdateCPU()
     end
-    local totalMemory = R.SystemInfo:UpdateMemory()
+    local totalMemory = SI:UpdateMemory()
     local bandwidth = GetAvailableBandwidth()
     local framerate = floor(GetFramerate())
     local useIPv6 = GetCVarBool("useIPv6")
     if useIPv6 then
         local ipTypeHome, ipTypeWorld = GetNetIpTypes()
-        R.SystemInfo.ipTypeHome = ipTypeHome
-        R.SystemInfo.ipTypeWorld = ipTypeWorld
+        SI.ipTypeHome = ipTypeHome
+        SI.ipTypeWorld = ipTypeWorld
     else
-        R.SystemInfo.ipTypeHome = "IPv4"
-        R.SystemInfo.ipTypeWorld = "IPv4"
+        SI.ipTypeHome = "IPv4"
+        SI.ipTypeWorld = "IPv4"
     end
 
-    R.SystemInfo.cpuProfiling = cpuProfiling
-    R.SystemInfo.totalMemory = totalMemory
-    R.SystemInfo.totalCPU = totalCPU
-    R.SystemInfo.cpuPerSecond = totalCPU / R.SystemInfo.elapsed
-    R.SystemInfo.bandwidth = bandwidth
-    R.SystemInfo.framerate = framerate
+    SI.cpuProfiling = cpuProfiling
+    SI.totalMemory = totalMemory
+    SI.totalCPU = totalCPU
+    SI.cpuPerSecond = totalCPU / SI.elapsed
+    SI.bandwidth = bandwidth
+    SI.framerate = framerate
 end
 
-function R.SystemInfo:ToggleCPUProfiling()
-    R.SystemInfo.cpuProfiling = not R.SystemInfo.cpuProfiling
-    SetCVar("scriptProfile", R.SystemInfo.cpuProfiling)
+function SI:ToggleCPUProfiling()
+    SI.cpuProfiling = not SI.cpuProfiling
+    SetCVar("scriptProfile", SI.cpuProfiling)
 end
 
-function R.SystemInfo:CurrentCPUUsage(addon)
-    for i = 1, #R.SystemInfo.cpuTable do
-        local ele = R.SystemInfo.cpuTable[i]
+function SI:CurrentCPUUsage(addon)
+    for i = 1, #SI.cpuTable do
+        local ele = SI.cpuTable[i]
         if ele and IsAddOnLoaded(ele[1]) then
             if ele[2] == addon then
                 return ele[3]
@@ -129,9 +130,9 @@ function R.SystemInfo:CurrentCPUUsage(addon)
     end
 end
 
-function R.SystemInfo:CurrentMemoryUsage(addon)
-    for i = 1, #R.SystemInfo.memoryTable do
-        local ele = R.SystemInfo.memoryTable[i]
+function SI:CurrentMemoryUsage(addon)
+    for i = 1, #SI.memoryTable do
+        local ele = SI.memoryTable[i]
         if ele and IsAddOnLoaded(ele[1]) then
             if ele[2] == addon then
                 return ele[3]
@@ -140,11 +141,11 @@ function R.SystemInfo:CurrentMemoryUsage(addon)
     end
 end
 
-function R.SystemInfo:GetLatency()
-    return R.SystemInfo.homePing > R.SystemInfo.worldPing and R.SystemInfo.homePing or R.SystemInfo.worldPing
+function SI:GetLatency()
+    return SI.homePing > SI.worldPing and SI.homePing or SI.worldPing
 end
 
-function R.SystemInfo:FormatMemory(memory)
+function SI:FormatMemory(memory)
     local mult = 10 ^ 1
     if memory > 999 then
         local mem = ((memory / 1024) * mult) / mult

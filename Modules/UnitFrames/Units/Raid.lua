@@ -3,38 +3,78 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnRaid()
+function UF:SpawnRaidHeader()
     local config = R.config.db.profile.modules.unitFrames.raid
     local default = R.config.defaults.profile.modules.unitFrames.raid
 
     if config.enabled then
+        local parent = CreateFrame("Frame", addonName .. "Raid")
+        parent:SetPoint(unpack(config.point))
+        parent:SetSize(200, 40)
+        parent:Show()
+        parent.groups = {}
+
         oUF:RegisterStyle(addonName .. "Raid", UF.CreateRaid)
         oUF:SetActiveStyle(addonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
-            -- config needs to provide 8 point tables, one for each raid group
-            local raidGroup = oUF:SpawnHeader(addonName .. "RaidHeader" .. i, nil, nil, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty,
-                                              "showRaid", config.showRaid, "point", config.point, "xOffset", config.xOffset, "yOffset", config.yOffset, "groupFilter", tostring(i),
-                                              "unitsPerColumn", 5, "oUF-initialConfigFunction", ([[
-                    self:SetWidth(%d)
-                    self:SetHeight(%d)
-                    self:GetParent():SetScale(%f)
-                ]]):format(config.size[1], config.size[2], config.scale))
-            raidGroup:SetPoint(unpack(config.points[i]))
-            raidGroup:Show()
-            raidGroup.cfg = config
-            UF.frames["raidGroup" .. i] = raidGroup
+            local group = UF:SpawnHeader("Raid", i, UF.CreateRaid, config, default)
+            group.cfg = config
 
-            if config.fader and config.fader.enabled then
-                R:CreateFrameFader(raidGroup, config.fader)
-            end
-
-            R:CreateDragFrame(raidGroup, "Raid Group " .. i, default.points[i], 200, 40)
+            parent.groups[i] = group
         end
+
+        R:CreateDragFrame(parent, "Raid Frames", default.point, 200, 40)
 
         CompactRaidFrameManager_SetSetting("IsShown", "0")
         _G.UIParent:UnregisterEvent("GROUP_ROSTER_UPDATE")
         _G.CompactRaidFrameManager:UnregisterAllEvents()
         _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
+
+        return parent
+    end
+end
+
+function UF:UpdateRaidHeader()
+    if not UF.frames.raidHeader then
+        return
+    end
+
+    for i, group in ipairs(UF.frames.raidHeader.groups) do
+        group:ClearAllPoints()
+
+        for j = 1, group:GetNumChildren() do
+            local child = group:GetAttribute("child" .. j)
+            -- child:ClearAllPoints()
+            UF:UpdateRaid(child)
+        end
+
+        group:SetAttribute("point", group.cfg.unitAnchorPoint)
+        group:SetAttribute("xOffset", group.cfg.xOffset)
+        group:SetAttribute("yOffset", group.cfg.yOffset)
+        group:SetAttribute("columnSpacing", group.cfg.columnSpacing)
+        group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
+        group:SetAttribute("maxColumns", group.cfg.maxColumns)
+        group:SetAttribute("unitsPerColumn", group.cfg.unitsPerColumn)
+        group:SetAttribute("groupBy", group.cfg.groupBy)
+        group:SetAttribute("groupingOrder", group.cfg.groupingOrder)
+        group:SetAttribute("sortMethod", group.cfg.sortMethod)
+        group:SetAttribute("sortDir", group.cfg.sortDir)
+        group:SetAttribute("showPlayer", group.cfg.showPlayer)
+
+        if not group.isForced then
+            if not group.initialized then
+                group:SetAttribute("startingIndex", -4)
+                group:Show()
+                group.initialized = true
+            end
+            group:SetAttribute("startingIndex", 1)
+        end
+
+        if i == 1 then
+            group:SetPoint("TOPLEFT", UF.frames.raidHeader, "TOPLEFT")
+        else
+            group:SetPoint("TOPLEFT", UF.frames.raidHeader.groups[i - 1], "BOTTOMLEFT")
+        end
     end
 end
 
@@ -135,5 +175,9 @@ function UF:CreateRaid()
     UF.CreateAuraHighlight(self)
 end
 
-function UF:UpdateRaid()
+function UF:UpdateRaid(frame)
+    if not frame then
+        return
+    end
+
 end

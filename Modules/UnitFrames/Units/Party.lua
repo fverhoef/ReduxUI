@@ -169,6 +169,9 @@ function UF:CreateParty()
             end
         end
     }
+
+    -- aura highlight
+    UF.CreateAuraHighlight(self)
 end
 
 function UF:UpdateParty()

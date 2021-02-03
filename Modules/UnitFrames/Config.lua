@@ -6,7 +6,8 @@ local oUF = ns.oUF or oUF
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
 
 function UF:IsBlizzardTheme()
-    return R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard or R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard_LargeHealth
+    return R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard or R.config.db.profile.modules.unitFrames.theme ==
+               UF.themes.Blizzard_LargeHealth
 end
 
 function UF:CreateStatusBarTextureOption(name, desc, option, order)
@@ -235,6 +236,7 @@ R.config.defaults.profile.modules.unitFrames = {
             fontSize = 12
         },
         combatfeedback = {enabled = true},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -265,6 +267,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = true},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -295,6 +298,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = false},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -325,6 +329,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = true},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -355,6 +360,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = true},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -385,6 +391,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = false},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -417,6 +424,8 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = true, fontSize = 14},
+        auraHighlight = {enabled = true, mode = "GLOW"},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1},
@@ -431,34 +440,34 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {90, 36},
         scale = 1,
-        point = "TOP",
-        points = { -- list of 8 points, one for each raid group
-            {"TOPLEFT", 20, -20},
-            {"TOP", addonName .. "RaidHeader1", "BOTTOM", 0, -10},
-            {"TOP", addonName .. "RaidHeader2", "BOTTOM", 0, -10},
-            {"TOP", addonName .. "RaidHeader3", "BOTTOM", 0, -10},
-            {"TOPLEFT", addonName .. "RaidHeader1", "TOPRIGHT", 10, 0},
-            {"TOP", addonName .. "RaidHeader5", "BOTTOM", 0, -10},
-            {"TOP", addonName .. "RaidHeader6", "BOTTOM", 0, -10},
-            {"TOP", addonName .. "RaidHeader7", "BOTTOM", 0, -10}
-        },
+        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 8}, value = {tag = "[curpp]"}},
         portrait = {enabled = false},
         auras = {enabled = false},
         castbar = {enabled = false},
+        combatfeedback = {enabled = false},
+        auraHighlight = {enabled = true, mode = "GLOW"},
         border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
 
-        scale = 1,
+        unitAnchorPoint = "TOP",
         xOffset = 0,
-        yOffset = -5,
-        visibility = "[group:raid] show",
+        yOffset = 0,
+        columnSpacing = 0,
+        columnAnchorPoint = "LEFT",
+        maxColumns = 5,
+        unitsPerColumn = 1,
+        groupBy = "GROUP", -- GROUP, CLASS, ROLE
+        groupingOrder = "1,2,3,4,5,6,7,8",
+        sortMethod = "INDEX", -- NAME, INDEX
+        sortDir = "ASC", -- ASC, DESC
         showPlayer = false,
         showSolo = false,
         showParty = false,
         showRaid = true,
-        auraHighlight = {enabled = true, mode = "GLOW"}
+
+        --visibility = "[group:raid] show"
     },
     boss = {
         enabled = R.isRetail,
@@ -486,6 +495,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = false},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -516,6 +526,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = false},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -546,6 +557,7 @@ R.config.defaults.profile.modules.unitFrames = {
             borderSize = 12
         },
         combatfeedback = {enabled = false},
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -554,7 +566,7 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {150, 16},
         health = {enabled = true, height = 16, value = {tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        power = {enabled = false, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         portrait = {enabled = false},
         auras = {
             enabled = true,
@@ -581,11 +593,9 @@ R.config.defaults.profile.modules.unitFrames = {
             ignoreEnergize = true,
             ignoreOther = true
         },
+        border = {enabled = true, size = 12},
         fader = R.config.faders.onShow,
 
-        showBorder = true,
-        borderSize = 12,
-        showPower = false,
         showComboPoints = false,
         targetGlow = true,
         targetArrows = true,
@@ -622,7 +632,7 @@ R.config.defaults.profile.modules.unitFrames = {
 R.config.options.args.unitFrames = {
     type = "group",
     name = "Unit Frames",
-    order = 15,
+    order = 14,
     args = {
         header = {type = "header", name = R.title .. " > Unit Frames", order = 0},
         enabled = {
@@ -671,12 +681,18 @@ R.config.options.args.unitFrames = {
             inline = true,
             args = {
                 health = UF:CreateStatusBarTextureOption("Health", "Set the texture to use for health bars.", "health", 1),
-                healthPrediction = UF:CreateStatusBarTextureOption("Health Prediction (Healing)", "Set the texture to use for health prediction bars.", "healthPrediction", 2),
+                healthPrediction = UF:CreateStatusBarTextureOption("Health Prediction (Healing)",
+                                                                   "Set the texture to use for health prediction bars.",
+                                                                   "healthPrediction", 2),
                 power = UF:CreateStatusBarTextureOption("Power", "Set the texture to use for power bars.", "power", 11),
-                powerPrediction = UF:CreateStatusBarTextureOption("Power Prediction (Power Cost)", "Set the texture to use for power prediction bars.", "powerPrediction", 12),
-                additionalPower = UF:CreateStatusBarTextureOption("Additional Power", "Set the texture to use for power bars.", "additionalPower", 21),
+                powerPrediction = UF:CreateStatusBarTextureOption("Power Prediction (Power Cost)",
+                                                                  "Set the texture to use for power prediction bars.",
+                                                                  "powerPrediction", 12),
+                additionalPower = UF:CreateStatusBarTextureOption("Additional Power", "Set the texture to use for power bars.",
+                                                                  "additionalPower", 21),
                 additionalPowerPrediction = UF:CreateStatusBarTextureOption("Additional Power Prediction (Power Cost)",
-                                                                            "Set the texture to use for additional power prediction bars.", "additionalPowerPrediction", 22),
+                                                                            "Set the texture to use for additional power prediction bars.",
+                                                                            "additionalPowerPrediction", 22),
                 castbar = UF:CreateStatusBarTextureOption("Cast Bars", "Set the texture to use for cast bars.", "castbar", 31)
             }
         },
@@ -843,7 +859,24 @@ R.config.options.args.unitFrames = {
             type = "group",
             name = "Raid",
             order = 19,
-            args = {enabled = UF:CreateUnitEnabledOption("raid", 0), size = UF:CreateUnitSizeOption("raid", 10, true)}
+            args = {
+                enabled = UF:CreateUnitEnabledOption("raid", 0),
+                lineBreak1 = {type = "header", name = "", order = 1},
+                forceShow = {
+                    order = 2,
+                    type = "execute",
+                    name = "Force Show/Hide",
+                    desc = "Forcibly show/hide the raid frames.",
+                    func = function()
+                        if not UF.forceShowRaid then
+                            UF:ForceShowRaid()
+                        else
+                            UF:UnforceShowRaid()
+                        end
+                    end
+                },
+                size = UF:CreateUnitSizeOption("raid", 10, true)
+            }
         },
         tank = {
             type = "group",

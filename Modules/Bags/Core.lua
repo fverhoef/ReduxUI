@@ -290,7 +290,8 @@ function B:UpdateItemButton(bag, slot)
         return
     end
 
-    local texture, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemId = GetContainerItemInfo(bagID, slot)
+    local texture, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemId =
+        GetContainerItemInfo(bagID, slot)
 
     SetItemButtonTexture(button, texture)
     SetItemButtonQuality(button, quality, itemId)
@@ -444,6 +445,8 @@ function B:CreateInventoryFrame()
 
     frame:SetScript("OnHide", B.Inventory_OnHide)
 
+    R:CreateDragFrame(frame, "Inventory", {"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -100, 100})
+
     return frame
 end
 
@@ -463,7 +466,8 @@ function B:InventoryMoney_OnEnter()
         if char.money then
             total = total + char.money
 
-            GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "FULL", false), 1, 1, 1, 1, 1, 1)
+            GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:",
+                                      R:FormatMoney(char.money, "FULL", false), 1, 1, 1, 1, 1, 1)
         end
     end
     GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "FULL", false), 1, 1, 1, 1, 1, 1)
@@ -581,6 +585,8 @@ function B:CreateBankFrame()
     frame:SetScript("OnHide", function()
         CloseBankFrame()
     end)
+
+    R:CreateDragFrame(frame, "Bank", {"BOTTOMLEFT", UIParent, "BOTTOMLEFT", 100, 100})
 
     return frame
 end

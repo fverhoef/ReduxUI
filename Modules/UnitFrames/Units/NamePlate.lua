@@ -25,7 +25,7 @@ function UF:CreateNamePlate()
     -- health
     UF.CreateHealth(self)
     self.Health:SetSize(self:GetWidth() - 2, 16)
-    if not self.cfg.showPower then
+    if not self.cfg.power.enabled then
         self.Health:SetPoint("CENTER", self, 0, 0)
     else
         self.Health:SetPoint("CENTER", self, 0, 4)
@@ -34,7 +34,7 @@ function UF:CreateNamePlate()
     self.Health.colorReaction = true
 
     -- power
-    if self.cfg.showPower then
+    if self.cfg.power.enabled then
         UF.CreatePower(self)
         self.Power:SetHeight(6)
         self:SetHeight(self:GetHeight() + 8)
@@ -42,7 +42,7 @@ function UF:CreateNamePlate()
 
     -- name
     UF.CreateName(self)
-    if not self.cfg.showPower then
+    if not self.cfg.power.enabled then
         self.Name:SetPoint("LEFT", self, "LEFT", 2, 15)
         self.Name:SetPoint("RIGHT", self, "RIGHT", -16, 15)
         self.Name:SetJustifyH("LEFT")
@@ -56,15 +56,15 @@ function UF:CreateNamePlate()
     UF.CreateLevel(self)
     self.Level:SetPoint("RIGHT", self.Health, 0, 0)
     self.Level:SetFont(R.config.db.profile.modules.unitFrames.font, 12, "OUTLINE")
-    if not self.cfg.showPower then
+    if not self.cfg.power.enabled then
         self.Level:SetPoint("RIGHT", self, 0, 15)
     else
         self.Level:SetPoint("RIGHT", self, 0, 23)
     end
 
     -- border
-    if self.cfg.showBorder then
-        self:CreateBorder(self.cfg.borderSize)
+    if self.cfg.border.enabled then
+        self:CreateBorder(self.cfg.border.size)
         self:SetBorderPadding(1, 1, 0, 0)
     end
 

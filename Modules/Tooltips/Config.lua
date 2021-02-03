@@ -53,9 +53,9 @@ R.config.defaults.profile.modules.tooltips = {
 R.config.options.args.tooltips = {    
     type = "group",
     name = "Tooltips",
-    order = 14,
+    order = 13,
     args = {
-        header = {type = "header", name = R.title .. " > Spell Info", order = 0},
+        header = {type = "header", name = R.title .. " > Tooltips", order = 0},
         enabled = {
             type = "toggle",
             name = "Enabled",
