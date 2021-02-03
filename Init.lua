@@ -56,14 +56,17 @@ function R:OnInitialize()
     R:UpdateBlizzardFonts()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
-        if args:match "unlock" then
+        if args:match("unlock") then
             R:UnlockFrames()
-        elseif args:match "lock" then
+        elseif args:match("lock") then
             R:LockFrames()
-        elseif args:match "reset" then
+        elseif args:match("reset") then
             R:ResetFrames()
+        elseif args:match("options") then
+            R.Libs.AceConfigDialog:Open(addonName)
         else
             R:Print("Command list:")
+            R:Print("/" .. R.shortcut .. " options|r, to show the options dialog")
             R:Print("/" .. R.shortcut .. " lock|r, to lock all frames")
             R:Print("/" .. R.shortcut .. " unlock|r, to unlock all frames")
             R:Print("/" .. R.shortcut .. " reset|r, to reset all frames")
