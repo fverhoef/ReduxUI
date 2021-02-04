@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateOfflineIcon = function(self)
     self.OfflineIcon = self:CreateTexture("$parentOfflineIcon", "OVERLAY")
@@ -9,3 +10,5 @@ UF.CreateOfflineIcon = function(self)
 
     return self.OfflineIcon
 end
+
+oUF:RegisterMetaFunction("CreateOfflineIcon", UF.CreateOfflineIcon)

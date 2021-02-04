@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateLeaderIndicator = function(self)
     self.LeaderIndicatorParent = CreateFrame("Frame", nil, self)
@@ -11,3 +12,5 @@ UF.CreateLeaderIndicator = function(self)
 
     return self.LeaderIndicator
 end
+
+oUF:RegisterMetaFunction("CreateLeaderIndicator", UF.CreateLeaderIndicator)

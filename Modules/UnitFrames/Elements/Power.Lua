@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreatePower = function(self)
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
@@ -29,6 +30,8 @@ UF.CreatePower = function(self)
     return self.Power
 end
 
+oUF:RegisterMetaFunction("CreatePower", UF.CreatePower)
+
 UF.UpdatePower = function(self)
     if self.Power then
         local cfg = self.cfg.power
@@ -50,6 +53,8 @@ UF.UpdatePower = function(self)
     end
 end
 
+oUF:RegisterMetaFunction("UpdatePower", UF.UpdatePower)
+
 UF.CreateEnergyManaRegen = function(self)
     self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
     self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
@@ -58,6 +63,8 @@ UF.CreateEnergyManaRegen = function(self)
 
     return self.EnergyManaRegen
 end
+
+oUF:RegisterMetaFunction("CreateEnergyManaRegen", UF.CreateEnergyManaRegen)
 
 UF.CreateAdditionalPower = function(self)
     self.AdditionalPower = CreateFrame("StatusBar", "$parentPower", self)
@@ -77,11 +84,15 @@ UF.CreateAdditionalPower = function(self)
     return self.AdditionalPower
 end
 
+oUF:RegisterMetaFunction("CreateAdditionalPower", UF.CreateAdditionalPower)
+
 UF.UpdateAdditionalPower = function(self)
     if self.AdditionalPower then
         self.AdditionalPower:SetStatusBarTexture(R.config.db.profile.modules.unitFrames.statusbars.additionalPower)
     end
 end
+
+oUF:RegisterMetaFunction("UpdateAdditionalPower", UF.UpdateAdditionalPower)
 
 UF.CreatePowerPrediction = function(self)
     local mainBar = CreateFrame("StatusBar", nil, self.Power)
@@ -110,6 +121,8 @@ UF.CreatePowerPrediction = function(self)
     return self.PowerPrediction
 end
 
+oUF:RegisterMetaFunction("CreatePowerPrediction", UF.CreatePowerPrediction)
+
 UF.UpdatePowerPrediction = function(self)
     if self.PowerPrediction then
         self.PowerPrediction.mainBar:SetStatusBarTexture(R.config.db.profile.modules.unitFrames.statusbars.powerPrediction)
@@ -121,3 +134,5 @@ UF.UpdatePowerPrediction = function(self)
         end
     end
 end
+
+oUF:RegisterMetaFunction("UpdatePowerPrediction", UF.UpdatePowerPrediction)

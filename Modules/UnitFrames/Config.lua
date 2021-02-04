@@ -133,10 +133,10 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
     }
 end
 
-function UF:CreateUnitHealthOption(unit, order, inline)
+function UF:CreateUnitHealthOption(unit, order, inline, name)
     return {
         type = "group",
-        name = "Health",
+        name = name or "Health",
         order = order,
         inline = inline,
         args = {
@@ -217,6 +217,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 13},
         portrait = {enabled = true},
         auras = {
             enabled = false,
@@ -238,6 +239,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = true},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -249,6 +251,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 13},
         portrait = {enabled = true},
         auras = {
             enabled = true,
@@ -269,6 +272,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = true},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -280,6 +284,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 11},
         portrait = {enabled = true},
         auras = {
             enabled = false,
@@ -300,6 +305,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = false},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -311,6 +317,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 11},
         portrait = {enabled = true},
         auras = {
             enabled = true,
@@ -331,6 +338,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = true},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -342,6 +350,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOP", "UIParent", "TOP", 0, 300},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 11},
         portrait = {enabled = true},
         auras = {
             enabled = true,
@@ -362,6 +371,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = true},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -373,6 +383,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 11},
         portrait = {enabled = true},
         auras = {
             enabled = false,
@@ -393,6 +404,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = false},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -405,6 +417,7 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"BOTTOM", "UIParent", "BOTTOM", -550, 320},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 11},
         portrait = {enabled = true},
         auras = {
             enabled = true,
@@ -427,15 +440,19 @@ R.config.defaults.profile.modules.unitFrames = {
         combatfeedback = {enabled = true, fontSize = 14},
         auraHighlight = {enabled = true, mode = "GLOW"},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1},
 
-        xOffset = 0,
-        yOffset = 50,
+        unitAnchorPoint = "BOTTOM",
+        unitSpacing = 50,
+        sortMethod = "INDEX", -- NAME, INDEX
+        sortDir = "ASC", -- ASC, DESC
         showPlayer = false,
         showSolo = false,
-        showInRaid = false
+        showParty = true,
+        showRaid = false
     },
     raid = {
         enabled = true,
@@ -444,12 +461,14 @@ R.config.defaults.profile.modules.unitFrames = {
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 8}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 12},
         portrait = {enabled = false},
         auras = {enabled = false},
         castbar = {enabled = false},
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, mode = "GLOW"},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -495,6 +514,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = false},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -526,6 +546,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = false},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -557,6 +578,7 @@ R.config.defaults.profile.modules.unitFrames = {
         },
         combatfeedback = {enabled = false},
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1}
@@ -566,6 +588,7 @@ R.config.defaults.profile.modules.unitFrames = {
         size = {150, 16},
         health = {enabled = true, height = 16, value = {tag = "[curhp_status]"}},
         power = {enabled = false, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
+        name = {enabled = true, fontSize = 13},
         portrait = {enabled = false},
         auras = {
             enabled = true,
@@ -593,6 +616,7 @@ R.config.defaults.profile.modules.unitFrames = {
             ignoreOther = true
         },
         border = {enabled = true, size = 12},
+        shadow = {enabled = true},
         fader = R.config.faders.onShow,
 
         showComboPoints = false,
@@ -659,18 +683,31 @@ R.config.options.args.unitFrames = {
         },
         lineBreak1 = {type = "header", name = "", order = 2},
         theme = {
-            type = "select",
+            type = "group",
             name = "Theme",
-            desc = "Select the unit frame theme.",
             order = 3,
-            values = UF.themes,
-            get = function()
-                return UF.themes[R.config.db.profile.modules.unitFrames.theme]
-            end,
-            set = function(_, key)
-                R.config.db.profile.modules.unitFrames.theme = UF.themes[key]
-                UF:UpdateAll()
-            end
+            inline = true,
+            args = {
+                desc = {
+                    order = 1,
+                    type = "description",
+                    name = "The theme determines the general look and feel of the unit frames. Setting the theme to 'Custom' will allow you to customize every element of every frame, while using a non-custom theme will lock certain most elements in place."
+                },
+                theme = {
+                    type = "select",
+                    name = "Theme",
+                    desc = "Select the unit frame theme.",
+                    order = 3,
+                    values = UF.themes,
+                    get = function()
+                        return UF.themes[R.config.db.profile.modules.unitFrames.theme]
+                    end,
+                    set = function(_, key)
+                        R.config.db.profile.modules.unitFrames.theme = UF.themes[key]
+                        UF:UpdateAll()
+                    end
+                }
+            }
         },
         lineBreak2 = {type = "header", name = "", order = 4},
         statusbarTextures = {
@@ -701,14 +738,14 @@ R.config.options.args.unitFrames = {
             order = 6,
             inline = true,
             args = {
-                health = UF:CreateStatusBarColorOption("Health", "health", 1),
-                mana = UF:CreateStatusBarColorOption("Mana", "mana", 2),
-                rage = UF:CreateStatusBarColorOption("Rage", "rage", 3),
-                energy = UF:CreateStatusBarColorOption("Energy", "energy", 4),
-                focus = UF:CreateStatusBarColorOption("Focus", "focus", 5),
-                comboPoints = UF:CreateStatusBarColorOption("Combo Points", "comboPoints", 6),
-                castbar = UF:CreateStatusBarColorOption("Castbar", "castbar", 7),
-                castbar_Shielded = UF:CreateStatusBarColorOption("Castbar (Shielded)", "castbar_Shielded", 8),
+                health = UF:CreateStatusBarColorOption("Health", "health", 2),
+                mana = UF:CreateStatusBarColorOption("Mana", "mana", 3),
+                rage = UF:CreateStatusBarColorOption("Rage", "rage", 4),
+                energy = UF:CreateStatusBarColorOption("Energy", "energy", 5),
+                focus = UF:CreateStatusBarColorOption("Focus", "focus", 6),
+                comboPoints = UF:CreateStatusBarColorOption("Combo Points", "comboPoints", 7),
+                castbar = UF:CreateStatusBarColorOption("Castbar", "castbar", 8),
+                castbar_Shielded = UF:CreateStatusBarColorOption("Castbar (Shielded)", "castbar_Shielded", 9),
                 lineBreak1 = {type = "header", name = "", order = 15},
                 colorHealthClass = {
                     type = "toggle",
@@ -790,53 +827,80 @@ R.config.options.args.unitFrames = {
             order = 7,
             inline = true,
             args = {
-                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 0, R.isClassic),
-                demonHunter = UF:CreateClassColorOption("DEMONHUNTER", R:LocalizedClassName("Demon Hunter"), 1, R.isClassic),
-                druid = UF:CreateClassColorOption("DRUID", R:LocalizedClassName("Druid"), 2),
-                hunter = UF:CreateClassColorOption("HUNTER", R:LocalizedClassName("Hunter"), 3),
-                mage = UF:CreateClassColorOption("MAGE", R:LocalizedClassName("Mage"), 4),
-                monk = UF:CreateClassColorOption("MONK", R:LocalizedClassName("Monk"), 5, R.isClassic),
-                paladin = UF:CreateClassColorOption("PALADIN", R:LocalizedClassName("Paladin"), 6),
-                priest = UF:CreateClassColorOption("PRIEST", R:LocalizedClassName("Priest"), 7),
-                rogue = UF:CreateClassColorOption("ROGUE", R:LocalizedClassName("Rogue"), 8),
-                shaman = UF:CreateClassColorOption("SHAMAN", R:LocalizedClassName("Shaman"), 9),
-                warlock = UF:CreateClassColorOption("WARLOCK", R:LocalizedClassName("Warlock"), 10),
-                warrior = UF:CreateClassColorOption("WARRIOR", R:LocalizedClassName("Warrior"), 11)
+                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 10, R.isClassic),
+                demonHunter = UF:CreateClassColorOption("DEMONHUNTER", R:LocalizedClassName("Demon Hunter"), 11, R.isClassic),
+                druid = UF:CreateClassColorOption("DRUID", R:LocalizedClassName("Druid"), 12),
+                hunter = UF:CreateClassColorOption("HUNTER", R:LocalizedClassName("Hunter"), 13),
+                mage = UF:CreateClassColorOption("MAGE", R:LocalizedClassName("Mage"), 14),
+                monk = UF:CreateClassColorOption("MONK", R:LocalizedClassName("Monk"), 15, R.isClassic),
+                paladin = UF:CreateClassColorOption("PALADIN", R:LocalizedClassName("Paladin"), 16),
+                priest = UF:CreateClassColorOption("PRIEST", R:LocalizedClassName("Priest"), 17),
+                rogue = UF:CreateClassColorOption("ROGUE", R:LocalizedClassName("Rogue"), 18),
+                shaman = UF:CreateClassColorOption("SHAMAN", R:LocalizedClassName("Shaman"), 19),
+                warlock = UF:CreateClassColorOption("WARLOCK", R:LocalizedClassName("Warlock"), 20),
+                warrior = UF:CreateClassColorOption("WARRIOR", R:LocalizedClassName("Warrior"), 21)
             }
         },
         player = {
             type = "group",
             name = "Player",
             order = 12,
-            args = {enabled = UF:CreateUnitEnabledOption("player", 0), size = UF:CreateUnitSizeOption("player", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Player", order = 0},
+                enabled = UF:CreateUnitEnabledOption("player", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("player", 10, true),
+                health = UF:CreateUnitHealthOption("player", 11, true)
+            }
         },
         target = {
             type = "group",
             name = "Target",
             order = 13,
-            args = {enabled = UF:CreateUnitEnabledOption("target", 0), size = UF:CreateUnitSizeOption("target", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Target", order = 0},
+                enabled = UF:CreateUnitEnabledOption("target", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("target", 10, true),
+                health = UF:CreateUnitHealthOption("target", 11, true)
+            }
         },
         targettarget = {
             type = "group",
             name = "Target's Target",
             order = 14,
             args = {
-                enabled = UF:CreateUnitEnabledOption("targettarget", 0),
-                size = UF:CreateUnitSizeOption("targettarget", 10, true)
+                header = {type = "header", name = R.title .. " > Unit Frames: Target's Target", order = 0},
+                enabled = UF:CreateUnitEnabledOption("targettarget", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("targettarget", 10, true),
+                health = UF:CreateUnitHealthOption("targettarget", 11, true)
             }
         },
         pet = {
             type = "group",
             name = "Pet",
             order = 15,
-            args = {enabled = UF:CreateUnitEnabledOption("pet", 0), size = UF:CreateUnitSizeOption("pet", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Pet", order = 0},
+                enabled = UF:CreateUnitEnabledOption("pet", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("pet", 10, true),
+                health = UF:CreateUnitHealthOption("pet", 11, true)
+            }
         },
         focus = {
             type = "group",
             name = "Focus Target",
             order = 16,
             hidden = R.isClassic,
-            args = {enabled = UF:CreateUnitEnabledOption("focus", 0), size = UF:CreateUnitSizeOption("focus", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Focus Target", order = 0},
+                enabled = UF:CreateUnitEnabledOption("focus", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("focus", 10, true),
+                health = UF:CreateUnitHealthOption("focus", 11, true)
+            }
         },
         focustarget = {
             type = "group",
@@ -844,25 +908,126 @@ R.config.options.args.unitFrames = {
             order = 17,
             hidden = R.isClassic,
             args = {
-                enabled = UF:CreateUnitEnabledOption("focustarget", 0),
-                size = UF:CreateUnitSizeOption("focustarget", 10, true)
+                header = {type = "header", name = R.title .. " > Unit Frames: Focus Target's Target", order = 0},
+                enabled = UF:CreateUnitEnabledOption("focustarget", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("focustarget", 10, true),
+                health = UF:CreateUnitHealthOption("focustarget", 11, true)
             }
         },
         party = {
             type = "group",
             name = "Party",
             order = 18,
-            args = {enabled = UF:CreateUnitEnabledOption("party", 0), size = UF:CreateUnitSizeOption("party", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Party", order = 0},
+                enabled = UF:CreateUnitEnabledOption("party", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                forceShow = {
+                    order = 3,
+                    type = "execute",
+                    name = function()
+                        return UF.forceShowParty and "Hide Frames" or "Show Frames"
+                    end,
+                    desc = "Forcibly show/hide the party frames.",
+                    func = function()
+                        if not UF.forceShowParty then
+                            UF:ForceShowParty()
+                        else
+                            UF:UnforceShowParty()
+                        end
+                    end
+                },
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 4,
+                    inline = true,
+                    args = {
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.anchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.anchors) do
+                                    if R.config.db.profile.modules.unitFrames.party.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                R.config.db.profile.modules.unitFrames.party.unitAnchorPoint = UF.anchors[key]
+                                UF:UpdatePartyHeader()
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return R.config.db.profile.modules.unitFrames.party.unitSpacing
+                            end,
+                            set = function(_, val)
+                                R.config.db.profile.modules.unitFrames.party.unitSpacing = val
+                                UF:UpdatePartyHeader()
+                            end
+                        }
+                    }
+                },
+                size = UF:CreateUnitSizeOption("party", 10, true),
+                health = UF:CreateUnitHealthOption("party", 11, true),
+                showPlayer = {
+                    type = "toggle",
+                    name = "Show Player",
+                    order = 20,
+                    get = function()
+                        return R.config.db.profile.modules.unitFrames.party.showPlayer
+                    end,
+                    set = function(_, val)
+                        R.config.db.profile.modules.unitFrames.party.showPlayer = val
+                        UF:UpdatePartyHeader()
+                    end
+                },
+                showRaid = {
+                    type = "toggle",
+                    name = "Show in Raid",
+                    order = 21,
+                    get = function()
+                        return R.config.db.profile.modules.unitFrames.party.showRaid
+                    end,
+                    set = function(_, val)
+                        R.config.db.profile.modules.unitFrames.party.showRaid = val
+                        UF:UpdatePartyHeader()
+                    end
+                },
+                showSolo = {
+                    type = "toggle",
+                    name = "Show when Solo",
+                    order = 22,
+                    get = function()
+                        return R.config.db.profile.modules.unitFrames.party.showSolo
+                    end,
+                    set = function(_, val)
+                        R.config.db.profile.modules.unitFrames.party.showSolo = val
+                        UF:UpdatePartyHeader()
+                    end
+                }
+            }
         },
         raid = {
             type = "group",
             name = "Raid",
             order = 19,
             args = {
-                enabled = UF:CreateUnitEnabledOption("raid", 0),
-                lineBreak1 = {type = "header", name = "", order = 1},
+                header = {type = "header", name = R.title .. " > Unit Frames: Raid", order = 0},
+                enabled = UF:CreateUnitEnabledOption("raid", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
                 forceShow = {
-                    order = 2,
+                    order = 3,
                     type = "execute",
                     name = function()
                         return UF.forceShowRaid and "Hide Frames" or "Show Frames"
@@ -879,13 +1044,13 @@ R.config.options.args.unitFrames = {
                 layout = {
                     type = "group",
                     name = "Layout",
-                    order = 3,
+                    order = 4,
                     inline = true,
                     args = {
                         unitAnchorPoint = {
                             type = "select",
                             name = "Unit Anchor Point",
-                            order = 3,
+                            order = 1,
                             values = UF.anchors,
                             get = function()
                                 for key, anchor in ipairs(UF.anchors) do
@@ -902,7 +1067,7 @@ R.config.options.args.unitFrames = {
                         unitSpacing = {
                             type = "range",
                             name = "Unit Spacing",
-                            order = 4,
+                            order = 2,
                             min = 0,
                             softMax = 50,
                             step = 1,
@@ -917,7 +1082,7 @@ R.config.options.args.unitFrames = {
                         groupAnchorPoint = {
                             type = "select",
                             name = "Group Anchor Point",
-                            order = 5,
+                            order = 3,
                             values = UF.anchors,
                             get = function()
                                 for key, anchor in ipairs(UF.anchors) do
@@ -934,7 +1099,7 @@ R.config.options.args.unitFrames = {
                         groupSpacing = {
                             type = "range",
                             name = "Group Spacing",
-                            order = 6,
+                            order = 4,
                             min = 0,
                             softMax = 50,
                             step = 1,
@@ -948,33 +1113,71 @@ R.config.options.args.unitFrames = {
                         }
                     }
                 },
-                size = UF:CreateUnitSizeOption("raid", 4, true, "Unit Size")
+                size = UF:CreateUnitSizeOption("raid", 10, true, "Unit Size"),
+                health = UF:CreateUnitHealthOption("raid", 11, true)
             }
         },
         tank = {
             type = "group",
             name = "Tanks",
             order = 20,
-            args = {enabled = UF:CreateUnitEnabledOption("tank", 0), size = UF:CreateUnitSizeOption("tank", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Tanks", order = 0},
+                enabled = UF:CreateUnitEnabledOption("tank", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("tank", 10, true),
+                health = UF:CreateUnitHealthOption("tank", 11, true)
+            }
         },
         assist = {
             type = "group",
             name = "Assist",
             order = 21,
-            args = {enabled = UF:CreateUnitEnabledOption("assist", 0), size = UF:CreateUnitSizeOption("assist", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Assist", order = 0},
+                enabled = UF:CreateUnitEnabledOption("assist", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("assist", 10, true),
+                health = UF:CreateUnitHealthOption("assist", 11, true)
+            }
         },
         boss = {
             type = "group",
             name = "Boss",
             order = 22,
             hidden = R.isClassic,
-            args = {enabled = UF:CreateUnitEnabledOption("boss", 0), size = UF:CreateUnitSizeOption("boss", 10, true)}
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Boss", order = 0},
+                enabled = UF:CreateUnitEnabledOption("boss", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("boss", 10, true),
+                health = UF:CreateUnitHealthOption("boss", 11, true)
+            }
+        },
+        arena = {
+            type = "group",
+            name = "Arena",
+            order = 23,
+            hidden = R.isClassic,
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Arena", order = 0},
+                enabled = UF:CreateUnitEnabledOption("arena", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("boss", 10, true),
+                health = UF:CreateUnitHealthOption("boss", 11, true)
+            }
         },
         nameplates = {
             type = "group",
             name = "Nameplates",
-            order = 23,
-            args = {enabled = UF:CreateUnitEnabledOption("nameplates", 0), size = UF:CreateUnitSizeOption("nameplates", 10, true)}
+            order = 24,
+            args = {
+                header = {type = "header", name = R.title .. " > Unit Frames: Nameplates", order = 0},
+                enabled = UF:CreateUnitEnabledOption("nameplates", 1),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                size = UF:CreateUnitSizeOption("nameplates", 10, true),
+                health = UF:CreateUnitHealthOption("nameplates", 11, true)
+            }
         }
     }
 }

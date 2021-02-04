@@ -72,6 +72,8 @@ function R:OnInitialize()
             R:Print("/" .. R.shortcut .. " reset|r, to reset all frames")
         end
     end)
+
+    R.framesLocked = true
 end
 
 function R:OnEnable()

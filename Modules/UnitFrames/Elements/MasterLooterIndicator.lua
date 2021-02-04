@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateMasterLooterIndicator = function(self)
     self.MasterLooterIndicatorParent = CreateFrame("Frame", nil, self)
@@ -11,3 +12,5 @@ UF.CreateMasterLooterIndicator = function(self)
 
     return self.MasterLooterIndicator
 end
+
+oUF:RegisterMetaFunction("CreateMasterLooterIndicator", UF.CreateMasterLooterIndicator)

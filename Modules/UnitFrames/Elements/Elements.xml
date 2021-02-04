@@ -21,6 +21,7 @@
     <Script file="QuestIndicator.lua"/>
     <Script file="RaidRoleIndicator.lua"/>
     <Script file="RaidTargetIndicator.lua"/>
+    <Script file="Range.lua"/>
     <Script file="ReadyCheckIndicator.lua"/>
     <Script file="ResurrectIndicator.lua"/>
     <Script file="RestingIndicator.lua"/>

@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateTab = function(self)
     self.Tab = {}
@@ -44,6 +45,8 @@ UF.CreateTab = function(self)
 
     UF.UpdateTab(self)
 end
+
+oUF:RegisterMetaFunction("CreateTab", UF.CreateTab)
 
 UF.UpdateTab = function(self)
     if not self.Tab then

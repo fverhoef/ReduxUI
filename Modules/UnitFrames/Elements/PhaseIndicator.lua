@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreatePhaseIndicator = function(self)
     self.PhaseIndicatorParent = CreateFrame("Frame", nil, self)
@@ -17,3 +18,5 @@ UF.CreatePhaseIndicator = function(self)
 
     return self.PhaseIndicator
 end
+
+oUF:RegisterMetaFunction("CreatePhaseIndicator", UF.CreatePhaseIndicator)

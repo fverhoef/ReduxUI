@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateAuraHighlight = function(self)
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
@@ -24,6 +25,8 @@ UF.CreateAuraHighlight = function(self)
     return self.AuraHighlight
 end
 
+oUF:RegisterMetaFunction("CreateAuraHighlight", UF.CreateAuraHighlight)
+
 UF.UpdateAuraHighlight = function(self)
     local cfg = self.cfg.auraHighlight
     if cfg and cfg.enabled then
@@ -46,6 +49,8 @@ UF.UpdateAuraHighlight = function(self)
         self:EnableElement("AuraHighlight")
     end
 end
+
+oUF:RegisterMetaFunction("UpdateAuraHighlight", UF.UpdateAuraHighlight)
 
 function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
     if debuffType and not wasFiltered then

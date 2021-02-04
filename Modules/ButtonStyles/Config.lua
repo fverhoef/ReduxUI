@@ -37,10 +37,10 @@ R.config.defaults.profile.modules.buttonStyles = {
 
 R.config.options.args.buttons = {    
     type = "group",
-    name = "Buttons",
+    name = "Button Styles",
     order = 5,
     args = {
-        header = {type = "header", name = R.title .. " > Buttons", order = 0},
+        header = {type = "header", name = R.title .. " > Button Styles", order = 0},
         enabled = {
             type = "toggle",
             name = "Enabled",

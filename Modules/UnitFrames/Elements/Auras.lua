@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateAuras = function(self)
     local cfg = self.cfg.auras
@@ -61,6 +62,8 @@ UF.CreateAuras = function(self)
     end
 end
 
+oUF:RegisterMetaFunction("CreateAuras", UF.CreateAuras)
+
 UF.PostCreateAura = function(self, button)
     if LibStub("Masque", true) then
         UF.MasqueGroups.AuraGroup:AddButton(button)
@@ -112,3 +115,5 @@ UF.UpdateAuras = function(self)
         self:DisableElement("Auras")
     end
 end
+
+oUF:RegisterMetaFunction("UpdateAuras", UF.UpdateAuras)

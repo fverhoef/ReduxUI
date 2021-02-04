@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnArena()
+function UF:SpawnArenaHeader()
     local config = R.config.db.profile.modules.unitFrames.arena
     local default = R.config.defaults.profile.modules.unitFrames.arena
 
@@ -27,21 +27,31 @@ function UF:SpawnArena()
     end
 end
 
-function UF:CreateArena()
-    self.cfg = R.config.db.profile.modules.unitFrames.arena
-end
-
-function UF:UpdateArena()
+function UF:UpdateArenaHeader()
     if R.isRetail then
         for i = 1, MAX_ARENA_FRAMES do
-            local self = UF.frames["arena" .. i]
-            if self then
-                UF:UpdateFrame(self)
-
-                if UF:IsBlizzardTheme() then
-                else
-                end
-            end
+            UF:UpdateArena(UF.frames["arena" .. i])
         end
+    end
+end
+
+function UF:CreateArena()
+    self.cfg = R.config.db.profile.modules.unitFrames.arena
+
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+end
+
+function UF:UpdateArena(self)
+    if not self then
+        return
+    end
+
+    UF:UpdateFrame(self)
+
+    if UF:IsBlizzardTheme() then
+    else
     end
 end

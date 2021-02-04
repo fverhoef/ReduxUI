@@ -12,10 +12,17 @@ end
 
 function UF:CreateMouseover()
     self.cfg = R.config.db.profile.modules.unitFrames.mouseover
+
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
 end
 
-function UF:UpdateMouseover()
-    local self = UF.frames.mouseover
-    if self then
+function UF:UpdateMouseover(self)
+    if not self then
+        return
     end
+
+    UF:UpdateFrame(self)
 end

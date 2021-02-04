@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateAssistantIndicator = function(self)
     self.AssistantIndicatorParent = CreateFrame("Frame", nil, self)
@@ -11,3 +12,5 @@ UF.CreateAssistantIndicator = function(self)
 
     return self.AssistantIndicator
 end
+
+oUF:RegisterMetaFunction("CreateAssistantIndicator", UF.CreateAssistantIndicator)

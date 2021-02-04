@@ -23,6 +23,11 @@ function UF:CreateFocusTarget()
 
     self:RegisterForClicks("AnyUp")
 
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
@@ -30,34 +35,34 @@ function UF:CreateFocusTarget()
     self.Texture:SetAllPoints(self)
 
     -- health
-    UF.CreateHealth(self)
+    self:CreateHealth()
     self.Health:SetSize(46, 7)
     self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePower(self)
+    self:CreatePower()
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
     -- name
-    UF.CreateName(self, 11)
+    self:CreateName(11)
     self.Name:SetWidth(110)
     self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
 
     -- portrait
-    UF.CreatePortrait(self)
+    self:CreatePortrait()
     self.Portrait:SetSize(35, 35)
     self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
 end
 
-function UF:UpdateFocusTarget()
-    local self = UF.frames.focustarget
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdateFocusTarget(self)
+    if not self then
+        return
+    end
 
-        if UF:IsBlizzardTheme() then
-        else
-        end
+    UF:UpdateFrame(self)
+
+    if UF:IsBlizzardTheme() then
     end
 end

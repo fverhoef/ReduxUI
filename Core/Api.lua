@@ -64,6 +64,21 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border.color = color
         self.Border.texture = texture
         self.Border.padding = {left, right, top, bottom}
+        self.Border.Show = function(self)
+            for i = 1, 8 do
+                self[i]:Show()
+            end
+        end
+        self.Border.Hide = function(self)
+            for i = 1, 8 do
+                self[i]:Hide()
+            end
+        end
+        self.Border.SetShown = function(self, val)
+            for i = 1, 8 do
+                self[i]:SetShown(val)
+            end
+        end
 
         for i = 1, 8 do
             self.Border[i] = self:CreateTexture(nil, "OVERLAY")

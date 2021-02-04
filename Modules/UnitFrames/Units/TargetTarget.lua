@@ -13,7 +13,6 @@ function UF:SpawnTargetTarget()
 end
 
 function UF:CreateTargetTarget()
-    -- config
     self.cfg = R.config.db.profile.modules.unitFrames.targettarget
 
     local target = UF.frames.target
@@ -27,62 +26,57 @@ function UF:CreateTargetTarget()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-    -- texture
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
-    self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
-    self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
-    self.Texture:SetAllPoints(self)
 
     if self.Texture then
         self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
     end
 
-    -- health
-    UF.CreateHealth(self)
-    self.Health:SetSize(46, 7)
-    self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
-    self.Health.Value:Hide()
-
-    -- power
-    UF.CreatePower(self)
-    self.Power:SetHeight(self.Health:GetHeight())
-    self.Power.Value:Hide()
-
-    -- name
-    UF.CreateName(self, 11)
-    self.Name:SetWidth(110)
-    self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
-
-    -- portrait
-    UF.CreatePortrait(self)
-    self.Portrait:SetSize(35, 35)
-    self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
-
-    -- range check
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5,
-        Update = function(self, inRange, checkedRange, connected)
-            if self.fader and not self:IsShown() then
-                R:StartFadeIn(self, {
-                    fadeInAlpha = self.Range[inRange and "insideAlpha" or "outsideAlpha"],
-                    fadeInDuration = self.faderConfig.fadeInDuration,
-                    fadeInSmooth = self.faderConfig.fadeInSmooth
-                })
-            else
-                self:SetAlpha(self.Range[inRange and "insideAlpha" or "outsideAlpha"])
-            end
-        end
-    }
+    self:CreateHealth()
+    self:CreatePower()
+    self:CreateName(11)
+    self:CreatePortrait()
+    self:CreateRange()
 end
 
-function UF:UpdateTargetTarget()
-    local self = UF.frames.targettarget
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdateTargetTarget(self)
+    if not self then
+        return
+    end
 
-        if UF:IsBlizzardTheme() then
-        else
-        end
+    UF:UpdateFrame(self)
+
+    if UF:IsBlizzardTheme() then
+        self.Border:Hide()
+        self.Shadow:Hide()
+
+        self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
+        self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
+        self.Texture:ClearAllPoints()
+        self.Texture:SetAllPoints(self)
+
+        self.Health:SetSize(46, 7)
+        self.Health:ClearAllPoints()
+        self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
+        self.Health.Value:Hide()
+
+        self.Power:SetHeight(self.Health:GetHeight())
+        self.Power:ClearAllPoints()
+        self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
+        self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
+        self.Power.Value:Hide()
+
+        self.Name:SetWidth(110)
+        self.Name:ClearAllPoints()
+        self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
+
+        self.Portrait:SetSize(35, 35)
+        self.Portrait:ClearAllPoints()
+        self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
     end
 end

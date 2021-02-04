@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreatePvPClassificationIndicator = function(self)
     self.PvPClassificationIndicatorParent = CreateFrame("Frame", nil, self)
@@ -12,3 +13,5 @@ UF.CreatePvPClassificationIndicator = function(self)
 
     return self.PvPClassificationIndicator
 end
+
+oUF:RegisterMetaFunction("CreatePvPClassificationIndicator", UF.CreatePvPClassificationIndicator)

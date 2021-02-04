@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateRaidTargetIndicator = function(self)
     self.RaidTargetIndicatorParent = CreateFrame("Frame", nil, self)
@@ -16,3 +17,5 @@ UF.CreateRaidTargetIndicator = function(self)
 
     return self.RaidTargetIndicator
 end
+
+oUF:RegisterMetaFunction("CreateRaidTargetIndicator", UF.CreateRaidTargetIndicator)

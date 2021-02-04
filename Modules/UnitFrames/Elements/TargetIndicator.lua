@@ -28,6 +28,8 @@ UF.CreateTargetIndicator = function(self)
     return self.TargetIndicator
 end
 
+oUF:RegisterMetaFunction("CreateTargetIndicator", UF.CreateTargetIndicator)
+
 UF.UpdateTargetIndicator = function(self)
     if self.unit and UnitIsUnit(self.unit, "target") then
         if self.cfg.targetGlow then

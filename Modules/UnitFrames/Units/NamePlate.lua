@@ -12,6 +12,12 @@ function UF:SpawnNamePlates()
     end
 end
 
+function UF:UpdateNamePlates()
+    for i, nameplate in ipairs(UF.nameplates) do
+        UF:UpdateNamePlate(nameplate)
+    end
+end
+
 function UF:CreateNamePlate()
     self.cfg = R.config.db.profile.modules.unitFrames.nameplates
 
@@ -22,8 +28,13 @@ function UF:CreateNamePlate()
     -- nameplates are not part of uiparent, they must be multiplied by uiparent scale!
     self:SetScale(1 * UIParent:GetScale())
 
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     -- health
-    UF.CreateHealth(self)
+    self:CreateHealth()
     self.Health:SetSize(self:GetWidth() - 2, 16)
     if not self.cfg.power.enabled then
         self.Health:SetPoint("CENTER", self, 0, 0)
@@ -34,14 +45,14 @@ function UF:CreateNamePlate()
     self.Health.colorReaction = true
 
     -- power
+    self:CreatePower()
     if self.cfg.power.enabled then
-        UF.CreatePower(self)
         self.Power:SetHeight(6)
         self:SetHeight(self:GetHeight() + 8)
     end
 
     -- name
-    UF.CreateName(self)
+    self:CreateName()
     if not self.cfg.power.enabled then
         self.Name:SetPoint("LEFT", self, "LEFT", 2, 15)
         self.Name:SetPoint("RIGHT", self, "RIGHT", -16, 15)
@@ -53,7 +64,7 @@ function UF:CreateNamePlate()
     end
 
     -- level
-    UF.CreateLevel(self)
+    self:CreateLevel()
     self.Level:SetPoint("RIGHT", self.Health, 0, 0)
     self.Level:SetFont(R.config.db.profile.modules.unitFrames.font, 12, "OUTLINE")
     if not self.cfg.power.enabled then
@@ -62,20 +73,9 @@ function UF:CreateNamePlate()
         self.Level:SetPoint("RIGHT", self, 0, 23)
     end
 
-    -- border
-    if self.cfg.border.enabled then
-        self:CreateBorder(self.cfg.border.size)
-        self:SetBorderPadding(1, 1, 0, 0)
-    end
-
-    -- shadow
-    self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
-
     -- auras
+    self:CreateAuras()
     if self.cfg.auras.enabled then
-        UF.CreateAuras(self)
-
         if not self.cfg.auras.showDebuffsOnTop then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 15)
@@ -86,8 +86,8 @@ function UF:CreateNamePlate()
     end
 
     -- castbar
+    self:CreateCastbar()
     if self.cfg.castbar.enabled then
-        UF.CreateCastbar(self)
         self.Castbar:ClearAllPoints()
         if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
             local _, height = unpack(self.cfg.castbar.size)
@@ -100,20 +100,22 @@ function UF:CreateNamePlate()
 
     -- combo points
     if self.cfg.showComboPoints then
-        UF.CreateComboFrame(self)
+        self:CreateComboFrame()
     end
 
-    -- raid target
-    UF.CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator(self)
+    self:CreateThreatIndicator()
+    self:CreateTargetIndicator()
 
-    -- threat glow
-    UF.CreateThreatIndicator(self)
-
-    -- target indicator
-    UF.CreateTargetIndicator(self)
+    table.insert(UF.nameplates, self)
 end
 
-function UF:UpdateNamePlates()
+function UF:UpdateNamePlate(self)
+    if not self then
+        return
+    end
+
+    UF:UpdateFrame(self)
 end
 
 UF.NamePlate_Callback = function(self, event, unit)

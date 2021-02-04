@@ -4,6 +4,7 @@ local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-
 local oUF = ns.oUF or oUF
 
 UF.frames = {}
+UF.nameplates = {}
 UF.forceShowRaid = false
 
 function UF:Initialize()
@@ -21,12 +22,12 @@ function UF:Initialize()
     UF.frames.focusTarget = UF:SpawnFocusTarget()
     UF.frames.mouseover = UF:SpawnMouseOver()
 
-    UF.frames.partyHeader = UF:SpawnParty()
+    UF.frames.partyHeader = UF:SpawnPartyHeader()
     UF.frames.raidHeader = UF:SpawnRaidHeader()
-    UF.frames.tankHeader = UF:SpawnTank()
-    UF.frames.assistHeader = UF:SpawnAssist()
-    UF.frames.bossHeader = UF:SpawnBoss()
-    UF.frames.arenaHeader = UF:SpawnArena()
+    UF.frames.tankHeader = UF:SpawnTankHeader()
+    UF.frames.assistHeader = UF:SpawnAssistHeader()
+    UF.frames.bossHeader = UF:SpawnBossHeader()
+    UF.frames.arenaHeader = UF:SpawnArenaHeader()
 
     UF:SpawnNamePlates()
 
@@ -38,20 +39,20 @@ end
 function UF:UpdateAll()
     UF:UpdateColors()
 
-    UF:UpdatePlayer()
-    UF:UpdateTarget()
-    UF:UpdateTargetTarget()
-    UF:UpdatePet()
-    UF:UpdateFocus()
-    UF:UpdateFocusTarget()
-    UF:UpdateMouseover()
+    UF:UpdatePlayer(UF.frames.player)
+    UF:UpdateTarget(UF.frames.target)
+    UF:UpdateTargetTarget(UF.frames.targetTarget)
+    UF:UpdatePet(UF.frames.pet)
+    UF:UpdateFocus(UF.frames.focus)
+    UF:UpdateFocusTarget(UF.frames.focusTarget)
+    UF:UpdateMouseover(UF.frames.mouseover)
 
-    UF:UpdateParty()
+    UF:UpdatePartyHeader()
     UF:UpdateRaidHeader()
-    UF:UpdateTank()
-    UF:UpdateAssist()
-    UF:UpdateBoss()
-    UF:UpdateArena()
+    UF:UpdateTankHeader()
+    UF:UpdateAssistHeader()
+    UF:UpdateBossHeader()
+    UF:UpdateArenaHeader()
 
     UF:UpdateNamePlates()
 end
@@ -89,17 +90,22 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     return frame
 end
 
-function UF:SpawnHeader(name, index, func, config, defaultConfig)
-    -- oUF:RegisterStyle(addonName .. name, func)
-    -- oUF:SetActiveStyle(addonName .. name)
+function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index)
+    if registerStyle then
+        oUF:RegisterStyle(addonName .. name, func)
+        oUF:SetActiveStyle(addonName .. name)
+    end
 
-    local header = oUF:SpawnHeader(addonName .. name .. "Header" .. index, nil, config.visibility, "showPlayer",
+    local header = oUF:SpawnHeader(addonName .. name .. "Header" .. (index or ""), nil, config.visibility, "showPlayer",
                                    config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty, "showRaid",
-                                   config.showRaid, "point", config.unitAnchorPoint, "groupFilter", tostring(index), "oUF-initialConfigFunction", ([[
+                                   config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index and tostring(index),
+                                   "oUF-initialConfigFunction", ([[
             self:SetWidth(%d)
             self:SetHeight(%d)
             self:GetParent():SetScale(%f)
         ]]):format(config.size[1], config.size[2], config.scale))
+
+    header:SetFrameStrata("LOW")
 
     if config.fader and config.fader.enabled then
         R:CreateFrameFader(header, config.fader)
@@ -115,120 +121,41 @@ function UF:UpdateFrame(self)
 
     self:SetScale(self.cfg.scale or 1)
 
-    UF.UpdateHealth(self)
-    UF.UpdatePower(self)
-    UF.UpdatePowerPrediction(self)
-    UF.UpdateAdditionalPower(self)
-    UF.UpdateCastbar(self)
-    UF.UpdateAuraHighlight(self)
-    UF.UpdateAuras(self)
-    UF.UpdateCombatFeedback(self)
+    self:UpdateHealth()
+    self:UpdatePower()
+    self:UpdatePowerPrediction()
+    self:UpdateAdditionalPower()
+    self:UpdateCastbar()
+    self:UpdateName()
+    self:UpdateAuraHighlight()
+    self:UpdateAuras()
+    self:UpdateCombatFeedback()
 
     if self.Texture then
+        self.Texture:SetTexture(self.cfg.texture)
         self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
     end
+
+    self.Border:SetShown(self.cfg.border.enabled)
+    self.Shadow:SetShown(self.cfg.shadow.enabled)
 
     self:UpdateAllElements("OnUpdate")
 end
 
-local configEnv
-local originalEnvs = {}
-local overrideFuncs = {}
-
-local function CreateConfigEnv()
-    if (configEnv) then
-        return
-    end
-    configEnv = setmetatable({
-        UnitPower = function(unit, displayType)
-            if unit:find("target") or unit:find("focus") then
-                return UnitPower(unit, displayType)
-            end
-
-            return random(1, UnitPowerMax(unit, displayType) or 1)
-        end,
-        UnitHealth = function(unit)
-            if unit:find("target") or unit:find("focus") then
-                return UnitHealth(unit)
-            end
-
-            return random(1, UnitHealthMax(unit))
-        end,
-        UnitName = function(unit)
-            if unit:find("target") or unit:find("focus") then
-                return UnitName(unit)
-            end
-            if E.CreditsList then
-                local max = #E.CreditsList
-                return E.CreditsList[random(1, max)]
-            end
-            return "Test Name"
-        end,
-        UnitClass = function(unit)
-            if unit:find("target") or unit:find("focus") then
-                return UnitClass(unit)
-            end
-
-            local classToken = CLASS_SORT_ORDER[random(1, #(CLASS_SORT_ORDER))]
-            return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
-        end,
-        Hex = function(r, g, b)
-            if type(r) == "table" then
-                if r.r then
-                    r, g, b = r.r, r.g, r.b
-                else
-                    r, g, b = unpack(r)
-                end
-            end
-            return format("|cff%02x%02x%02x", r * 255, g * 255, b * 255)
-        end,
-        ColorGradient = oUF.ColorGradient,
-        _COLORS = oUF.colors
-    }, {
-        __index = _G,
-        __newindex = function(_, key, value)
-            _G[key] = value
-        end
-    })
-
-    overrideFuncs["namecolor"] = oUF.Tags.Methods["namecolor"]
-    overrideFuncs["name:veryshort"] = oUF.Tags.Methods["name:veryshort"]
-    overrideFuncs["name:short"] = oUF.Tags.Methods["name:short"]
-    overrideFuncs["name:medium"] = oUF.Tags.Methods["name:medium"]
-    overrideFuncs["name:long"] = oUF.Tags.Methods["name:long"]
-
-    overrideFuncs["healthcolor"] = oUF.Tags.Methods["healthcolor"]
-    overrideFuncs["health:current"] = oUF.Tags.Methods["health:current"]
-    overrideFuncs["health:deficit"] = oUF.Tags.Methods["health:deficit"]
-    overrideFuncs["health:current-percent"] = oUF.Tags.Methods["health:current-percent"]
-    overrideFuncs["health:current-max"] = oUF.Tags.Methods["health:current-max"]
-    overrideFuncs["health:current-max-percent"] = oUF.Tags.Methods["health:current-max-percent"]
-    overrideFuncs["health:max"] = oUF.Tags.Methods["health:max"]
-    overrideFuncs["health:percent"] = oUF.Tags.Methods["health:percent"]
-
-    overrideFuncs["powercolor"] = oUF.Tags.Methods["powercolor"]
-    overrideFuncs["power:current"] = oUF.Tags.Methods["power:current"]
-    overrideFuncs["power:deficit"] = oUF.Tags.Methods["power:deficit"]
-    overrideFuncs["power:current-percent"] = oUF.Tags.Methods["power:current-percent"]
-    overrideFuncs["power:current-max"] = oUF.Tags.Methods["power:current-max"]
-    overrideFuncs["power:current-max-percent"] = oUF.Tags.Methods["power:current-max-percent"]
-    overrideFuncs["power:max"] = oUF.Tags.Methods["power:max"]
-    overrideFuncs["power:percent"] = oUF.Tags.Methods["power:percent"]
-end
-
 function UF:ForceShow(frame)
-    if InCombatLockdown() then
-        return;
+    if not frame or InCombatLockdown() then
+        return
     end
     if not frame.isForced then
         frame.oldUnit = frame.unit
         frame.unit = "player"
+        frame.forceShowAuras = true
         frame.isForced = true
         frame.oldOnUpdate = frame:GetScript("OnUpdate")
     end
 
     frame:SetScript("OnUpdate", nil)
-    frame.forceShowAuras = true
+
     UnregisterUnitWatch(frame)
     RegisterUnitWatch(frame, true)
 
@@ -249,16 +176,13 @@ function UF:ForceShow(frame)
 end
 
 function UF:UnforceShow(frame)
-    if InCombatLockdown() then
-        return;
-    end
-    if not frame.isForced then
+    if not frame or not frame.isForced or InCombatLockdown() then
         return
     end
+
     frame.forceShowAuras = nil
     frame.isForced = nil
 
-    -- Ask the SecureStateDriver to show/hide the frame for us
     UnregisterUnitWatch(frame)
     RegisterUnitWatch(frame)
 
@@ -270,8 +194,6 @@ function UF:UnforceShow(frame)
     end
 
     frame.unit = frame.oldUnit or frame.unit
-    -- If we're visible force an update so everything is properly in a
-    -- non-config mode state
     if frame:IsVisible() and frame.Update then
         frame:Update()
     end
@@ -285,72 +207,50 @@ function UF:UnforceShow(frame)
     end
 end
 
-function UF:ForceShowRaid()
-    if InCombatLockdown() then
+function UF:ForceShowHeader(header)
+    if not header or header.isForced then
         return
     end
 
-    CreateConfigEnv()
-    for _, func in pairs(overrideFuncs) do
-        if type(func) == "function" then
-            if not originalEnvs[func] then
-                originalEnvs[func] = getfenv(func)
-                setfenv(func, configEnv)
-            end
+    if header:IsShown() then
+        header.isForced = true
+        header.forceShow = true
+        header:SetAttribute("startingIndex", -4)
+
+        for i = 1, header:GetNumChildren() do
+            local child = header:GetAttribute("child" .. i)
+            self:ForceShow(child)
+        end
+
+        if header.Update then
+            header:Update()
         end
     end
-
-    for _, group in ipairs(UF.frames.raidHeader.groups) do
-        if group:IsShown() then
-            group.isForced = true
-            group.forceShow = true
-            group:SetAttribute("startingIndex", -4)
-
-            for i = 1, group:GetNumChildren() do
-                local child = group:GetAttribute("child" .. i)
-                self:ForceShow(child)
-            end
-        
-            if group.Update then
-                group:Update()
-            end
-        end
-    end
-
-    UF.forceShowRaid = true
 end
 
-function UF:UnforceShowRaid()
-    if InCombatLockdown() then
+function UF:UnforceShowHeader(header)
+    if not header or not header.isForced then
         return
     end
 
-    for func, env in pairs(originalEnvs) do
-        setfenv(func, env)
-        originalEnvs[func] = nil
-    end
+    if header:IsShown() then
+        header.isForced = nil
+        header.forceShow = nil
+        header:SetAttribute("startingIndex", 1)
 
-    for _, group in ipairs(UF.frames.raidHeader.groups) do
-        if group:IsShown() then
-            group.isForced = nil
-            group.forceShow = nil
-            group:SetAttribute("startingIndex", 1)
+        for i = 1, header:GetNumChildren() do
+            local child = header:GetAttribute("child" .. i)
+            self:UnforceShow(child)
+        end
 
-            for i = 1, group:GetNumChildren() do
-                local child = group:GetAttribute("child" .. i)
-                self:UnforceShow(child)
-            end
-        
-            if group.Update then
-                group:Update()
-            end
+        if header.Update then
+            header:Update()
         end
     end
-
-    UF.forceShowRaid = false
 end
 
 function UF:PLAYER_REGEN_DISABLED()
+    UF:UnforceShowParty()
     UF:UnforceShowRaid()
 end
 

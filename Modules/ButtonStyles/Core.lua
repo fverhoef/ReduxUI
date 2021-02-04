@@ -262,7 +262,7 @@ function BS:UpdateAuraButton(button)
 
     local borderColor = R.config.db.profile.borders.color
     if button.isDebuff then
-        local debuffColor = button.filter == "HARMFUL" and _G.DebuffTypeColor[button.debuffType]
+        local debuffColor = _G.DebuffTypeColor[(button.debuffType or "none")]
         if debuffColor then
             borderColor = {debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1}
         end
@@ -580,10 +580,18 @@ end
 function BS:BuffFrame_Update()
     local button
     for i = 1, BUFF_MAX_DISPLAY do
-        BS:StyleAuraButton(_G["BuffButton" .. i])
+        button = _G["BuffButton" .. i]
+        if button then
+            button.isBuff = true
+            BS:StyleAuraButton(button)
+        end
     end
     for i = 1, DEBUFF_MAX_DISPLAY do
-        BS:StyleAuraButton(_G["DebuffButton" .. i])
+        button = _G["DebuffButton" .. i]
+        if button then
+            button.isDebuff = true
+            BS:StyleAuraButton(button)
+        end
     end
     for i = 1, NUM_TEMP_ENCHANT_FRAMES do
         button = _G["TempEnchant" .. i]

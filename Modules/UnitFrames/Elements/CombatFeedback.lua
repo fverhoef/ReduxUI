@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateCombatFeedback = function(self)
     local cfg = self.cfg.combatfeedback
@@ -20,6 +21,8 @@ UF.CreateCombatFeedback = function(self)
     return self.CombatFeedbackText
 end
 
+oUF:RegisterMetaFunction("CreateCombatFeedback", UF.CreateCombatFeedback)
+
 UF.UpdateCombatFeedback = function(self)
     if self.cfg.combatfeedback.enabled then
         self:EnableElement("CombatFeedbackText")
@@ -27,3 +30,5 @@ UF.UpdateCombatFeedback = function(self)
         self:DisableElement("CombatFeedbackText")
     end
 end
+
+oUF:RegisterMetaFunction("UpdateCombatFeedback", UF.UpdateCombatFeedback)

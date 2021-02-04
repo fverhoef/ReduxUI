@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateCastbar = function(self)
     local cfg = self.cfg.castbar
@@ -59,6 +60,8 @@ UF.CreateCastbar = function(self)
     return self.Castbar
 end
 
+oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
+
 UF.UpdateCastbar = function(self)
     local cfg = self.cfg.castbar
     if cfg.enabled then
@@ -110,3 +113,5 @@ UF.UpdateCastbar = function(self)
         self:DisableElement("Castbar")
     end
 end
+
+oUF:RegisterMetaFunction("UpdateCastbar", UF.UpdateCastbar)

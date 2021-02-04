@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateComboFrame = function(self)
     if (R.PlayerClass ~= "ROGUE" and R.PlayerClass ~= "DRUID") then
@@ -100,3 +101,5 @@ UF.CreateComboFrame = function(self)
 
     return self.ComboFrame
 end
+
+oUF:RegisterMetaFunction("CreateComboFrame", UF.CreateComboFrame)

@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreatePvPIndicator = function(self)
     self.PvPIndicatorParent = CreateFrame("Frame", nil, self)
@@ -11,3 +12,5 @@ UF.CreatePvPIndicator = function(self)
 
     return self.PvPIndicator
 end
+
+oUF:RegisterMetaFunction("CreatePvPIndicator", UF.CreatePvPIndicator)

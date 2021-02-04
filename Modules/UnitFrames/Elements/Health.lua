@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateHealth = function(self)
     self.Health = CreateFrame("StatusBar", nil, self)
@@ -64,6 +65,8 @@ UF.CreateHealth = function(self)
     return self.Health
 end
 
+oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)
+
 UF.UpdateHealth = function(self)
     if self.Health then
         self.Health:SetStatusBarTexture(R.config.db.profile.modules.unitFrames.statusbars.health)
@@ -82,3 +85,5 @@ UF.UpdateHealth = function(self)
         end
     end
 end
+
+oUF:RegisterMetaFunction("UpdateHealth", UF.UpdateHealth)

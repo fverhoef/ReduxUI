@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateGroupRoleIndicator = function(self)
     self.GroupRoleIndicatorParent = CreateFrame("Frame", nil, self)
@@ -19,3 +20,5 @@ UF.CreateGroupRoleIndicator = function(self)
 
     return self.GroupRoleIndicator
 end
+
+oUF:RegisterMetaFunction("CreateGroupRoleIndicator", UF.CreateGroupRoleIndicator)

@@ -137,6 +137,7 @@ function R:LockFrames()
         R:LockFrame(frame)
     end
     R:Print("Frames locked.")
+    R.framesLocked = true
 end
 
 function R:UnlockFrames()
@@ -144,6 +145,7 @@ function R:UnlockFrames()
         R:UnlockFrame(frame)
     end
     R:Print("Frames unlocked.")
+    R.framesLocked = false
 end
 
 function R:ResetFrames()

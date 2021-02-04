@@ -3,22 +3,13 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnParty()
+function UF:SpawnPartyHeader()
     local config = R.config.db.profile.modules.unitFrames.party
     local default = R.config.db.profile.modules.unitFrames.party
 
     if config.enabled then
-        oUF:RegisterStyle(addonName .. "Party", UF.CreateParty)
-        oUF:SetActiveStyle(addonName .. "Party")
-        local partyHeader = oUF:SpawnHeader(addonName .. "PartyHeader", nil, (config.showInRaid and "party,raid") or "party", "showPlayer", config.showPlayer, "showSolo",
-                                            config.showSolo, "showParty", true, "showRaid", config.showInRaid, "point", "BOTTOM", "xOffset", config.xOffset, "yOffset",
-                                            config.yOffset, "sortMethod", "NAME", "oUF-initialConfigFunction", ([[
-                self:SetWidth(%d)
-                self:SetHeight(%d)
-                self:GetParent():SetScale(%f)
-            ]]):format(config.size[1], config.size[2], config.scale or 1))
+        local partyHeader = UF:SpawnHeader("Party", UF.CreateParty, config, default, true)
         partyHeader:SetPoint(unpack(config.point))
-        partyHeader:SetFrameStrata("LOW")
         partyHeader:Show()
         partyHeader.cfg = config
 
@@ -32,6 +23,53 @@ function UF:SpawnParty()
     end
 end
 
+function UF:UpdatePartyHeader()
+    if not UF.frames.partyHeader then
+        return
+    end
+
+    local group = UF.frames.partyHeader
+
+    for i = 1, group:GetNumChildren() do
+        local child = group:GetAttribute("child" .. i)
+        child:ClearAllPoints()
+        UF:UpdateParty(child)
+    end
+
+    group:SetAttribute("point", group.cfg.unitAnchorPoint)
+    if group.cfg.unitAnchorPoint == "LEFT" or group.cfg.unitAnchorPoint == "RIGHT" then
+        group:SetAttribute("xOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "RIGHT" and -1 or 1))
+        group:SetAttribute("yOffset", 0)
+        group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+    else
+        group:SetAttribute("xOffset", 0)
+        group:SetAttribute("yOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "TOP" and -1 or 1))
+        group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+    end
+
+    group:SetAttribute("maxColumns", 1)
+    group:SetAttribute("unitsPerColumn", 5)
+    group:SetAttribute("sortMethod", group.cfg.sortMethod)
+    group:SetAttribute("sortDir", group.cfg.sortDir)
+
+    if not group.isForced then
+        if not group.initialized then
+            group:SetAttribute("startingIndex", -4)
+            group:Show()
+            group.initialized = true
+        end
+        group:SetAttribute("startingIndex", 1)
+        group:SetAttribute("visibility", (group.cfg.showRaid and "party,raid") or "party")
+    else
+        group:SetAttribute("visibility", nil)
+    end
+
+    group:SetAttribute("showPlayer", group.cfg.showPlayer)
+    group:SetAttribute("showSolo", group.cfg.showSolo)
+    group:SetAttribute("showParty", group.cfg.showParty)
+    group:SetAttribute("showRaid", group.cfg.showRaid)
+end
+
 function UF:CreateParty()
     self.cfg = R.config.db.profile.modules.unitFrames.party
 
@@ -42,91 +80,35 @@ function UF:CreateParty()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-    -- texture
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
-    self.Texture:SetTexture(R.media.textures.unitFrames.partyFrame)
-    self.Texture:SetSize(128, 64)
-    self.Texture:SetPoint("TOPLEFT", self, 0, -2)
 
-    if self.Texture then
-        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
-    end
+    self:CreateHealth()
+    self:CreatePower()
+    self:CreateName(11)
+    self:CreatePortrait()
+    self:CreateCombatFeedback()
+    self:CreatePvPIndicator()
+    self:CreateLeaderIndicator()
+    self:CreateAssistantIndicator()
+    self:CreateMasterLooterIndicator()
+    self:CreateRaidTargetIndicator(self)
+    self:CreateOfflineIcon()
+    self:CreateReadyCheckIndicator()
+    self:CreateRaidRoleIndicator()
+    self:CreateResurrectIndicator()
 
-    -- health
-    UF.CreateHealth(self)
-    self.Health:SetSize(70, 7)
-    self.Health:SetPoint("TOPLEFT", self.Texture, 47, -12)
-    self.Health.Value:Hide()
-
-    -- power
-    UF.CreatePower(self)
-    self.Power:SetHeight(self.Health:GetHeight())
-    self.Power.Value:Hide()
-
-    -- name
-    UF.CreateName(self, 11)
-    self.Name:SetWidth(110)
-    self.Name:SetJustifyH("LEFT")
-    self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
-
-    -- portrait
-    UF.CreatePortrait(self)
-    self.Portrait:SetSize(37, 37)
-    self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
-    UF.CreateCombatFeedback(self)
-
-    -- pvp
-    UF.CreatePvPIndicator(self)
-    self.PvPIndicator:SetSize(25, 25)
-    self.PvPIndicator:SetPoint("LEFT", self.Texture, "LEFT", -9, 5)
-
-    -- leader
-    UF.CreateLeaderIndicator(self)
-    self.LeaderIndicator:SetSize(14, 14)
-    self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOPLEFT", 1, -1)
-
-    -- assistant
-    UF.CreateAssistantIndicator(self)
-    self.AssistantIndicator:SetSize(14, 14)
-    self.AssistantIndicator:SetPoint("CENTER", self.Portrait, "TOPLEFT", 1, -1)
-
-    -- master loot
-    UF.CreateMasterLooterIndicator(self)
-    self.MasterLooterIndicator:SetSize(12, 12)
-    self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOPRIGHT", -4, 0)
-
-    -- raid target
-    UF.CreateRaidTargetIndicator(self)
-    self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, 2)
-
-    -- phase
     if not R.isClassic then
-        UF.CreatePhaseIndicator(self)
+        self:CreatePhaseIndicator()
+        self:CreateGroupRoleIndicator()
     end
 
-    -- offline
-    UF.CreateOfflineIcon(self)
-    self.OfflineIcon:SetSize(48, 48)
-
-    -- ready check
-    UF.CreateReadyCheckIndicator(self)
-
-    -- role
-    if not R.isClassic then
-        UF.CreateGroupRoleIndicator(self)
-        self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
-    end
-
-    -- raid role
-    UF.CreateRaidRoleIndicator(self)
-    self.RaidRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
-
-    -- resurrect
-    UF.CreateResurrectIndicator(self)
-
-    -- auras
+    self:CreateAuras()
     if self.cfg.auras.enabled then
-        UF.CreateAuras(self)
         if self.Auras then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
@@ -141,9 +123,8 @@ function UF:CreateParty()
         end
     end
 
-    -- castbar
+    self:CreateCastbar()
     if self.cfg.castbar.enabled then
-        UF.CreateCastbar(self)
         if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
             local _, height = unpack(self.cfg.castbar.size)
             local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
@@ -153,35 +134,82 @@ function UF:CreateParty()
         end
     end
 
-    -- range check
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5,
-        Update = function(self, inRange, checkedRange, connected)
-            if self.fader and not self:IsShown() then
-                R:StartFadeIn(self, {
-                    fadeInAlpha = self.Range[inRange and "insideAlpha" or "outsideAlpha"],
-                    fadeInDuration = self.faderConfig.fadeInDuration,
-                    fadeInSmooth = self.faderConfig.fadeInSmooth
-                })
-            else
-                self:SetAlpha(self.Range[inRange and "insideAlpha" or "outsideAlpha"])
-            end
-        end
-    }
-
-    -- aura highlight
-    UF.CreateAuraHighlight(self)
+    self:CreateRange()
+    self:CreateAuraHighlight()
 end
 
-function UF:UpdateParty()
-    local header = UF.frames.partyHeader
-    local self = nil
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdateParty(self)
+    if not self then
+        return
+    end
 
-        if UF:IsBlizzardTheme() then
-        else
+    UF:UpdateFrame(self)
+
+    if UF:IsBlizzardTheme() then
+        self.Border:Hide()
+        self.Shadow:Hide()
+        
+        self.Texture:SetTexture(R.media.textures.unitFrames.partyFrame)
+        self.Texture:SetSize(128, 64)
+        self.Texture:SetPoint("TOPLEFT", self, 0, -2)
+        
+        self.Health:SetSize(70, 7)
+        self.Health:ClearAllPoints()
+        self.Health:SetPoint("TOPLEFT", self.Texture, 47, -12)
+        self.Health.Value:Hide()
+
+        self.Power:SetHeight(self.Health:GetHeight())
+        self.Power:ClearAllPoints()
+        self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
+        self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
+        self.Power.Value:Hide()
+
+        self.Name:SetWidth(110)
+        self.Name:SetJustifyH("LEFT")
+        self.Name:ClearAllPoints()
+        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
+
+        self.Portrait:SetSize(37, 37)
+        self.Portrait:ClearAllPoints()
+        self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
+
+        self.OfflineIcon:SetSize(48, 48)
+
+        self.PvPIndicator:SetSize(25, 25)
+        self.PvPIndicator:ClearAllPoints()
+        self.PvPIndicator:SetPoint("LEFT", self.Texture, "LEFT", -9, 5)
+
+        self.LeaderIndicator:SetSize(14, 14)
+        self.LeaderIndicator:ClearAllPoints()
+        self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOPLEFT", 1, -1)
+
+        self.AssistantIndicator:SetSize(14, 14)
+        self.AssistantIndicator:ClearAllPoints()
+        self.AssistantIndicator:SetPoint("CENTER", self.Portrait, "TOPLEFT", 1, -1)
+
+        self.MasterLooterIndicator:SetSize(12, 12)
+        self.MasterLooterIndicator:ClearAllPoints()
+        self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOPRIGHT", -4, 0)
+
+        self.RaidTargetIndicator:ClearAllPoints()
+        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, 2)
+
+        self.RaidRoleIndicator:ClearAllPoints()
+        self.RaidRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
+
+        if not R.isClassic then
+            self.GroupRoleIndicator:ClearAllPoints()
+            self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
         end
     end
+end
+
+function UF:ForceShowParty()
+    UF:ForceShowHeader(UF.frames.partyHeader)
+    UF.forceShowParty = true
+end
+
+function UF:UnforceShowParty()
+    UF:UnforceShowHeader(UF.frames.partyHeader)
+    UF.forceShowParty = false
 end

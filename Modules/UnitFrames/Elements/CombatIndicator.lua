@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateCombatIndicator = function(self)
     self.CombatIndicatorParent = CreateFrame("Frame", nil, self)
@@ -23,3 +24,5 @@ UF.CreateCombatIndicator = function(self)
 
     return self.CombatIndicator
 end
+
+oUF:RegisterMetaFunction("CreateCombatIndicator", UF.CreateCombatIndicator)

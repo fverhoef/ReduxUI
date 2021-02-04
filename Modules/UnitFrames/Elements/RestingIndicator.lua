@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateRestingIndicator = function(self)
     self.RestingIndicatorParent = CreateFrame("Frame", nil, self)
@@ -21,3 +22,5 @@ UF.CreateRestingIndicator = function(self)
 
     return self.RestingIndicator
 end
+
+oUF:RegisterMetaFunction("CreateRestingIndicator", UF.CreateRestingIndicator)

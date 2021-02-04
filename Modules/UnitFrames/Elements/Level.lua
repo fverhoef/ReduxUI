@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateLevel = function(self)
     self.LevelParent = CreateFrame("Frame", nil, self)
@@ -13,3 +14,5 @@ UF.CreateLevel = function(self)
 
     return self.Level
 end
+
+oUF:RegisterMetaFunction("CreateLevel", UF.CreateLevel)

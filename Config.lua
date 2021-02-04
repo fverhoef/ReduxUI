@@ -45,10 +45,34 @@ R.config.options = {
             args = {
                 header = {type = "header", name = R.title .. " > General", order = 0},
                 desc = {order = 1, type = "description", name = "These are features that apply to every module."},
+                toggleFrameLock = {
+                    order = 2,
+                    type = "execute",
+                    name = function()
+                        return R.framesLocked and "Unlock Frames" or "Lock Frames"
+                    end,
+                    desc = "Lock/unlock all movable frames.",
+                    func = function()
+                        if R.framesLocked then
+                            R:UnlockFrames()
+                        else
+                            R:LockFrames()
+                        end
+                    end
+                },
+                resetFrames = {
+                    order = 3,
+                    type = "execute",
+                    name = "Reset Frames",
+                    desc = "Reset the position of all movable frames.",
+                    func = function()
+                        R:ResetFrames()
+                    end
+                },
                 fonts = {
                     type = "group",
                     name = "Fonts",
-                    order = 2,
+                    order = 10,
                     inline = true,
                     args = {
                         normal = {
@@ -194,6 +218,7 @@ function R:SetupConfig()
     end)
 
     AddLogo(R.config.dialog)
+    R.Libs.AceConfigDialog:SetDefaultSize(addonName, 900, 700)
 end
 
 function R:RefreshConfig()

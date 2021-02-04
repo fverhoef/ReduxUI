@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateQuestIndicator = function(self)
     self.QuestIndicatorParent = CreateFrame("Frame", nil, self)
@@ -12,3 +13,5 @@ UF.CreateQuestIndicator = function(self)
 
     return self.QuestIndicator
 end
+
+oUF:RegisterMetaFunction("CreateQuestIndicator", UF.CreateQuestIndicator)

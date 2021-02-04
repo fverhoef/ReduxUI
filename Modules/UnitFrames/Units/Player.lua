@@ -24,37 +24,42 @@ function UF:CreatePlayer()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
-    UF.CreateHealth(self)
-    UF.CreatePower(self)
+    self:CreateHealth()
+    self:CreatePower()
 
     if R.PlayerClass == "DRUID" then
-        UF.CreateAdditionalPower(self)
+        self:CreateAdditionalPower()
     end
 
-    UF.CreatePowerPrediction(self)
-    UF.CreateEnergyManaRegen(self)
-    UF.CreateName(self)
-    UF.CreateLevel(self)
-    UF.CreatePortrait(self)
-    UF.CreateCombatFeedback(self)
+    self:CreatePowerPrediction()
+    self:CreateEnergyManaRegen()
+    self:CreateName()
+    self:CreateLevel()
+    self:CreatePortrait()
+    self:CreateCombatFeedback()
 
-    UF.CreatePvPIndicator(self)
-    UF.CreateLeaderIndicator(self)
-    UF.CreateAssistantIndicator(self)
-    UF.CreateMasterLooterIndicator(self)
-    UF.CreateRaidRoleIndicator(self)
-    UF.CreateRaidTargetIndicator(self)
+    self:CreatePvPIndicator()
+    self:CreateLeaderIndicator()
+    self:CreateAssistantIndicator()
+    self:CreateMasterLooterIndicator()
+    self:CreateRaidRoleIndicator()
+    self:CreateRaidTargetIndicator(self)
 
     if not R.isClassic then
-        UF.CreatePhaseIndicator(self)
-        UF.CreateGroupRoleIndicator(self)
-        UF.CreatePvPClassificationIndicator(self)
+        self:CreatePhaseIndicator()
+        self:CreateGroupRoleIndicator()
+        self:CreatePvPClassificationIndicator()
     end
 
-    UF.CreateOfflineIcon(self)
-    UF.CreateReadyCheckIndicator(self)
+    self:CreateOfflineIcon()
+    self:CreateReadyCheckIndicator()
 
     UF.CreateRestingIndicator(self)
     self.RestingIndicator.PostUpdate = function()
@@ -74,16 +79,16 @@ function UF:CreatePlayer()
             self.Level:SetAlpha(1)
         end
     end
-    UF.CreateResurrectIndicator(self)
+    self:CreateResurrectIndicator()
     -- UF.CreateStatusFlash(self)
-    UF.CreateThreatIndicator(self)
-    UF.CreateTab(self)
+    self:CreateThreatIndicator()
+    self:CreateTab()
 
-    UF.CreateAuras(self)
-    UF.CreateCastbar(self)
+    self:CreateAuras()
+    self:CreateCastbar()
 
     if not R.isClassic then
-        UF.CreateComboFrame(self)
+        self:CreateComboFrame()
     end
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD", UF.Player_OnEvent, true)
@@ -96,85 +101,87 @@ function UF:CreatePlayer()
     self:RegisterEvent("CINEMATIC_STOP", UF.Player_OnEvent, true)
 end
 
-function UF:UpdatePlayer()
-    local self = UF.frames.player
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdatePlayer(self)
+    if not self then
+        return
+    end
 
-        if UF:IsBlizzardTheme() then
-            self.Health:ClearAllPoints()
-            self.Health.Value:ClearAllPoints()
-            self.Power:ClearAllPoints()
-            if R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard_LargeHealth then
-                self.Health:SetSize(119, 28)
-                self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
-                self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
-                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
-                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
-                self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame_LargerHealth)
-                if self.StatusFlash then
-                    self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus_LargerHealth)
-                end
-            else
-                self.Health:SetSize(119, 12)
-                self.Health:SetPoint("TOPLEFT", self.Texture, 107, -41)
-                self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
-                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
-                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
-                self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame)
-                if self.StatusFlash then
-                    self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus)
-                end
-            end
+    UF:UpdateFrame(self)
 
-            self.Texture:ClearAllPoints()
-            self.Texture:SetTexCoord(1, 0.09375, 0, 0.78125)
-            self.Texture:SetSize(232, 100)
-            self.Texture:SetPoint("CENTER", self, -20, -7)
-
-            self.Power:SetHeight(10)
-            UF.UpdatePowerPrediction(self)
-
-            self.Name:ClearAllPoints()
-            self.Name:SetWidth(110)
-            self.Name:SetPoint("CENTER", self.Texture, 50, 19)
-
-            self.Level:ClearAllPoints()
-            self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -17)
-
-            self.Portrait:ClearAllPoints()
-            self.Portrait:SetSize(64, 64)
-            self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
-
-            self.PvPIndicator:ClearAllPoints()
-            self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
-
-            self.LeaderIndicator:ClearAllPoints()
-            self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
-
-            self.AssistantIndicator:ClearAllPoints()
-            self.AssistantIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
-
-            self.MasterLooterIndicator:ClearAllPoints()
-            self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
-
-            if not R.isClassic then
-                self.GroupRoleIndicator:ClearAllPoints()
-                self.GroupRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
-            end
-            self.RaidRoleIndicator:ClearAllPoints()
-            self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
-
-            self.Castbar:ClearAllPoints()
-            if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-                local _, height = unpack(self.cfg.castbar.size)
-                local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-                self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", leftPadding / 2, 160)
-            else
-                self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", 0, 160)
+    if UF:IsBlizzardTheme() then
+        self.Border:Hide()
+        self.Shadow:Hide()
+        
+        self.Health:ClearAllPoints()
+        self.Health.Value:ClearAllPoints()
+        self.Power:ClearAllPoints()
+        if R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard_LargeHealth then
+            self.Health:SetSize(119, 28)
+            self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
+            self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
+            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
+            self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
+            self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame_LargerHealth)
+            if self.StatusFlash then
+                self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus_LargerHealth)
             end
         else
-            self.Texture:SetTexture(nil)
+            self.Health:SetSize(119, 12)
+            self.Health:SetPoint("TOPLEFT", self.Texture, 107, -41)
+            self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
+            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
+            self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
+            self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame)
+            if self.StatusFlash then
+                self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus)
+            end
+        end
+
+        self.Texture:ClearAllPoints()
+        self.Texture:SetTexCoord(1, 0.09375, 0, 0.78125)
+        self.Texture:SetSize(232, 100)
+        self.Texture:SetPoint("CENTER", self, -20, -7)
+
+        self.Power:SetHeight(10)
+        UF.UpdatePowerPrediction(self)
+
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("CENTER", self.Texture, 50, 19)
+
+        self.Level:ClearAllPoints()
+        self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -17)
+
+        self.Portrait:ClearAllPoints()
+        self.Portrait:SetSize(64, 64)
+        self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
+
+        self.PvPIndicator:ClearAllPoints()
+        self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
+
+        self.LeaderIndicator:ClearAllPoints()
+        self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
+
+        self.AssistantIndicator:ClearAllPoints()
+        self.AssistantIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
+
+        self.MasterLooterIndicator:ClearAllPoints()
+        self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
+
+        if not R.isClassic then
+            self.GroupRoleIndicator:ClearAllPoints()
+            self.GroupRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
+        end
+        self.RaidRoleIndicator:ClearAllPoints()
+        self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
+
+        self.Castbar:ClearAllPoints()
+        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
+            local _, height = unpack(self.cfg.castbar.size)
+            local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
+            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", leftPadding / 2, 160)
+        else
+            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", 0, 160)
         end
     end
 end

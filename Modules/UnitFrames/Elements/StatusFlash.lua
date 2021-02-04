@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local oUF = ns.oUF or oUF
 
 UF.CreateStatusFlash = function(self)
     self.StatusFlashParent = CreateFrame("Frame", nil, self)
@@ -20,6 +21,8 @@ UF.CreateStatusFlash = function(self)
 
     return self.StatusFlash
 end
+
+oUF:RegisterMetaFunction("CreateStatusFlash", UF.CreateStatusFlash)
 
 UF.UpdateStatusFlashVisibility = function(self)
     if not self.StatusFlash then

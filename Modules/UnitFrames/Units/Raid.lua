@@ -17,7 +17,7 @@ function UF:SpawnRaidHeader()
         oUF:RegisterStyle(addonName .. "Raid", UF.CreateRaid)
         oUF:SetActiveStyle(addonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
-            local group = UF:SpawnHeader("Raid", i, UF.CreateRaid, config, default)
+            local group = UF:SpawnHeader("Raid", UF.CreateRaid, config, default, false, i)
             group.cfg = config
 
             parent.groups[i] = group
@@ -76,7 +76,15 @@ function UF:UpdateRaidHeader()
                 group.initialized = true
             end
             group:SetAttribute("startingIndex", 1)
+            group:SetAttribute("visibility", group.cfg.visibility)
+        else
+            group:SetAttribute("visibility", nil)
         end
+
+        group:SetAttribute("showPlayer", group.cfg.showPlayer)
+        group:SetAttribute("showSolo", group.cfg.showSolo)
+        group:SetAttribute("showParty", group.cfg.showParty)
+        group:SetAttribute("showRaid", group.cfg.showRaid)
 
         if i == 1 then
             local groupAnchorPoint
@@ -137,14 +145,13 @@ function UF:CreateRaid()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-    -- border
-    if self.cfg.border.enabled then
-        self:CreateBorder(self.cfg.border.size)
-        self:CreateShadow()
-    end
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
 
     -- health
-    UF.CreateHealth(self)
+    self:CreateHealth()
     self.Health:SetSize(width, height)
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", self.cfg.border.enabled and 2 or 0, 0)
     self.Health:SetPoint("TOPRIGHT", self, "TOPRIGHT", self.cfg.border.enabled and -2 or 0, 0)
@@ -152,8 +159,8 @@ function UF:CreateRaid()
     self.Health.Value:SetPoint("TOP", self, "TOP", 0, -20)
 
     -- power
+    self:CreatePower()
     if self.cfg.power.enabled then
-        UF.CreatePower(self)
         self.Power:SetHeight(self.cfg.power.size[2])
         self.Power.Value:Hide()
 
@@ -161,65 +168,51 @@ function UF:CreateRaid()
     end
 
     -- name
-    UF.CreateName(self, 12)
+    self:CreateName(12)
     self.Name:SetPoint("TOP", self, "TOP", 0, -8)
 
     -- leader
-    UF.CreateLeaderIndicator(self)
+    self:CreateLeaderIndicator()
     self.LeaderIndicator:SetSize(14, 14)
     self.LeaderIndicator:ClearAllPoints()
     self.LeaderIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", -6, 5)
 
     -- assistant
-    UF.CreateAssistantIndicator(self)
+    self:CreateAssistantIndicator()
     self.AssistantIndicator:ClearAllPoints()
     self.AssistantIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", -6, 5)
 
     -- master loot
-    UF.CreateMasterLooterIndicator(self)
+    self:CreateMasterLooterIndicator()
     self.MasterLooterIndicator:ClearAllPoints()
     self.MasterLooterIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", 10, 5)
 
     -- raid role
-    UF.CreateRaidRoleIndicator(self)
+    self:CreateRaidRoleIndicator()
     self.RaidRoleIndicator:SetSize(14, 14)
     self.RaidRoleIndicator:ClearAllPoints()
     self.RaidRoleIndicator:SetPoint("TOPRIGHT", self, "TOPRIGHT", 6, 5)
 
     -- raid target
-    UF.CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator(self)
     self.RaidTargetIndicator:SetSize(20, 20)
     self.RaidTargetIndicator:ClearAllPoints()
     self.RaidTargetIndicator:SetPoint("TOP", self, "TOP", 0, 10)
 
     -- ready check
-    UF.CreateReadyCheckIndicator(self)
+    self:CreateReadyCheckIndicator()
     self.ReadyCheckIndicator:SetSize(24, 24)
     self.ReadyCheckIndicator:ClearAllPoints()
     self.ReadyCheckIndicator:SetPoint("LEFT", self, "RIGHT", -12, 0)
 
     -- resurrect
-    UF.CreateResurrectIndicator(self)
+    self:CreateResurrectIndicator()
 
     -- range check
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5,
-        Update = function(self, inRange, checkedRange, connected)
-            if self.fader and not self:IsShown() then
-                R:StartFadeIn(self, {
-                    fadeInAlpha = self.Range[inRange and "insideAlpha" or "outsideAlpha"],
-                    fadeInDuration = self.faderConfig.fadeInDuration,
-                    fadeInSmooth = self.faderConfig.fadeInSmooth
-                })
-            else
-                self:SetAlpha(self.Range[inRange and "insideAlpha" or "outsideAlpha"])
-            end
-        end
-    }
+    self:CreateRange()
 
     -- aura highlight
-    UF.CreateAuraHighlight(self)
+    self:CreateAuraHighlight()
 end
 
 function UF:UpdateRaid(self)
@@ -227,6 +220,32 @@ function UF:UpdateRaid(self)
         return
     end
 
+    UF:UpdateFrame(self)
+
     local width, height = unpack(self.cfg.size)
     self:SetSize(width, height)
+end
+
+function UF:ForceShowRaid()
+    if InCombatLockdown() or not UF.frames.raidHeader then
+        return
+    end
+
+    for _, group in ipairs(UF.frames.raidHeader.groups) do
+        UF:ForceShowHeader(group)
+    end
+
+    UF.forceShowRaid = true
+end
+
+function UF:UnforceShowRaid()
+    if InCombatLockdown() or not UF.frames.raidHeader then
+        return
+    end
+
+    for _, group in ipairs(UF.frames.raidHeader.groups) do
+        UF:UnforceShowHeader(group)
+    end
+
+    UF.forceShowRaid = false
 end

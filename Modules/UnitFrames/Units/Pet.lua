@@ -27,43 +27,46 @@ function UF:CreatePet()
     self:SetScript("OnEnter", UnitFrame_OnEnter)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
+
     -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetSize(128, 64)
     self.Texture:SetPoint("TOPLEFT", self, 0, -2)
     self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
-    self.Texture.SetTexture = function()
-    end
 
     -- health
-    UF.CreateHealth(self)
+    self:CreateHealth()
     self.Health:SetSize(70, 9)
     self.Health:SetPoint("TOPLEFT", self.Texture, 45, -20)
     self.Health.Value:Hide()
 
     -- power
-    UF.CreatePower(self)
+    self:CreatePower()
     self.Power:SetHeight(self.Health:GetHeight())
     self.Power.Value:Hide()
 
     -- name
-    UF.CreateName(self, 11)
+    self:CreateName(11)
     self.Name:SetWidth(110)
     self.Name:SetJustifyH("LEFT")
     self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
 
     -- portrait
-    UF.CreatePortrait(self)
+    self:CreatePortrait()
     self.Portrait:SetSize(37, 37)
     self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
-    UF.CreateCombatFeedback(self)
+    self:CreateCombatFeedback()
 
     -- raid target
-    UF.CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator(self)
 
     -- auras
     if self.cfg.auras.enabled then
-        UF.CreateAuras(self)
+        self:CreateAuras()
         if self.Auras then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
@@ -80,35 +83,24 @@ function UF:CreatePet()
 
     -- castbar
     if self.cfg.castbar.enabled then
-        UF.CreateCastbar(self)
+        self:CreateCastbar()
         self.Castbar:SetPoint("LEFT", self, "RIGHT", 16, -5)
     end
 
     -- range check
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5,
-        Update = function(self, inRange, checkedRange, connected)
-            if self.fader and not self:IsShown() then
-                R:StartFadeIn(self, {
-                    fadeInAlpha = self.Range[inRange and "insideAlpha" or "outsideAlpha"],
-                    fadeInDuration = self.faderConfig.fadeInDuration,
-                    fadeInSmooth = self.faderConfig.fadeInSmooth
-                })
-            else
-                self:SetAlpha(self.Range[inRange and "insideAlpha" or "outsideAlpha"])
-            end
-        end
-    }
+    self:CreateRange()
 end
 
-function UF:UpdatePet()
-    local self = UF.frames.pet
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdatePet(self)
+    if not self then
+        return
+    end
+    
+    UF:UpdateFrame(self)
 
-        if UF:IsBlizzardTheme() then
-        else
-        end
+    if UF:IsBlizzardTheme() then
+        self.Border:Hide()
+        self.Shadow:Hide()
+    else
     end
 end

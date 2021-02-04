@@ -14,15 +14,21 @@ end
 
 function UF:CreateFocus()
     self.cfg = R.config.db.profile.modules.unitFrames.focus
+
+    self:CreateBorder(self.cfg.border.size)
+    self:SetBorderPadding(1, 1, 0, 0)
+    self:CreateShadow()
+    self:SetShadowPadding(1, 1, 0, 0)
 end
 
-function UF:UpdateFocus()
-    local self = UF.frames.focus
-    if self then
-        UF:UpdateFrame(self)
+function UF:UpdateFocus(self)
+    if not self then
+        return
+    end
 
-        if UF:IsBlizzardTheme() then
-        else
-        end
+    UF:UpdateFrame(self)
+
+    if UF:IsBlizzardTheme() then
+    else
     end
 end
