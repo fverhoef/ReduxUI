@@ -590,6 +590,7 @@ function BS:BuffFrame_Update()
         button = _G["DebuffButton" .. i]
         if button then
             button.isDebuff = true
+            button.debuffType = select(4, UnitAura("player", i, "HARMFUL_NOT_PASSIVE"))
             BS:StyleAuraButton(button)
         end
     end

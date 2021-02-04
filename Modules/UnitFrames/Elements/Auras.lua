@@ -89,6 +89,10 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
         name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
     end
 
+    if button and button.debuffType ~= debuffType then
+        button.debuffType = debuffType
+    end
+
     if button and button.cd then
         if (duration and duration > 0) then
             button.cd:SetCooldown(expiration - duration, duration)
