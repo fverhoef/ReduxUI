@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPlayer()
-    local config = R.config.db.profile.modules.unitFrames.player
-    local default = R.config.defaults.profile.modules.unitFrames.player
+    local config = UF.config.player
+    local default = UF.defaults.player
 
     if config.enabled then
         return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, default)
@@ -13,7 +13,7 @@ function UF:SpawnPlayer()
 end
 
 function UF:CreatePlayer()
-    self.cfg = R.config.db.profile.modules.unitFrames.player
+    self.cfg = UF.config.player
 
     self:SetSize(unpack(self.cfg.size))
     self:SetPoint(unpack(self.cfg.point))
@@ -115,7 +115,7 @@ function UF:UpdatePlayer(self)
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
         self.Power:ClearAllPoints()
-        if R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard_LargeHealth then
+        if UF.config.theme == UF.themes.Blizzard_LargeHealth then
             self.Health:SetSize(119, 28)
             self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
             self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)

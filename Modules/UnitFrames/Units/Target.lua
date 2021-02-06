@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
-    local config = R.config.db.profile.modules.unitFrames.target
-    local default = R.config.defaults.profile.modules.unitFrames.target
+    local config = UF.config.target
+    local default = UF.defaults.target
 
     if config.enabled then
         return UF:SpawnFrame("Target", "target", UF.CreateTarget, config, default)
@@ -13,7 +13,7 @@ function UF:SpawnTarget()
 end
 
 function UF:CreateTarget()
-    self.cfg = R.config.db.profile.modules.unitFrames.target
+    self.cfg = UF.config.target
 
     self:SetSize(unpack(self.cfg.size))
     self:SetPoint(unpack(self.cfg.point))
@@ -114,7 +114,7 @@ function UF:UpdateTarget(self)
         
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
-        if R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard_LargeHealth then
+        if UF.config.theme == UF.themes.Blizzard_LargeHealth then
             self.Health:SetSize(119, 28)
             self.Health:SetPoint("TOPRIGHT", self.Texture, -108, -23)
             self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)

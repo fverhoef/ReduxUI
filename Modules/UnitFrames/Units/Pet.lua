@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPet()
-    local config = R.config.db.profile.modules.unitFrames.pet
-    local default = R.config.defaults.profile.modules.unitFrames.pet
+    local config = UF.config.pet
+    local default = UF.defaults.pet
 
     if config.enabled then
         return UF:SpawnFrame("Pet", "pet", UF.CreatePet, config, default)
@@ -14,7 +14,7 @@ end
 
 function UF:CreatePet()
     -- config
-    self.cfg = R.config.db.profile.modules.unitFrames.pet
+    self.cfg = UF.config.pet
 
     local player = UF.frames.player
 

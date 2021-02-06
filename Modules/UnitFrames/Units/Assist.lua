@@ -10,7 +10,7 @@ function UF:UpdateAssistHeader()
 end
 
 function UF:CreateAssist()
-    self.cfg = R.config.db.profile.modules.unitFrames.assist
+    self.cfg = UF.config.assist
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

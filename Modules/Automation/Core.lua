@@ -9,7 +9,7 @@ local vendorList = {}
 local totalVendorPrice = 0
 
 function AM:Initialize()
-    if not R.config.db.profile.modules.automation.enabled then
+    if not AM.config.enabled then
         return
     end
 
@@ -26,7 +26,7 @@ function AM:Initialize()
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)
-    if R.config.db.profile.modules.automation.standDismount then
+    if AM.config.standDismount then
         if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
             DoEmote("stand")
             UIErrorsFrame:Clear()
@@ -41,7 +41,7 @@ function AM:UI_ERROR_MESSAGE(event, errorType, msg)
 end
 
 function AM:LOOT_READY(event)
-    if R.config.db.profile.modules.automation.fastLoot then
+    if AM.config.fastLoot then
         if GetTime() - fastLootDelay >= 0.3 then
             fastLootDelay = GetTime()
             if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
@@ -55,10 +55,10 @@ function AM:LOOT_READY(event)
 end
 
 function AM:MERCHANT_SHOW(event)
-    if R.config.db.profile.modules.automation.repair then
+    if AM.config.repair then
         AM:Repair()
     end
-    if R.config.db.profile.modules.automation.vendorGrays then
+    if AM.config.vendorGrays then
         stopVendoring = false
         totalVendorPrice = 0
         wipe(vendorList)
@@ -70,40 +70,40 @@ function AM:MERCHANT_CLOSED(event)
     stopVendoring = true
 end
 
-function AM:RESURRECT_REQUEST(event)
-    if R.config.db.profile.modules.automation.acceptResurrection then
-        AM:AcceptResurrection(self)
+function AM:RESURRECT_REQUEST(event, inviter)
+    if AM.config.acceptResurrection then
+        AM:AcceptResurrection(inviter)
     end
 end
 
 function AM:CONFIRM_SUMMON(event)
-    if R.config.db.profile.modules.automation.acceptSummon then
+    if AM.config.acceptSummon then
         AM:AcceptSummon()
     end
 end
 
 function AM:CONFIRM_LOOT_ROLL(event, rollID, rollType, confirmReason)
-    if R.config.db.profile.modules.automation.disableLootRollConfirmation then
+    if AM.config.disableLootRollConfirmation then
         ConfirmLootRoll(rollID, rollType)
         StaticPopup_Hide("CONFIRM_LOOT_ROLL")
     end
 end
 
 function AM:LOOT_BIND_CONFIRM(event, lootSlot)
-    if R.config.db.profile.modules.automation.disableLootBindConfirmation then
+    if AM.config.disableLootBindConfirmation then
         ConfirmLootSlot(lootSlot)
         StaticPopup_Hide("LOOT_BIND")
     end
 end
 
 function AM:MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL(event)
-    if R.config.db.profile.modules.automation.disableVendorRefundWarning then
+    if AM.config.disableVendorRefundWarning then
         SellCursorItem()
     end
 end
 
 function AM:MAIL_LOCK_SEND_ITEMS(event, attachSlot, itemLink)
-    if R.config.db.profile.modules.automation.disableMailRefundWarning then
+    if AM.config.disableMailRefundWarning then
         RespondMailLockSendItem(attachSlot, true)
     end
 end
@@ -180,7 +180,7 @@ end
 
 function AM:AcceptResurrection(unit)
     -- Exclude Chained Spirit (Zul'Gurub)
-    if unit == L["Chained Spirit"] then
+    if not unit or unit == L["Chained Spirit"] then
         return
     end
 

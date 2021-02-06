@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTargetTarget()
-    local config = R.config.db.profile.modules.unitFrames.targettarget
-    local default = R.config.defaults.profile.modules.unitFrames.targettarget
+    local config = UF.config.targettarget
+    local default = UF.defaults.targettarget
 
     if config.enabled then
         return UF:SpawnFrame("TargetTarget", "targettarget", UF.CreateTargetTarget, config, default)
@@ -13,7 +13,7 @@ function UF:SpawnTargetTarget()
 end
 
 function UF:CreateTargetTarget()
-    self.cfg = R.config.db.profile.modules.unitFrames.targettarget
+    self.cfg = UF.config.targettarget
 
     local target = UF.frames.target
 

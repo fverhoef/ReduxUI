@@ -21,7 +21,7 @@ AB.themes = {
     Wood = "Wood"
 }
 
-R.config.defaults.profile.modules.actionBars = {
+R:RegisterModuleConfig(AB, {
     enabled = true,
     mainMenuBar = {
         theme = AB.themes.Default,
@@ -48,12 +48,11 @@ R.config.defaults.profile.modules.actionBars = {
         -- frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; show"
     },
     petActionBar = {frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"}
-}
+})
 
-R.config.options.args.actionBars = {
+R:RegisterModuleOptions(AB, {
     type = "group",
     name = "Action Bars",
-    order = 2,
     args = {
         header = {type = "header", name = R.title .. " > Action Bars", order = 0},
         enabled = {
@@ -63,10 +62,10 @@ R.config.options.args.actionBars = {
                 return "Disabling this module requires a UI reload. Proceed?"
             end,
             get = function()
-                return R.config.db.profile.modules.actionBars.enabled
+                return AB.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.actionBars.enabled = val
+                AB.config.enabled = val
                 ReloadUI()
             end,
             order = 1
@@ -75,6 +74,7 @@ R.config.options.args.actionBars = {
             type = "group",
             name = "Main Action Bar",
             order = 2,
+            inline = true,
             args = {
                 theme = {
                     type = "select",
@@ -83,17 +83,17 @@ R.config.options.args.actionBars = {
                     values = AB.themes,
                     get = function()
                         for key, val in pairs(AB.themes) do
-                            if R.config.db.profile.modules.actionBars.mainMenuBar.theme == val then
+                            if AB.config.mainMenuBar.theme == val then
                                 return val
                             end
                         end
                     end,
                     set = function(_, key)
-                        R.config.db.profile.modules.actionBars.mainMenuBar.theme = AB.themes[key]
+                        AB.config.mainMenuBar.theme = AB.themes[key]
                         AB:UpdateAll()
                     end
                 }
             }
         }
     }
-}
+})

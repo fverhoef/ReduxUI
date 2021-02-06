@@ -10,7 +10,7 @@ function UF:UpdateTankHeader()
 end
 
 function UF:CreateTank()
-    self.cfg = R.config.db.profile.modules.unitFrames.tank
+    self.cfg = UF.config.tank
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

@@ -65,11 +65,7 @@ end
 oUF:RegisterMetaFunction("CreateAuras", UF.CreateAuras)
 
 UF.PostCreateAura = function(self, button)
-    if LibStub("Masque", true) then
-        UF.MasqueGroups.AuraGroup:AddButton(button)
-    elseif R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleAuraButton(button)
-    end
+    R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
 UF.PostUpdateAura = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
@@ -105,11 +101,7 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
         end
     end
 
-    if LibStub("Masque", true) then
-        UF.MasqueGroups.AuraGroup:ReSkin()
-    elseif R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:UpdateAuraButton(button)
-    end
+    R.Modules.ButtonStyles:UpdateAuraButton(button)
 end
 
 UF.UpdateAuras = function(self)

@@ -8,7 +8,7 @@ UF.CreateLevel = function(self)
     self.LevelParent:SetFrameLevel(self:GetFrameLevel() + 10)
 
     self.Level = self.LevelParent:CreateFontString("$parentLevel", "ARTWORK")
-    self.Level:SetFont(R.config.db.profile.modules.unitFrames.font, 12, "THICKOUTLINE")
+    self.Level:SetFont(UF.config.font, 12, "THICKOUTLINE")
     self.Level:SetShadowOffset(0, 0)
     self:Tag(self.Level, "[difficultycolor][level]")
 

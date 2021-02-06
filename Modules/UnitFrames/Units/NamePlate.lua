@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnNamePlates()
-    local config = R.config.db.profile.modules.unitFrames.nameplates
+    local config = UF.config.nameplates
     if config.enabled then
         oUF:RegisterStyle(addonName .. "Nameplate", UF.CreateNamePlate)
         oUF:SetActiveStyle(addonName .. "Nameplate")
@@ -19,7 +19,7 @@ function UF:UpdateNamePlates()
 end
 
 function UF:CreateNamePlate()
-    self.cfg = R.config.db.profile.modules.unitFrames.nameplates
+    self.cfg = UF.config.nameplates
 
     self:SetSize(unpack(self.cfg.size))
     self:SetPoint("CENTER")
@@ -66,7 +66,7 @@ function UF:CreateNamePlate()
     -- level
     self:CreateLevel()
     self.Level:SetPoint("RIGHT", self.Health, 0, 0)
-    self.Level:SetFont(R.config.db.profile.modules.unitFrames.font, 12, "OUTLINE")
+    self.Level:SetFont(UF.config.font, 12, "OUTLINE")
     if not self.cfg.power.enabled then
         self.Level:SetPoint("RIGHT", self, 0, 15)
     else

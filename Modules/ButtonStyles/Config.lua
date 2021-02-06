@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
-R.config.defaults.profile.modules.buttonStyles = {
+R:RegisterModuleConfig(BS, {
     enabled = true,
     outOfRangeColoring = "button",
     colors = {
@@ -17,28 +17,15 @@ R.config.defaults.profile.modules.buttonStyles = {
         hideKeybindText = false,
         hideMacroText = true
     },
-    auras = {
-        font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"},
-        borderSize = 12
-    },
-    bags = {
-        font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"},
-        borderSize = 12
-    },
-    items = {
-        font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"},
-        borderSize = 12
-    },
-    microMenu = {
-        font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"},
-        borderSize = 12
-    }
-}
+    auras = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12},
+    bags = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12},
+    items = {font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"}, borderSize = 12},
+    microMenu = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12}
+})
 
-R.config.options.args.buttons = {    
+R:RegisterModuleOptions(BS, {
     type = "group",
     name = "Button Styles",
-    order = 5,
     args = {
         header = {type = "header", name = R.title .. " > Button Styles", order = 0},
         enabled = {
@@ -46,24 +33,24 @@ R.config.options.args.buttons = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.buttonStyles.enabled then
+                if BS.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.buttonStyles.enabled
+                return BS.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.buttonStyles.enabled = val
+                BS.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.ButtonStyles:Initialize()
+                    BS:Initialize()
                 end
             end
         },
         lineBreak = {type = "header", name = "", order = 2}
     }
-}
+})

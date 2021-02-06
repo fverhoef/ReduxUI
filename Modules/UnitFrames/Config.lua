@@ -7,7 +7,7 @@ UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth
 UF.anchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 
 function UF:IsBlizzardTheme()
-    return R.config.db.profile.modules.unitFrames.theme == UF.themes.Blizzard or R.config.db.profile.modules.unitFrames.theme ==
+    return UF.config.theme == UF.themes.Blizzard or UF.config.theme ==
                UF.themes.Blizzard_LargeHealth
 end
 
@@ -21,13 +21,13 @@ function UF:CreateStatusBarTextureOption(name, desc, option, order)
         values = R.Libs.SharedMedia:HashTable("statusbar"),
         get = function()
             for key, texture in pairs(R.Libs.SharedMedia:HashTable("statusbar")) do
-                if R.config.db.profile.modules.unitFrames.statusbars[option] == texture then
+                if UF.config.statusbars[option] == texture then
                     return key
                 end
             end
         end,
         set = function(_, key)
-            R.config.db.profile.modules.unitFrames.statusbars[option] = R.Libs.SharedMedia:Fetch("statusbar", key)
+            UF.config.statusbars[option] = R.Libs.SharedMedia:Fetch("statusbar", key)
             UF:UpdateAll()
         end
     }
@@ -40,11 +40,11 @@ function UF:CreateStatusBarColorOption(name, option, order)
         order = order,
         hasAlpha = false,
         get = function()
-            local color = R.config.db.profile.modules.unitFrames.colors[option]
+            local color = UF.config.colors[option]
             return color[1], color[2], color[3], 1
         end,
         set = function(_, r, g, b, a)
-            local color = R.config.db.profile.modules.unitFrames.colors[option]
+            local color = UF.config.colors[option]
             color[1] = r
             color[2] = g
             color[3] = b
@@ -61,11 +61,11 @@ function UF:CreateClassColorOption(class, name, order, hidden)
         hidden = hidden,
         hasAlpha = false,
         get = function()
-            local color = R.config.db.profile.modules.unitFrames.colors.class[class]
+            local color = UF.config.colors.class[class]
             return color[1], color[2], color[3], 1
         end,
         set = function(_, r, g, b, a)
-            local color = R.config.db.profile.modules.unitFrames.colors.class[class]
+            local color = UF.config.colors.class[class]
             color[1] = r
             color[2] = g
             color[3] = b
@@ -83,10 +83,10 @@ function UF:CreateUnitEnabledOption(unit, order)
             return "Disabling this unit requires a UI reload. Proceed?"
         end,
         get = function()
-            return R.config.db.profile.modules.unitFrames[unit].enabled
+            return UF.config[unit].enabled
         end,
         set = function(_, val)
-            R.config.db.profile.modules.unitFrames[unit].enabled = val
+            UF.config[unit].enabled = val
             ReloadUI()
         end
     }
@@ -107,10 +107,10 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 softMax = 400,
                 step = 1,
                 get = function()
-                    return R.config.db.profile.modules.unitFrames[unit].size[1]
+                    return UF.config[unit].size[1]
                 end,
                 set = function(_, val)
-                    R.config.db.profile.modules.unitFrames[unit].size[1] = val
+                    UF.config[unit].size[1] = val
                     UF:UpdateAll()
                 end
             },
@@ -122,10 +122,10 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 softMax = 400,
                 step = 1,
                 get = function()
-                    return R.config.db.profile.modules.unitFrames[unit].size[2]
+                    return UF.config[unit].size[2]
                 end,
                 set = function(_, val)
-                    R.config.db.profile.modules.unitFrames[unit].size[2] = val
+                    UF.config[unit].size[2] = val
                     UF:UpdateAll()
                 end
             }
@@ -149,10 +149,10 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                 softMax = 400,
                 step = 1,
                 get = function()
-                    return R.config.db.profile.modules.unitFrames[unit].health.height
+                    return UF.config[unit].health.height
                 end,
                 set = function(_, val)
-                    R.config.db.profile.modules.unitFrames[unit].health.height = val
+                    UF.config[unit].health.height = val
                     UF:UpdateAll()
                 end
             }
@@ -160,7 +160,7 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
     }
 end
 
-R.config.defaults.profile.modules.unitFrames = {
+R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     statusbars = {
@@ -414,7 +414,7 @@ R.config.defaults.profile.modules.unitFrames = {
         enabled = true,
         size = {105, 30},
         scale = 1,
-        point = {"BOTTOM", "UIParent", "BOTTOM", -550, 320},
+        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         health = {enabled = true, height = 6, value = {tag = "[curhp_status]"}},
         power = {enabled = true, detached = false, size = {150, 12}, value = {tag = "[curpp]"}},
         name = {enabled = true, fontSize = 11},
@@ -445,7 +445,7 @@ R.config.defaults.profile.modules.unitFrames = {
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1},
 
-        unitAnchorPoint = "BOTTOM",
+        unitAnchorPoint = "TOP",
         unitSpacing = 50,
         sortMethod = "INDEX", -- NAME, INDEX
         sortDir = "ASC", -- ASC, DESC
@@ -473,9 +473,9 @@ R.config.defaults.profile.modules.unitFrames = {
 
         raidWideSorting = false,
         unitAnchorPoint = "LEFT",
-        unitSpacing = 0,
+        unitSpacing = 5,
         groupAnchorPoint = "TOP",
-        groupSpacing = 0,
+        groupSpacing = 5,
         groupBy = "GROUP", -- GROUP, CLASS, ROLE
         groupingOrder = "1,2,3,4,5,6,7,8",
         sortMethod = "INDEX", -- NAME, INDEX
@@ -650,12 +650,11 @@ R.config.defaults.profile.modules.unitFrames = {
             nameplateShowFriendlyTotems = 0
         }
     }
-}
+})
 
-R.config.options.args.unitFrames = {
+R:RegisterModuleOptions(UF, {
     type = "group",
     name = "Unit Frames",
-    order = 14,
     args = {
         header = {type = "header", name = R.title .. " > Unit Frames", order = 0},
         enabled = {
@@ -663,21 +662,21 @@ R.config.options.args.unitFrames = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.unitFrames.enabled then
+                if UF.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.unitFrames.enabled
+                return UF.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.unitFrames.enabled = val
+                UF.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.UnitFrames:Initialize()
+                    UF:Initialize()
                 end
             end
         },
@@ -700,10 +699,10 @@ R.config.options.args.unitFrames = {
                     order = 3,
                     values = UF.themes,
                     get = function()
-                        return UF.themes[R.config.db.profile.modules.unitFrames.theme]
+                        return UF.themes[UF.config.theme]
                     end,
                     set = function(_, key)
-                        R.config.db.profile.modules.unitFrames.theme = UF.themes[key]
+                        UF.config.theme = UF.themes[key]
                         UF:UpdateAll()
                     end
                 }
@@ -752,10 +751,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Health by Class",
                     order = 20,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorHealthClass
+                        return UF.config.colors.colorHealthClass
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorHealthClass = val
+                        UF.config.colors.colorHealthClass = val
                         UF:UpdateAll()
                     end
                 },
@@ -764,10 +763,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Health by Value",
                     order = 21,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorHealthSmooth
+                        return UF.config.colors.colorHealthSmooth
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorHealthSmooth = val
+                        UF.config.colors.colorHealthSmooth = val
                         UF:UpdateAll()
                     end
                 },
@@ -776,10 +775,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Health when Disconnected",
                     order = 22,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorHealthDisconnected
+                        return UF.config.colors.colorHealthDisconnected
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorHealthDisconnected = val
+                        UF.config.colors.colorHealthDisconnected = val
                         UF:UpdateAll()
                     end
                 },
@@ -788,10 +787,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Power by Class",
                     order = 30,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorPowerClass
+                        return UF.config.colors.colorPowerClass
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorPowerClass = val
+                        UF.config.colors.colorPowerClass = val
                         UF:UpdateAll()
                     end
                 },
@@ -800,10 +799,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Power by Value",
                     order = 31,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorPowerSmooth
+                        return UF.config.colors.colorPowerSmooth
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorPowerSmooth = val
+                        UF.config.colors.colorPowerSmooth = val
                         UF:UpdateAll()
                     end
                 },
@@ -812,10 +811,10 @@ R.config.options.args.unitFrames = {
                     name = "Color Power when Disconnected",
                     order = 32,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.colors.colorPowerDisconnected
+                        return UF.config.colors.colorPowerDisconnected
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.colors.colorPowerDisconnected = val
+                        UF.config.colors.colorPowerDisconnected = val
                         UF:UpdateAll()
                     end
                 }
@@ -951,13 +950,13 @@ R.config.options.args.unitFrames = {
                             values = UF.anchors,
                             get = function()
                                 for key, anchor in ipairs(UF.anchors) do
-                                    if R.config.db.profile.modules.unitFrames.party.unitAnchorPoint == anchor then
+                                    if UF.config.party.unitAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                R.config.db.profile.modules.unitFrames.party.unitAnchorPoint = UF.anchors[key]
+                                UF.config.party.unitAnchorPoint = UF.anchors[key]
                                 UF:UpdatePartyHeader()
                             end
                         },
@@ -969,10 +968,10 @@ R.config.options.args.unitFrames = {
                             softMax = 50,
                             step = 1,
                             get = function()
-                                return R.config.db.profile.modules.unitFrames.party.unitSpacing
+                                return UF.config.party.unitSpacing
                             end,
                             set = function(_, val)
-                                R.config.db.profile.modules.unitFrames.party.unitSpacing = val
+                                UF.config.party.unitSpacing = val
                                 UF:UpdatePartyHeader()
                             end
                         }
@@ -985,10 +984,10 @@ R.config.options.args.unitFrames = {
                     name = "Show Player",
                     order = 20,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.party.showPlayer
+                        return UF.config.party.showPlayer
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.party.showPlayer = val
+                        UF.config.party.showPlayer = val
                         UF:UpdatePartyHeader()
                     end
                 },
@@ -997,10 +996,10 @@ R.config.options.args.unitFrames = {
                     name = "Show in Raid",
                     order = 21,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.party.showRaid
+                        return UF.config.party.showRaid
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.party.showRaid = val
+                        UF.config.party.showRaid = val
                         UF:UpdatePartyHeader()
                     end
                 },
@@ -1009,10 +1008,10 @@ R.config.options.args.unitFrames = {
                     name = "Show when Solo",
                     order = 22,
                     get = function()
-                        return R.config.db.profile.modules.unitFrames.party.showSolo
+                        return UF.config.party.showSolo
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.unitFrames.party.showSolo = val
+                        UF.config.party.showSolo = val
                         UF:UpdatePartyHeader()
                     end
                 }
@@ -1054,13 +1053,13 @@ R.config.options.args.unitFrames = {
                             values = UF.anchors,
                             get = function()
                                 for key, anchor in ipairs(UF.anchors) do
-                                    if R.config.db.profile.modules.unitFrames.raid.unitAnchorPoint == anchor then
+                                    if UF.config.raid.unitAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                R.config.db.profile.modules.unitFrames.raid.unitAnchorPoint = UF.anchors[key]
+                                UF.config.raid.unitAnchorPoint = UF.anchors[key]
                                 UF:UpdateRaidHeader()
                             end
                         },
@@ -1072,10 +1071,10 @@ R.config.options.args.unitFrames = {
                             softMax = 50,
                             step = 1,
                             get = function()
-                                return R.config.db.profile.modules.unitFrames.raid.unitSpacing
+                                return UF.config.raid.unitSpacing
                             end,
                             set = function(_, val)
-                                R.config.db.profile.modules.unitFrames.raid.unitSpacing = val
+                                UF.config.raid.unitSpacing = val
                                 UF:UpdateRaidHeader()
                             end
                         },
@@ -1086,13 +1085,13 @@ R.config.options.args.unitFrames = {
                             values = UF.anchors,
                             get = function()
                                 for key, anchor in ipairs(UF.anchors) do
-                                    if R.config.db.profile.modules.unitFrames.raid.groupAnchorPoint == anchor then
+                                    if UF.config.raid.groupAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                R.config.db.profile.modules.unitFrames.raid.groupAnchorPoint = UF.anchors[key]
+                                UF.config.raid.groupAnchorPoint = UF.anchors[key]
                                 UF:UpdateRaidHeader()
                             end
                         },
@@ -1104,10 +1103,10 @@ R.config.options.args.unitFrames = {
                             softMax = 50,
                             step = 1,
                             get = function()
-                                return R.config.db.profile.modules.unitFrames.raid.groupSpacing
+                                return UF.config.raid.groupSpacing
                             end,
                             set = function(_, val)
-                                R.config.db.profile.modules.unitFrames.raid.groupSpacing = val
+                                UF.config.raid.groupSpacing = val
                                 UF:UpdateRaidHeader()
                             end
                         }
@@ -1180,4 +1179,4 @@ R.config.options.args.unitFrames = {
             }
         }
     }
-}
+})

@@ -110,23 +110,13 @@ end
 
 function R:LockFrame(frame)
     if frame.frameVisibility then
-        if frame.frameVisibilityFunc then
-            UnregisterStateDriver(frame, "visibility")
-            -- hack to make it refresh properly, otherwise if you had state n (no vehicle exit button) it would not update properly because the state n is still in place
-            RegisterStateDriver(frame, frame.frameVisibilityFunc, "foo")
-            RegisterStateDriver(frame, frame.frameVisibilityFunc, frame.frameVisibility)
-        else
-            RegisterStateDriver(frame, "visibility", frame.frameVisibility)
-        end
+        RegisterStateDriver(frame, "visibility", frame.frameVisibility)
     end
     frame.DragFrame:Hide()
 end
 
 function R:UnlockFrame(frame)
     if frame.frameVisibility then
-        if frame.frameVisibilityFunc then
-            UnregisterStateDriver(frame, frame.frameVisibilityFunc)
-        end
         RegisterStateDriver(frame, "visibility", "show")
     end
     frame.DragFrame:Show()
@@ -174,5 +164,7 @@ function R:ResetPoint(frame)
     end
     frame:ClearAllPoints()
     frame:SetPoint(unpack(frame.defaultPoint))
-    frame.cfg.point = frame.defaultPoint
+    if frame.cfg then
+        frame.cfg.point = frame.defaultPoint
+    end
 end

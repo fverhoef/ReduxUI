@@ -12,11 +12,11 @@ if IsMacClient() then
 end
 
 function SS:Initialize()    
-    if not R.config.db.profile.modules.screenSaver.enabled then
+    if not SS.config.enabled then
         return
     end
 
-    local config = R.config.db.profile.modules.screenSaver
+    local config = SS.config
 
     SS.Canvas = CreateFrame("Frame", "ScreenSaverCanvas")
     SS.Canvas:SetFrameLevel(1)

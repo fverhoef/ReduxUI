@@ -32,7 +32,7 @@ UF.UpdateAuraHighlight = function(self)
     if cfg and cfg.enabled then
         self:EnableElement("AuraHighlight")
 
-        self.AuraHighlight:SetBlendMode(R.config.db.profile.modules.unitFrames.colors.auraHighlight.blendMode)
+        self.AuraHighlight:SetBlendMode(UF.config.colors.auraHighlight.blendMode)
         self.AuraHighlight:SetAllPoints(self.Health:GetStatusBarTexture())
 
         if cfg.mode == "GLOW" then
@@ -54,7 +54,7 @@ oUF:RegisterMetaFunction("UpdateAuraHighlight", UF.UpdateAuraHighlight)
 
 function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
     if debuffType and not wasFiltered then
-        local color = R.config.db.profile.modules.unitFrames.colors.auraHighlight[debuffType]
+        local color = UF.config.colors.auraHighlight[debuffType]
         if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
             object.AuraHightlightGlow:SetBackdropBorderColor(unpack(color))
         else

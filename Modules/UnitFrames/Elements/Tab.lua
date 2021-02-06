@@ -20,7 +20,7 @@ UF.CreateTab = function(self)
     self.Tab[3]:SetPoint("RIGHT", self.Tab[1], "LEFT")
 
     self.Tab[4] = self:CreateFontString("$parentTabText", "OVERLAY")
-    self.Tab[4]:SetFont(R.config.db.profile.modules.unitFrames.font, 11)
+    self.Tab[4]:SetFont(UF.config.font, 11)
     self.Tab[4]:SetShadowOffset(1, -1)
     self.Tab[4]:SetPoint("BOTTOM", self.Tab[1], 0, 2)
     self.Tab[4]:SetAlpha(0.5)

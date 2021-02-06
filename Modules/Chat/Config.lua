@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local C = R.Modules.Chat
 
-R.config.defaults.profile.modules.chat = {
+R:RegisterModuleConfig(C, {
     enabled = true,
     font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"},
     maxMessageCount = 1500,
@@ -10,16 +10,11 @@ R.config.defaults.profile.modules.chat = {
     showClassColors = true,
     hideMenuButton = true,
     hideChannelButton = true
-}
+}, {chatMessages = {}})
 
-R.config.defaults.char.modules.chat = {
-    chatMessages = {}
-}
-
-R.config.options.args.chat = {
+R:RegisterModuleOptions(C, {
     type = "group",
     name = "Chat",
-    order = 6,
     args = {
         header = {type = "header", name = R.title .. " > Chat", order = 0},
         enabled = {
@@ -27,21 +22,21 @@ R.config.options.args.chat = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.chat.enabled then
+                if C.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.chat.enabled
+                return C.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.enabled = val
+                C.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Chat:Initialize()
+                    C:Initialize()
                 end
             end
         },
@@ -60,14 +55,14 @@ R.config.options.args.chat = {
                     values = R.Libs.SharedMedia:HashTable("font"),
                     get = function()
                         for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                            if R.config.db.profile.modules.chat.font[1] == font then
+                            if C.config.font[1] == font then
                                 return key
                             end
                         end
                     end,
                     set = function(_, key)
-                        R.config.db.profile.modules.chat.font[1] = R.Libs.SharedMedia:Fetch("font", key)
-                        R.Modules.Chat:UpdateChatFrames()
+                        C.config.font[1] = R.Libs.SharedMedia:Fetch("font", key)
+                        C:UpdateChatFrames()
                     end
                 },
                 size = {
@@ -78,11 +73,11 @@ R.config.options.args.chat = {
                     softMax = 36,
                     step = 1,
                     get = function()
-                        return R.config.db.profile.modules.chat.font[2]
+                        return C.config.font[2]
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.chat.font[2] = val
-                        R.Modules.Chat:UpdateChatFrames()
+                        C.config.font[2] = val
+                        C:UpdateChatFrames()
                     end
                 },
                 outline = {
@@ -91,11 +86,11 @@ R.config.options.args.chat = {
                     order = 3,
                     values = R.FONT_OUTLINES,
                     get = function()
-                        return R.config.db.profile.modules.chat.font[3]
+                        return C.config.font[3]
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.chat.font[3] = val
-                        R.Modules.Chat:UpdateChatFrames()
+                        C.config.font[3] = val
+                        C:UpdateChatFrames()
                     end
                 }
             }
@@ -109,11 +104,11 @@ R.config.options.args.chat = {
             step = 100,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.chat.maxMessageCount
+                return C.config.maxMessageCount
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.maxMessageCount = val
-                R.Modules.Chat:UpdateChatFrames()
+                C.config.maxMessageCount = val
+                C:UpdateChatFrames()
             end
         },
         maxHistoryCount = {
@@ -125,11 +120,11 @@ R.config.options.args.chat = {
             step = 100,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.chat.maxHistoryCount
+                return C.config.maxHistoryCount
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.maxHistoryCount = val
-                R.Modules.Chat:UpdateChatFrames()
+                C.config.maxHistoryCount = val
+                C:UpdateChatFrames()
             end
         },
         clearHistory = {
@@ -146,11 +141,11 @@ R.config.options.args.chat = {
             order = 20,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.chat.showClassColors
+                return C.config.showClassColors
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.showClassColors = val
-                R.Modules.Chat:UpdateChatFrames()
+                C.config.showClassColors = val
+                C:UpdateChatFrames()
             end
         },
         hideMenuButton = {
@@ -159,11 +154,11 @@ R.config.options.args.chat = {
             order = 21,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.chat.hideMenuButton
+                return C.config.hideMenuButton
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.hideMenuButton = val
-                R.Modules.Chat:UpdateChatFrames()
+                C.config.hideMenuButton = val
+                C:UpdateChatFrames()
             end
         },
         hideChannelButton = {
@@ -172,12 +167,12 @@ R.config.options.args.chat = {
             order = 22,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.chat.hideChannelButton
+                return C.config.hideChannelButton
             end,
             set = function(_, val)
-                R.config.db.profile.modules.chat.hideChannelButton = val
-                R.Modules.Chat:UpdateChatFrames()
+                C.config.hideChannelButton = val
+                C:UpdateChatFrames()
             end
         }
     }
-}
+})

@@ -3,18 +3,32 @@ local R = _G.ReduxUI
 local BS = R:AddModule("ButtonStyles", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 function BS:Initialize()
-    BS.config = R.config.db.profile.modules.buttonStyles
-    BS.colors = BS.config.colors
-    if not BS.config.enabled then
+    BS.config = BS.config
+    BS.masque = LibStub("Masque", true)
+    if not BS.masque and (not BS.config.enabled or BS.initalized) then
         return
+    end
+
+    if BS.masque then
+        BS.masqueGroups = {
+            actionButtons = BS.masque:Group(R.title, "Action Buttons"),
+            itemButtons = BS.masque:Group(R.title, "Item Buttons"),
+            bagSlotButtons = BS.masque:Group(R.title, "Bag Slot Buttons"),
+            buffs = BS.masque:Group(R.title, "Buffs"),
+            debuffs = BS.masque:Group(R.title, "Debuffs"),
+            tempEnchants = BS.masque:Group(R.title, "Temp Enchants")
+        }
     end
 
     BS:StyleAllActionButtons()
     BS:StyleAllBagButtons()
     BS:StyleAllCharacterSlots()
+    BS:StyleAllMicroButtons()
 
     BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
     BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
+    BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+    _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)
 end
 
 function BS:StyleAllActionButtons()
@@ -47,8 +61,41 @@ function BS:StyleAllActionButtons()
     BS:SecureHook("ActionButton_UpdateRangeIndicator", BS.ActionButton_UpdateRangeIndicator)
 end
 
+function BS:StyleAllBagButtons()
+    local itemButtons = {
+        "MainMenuBarBackpackButton",
+        "CharacterBag0Slot",
+        "CharacterBag1Slot",
+        "CharacterBag2Slot",
+        "CharacterBag3Slot"
+    }
+    for _, buttonName in next, itemButtons do
+        BS:StyleBagButton(_G[buttonName])
+    end
+end
+
+function BS:StyleAllCharacterSlots()
+    for i, slot in next, R.EquipmentSlots do
+        local button = _G["Character" .. slot]
+        if button then
+            button.itemIDOrLink = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
+            BS:StyleItemButton(button)
+        end
+    end
+end
+
+function BS:StyleAllMicroButtons()
+    for _, buttonName in next, MICRO_BUTTONS do
+        BS:StyleMicroButton(_G[buttonName])
+    end
+end
+
 function BS:StyleActionButton(button)
     if not button then
+        return
+    end
+    if BS.masque then
+        BS.masqueGroups.actionButtons:AddButton(button)
         return
     end
     if button.__styled then
@@ -180,14 +227,14 @@ function BS:UpdateActionButton(button)
     end
 
     if button.checksRange and not button.inRange then
-        R:ApplyVertexColor(button.icon, BS.colors.outOfRange)
+        R:ApplyVertexColor(button.icon, BS.config.colors.outOfRange)
     else
         if button.isUsable then
-            R:ApplyVertexColor(button.icon, BS.colors.usable)
+            R:ApplyVertexColor(button.icon, BS.config.colors.usable)
         elseif button.notEnoughMana then
-            R:ApplyVertexColor(button.icon, BS.colors.notEnoughMana)
+            R:ApplyVertexColor(button.icon, BS.config.colors.notEnoughMana)
         else
-            R:ApplyVertexColor(button.icon, BS.colors.notUsable)
+            R:ApplyVertexColor(button.icon, BS.config.colors.notUsable)
         end
     end
 
@@ -196,11 +243,18 @@ function BS:UpdateActionButton(button)
     end
 end
 
-function BS:StyleAllAuraButtons()
-end
-
 function BS:StyleAuraButton(button)
     if not button then
+        return
+    end
+    if BS.masque then
+        if button.isDebuff then
+            BS.masqueGroups.debuffs:AddButton(button)
+        elseif button.isTempEnchant then
+            BS.masqueGroups.tempEnchants:AddButton(button)
+        else
+            BS.masqueGroups.buffs:AddButton(button)
+        end
         return
     end
     if button.__styled then
@@ -209,7 +263,7 @@ function BS:StyleAuraButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = R.config.db.profile.modules.buttonStyles.auras
+    local cfg = BS.config.auras
 
     -- setup icon texture
     local icon = _G[buttonName .. "Icon"]
@@ -276,21 +330,12 @@ function BS:UpdateAuraButton(button)
     button:SetBorderColor(unpack(borderColor))
 end
 
-function BS:StyleAllBagButtons()
-    local itemButtons = {
-        "MainMenuBarBackpackButton",
-        "CharacterBag0Slot",
-        "CharacterBag1Slot",
-        "CharacterBag2Slot",
-        "CharacterBag3Slot"
-    }
-    for _, buttonName in next, itemButtons do
-        BS:StyleBagButton(_G[buttonName])
-    end
-end
-
 function BS:StyleBagButton(button)
     if not button then
+        return
+    end
+    if BS.masque then
+        BS.masqueGroups.bagSlotButtons:AddButton(button)
         return
     end
     if button.__styled then
@@ -299,7 +344,7 @@ function BS:StyleBagButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = R.config.db.profile.modules.buttonStyles.bags
+    local cfg = BS.config.bags
 
     -- backdrop
     local bg = CreateFrame("Frame", nil, button)
@@ -378,27 +423,12 @@ function BS:UpdateBagButton(button)
     end
 end
 
-function BS:StyleAllCharacterSlots()
-    for i, slot in next, R.EquipmentSlots do
-        BS:StyleItemButton(_G["Character" .. slot])
-    end
-
-    BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", BS.UpdateAllCharacterSlots)
-    _G.CharacterFrame:HookScript("OnShow", BS.UpdateAllCharacterSlots)
-end
-
-function BS:UpdateAllCharacterSlots()
-    for i, slot in next, R.EquipmentSlots do
-        local button = _G["Character" .. slot]
-        if button then
-            button.itemIDOrLink = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
-            BS:UpdateItemButton(button)
-        end
-    end
-end
-
 function BS:StyleItemButton(button)
     if not button then
+        return
+    end
+    if BS.masque then
+        BS.masqueGroups.itemButtons:AddButton(button)
         return
     end
     if button.__styled then
@@ -407,7 +437,7 @@ function BS:StyleItemButton(button)
     end
 
     local buttonName = button:GetName()
-    local cfg = R.config.db.profile.modules.buttonStyles.items
+    local cfg = BS.config.items
 
     -- backdrop
     local bg = CreateFrame("Frame", nil, button)
@@ -501,7 +531,7 @@ function BS:UpdateItemButton(button)
         if button.itemIDOrLink then
             local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
             if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-                border:SetVertexColor(unpack(R.config.db.profile.modules.bags.colors.questItem))
+                border:SetVertexColor(unpack(R.Modules.Bags.config.colors.questItem))
                 border:SetTexture(R.media.textures.buttons.buttonBorderWhite)
                 border:Show()
             elseif itemRarity and itemRarity > 1 then
@@ -519,12 +549,6 @@ function BS:UpdateItemButton(button)
     end
 end
 
-function BS:StyleAllMicroButtons()
-    for _, buttonName in next, MICRO_BUTTONS do
-        BS:StyleActionButton(_G[buttonName])
-    end
-end
-
 function BS:StyleMicroButton(button)
     if not button then
         return
@@ -534,7 +558,7 @@ function BS:StyleMicroButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = R.config.db.profile.modules.buttonStyles.microMenu
+    local cfg = BS.config.microMenu
 
     button.__styled = true
 end
@@ -583,6 +607,7 @@ function BS:BuffFrame_Update()
         button = _G["BuffButton" .. i]
         if button then
             button.isBuff = true
+            button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
             BS:StyleAuraButton(button)
         end
     end
@@ -590,7 +615,7 @@ function BS:BuffFrame_Update()
         button = _G["DebuffButton" .. i]
         if button then
             button.isDebuff = true
-            button.debuffType = select(4, UnitAura("player", i, "HARMFUL_NOT_PASSIVE"))
+            button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
             BS:StyleAuraButton(button)
         end
     end
@@ -605,4 +630,12 @@ function BS:SetItemButtonQuality(quality, itemIDOrLink, suppressOverlays)
     self.quality = quality
     self.itemIDOrLink = itemIDOrLink
     BS:StyleItemButton(self)
+end
+
+function BS:PLAYER_EQUIPMENT_CHANGED(event)
+    BS:StyleAllCharacterSlots()
+end
+
+function BS:CharacterFrame_OnShow()
+    BS:StyleAllCharacterSlots()
 end

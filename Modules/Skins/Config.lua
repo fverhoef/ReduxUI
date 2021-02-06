@@ -2,14 +2,13 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local S = R.Modules.Skins
 
-R.config.defaults.profile.modules.skins = {
+R:RegisterModuleConfig(S, {
     enabled = true
-}
+})
 
-R.config.options.args.skins = {    
+R:RegisterModuleOptions(S, {  
     type = "group",
     name = "Skins",
-    order = 12,
     args = {
         header = {type = "header", name = R.title .. " > Skins", order = 0},
         enabled = {
@@ -17,24 +16,24 @@ R.config.options.args.skins = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.skins.enabled then
+                if S.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.skins.enabled
+                return S.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.skins.enabled = val
+                S.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Skins:Initialize()
+                    S:Initialize()
                 end
             end
         },
         lineBreak1 = {type = "header", name = "", order = 2}
     }
-}
+})

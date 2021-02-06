@@ -6,7 +6,7 @@ TT.classColors = {}
 TT.factionColors = {}
 
 function TT:Initialize()
-    if not R.config.db.profile.modules.tooltips.enabled then
+    if not TT.config.enabled then
         return
     end
 
@@ -121,13 +121,13 @@ function TT:OnTooltipSetUnit()
     end
 
     -- color tooltips
-    GameTooltipTextLeft2:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft3:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft4:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft5:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft6:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft7:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
-    GameTooltipTextLeft8:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.text))
+    GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft3:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft4:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft5:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft6:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft7:SetTextColor(unpack(TT.config.colors.text))
+    GameTooltipTextLeft8:SetTextColor(unpack(TT.config.colors.text))
 
     -- position raid icon
     local raidIconIndex = GetRaidTargetIndex(unit)
@@ -153,7 +153,7 @@ function TT:OnTooltipSetUnit()
         if string.find(GameTooltipTextLeft2:GetText() or "empty", "%a%s%d") then
             levelLine = GameTooltipTextLeft2
         elseif string.find(GameTooltipTextLeft3:GetText() or "empty", "%a%s%d") then
-            GameTooltipTextLeft2:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.guild))
+            GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.guild))
             levelLine = GameTooltipTextLeft3
         end
         if levelLine then
@@ -162,7 +162,7 @@ function TT:OnTooltipSetUnit()
             levelLine:SetTextColor(color.r, color.g, color.b)
         end
         if unitClassification == "worldboss" or UnitLevel(unit) == -1 then
-            GameTooltipTextLeft2:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.boss))
+            GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.boss))
         end
     else
         -- unit is any player
@@ -182,36 +182,36 @@ function TT:OnTooltipSetUnit()
             GameTooltip:AddLine(GameTooltipTextLeft2:GetText(), color.r, color.g, color.b)
             -- add guild info
             GameTooltipTextLeft2:SetText("<" .. unitGuild .. "> [" .. guildRankName .. "]")
-            GameTooltipTextLeft2:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.guild))
+            GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.guild))
         else
             GameTooltipTextLeft2:SetTextColor(color.r, color.g, color.b)
         end
 
         -- afk?
         if UnitIsAFK(unit) then
-            self:AppendText((" %s<AFK>|r"):format(R:Hex(R.config.db.profile.modules.tooltips.colors.afk)))
+            self:AppendText((" %s<AFK>|r"):format(R:Hex(TT.config.colors.afk)))
         end
     end
 
     -- pvp
     if string.find(GameTooltipTextLeft2:GetText() or "empty", "PvP") then
-        GameTooltipTextLeft2:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.pvp))
+        GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.pvp))
     elseif string.find(GameTooltipTextLeft3:GetText() or "empty", "PvP") then
-        GameTooltipTextLeft3:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.pvp))
+        GameTooltipTextLeft3:SetTextColor(unpack(TT.config.colors.pvp))
     elseif string.find(GameTooltipTextLeft4:GetText() or "empty", "PvP") then
-        GameTooltipTextLeft4:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.pvp))
+        GameTooltipTextLeft4:SetTextColor(unpack(TT.config.colors.pvp))
     elseif string.find(GameTooltipTextLeft5:GetText() or "empty", "PvP") then
-        GameTooltipTextLeft5:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.pvp))
+        GameTooltipTextLeft5:SetTextColor(unpack(TT.config.colors.pvp))
     end
 
     -- dead?
     if UnitIsDeadOrGhost(unit) then
-        GameTooltipTextLeft1:SetTextColor(unpack(R.config.db.profile.modules.tooltips.colors.dead))
+        GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead))
     end
 
     -- target line
     if (UnitExists(unit .. "target")) then
-        GameTooltip:AddDoubleLine(("%s%s|r"):format(R:Hex(R.config.db.profile.modules.tooltips.colors.target), "Target"),
+        GameTooltip:AddDoubleLine(("%s%s|r"):format(R:Hex(TT.config.colors.target), "Target"),
                                   TT:GetTarget(unit .. "target") or "Unknown")
     end
 end
@@ -263,7 +263,7 @@ function TT:OnShow()
         end
     end
 
-    if R.config.db.profile.modules.tooltips.colorBorderByRarity then
+    if TT.config.colorBorderByRarity then
         local color = R.config.db.profile.borders.color
         local texture = R.media.textures.borders.beautycase
         if link then
@@ -311,7 +311,7 @@ function TT:SetStatusBarColor(r, g, b)
 end
 
 function TT:OnStatusBarValueChanged(value)
-    if R.config.db.profile.modules.tooltips.showHealthValues then
+    if TT.config.showHealthValues then
         local tooltip = self:GetParent()
         local unit = select(2, tooltip:GetUnit())
         if (not unit) then
@@ -334,12 +334,12 @@ function TT:OnStatusBarValueChanged(value)
 end
 
 function TT:SetDefaultAnchor(owner)
-    if not R.config.db.profile.modules.tooltips.anchor then
+    if not TT.config.anchor then
         return
     end
-    local anchor = R.config.db.profile.modules.tooltips.anchor
-    local offsetX = R.config.db.profile.modules.tooltips.offsetX
-    local offsetY = R.config.db.profile.modules.tooltips.offsetY
+    local anchor = TT.config.anchor
+    local offsetX = TT.config.offsetX
+    local offsetY = TT.config.offsetY
 
     -- override anchor for action bar buttons
     local parent = owner:GetParent()
@@ -413,7 +413,7 @@ function TT:InsertLine(tooltip, position, line)
 end
 
 function TT:AddIcon(tooltip, icon)
-    if icon and R.config.db.profile.modules.tooltips.showIcons then
+    if icon and TT.config.showIcons then
         local title = _G[tooltip:GetName() .. "TextLeft1"]
         if title and not title:GetText():find("|T" .. icon) then
             title:SetFormattedText("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", icon, 40, title:GetText())
@@ -422,19 +422,19 @@ function TT:AddIcon(tooltip, icon)
 end
 
 function TT:AddSpellID(tooltip, spellId)
-    if spellId and R.config.db.profile.modules.tooltips.showSpellId then
+    if spellId and TT.config.showSpellId then
         tooltip:AddDoubleLine("|cff0099ffSpell ID|r", spellId)
     end
 end
 
 function TT:AddItemID(tooltip, itemId)
-    if itemId and R.config.db.profile.modules.tooltips.showItemId then
+    if itemId and TT.config.showItemId then
         tooltip:AddDoubleLine("|cff0099ffItem ID|r", itemId)
     end
 end
 
 function TT:AddItemCount(tooltip, itemId)
-    if itemId and R.config.db.profile.modules.tooltips.showItemCount and R.config.db.realm.inventory then
+    if itemId and TT.config.showItemCount and R.config.db.realm.inventory then
         for i, char in next, R.config.db.realm.inventory do
             local bagCount = char.bags and char.bags[itemId] or 0
             local bankCount = char.bank and char.bank[itemId] or 0
@@ -464,16 +464,16 @@ function TT:AddItemCount(tooltip, itemId)
 end
 
 function TT:AddItemLevel(tooltip, itemLevel)
-    if R.config.db.profile.modules.tooltips.showItemLevel then
+    if TT.config.showItemLevel then
         TT:InsertLine(tooltip, 2, {
-            left = {text = "Item Level " .. itemLevel, color = R.config.db.profile.modules.tooltips.colors.itemLevel},
+            left = {text = "Item Level " .. itemLevel, color = TT.config.colors.itemLevel},
             right = {}
         })
     end
 end
 
 function TT:AddVendorPrice(tooltip, sellPrice, classID)
-    if R.config.db.profile.modules.tooltips.showVendorPrice and not tooltip.shownMoneyFrames then
+    if TT.config.showVendorPrice and not tooltip.shownMoneyFrames then
         if sellPrice and sellPrice > 0 then
             local container = GetMouseFocus()
             if not container then
@@ -504,31 +504,31 @@ function TT:UpdateScale()
         SmallTextTooltip
     }
     for _, tooltip in next, tooltips do
-        tooltip:SetScale(R.config.db.profile.modules.tooltips.scale)
+        tooltip:SetScale(TT.config.scale)
     end
 
     local menus = {DropDownList1MenuBackdrop, DropDownList2MenuBackdrop}
     for _, menu in next, menus do
-        menu:SetScale(R.config.db.profile.modules.tooltips.scale)
+        menu:SetScale(TT.config.scale)
     end
 end
 
 function TT:UpdateFonts()
-    GameTooltipHeaderText:SetFont(R.config.db.profile.modules.tooltips.fontFamily,
-                                  R.config.db.profile.modules.tooltips.headerFontSize, "NONE")
+    GameTooltipHeaderText:SetFont(TT.config.fontFamily,
+                                  TT.config.headerFontSize, "NONE")
     GameTooltipHeaderText:SetShadowOffset(1, -2)
     GameTooltipHeaderText:SetShadowColor(0, 0, 0, 0.75)
 
-    GameTooltipText:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.fontSize, "NONE")
+    GameTooltipText:SetFont(TT.config.fontFamily, TT.config.fontSize, "NONE")
     GameTooltipText:SetShadowOffset(1, -2)
     GameTooltipText:SetShadowColor(0, 0, 0, 0.75)
 
-    Tooltip_Small:SetFont(R.config.db.profile.modules.tooltips.fontFamily, R.config.db.profile.modules.tooltips.smallFontSize,
+    Tooltip_Small:SetFont(TT.config.fontFamily, TT.config.smallFontSize,
                           "NONE")
     Tooltip_Small:SetShadowOffset(1, -2)
     Tooltip_Small:SetShadowColor(0, 0, 0, 0.75)
 
-    GameTooltipStatusBar.text:SetFont(R.config.db.profile.modules.tooltips.fontFamily,
-                                      R.config.db.profile.modules.tooltips.healthFontSize, "OUTLINE")
+    GameTooltipStatusBar.text:SetFont(TT.config.fontFamily,
+                                      TT.config.healthFontSize, "OUTLINE")
 end
 

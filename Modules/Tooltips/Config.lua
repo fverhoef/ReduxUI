@@ -15,7 +15,7 @@ local TOOLTIP_ANCHORS = {
     ["ANCHOR_RIGHT"] = "ANCHOR_RIGHT"
 }
 
-R.config.defaults.profile.modules.tooltips = {
+R:RegisterModuleConfig(TT, {
     enabled = true,
     colors = {
         text = {100 / 255, 100 / 255, 100 / 255},
@@ -48,12 +48,11 @@ R.config.defaults.profile.modules.tooltips = {
     showItemLevel = true,
     showItemCount = true,
     showVendorPrice = true
-}
+})
 
-R.config.options.args.tooltips = {    
+R:RegisterModuleOptions(TT, {
     type = "group",
     name = "Tooltips",
-    order = 13,
     args = {
         header = {type = "header", name = R.title .. " > Tooltips", order = 0},
         enabled = {
@@ -61,21 +60,21 @@ R.config.options.args.tooltips = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.tooltips.enabled then
+                if TT.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.tooltips.enabled
+                return TT.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.enabled = val
+                TT.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Tooltips:Initialize()
+                    TT:Initialize()
                 end
             end
         },
@@ -86,10 +85,10 @@ R.config.options.args.tooltips = {
             order = 10,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showHealthValues
+                return TT.config.showHealthValues
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showHealthValues = val
+                TT.config.showHealthValues = val
             end
         },
         showVendorPrice = {
@@ -98,10 +97,10 @@ R.config.options.args.tooltips = {
             order = 11,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showVendorPrice
+                return TT.config.showVendorPrice
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showVendorPrice = val
+                TT.config.showVendorPrice = val
             end
         },
         showItemLevel = {
@@ -110,10 +109,10 @@ R.config.options.args.tooltips = {
             order = 12,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showItemLevel
+                return TT.config.showItemLevel
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showItemLevel = val
+                TT.config.showItemLevel = val
             end
         },
         showItemCount = {
@@ -122,10 +121,10 @@ R.config.options.args.tooltips = {
             order = 13,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showItemCount
+                return TT.config.showItemCount
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showItemCount = val
+                TT.config.showItemCount = val
             end
         },
         showIcons = {
@@ -134,10 +133,10 @@ R.config.options.args.tooltips = {
             order = 14,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showIcons
+                return TT.config.showIcons
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showIcons = val
+                TT.config.showIcons = val
             end
         },
         showSpellId = {
@@ -146,10 +145,10 @@ R.config.options.args.tooltips = {
             order = 15,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showSpellId
+                return TT.config.showSpellId
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showSpellId = val
+                TT.config.showSpellId = val
             end
         },
         showItemId = {
@@ -158,10 +157,10 @@ R.config.options.args.tooltips = {
             order = 16,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.tooltips.showItemId
+                return TT.config.showItemId
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.showItemId = val
+                TT.config.showItemId = val
             end
         },
         lineBreak2 = {type = "header", name = "", order = 20},
@@ -179,14 +178,14 @@ R.config.options.args.tooltips = {
                     values = R.Libs.SharedMedia:HashTable("font"),
                     get = function()
                         for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                            if R.config.db.profile.modules.tooltips.fontFamily == font then
+                            if TT.config.fontFamily == font then
                                 return key
                             end
                         end
                     end,
                     set = function(_, key)
-                        R.config.db.profile.modules.tooltips.fontFamily = R.Libs.SharedMedia:Fetch("font", key)
-                        R.Modules.Tooltips:UpdateFonts()
+                        TT.config.fontFamily = R.Libs.SharedMedia:Fetch("font", key)
+                        TT:UpdateFonts()
                     end
                 },
                 size = {
@@ -197,11 +196,11 @@ R.config.options.args.tooltips = {
                     softMax = 36,
                     step = 1,
                     get = function()
-                        return R.config.db.profile.modules.tooltips.fontSize
+                        return TT.config.fontSize
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.tooltips.fontSize = val
-                        R.Modules.Tooltips:UpdateFonts()
+                        TT.config.fontSize = val
+                        TT:UpdateFonts()
                     end
                 },
                 smallFontSize = {
@@ -212,11 +211,11 @@ R.config.options.args.tooltips = {
                     softMax = 36,
                     step = 1,
                     get = function()
-                        return R.config.db.profile.modules.tooltips.smallFontSize
+                        return TT.config.smallFontSize
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.tooltips.smallFontSize = val
-                        R.Modules.Tooltips:UpdateFonts()
+                        TT.config.smallFontSize = val
+                        TT:UpdateFonts()
                     end
                 },
                 headerFontSize = {
@@ -227,11 +226,11 @@ R.config.options.args.tooltips = {
                     softMax = 36,
                     step = 1,
                     get = function()
-                        return R.config.db.profile.modules.tooltips.headerFontSize
+                        return TT.config.headerFontSize
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.tooltips.headerFontSize = val
-                        R.Modules.Tooltips:UpdateFonts()
+                        TT.config.headerFontSize = val
+                        TT:UpdateFonts()
                     end
                 },
                 healthFontSize = {
@@ -242,11 +241,11 @@ R.config.options.args.tooltips = {
                     softMax = 36,
                     step = 1,
                     get = function()
-                        return R.config.db.profile.modules.tooltips.healthFontSize
+                        return TT.config.healthFontSize
                     end,
                     set = function(_, val)
-                        R.config.db.profile.modules.tooltips.healthFontSize = val
-                        R.Modules.Tooltips:UpdateFonts()
+                        TT.config.healthFontSize = val
+                        TT:UpdateFonts()
                     end
                 }
             }
@@ -259,11 +258,11 @@ R.config.options.args.tooltips = {
             softMax = 3,
             step = 0.1,
             get = function()
-                return R.config.db.profile.modules.tooltips.scale
+                return TT.config.scale
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.scale = val
-                R.Modules.Tooltips:UpdateScale()
+                TT.config.scale = val
+                TT:UpdateScale()
             end
         },
         anchor = {
@@ -272,10 +271,10 @@ R.config.options.args.tooltips = {
             order = 31,
             values = TOOLTIP_ANCHORS,
             get = function()
-                return R.config.db.profile.modules.tooltips.anchor
+                return TT.config.anchor
             end,
             set = function(_, key)
-                R.config.db.profile.modules.tooltips.anchor = key
+                TT.config.anchor = key
             end
         },
         offsetX = {
@@ -286,10 +285,10 @@ R.config.options.args.tooltips = {
             softMax = 100,
             step = 1,
             get = function()
-                return R.config.db.profile.modules.tooltips.offsetX
+                return TT.config.offsetX
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.offsetX = val
+                TT.config.offsetX = val
             end
         },
         offsetY = {
@@ -300,11 +299,11 @@ R.config.options.args.tooltips = {
             softMax = 100,
             step = 1,
             get = function()
-                return R.config.db.profile.modules.tooltips.offsetY
+                return TT.config.offsetY
             end,
             set = function(_, val)
-                R.config.db.profile.modules.tooltips.offsetY = val
+                TT.config.offsetY = val
             end
         }
     }
-}
+})

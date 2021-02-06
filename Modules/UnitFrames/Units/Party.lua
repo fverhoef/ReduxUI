@@ -4,31 +4,30 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPartyHeader()
-    local config = R.config.db.profile.modules.unitFrames.party
-    local default = R.config.db.profile.modules.unitFrames.party
+    local config = UF.config.party
+    local default = UF.config.party
 
     if config.enabled then
-        local partyHeader = UF:SpawnHeader("Party", UF.CreateParty, config, default, true)
-        partyHeader:SetPoint(unpack(config.point))
-        partyHeader:Show()
-        partyHeader.cfg = config
+        local parent = CreateFrame("Frame", addonName .. "Party")
+        parent:SetPoint(unpack(config.point))
+        parent:SetSize(200, 40)
+        parent:Show()
 
-        if config.fader and config.fader.enabled then
-            R:CreateFrameFader(partyHeader, config.fader)
-        end
+        local group = UF:SpawnHeader("Party", UF.CreateParty, config, default, true)
+        group.cfg = config
+        parent.group = group
 
-        R:CreateDragFrame(partyHeader, "Party", default.point, 200, 40)
+        R:CreateDragFrame(parent, "Party", default.point, 200, 40)
 
-        return partyHeader
+        return parent
     end
 end
 
 function UF:UpdatePartyHeader()
-    if not UF.frames.partyHeader then
+    local group = UF.frames.partyHeader.group
+    if not group then
         return
     end
-
-    local group = UF.frames.partyHeader
 
     for i = 1, group:GetNumChildren() do
         local child = group:GetAttribute("child" .. i)
@@ -37,6 +36,7 @@ function UF:UpdatePartyHeader()
     end
 
     group:SetAttribute("point", group.cfg.unitAnchorPoint)
+    group:SetAttribute("columnAnchorPoint", group.cfg.unitAnchorPoint)
     if group.cfg.unitAnchorPoint == "LEFT" or group.cfg.unitAnchorPoint == "RIGHT" then
         group:SetAttribute("xOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "RIGHT" and -1 or 1))
         group:SetAttribute("yOffset", 0)
@@ -59,9 +59,18 @@ function UF:UpdatePartyHeader()
             group.initialized = true
         end
         group:SetAttribute("startingIndex", 1)
-        group:SetAttribute("visibility", (group.cfg.showRaid and "party,raid") or "party")
-    else
-        group:SetAttribute("visibility", nil)
+    end
+    UF:UpdateHeaderVisibility(group, (group.isForced and "show") or (group.cfg.showRaid and "party,raid") or "party")
+
+    group:ClearAllPoints()
+    if group.cfg.unitAnchorPoint == "LEFT" then
+        group:SetPoint("TOPLEFT", UF.frames.partyHeader, "TOPLEFT")
+    elseif group.cfg.unitAnchorPoint == "RIGHT" then
+        group:SetPoint("TOPRIGHT", UF.frames.partyHeader, "TOPRIGHT")
+    elseif group.cfg.unitAnchorPoint == "BOTTOM" then
+        group:SetPoint("BOTTOMLEFT", UF.frames.partyHeader, "BOTTOMLEFT")
+    elseif group.cfg.unitAnchorPoint == "TOP" then
+        group:SetPoint("TOPLEFT", UF.frames.partyHeader, "TOPLEFT")
     end
 
     group:SetAttribute("showPlayer", group.cfg.showPlayer)
@@ -71,7 +80,7 @@ function UF:UpdatePartyHeader()
 end
 
 function UF:CreateParty()
-    self.cfg = R.config.db.profile.modules.unitFrames.party
+    self.cfg = UF.config.party
 
     self:SetSize(unpack(self.cfg.size))
     self:SetFrameStrata("LOW")
@@ -136,6 +145,8 @@ function UF:CreateParty()
 
     self:CreateRange()
     self:CreateAuraHighlight()
+
+    UF:UpdateParty(self)
 end
 
 function UF:UpdateParty(self)
@@ -148,11 +159,11 @@ function UF:UpdateParty(self)
     if UF:IsBlizzardTheme() then
         self.Border:Hide()
         self.Shadow:Hide()
-        
+
         self.Texture:SetTexture(R.media.textures.unitFrames.partyFrame)
         self.Texture:SetSize(128, 64)
         self.Texture:SetPoint("TOPLEFT", self, 0, -2)
-        
+
         self.Health:SetSize(70, 7)
         self.Health:ClearAllPoints()
         self.Health:SetPoint("TOPLEFT", self.Texture, 47, -12)
@@ -205,11 +216,13 @@ function UF:UpdateParty(self)
 end
 
 function UF:ForceShowParty()
-    UF:ForceShowHeader(UF.frames.partyHeader)
+    UF:ForceShowHeader(UF.frames.partyHeader.group)
+    UF:UpdatePartyHeader()
     UF.forceShowParty = true
 end
 
 function UF:UnforceShowParty()
-    UF:UnforceShowHeader(UF.frames.partyHeader)
+    UF:UnforceShowHeader(UF.frames.partyHeader.group)
+    UF:UpdatePartyHeader()
     UF.forceShowParty = false
 end

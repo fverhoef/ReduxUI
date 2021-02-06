@@ -8,7 +8,7 @@ UF.nameplates = {}
 UF.forceShowRaid = false
 
 function UF:Initialize()
-    if not R.config.db.profile.modules.unitFrames.enabled then
+    if not UF.config.enabled then
         return
     end
 
@@ -30,9 +30,6 @@ function UF:Initialize()
     UF.frames.arenaHeader = UF:SpawnArenaHeader()
 
     UF:SpawnNamePlates()
-
-    UF:RegisterEvent("PLAYER_ENTERING_WORLD", UF.SetupMasque)
-
     UF:UpdateAll()
 end
 
@@ -58,14 +55,14 @@ function UF:UpdateAll()
 end
 
 function UF:UpdateColors()
-    oUF.colors.health = R.config.db.profile.modules.unitFrames.health
-    oUF.colors.power["MANA"] = R.config.db.profile.modules.unitFrames.colors.mana
-    oUF.colors.power["RAGE"] = R.config.db.profile.modules.unitFrames.colors.rage
-    oUF.colors.power["ENERGY"] = R.config.db.profile.modules.unitFrames.colors.energy
-    oUF.colors.power["FOCUS"] = R.config.db.profile.modules.unitFrames.colors.focus
-    oUF.colors.power["COMBO_POINTS"] = R.config.db.profile.modules.unitFrames.colors.comboPoints
+    oUF.colors.health = UF.config.health
+    oUF.colors.power["MANA"] = UF.config.colors.mana
+    oUF.colors.power["RAGE"] = UF.config.colors.rage
+    oUF.colors.power["ENERGY"] = UF.config.colors.energy
+    oUF.colors.power["FOCUS"] = UF.config.colors.focus
+    oUF.colors.power["COMBO_POINTS"] = UF.config.colors.comboPoints
 
-    for key, value in next, R.config.db.profile.modules.unitFrames.colors.class do
+    for key, value in next, UF.config.colors.class do
         if RAID_CLASS_COLORS[key] then
             RAID_CLASS_COLORS[key]["r"] = value[1]
             RAID_CLASS_COLORS[key]["g"] = value[2]
@@ -90,7 +87,7 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     return frame
 end
 
-function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index)
+function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index, visibility)
     if registerStyle then
         oUF:RegisterStyle(addonName .. name, func)
         oUF:SetActiveStyle(addonName .. name)
@@ -140,6 +137,44 @@ function UF:UpdateFrame(self)
     self.Shadow:SetShown(self.cfg.shadow.enabled)
 
     self:UpdateAllElements("OnUpdate")
+end
+
+function UF:UpdateHeaderVisibility(self, visibility)
+    local type, list = string.split(" ", visibility, 2)
+    if list and type == "custom" then
+        RegisterAttributeDriver(self, "state-visibility", list)
+        self.visibility = list
+    else
+        local condition = UF:GetCondition(string.split(",", visibility))
+        RegisterAttributeDriver(self, "state-visibility", condition)
+        self.visibility = condition
+    end
+end
+
+local conditions = {
+    raid40 = "[@raid26,exists] show;",
+    raid25 = "[@raid11,exists] show;",
+    raid10 = "[@raid6,exists] show;",
+    raid = "[group:raid] show;",
+    party = "[group:party,nogroup:raid] show;",
+    solo = "[@player,exists,nogroup:party] show;",
+    show = "show;"
+}
+
+function UF:GetCondition(...)
+    local cond = ""
+
+    local short, condition
+    for i = 1, select("#", ...) do
+        short = select(i, ...)
+
+        condition = conditions[short]
+        if condition then
+            cond = cond .. condition
+        end
+    end
+
+    return cond .. "hide"
 end
 
 function UF:ForceShow(frame)

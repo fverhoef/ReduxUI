@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 UF.CreateName = function(self)
     self.Name = self:CreateFontString("$parentName", "OVERLAY")
-    self.Name:SetFont(R.config.db.profile.modules.unitFrames.font, 13, "OUTLINE")
+    self.Name:SetFont(UF.config.font, 13, "OUTLINE")
     -- self.Name:SetShadowOffset(1, -1)
     self.Name:SetJustifyH("CENTER")
     self.Name:SetHeight(10)
@@ -23,7 +23,7 @@ UF.UpdateName = function(self)
 
     if self.cfg.name.enabled then
         self.Name:Show()
-        self.Name:SetFont(R.config.db.profile.modules.unitFrames.font, self.cfg.name.fontSize, "OUTLINE")
+        self.Name:SetFont(UF.config.font, self.cfg.name.fontSize, "OUTLINE")
     else
         self.Name:Hide()
     end

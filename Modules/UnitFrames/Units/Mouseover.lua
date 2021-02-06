@@ -4,14 +4,14 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnMouseOver()
-    local config = R.config.db.profile.modules.unitFrames.mouseover
+    local config = UF.config.mouseover
     if config.enabled then
         return UF:SpawnFrame("Mouseover", "mouseover", UF.CreateMouseover, config)
     end
 end
 
 function UF:CreateMouseover()
-    self.cfg = R.config.db.profile.modules.unitFrames.mouseover
+    self.cfg = UF.config.mouseover
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

@@ -9,7 +9,7 @@ local bagIDs =
 } 
 
 function ID:Initialize()   
-    if not R.config.db.profile.modules.inventoryDatabase then
+    if not ID.config then
         return
     end
 

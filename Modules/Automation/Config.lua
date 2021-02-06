@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local AM = R.Modules.Automation
 
-R.config.defaults.profile.modules.automation = {
+R:RegisterModuleConfig(AM, {
     enabled = true,
     fastLoot = true,
     standDismount = true,
@@ -14,12 +14,11 @@ R.config.defaults.profile.modules.automation = {
     disableLootBindConfirmation = false,
     disableVendorRefundWarning = true,
     disableMailRefundWarning = true
-}
+})
 
-R.config.options.args.automation = {
+R:RegisterModuleOptions(AM, {
     type = "group",
     name = "Automation",
-    order = 3,
     args = {
         header = {type = "header", name = R.title .. " > Automation", order = 0},
         enabled = {
@@ -27,21 +26,21 @@ R.config.options.args.automation = {
             name = "Enabled",
             order = 1,
             confirm = function()
-                if R.config.db.profile.modules.automation.enabled then
+                if AM.config.enabled then
                     return "Disabling this module requires a UI reload. Proceed?"
                 else
                     return false
                 end
             end,
             get = function()
-                return R.config.db.profile.modules.automation.enabled
+                return AM.config.enabled
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.enabled = val
+                AM.config.enabled = val
                 if not val then
                     ReloadUI()
                 else
-                    R.Modules.Automation:Initialize()
+                    AM:Initialize()
                 end
             end
         },
@@ -52,10 +51,10 @@ R.config.options.args.automation = {
             order = 10,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.fastLoot
+                return AM.config.fastLoot
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.fastLoot = val
+                AM.config.fastLoot = val
             end
         },
         standDismount = {
@@ -64,10 +63,10 @@ R.config.options.args.automation = {
             order = 11,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.standDismount
+                return AM.config.standDismount
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.standDismount = val
+                AM.config.standDismount = val
             end
         },
         vendorGrays = {
@@ -76,10 +75,10 @@ R.config.options.args.automation = {
             order = 12,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.vendorGrays
+                return AM.config.vendorGrays
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.vendorGrays = val
+                AM.config.vendorGrays = val
             end
         },
         repair = {
@@ -88,10 +87,10 @@ R.config.options.args.automation = {
             order = 13,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.repair
+                return AM.config.repair
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.repair = val
+                AM.config.repair = val
             end
         },
         acceptSummon = {
@@ -100,10 +99,10 @@ R.config.options.args.automation = {
             order = 14,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.acceptSummon
+                return AM.config.acceptSummon
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.acceptSummon = val
+                AM.config.acceptSummon = val
             end
         },
         acceptResurrection = {
@@ -112,10 +111,10 @@ R.config.options.args.automation = {
             order = 15,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.acceptResurrection
+                return AM.config.acceptResurrection
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.acceptResurrection = val
+                AM.config.acceptResurrection = val
             end
         },
         disableLootBindConfirmation = {
@@ -124,10 +123,10 @@ R.config.options.args.automation = {
             order = 16,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.disableLootBindConfirmation
+                return AM.config.disableLootBindConfirmation
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.disableLootBindConfirmation = val
+                AM.config.disableLootBindConfirmation = val
             end
         },
         disableLootRollConfirmation = {
@@ -136,10 +135,10 @@ R.config.options.args.automation = {
             order = 17,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.disableLootRollConfirmation
+                return AM.config.disableLootRollConfirmation
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.disableLootRollConfirmation = val
+                AM.config.disableLootRollConfirmation = val
             end
         },
         disableVendorRefundWarning = {
@@ -148,10 +147,10 @@ R.config.options.args.automation = {
             order = 18,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.disableVendorRefundWarning
+                return AM.config.disableVendorRefundWarning
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.disableVendorRefundWarning = val
+                AM.config.disableVendorRefundWarning = val
             end
         },
         disableMailRefundWarning = {
@@ -160,11 +159,11 @@ R.config.options.args.automation = {
             order = 19,
             width = "full",
             get = function()
-                return R.config.db.profile.modules.automation.disableMailRefundWarning
+                return AM.config.disableMailRefundWarning
             end,
             set = function(_, val)
-                R.config.db.profile.modules.automation.disableMailRefundWarning = val
+                AM.config.disableMailRefundWarning = val
             end
         }
     }
-}
+})

@@ -11,7 +11,7 @@ UF.CreateCombatFeedback = function(self)
     else
         self.CombatFeedbackText:SetPoint("CENTER", self.Health, "CENTER")
     end
-    self.CombatFeedbackText:SetFont(R.config.db.profile.modules.unitFrames.font, cfg.fontSize or 19, "OUTLINE")
+    self.CombatFeedbackText:SetFont(UF.config.font, cfg.fontSize or 19, "OUTLINE")
     self.CombatFeedbackText.ignoreImmune = cfg.ignoreImmune
     self.CombatFeedbackText.ignoreDamage = cfg.ignoreDamage
     self.CombatFeedbackText.ignoreHeal = cfg.ignoreHeal

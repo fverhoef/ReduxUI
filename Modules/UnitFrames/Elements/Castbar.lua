@@ -26,7 +26,7 @@ UF.CreateCastbar = function(self)
 
     -- text
     self.Castbar.Text = self.Castbar:CreateFontString(nil, "OVERLAY")
-    self.Castbar.Text:SetFont(R.config.db.profile.modules.unitFrames.font, cfg.fontSize or 10)
+    self.Castbar.Text:SetFont(UF.config.font, cfg.fontSize or 10)
     self.Castbar.Text:SetShadowOffset(1, -1)
     self.Castbar.Text:SetPoint("LEFT", self.Castbar, 2, 0)
     self.Castbar.Text:SetPoint("RIGHT", self.Castbar, -15, 0)
@@ -35,7 +35,7 @@ UF.CreateCastbar = function(self)
 
     -- time
     self.Castbar.Time = self.Castbar:CreateFontString(nil, "OVERLAY")
-    self.Castbar.Time:SetFont(R.config.db.profile.modules.unitFrames.font, cfg.fontSize or 10)
+    self.Castbar.Time:SetFont(UF.config.font, cfg.fontSize or 10)
     self.Castbar.Time:SetShadowOffset(1, -1)
     self.Castbar.Time:SetPoint("RIGHT", self.Castbar, -2, 0)
 
@@ -69,16 +69,16 @@ UF.UpdateCastbar = function(self)
         local width, height = unpack(cfg.size)
         self.Castbar:SetSize(width, height)
 
-        self.Castbar:SetStatusBarTexture(R.config.db.profile.modules.unitFrames.statusbars.castbar)
-        self.Castbar:SetStatusBarColor(unpack(R.config.db.profile.modules.unitFrames.colors.castbar))
+        self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
+        self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
 
-        self.Castbar.bg:SetTexture(R.config.db.profile.modules.unitFrames.statusbars.castbar)
-        self.Castbar.bg:SetVertexColor(0.3 * R.config.db.profile.modules.unitFrames.colors.castbar[1], 0.3 * R.config.db.profile.modules.unitFrames.colors.castbar[2], 0.3 * R.config.db.profile.modules.unitFrames.colors.castbar[3])
+        self.Castbar.bg:SetTexture(UF.config.statusbars.castbar)
+        self.Castbar.bg:SetVertexColor(0.3 * UF.config.colors.castbar[1], 0.3 * UF.config.colors.castbar[2], 0.3 * UF.config.colors.castbar[3])
 
         self.Castbar.Spark:SetSize(height - cfg.borderSize, height - cfg.borderSize)
 
-        self.Castbar.Text:SetFont(R.config.db.profile.modules.unitFrames.font, cfg.fontSize or 10)
-        self.Castbar.Time:SetFont(R.config.db.profile.modules.unitFrames.font, cfg.fontSize or 10)
+        self.Castbar.Text:SetFont(UF.config.font, cfg.fontSize or 10)
+        self.Castbar.Time:SetFont(UF.config.font, cfg.fontSize or 10)
 
         if cfg.showIcon then
             self.Castbar.Icon:Show()

@@ -14,11 +14,7 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
-        borders = {
-            size = 5,
-            texture = R.media.textures.borders.beautycaseWhite,
-            color = {89 / 255, 89 / 255, 89 / 255}
-        },
+        borders = {size = 5, texture = R.media.textures.borders.beautycaseWhite, color = {89 / 255, 89 / 255, 89 / 255}},
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
             highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight
@@ -27,8 +23,7 @@ R.config.defaults = {
             grayFont = {127 / 255, 127 / 255, 127 / 255}, -- GameFontGray
             darkGrayFont = {89 / 255, 89 / 255, 89 / 255} -- GameFontDarkGray
         },
-        modules = {
-        }
+        modules = {}
     },
     char = {modules = {}},
     realm = {inventory = {}, modules = {}}
@@ -176,8 +171,25 @@ R.config.options = {
 
 R.config.faders = {
     none = nil,
-    onShow = {fadeInAlpha = 1, fadeInDuration = 0.3, fadeInSmooth = "OUT", fadeOutAlpha = 0, fadeOutDuration = 0.9, fadeOutSmooth = "OUT", fadeOutDelay = 0, trigger = "OnShow"},
-    mouseOver = {fadeInAlpha = 1, fadeInDuration = 0.3, fadeInSmooth = "OUT", fadeOutAlpha = 0, fadeOutDuration = 0.9, fadeOutSmooth = "OUT", fadeOutDelay = 0}
+    onShow = {
+        fadeInAlpha = 1,
+        fadeInDuration = 0.3,
+        fadeInSmooth = "OUT",
+        fadeOutAlpha = 0,
+        fadeOutDuration = 0.9,
+        fadeOutSmooth = "OUT",
+        fadeOutDelay = 0,
+        trigger = "OnShow"
+    },
+    mouseOver = {
+        fadeInAlpha = 1,
+        fadeInDuration = 0.3,
+        fadeInSmooth = "OUT",
+        fadeOutAlpha = 0,
+        fadeOutDuration = 0.9,
+        fadeOutSmooth = "OUT",
+        fadeOutDelay = 0
+    }
 }
 
 local function FindPanel(name, parent)
@@ -200,6 +212,25 @@ local function AddLogo(frame)
     logo:SetBackdrop({bgFile = R.media.textures.logo})
 
     frame.logo = logo
+end
+
+function R:RegisterModuleConfig(module, profile, char, realm)
+    R.config.defaults.profile.modules[module.name] = profile
+    module.defaults = profile
+    if char then
+        R.config.defaults.char.modules[module.name] = char
+        module.charDefaults = char
+    end
+    if realm then
+        R.config.defaults.realm.modules[module.name] = realm
+        module.realmDefaults = realm
+    end
+end
+
+function R:RegisterModuleOptions(module, options)
+    options.order = 100 + #R.config.options.args
+    R.config.options.args[module.name] = options
+    module.options = options
 end
 
 function R:SetupConfig()

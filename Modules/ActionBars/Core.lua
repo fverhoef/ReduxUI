@@ -4,7 +4,7 @@ local AB = R:AddModule("ActionBars", "AceConsole-3.0", "AceEvent-3.0", "AceHook-
 AB.bars = {}
 
 function AB:Initialize()
-    if not R.config.db.profile.modules.actionBars.enabled then
+    if not AB.config.enabled then
         return
     end
 
@@ -129,17 +129,6 @@ function AB:UpdateAll()
             widthOffset = 38 -- 37
         end
 
-        if R.Modules.DungeonJournal then
-            if not R.Modules.DungeonJournal.MicroButton:IsShown() then
-                R.Modules.DungeonJournal.MicroButton:SetParent(AB.bars.MicroButtonAndBagsBar)
-                R.Modules.DungeonJournal.MicroButton:SetPoint("BOTTOMLEFT", "WorldMapMicroButton", "BOTTOMRIGHT", 0, 0)
-                R.Modules.DungeonJournal.MicroButton:Show()
-                MainMenuMicroButton:ClearAllPoints()
-                MainMenuMicroButton:SetPoint("BOTTOMLEFT", R.Modules.DungeonJournal.MicroButton, "BOTTOMRIGHT", 0, 0)
-            end
-            widthOffset = 10
-        end
-
         AB.bars.MicroButtonAndBagsBar:SetSize(298 - widthOffset, 88)
         AB.bars.MicroButtonAndBagsBar.Texture:SetTexCoord((257 + widthOffset) / 1024, (257 + 286) / 1024, 168 / 255, 255 / 255)
         AB.bars.MicroButtonAndBagsBar.Texture:SetSize(286 - widthOffset, 88)
@@ -196,21 +185,17 @@ function AB:HideBlizzardBar(framesToHide, framesToDisable)
     end
 end
 
-function AB:SetupButton(button, frame, width, height, point, masqueGroup)
+function AB:SetupButton(button, frame, width, height, point)
     if not frame.__blizzardBar then
         button:SetParent(frame)
     end
     button:SetSize(width, height)
     button:ClearAllPoints()
     button:SetPoint(unpack(point))
-
-    if masqueGroup then
-        masqueGroup:AddButton(button)
-    end
 end
 
 function AB:CreateMicroButtonAndBagsBar()
-    local config = R.config.db.profile.modules.actionBars.microButtonAndBags
+    local config = AB.config.microButtonAndBags
 
     local widthOffset = 0
     local playerLevel = UnitLevel("player")
@@ -265,16 +250,11 @@ function AB:CreateMicroButtonAndBagsBar()
         end
     end
 
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Bags", true)
-    end
-
-    AB:SetupButton(MainMenuBarBackpackButton, frame, 40, 40, {"BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, 46}, masqueGroup)
-    AB:SetupButton(CharacterBag0Slot, frame, 30, 30, {"BOTTOMRIGHT", MainMenuBarBackpackButton, "BOTTOMLEFT", -3, 0}, masqueGroup)
-    AB:SetupButton(CharacterBag1Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag0Slot, "BOTTOMLEFT", -2, 0}, masqueGroup)
-    AB:SetupButton(CharacterBag2Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag1Slot, "BOTTOMLEFT", -2, 0}, masqueGroup)
-    AB:SetupButton(CharacterBag3Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag2Slot, "BOTTOMLEFT", -2, 0}, masqueGroup)
+    AB:SetupButton(MainMenuBarBackpackButton, frame, 40, 40, {"BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, 46})
+    AB:SetupButton(CharacterBag0Slot, frame, 30, 30, {"BOTTOMRIGHT", MainMenuBarBackpackButton, "BOTTOMLEFT", -3, 0})
+    AB:SetupButton(CharacterBag1Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag0Slot, "BOTTOMLEFT", -2, 0})
+    AB:SetupButton(CharacterBag2Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag1Slot, "BOTTOMLEFT", -2, 0})
+    AB:SetupButton(CharacterBag3Slot, frame, 30, 30, {"BOTTOMRIGHT", CharacterBag2Slot, "BOTTOMLEFT", -2, 0})
 
     R:FixNormalTextureSize(MainMenuBarBackpackButton)
     R:FixNormalTextureSize(CharacterBag0Slot)
@@ -328,12 +308,12 @@ function AB:MainMenuMicroButton_Update()
 
         local latencyColor
         local latency = R.SystemInfo.homePing > R.SystemInfo.worldPing and R.SystemInfo.homePing or R.SystemInfo.worldPing
-        if latency > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyTreshold then
-            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.highLatencyColor
-        elseif latency > R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyTreshold then
-            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyColor
+        if latency > AB.config.microButtonAndBags.mediumLatencyTreshold then
+            latencyColor = AB.config.microButtonAndBags.highLatencyColor
+        elseif latency > AB.config.microButtonAndBags.lowLatencyTreshold then
+            latencyColor = AB.config.microButtonAndBags.mediumLatencyColor
         else
-            latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyColor
+            latencyColor = AB.config.microButtonAndBags.lowLatencyColor
         end
 
         MainMenuMicroButton.PerformanceBar.Texture:SetVertexColor(unpack(latencyColor))
@@ -344,7 +324,7 @@ function AB:MainMenuMicroButton_Update()
 end
 
 function AB:CreateMainMenuBar()
-    local config = R.config.db.profile.modules.actionBars.mainMenuBar
+    local config = AB.config.mainMenuBar
 
     local framesToHide = {MainMenuBar}
     local framesToDisable = {MainMenuBar, MicroButtonAndBagsBar, MainMenuBarArtFrame}
@@ -370,11 +350,6 @@ function AB:CreateMainMenuBar()
     frame.RightEndCap = overlay:CreateTexture("ARTWORK", 2)
     frame.RightEndCap:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT", -32, 0)
 
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Main Action Bar", true)
-    end
-
     local buttonList = {}
     for i = 1, NUM_ACTIONBAR_BUTTONS do
         local button = _G["ActionButton" .. i]
@@ -393,7 +368,7 @@ function AB:CreateMainMenuBar()
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
-        AB:SetupButton(button, frame, 36, 36, point, masqueGroup)
+        AB:SetupButton(button, frame, 36, 36, point)
     end
 
     if ActionBarUpButton then
@@ -510,7 +485,7 @@ function AB:CreateMainMenuBar()
 end
 
 function AB:UpdateMainMenuBarTextures()
-    local config = R.config.db.profile.modules.actionBars.mainMenuBar
+    local config = AB.config.mainMenuBar
 
     local isExpBarShown = MainMenuExpBar:IsShown()
     local isRepBarShown = ReputationWatchBar:IsShown()
@@ -709,7 +684,7 @@ function AB:UpdateMaxLevelBarTextures()
 end
 
 function AB:CreateMultiBarBottomLeft()
-    local config = R.config.db.profile.modules.actionBars.multiBarBottomLeft
+    local config = AB.config.multiBarBottomLeft
 
     local framesToHide = {MultiBarBottomLeft}
     local framesToDisable = {MultiBarBottomLeft}
@@ -719,11 +694,6 @@ function AB:CreateMultiBarBottomLeft()
     local frame = CreateFrame("Frame", addonName .. "MultiBarBottomLeft", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, -5)
-
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Bottom Left Action Bar", true)
-    end
 
     local buttonList = {}
     for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -743,7 +713,7 @@ function AB:CreateMultiBarBottomLeft()
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
-        AB:SetupButton(button, frame, 36, 36, point, masqueGroup)
+        AB:SetupButton(button, frame, 36, 36, point)
     end
 
     frame:SetAttribute("actionpage", 6) -- 6 = MultiBarBottomLeft
@@ -752,7 +722,7 @@ function AB:CreateMultiBarBottomLeft()
 end
 
 function AB:CreateMultiBarBottomRight()
-    local config = R.config.db.profile.modules.actionBars.multiBarBottomRight
+    local config = AB.config.multiBarBottomRight
 
     local framesToHide = {MultiBarBottomRight}
     local framesToDisable = {MultiBarBottomRight}
@@ -762,11 +732,6 @@ function AB:CreateMultiBarBottomRight()
     local frame = CreateFrame("Frame", addonName .. "MultiBarBottomRight", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "BOTTOMRIGHT", 38, 0)
-
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Bottom Right Action Bar", true)
-    end
 
     local buttonList = {}
     for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -789,7 +754,7 @@ function AB:CreateMultiBarBottomRight()
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
-        AB:SetupButton(button, frame, 36, 36, point, masqueGroup)
+        AB:SetupButton(button, frame, 36, 36, point)
     end
 
     frame:SetAttribute("actionpage", 5) -- 5 = MultiBarBottomRight
@@ -798,7 +763,7 @@ function AB:CreateMultiBarBottomRight()
 end
 
 function AB:CreateMultiBarRight()
-    local config = R.config.db.profile.modules.actionBars.multiBarRight
+    local config = AB.config.multiBarRight
 
     local framesToHide = {MultiBarRight}
     local framesToDisable = {MultiBarRight}
@@ -808,11 +773,6 @@ function AB:CreateMultiBarRight()
     local frame = CreateFrame("Frame", addonName .. "MultiBarRight", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", UIParent, "RIGHT", 0, 0)
-
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Right Action Bar", true)
-    end
 
     local buttonList = {}
     for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -832,7 +792,7 @@ function AB:CreateMultiBarRight()
             point = {"TOPLEFT", parent, "BOTTOMLEFT", 0, -2}
         end
 
-        AB:SetupButton(button, frame, 36, 36, point, masqueGroup)
+        AB:SetupButton(button, frame, 36, 36, point)
     end
 
     frame:SetAttribute("actionpage", 3) -- 3 = MultiBarRight
@@ -845,7 +805,7 @@ function AB:CreateMultiBarRight()
 end
 
 function AB:CreateMultiBarLeft()
-    local config = R.config.db.profile.modules.actionBars.multiBarLeft
+    local config = AB.config.multiBarLeft
 
     local framesToHide = {MultiBarLeft}
     local framesToDisable = {MultiBarLeft}
@@ -855,11 +815,6 @@ function AB:CreateMultiBarLeft()
     local frame = CreateFrame("Frame", addonName .. "MultiBarLeft", UIParent, "SecureHandlerStateTemplate")
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", addonName .. "MultiBarRight", "LEFT", -2, 0)
-
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Left Action Bar", true)
-    end
 
     local buttonList = {}
     for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -879,7 +834,7 @@ function AB:CreateMultiBarLeft()
             point = {"TOPLEFT", parent, "BOTTOMLEFT", 0, -2}
         end
 
-        AB:SetupButton(button, frame, 36, 36, point, masqueGroup)
+        AB:SetupButton(button, frame, 36, 36, point)
     end
 
     frame:SetAttribute("actionpage", 4) -- 4 = MultiBarLeft
@@ -892,7 +847,7 @@ function AB:CreateMultiBarLeft()
 end
 
 function AB:CreateStanceBar()
-    local config = R.config.db.profile.modules.actionBars.stanceBar
+    local config = AB.config.stanceBar
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
@@ -913,11 +868,6 @@ function AB:CreateStanceBar()
         frame.__blizzardBar:SetAllPoints()
     end
 
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Stance/Shapeshift Bar", true)
-    end
-
     local buttonList = {}
     for i = 1, NUM_STANCE_SLOTS do
         local button = _G["StanceButton" .. i]
@@ -936,7 +886,7 @@ function AB:CreateStanceBar()
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
-        AB:SetupButton(button, parent, 30, 30, point, masqueGroup)
+        AB:SetupButton(button, parent, 30, 30, point)
     end
 
     -- hide blizzard textures
@@ -948,7 +898,7 @@ function AB:CreateStanceBar()
 end
 
 function AB:CreatePetActionBar()
-    local config = R.config.db.profile.modules.actionBars.petActionBar
+    local config = AB.config.petActionBar
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
@@ -969,11 +919,6 @@ function AB:CreatePetActionBar()
         frame.__blizzardBar:SetAllPoints()
     end
 
-    local masqueGroup
-    if LibStub("Masque", true) then
-        masqueGroup = LibStub("Masque", true):Group(AB.Title, "Pet Action Bar", true)
-    end
-
     local buttonList = {}
     for i = 1, NUM_PET_ACTION_SLOTS do
         local button = _G["PetActionButton" .. i]
@@ -992,14 +937,14 @@ function AB:CreatePetActionBar()
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
-        AB:SetupButton(button, parent, 30, 30, point, masqueGroup)
+        AB:SetupButton(button, parent, 30, 30, point)
     end
 
     return frame
 end
 
 function AB:CreateVehicleExitBar()
-    local config = R.config.db.profile.modules.actionBars.vehicleExitBar
+    local config = AB.config.vehicleExitBar
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
@@ -1062,24 +1007,24 @@ function AB:AddSystemInfo(tooltip)
 
     local latencyColor
     local latency = R.SystemInfo.homePing > R.SystemInfo.worldPing and R.SystemInfo.homePing or R.SystemInfo.worldPing
-    if latency > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyTreshold then
-        latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.highLatencyColor
-    elseif latency > R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyTreshold then
-        latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.mediumLatencyColor
+    if latency > AB.config.microButtonAndBags.mediumLatencyTreshold then
+        latencyColor = AB.config.microButtonAndBags.highLatencyColor
+    elseif latency > AB.config.microButtonAndBags.lowLatencyTreshold then
+        latencyColor = AB.config.microButtonAndBags.mediumLatencyColor
     else
-        latencyColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowLatencyColor
+        latencyColor = AB.config.microButtonAndBags.lowLatencyColor
     end
 
     tooltip:AddDoubleLine("Latency:", R.SystemInfo.homePing, labelColor[1], labelColor[2], labelColor[3], latencyColor[1],
                           latencyColor[2], latencyColor[3])
 
     local fpsColor
-    if R.SystemInfo.framerate > R.config.db.profile.modules.actionBars.microButtonAndBags.mediumFpsTreshold then
-        fpsColor = R.config.db.profile.modules.actionBars.microButtonAndBags.highFpsColor
-    elseif R.SystemInfo.framerate > R.config.db.profile.modules.actionBars.microButtonAndBags.lowFpsTreshold then
-        fpsColor = R.config.db.profile.modules.actionBars.microButtonAndBags.mediumFpsColor
+    if R.SystemInfo.framerate > AB.config.microButtonAndBags.mediumFpsTreshold then
+        fpsColor = AB.config.microButtonAndBags.highFpsColor
+    elseif R.SystemInfo.framerate > AB.config.microButtonAndBags.lowFpsTreshold then
+        fpsColor = AB.config.microButtonAndBags.mediumFpsColor
     else
-        fpsColor = R.config.db.profile.modules.actionBars.microButtonAndBags.lowFpsColor
+        fpsColor = AB.config.microButtonAndBags.lowFpsColor
     end
 
     tooltip:AddDoubleLine("FPS:", R.SystemInfo.framerate, labelColor[1], labelColor[2], labelColor[3], fpsColor[1], fpsColor[2],
@@ -1111,7 +1056,7 @@ function AB:AddSystemInfo(tooltip)
     tooltip:AddLine(" ")
     if R.SystemInfo.cpuProfiling then
         for i = 1, #R.SystemInfo.cpuTable do
-            if (not IsShiftKeyDown()) and (i > R.config.db.profile.modules.actionBars.microButtonAndBags.addonsToDisplay) then
+            if (not IsShiftKeyDown()) and (i > AB.config.microButtonAndBags.addonsToDisplay) then
                 tooltip:AddLine("(Hold Shift) Show All Addons") -- TODO: Localize
                 break
             end
@@ -1140,7 +1085,7 @@ function AB:AddSystemInfo(tooltip)
         end
     else
         for i = 1, #R.SystemInfo.memoryTable do
-            if (not IsShiftKeyDown()) and (i > R.config.db.profile.modules.actionBars.microButtonAndBags.addonsToDisplay) then
+            if (not IsShiftKeyDown()) and (i > AB.config.microButtonAndBags.addonsToDisplay) then
                 tooltip:AddLine("(Hold Shift) Show All Addons") -- TODO: Localize
                 break
             end

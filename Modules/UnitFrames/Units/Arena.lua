@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnArenaHeader()
-    local config = R.config.db.profile.modules.unitFrames.arena
-    local default = R.config.defaults.profile.modules.unitFrames.arena
+    local config = UF.config.arena
+    local default = UF.defaults.arena
 
     if R.isRetail and config.enabled then
         oUF:RegisterStyle(addonName .. "Arena", UF.CreateArena)
@@ -36,7 +36,7 @@ function UF:UpdateArenaHeader()
 end
 
 function UF:CreateArena()
-    self.cfg = R.config.db.profile.modules.unitFrames.arena
+    self.cfg = UF.config.arena
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

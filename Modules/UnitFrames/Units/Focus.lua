@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnFocus()
-    local config = R.config.db.profile.modules.unitFrames.focus
-    local default = R.config.defaults.profile.modules.unitFrames.focus
+    local config = UF.config.focus
+    local default = UF.defaults.focus
     
     if R.isRetail and config.enabled then
         return UF:SpawnFrame("Focus", "focus", UF.CreateFocus, config, default)
@@ -13,7 +13,7 @@ function UF:SpawnFocus()
 end
 
 function UF:CreateFocus()
-    self.cfg = R.config.db.profile.modules.unitFrames.focus
+    self.cfg = UF.config.focus
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

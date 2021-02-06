@@ -7,7 +7,7 @@ local BANK_CONTAINER = -1
 local KEYRING_CONTAINER = -2
 
 function B:Initialize()
-    if not R.config.db.profile.modules.bags.enabled then
+    if not B.config.enabled then
         return
     end
 
@@ -340,7 +340,7 @@ end
 
 function B:UpdateItemButtons(frame)
     local isBank = frame == B.Bank
-    local config = isBank and R.config.db.profile.modules.bags.bank or R.config.db.profile.modules.bags.inventory
+    local config = isBank and B.config.bank or B.config.inventory
     local column = 1
     local row = 1
     for _, bag in ipairs(frame.Bags) do

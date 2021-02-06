@@ -18,11 +18,11 @@ C.HyperlinkTypes = {
 }
 
 function C:Initialize()
-    if not R.config.db.profile.modules.chat.enabled then
+    if not C.config.enabled then
         return
     end
 
-    C.chatMessages = R.config.db.char.modules.chat.chatMessages
+    C.chatMessages = C.charConfig.chatMessages
 
     -- font size
     CHAT_FONT_HEIGHTS = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
@@ -187,15 +187,15 @@ end
 
 function C:UpdateChatFrames()
     -- editbox font
-    ChatFontNormal:SetFont(unpack(R.config.db.profile.modules.chat.font))
+    ChatFontNormal:SetFont(unpack(C.config.font))
 
     -- ChatFrameMenuButton
     ChatFrameMenuButton:HookScript("OnShow", function()
-        if R.config.db.profile.modules.chat.hideMenuButton then
+        if C.config.hideMenuButton then
             ChatFrameMenuButton:Hide()
         end
     end)
-    if R.config.db.profile.modules.chat.hideMenuButton then
+    if C.config.hideMenuButton then
         ChatFrameMenuButton:Hide()
     else
         ChatFrameMenuButton:Show()
@@ -203,18 +203,18 @@ function C:UpdateChatFrames()
 
     -- ChatFrameChannelButton
     ChatFrameChannelButton:HookScript("OnShow", function()
-        if R.config.db.profile.modules.chat.hideChannelButton then
+        if C.config.hideChannelButton then
             ChatFrameChannelButton:Hide()
         end
     end)
-    if R.config.db.profile.modules.chat.hideChannelButton then
+    if C.config.hideChannelButton then
         ChatFrameChannelButton:Hide()
     else
         ChatFrameChannelButton:Show()
     end
 
     -- show/hide class colors
-    if R.config.db.profile.modules.chat.showClassColors then
+    if C.config.showClassColors then
         SetCVar("chatClassColorOverride", 0)
     else
         SetCVar("chatClassColorOverride", 1)
@@ -244,7 +244,7 @@ function C:SkinChatFrame(frame)
     frame:SetClampRectInsets(0, 0, 0, 0)
     frame:SetMaxResize(UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
     frame:SetMinResize(100, 50)
-    frame:SetFont(unpack(R.config.db.profile.modules.chat.font))
+    frame:SetFont(unpack(C.config.font))
 
     -- chat fading
     frame:SetFading(true)
@@ -274,15 +274,13 @@ function C:SkinChatFrame(frame)
     editBox:SetPoint("RIGHT", frame, 10, 0)
 
     -- set max lines
-    frame:SetMaxLines(R.config.db.profile.modules.chat.maxMessageCount)
+    frame:SetMaxLines(C.config.maxMessageCount)
 
     -- style hyperlinks
     if not frame.scriptsSet then
         C:HookScript(frame, "OnHyperlinkEnter")
         C:HookScript(frame, "OnHyperlinkLeave")
         C:HookScript(frame, "OnMouseWheel")
-        frame:SetScript("OnMouseWheel", C.ChatFrame_OnMouseWheel)
-        C:SecureHook(frame, "SetScript", C.ChatFrame_SetScript)
 
         frame.scriptsSet = true
     end
@@ -312,8 +310,8 @@ function C:LoadChatHistory(frame)
 end
 
 function C:ClearChatHistory()
-    R.config.db.char.modules.chat.chatMessages = {}
-    C.chatMessages = R.config.db.char.modules.chat.chatMessages
+    C.charConfig.chatMessages = {}
+    C.chatMessages = C.charConfig.chatMessages
 end
 
 function C:StoreChatMessage(frame, text, ...)
@@ -344,7 +342,7 @@ function C:StoreChatMessage(frame, text, ...)
     table.insert(db, message)
 
     local count = #db
-    local countOverMax = count - R.config.db.profile.modules.chat.maxHistoryCount
+    local countOverMax = count - C.config.maxHistoryCount
     if countOverMax > 0 then
         for i = 1, countOverMax do
             table.remove(db, 1)
@@ -373,20 +371,12 @@ function C:OnHyperlinkLeave()
     end
 end
 
-function C:OnMouseWheel(frame)
-    if C.HyperLinkFrame == frame then
+function C:OnMouseWheel(self, delta)
+    if C.HyperLinkFrame == self then
         C.HyperLinkFrame = nil
         _G.GameTooltip:Hide()
     end
-end
 
-function C:ChatFrame_SetScript(script, func)
-    if script == "OnMouseWheel" and func ~= C.ChatFrame_OnMouseScroll then
-        self:SetScript(script, C.ChatFrame_OnMouseWheel)
-    end
-end
-
-function C:ChatFrame_OnMouseWheel(delta)
     local numScrollMessages = 3
     if delta < 0 then
         if IsShiftKeyDown() then

@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnBossHeader()
-    local config = R.config.db.profile.modules.unitFrames.boss
-    local default = R.config.defaults.profile.modules.unitFrames.boss
+    local config = UF.config.boss
+    local default = UF.defaults.boss
     
     if R.isRetail and config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Boss")
@@ -48,7 +48,7 @@ function UF:UpdateBossHeader()
 end
 
 function UF:CreateBoss()
-    self.cfg = R.config.db.profile.modules.unitFrames.boss
+    self.cfg = UF.config.boss
 
     self:CreateBorder(self.cfg.border.size)
     self:SetBorderPadding(1, 1, 0, 0)

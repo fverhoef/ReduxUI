@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnRaidHeader()
-    local config = R.config.db.profile.modules.unitFrames.raid
-    local default = R.config.defaults.profile.modules.unitFrames.raid
+    local config = UF.config.raid
+    local default = UF.defaults.raid
 
     if config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Raid")
@@ -19,11 +19,10 @@ function UF:SpawnRaidHeader()
         for i = 1, NUM_RAID_GROUPS do
             local group = UF:SpawnHeader("Raid", UF.CreateRaid, config, default, false, i)
             group.cfg = config
-
             parent.groups[i] = group
         end
 
-        R:CreateDragFrame(parent, "Raid Frames", default.point, 200, 40)
+        R:CreateDragFrame(parent, "Raid", default.point, 200, 40)
 
         CompactRaidFrameManager_SetSetting("IsShown", "0")
         _G.UIParent:UnregisterEvent("GROUP_ROSTER_UPDATE")
@@ -76,10 +75,8 @@ function UF:UpdateRaidHeader()
                 group.initialized = true
             end
             group:SetAttribute("startingIndex", 1)
-            group:SetAttribute("visibility", group.cfg.visibility)
-        else
-            group:SetAttribute("visibility", nil)
         end
+        UF:UpdateHeaderVisibility(group, (group.isForced and "show") or group.cfg.visibility or "show")
 
         group:SetAttribute("showPlayer", group.cfg.showPlayer)
         group:SetAttribute("showSolo", group.cfg.showSolo)
@@ -134,7 +131,7 @@ function UF:UpdateRaidHeader()
 end
 
 function UF:CreateRaid()
-    self.cfg = R.config.db.profile.modules.unitFrames.raid
+    self.cfg = UF.config.raid
 
     local width, height = unpack(self.cfg.size)
     self:SetSize(width, height)

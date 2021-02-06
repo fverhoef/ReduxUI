@@ -44,7 +44,7 @@ MM.UnrulyButtons = {"WIM3MinimapButton", "RecipeRadar_MinimapButton"}
 MM.ButtonFunctions = {"SetParent", "ClearAllPoints", "SetPoint", "SetSize", "SetScale", "SetFrameStrata", "SetFrameLevel"}
 
 function MM:Initialize()    
-    if not R.config.db.profile.modules.minimap.enabled then
+    if not MM.config.enabled then
         return
     end
 
@@ -113,7 +113,7 @@ function MM:GrabMinimapButton(button)
             elseif textureID == 136477 or texture == "Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight" then
                 region:SetSize(28, 28)
                 region:ClearAllPoints()
-                local offset = 1 + (28 - R.config.defaults.profile.modules.minimap.buttonFrame.iconSize) / 2
+                local offset = 1 + (28 - MM.config.buttonFrame.iconSize) / 2
                 region:SetPoint("CENTER", offset, -1 * offset)
             else
                 region:SetSize(18, 18)
@@ -186,21 +186,21 @@ end
 
 function MM:StyleMinimap()
     -- MinimapCluster
-    MinimapCluster.cfg = R.config.defaults.profile.modules.minimap
+    MinimapCluster.cfg = MM.config
     MinimapCluster:SetSize(190, 240)
     MinimapCluster:ClearAllPoints()
-    MinimapCluster:SetPoint(unpack(R.config.defaults.profile.modules.minimap.point))
+    MinimapCluster:SetPoint(unpack(MM.config.point))
 
-    if R.config.defaults.profile.modules.minimap.frameVisibility then
-        MinimapCluster.frameVisibility = R.config.defaults.profile.modules.minimap.frameVisibility
-        RegisterStateDriver(MinimapCluster, "visibility", R.config.defaults.profile.modules.minimap.frameVisibility)
+    if MM.config.frameVisibility then
+        MinimapCluster.frameVisibility = MM.config.frameVisibility
+        RegisterStateDriver(MinimapCluster, "visibility", MM.config.frameVisibility)
     end
 
-    if R.config.defaults.profile.modules.minimap.fader and R.config.defaults.profile.modules.minimap.fader.enabled then
-        R:CreateFrameFader(MinimapCluster, R.config.defaults.profile.modules.minimap.fader)
+    if MM.config.fader and MM.config.fader.enabled then
+        R:CreateFrameFader(MinimapCluster, MM.config.fader)
     end
 
-    R:CreateDragFrame(MinimapCluster, "Minimap", R.config.defaults.profile.modules.minimap.point)
+    R:CreateDragFrame(MinimapCluster, "Minimap", MM.config.point)
 
     -- Minimap
     Minimap:SetMaskTexture(R.media.textures.minimap.minimapMask1)
@@ -267,7 +267,7 @@ function MM:StyleMinimap()
     MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -25, 3)
     MiniMapMailIcon:SetTexture(R.media.textures.mailIcon)
     MiniMapMailIcon:SetTexCoord(0, 0.95, 0, 0.95)
-    if R.config.defaults.profile.modules.minimap.enableMailGlow then
+    if MM.config.enableMailGlow then
         MiniMapMailBorder:SetTexture("Interface\\Calendar\\EventNotificationGlow")
         MiniMapMailBorder:SetBlendMode("ADD")
         MiniMapMailBorder:ClearAllPoints()
@@ -324,7 +324,7 @@ function MM:StyleMinimap()
     Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", addonName .. "MinimapButtonFrameToggle", Minimap.InformationFrame)
     Minimap.InformationFrame.ButtonFrameToggle:SetSize(16, 16)
     Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -5, 4)
-    Minimap.InformationFrame.ButtonFrameToggle:SetChecked(not R.config.defaults.profile.modules.minimap.buttonFrame.collapsed)
+    Minimap.InformationFrame.ButtonFrameToggle:SetChecked(not MM.config.buttonFrame.collapsed)
     Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnEnter", MM.ButtonFrameToggle_OnEnter)
     Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnLeave", MM.ButtonFrameToggle_OnLeave)
     Minimap.InformationFrame.ButtonFrameToggle:SetScript("OnClick", MM.ButtonFrameToggle_OnClick)
@@ -336,15 +336,15 @@ function MM:StyleMinimap()
     Minimap.ButtonFrame:SetFrameStrata("MEDIUM")
     Minimap.ButtonFrame:SetFrameLevel(1)
     Minimap.ButtonFrame:EnableMouse(true)
-    Minimap.ButtonFrame:SetSize(R.config.defaults.profile.modules.minimap.buttonFrame.iconSize, R.config.defaults.profile.modules.minimap.buttonFrame.iconSize)
+    Minimap.ButtonFrame:SetSize(MM.config.buttonFrame.iconSize, MM.config.buttonFrame.iconSize)
 
-    if R.config.defaults.profile.modules.minimap.frameVisibility then
-        Minimap.ButtonFrame.frameVisibility = R.config.defaults.profile.modules.minimap.frameVisibility
-        RegisterStateDriver(Minimap.ButtonFrame, "visibility", R.config.defaults.profile.modules.minimap.frameVisibility)
+    if MM.config.frameVisibility then
+        Minimap.ButtonFrame.frameVisibility = MM.config.frameVisibility
+        RegisterStateDriver(Minimap.ButtonFrame, "visibility", MM.config.frameVisibility)
     end
 
-    if R.config.defaults.profile.modules.minimap.fader and R.config.defaults.profile.modules.minimap.fader.enabled then
-        R:CreateFrameFader(Minimap.ButtonFrame, R.config.defaults.profile.modules.minimap.fader)
+    if MM.config.fader and MM.config.fader.enabled then
+        R:CreateFrameFader(Minimap.ButtonFrame, MM.config.fader)
     end
 
     MM:ToggleButtonFrame()
@@ -389,9 +389,9 @@ end
 
 function MM:UpdateButtonFrame()
     local anchorX, anchorY = 0, 1
-    local buttonsPerRow = R.config.defaults.profile.modules.minimap.buttonFrame.buttonsPerRow or 12
-    local spacing = R.config.defaults.profile.modules.minimap.buttonFrame.buttonSpacing or 2
-    local size = R.config.defaults.profile.modules.minimap.buttonFrame.iconSize or 27
+    local buttonsPerRow = MM.config.buttonFrame.buttonsPerRow or 12
+    local spacing = MM.config.buttonFrame.buttonSpacing or 2
+    local size = MM.config.buttonFrame.iconSize or 27
     local actualButtons, maxed = 0
 
     local anchor, dirMult = "TOPLEFT", 1
@@ -409,7 +409,7 @@ function MM:UpdateButtonFrame()
             button:SetParent(Minimap.ButtonFrame)
             button:ClearAllPoints()
             button:SetPoint(anchor, Minimap.ButtonFrame, anchor, dirMult * (spacing + ((size + spacing) * (anchorX - 1))), (-spacing - ((size + spacing) * (anchorY - 1))))
-            button:SetSize(R.config.defaults.profile.modules.minimap.buttonFrame.iconSize, R.config.defaults.profile.modules.minimap.buttonFrame.iconSize)
+            button:SetSize(MM.config.buttonFrame.iconSize, MM.config.buttonFrame.iconSize)
             button:SetScale(1)
             button:SetFrameStrata("MEDIUM")
             button:SetFrameLevel(Minimap.ButtonFrame:GetFrameLevel() + 1)
@@ -436,13 +436,13 @@ function MM:ToggleButtonFrame()
         Minimap.InformationFrame.ButtonFrameToggle:SetNormalTexture(R.media.textures.arrowUp_Up)
         Minimap.InformationFrame.ButtonFrameToggle:SetPushedTexture(R.media.textures.arrowUp_Down)
         Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -8, -1)
-        R.config.defaults.profile.modules.minimap.buttonFrame.collapsed = false
+        MM.config.buttonFrame.collapsed = false
     else
         Minimap.ButtonFrame:Hide()
         Minimap.InformationFrame.ButtonFrameToggle:SetNormalTexture(R.media.textures.arrowDown_Up)
         Minimap.InformationFrame.ButtonFrameToggle:SetPushedTexture(R.media.textures.arrowDown_Down)
         Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -8, -8)
-        R.config.defaults.profile.modules.minimap.buttonFrame.collapsed = true
+        MM.config.buttonFrame.collapsed = true
     end
     MM:UpdateButtonFrame()
 end

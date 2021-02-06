@@ -4,8 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnFocusTarget()
-    local config = R.config.db.profile.modules.unitFrames.focustarget
-    local default = R.config.defaults.profile.modules.unitFrames.focustarget
+    local config = UF.config.focustarget
+    local default = UF.defaults.focustarget
 
     if R.isRetail and config.enabled then
         return UF:SpawnFrame("FocusTarget", "focustarget", UF.CreateFocusTarget, config, default)
@@ -13,7 +13,7 @@ function UF:SpawnFocusTarget()
 end
 
 function UF:CreateFocusTarget()
-    self.cfg = R.config.db.profile.modules.unitFrames.focustarget
+    self.cfg = UF.config.focustarget
 
     local focus = UF.frames.focus
 

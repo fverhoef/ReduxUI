@@ -80,10 +80,15 @@ function R:OnEnable()
     R:RefreshConfig()
 
     for name, module in pairs(R.Modules) do
+        module.config = R.config.db.profile.modules[name]
+        module.charConfig = R.config.db.char.modules[name]
+        module.realmConfig = R.config.db.realm.modules[name]
+    end
+
+    for name, module in pairs(R.Modules) do
         if module.Initialize and not module.initialized then
             module.Initialize()
             module.initialized = true
-            --R:Print("Module " .. name .. " initialized.")
         end
     end
 
