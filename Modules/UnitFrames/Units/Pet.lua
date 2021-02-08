@@ -13,7 +13,6 @@ function UF:SpawnPet()
 end
 
 function UF:CreatePet()
-    -- config
     self.cfg = UF.config.pet
 
     local player = UF.frames.player
@@ -38,33 +37,13 @@ function UF:CreatePet()
     self.Texture:SetPoint("TOPLEFT", self, 0, -2)
     self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
 
-    -- health
     self:CreateHealth()
-    self.Health:SetSize(70, 9)
-    self.Health:SetPoint("TOPLEFT", self.Texture, 45, -20)
-    self.Health.Value:Hide()
-
-    -- power
     self:CreatePower()
-    self.Power:SetHeight(self.Health:GetHeight())
-    self.Power.Value:Hide()
-
-    -- name
-    self:CreateName(11)
-    self.Name:SetWidth(110)
-    self.Name:SetJustifyH("LEFT")
-    self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
-
-    -- portrait
+    self:CreateName()
     self:CreatePortrait()
-    self.Portrait:SetSize(37, 37)
-    self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
     self:CreateCombatFeedback()
+    self:CreateRaidTargetIndicator()
 
-    -- raid target
-    self:CreateRaidTargetIndicator(self)
-
-    -- auras
     if self.cfg.auras.enabled then
         self:CreateAuras()
         if self.Auras then
@@ -81,13 +60,8 @@ function UF:CreatePet()
         end
     end
 
-    -- castbar
-    if self.cfg.castbar.enabled then
-        self:CreateCastbar()
-        self.Castbar:SetPoint("LEFT", self, "RIGHT", 16, -5)
-    end
+    self:CreateCastbar()
 
-    -- range check
     self:CreateRange()
 end
 
@@ -101,6 +75,30 @@ function UF:UpdatePet(self)
     if UF:IsBlizzardTheme() then
         self.Border:Hide()
         self.Shadow:Hide()
-    else
+
+        self:EnableElement("Power")
+        self:EnableElement("Portrait")
+
+        self.Health:ClearAllPoints()
+        self.Health:SetSize(70, 9)
+        self.Health:SetPoint("TOPLEFT", self.Texture, 45, -20)
+        self.Health.Value:Hide()
+
+        self.Power:ClearAllPoints()
+        self.Power:SetHeight(self.Health:GetHeight())
+        self.Power.Value:Hide()
+
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetJustifyH("LEFT")
+        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
+
+        self.Portrait:ClearAllPoints()
+        self.Portrait:SetSize(37, 37)
+        self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
+		self.Portrait:SetTexCoord(0, 1, 0, 1)
+
+        self.Castbar:ClearAllPoints()
+        self.Castbar:SetPoint("LEFT", self, "RIGHT", 16, -5)
     end
 end

@@ -78,8 +78,8 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
 
     local frame = oUF:Spawn(unit, addonName .. name)
 
-    if config.fader and config.fader.enabled then
-        R:CreateFrameFader(frame, config.fader)
+    if config.fader then
+        frame:CreateFader(config.fader)
     end
 
     R:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
@@ -104,8 +104,8 @@ function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index,
 
     header:SetFrameStrata("LOW")
 
-    if config.fader and config.fader.enabled then
-        R:CreateFrameFader(header, config.fader)
+    if config.fader then
+        header:CreateFader(config.fader)
     end
 
     return header
@@ -122,11 +122,15 @@ function UF:UpdateFrame(self)
     self:UpdatePower()
     self:UpdatePowerPrediction()
     self:UpdateAdditionalPower()
+    self:UpdatePortrait()
     self:UpdateCastbar()
     self:UpdateName()
     self:UpdateAuraHighlight()
     self:UpdateAuras()
     self:UpdateCombatFeedback()
+    self:UpdateLeaderIndicator()
+    self:UpdateAssistantIndicator()
+    self:UpdateMasterLooterIndicator()
 
     if self.Texture then
         self.Texture:SetTexture(self.cfg.texture)
@@ -147,6 +151,7 @@ function UF:UpdateHeaderVisibility(self, visibility)
     else
         local condition = UF:GetCondition(string.split(",", visibility))
         RegisterAttributeDriver(self, "state-visibility", condition)
+        --R:Print(self:GetName() .. ": " .. visibility .. "(" .. condition .. ")")
         self.visibility = condition
     end
 end
@@ -247,19 +252,17 @@ function UF:ForceShowHeader(header)
         return
     end
 
-    if header:IsShown() then
-        header.isForced = true
-        header.forceShow = true
-        header:SetAttribute("startingIndex", -4)
+    header.isForced = true
+    header.forceShow = true
+    header:SetAttribute("startingIndex", -4)
 
-        for i = 1, header:GetNumChildren() do
-            local child = header:GetAttribute("child" .. i)
-            self:ForceShow(child)
-        end
+    for i = 1, header:GetNumChildren() do
+        local child = header:GetAttribute("child" .. i)
+        self:ForceShow(child)
+    end
 
-        if header.Update then
-            header:Update()
-        end
+    if header.Update then
+        header:Update()
     end
 end
 
@@ -268,19 +271,17 @@ function UF:UnforceShowHeader(header)
         return
     end
 
-    if header:IsShown() then
-        header.isForced = nil
-        header.forceShow = nil
-        header:SetAttribute("startingIndex", 1)
+    header.isForced = nil
+    header.forceShow = nil
+    header:SetAttribute("startingIndex", 1)
 
-        for i = 1, header:GetNumChildren() do
-            local child = header:GetAttribute("child" .. i)
-            self:UnforceShow(child)
-        end
+    for i = 1, header:GetNumChildren() do
+        local child = header:GetAttribute("child" .. i)
+        self:UnforceShow(child)
+    end
 
-        if header.Update then
-            header:Update()
-        end
+    if header.Update then
+        header:Update()
     end
 end
 

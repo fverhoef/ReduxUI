@@ -237,6 +237,63 @@ function R:SetShadowColor(color)
     self.Shadow:SetBackdropBorderColor(unpack(color))
 end
 
+function R:FadeIn(timeToFade, startAlpha, endAlpha)
+    UIFrameFadeIn(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 1)
+end
+
+function R:FadeOut(timeToFade, startAlpha, endAlpha)
+    UIFrameFadeOut(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 0)
+end
+
+function R:CreateFader(faderConfig, children)
+    if not self or self.faderConfig then
+        return
+    end
+    self.faderConfig = faderConfig
+
+    self:EnableMouse(true)
+    self:HookScript("OnShow", R.Fader_OnShow)
+    self:HookScript("OnEnter", R.Fader_OnEnter)
+    self:HookScript("OnLeave", R.Fader_OnLeave)
+    if self.faderConfig == R.config.faders.mouseOver then
+        R.Fader_OnEnter(self)
+    end
+
+    if children then
+        for _, child in next, children do
+            if not child.faderParent then
+                child.faderParent = self
+                child:EnableMouse(true)
+                child:HookScript("OnEnter", R.Fader_OnEnter)
+                child:HookScript("OnLeave", R.Fader_OnLeave)
+            end
+        end
+    end
+end
+
+function R:Fader_OnShow()
+    local frame = self.faderParent or self
+    if frame.faderConfig == R.config.faders.onShow then
+        R.FadeIn(frame)
+    end
+end
+
+function R:Fader_OnEnter()
+    local frame = self.faderParent or self
+    if frame.faderConfig == R.config.faders.mouseOver then
+        R.FadeIn(frame)
+    end
+end
+
+function R:Fader_OnLeave()
+    local frame = self.faderParent or self
+    if frame.faderConfig == R.config.faders.mouseOver then
+        if not MouseIsOver(frame) then
+            R.FadeOut(frame)
+        end
+    end
+end
+
 local function AddApi(object)
     local mt = getmetatable(object).__index
     if not object.SetInside then
@@ -274,6 +331,15 @@ local function AddApi(object)
     end
     if not object.SetShadowColor then
         mt.SetShadowColor = R.SetShadowColor
+    end
+    if not object.FadeIn then
+        mt.FadeIn = R.FadeIn
+    end
+    if not object.FadeOut then
+        mt.FadeOut = R.FadeOut
+    end
+    if not object.CreateFader then
+        mt.CreateFader = R.CreateFader
     end
 end
 

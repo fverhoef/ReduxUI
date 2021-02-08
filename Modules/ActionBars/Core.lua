@@ -273,7 +273,7 @@ function AB:CreateMicroButtonAndBagsBar()
     end
 
     if config.fader then
-        R:CreateButtonFrameFader(frame, buttonList, config.fader)
+        frame:CreateFader(config.fader, buttonList)
     end
 
     if R.isClassic then
@@ -332,6 +332,7 @@ function AB:CreateMainMenuBar()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MainMenuBar", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(552, 51)
     frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
 
@@ -478,7 +479,7 @@ function AB:CreateMainMenuBar()
             table.insert(buttonList, MainMenuBarVehicleLeaveButton)
         end
 
-        R:CreateButtonFrameFader(frame, buttonList, config.fader)
+        frame:CreateFader(config.fader, buttonList)
     end
 
     return frame
@@ -692,6 +693,7 @@ function AB:CreateMultiBarBottomLeft()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MultiBarBottomLeft", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, -5)
 
@@ -730,6 +732,7 @@ function AB:CreateMultiBarBottomRight()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MultiBarBottomRight", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(506, 36)
     frame:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "BOTTOMRIGHT", 38, 0)
 
@@ -771,6 +774,7 @@ function AB:CreateMultiBarRight()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MultiBarRight", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", UIParent, "RIGHT", 0, 0)
 
@@ -798,7 +802,7 @@ function AB:CreateMultiBarRight()
     frame:SetAttribute("actionpage", 3) -- 3 = MultiBarRight
 
     if config.fader then
-        R:CreateButtonFrameFader(frame, buttonList, config.fader)
+        frame:CreateFader(config.fader, buttonList)
     end
 
     return frame
@@ -813,6 +817,7 @@ function AB:CreateMultiBarLeft()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MultiBarLeft", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", addonName .. "MultiBarRight", "LEFT", -2, 0)
 
@@ -840,7 +845,7 @@ function AB:CreateMultiBarLeft()
     frame:SetAttribute("actionpage", 4) -- 4 = MultiBarLeft
 
     if config.fader then
-        R:CreateButtonFrameFader(frame, buttonList, config.fader)
+        frame:CreateFader(config.fader, buttonList)
     end
 
     return frame
@@ -851,6 +856,7 @@ function AB:CreateStanceBar()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(29, 32)
     frame:SetPoint("BOTTOMLEFT", addonName .. "MainMenuBar", "TOPLEFT", 30, 40)
     frame.__blizzardBar = StanceBarFrame
@@ -902,6 +908,7 @@ function AB:CreatePetActionBar()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "StanceBar", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(509, 43)
     frame:SetPoint("BOTTOMLEFT", addonName .. "MainMenuBar", "TOPLEFT", 40, 40)
     frame.__blizzardBar = PetActionBarFrame
@@ -948,6 +955,7 @@ function AB:CreateVehicleExitBar()
 
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
+    frame.cfg = config
     frame:SetSize(36, 36)
     frame:SetPoint("BOTTOMRIGHT", addonName .. "MainMenuBar", "TOPRIGHT", -24, 40)
 

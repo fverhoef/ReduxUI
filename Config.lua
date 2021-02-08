@@ -171,25 +171,8 @@ R.config.options = {
 
 R.config.faders = {
     none = nil,
-    onShow = {
-        fadeInAlpha = 1,
-        fadeInDuration = 0.3,
-        fadeInSmooth = "OUT",
-        fadeOutAlpha = 0,
-        fadeOutDuration = 0.9,
-        fadeOutSmooth = "OUT",
-        fadeOutDelay = 0,
-        trigger = "OnShow"
-    },
-    mouseOver = {
-        fadeInAlpha = 1,
-        fadeInDuration = 0.3,
-        fadeInSmooth = "OUT",
-        fadeOutAlpha = 0,
-        fadeOutDuration = 0.9,
-        fadeOutSmooth = "OUT",
-        fadeOutDelay = 0
-    }
+    onShow = 1,
+    mouseOver = 2
 }
 
 local function FindPanel(name, parent)

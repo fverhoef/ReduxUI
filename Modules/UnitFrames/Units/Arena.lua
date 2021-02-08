@@ -17,9 +17,6 @@ function UF:SpawnArenaHeader()
             else
                 arena:SetPoint(config.point, UF.frames["arena" .. (i - 1)], config.relativePoint, config.xOffset, config.yOffset)
             end
-            if config.fader and config.fader.enabled then
-                R:CreateFrameFader(arena, config.fader)
-            end
             UF.frames["arena" .. i] = arena
 
             R:CreateDragFrame(arena, "Arena" .. i, default.point)

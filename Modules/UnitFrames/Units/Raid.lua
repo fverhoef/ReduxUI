@@ -149,11 +149,6 @@ function UF:CreateRaid()
 
     -- health
     self:CreateHealth()
-    self.Health:SetSize(width, height)
-    self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", self.cfg.border.enabled and 2 or 0, 0)
-    self.Health:SetPoint("TOPRIGHT", self, "TOPRIGHT", self.cfg.border.enabled and -2 or 0, 0)
-    self.Health.Value:ClearAllPoints()
-    self.Health.Value:SetPoint("TOP", self, "TOP", 0, -20)
 
     -- power
     self:CreatePower()
@@ -165,7 +160,7 @@ function UF:CreateRaid()
     end
 
     -- name
-    self:CreateName(12)
+    self:CreateName()
     self.Name:SetPoint("TOP", self, "TOP", 0, -8)
 
     -- leader
@@ -191,7 +186,7 @@ function UF:CreateRaid()
     self.RaidRoleIndicator:SetPoint("TOPRIGHT", self, "TOPRIGHT", 6, 5)
 
     -- raid target
-    self:CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator()
     self.RaidTargetIndicator:SetSize(20, 20)
     self.RaidTargetIndicator:ClearAllPoints()
     self.RaidTargetIndicator:SetPoint("TOP", self, "TOP", 0, 10)
@@ -204,12 +199,11 @@ function UF:CreateRaid()
 
     -- resurrect
     self:CreateResurrectIndicator()
-
-    -- range check
+    
     self:CreateRange()
-
-    -- aura highlight
     self:CreateAuraHighlight()
+
+    UF:UpdateRaid(self)
 end
 
 function UF:UpdateRaid(self)
@@ -219,8 +213,7 @@ function UF:UpdateRaid(self)
 
     UF:UpdateFrame(self)
 
-    local width, height = unpack(self.cfg.size)
-    self:SetSize(width, height)
+    self:SetSize(unpack(self.cfg.size))
 end
 
 function UF:ForceShowRaid()

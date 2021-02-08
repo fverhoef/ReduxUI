@@ -103,7 +103,7 @@ function UF:CreateNamePlate()
         self:CreateComboFrame()
     end
 
-    self:CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator()
     self:CreateThreatIndicator()
     self:CreateTargetIndicator()
 
@@ -116,6 +116,7 @@ function UF:UpdateNamePlate(self)
     end
 
     UF:UpdateFrame(self)
+    self:SetScale(1 * UIParent:GetScale())
 end
 
 UF.NamePlate_Callback = function(self, event, unit)

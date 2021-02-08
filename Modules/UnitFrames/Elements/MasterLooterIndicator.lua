@@ -14,3 +14,18 @@ UF.CreateMasterLooterIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateMasterLooterIndicator", UF.CreateMasterLooterIndicator)
+
+UF.UpdateMasterLooterIndicator = function(self)
+    if not self.MasterLooterIndicator then
+        return
+    end
+
+    local cfg = self.cfg.masterLooterIndicator
+    if cfg.enabled then
+        self:EnableElement("MasterLooterIndicator")
+    else
+        self:DisableElement("MasterLooterIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateMasterLooterIndicator", UF.UpdateMasterLooterIndicator)

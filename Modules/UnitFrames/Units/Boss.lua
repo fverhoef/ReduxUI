@@ -26,10 +26,6 @@ function UF:SpawnBossHeader()
                 boss:SetPoint(config.point, UF.frames["boss" .. (i - 1)], config.relativePoint, config.xOffset, config.yOffset)
             end
 
-            if config.fader and config.fader.enabled then
-                R:CreateFrameFader(boss, config.fader)
-            end
-
             parent.bosses[i] = boss
         end
 

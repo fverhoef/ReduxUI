@@ -57,7 +57,13 @@ UF.CreateHealth = function(self)
     healAbsorbBar:SetWidth(125)
     healAbsorbBar:Hide()
 
-    self.HealthPrediction = {myBar = myBar, otherBar = otherBar, absorbBar = absorbBar, healAbsorbBar = healAbsorbBar, maxOverflow = 1}
+    self.HealthPrediction = {
+        myBar = myBar,
+        otherBar = otherBar,
+        absorbBar = absorbBar,
+        healAbsorbBar = healAbsorbBar,
+        maxOverflow = 1
+    }
     self.HealthPrediction.frequentUpdates = true
 
     self:Tag(self.Health.Value, "[curhp_status]")
@@ -68,22 +74,41 @@ end
 oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)
 
 UF.UpdateHealth = function(self)
-    if self.Health then
-        self.Health:SetStatusBarTexture(UF.config.statusbars.health)
-        self.Health.colorClass = UF.config.colors.colorHealthClass
-        self.Health.colorSmooth = UF.config.colors.colorHealthSmooth
-        self.Health.colorDisconnected = UF.config.colors.colorHealthDisconnected
-
-        self.HealthPrediction.myBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
-        self.HealthPrediction.otherBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
-        self.HealthPrediction.absorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
-        self.HealthPrediction.healAbsorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
-
-        self.Health.Value:SetFont(UF.config.font, 11)
-        if self.cfg.health.value and self.cfg.health.value.tag ~= nil then
-            self:Tag(self.Health.Value, self.cfg.health.value.tag)
-        end
+    if not self.Health then
+        return
     end
+
+    local cfg = self.cfg.health
+    self.Health:SetStatusBarTexture(UF.config.statusbars.health)
+    self.Health.colorClass = UF.config.colors.colorHealthClass
+    self.Health.colorSmooth = UF.config.colors.colorHealthSmooth
+    self.Health.colorDisconnected = UF.config.colors.colorHealthDisconnected
+
+    self.HealthPrediction.myBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
+    self.HealthPrediction.otherBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
+    self.HealthPrediction.absorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
+    self.HealthPrediction.healAbsorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
+
+    if cfg.value.enabled then
+        self.Health.Value:Show()
+        self.Health.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 11, cfg.value.fontOutline)
+        if cfg.value.tag then
+            self:Tag(self.Health.Value, cfg.value.tag)
+        end
+        if cfg.value.point then
+            self.Health.Value:ClearAllPoints()
+            self.Health.Value:SetPoint(unpack(cfg.value.point))
+        end
+    else
+        self.Health.Value:Hide()
+    end
+
+    local leftOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.portrait.enabled and self.cfg.portrait.size[1] or 0)
+    local rightOffset = self.cfg.border.enabled and -2 or 0
+    local bottomOffset = self.cfg.power.enabled and self.cfg.power.size[2] or 0
+    self.Health:ClearAllPoints()
+    self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", leftOffset, 0)
+    self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", rightOffset, bottomOffset)
 end
 
 oUF:RegisterMetaFunction("UpdateHealth", UF.UpdateHealth)

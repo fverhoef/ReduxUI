@@ -2,7 +2,6 @@
     <Script file="Api.lua"/>
     <Script file="DragFrame.lua"/>
     <Script file="Fonts.lua"/>
-    <Script file="FrameFader.lua"/>
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
 </Ui>

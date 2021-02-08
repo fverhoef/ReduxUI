@@ -30,17 +30,17 @@ UF.CreateTab = function(self)
     self.Tab[1]:SetWidth((width < 5 and 50) or width + 4)
 
     self.Tab.FadeIn = function(_, alpha, alpha2)
-        for i = 1, 4 do
-            securecall("UIFrameFadeIn", self.Tab[i], 0.15, self.Tab[i]:GetAlpha(), alpha)
-            securecall("UIFrameFadeIn", self.Tab[4], 0.15, self.Tab[4]:GetAlpha(), alpha2 or alpha)
-        end
+        UIFrameFadeIn(self.Tab[1], 0.15, self.Tab[1]:GetAlpha(), alpha)
+        UIFrameFadeIn(self.Tab[2], 0.15, self.Tab[2]:GetAlpha(), alpha)
+        UIFrameFadeIn(self.Tab[3], 0.15, self.Tab[3]:GetAlpha(), alpha)
+        UIFrameFadeIn(self.Tab[4], 0.15, self.Tab[4]:GetAlpha(), alpha2 or alpha)
     end
 
     self.Tab.FadeOut = function(_, alpha, alpha2)
-        for i = 1, 4 do
-            securecall("UIFrameFadeOut", self.Tab[i], 0.15, self.Tab[i]:GetAlpha(), alpha)
-            securecall("UIFrameFadeOut", self.Tab[4], 0.15, self.Tab[4]:GetAlpha(), alpha2 or alpha)
-        end
+        UIFrameFadeOut(self.Tab[1], 0.15, self.Tab[1]:GetAlpha(), alpha)
+        UIFrameFadeOut(self.Tab[2], 0.15, self.Tab[2]:GetAlpha(), alpha)
+        UIFrameFadeOut(self.Tab[3], 0.15, self.Tab[3]:GetAlpha(), alpha)
+        UIFrameFadeOut(self.Tab[4], 0.15, self.Tab[4]:GetAlpha(), alpha2 or alpha)
     end
 
     UF.UpdateTab(self)
@@ -69,3 +69,5 @@ UF.UpdateTab = function(self)
         end
     end
 end
+
+oUF:RegisterMetaFunction("UpdateTab", UF.UpdateTab)

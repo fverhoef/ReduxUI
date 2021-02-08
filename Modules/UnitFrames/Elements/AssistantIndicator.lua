@@ -14,3 +14,18 @@ UF.CreateAssistantIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateAssistantIndicator", UF.CreateAssistantIndicator)
+
+UF.UpdateAssistantIndicator = function(self)
+    if not self.AssistantIndicator then
+        return
+    end
+
+    local cfg = self.cfg.assistantIndicator
+    if cfg.enabled then
+        self:EnableElement("AssistantIndicator")
+    else
+        self:DisableElement("AssistantIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateAssistantIndicator", UF.UpdateAssistantIndicator)

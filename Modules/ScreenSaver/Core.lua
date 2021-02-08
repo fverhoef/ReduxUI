@@ -104,8 +104,6 @@ function SS:Initialize()
     SS.Canvas.Bottom.Model:SetCamDistanceScale(4.5) -- Since the model frame is huge, we need to zoom out quite a bit.
     SS.Canvas.Bottom.Model:SetFacing(6)
 
-    --R:CreateFrameFader(SS.Canvas, config.fader)
-
     SS:Toggle()
 
     SS:RegisterEvent("PLAYER_FLAGS_CHANGED", SS.OnEvent)
@@ -187,8 +185,7 @@ function SS:Show()
     SS.startTime = GetTime()
 
     SS.timer = SS:ScheduleRepeatingTimer("UpdateTimer", 1)
-    UIFrameFadeIn(SS.Canvas, 1, 0, 1)
-    --R:StartFadeIn(SS.Canvas)
+    SS.Canvas:FadeIn(1, 0, 1)
 
     SetCVar("autoClearAFK", "1")
 end

@@ -50,7 +50,7 @@ function UF:CreatePlayer()
     self:CreateAssistantIndicator()
     self:CreateMasterLooterIndicator()
     self:CreateRaidRoleIndicator()
-    self:CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator()
 
     if not R.isClassic then
         self:CreatePhaseIndicator()
@@ -111,16 +111,24 @@ function UF:UpdatePlayer(self)
     if UF:IsBlizzardTheme() then
         self.Border:Hide()
         self.Shadow:Hide()
+
+        self:EnableElement("Power")
+        self:EnableElement("Portrait")
+        self:EnableElement("LeaderIndicator")
+        self:EnableElement("AssistantIndicator")
+        self:EnableElement("MasterLooterIndicator")
         
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
         self.Power:ClearAllPoints()
+        self.Power.Value:ClearAllPoints()
         if UF.config.theme == UF.themes.Blizzard_LargeHealth then
             self.Health:SetSize(119, 28)
             self.Health:SetPoint("TOPLEFT", self.Texture, 107, -23)
             self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -2)
             self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -2)
+            self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
             self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame_LargerHealth)
             if self.StatusFlash then
                 self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus_LargerHealth)
@@ -131,6 +139,7 @@ function UF:UpdatePlayer(self)
             self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
             self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
+            self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
             self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame)
             if self.StatusFlash then
                 self.StatusFlash:SetTexture(R.media.textures.unitFrames.playerStatus)
@@ -155,16 +164,20 @@ function UF:UpdatePlayer(self)
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
+		self.Portrait:SetTexCoord(0, 1, 0, 1)
 
         self.PvPIndicator:ClearAllPoints()
         self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
 
+        self.LeaderIndicator:SetSize(16, 16)
         self.LeaderIndicator:ClearAllPoints()
         self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 
+        self.AssistantIndicator:SetSize(16, 16)
         self.AssistantIndicator:ClearAllPoints()
         self.AssistantIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 
+        self.MasterLooterIndicator:SetSize(14, 14)
         self.MasterLooterIndicator:ClearAllPoints()
         self.MasterLooterIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
 

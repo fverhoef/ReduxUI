@@ -28,32 +28,15 @@ function UF:CreateFocusTarget()
     self:CreateShadow()
     self:SetShadowPadding(1, 1, 0, 0)
 
-    -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
     self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
     self.Texture:SetAllPoints(self)
 
-    -- health
     self:CreateHealth()
-    self.Health:SetSize(46, 7)
-    self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
-    self.Health.Value:Hide()
-
-    -- power
     self:CreatePower()
-    self.Power:SetHeight(self.Health:GetHeight())
-    self.Power.Value:Hide()
-
-    -- name
-    self:CreateName(11)
-    self.Name:SetWidth(110)
-    self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
-
-    -- portrait
+    self:CreateName()
     self:CreatePortrait()
-    self.Portrait:SetSize(35, 35)
-    self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
 end
 
 function UF:UpdateFocusTarget(self)
@@ -64,5 +47,17 @@ function UF:UpdateFocusTarget(self)
     UF:UpdateFrame(self)
 
     if UF:IsBlizzardTheme() then
+        self.Health:SetSize(46, 7)
+        self.Health:SetPoint("TOPRIGHT", self.Texture, -2, -15)
+        self.Health.Value:Hide()
+
+        self.Power:SetHeight(self.Health:GetHeight())
+        self.Power.Value:Hide()
+
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
+        
+        self.Portrait:SetSize(35, 35)
+        self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
     end
 end

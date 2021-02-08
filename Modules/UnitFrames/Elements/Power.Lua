@@ -23,7 +23,6 @@ UF.CreatePower = function(self)
     self.Power.Value = self:CreateFontString("$parentPowerText", "OVERLAY")
     self.Power.Value:SetFont(UF.config.font, 10)
     self.Power.Value:SetShadowOffset(1, -1)
-    self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
 
     self:Tag(self.Power.Value, "[curpp]")
 
@@ -33,23 +32,41 @@ end
 oUF:RegisterMetaFunction("CreatePower", UF.CreatePower)
 
 UF.UpdatePower = function(self)
-    if self.Power then
-        local cfg = self.cfg.power
-        if cfg.enabled then
-            self:EnableElement("Power")
+    if not self.Power then
+        return
+    end
 
-            self.Power:SetStatusBarTexture(UF.config.statusbars.power)
-            self.Power.colorClass = UF.config.colors.colorPowerClass
-            self.Power.colorSmooth = UF.config.colors.colorPowerSmooth
-            self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
-            
-            self.Power.Value:SetFont(UF.config.font, 10)
-            if self.cfg.power.value and self.cfg.power.value.tag ~= nil then
-                self:Tag(self.Power.Value, self.cfg.power.value.tag)
+    local cfg = self.cfg.power
+    if cfg.enabled then
+        self:EnableElement("Power")
+
+        self.Power:SetStatusBarTexture(UF.config.statusbars.power)
+        self.Power.colorClass = UF.config.colors.colorPowerClass
+        self.Power.colorSmooth = UF.config.colors.colorPowerSmooth
+        self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
+
+        if cfg.value.enabled then
+            self.Power.Value:Show()
+            self.Power.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 10, cfg.value.fontOutline)
+            if cfg.value.tag then
+                self:Tag(self.Power.Value, cfg.value.tag)
+            end
+            self.Power.Value:ClearAllPoints()
+            if cfg.value.point then
+                self.Power.Value:SetPoint(unpack(cfg.value.point))
+            else
+                self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
             end
         else
-            self:DisableElement("Power")
+            self.Power.Value:Hide()
         end
+
+        self.Power:SetSize(unpack(cfg.size))
+        self.Power:ClearAllPoints()
+        self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
+        self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.cfg.border.enabled and -2 or 0, 0)
+    else
+        self:DisableElement("Power")
     end
 end
 
@@ -105,7 +122,7 @@ UF.CreatePowerPrediction = function(self)
     mainBar:SetSize(self.Power:GetWidth(), 0)
 
     local altBar
-    if self.AdditionalPower then 
+    if self.AdditionalPower then
         altBar = CreateFrame("StatusBar", nil, self.AdditionalPower)
         altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
         altBar:SetFrameLevel(self:GetFrameLevel())

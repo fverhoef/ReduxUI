@@ -60,7 +60,7 @@ function UF:CreateTarget()
     self:CreateAssistantIndicator()
     self:CreateMasterLooterIndicator()
     self:CreateRaidRoleIndicator()
-    self:CreateRaidTargetIndicator(self)
+    self:CreateRaidTargetIndicator()
 
     if not R.isClassic then
         self:CreatePhaseIndicator()
@@ -111,9 +111,17 @@ function UF:UpdateTarget(self)
     if UF:IsBlizzardTheme() then
         self.Border:Hide()
         self.Shadow:Hide()
-        
+
+        self:EnableElement("Power")
+        self:EnableElement("Portrait")
+        self:EnableElement("LeaderIndicator")
+        self:EnableElement("AssistantIndicator")
+        self:EnableElement("MasterLooterIndicator")
+
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
+        self.Power:ClearAllPoints()
+        self.Power.Value:ClearAllPoints()
         if UF.config.theme == UF.themes.Blizzard_LargeHealth then
             self.Health:SetSize(119, 28)
             self.Health:SetPoint("TOPRIGHT", self.Texture, -108, -23)
@@ -133,6 +141,7 @@ function UF:UpdateTarget(self)
         end
 
         self.Power:SetHeight(10)
+        self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
 
         self.Name:ClearAllPoints()
         self.Name:SetWidth(110)
@@ -144,17 +153,21 @@ function UF:UpdateTarget(self)
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
         self.Portrait:SetPoint("TOPRIGHT", self.Texture, -42, -12)
+        self.Portrait:SetTexCoord(0, 1, 0, 1)
 
         self.PvPIndicator:ClearAllPoints()
         self.PvPIndicator:SetPoint("TOPRIGHT", self.Texture, -16, -23)
 
+        self.LeaderIndicator:SetSize(16, 16)
         self.LeaderIndicator:ClearAllPoints()
         self.LeaderIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
 
+        self.AssistantIndicator:SetSize(16, 16)
         self.AssistantIndicator:ClearAllPoints()
         self.AssistantIndicator:SetPoint("TOPRIGHT", self.Portrait, -3, 2)
 
         self.MasterLooterIndicator:ClearAllPoints()
+        self.MasterLooterIndicator:SetSize(14, 14)
         self.MasterLooterIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 
         if not R.isClassic then
@@ -175,6 +188,8 @@ function UF:UpdateTarget(self)
             self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.Castbar:GetHeight() + 5)
         end
     end
+
+    UF.UpdateTargetFrameTexture(self)
 end
 
 UF.TargetFrame_OnEvent = function(self, event)
@@ -214,5 +229,9 @@ UF.UpdateTargetFrameTexture = function(self)
             self.RareTexture:Hide()
             self.RareEliteTexture:Hide()
         end
+    else
+        self.EliteTexture:Hide()
+        self.RareTexture:Hide()
+        self.RareEliteTexture:Hide()
     end
 end

@@ -39,7 +39,7 @@ function UF:CreateTargetTarget()
 
     self:CreateHealth()
     self:CreatePower()
-    self:CreateName(11)
+    self:CreateName()
     self:CreatePortrait()
     self:CreateRange()
 end
@@ -54,6 +54,12 @@ function UF:UpdateTargetTarget(self)
     if UF:IsBlizzardTheme() then
         self.Border:Hide()
         self.Shadow:Hide()
+
+        self:EnableElement("Power")
+        self:EnableElement("Portrait")
+        self:EnableElement("LeaderIndicator")
+        self:EnableElement("AssistantIndicator")
+        self:EnableElement("MasterLooterIndicator")
 
         self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
         self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
@@ -78,5 +84,6 @@ function UF:UpdateTargetTarget(self)
         self.Portrait:SetSize(35, 35)
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 5, -5)
+		self.Portrait:SetTexCoord(0, 1, 0, 1)
     end
 end

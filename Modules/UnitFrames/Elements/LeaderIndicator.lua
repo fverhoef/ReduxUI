@@ -14,3 +14,20 @@ UF.CreateLeaderIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateLeaderIndicator", UF.CreateLeaderIndicator)
+
+UF.UpdateLeaderIndicator = function(self)
+    if not self.LeaderIndicator then
+        return
+    end
+
+    local cfg = self.cfg.leaderIndicator
+    if cfg.enabled then
+        self:EnableElement("LeaderIndicator")
+        self.LeaderIndicator:SetSize(unpack(cfg.size))
+        self.LeaderIndicator:SetPoint(unpack(cfg.point))
+    else
+        self:DisableElement("LeaderIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateLeaderIndicator", UF.UpdateLeaderIndicator)

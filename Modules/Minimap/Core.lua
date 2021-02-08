@@ -197,7 +197,7 @@ function MM:StyleMinimap()
     end
 
     if MM.config.fader and MM.config.fader.enabled then
-        R:CreateFrameFader(MinimapCluster, MM.config.fader)
+        MinimapCluster:CreateFader(MM.config.fader)
     end
 
     R:CreateDragFrame(MinimapCluster, "Minimap", MM.config.point)
@@ -344,7 +344,7 @@ function MM:StyleMinimap()
     end
 
     if MM.config.fader and MM.config.fader.enabled then
-        R:CreateFrameFader(Minimap.ButtonFrame, MM.config.fader)
+        Minimap.ButtonFrame:CreateFader(MM.config.fader)
     end
 
     MM:ToggleButtonFrame()
