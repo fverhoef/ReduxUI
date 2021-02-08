@@ -28,6 +28,8 @@ R:RegisterModuleConfig(AB, {
         fader = R.config.faders.onShow
         -- frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide"
     },
+    multiBarBottomLeft = {fader = R.config.faders.none},
+    multiBarBottomRight = {fader = R.config.faders.none},
     multiBarLeft = {fader = R.config.faders.mouseOver},
     multiBarRight = {fader = R.config.faders.mouseOver},
     microButtonAndBags = {
@@ -45,9 +47,14 @@ R:RegisterModuleConfig(AB, {
         fader = R.config.faders.mouseOver
     },
     stanceBar = {
+        {fader = R.config.faders.onShow}
         -- frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; show"
     },
-    petActionBar = {frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"}
+    petActionBar = {
+        {fader = R.config.faders.onShow},
+        frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
+    },
+    vehicleExitBar = {{fader = R.config.faders.onShow}}
 })
 
 R:RegisterModuleOptions(AB, {

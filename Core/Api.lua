@@ -246,17 +246,21 @@ function R:FadeOut(timeToFade, startAlpha, endAlpha)
 end
 
 function R:CreateFader(faderConfig, children)
-    if not self or self.faderConfig then
+    if not self then
+        return
+    end
+    if self.faderConfig then
+        self.faderConfig = faderConfig
         return
     end
     self.faderConfig = faderConfig
 
     self:EnableMouse(true)
     self:HookScript("OnShow", R.Fader_OnShow)
-    self:HookScript("OnEnter", R.Fader_OnEnter)
-    self:HookScript("OnLeave", R.Fader_OnLeave)
+    self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
+    self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
     if self.faderConfig == R.config.faders.mouseOver then
-        R.Fader_OnEnter(self)
+        R.Fader_OnEnterOrLeave(self)
     end
 
     if children then
@@ -264,8 +268,8 @@ function R:CreateFader(faderConfig, children)
             if not child.faderParent then
                 child.faderParent = self
                 child:EnableMouse(true)
-                child:HookScript("OnEnter", R.Fader_OnEnter)
-                child:HookScript("OnLeave", R.Fader_OnLeave)
+                child:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
+                child:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
             end
         end
     end
@@ -278,17 +282,12 @@ function R:Fader_OnShow()
     end
 end
 
-function R:Fader_OnEnter()
+function R:Fader_OnEnterOrLeave()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.mouseOver then
-        R.FadeIn(frame)
-    end
-end
-
-function R:Fader_OnLeave()
-    local frame = self.faderParent or self
-    if frame.faderConfig == R.config.faders.mouseOver then
-        if not MouseIsOver(frame) then
+        if MouseIsOver(frame) then
+            R.FadeIn(frame)
+        else
             R.FadeOut(frame)
         end
     end

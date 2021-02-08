@@ -272,9 +272,7 @@ function AB:CreateMicroButtonAndBagsBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    if config.fader then
-        frame:CreateFader(config.fader, buttonList)
-    end
+    frame:CreateFader(config.fader, buttonList)
 
     if R.isClassic then
         MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, MainMenuMicroButton)
@@ -433,54 +431,52 @@ function AB:CreateMainMenuBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    if config.fader then
-        local buttonList = {}
-        for i = 1, NUM_ACTIONBAR_BUTTONS do
-            local button = _G["ActionButton" .. i]
-            if not button then
-                break
-            end
-            table.insert(buttonList, button)
+    local buttonList = {}
+    for i = 1, NUM_ACTIONBAR_BUTTONS do
+        local button = _G["ActionButton" .. i]
+        if not button then
+            break
         end
-
-        for i = 1, NUM_ACTIONBAR_BUTTONS do
-            local button = _G["MultiBarBottomLeftButton" .. i]
-            if not button then
-                break
-            end
-            table.insert(buttonList, button)
-        end
-
-        for i = 1, NUM_ACTIONBAR_BUTTONS do
-            local button = _G["MultiBarBottomRightButton" .. i]
-            if not button then
-                break
-            end
-            table.insert(buttonList, button)
-        end
-
-        for i = 1, NUM_STANCE_SLOTS do
-            local button = _G["StanceButton" .. i]
-            if not button then
-                break
-            end
-            table.insert(buttonList, button)
-        end
-
-        for i = 1, NUM_PET_ACTION_SLOTS do
-            local button = _G["PetActionButton" .. i]
-            if not button then
-                break
-            end
-            table.insert(buttonList, button)
-        end
-
-        if MainMenuBarVehicleLeaveButton then
-            table.insert(buttonList, MainMenuBarVehicleLeaveButton)
-        end
-
-        frame:CreateFader(config.fader, buttonList)
+        table.insert(buttonList, button)
     end
+
+    for i = 1, NUM_ACTIONBAR_BUTTONS do
+        local button = _G["MultiBarBottomLeftButton" .. i]
+        if not button then
+            break
+        end
+        table.insert(buttonList, button)
+    end
+
+    for i = 1, NUM_ACTIONBAR_BUTTONS do
+        local button = _G["MultiBarBottomRightButton" .. i]
+        if not button then
+            break
+        end
+        table.insert(buttonList, button)
+    end
+
+    for i = 1, NUM_STANCE_SLOTS do
+        local button = _G["StanceButton" .. i]
+        if not button then
+            break
+        end
+        table.insert(buttonList, button)
+    end
+
+    for i = 1, NUM_PET_ACTION_SLOTS do
+        local button = _G["PetActionButton" .. i]
+        if not button then
+            break
+        end
+        table.insert(buttonList, button)
+    end
+
+    if MainMenuBarVehicleLeaveButton then
+        table.insert(buttonList, MainMenuBarVehicleLeaveButton)
+    end
+
+    frame:CreateFader(config.fader, buttonList)
 
     return frame
 end
@@ -720,6 +716,8 @@ function AB:CreateMultiBarBottomLeft()
 
     frame:SetAttribute("actionpage", 6) -- 6 = MultiBarBottomLeft
 
+    frame:CreateFader(config.fader, buttonList)
+
     return frame
 end
 
@@ -762,6 +760,8 @@ function AB:CreateMultiBarBottomRight()
 
     frame:SetAttribute("actionpage", 5) -- 5 = MultiBarBottomRight
 
+    frame:CreateFader(config.fader, buttonList)
+
     return frame
 end
 
@@ -801,9 +801,7 @@ function AB:CreateMultiBarRight()
 
     frame:SetAttribute("actionpage", 3) -- 3 = MultiBarRight
 
-    if config.fader then
-        frame:CreateFader(config.fader, buttonList)
-    end
+    frame:CreateFader(config.fader, buttonList)
 
     return frame
 end
@@ -844,9 +842,7 @@ function AB:CreateMultiBarLeft()
 
     frame:SetAttribute("actionpage", 4) -- 4 = MultiBarLeft
 
-    if config.fader then
-        frame:CreateFader(config.fader, buttonList)
-    end
+    frame:CreateFader(config.fader, buttonList)
 
     return frame
 end
@@ -900,6 +896,8 @@ function AB:CreateStanceBar()
     StanceBarMiddle:SetTexture(nil)
     StanceBarRight:SetTexture(nil)
 
+    frame:CreateFader(config.fader, buttonList)
+
     return frame
 end
 
@@ -947,6 +945,8 @@ function AB:CreatePetActionBar()
         AB:SetupButton(button, parent, 30, 30, point)
     end
 
+    frame:CreateFader(config.fader, buttonList)
+
     return frame
 end
 
@@ -992,6 +992,8 @@ function AB:CreateVehicleExitBar()
         end
     end
     frame:HookScript("OnEvent", HandleEvent)
+
+    frame:CreateFader(config.fader, {MainMenuBarVehicleLeaveButton})
 
     return frame
 end

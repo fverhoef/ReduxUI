@@ -196,9 +196,7 @@ function MM:StyleMinimap()
         RegisterStateDriver(MinimapCluster, "visibility", MM.config.frameVisibility)
     end
 
-    if MM.config.fader and MM.config.fader.enabled then
-        MinimapCluster:CreateFader(MM.config.fader)
-    end
+    MinimapCluster:CreateFader(MM.config.fader)
 
     R:CreateDragFrame(MinimapCluster, "Minimap", MM.config.point)
 
@@ -343,9 +341,7 @@ function MM:StyleMinimap()
         RegisterStateDriver(Minimap.ButtonFrame, "visibility", MM.config.frameVisibility)
     end
 
-    if MM.config.fader and MM.config.fader.enabled then
-        Minimap.ButtonFrame:CreateFader(MM.config.fader)
-    end
+    Minimap.ButtonFrame:CreateFader(MM.config.fader)
 
     MM:ToggleButtonFrame()
 end

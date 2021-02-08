@@ -77,10 +77,7 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     oUF:SetActiveStyle(addonName .. name)
 
     local frame = oUF:Spawn(unit, addonName .. name)
-
-    if config.fader then
-        frame:CreateFader(config.fader)
-    end
+    frame:CreateFader(config.fader)
 
     R:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
 
@@ -103,10 +100,7 @@ function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index,
         ]]):format(config.size[1], config.size[2], config.scale))
 
     header:SetFrameStrata("LOW")
-
-    if config.fader then
-        header:CreateFader(config.fader)
-    end
+    header:CreateFader(config.fader)
 
     return header
 end
