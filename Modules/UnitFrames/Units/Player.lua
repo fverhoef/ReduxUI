@@ -99,6 +99,10 @@ function UF:CreatePlayer()
     self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", UF.Player_OnEvent, true)
     self:RegisterEvent("GROUP_ROSTER_UPDATE", UF.Player_OnEvent, true)
     self:RegisterEvent("CINEMATIC_STOP", UF.Player_OnEvent, true)
+
+    self.Update = function(self)
+        UF:UpdatePlayer(self)
+    end
 end
 
 function UF:UpdatePlayer(self)

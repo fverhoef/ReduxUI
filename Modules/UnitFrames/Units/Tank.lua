@@ -16,7 +16,11 @@ function UF:CreateTank()
     self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
     self:SetShadowPadding(1, 1, 0, 0)
+
+    self.Update = function(self)
+        UF:UpdateTank(self)
+    end
 end
 
-function UF:UpdateTank()
+function UF:UpdateTank(self)
 end

@@ -42,6 +42,10 @@ function UF:CreateTargetTarget()
     self:CreateName()
     self:CreatePortrait()
     self:CreateRange()
+
+    self.Update = function(self)
+        UF:UpdateTargetTarget(self)
+    end
 end
 
 function UF:UpdateTargetTarget(self)

@@ -132,10 +132,19 @@ function UF:UpdateFrame(self)
     end
 
     self.Border:SetShown(self.cfg.border.enabled)
+    self:SetBorderPadding(self.cfg.border.enabled and 1 or 0, self.cfg.border.enabled and 1 or 0, 0, 0)
+
     self.Shadow:SetShown(self.cfg.shadow.enabled)
+    self:SetShadowPadding(self.cfg.border.enabled and 1 or 0, self.cfg.border.enabled and 1 or 1, 0, 0)
 
     self:UpdateAllElements("OnUpdate")
 end
+
+oUF:RegisterInitCallback(function(object)
+    if object.Update then
+        object:Update()
+    end
+end)
 
 function UF:UpdateHeaderVisibility(self, visibility)
     local type, list = string.split(" ", visibility, 2)
@@ -145,7 +154,7 @@ function UF:UpdateHeaderVisibility(self, visibility)
     else
         local condition = UF:GetCondition(string.split(",", visibility))
         RegisterAttributeDriver(self, "state-visibility", condition)
-        --R:Print(self:GetName() .. ": " .. visibility .. "(" .. condition .. ")")
+        -- R:Print(self:GetName() .. ": " .. visibility .. "(" .. condition .. ")")
         self.visibility = condition
     end
 end

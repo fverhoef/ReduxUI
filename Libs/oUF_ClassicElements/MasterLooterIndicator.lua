@@ -22,6 +22,10 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
     self.MasterLooterIndicator = MasterLooterIndicator
 --]]
 
+if select(4, GetBuildInfo()) >= 20000 then
+    return
+end
+
 local _, ns = ...
 local oUF = ns.oUF
 

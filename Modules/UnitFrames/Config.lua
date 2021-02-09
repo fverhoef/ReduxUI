@@ -4,7 +4,10 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
-UF.anchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
+UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT"}
+UF.anchors = {"UIParent"}
+UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
+UF.groupAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 
 function UF:IsBlizzardTheme()
     return UF.config.theme == UF.themes.Blizzard or UF.config.theme == UF.themes.Blizzard_LargeHealth
@@ -91,6 +94,103 @@ function UF:CreateUnitEnabledOption(unit, order)
     }
 end
 
+function UF:CreateUnitPositionOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Position",
+        order = order,
+        inline = inline,
+        args = {
+            point = {
+                type = "select",
+                name = "Point",
+                desc = "The point on the frame to attach to the anchor.",
+                order = 1,
+                values = UF.anchorPoints,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].point[1] = UF.anchorPoints[key]
+                    UF:UpdateAll()
+                end
+            },
+            anchor = {
+                type = "select",
+                name = "Anchor",
+                desc = "The frame to attach to.",
+                order = 2,
+                values = UF.anchors,
+                get = function()
+                    for key, value in ipairs(UF.anchors) do
+                        if value == UF.config[unit].point[2] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].point[2] = UF.anchors[key]
+                    UF:UpdateAll()
+                end
+            },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the anchor frame to attach to.",
+                order = 3,
+                values = UF.anchorPoints,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].point[3] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].point[3] = UF.anchorPoints[key]
+                    UF:UpdateAll()
+                end
+            },
+            offsetX = {
+                type = "range",
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 4,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                get = function()
+                    return UF.config[unit].point[4]
+                end,
+                set = function(_, val)
+                    UF.config[unit].size[4] = val
+                    UF:UpdateAll()
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 5,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                get = function()
+                    return UF.config[unit].point[5]
+                end,
+                set = function(_, val)
+                    UF.config[unit].size[5] = val
+                    UF:UpdateAll()
+                end
+            }
+        }
+    }
+end
+
 function UF:CreateUnitSizeOption(unit, order, inline, name)
     return {
         type = "group",
@@ -125,6 +225,21 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 end,
                 set = function(_, val)
                     UF.config[unit].size[2] = val
+                    UF:UpdateAll()
+                end
+            },
+            scale = {
+                type = "range",
+                name = "Scale",
+                order = 3,
+                min = 0.1,
+                softMax = 3,
+                step = 0.1,
+                get = function()
+                    return UF.config[unit].scale
+                end,
+                set = function(_, val)
+                    UF.config[unit].scale = val
                     UF:UpdateAll()
                 end
             }
@@ -631,6 +746,7 @@ R:RegisterModuleConfig(UF, {
     nameplates = {
         enabled = true,
         size = {150, 16},
+        scale = 1,
         health = {enabled = true, height = 16, value = {enabled = true, tag = "[curhp_status]"}},
         power = {enabled = false, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
         name = {enabled = true, fontSize = 13},
@@ -898,7 +1014,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("player", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("player", 10, true),
-                health = UF:CreateUnitHealthOption("player", 11, true)
+                position = UF:CreateUnitPositionOption("player", 11, true),
+                health = UF:CreateUnitHealthOption("player", 12, true)
             }
         },
         target = {
@@ -910,7 +1027,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("target", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("target", 10, true),
-                health = UF:CreateUnitHealthOption("target", 11, true)
+                position = UF:CreateUnitPositionOption("target", 11, true),
+                health = UF:CreateUnitHealthOption("target", 12, true)
             }
         },
         targettarget = {
@@ -922,7 +1040,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("targettarget", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("targettarget", 10, true),
-                health = UF:CreateUnitHealthOption("targettarget", 11, true)
+                position = UF:CreateUnitPositionOption("targettarget", 11, true),
+                health = UF:CreateUnitHealthOption("targettarget", 12, true)
             }
         },
         pet = {
@@ -934,7 +1053,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("pet", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("pet", 10, true),
-                health = UF:CreateUnitHealthOption("pet", 11, true)
+                position = UF:CreateUnitPositionOption("pet", 11, true),
+                health = UF:CreateUnitHealthOption("pet", 12, true)
             }
         },
         focus = {
@@ -947,7 +1067,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("focus", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("focus", 10, true),
-                health = UF:CreateUnitHealthOption("focus", 11, true)
+                position = UF:CreateUnitPositionOption("focus", 11, true),
+                health = UF:CreateUnitHealthOption("focus", 12, true)
             }
         },
         focustarget = {
@@ -960,7 +1081,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("focustarget", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("focustarget", 10, true),
-                health = UF:CreateUnitHealthOption("focustarget", 11, true)
+                position = UF:CreateUnitPositionOption("focustarget", 11, true),
+                health = UF:CreateUnitHealthOption("focustarget", 12, true)
             }
         },
         party = {
@@ -996,16 +1118,16 @@ R:RegisterModuleOptions(UF, {
                             type = "select",
                             name = "Unit Anchor Point",
                             order = 3,
-                            values = UF.anchors,
+                            values = UF.unitAnchors,
                             get = function()
-                                for key, anchor in ipairs(UF.anchors) do
+                                for key, anchor in ipairs(UF.unitAnchors) do
                                     if UF.config.party.unitAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                UF.config.party.unitAnchorPoint = UF.anchors[key]
+                                UF.config.party.unitAnchorPoint = UF.unitAnchors[key]
                                 UF:UpdatePartyHeader()
                             end
                         },
@@ -1027,7 +1149,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 size = UF:CreateUnitSizeOption("party", 10, true),
-                health = UF:CreateUnitHealthOption("party", 11, true),
+                position = UF:CreateUnitPositionOption("party", 11, true),
+                health = UF:CreateUnitHealthOption("party", 12, true),
                 showPlayer = {
                     type = "toggle",
                     name = "Show Player",
@@ -1099,16 +1222,16 @@ R:RegisterModuleOptions(UF, {
                             type = "select",
                             name = "Unit Anchor Point",
                             order = 1,
-                            values = UF.anchors,
+                            values = UF.unitAnchors,
                             get = function()
-                                for key, anchor in ipairs(UF.anchors) do
+                                for key, anchor in ipairs(UF.unitAnchors) do
                                     if UF.config.raid.unitAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                UF.config.raid.unitAnchorPoint = UF.anchors[key]
+                                UF.config.raid.unitAnchorPoint = UF.unitAnchors[key]
                                 UF:UpdateRaidHeader()
                             end
                         },
@@ -1131,16 +1254,16 @@ R:RegisterModuleOptions(UF, {
                             type = "select",
                             name = "Group Anchor Point",
                             order = 3,
-                            values = UF.anchors,
+                            values = UF.groupAnchors,
                             get = function()
-                                for key, anchor in ipairs(UF.anchors) do
+                                for key, anchor in ipairs(UF.groupAnchors) do
                                     if UF.config.raid.groupAnchorPoint == anchor then
                                         return key
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                UF.config.raid.groupAnchorPoint = UF.anchors[key]
+                                UF.config.raid.groupAnchorPoint = UF.groupAnchors[key]
                                 UF:UpdateRaidHeader()
                             end
                         },
@@ -1162,7 +1285,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 size = UF:CreateUnitSizeOption("raid", 10, true, "Unit Size"),
-                health = UF:CreateUnitHealthOption("raid", 11, true)
+                position = UF:CreateUnitPositionOption("raid", 11, true),
+                health = UF:CreateUnitHealthOption("raid", 12, true)
             }
         },
         tank = {
@@ -1174,7 +1298,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("tank", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("tank", 10, true),
-                health = UF:CreateUnitHealthOption("tank", 11, true)
+                position = UF:CreateUnitPositionOption("tank", 11, true),
+                health = UF:CreateUnitHealthOption("tank", 12, true)
             }
         },
         assist = {
@@ -1186,7 +1311,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("assist", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("assist", 10, true),
-                health = UF:CreateUnitHealthOption("assist", 11, true)
+                position = UF:CreateUnitPositionOption("assist", 11, true),
+                health = UF:CreateUnitHealthOption("assist", 12, true)
             }
         },
         boss = {
@@ -1199,7 +1325,8 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("boss", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("boss", 10, true),
-                health = UF:CreateUnitHealthOption("boss", 11, true)
+                position = UF:CreateUnitPositionOption("boss", 11, true),
+                health = UF:CreateUnitHealthOption("boss", 12, true)
             }
         },
         arena = {
@@ -1211,8 +1338,9 @@ R:RegisterModuleOptions(UF, {
                 header = {type = "header", name = R.title .. " > Unit Frames: Arena", order = 0},
                 enabled = UF:CreateUnitEnabledOption("arena", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("boss", 10, true),
-                health = UF:CreateUnitHealthOption("boss", 11, true)
+                size = UF:CreateUnitSizeOption("arena", 10, true),
+                position = UF:CreateUnitPositionOption("arena", 11, true),
+                health = UF:CreateUnitHealthOption("arena", 12, true)
             }
         },
         nameplates = {

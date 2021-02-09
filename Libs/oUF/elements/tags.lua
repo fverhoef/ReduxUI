@@ -12,15 +12,25 @@ A FontString to hold a tag string. Unlike other elements, this widget must not h
 ## Notes
 
 A `Tag` is a Lua string consisting of a function name surrounded by square brackets. The tag will be replaced by the
-output of the function and displayed as text on the font string widget with that the tag has been registered. Literals
-can be pre- or appended by separating them with a `>` before or `<` after the function name. The literals will be only
-displayed when the function returns a non-nil value. I.e. `"[perhp<%]"` will display the current health as a percentage
-of the maximum health followed by the % sign.
+output of the function and displayed as text on the font string widget with that the tag has been registered.
 
-A `Tag String` is a Lua string consisting of one or multiple tags with optional literals between them. Each tag will be
-updated individually and the output will follow the tags order. Literals will be displayed in the output string
-regardless of whether the surrounding tag functions return a value. I.e. `"[curhp]/[maxhp]"` will resolve to something
-like `2453/5000`.
+A `Tag String` is a Lua string consisting of one or multiple tags with optional literals and parameters around them.
+Each tag will be updated individually and the output will follow the tags order. Literals will be displayed in the
+output string regardless of whether the surrounding tag functions return a value. I.e. `"[curhp]/[maxhp]"` will resolve
+to something like `2453/5000`.
+
+There's also an optional prefix and suffix that are separated from the tag name by `$>` and `<$` respectively,
+for example, `"[==$>name<$==]"` will resolve to `==Thrall==`, and `"[perhp<$%]"` will resole to `100%`, however, said
+affixes will only be added if the tag function returns a non-empty string, if it returns `nil` or `""` affixes will be
+omitted.
+
+Additionally, it's possible to pass optional arguments to a tag function to alter its behaviour. Optional arguments are
+defined via `()` at the end of a tag and separated by commas (`,`). For example, `"[name(a,r,g,s)]"`, in this case 4
+additional arguments, `"a"`, `"r"`, `"g"`, and `"s"` will be passed to the name tag function, what to do with them,
+however, is up to a developer to decide.
+
+The full tag syntax looks like this: `"[prefix$>tag<$suffix(a,r,g,s)]"`. The order of optional elements is important,
+while they can be independently omitted, they can't be reordered.
 
 A `Tag Function` is used to replace a single tag in a tag string by its output. A tag function receives only two
 arguments - the unit and the realUnit of the unit frame used to register the tag (see Options for further details). The
@@ -37,15 +47,17 @@ in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NA
 .overrideUnit    - if specified on the font string widget, the frame's realUnit will be passed as the second argument to
                    every tag function whose name is contained in the relevant tag string. Otherwise the second argument
                    is always nil (boolean)
-.frequentUpdates - defines how often the correspondig tag function(s) should be called. This will override the events for
-                   the tag(s), if any. If the value is a number, it is taken as a time interval in seconds. If the value
-                   is a boolean, the time interval is set to 0.5 seconds (number or boolean)
+.frequentUpdates - defines how often the corresponding tag function(s) should be called. This will override the events
+                   for the tag(s), if any. If the value is a number, it is taken as a time interval in seconds. If the
+                   value is a boolean, the time interval is set to 0.5 seconds (number or boolean)
 
 ## Attributes
 
 .parent - the unit frame on which the tag has been registered
 
 ## Examples
+
+### Example 1
 
     -- define the tag function
     oUF.Tags.Methods['mylayout:threatname'] = function(unit, realUnit)
@@ -63,23 +75,39 @@ in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NA
 
     -- register the tag on the text widget with oUF
     self:Tag(info, '[mylayout:threatname]')
+
+### Example 2
+
+    -- define the tag function that accepts optional arguments
+    oUF.Tags.Methods['mylayout:name'] = function(unit, realUnit, ...)
+        local name = _TAGS['name'](unit, realUnit)
+        local length = tonumber(...)
+        if(length) then
+            return name:sub(1, length) -- please note, this code doesn't support UTF-8 chars
+        else
+            return name
+        end
+    end
+
+    -- add the events
+    oUF.Tags.Events['mylayout:name'] = 'UNIT_NAME_UPDATE'
+
+    -- create the text widget
+    local info = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+    info:SetPoint('LEFT')
+
+    -- register the tag on the text widget with oUF
+    self:Tag(info, '[mylayout:name(5)]') -- the output will be shortened to 5 characters
+    -- self:Tag(info, '[mylayout:name]') -- alternative, the output won't be adjusted
+    -- self:Tag(info, '[mylayout:name(10)]') -- alternative, the output will be shortened to 10 characters
 --]]
 
 local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
+local xpcall = Private.xpcall
 local unitExists = Private.unitExists
-
--- ElvUI block
-local _G = _G
-local CreateFrame = CreateFrame
-local setfenv, getfenv = setfenv, getfenv
-local rawget, rawset, select = rawget, rawset, select
-local format, tinsert, tremove = format, tinsert, tremove
-local next, type, pcall, unpack = next, type, pcall, unpack
-local error, assert, loadstring = error, assert, loadstring
--- end block
 
 local _PATTERN = '%[..-%]+'
 
@@ -92,14 +120,7 @@ local _ENV = {
 				r, g, b = unpack(r)
 			end
 		end
-
-		-- ElvUI block
-		if not r or type(r) == 'string' then --wtf?
-			return '|cffFFFFFF'
-		end
-		-- end block
-
-		return format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
+		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
 }
 _ENV.ColorGradient = function(...)
@@ -113,6 +134,35 @@ local tagStrings = {
 		local c = UnitClassification(u)
 		if(c == 'minus') then
 			return 'Affix'
+		end
+	end]],
+
+	['arcanecharges'] = [[function()
+		if(GetSpecialization() == SPEC_MAGE_ARCANE) then
+			local num = UnitPower('player', Enum.PowerType.ArcaneCharges)
+			if(num > 0) then
+				return num
+			end
+		end
+	end]],
+
+	['arenaspec'] = [[function(u)
+		local id = u:match('arena(%d)$')
+		if(id) then
+			local specID = GetArenaOpponentSpec(tonumber(id))
+			if(specID and specID > 0) then
+				local _, specName = GetSpecializationInfoByID(specID)
+				return specName
+			end
+		end
+	end]],
+
+	['chi'] = [[function()
+		if(GetSpecialization() == SPEC_MONK_WINDWALKER) then
+			local num = UnitPower('player', Enum.PowerType.Chi)
+			if(num > 0) then
+				return num
+			end
 		end
 	end]],
 
@@ -166,7 +216,7 @@ local tagStrings = {
 
 	['difficulty'] = [[function(u)
 		if UnitCanAttack('player', u) then
-			local l = UnitLevel(u) - UnitLevel('player')
+			local l = UnitEffectiveLevel(u)
 			return Hex(GetCreatureDifficultyColor((l > 0) and l or 999))
 		end
 	end]],
@@ -185,6 +235,15 @@ local tagStrings = {
 		end
 	end]],
 
+	['holypower'] = [[function()
+		if(GetSpecialization() == SPEC_PALADIN_RETRIBUTION) then
+			local num = UnitPower('player', Enum.PowerType.HolyPower)
+			if(num > 0) then
+				return num
+			end
+		end
+	end]],
+
 	['leader'] = [[function(u)
 		if(UnitIsGroupLeader(u)) then
 			return 'L'
@@ -199,6 +258,9 @@ local tagStrings = {
 
 	['level'] = [[function(u)
 		local l = UnitLevel(u)
+		if(UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
+			l = UnitBattlePetLevel(u)
+		end
 
 		if(l > 0) then
 			return l
@@ -272,7 +334,7 @@ local tagStrings = {
 					return Hex(altR, altG, altB)
 				end
 			else
-				return Hex(_COLORS.power[pType])
+				return Hex(_COLORS.power[pType] or _COLORS.power.MANA)
 			end
 		end
 
@@ -289,6 +351,15 @@ local tagStrings = {
 		local _, class = UnitClass(u)
 		if(class) then
 			return Hex(_COLORS.class[class])
+		else
+			local id = u:match('arena(%d)$')
+			if(id) then
+				local specID = GetArenaOpponentSpec(tonumber(id))
+				if(specID and specID > 0) then
+					_, _, _, _, _, class = GetSpecializationInfoByID(specID)
+					return Hex(_COLORS.class[class])
+				end
+			end
 		end
 	end]],
 
@@ -303,6 +374,19 @@ local tagStrings = {
 		if(u == 'player' and IsResting()) then
 			return 'zzz'
 		end
+	end]],
+
+	['runes'] = [[function()
+		local amount = 0
+
+		for i = 1, 6 do
+			local _, _, ready = GetRuneCooldown(i)
+			if(ready) then
+				amount = amount + 1
+			end
+		end
+
+		return amount
 	end]],
 
 	['sex'] = [[function(u)
@@ -352,6 +436,13 @@ local tagStrings = {
 		end
 	end]],
 
+	['soulshards'] = [[function()
+		local num = UnitPower('player', Enum.PowerType.SoulShards)
+		if(num > 0) then
+			return num
+		end
+	end]],
+
 	['status'] = [[function(u)
 		if(UnitIsDead(u)) then
 			return 'Dead'
@@ -362,6 +453,21 @@ local tagStrings = {
 		else
 			return _TAGS['resting'](u)
 		end
+	end]],
+
+	['threat'] = [[function(u)
+		local s = UnitThreatSituation(u)
+		if(s == 1) then
+			return '++'
+		elseif(s == 2) then
+			return '--'
+		elseif(s == 3) then
+			return 'Aggro'
+		end
+	end]],
+
+	['threatcolor'] = [[function(u)
+		return Hex(GetThreatStatusColor(UnitThreatSituation(u)))
 	end]],
 }
 
@@ -429,44 +535,56 @@ _ENV._VARS = vars
 
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
+	['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',
+	['arenaspec']           = 'ARENA_PREP_OPPONENT_SPECIALIZATIONS',
+	['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['cpoints']             = 'UNIT_POWER_FREQUENT PLAYER_TARGET_CHANGED',
-	['curhp']               = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
+	['curhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
 	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['curpp']               = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
-	['dead']                = 'UNIT_HEALTH_FREQUENT',
-	['deficit:name']        = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE',
+	['dead']                = 'UNIT_HEALTH',
+	['deficit:name']        = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE',
 	['difficulty']          = 'UNIT_FACTION',
-	['faction']             = 'UNIT_FACTION',
+	['faction']             = oUF.isClassic and 'UNIT_FACTION' or 'NEUTRAL_FACTION_SELECT_RESULT',
 	['group']               = 'GROUP_ROSTER_UPDATE',
+	['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',
 	['leader']              = 'PARTY_LEADER_CHANGED',
 	['leaderlong']          = 'PARTY_LEADER_CHANGED',
 	['level']               = 'UNIT_LEVEL PLAYER_LEVEL_UP',
 	['maxhp']               = 'UNIT_MAXHEALTH',
 	['maxmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['maxpp']               = 'UNIT_MAXPOWER',
-	['missinghp']           = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
+	['missinghp']           = 'UNIT_HEALTH UNIT_MAXHEALTH',
 	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['name']                = 'UNIT_NAME_UPDATE',
-	['offline']             = 'UNIT_HEALTH_FREQUENT UNIT_CONNECTION',
-	['perhp']               = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
+	['offline']             = 'UNIT_HEALTH UNIT_CONNECTION',
+	['perhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
 	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['plus']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['powercolor']          = 'UNIT_DISPLAYPOWER',
 	['pvp']                 = 'UNIT_FACTION',
 	['rare']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['resting']             = 'PLAYER_UPDATE_RESTING',
+	['runes']               = 'RUNE_POWER_UPDATE',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
 	['smartlevel']          = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED',
-	['status']              = 'UNIT_HEALTH_FREQUENT PLAYER_UPDATE_RESTING UNIT_CONNECTION',
+	['soulshards']          = 'UNIT_POWER_UPDATE',
+	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION',
+	['threat']              = 'UNIT_THREAT_SITUATION_UPDATE',
+	['threatcolor']         = 'UNIT_THREAT_SITUATION_UPDATE',
 }
 
 local unitlessEvents = {
+	ARENA_PREP_OPPONENT_SPECIALIZATIONS = true,
 	GROUP_ROSTER_UPDATE = true,
+	NEUTRAL_FACTION_SELECT_RESULT = true,
 	PARTY_LEADER_CHANGED = true,
 	PLAYER_LEVEL_UP = true,
+	PLAYER_TALENT_UPDATE = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
+	RUNE_POWER_UPDATE = true,
 }
 
 local events = {}
@@ -522,27 +640,30 @@ local function Update(self)
 	end
 end
 
--- ElvUI block
-local onEnter = function(self) for fs in next, self.__mousetags do fs:SetAlpha(1) end end
-local onLeave = function(self) for fs in next, self.__mousetags do fs:SetAlpha(0) end end
-local onUpdateDelay = {}
-local escapeSequences = {
-	["||c"] = "|c",
-	["||r"] = "|r",
-	["||T"] = "|T",
-	["||t"] = "|t",
-}
--- end block
-
 local tagPool = {}
 local funcPool = {}
 local tmp = {}
 
-local function getTagName(tag)
-	local tagStart = tag:match('>+()') or 2
-	local tagEnd = (tag:match('.-()<') or -1) - 1
+local function getBracketData(tag)
+	-- full tag syntax: '[prefix$>tag-name<$suffix(a,r,g,s)]'
+	local suffixEnd = (tag:match('()%(') or -1) - 1
 
-	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
+	local prefixEnd, prefixOffset = tag:match('()$>'), 1
+	if(not prefixEnd) then
+		prefixEnd = 1
+	else
+		prefixEnd = prefixEnd - 1
+		prefixOffset = 3
+	end
+
+	local suffixStart, suffixOffset = tag:match('<$()', prefixEnd), 1
+	if(not suffixStart) then
+		suffixStart = suffixEnd + 1
+	else
+		suffixOffset = 3
+	end
+
+	return tag:sub(prefixEnd + prefixOffset, suffixStart - suffixOffset), prefixEnd, suffixStart, suffixEnd, tag:match('%((.-)%)')
 end
 
 local function getTagFunc(tagstr)
@@ -554,39 +675,66 @@ local function getTagFunc(tagstr)
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
 			if(not tagFunc) then
-				local tagName, tagStart, tagEnd = getTagName(bracket)
-
+				local tagName, prefixEnd, suffixStart, suffixEnd, customArgs = getBracketData(bracket)
 				local tag = tags[tagName]
 				if(tag) then
-					tagStart = tagStart - 2
-					tagEnd = tagEnd + 2
-
-					if(tagStart ~= 0 and tagEnd ~= 0) then
-						local prefix = bracket:sub(2, tagStart)
-						local suffix = bracket:sub(tagEnd, -2)
+					if(prefixEnd ~= 1 and suffixStart - suffixEnd ~= 1) then
+						local prefix = bracket:sub(2, prefixEnd)
+						local suffix = bracket:sub(suffixStart, suffixEnd)
 
 						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
+							local str
+							if(customArgs) then
+								str = tag(unit, realUnit, strsplit(',', customArgs))
+							else
+								str = tag(unit, realUnit)
+							end
+
+							if(str and str ~= '') then
 								return prefix .. str .. suffix
 							end
 						end
-					elseif(tagStart ~= 0) then
-						local prefix = bracket:sub(2, tagStart)
+					elseif(prefixEnd ~= 1) then
+						local prefix = bracket:sub(2, prefixEnd)
 
 						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
+							local str
+							if(customArgs) then
+								str = tag(unit, realUnit, strsplit(',', customArgs))
+							else
+								str = tag(unit, realUnit)
+							end
+
+							if(str and str ~= '') then
 								return prefix .. str
 							end
 						end
-					elseif(tagEnd ~= 0) then
-						local suffix = bracket:sub(tagEnd, -2)
+					elseif(suffixStart - suffixEnd ~= 1) then
+						local suffix = bracket:sub(suffixStart, suffixEnd)
 
 						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
+							local str
+							if(customArgs) then
+								str = tag(unit, realUnit, strsplit(',', customArgs))
+							else
+								str = tag(unit, realUnit)
+							end
+
+							if(str and str ~= '') then
 								return str .. suffix
+							end
+						end
+					else
+						tagFunc = function(unit, realUnit)
+							local str
+							if(customArgs) then
+								str = tag(unit, realUnit, strsplit(',', customArgs))
+							else
+								str = tag(unit, realUnit)
+							end
+
+							if(str and str ~= '') then
+								return str
 							end
 						end
 					end
@@ -595,42 +743,32 @@ local function getTagFunc(tagstr)
 				end
 			end
 
-			-- ElvUI changed
 			if(tagFunc) then
-				tinsert(args, tagFunc)
+				table.insert(args, tagFunc)
 			else
-				numTags = -1
-				func = function(self)
-					return self:SetText(bracket)
-				end
-			end
-			-- end block
-		end
-
-		if numTags ~= -1 then -- ElvUI replaced
-			func = function(self)
-				local parent = self.parent
-				local unit = parent.unit
-
-				local customArgs = parent.__customargs
-				local realUnit = self.overrideUnit and parent.realUnit
-
-				_ENV._COLORS = parent.colors
-				_ENV._FRAME = parent
-				for i, fnc in next, args do
-					tmp[i] = fnc(unit, realUnit, customArgs[self]) or ''
-				end
-
-				-- We do 1, numTags because tmp can hold several unneeded variables.
-				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
+				return error(string.format('Attempted to use invalid tag %s.', bracket), 3)
 			end
 		end
 
-		-- ElvUI added check
-		if numTags ~= -1 then
-			tagPool[tagstr] = func
+		func = function(self)
+			local parent = self.parent
+			local unit = parent.unit
+			local realUnit
+			if(self.overrideUnit) then
+				realUnit = parent.realUnit
+			end
+
+			_ENV._COLORS = parent.colors
+			_ENV._FRAME = parent
+			for i, f in next, args do
+				tmp[i] = f(unit, realUnit) or ''
+			end
+
+			-- We do 1, numTags because tmp can hold several unneeded variables.
+			return self:SetFormattedText(format, unpack(tmp, 1, numTags))
 		end
-		-- end block
+
+		tagPool[tagstr] = func
 	end
 
 	return func
@@ -639,13 +777,15 @@ end
 local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
-	eventFrame:RegisterEvent(event)
-	tinsert(events[event], fontstr)
+	local isOK = xpcall(eventFrame.RegisterEvent, eventFrame, event)
+	if(isOK) then
+		table.insert(events[event], fontstr)
+	end
 end
 
 local function registerEvents(fontstr, tagstr)
 	for tag in tagstr:gmatch(_PATTERN) do
-		tag = getTagName(tag)
+		tag = getBracketData(tag)
 		local tagevents = tagEvents[tag]
 		if(tagevents) then
 			for event in tagevents:gmatch('%S+') do
@@ -657,14 +797,20 @@ end
 
 local function unregisterEvents(fontstr)
 	for event, data in next, events do
-		for i, tagfsstr in next, data do
+		local index = 1
+		local tagfsstr = data[index]
+		while tagfsstr do
 			if(tagfsstr == fontstr) then
 				if(#data == 1) then
 					eventFrame:UnregisterEvent(event)
 				end
 
-				tremove(data, i)
+				table.remove(data, index)
+			else
+				index = index + 1
 			end
+
+			tagfsstr = data[index]
 		end
 	end
 end
@@ -684,75 +830,26 @@ local function Tag(self, fs, tagstr, ...)
 
 	if(not self.__tags) then
 		self.__tags = {}
-		self.__mousetags = {} -- ElvUI
-		self.__customargs = {} -- ElvUI
-
-		tinsert(self.__elements, Update)
+		table.insert(self.__elements, Update)
 	elseif(self.__tags[fs]) then
 		-- We don't need to remove it from the __tags table as Untag handles
 		-- that for us.
 		self:Untag(fs)
 	end
 
-	-- ElvUI
-	for escapeSequence, replacement in next, escapeSequences do
-		while tagstr:find(escapeSequence) do
-			tagstr = tagstr:gsub(escapeSequence, replacement)
-		end
-	end
-
-	local customArgs = tagstr:match('{(.-)}%]')
-	if customArgs then
-		self.__customargs[fs] = customArgs
-		tagstr = tagstr:gsub('{.-}%]', ']')
-	else
-		self.__customargs[fs] = nil
-	end
-
-	if tagstr:find('%[mouseover%]') then
-		self.__mousetags[fs] = true
-		fs:SetAlpha(0)
-		if not self.__HookFunc then
-			self:HookScript('OnEnter', onEnter)
-			self:HookScript('OnLeave', onLeave)
-			self.__HookFunc = true;
-		end
-		tagstr = tagstr:gsub('%[mouseover%]', '')
-	else
-		for fontString in next, self.__mousetags do
-			if fontString == fs then
-				self.__mousetags[fontString] = nil
-				fs:SetAlpha(1)
-			end
-		end
-	end
-
-	local containsOnUpdate
-	for tag in tagstr:gmatch(_PATTERN) do
-		tag = getTagName(tag)
-		if not tagEvents[tag] then
-			containsOnUpdate = onUpdateDelay[tag] or 0.15;
-		end
-	end
-	-- end block
-
 	fs.parent = self
 	fs.UpdateTag = getTagFunc(tagstr)
 
-	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then -- ElvUI changed
+	if(self.__eventless or fs.frequentUpdates) then
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
-		-- ElvUI added check
-		elseif containsOnUpdate then
-			timer = containsOnUpdate
-		-- end block
 		else
 			timer = .5
 		end
 
 		if(not eventlessUnits[timer]) then eventlessUnits[timer] = {} end
-		tinsert(eventlessUnits[timer], fs)
+		table.insert(eventlessUnits[timer], fs)
 
 		createOnUpdate(timer)
 	else
@@ -784,10 +881,16 @@ local function Untag(self, fs)
 
 	unregisterEvents(fs)
 	for _, timers in next, eventlessUnits do
-		for i, fontstr in next, timers do
+		local index = 1
+		local fontstr = timers[index]
+		while fontstr do
 			if(fs == fontstr) then
-				tremove(timers, i)
+				table.remove(timers, index)
+			else
+				index = index + 1
 			end
+
+			fontstr = timers[index]
 		end
 	end
 
@@ -797,20 +900,31 @@ local function Untag(self, fs)
 	self.__tags[fs] = nil
 end
 
+local function strip(tag)
+	-- remove prefix, custom args, and suffix
+	return tag:gsub('%[.-$>', '['):gsub('%(.-%)%]', ']'):gsub('<$.-%]', ']')
+end
+
 oUF.Tags = {
 	Methods = tags,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
-	OnUpdateThrottle = onUpdateDelay, -- ElvUI
 	Vars = vars,
 	RefreshMethods = function(self, tag)
 		if(not tag) then return end
 
-		funcPool['[' .. tag .. ']'] = nil
-
+		-- If a tag's name contains magic chars, there's a chance that
+		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+
+		for func in next, funcPool do
+			if(strip(func):match(tag)) then
+				funcPool[func] = nil
+			end
+		end
+
 		for tagstr, func in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				tagPool[tagstr] = nil
 
 				for fs in next, taggedFS do
@@ -828,9 +942,11 @@ oUF.Tags = {
 	RefreshEvents = function(self, tag)
 		if(not tag) then return end
 
+		-- If a tag's name contains magic chars, there's a chance that
+		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				for fs, ts in next, taggedFS do
 					if(ts == tagstr) then
 						unregisterEvents(fs)

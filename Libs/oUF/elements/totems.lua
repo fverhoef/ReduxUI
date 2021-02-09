@@ -86,21 +86,9 @@ local function UpdateTotem(self, event, slot)
 			totem.Cooldown:SetCooldown(start, duration)
 		end
 
-		if totem:IsObjectType("Statusbar") then
-			totem:SetValue(0)
-			totem:SetScript("OnUpdate",function(self,elapsed)
-				self.total = (self.total or 0) + elapsed
-				if (self.total >= .01) then
-					self.total = 0
-					local _, _, startTime, expiration = GetTotemInfo(slot)
-					if ((GetTime() - startTime) == 0) then
-						self:SetValue(0)
-					else
-						self:SetValue(1 - ((GetTime() - startTime) / expiration))
-					end
-				end
-			end)
-		end
+		totem:Show()
+	else
+		totem:Hide()
 	end
 
 	--[[ Callback: Totems:PostUpdate(slot, haveTotem, name, start, duration, icon)
@@ -168,6 +156,13 @@ local function Enable(self)
 
 		self:RegisterEvent('PLAYER_TOTEM_UPDATE', Path, true)
 
+		if TotemFrame then
+			TotemFrame:UnregisterEvent('PLAYER_TOTEM_UPDATE')
+			TotemFrame:UnregisterEvent('PLAYER_ENTERING_WORLD')
+			TotemFrame:UnregisterEvent('UPDATE_SHAPESHIFT_FORM')
+			TotemFrame:UnregisterEvent('PLAYER_TALENT_UPDATE')
+		end
+
 		return true
 	end
 end
@@ -177,6 +172,13 @@ local function Disable(self)
 	if(element) then
 		for i = 1, #element do
 			element[i]:Hide()
+		end
+
+		if TotemFrame then
+			TotemFrame:RegisterEvent('PLAYER_TOTEM_UPDATE')
+			TotemFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+			TotemFrame:RegisterEvent('UPDATE_SHAPESHIFT_FORM')
+			TotemFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 		end
 
 		self:UnregisterEvent('PLAYER_TOTEM_UPDATE', Path)

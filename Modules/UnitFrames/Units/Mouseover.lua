@@ -17,6 +17,10 @@ function UF:CreateMouseover()
     self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
     self:SetShadowPadding(1, 1, 0, 0)
+
+    self.Update = function(self)
+        UF:UpdateMouseover(self)
+    end
 end
 
 function UF:UpdateMouseover(self)

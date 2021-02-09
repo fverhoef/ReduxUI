@@ -1,19 +1,29 @@
 --[[
 # Element: Threat Indicator
+
 Handles the visibility and updating of an indicator based on the unit's current threat level.
+
 ## Widget
+
 ThreatIndicator - A `Texture` used to display the current threat level.
 The element works by changing the texture's vertex color.
+
 ## Notes
+
 A default texture will be applied if the widget is a Texture and doesn't have a texture or a color set.
+
 ## Options
+
 .feedbackUnit - The unit whose threat situation is being requested. If defined, it'll be passed as the first argument to
                 [GetThreatStatusColor](http://wowprogramming.com/docs/api/UnitThreatSituation.html).
+
 ## Examples
+
     -- Position and size
     local ThreatIndicator = self:CreateTexture(nil, 'OVERLAY')
     ThreatIndicator:SetSize(16, 16)
     ThreatIndicator:SetPoint('TOPRIGHT', self)
+
     -- Register it with oUF
     self.ThreatIndicator = ThreatIndicator
 --]]
@@ -24,29 +34,13 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
-local IsClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local _GetThreatStatusColor = function(status)
-	if IsClassic then
-		if status == 0 then
-			return 0.69, 0.69, 0.69
-		elseif status == 1 then
-			return 1, 1, 0.47
-		elseif status == 2 then
-			return 1, 0.6, 0
-		else
-			return 1, 0, 0
-		end
-    else
-        return GetThreatStatusColor(status)
-    end
-end
-
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 
 	local element = self.ThreatIndicator
 	--[[ Callback: ThreatIndicator:PreUpdate(unit)
 	Called before the element has been updated.
+
 	* self - the ThreatIndicator element
 	* unit - the unit for which the update has been triggered (string)
 	--]]
@@ -67,10 +61,10 @@ local function Update(self, event, unit)
 
 	local r, g, b
 	if(status and status > 0) then
-		r, g, b = _GetThreatStatusColor(status)
+		r, g, b = unpack(self.colors.threat[status])
 
 		if(element.SetVertexColor) then
-			element:SetVertexColor(r, g, b, 1)
+			element:SetVertexColor(r, g, b)
 		end
 
 		element:Show()
@@ -80,6 +74,7 @@ local function Update(self, event, unit)
 
 	--[[ Callback: ThreatIndicator:PostUpdate(unit, status, r, g, b)
 	Called after the element has been updated.
+
 	* self   - the ThreatIndicator element
 	* unit   - the unit for which the update has been triggered (string)
 	* status - the unit's threat status (see [UnitThreatSituation](http://wowprogramming.com/docs/api/UnitThreatSituation.html))
@@ -95,6 +90,7 @@ end
 local function Path(self, ...)
 	--[[ Override: ThreatIndicator.Override(self, event, ...)
 	Used to completely override the internal update function.
+
 	* self  - the parent object
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
@@ -115,6 +111,10 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
 
+		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+			element:SetTexture([[Interface\RAIDFRAME\UI-RaidFrame-Threat]])
+		end
+
 		return true
 	end
 end
@@ -123,7 +123,7 @@ local function Disable(self)
 	local element = self.ThreatIndicator
 	if(element) then
 		element:Hide()
-		
+
 		self:UnregisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
 		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
 	end

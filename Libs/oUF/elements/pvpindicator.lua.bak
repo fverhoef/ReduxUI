@@ -146,9 +146,7 @@ local function Disable(self)
 		end
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
-		if not oUF.isClassic then
-			self:UnregisterEvent('HONOR_LEVEL_UPDATE', Path)
-		end
+		self:UnregisterEvent('HONOR_LEVEL_UPDATE', Path)
 	end
 end
 

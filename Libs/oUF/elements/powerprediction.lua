@@ -43,6 +43,12 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
+-- sourced from FrameXML/AlternatePowerBar.lua
+local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0
+local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
+
+local _, playerClass = UnitClass('player')
+
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
 
@@ -58,34 +64,52 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local _, _, _, startTime, endTime, _, _, _, spellID = CastingInfo()
+	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 	local mainPowerType = UnitPowerType(unit)
-	local mainCost = 0
+	local hasAltManaBar = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]
+		and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][mainPowerType]
+	local mainCost, altCost = 0, 0
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
-		for _, costInfo in next, costTable do
-			-- costInfo content:
-			-- - name: string (powerToken)
-			-- - type: number (powerType)
-			-- - cost: number
-			-- - costPercent: number
-			-- - costPerSec: number
-			-- - minCost: number
-			-- - hasRequiredAura: boolean
-			-- - requiredAuraID: number
-			if(costInfo.type == mainPowerType) then
-				mainCost = costInfo.cost
+		-- hasRequiredAura is always false if there's only 1 subtable
+		local checkRequiredAura = #costTable > 1
 
-				break
+		for _, costInfo in next, costTable do
+			if(not checkRequiredAura or costInfo.hasRequiredAura) then
+				if(costInfo.type == mainPowerType) then
+					mainCost = costInfo.cost
+					element.mainCost = mainCost
+
+					break
+				elseif(costInfo.type == ADDITIONAL_POWER_BAR_INDEX) then
+					altCost = costInfo.cost
+					element.altCost = altCost
+
+					break
+				end
 			end
 		end
+	elseif(spellID) then
+		-- if we try to cast a spell while casting another one we need to avoid
+		-- resetting the element
+		mainCost = element.mainCost or 0
+		altCost = element.altCost or 0
+	else
+		element.mainCost = mainCost
+		element.altCost = altCost
 	end
 
 	if(element.mainBar) then
 		element.mainBar:SetMinMaxValues(0, UnitPowerMax(unit, mainPowerType))
 		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
+	end
+
+	if(element.altBar and hasAltManaBar) then
+		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX))
+		element.altBar:SetValue(altCost)
+		element.altBar:Show()
 	end
 
 	--[[ Callback: PowerPrediction:PostUpdate(unit, mainCost, altCost, hasAltManaBar)
@@ -98,7 +122,7 @@ local function Update(self, event, unit)
 	* hasAltManaBar - indicates if the unit has a secondary power bar (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, mainCost)
+		return element:PostUpdate(unit, mainCost, altCost, hasAltManaBar)
 	end
 end
 
@@ -118,9 +142,9 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function Enable(self)
+local function Enable(self, unit)
 	local element = self.PowerPrediction
-	if(element) then
+	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
@@ -131,8 +155,16 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 
 		if(element.mainBar) then
-			if(element.mainBar:IsObjectType('StatusBar') and not element.mainBar:GetStatusBarTexture()) then
+			if(element.mainBar:IsObjectType('StatusBar')
+				and not (element.mainBar:GetStatusBarTexture() or element.mainBar:GetStatusBarAtlas())) then
 				element.mainBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			end
+		end
+
+		if(element.altBar) then
+			if(element.altBar:IsObjectType('StatusBar')
+				and not (element.altBar:GetStatusBarTexture() or element.altBar:GetStatusBarAtlas())) then
+				element.altBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end
 
@@ -145,6 +177,10 @@ local function Disable(self)
 	if(element) then
 		if(element.mainBar) then
 			element.mainBar:Hide()
+		end
+
+		if(element.altBar) then
+			element.altBar:Hide()
 		end
 
 		self:UnregisterEvent('UNIT_SPELLCAST_START', Path)

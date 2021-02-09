@@ -203,7 +203,9 @@ function UF:CreateRaid()
     self:CreateRange()
     self:CreateAuraHighlight()
 
-    UF:UpdateRaid(self)
+    self.Update = function(self)
+        UF:UpdateRaid(self)
+    end
 end
 
 function UF:UpdateRaid(self)

@@ -19,6 +19,10 @@ function UF:CreateFocus()
     self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
     self:SetShadowPadding(1, 1, 0, 0)
+
+    self.Update = function(self)
+        UF:UpdateFocus(self)
+    end
 end
 
 function UF:UpdateFocus(self)
@@ -29,6 +33,5 @@ function UF:UpdateFocus(self)
     UF:UpdateFrame(self)
 
     if UF:IsBlizzardTheme() then
-    else
     end
 end

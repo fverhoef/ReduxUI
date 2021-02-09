@@ -146,7 +146,9 @@ function UF:CreateParty()
     self:CreateRange()
     self:CreateAuraHighlight()
 
-    UF:UpdateParty(self)
+    self.Update = function(self)
+        UF:UpdateParty(self)
+    end
 end
 
 function UF:UpdateParty(self)

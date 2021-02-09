@@ -25,13 +25,8 @@ function UF:CreateNamePlate()
     self:SetPoint("CENTER")
     self:SetFrameStrata("BACKGROUND")
 
-    -- nameplates are not part of uiparent, they must be multiplied by uiparent scale!
-    self:SetScale(1 * UIParent:GetScale())
-
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     -- health
     self:CreateHealth()
@@ -108,6 +103,10 @@ function UF:CreateNamePlate()
     self:CreateTargetIndicator()
 
     table.insert(UF.nameplates, self)
+
+    self.Update = function(self)
+        UF:UpdateNamePlate(self)
+    end
 end
 
 function UF:UpdateNamePlate(self)
@@ -116,7 +115,7 @@ function UF:UpdateNamePlate(self)
     end
 
     UF:UpdateFrame(self)
-    self:SetScale(1 * UIParent:GetScale())
+    self:SetScale((self.cfg.scale or 1) * UIParent:GetScale())
 end
 
 UF.NamePlate_Callback = function(self, event, unit)

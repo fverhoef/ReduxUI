@@ -23,11 +23,23 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
     self.HappinessIndicator = HappinessIndicator
 --]]
 
+if select(4, GetBuildInfo()) >= 20000 then
+    return
+end
+
 local _, ns = ...
 local oUF = ns.oUF
 
 local GetPetHappiness = GetPetHappiness
 local HasPetUI = HasPetUI
+
+local colors = {
+    happiness = {
+        [1] = {.69, .31, .31},
+        [2] = {.65, .63, .35},
+        [3] = {.33, .59, .33},
+    }
+}
 
 local function Update(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end

@@ -38,11 +38,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isLeader = UnitLeadsAnyGroup(unit)
-	if IsInInstance() then
-		isLeader = UnitIsGroupLeader(unit)
-	end
-
+	local isLeader = (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsGroupLeader(unit)
 	if(isLeader) then
 		element:Show()
 	else

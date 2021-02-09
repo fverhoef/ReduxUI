@@ -63,6 +63,10 @@ function UF:CreatePet()
     self:CreateCastbar()
 
     self:CreateRange()
+
+    self.Update = function(self)
+        UF:UpdatePet(self)
+    end
 end
 
 function UF:UpdatePet(self)
@@ -87,6 +91,11 @@ function UF:UpdatePet(self)
         self.Power:ClearAllPoints()
         self.Power:SetHeight(self.Health:GetHeight())
         self.Power.Value:Hide()
+
+        self.Texture:ClearAllPoints()
+        self.Texture:SetSize(128, 64)
+        self.Texture:SetPoint("TOPLEFT", self, 0, -2)
+        self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
 
         self.Name:ClearAllPoints()
         self.Name:SetWidth(110)

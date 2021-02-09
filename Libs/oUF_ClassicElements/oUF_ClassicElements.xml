@@ -1,0 +1,4 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="HappinessIndicator.lua"/>
+    <Script file="MasterLooterIndicator.lua"/>
+</Ui>

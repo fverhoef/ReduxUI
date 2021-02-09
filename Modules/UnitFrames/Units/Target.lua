@@ -99,6 +99,10 @@ function UF:CreateTarget()
     self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", UF.TargetFrame_OnEvent)
     self:RegisterEvent("UNIT_LEVEL", UF.TargetFrame_OnEvent)
     UF.UpdateTargetFrameTexture(self)
+
+    self.Update = function(self)
+        UF:UpdateTarget(self)
+    end
 end
 
 function UF:UpdateTarget(self)

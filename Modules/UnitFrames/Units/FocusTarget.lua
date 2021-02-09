@@ -37,6 +37,10 @@ function UF:CreateFocusTarget()
     self:CreatePower()
     self:CreateName()
     self:CreatePortrait()
+
+    self.Update = function(self)
+        UF:UpdateFocusTarget(self)
+    end
 end
 
 function UF:UpdateFocusTarget(self)
