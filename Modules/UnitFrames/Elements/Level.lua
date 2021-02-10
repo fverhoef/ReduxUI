@@ -32,6 +32,8 @@ UF.UpdateLevel = function(self)
         self.Level:ClearAllPoints()
         self.Level:SetAllPoints(self.LevelParent)
 
+        self.LevelParent:Show()
+        self.LevelParent:ClearAllPoints()
         self.LevelParent:SetSize(unpack(cfg.size))
         self.LevelParent:SetPoint(unpack(cfg.point))
 

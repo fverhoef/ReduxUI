@@ -186,10 +186,11 @@ function UF:UpdateParty(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.Name:ClearAllPoints()
-        self.Name:SetWidth(110)
+        self.NameParent:ClearAllPoints()
+        self.NameParent:SetWidth(110)
+        self.NameParent:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
         self.Name:SetJustifyH("LEFT")
-        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
+        self.Name:Show()
 
         self.Level:Hide()
 

@@ -76,9 +76,8 @@ UF.UpdateCastbar = function(self)
     local cfg = self.cfg.castbar
     if cfg.enabled then
         self:EnableElement("Castbar")
+        
         local width, height = unpack(cfg.size)
-        self.CastbarParent:SetSize(width, height)
-
         self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
         self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
 
@@ -129,6 +128,7 @@ UF.UpdateCastbar = function(self)
             self.Castbar.SafeZone:Hide()
         end
 
+        self.CastbarParent:SetSize(width, height)
         self.CastbarParent:ClearAllPoints()
         self.CastbarParent:SetPoint(unpack(cfg.point))
     else

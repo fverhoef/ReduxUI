@@ -82,10 +82,11 @@ function UF:UpdateTargetTarget(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.Name:ClearAllPoints()
-        self.Name:SetWidth(110)
+        self.NameParent:ClearAllPoints()
+        self.NameParent:SetWidth(110)
+        self.NameParent:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
         self.Name:SetJustifyH("LEFT")
-        self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
+        self.Name:Show()
 
         self.Level:Hide()
 

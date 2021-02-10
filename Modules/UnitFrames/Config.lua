@@ -1389,7 +1389,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 16,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
@@ -1410,7 +1414,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = true},
+        combatfeedback = {
+            enabled = true,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1480,7 +1492,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 16,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
@@ -1500,7 +1516,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = true},
+        combatfeedback = {
+            enabled = true,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1570,7 +1594,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -1590,7 +1618,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1660,7 +1696,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = false,
+            onlyShowPlayer = false,
             numBuffs = 16,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
@@ -1680,7 +1720,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = true},
+        combatfeedback = {
+            enabled = true,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1750,7 +1798,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 16,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
@@ -1770,7 +1822,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = true},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1840,7 +1900,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -1860,7 +1924,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -1931,13 +2003,16 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
+            iconSize = 16,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 16,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
             onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true,
-            iconSize = 16
+            showDebuffsOnTop = true
         },
         castbar = {
             enabled = true,
@@ -1952,7 +2027,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = true, fontSize = 14},
+        combatfeedback = {
+            enabled = true,
+            fontSize = 14,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -2029,7 +2112,20 @@ R:RegisterModuleConfig(UF, {
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        auras = {enabled = false},
+        auras = {
+            enabled = false,
+            iconSize = 16,
+            spacing = 2,
+            numColumns = 5,
+            showDuration = true,
+            onlyShowPlayer = false,
+            numBuffs = 16,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = false,
+            showDebuffsOnTop = true,
+            iconSize = 16
+        },
         castbar = {
             enabled = false,
             size = {89, 15},
@@ -2043,7 +2139,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 14,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -2127,7 +2231,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -2147,7 +2255,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -2217,7 +2333,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -2237,7 +2357,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -2307,7 +2435,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -2327,7 +2459,15 @@ R:RegisterModuleConfig(UF, {
             fontOutline = "NONE",
             fontShadow = true
         },
-        combatfeedback = {enabled = false},
+        combatfeedback = {
+            enabled = false,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
@@ -2396,7 +2536,11 @@ R:RegisterModuleConfig(UF, {
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
             showDuration = true,
+            onlyShowPlayer = false,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -2418,11 +2562,12 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
-            ignoreImmune = true,
-            ignoreDamage = true,
+            fontSize = 19,
+            ignoreImmune = false,
+            ignoreDamage = false,
             ignoreHeal = false,
-            ignoreEnergize = true,
-            ignoreOther = true
+            ignoreEnergize = false,
+            ignoreOther = false
         },
         auraHighlight = {enabled = false, glow = true, border = true},
         border = {enabled = true, size = 12},

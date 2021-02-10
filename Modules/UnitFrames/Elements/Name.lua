@@ -32,6 +32,8 @@ UF.UpdateName = function(self)
         self.Name:ClearAllPoints()
         self.Name:SetAllPoints(self.NameParent)
 
+        self.NameParent:Show()
+        self.NameParent:ClearAllPoints()
         self.NameParent:SetSize(unpack(cfg.size))
         self.NameParent:SetPoint(unpack(cfg.point))
 

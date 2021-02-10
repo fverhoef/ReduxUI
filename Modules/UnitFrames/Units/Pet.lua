@@ -98,10 +98,11 @@ function UF:UpdatePet(self)
         self.Texture:SetPoint("TOPLEFT", self, 0, -2)
         self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
 
-        self.Name:ClearAllPoints()
-        self.Name:SetWidth(110)
+        self.NameParent:ClearAllPoints()
+        self.NameParent:SetWidth(110)
+        self.NameParent:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
         self.Name:SetJustifyH("LEFT")
-        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
+        self.Name:Show()
 
         self.Level:Hide()
 

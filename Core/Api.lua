@@ -237,6 +237,20 @@ function R:SetShadowColor(color)
     self.Shadow:SetBackdropBorderColor(unpack(color))
 end
 
+function R:GetShadowColor()
+    if not self.Shadow then
+        return
+    end
+
+    local color = {self.Shadow:GetBackdropBorderColor()}
+
+    if not color[4] then
+        color[4] = 0.7
+    end
+
+    return color
+end
+
 function R:FadeIn(timeToFade, startAlpha, endAlpha)
     UIFrameFadeIn(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 1)
 end
@@ -330,6 +344,9 @@ local function AddApi(object)
     end
     if not object.SetShadowColor then
         mt.SetShadowColor = R.SetShadowColor
+    end
+    if not object.GetShadowColor then
+        mt.GetShadowColor = R.GetShadowColor
     end
     if not object.FadeIn then
         mt.FadeIn = R.FadeIn

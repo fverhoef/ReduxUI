@@ -62,7 +62,7 @@ function UF:CreatePlayer()
     UF.CreateRestingIndicator(self)
     self.RestingIndicator.PostUpdate = function()
         self.RestingIndicator.Glow:SetShown(self.RestingIndicator:IsShown())
-        if self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown() then
+        if UF:IsBlizzardTheme() and (self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown()) then
             self.Level:SetAlpha(0.01)
         else
             self.Level:SetAlpha(1)
@@ -71,7 +71,7 @@ function UF:CreatePlayer()
     UF.CreateCombatIndicator(self)
     self.CombatIndicator.PostUpdate = function()
         self.CombatIndicator.Glow:SetShown(self.CombatIndicator:IsShown())
-        if self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown() then
+        if UF:IsBlizzardTheme() and (self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown()) then
             self.Level:SetAlpha(0.01)
         else
             self.Level:SetAlpha(1)
@@ -159,15 +159,17 @@ function UF:UpdatePlayer(self)
         self.Power.Shadow:Hide()
         UF.UpdatePowerPrediction(self)
 
-        self.Name:ClearAllPoints()
-        self.Name:SetWidth(110)
+        self.NameParent:ClearAllPoints()
+        self.NameParent:SetWidth(110)
+        self.NameParent:SetPoint("CENTER", self.Texture, 50, 19)
         self.Name:SetJustifyH("CENTER")
-        self.Name:SetPoint("CENTER", self.Texture, 50, 19)
+        self.Name:Show()
 
-        self.Level:ClearAllPoints()
-        self.Level:SetSize(18, 10)
+        self.LevelParent:ClearAllPoints()
+        self.LevelParent:SetSize(20, 10)
+        self.LevelParent:SetPoint("CENTER", self.Texture, "CENTER", -60, -16)
         self.Level:SetJustifyH("CENTER")
-        self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -16)
+        self.Level:Show()
 
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)

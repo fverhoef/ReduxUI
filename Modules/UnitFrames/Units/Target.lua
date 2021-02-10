@@ -135,7 +135,7 @@ function UF:UpdateTarget(self)
         else
             self.Health:SetSize(119, 12)
             self.Health:SetPoint("TOPRIGHT", self.Texture, -108, -41)
-            self.Health.Value:SetPoint("CENTER", self.Health, 0, -7)
+            self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
             self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
             self.Texture:SetTexture(R.media.textures.unitFrames.targetFrame)
@@ -147,15 +147,17 @@ function UF:UpdateTarget(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.Name:ClearAllPoints()
-        self.Name:SetWidth(110)
+        self.NameParent:ClearAllPoints()
+        self.NameParent:SetWidth(110)
+        self.NameParent:SetPoint("CENTER", self.Texture, -50, 19)
         self.Name:SetJustifyH("CENTER")
-        self.Name:SetPoint("CENTER", self.Texture, -50, 19)
+        self.Name:Show()
 
-        self.Level:ClearAllPoints()
-        self.Level:SetSize(18, 10)
+        self.LevelParent:ClearAllPoints()
+        self.LevelParent:SetSize(20, 10)
+        self.LevelParent:SetPoint("CENTER", self.Texture, "CENTER", 62, -16)
         self.Level:SetJustifyH("CENTER")
-        self.Level:SetPoint("CENTER", self.Texture, "CENTER", 62, -16)
+        self.Level:Show()
 
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
@@ -184,13 +186,9 @@ function UF:UpdateTarget(self)
         self.RaidRoleIndicator:ClearAllPoints()
         self.RaidRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
 
-        local leftPadding = 0
-        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-            local _, height = unpack(self.cfg.castbar.size)
-            leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-        end
-
-        self.CastbarParent:SetPoint("BOTTOMLEFT", self, "TOPLEFT", leftPadding, 5)
+        self.CastbarParent:ClearAllPoints()
+        self.CastbarParent:SetPoint("BOTTOMLEFT", self, "TOPLEFT", -2, 5)
+        self.CastbarParent:SetWidth(122)
         if self.cfg.auras.enabled and self.cfg.auras.showDebuffsOnTop then
             self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.CastbarParent:GetHeight() + 5)
         end

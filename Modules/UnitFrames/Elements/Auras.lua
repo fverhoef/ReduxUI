@@ -5,36 +5,33 @@ local oUF = ns.oUF or oUF
 
 UF.CreateAuras = function(self)
     local cfg = self.cfg.auras
-    local iconSize = cfg.iconSize or 25
     if cfg.showDebuffsOnTop then
         self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
-        self.Debuffs.gap = true
-        self.Debuffs.size = iconSize
-        self.Debuffs:SetHeight(self.Debuffs.size * 3)
-        self.Debuffs:SetWidth(self.Debuffs.size * 5)
+        self.Debuffs.size = cfg.iconSize or 25
+        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(cfg.numDebuffs / (cfg.numColumns or 5))))
+        self.Debuffs:SetWidth(self.Debuffs.size * (cfg.numColumns or 5))
         self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5)
         self.Debuffs.initialAnchor = "BOTTOMLEFT"
         self.Debuffs["growth-x"] = "RIGHT"
         self.Debuffs["growth-y"] = "UP"
         self.Debuffs.num = cfg.numDebuffs
         self.Debuffs.onlyShowPlayer = cfg.onlyShowPlayerDebuffs
-        self.Debuffs.spacing = 2 -- 4.5
+        self.Debuffs.spacing = cfg.spacing
         self.Debuffs.showDebuffType = false
         self.Debuffs.PostCreateIcon = UF.PostCreateAura
         self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
 
         self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
-        self.Buffs.gap = true
-        self.Buffs.size = iconSize
-        self.Buffs:SetHeight(self.Buffs.size * 3)
-        self.Buffs:SetWidth(self.Buffs.size * 5)
+        self.Buffs.size = cfg.iconSize or 25
+        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(cfg.numBuffs / (cfg.numColumns or 5))))
+        self.Buffs:SetWidth(self.Buffs.size * (cfg.numColumns or 5))
         self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
         self.Buffs.initialAnchor = "TOPLEFT"
         self.Buffs["growth-x"] = "RIGHT"
         self.Buffs["growth-y"] = "DOWN"
         self.Buffs.num = cfg.numBuffs
         self.Buffs.onlyShowPlayer = cfg.onlyShowPlayerBuffs
-        self.Buffs.spacing = 2 -- 4.5
+        self.Buffs.spacing = cfg.spacing
         self.Buffs.showStealableBuffs = true
         self.Buffs.showBuffType = false
         self.Buffs.PostCreateIcon = UF.PostCreateAura
@@ -42,9 +39,9 @@ UF.CreateAuras = function(self)
     else
         self.Auras = CreateFrame("Frame", "$parentAuras", self)
         self.Auras.gap = true
-        self.Auras.size = iconSize
-        self.Auras:SetHeight(self.Auras.size * 3)
-        self.Auras:SetWidth(self.Auras.size * 5)
+        self.Auras.size = cfg.iconSize or 25
+        self.Auras:SetHeight(self.Auras.size * (math.ceil((cfg.numBuffs + cfg.numDebuffs) / (cfg.numColumns or 5))))
+        self.Auras:SetWidth(self.Auras.size * (cfg.numColumns or 5))
         self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
         self.Auras.initialAnchor = "TOPLEFT"
         self.Auras["growth-x"] = "RIGHT"
@@ -52,10 +49,11 @@ UF.CreateAuras = function(self)
         self.Auras.numBuffs = cfg.numBuffs
         self.Auras.numDebuffs = cfg.numDebuffs
         self.Auras.onlyShowPlayer = cfg.onlyShowPlayer
-        self.Auras.spacing = 2 -- 4.5
+        self.Auras.spacing = cfg.spacing
         self.Auras.showStealableBuffs = true
         self.Auras.showBuffType = false
         self.Auras.showDebuffType = false
+        self.Auras.buffFilter = "HELPFUL"
         self.Auras.debuffFilter = "HARMFUL|INCLUDE_NAME_PLATE_ONLY"
         self.Auras.PostCreateIcon = UF.PostCreateAura
         self.Auras.PostUpdateIcon = UF.PostUpdateAura
