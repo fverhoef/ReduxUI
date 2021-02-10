@@ -155,7 +155,9 @@ function R:ResetSize(frame)
         return
     end
     frame:SetSize(unpack(frame.defaultSize))
-    frame.cfg.size = frame.defaultSize
+    if frame.cfg then
+        frame.cfg.size = frame.defaultSize
+    end
 end
 
 function R:ResetPoint(frame)

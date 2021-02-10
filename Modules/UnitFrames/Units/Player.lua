@@ -25,9 +25,7 @@ function UF:CreatePlayer()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
@@ -86,6 +84,7 @@ function UF:CreatePlayer()
 
     self:CreateAuras()
     self:CreateCastbar()
+    R:CreateDragFrame(self.CastbarParent, "Player Castbar", UF.defaults.player.castbar.point)
 
     if not R.isClassic then
         self:CreateComboFrame()
@@ -156,14 +155,19 @@ function UF:UpdatePlayer(self)
         self.Texture:SetPoint("CENTER", self, -20, -7)
 
         self.Power:SetHeight(10)
+        self.Power.Border:Hide()
+        self.Power.Shadow:Hide()
         UF.UpdatePowerPrediction(self)
 
         self.Name:ClearAllPoints()
         self.Name:SetWidth(110)
+        self.Name:SetJustifyH("CENTER")
         self.Name:SetPoint("CENTER", self.Texture, 50, 19)
 
         self.Level:ClearAllPoints()
-        self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -17)
+        self.Level:SetSize(18, 10)
+        self.Level:SetJustifyH("CENTER")
+        self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -16)
 
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
@@ -191,15 +195,6 @@ function UF:UpdatePlayer(self)
         end
         self.RaidRoleIndicator:ClearAllPoints()
         self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
-
-        self.Castbar:ClearAllPoints()
-        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-            local _, height = unpack(self.cfg.castbar.size)
-            local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", leftPadding / 2, 160)
-        else
-            self.Castbar:SetPoint("CENTER", UIParent, "BOTTOM", 0, 160)
-        end
     end
 end
 

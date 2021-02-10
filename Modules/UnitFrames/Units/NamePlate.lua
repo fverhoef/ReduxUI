@@ -28,45 +28,10 @@ function UF:CreateNamePlate()
     self:CreateBorder(self.cfg.border.size)
     self:CreateShadow()
 
-    -- health
     self:CreateHealth()
-    self.Health:SetSize(self:GetWidth() - 2, 16)
-    if not self.cfg.power.enabled then
-        self.Health:SetPoint("CENTER", self, 0, 0)
-    else
-        self.Health:SetPoint("CENTER", self, 0, 4)
-    end
-    self.Health.Value:SetPoint("CENTER", self.Health, 0, 0)
-    self.Health.colorReaction = true
-
-    -- power
     self:CreatePower()
-    if self.cfg.power.enabled then
-        self.Power:SetHeight(6)
-        self:SetHeight(self:GetHeight() + 8)
-    end
-
-    -- name
     self:CreateName()
-    if not self.cfg.power.enabled then
-        self.Name:SetPoint("LEFT", self, "LEFT", 2, 15)
-        self.Name:SetPoint("RIGHT", self, "RIGHT", -16, 15)
-        self.Name:SetJustifyH("LEFT")
-    else
-        self.Name:SetPoint("LEFT", self, "LEFT", 2, 23)
-        self.Name:SetPoint("RIGHT", self, "RIGHT", -16, 23)
-        self.Name:SetJustifyH("LEFT")
-    end
-
-    -- level
     self:CreateLevel()
-    self.Level:SetPoint("RIGHT", self.Health, 0, 0)
-    self.Level:SetFont(UF.config.font, 12, "OUTLINE")
-    if not self.cfg.power.enabled then
-        self.Level:SetPoint("RIGHT", self, 0, 15)
-    else
-        self.Level:SetPoint("RIGHT", self, 0, 23)
-    end
 
     -- auras
     self:CreateAuras()
@@ -80,18 +45,7 @@ function UF:CreateNamePlate()
         end
     end
 
-    -- castbar
     self:CreateCastbar()
-    if self.cfg.castbar.enabled then
-        self.Castbar:ClearAllPoints()
-        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-            local _, height = unpack(self.cfg.castbar.size)
-            local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-            self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", leftPadding, -5)
-        else
-            self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
-        end
-    end
 
     -- combo points
     if self.cfg.showComboPoints then

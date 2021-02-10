@@ -95,21 +95,18 @@ UF.UpdateHealth = function(self)
             self:Tag(self.Health.Value, cfg.value.tag)
         end
 
-        if cfg.value.point then
-            self.Health.Value:ClearAllPoints()
-            self.Health.Value:SetPoint(unpack(cfg.value.point))
-        else
-            self.Health.Value:SetPoint("CENTER")
-        end
+        self.Health.Value:ClearAllPoints()
+        self.Health.Value:SetPoint(unpack(cfg.value.point))
     else
         self.Health.Value:Hide()
     end
 
-    local leftOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.portrait.enabled and self.cfg.portrait.size[1] or 0)
+    local leftOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.portrait.enabled and not self.cfg.portrait.detached and self.cfg.portrait.size[1] or 0)
     local rightOffset = self.cfg.border.enabled and -2 or 0
-    local bottomOffset = self.cfg.power.enabled and self.cfg.power.size[2] or 0
+    local topOffset = (self.cfg.border.enabled and -2 or 0)
+    local bottomOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.power.enabled and not self.cfg.power.detached and self.cfg.power.size[2] or 0)
     self.Health:ClearAllPoints()
-    self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", leftOffset, 0)
+    self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", leftOffset, topOffset)
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", rightOffset, bottomOffset)
 end
 

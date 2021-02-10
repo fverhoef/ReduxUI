@@ -92,15 +92,14 @@ function UF:CreateParty()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
     self:CreateHealth()
     self:CreatePower()
     self:CreateName()
+    self:CreateLevel()
     self:CreatePortrait()
     self:CreateCombatFeedback()
     self:CreatePvPIndicator()
@@ -184,11 +183,15 @@ function UF:UpdateParty(self)
         self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
         self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
         self.Power.Value:Hide()
+        self.Power.Border:Hide()
+        self.Power.Shadow:Hide()
 
+        self.Name:ClearAllPoints()
         self.Name:SetWidth(110)
         self.Name:SetJustifyH("LEFT")
-        self.Name:ClearAllPoints()
         self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
+
+        self.Level:Hide()
 
         self.Portrait:SetSize(37, 37)
         self.Portrait:ClearAllPoints()

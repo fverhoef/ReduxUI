@@ -27,9 +27,7 @@ function UF:CreatePet()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
@@ -40,6 +38,7 @@ function UF:CreatePet()
     self:CreateHealth()
     self:CreatePower()
     self:CreateName()
+    self:CreateLevel()
     self:CreatePortrait()
     self:CreateCombatFeedback()
     self:CreateRaidTargetIndicator()
@@ -91,6 +90,8 @@ function UF:UpdatePet(self)
         self.Power:ClearAllPoints()
         self.Power:SetHeight(self.Health:GetHeight())
         self.Power.Value:Hide()
+        self.Power.Border:Hide()
+        self.Power.Shadow:Hide()
 
         self.Texture:ClearAllPoints()
         self.Texture:SetSize(128, 64)
@@ -102,12 +103,14 @@ function UF:UpdatePet(self)
         self.Name:SetJustifyH("LEFT")
         self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
 
+        self.Level:Hide()
+
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(37, 37)
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
 		self.Portrait:SetTexCoord(0, 1, 0, 1)
 
-        self.Castbar:ClearAllPoints()
-        self.Castbar:SetPoint("LEFT", self, "RIGHT", 16, -5)
+        self.CastbarParent:ClearAllPoints()
+        self.CastbarParent:SetPoint("LEFT", self, "RIGHT", 16, -5)
     end
 end

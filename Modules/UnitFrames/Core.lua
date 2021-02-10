@@ -123,13 +123,16 @@ function UF:UpdateFrame(self)
 
     self:UpdateHealth()
     self:UpdatePower()
+    self:UpdateName()
+    self:UpdateLevel()
+    self:UpdateCastbar()
+
     self:UpdatePowerPrediction()
     self:UpdateAdditionalPower()
-    self:UpdateName()
+    self:UpdateEnergyManaRegen()
     self:UpdatePortrait()
-    self:UpdateCastbar()
-    self:UpdateAuraHighlight()
     self:UpdateAuras()
+    self:UpdateAuraHighlight()
     self:UpdateCombatFeedback()
     self:UpdateLeaderIndicator()
     self:UpdateAssistantIndicator()
@@ -141,10 +144,7 @@ function UF:UpdateFrame(self)
     end
 
     self.Border:SetShown(self.cfg.border.enabled)
-    self:SetBorderPadding(self.cfg.border.enabled and 1 or 0, self.cfg.border.enabled and 1 or 0, 0, 0)
-
     self.Shadow:SetShown(self.cfg.shadow.enabled)
-    self:SetShadowPadding(self.cfg.border.enabled and 1 or 0, self.cfg.border.enabled and 1 or 1, 0, 0)
 
     self:UpdateAllElements("OnUpdate")
 end
@@ -154,6 +154,16 @@ oUF:RegisterInitCallback(function(object)
         object:Update()
     end
 end)
+
+function UF:GetAnchor(anchor)
+    if anchor == "UIParent" then
+        return "UIParent"
+    elseif not string.find(anchor, addonName) then
+        return _G[addonName .. anchor]
+    end
+    
+    return _G[anchor]
+end
 
 function UF:UpdateHeaderVisibility(self, visibility)
     local type, list = string.split(" ", visibility, 2)

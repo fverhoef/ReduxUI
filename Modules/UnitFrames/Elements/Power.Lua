@@ -23,6 +23,9 @@ UF.CreatePower = function(self)
     self.Power.Value:SetParent(self.Power)
     self.Power.Value:SetFont(UF.config.font, 10)
 
+    self.Power:CreateBorder(self.cfg.power.border.size)
+    self.Power:CreateShadow()
+
     self:Tag(self.Power.Value, "[curpp]")
 
     return self.Power
@@ -55,11 +58,7 @@ UF.UpdatePower = function(self)
             end
 
             self.Power.Value:ClearAllPoints()
-            if cfg.value.point then
-                self.Power.Value:SetPoint(unpack(cfg.value.point))
-            else
-                self.Power.Value:SetPoint("CENTER")
-            end
+            self.Power.Value:SetPoint(unpack(cfg.value.point))
         else
             self.Power.Value:Hide()
         end
@@ -72,6 +71,12 @@ UF.UpdatePower = function(self)
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
             self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.cfg.border.enabled and -2 or 0, 0)
         end
+
+        self.Power.Border:SetShown(cfg.detached and cfg.border.enabled)
+        self.Power:SetBorderPadding(cfg.border.enabled and 1 or 0, cfg.border.enabled and 1 or 0, 0, 0)
+    
+        self.Power.Shadow:SetShown(cfg.detached and cfg.shadow.enabled)
+        self.Power:SetShadowPadding(cfg.border.enabled and 1 or 0, cfg.border.enabled and 1 or 1, 0, 0)
     else
         self:DisableElement("Power")
     end

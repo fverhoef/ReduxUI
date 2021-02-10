@@ -27,9 +27,7 @@ function UF:CreateTargetTarget()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
@@ -40,6 +38,7 @@ function UF:CreateTargetTarget()
     self:CreateHealth()
     self:CreatePower()
     self:CreateName()
+    self:CreateLevel()
     self:CreatePortrait()
     self:CreateRange()
 
@@ -80,10 +79,15 @@ function UF:UpdateTargetTarget(self)
         self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
         self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
         self.Power.Value:Hide()
+        self.Power.Border:Hide()
+        self.Power.Shadow:Hide()
 
-        self.Name:SetWidth(110)
         self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetJustifyH("LEFT")
         self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
+
+        self.Level:Hide()
 
         self.Portrait:SetSize(35, 35)
         self.Portrait:ClearAllPoints()

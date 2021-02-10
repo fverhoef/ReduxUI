@@ -15,7 +15,7 @@ UF.themedUnits = {
     ["boss"] = true
 }
 UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
-UF.anchors = {"UIParent"}
+UF.anchors = {"UIParent", "Player", "Target", "Pet"}
 UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 UF.groupAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 
@@ -324,6 +324,7 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            lineBreakFont = {type = "header", name = "", order = 20},
             font = {
                 name = "Font Family",
                 type = "select",
@@ -386,6 +387,7 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            lineBreakTag = {type = "header", name = "", order = 30},
             tag = {
                 name = "Tag",
                 type = "input",
@@ -491,7 +493,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF:UpdateUnit(unit)
                         end
                     },
-                    lineBreak1 = {type = "header", name = "", order = 2},
+                    lineBreakPoint = {type = "header", name = "", order = 2},
                     relativePoint = {
                         type = "select",
                         name = "Relative Point",
@@ -545,6 +547,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF:UpdateUnit(unit)
                         end
                     },
+                    lineBreakFont = {type = "header", name = "", order = 20},
                     font = {
                         name = "Font Family",
                         type = "select",
@@ -607,6 +610,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF:UpdateUnit(unit)
                         end
                     },
+                    lineBreakTag = {type = "header", name = "", order = 30},
                     tag = {
                         name = "Tag",
                         type = "input",
@@ -633,6 +637,23 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
         order = order,
         inline = inline,
         args = {
+            width = {
+                type = "range",
+                name = "Width",
+                desc = "The width of the name text.",
+                order = 11,
+                min = 0,
+                softMax = 400,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].name.size[1]
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.size[1] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
             height = {
                 type = "range",
                 name = "Height",
@@ -643,13 +664,68 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 step = 1,
                 disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
                 get = function()
-                    return UF.config[unit].name.height
+                    return UF.config[unit].name.size[2]
                 end,
                 set = function(_, val)
-                    UF.config[unit].name.height = val
+                    UF.config[unit].name.size[2] = val
                     UF:UpdateUnit(unit)
                 end
             },
+            lineBreakPoint = {type = "header", name = "", order = 15},
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 16,
+                values = UF.anchorPoints,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].name.point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].name.point[1] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetX = {
+                type = "range",
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 17,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].name.point[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.point[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 18,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].name.point[3]
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.point[3] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreakFont = {type = "header", name = "", order = 20},
             font = {
                 name = "Font Family",
                 type = "select",
@@ -699,11 +775,24 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            justifyH = {
+                name = "Horizontal Justification",
+                type = "select",
+                order = 24,
+                values = R.JUSTIFY_H,
+                get = function()
+                    return UF.config[unit].name.justifyH
+                end,
+                set = function(_, key)
+                    UF.config[unit].name.justifyH = key
+                    UF:UpdateUnit(unit)
+                end
+            },
             fontShadow = {
                 name = "Font Shadows",
                 type = "toggle",
                 desc = "Whether to show shadow for name text.",
-                order = 24,
+                order = 25,
                 get = function()
                     return UF.config[unit].name.fontShadow
                 end,
@@ -712,6 +801,7 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            lineBreakTag = {type = "header", name = "", order = 30},
             tag = {
                 name = "Tag",
                 type = "input",
@@ -724,6 +814,464 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                     UF.config[unit].name.tag = val
                     UF:UpdateUnit(unit)
                 end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitLevelOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Level",
+        order = order,
+        inline = inline,
+        args = {
+            width = {
+                type = "range",
+                name = "Width",
+                desc = "The width of the level text.",
+                order = 11,
+                min = 0,
+                softMax = 50,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].level.size[1]
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.size[1] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            height = {
+                type = "range",
+                name = "Height",
+                desc = "The height of the level text.",
+                order = 12,
+                min = 0,
+                softMax = 50,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].level.size[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.size[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreakPoint = {type = "header", name = "", order = 15},
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 16,
+                values = UF.anchorPoints,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].level.point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].level.point[1] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetX = {
+                type = "range",
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 17,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].level.point[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.point[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 18,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].level.point[3]
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.point[3] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreakFont = {type = "header", name = "", order = 20},
+            font = {
+                name = "Font Family",
+                type = "select",
+                desc = "The font family for level text.",
+                order = 21,
+                dialogControl = "LSM30_Font",
+                values = R.Libs.SharedMedia:HashTable("font"),
+                get = function()
+                    for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                        if UF.config[unit].level.font == font then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].level.font = R.Libs.SharedMedia:Fetch("font", key)
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontSize = {
+                name = "Font Size",
+                type = "range",
+                desc = "The size of level text.",
+                order = 22,
+                min = R.FONT_MIN_SIZE,
+                max = R.FONT_MAX_SIZE,
+                step = 1,
+                get = function()
+                    return UF.config[unit].level.fontSize
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.fontSize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontOutline = {
+                name = "Font Outline",
+                type = "select",
+                desc = "The outline style of level text.",
+                order = 23,
+                values = R.FONT_OUTLINES,
+                get = function()
+                    return UF.config[unit].level.fontOutline
+                end,
+                set = function(_, key)
+                    UF.config[unit].level.fontOutline = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            justifyH = {
+                name = "Horizontal Justification",
+                type = "select",
+                order = 24,
+                values = R.JUSTIFY_H,
+                get = function()
+                    return UF.config[unit].level.justifyH
+                end,
+                set = function(_, key)
+                    UF.config[unit].level.justifyH = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontShadow = {
+                name = "Font Shadows",
+                type = "toggle",
+                desc = "Whether to show shadow for level text.",
+                order = 25,
+                get = function()
+                    return UF.config[unit].level.fontShadow
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.fontShadow = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreakTag = {type = "header", name = "", order = 30},
+            tag = {
+                name = "Tag",
+                type = "input",
+                desc = "The tag determines what is displayed in the unit level text.",
+                order = 31,
+                get = function()
+                    return UF.config[unit].level.tag
+                end,
+                set = function(_, val)
+                    UF.config[unit].level.tag = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
+    return {
+        type = "group",
+        name = name or "Castbar",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].castbar.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].castbar.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "header", name = "", order = 2},
+            showIcon = {
+                type = "toggle",
+                name = "Show Icon",
+                desc = "Whether to show an icon in the castbar.",
+                order = 3,
+                disabled = not canDetach,
+                get = function()
+                    return UF.config[unit].castbar.showIcon
+                end,
+                set = function(_, val)
+                    UF.config[unit].castbar.showIcon = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            showIconOutside = {
+                type = "toggle",
+                name = "Show Icon Outside",
+                desc = "Whether to show the icon outside the castbar.",
+                order = 4,
+                disabled = function()
+                    return not UF.config[unit].castbar.showIcon
+                end,
+                get = function()
+                    return UF.config[unit].castbar.showIconOutside
+                end,
+                set = function(_, val)
+                    UF.config[unit].castbar.showIconOutside = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            showSafeZone = {
+                type = "toggle",
+                name = "Show Latency",
+                desc = "Whether to show a latency indicator.",
+                order = 5,
+                hidden = (unit ~= "player"),
+                get = function()
+                    return UF.config[unit].castbar.showSafeZone
+                end,
+                set = function(_, val)
+                    UF.config[unit].castbar.showSafeZone = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            layout = {
+                type = "group",
+                name = "Layout",
+                inline = true,
+                order = 10,
+                args = {
+                    width = {
+                        type = "range",
+                        name = "Width",
+                        order = 1,
+                        min = 10,
+                        softMax = 400,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        get = function()
+                            return UF.config[unit].castbar.size[1]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.size[1] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    height = {
+                        type = "range",
+                        name = "Height",
+                        order = 2,
+                        min = 8,
+                        softMax = 400,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        get = function()
+                            return UF.config[unit].castbar.size[2]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.size[2] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    lineBreak1 = {type = "description", name = "", order = 20},
+                    detached = {
+                        type = "toggle",
+                        name = "Detached",
+                        desc = "Whether the cast bar is detached from the frame.",
+                        order = 10,
+                        disabled = not canDetach,
+                        get = function()
+                            return UF.config[unit].castbar.detached
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.detached = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    lineBreak2 = {type = "description", name = "", order = 20},
+                    point = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the unit frame to attach to.",
+                        order = 21,
+                        values = UF.anchorPoints,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        hidden = function()
+                            return UF.config[unit].castbar.detached
+                        end,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].castbar.point[1] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.point[1] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetX = {
+                        type = "range",
+                        name = "Offset (X)",
+                        desc = "The horizontal offset from the anchor point.",
+                        order = 22,
+                        min = -500,
+                        softMax = 500,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        hidden = function()
+                            return UF.config[unit].castbar.detached
+                        end,
+                        get = function()
+                            return UF.config[unit].castbar.point[2]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.point[2] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetY = {
+                        type = "range",
+                        name = "Offset (Y)",
+                        desc = "The vertical offset from the anchor point.",
+                        order = 23,
+                        min = -500,
+                        softMax = 500,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        hidden = function()
+                            return UF.config[unit].castbar.detached
+                        end,
+                        get = function()
+                            return UF.config[unit].castbar.point[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.point[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            font = {
+                type = "group",
+                name = "Font",
+                inline = true,
+                order = 11,
+                args = {
+                    font = {
+                        name = "Font Family",
+                        type = "select",
+                        desc = "The font family for castbar text.",
+                        order = 1,
+                        dialogControl = "LSM30_Font",
+                        values = R.Libs.SharedMedia:HashTable("font"),
+                        get = function()
+                            for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                                if UF.config[unit].castbar.font == font then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.font = R.Libs.SharedMedia:Fetch("font", key)
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontSize = {
+                        name = "Font Size",
+                        type = "range",
+                        desc = "The size of castbar text.",
+                        order = 2,
+                        min = R.FONT_MIN_SIZE,
+                        max = R.FONT_MAX_SIZE,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].castbar.fontSize
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.fontSize = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontOutline = {
+                        name = "Font Outline",
+                        type = "select",
+                        desc = "The outline style of castbar text.",
+                        order = 3,
+                        values = R.FONT_OUTLINES,
+                        get = function()
+                            return UF.config[unit].castbar.fontOutline
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.fontOutline = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    justifyH = {
+                        name = "Horizontal Justification",
+                        type = "select",
+                        order = 4,
+                        values = R.JUSTIFY_H,
+                        get = function()
+                            return UF.config[unit].castbar.justifyH
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.justifyH = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontShadow = {
+                        name = "Font Shadows",
+                        type = "toggle",
+                        desc = "Whether to show shadow for castbar text.",
+                        order = 5,
+                        get = function()
+                            return UF.config[unit].castbar.fontShadow
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.fontShadow = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
             }
         }
     }
@@ -781,7 +1329,7 @@ R:RegisterModuleConfig(UF, {
     },
     player = {
         enabled = true,
-        size = {175, 42},
+        size = {180, 42},
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
         health = {
@@ -800,6 +1348,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = true,
                 point = {"CENTER", 0, 0},
@@ -813,13 +1363,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 12},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
-            fontOutline = "NONE",
+            fontOutline = "OUTLINE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 12},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "OUTLINE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "LEFT", size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -837,11 +1399,16 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {250, 25},
+            point = {"CENTER", "UIParent", "BOTTOM", 0, 160},
+            detached = true,
             showIcon = true,
             showIconOutside = false,
             showSafeZone = true,
             borderSize = 12,
-            fontSize = 12
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = true},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -853,7 +1420,7 @@ R:RegisterModuleConfig(UF, {
     },
     target = {
         enabled = true,
-        size = {175, 42},
+        size = {180, 42},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
         health = {
@@ -872,6 +1439,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = true,
                 point = {"CENTER", 0, 0},
@@ -885,13 +1454,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPRIGHT", 0, 12},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
-            fontOutline = "NONE",
+            fontOutline = "OUTLINE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "RIGHT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPLEFT", 0, 12},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "OUTLINE",
+            fontShadow = true,
+            justifyH = "LEFT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "RIGHT", size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -908,11 +1489,16 @@ R:RegisterModuleConfig(UF, {
         },
         castbar = {
             enabled = true,
-            size = {113, 15},
+            size = {180, 20},
+            point = {"BOTTOM", 0, -22},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = true},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -924,7 +1510,7 @@ R:RegisterModuleConfig(UF, {
     },
     targettarget = {
         enabled = true,
-        size = {93, 45},
+        size = {95, 45},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
         health = {
@@ -943,6 +1529,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -956,13 +1544,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {75, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
             justifyH = "CENTER",
             tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPLEFT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, attachedPoint = "LEFT", size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -980,10 +1580,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
+            point = {"BOTTOM", 0, 20},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1014,6 +1619,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1027,13 +1634,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1051,10 +1670,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {89, 15},
+            point = {"BOTTOM", 0, 20},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = true},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1066,7 +1690,7 @@ R:RegisterModuleConfig(UF, {
     },
     focus = {
         enabled = R.isRetail,
-        size = {93, 45},
+        size = {90, 45},
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
         health = {
@@ -1085,6 +1709,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1098,13 +1724,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {70, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
             justifyH = "CENTER",
             tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPLEFT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1122,10 +1760,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {113, 15},
+            point = {"BOTTOM", 0, 20},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = true},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1137,7 +1780,7 @@ R:RegisterModuleConfig(UF, {
     },
     focustarget = {
         enabled = R.isRetail,
-        size = {175, 42},
+        size = {90, 30},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         health = {
@@ -1153,9 +1796,11 @@ R:RegisterModuleConfig(UF, {
             }
         },
         power = {
-            enabled = true,
+            enabled = false,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1169,13 +1814,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {70, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
             justifyH = "CENTER",
             tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPLEFT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1193,10 +1850,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
+            point = {"BOTTOM", 0, 20},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1228,6 +1890,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1241,13 +1905,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {85, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1266,10 +1942,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {89, 15},
+            point = {"RIGHT", 20, 0},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = true, fontSize = 14},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1309,6 +1990,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 8},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1322,7 +2005,8 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {70, 10},
+            point = {"TOPLEFT", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -1330,12 +2014,35 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[name]"
         },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {enabled = false},
-        castbar = {enabled = false},
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            point = {"BOTTOM", 0, 20},
+            showIcon = true,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
+        },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 12},
@@ -1379,6 +2086,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1392,13 +2101,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1416,10 +2137,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
+            point = {"LEFT", 20, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1450,6 +2176,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1463,13 +2191,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1487,10 +2227,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
+            point = {"RIGHT", 20, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1521,6 +2266,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1534,13 +2281,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 0},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1558,10 +2317,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
+            point = {"RIGHT", 20, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {enabled = false},
         auraHighlight = {enabled = true, glow = true, border = true},
@@ -1591,6 +2355,8 @@ R:RegisterModuleConfig(UF, {
             enabled = false,
             detached = false,
             size = {150, 4},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", 0, 0},
@@ -1604,13 +2370,25 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            height = 10,
+            size = {130, 10},
+            point = {"TOPLEFT", 0, 12},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
-            fontOutline = "NONE",
+            fontOutline = "OUTLINE",
             fontShadow = true,
-            justifyH = "CENTER",
+            justifyH = "LEFT",
             tag = "[name]"
+        },
+        level = {
+            enabled = true,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 12},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "OUTLINE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1628,10 +2406,15 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {150, 12},
+            point = {"TOP", 0, -20},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
         },
         combatfeedback = {
             enabled = false,
@@ -1870,104 +2653,185 @@ R:RegisterModuleOptions(UF, {
         },
         player = {
             type = "group",
+            childGroups = "tab",
             name = "Player",
             order = 12,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Player", order = 0},
                 enabled = UF:CreateUnitEnabledOption("player", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("player", 10, true),
-                position = UF:CreateUnitPositionOption("player", 11, true),
-                health = UF:CreateUnitHealthOption("player", 12, true),
-                power = UF:CreateUnitPowerOption("player", 13, true),
-                name = UF:CreateUnitNameOption("player", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("player", 1, true),
+                        position = UF:CreateUnitPositionOption("player", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("player", 11),
+                power = UF:CreateUnitPowerOption("player", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("player", 1), level = UF:CreateUnitLevelOption("player", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("player", 14, false, true)
             }
         },
         target = {
             type = "group",
+            childGroups = "tab",
             name = "Target",
             order = 13,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("target", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("target", 10, true),
-                position = UF:CreateUnitPositionOption("target", 11, true),
-                health = UF:CreateUnitHealthOption("target", 12, true),
-                power = UF:CreateUnitPowerOption("target", 13, true),
-                name = UF:CreateUnitNameOption("target", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("target", 1, true),
+                        position = UF:CreateUnitPositionOption("target", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("target", 11),
+                power = UF:CreateUnitPowerOption("target", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("target", 1), level = UF:CreateUnitLevelOption("target", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("target", 14)
             }
         },
         targettarget = {
             type = "group",
+            childGroups = "tab",
             name = "Target's Target",
             order = 14,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Target's Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("targettarget", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("targettarget", 10, true),
-                position = UF:CreateUnitPositionOption("targettarget", 11, true),
-                health = UF:CreateUnitHealthOption("targettarget", 12, true),
-                power = UF:CreateUnitPowerOption("targettarget", 13, true),
-                name = UF:CreateUnitNameOption("targettarget", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("targettarget", 1, true),
+                        position = UF:CreateUnitPositionOption("targettarget", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("targettarget", 11),
+                power = UF:CreateUnitPowerOption("targettarget", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {
+                        name = UF:CreateUnitNameOption("targettarget", 1),
+                        level = UF:CreateUnitLevelOption("targettarget", 2)
+                    }
+                },
+                castbar = UF:CreateUnitCastbarOption("targettarget", 14)
             }
         },
         pet = {
             type = "group",
+            childGroups = "tab",
             name = "Pet",
             order = 15,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Pet", order = 0},
                 enabled = UF:CreateUnitEnabledOption("pet", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("pet", 10, true),
-                position = UF:CreateUnitPositionOption("pet", 11, true),
-                health = UF:CreateUnitHealthOption("pet", 12, true),
-                power = UF:CreateUnitPowerOption("pet", 13, true),
-                name = UF:CreateUnitNameOption("pet", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("pet", 1, true),
+                        position = UF:CreateUnitPositionOption("pet", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("pet", 11),
+                power = UF:CreateUnitPowerOption("pet", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("pet", 1), level = UF:CreateUnitLevelOption("pet", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("pet", 14)
             }
         },
         focus = {
             type = "group",
+            childGroups = "tab",
             name = "Focus Target",
             order = 16,
             hidden = R.isClassic,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Focus Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("focus", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("focus", 10, true),
-                position = UF:CreateUnitPositionOption("focus", 11, true),
-                health = UF:CreateUnitHealthOption("focus", 12, true),
-                power = UF:CreateUnitPowerOption("focus", 13, true),
-                name = UF:CreateUnitNameOption("focus", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("focus", 1, true),
+                        position = UF:CreateUnitPositionOption("focus", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("focus", 11),
+                power = UF:CreateUnitPowerOption("focus", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("focus", 1), level = UF:CreateUnitLevelOption("focus", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("focus", 14)
             }
         },
         focustarget = {
             type = "group",
+            childGroups = "tab",
             name = "Focus Target's Target",
             order = 17,
             hidden = R.isClassic,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Focus Target's Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("focustarget", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("focustarget", 10, true),
-                position = UF:CreateUnitPositionOption("focustarget", 11, true),
-                health = UF:CreateUnitHealthOption("focustarget", 12, true),
-                power = UF:CreateUnitPowerOption("focustarget", 13, true),
-                name = UF:CreateUnitNameOption("focustarget", 14, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("focustarget", 1, true),
+                        position = UF:CreateUnitPositionOption("focustarget", 2, true)
+                    }
+                },
+                health = UF:CreateUnitHealthOption("focustarget", 11),
+                power = UF:CreateUnitPowerOption("focustarget", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("focustarget", 1), level = UF:CreateUnitLevelOption("focustarget", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("focustarget", 14)
             }
         },
         party = {
             type = "group",
+            childGroups = "tab",
             name = "Party",
             order = 18,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Party", order = 0},
                 enabled = UF:CreateUnitEnabledOption("party", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
                 forceShow = {
                     order = 3,
                     type = "execute",
@@ -1986,9 +2850,10 @@ R:RegisterModuleOptions(UF, {
                 layout = {
                     type = "group",
                     name = "Layout",
-                    order = 4,
-                    inline = true,
+                    order = 10,
                     args = {
+                        size = UF:CreateUnitSizeOption("party", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
                         unitAnchorPoint = {
                             type = "select",
                             name = "Unit Anchor Point",
@@ -2003,7 +2868,7 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, key)
                                 UF.config.party.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdatePartyHeader()
+                                UF:UpdateUnit("party")
                             end
                         },
                         unitSpacing = {
@@ -2018,56 +2883,61 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, val)
                                 UF.config.party.unitSpacing = val
-                                UF:UpdatePartyHeader()
+                                UF:UpdateUnit("party")
+                            end
+                        },
+                        showPlayer = {
+                            type = "toggle",
+                            name = "Show Player",
+                            order = 5,
+                            get = function()
+                                return UF.config.party.showPlayer
+                            end,
+                            set = function(_, val)
+                                UF.config.party.showPlayer = val
+                                UF:UpdateUnit("party")
+                            end
+                        },
+                        showRaid = {
+                            type = "toggle",
+                            name = "Show in Raid",
+                            order = 6,
+                            get = function()
+                                return UF.config.party.showRaid
+                            end,
+                            set = function(_, val)
+                                UF.config.party.showRaid = val
+                                UF:UpdateUnit("party")
+                            end
+                        },
+                        showSolo = {
+                            type = "toggle",
+                            name = "Show when Solo",
+                            order = 7,
+                            get = function()
+                                return UF.config.party.showSolo
+                            end,
+                            set = function(_, val)
+                                UF.config.party.showSolo = val
+                                UF:UpdateUnit("party")
                             end
                         }
                     }
                 },
-                showPlayer = {
-                    type = "toggle",
-                    name = "Show Player",
-                    order = 5,
-                    get = function()
-                        return UF.config.party.showPlayer
-                    end,
-                    set = function(_, val)
-                        UF.config.party.showPlayer = val
-                        UF:UpdatePartyHeader()
-                    end
+                health = UF:CreateUnitHealthOption("party", 11),
+                power = UF:CreateUnitPowerOption("party", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("party", 1), level = UF:CreateUnitLevelOption("party", 2)}
                 },
-                showRaid = {
-                    type = "toggle",
-                    name = "Show in Raid",
-                    order = 6,
-                    get = function()
-                        return UF.config.party.showRaid
-                    end,
-                    set = function(_, val)
-                        UF.config.party.showRaid = val
-                        UF:UpdatePartyHeader()
-                    end
-                },
-                showSolo = {
-                    type = "toggle",
-                    name = "Show when Solo",
-                    order = 7,
-                    get = function()
-                        return UF.config.party.showSolo
-                    end,
-                    set = function(_, val)
-                        UF.config.party.showSolo = val
-                        UF:UpdatePartyHeader()
-                    end
-                },
-                size = UF:CreateUnitSizeOption("party", 10, true),
-                position = UF:CreateUnitPositionOption("party", 11, true),
-                health = UF:CreateUnitHealthOption("party", 12, true),
-                power = UF:CreateUnitPowerOption("party", 13, true),
-                name = UF:CreateUnitNameOption("party", 14, true)
+                castbar = UF:CreateUnitCastbarOption("party", 14)
             }
         },
         raid = {
             type = "group",
+            childGroups = "tab",
             name = "Raid",
             order = 19,
             args = {
@@ -2092,9 +2962,10 @@ R:RegisterModuleOptions(UF, {
                 layout = {
                     type = "group",
                     name = "Layout",
-                    order = 4,
-                    inline = true,
+                    order = 10,
                     args = {
+                        size = UF:CreateUnitSizeOption("raid", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
                         unitAnchorPoint = {
                             type = "select",
                             name = "Unit Anchor Point",
@@ -2109,7 +2980,7 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, key)
                                 UF.config.raid.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateRaidHeader()
+                                UF:UpdateUnit("raid")
                             end
                         },
                         unitSpacing = {
@@ -2124,7 +2995,7 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, val)
                                 UF.config.raid.unitSpacing = val
-                                UF:UpdateRaidHeader()
+                                UF:UpdateUnit("raid")
                             end
                         },
                         groupAnchorPoint = {
@@ -2141,7 +3012,7 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, key)
                                 UF.config.raid.groupAnchorPoint = UF.groupAnchors[key]
-                                UF:UpdateRaidHeader()
+                                UF:UpdateUnit("raid")
                             end
                         },
                         groupSpacing = {
@@ -2156,92 +3027,347 @@ R:RegisterModuleOptions(UF, {
                             end,
                             set = function(_, val)
                                 UF.config.raid.groupSpacing = val
-                                UF:UpdateRaidHeader()
+                                UF:UpdateUnit("raid")
                             end
                         }
                     }
                 },
-                size = UF:CreateUnitSizeOption("raid", 10, true, "Unit Size"),
-                position = UF:CreateUnitPositionOption("raid", 11, true),
-                health = UF:CreateUnitHealthOption("raid", 12, true),
-                power = UF:CreateUnitPowerOption("raid", 13, true),
-                name = UF:CreateUnitNameOption("raid", 14, true)
+                health = UF:CreateUnitHealthOption("raid", 11),
+                power = UF:CreateUnitPowerOption("raid", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("raid", 1), level = UF:CreateUnitLevelOption("raid", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("raid", 14)
             }
         },
         tank = {
             type = "group",
+            childGroups = "tab",
             name = "Tanks",
             order = 20,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Tanks", order = 0},
                 enabled = UF:CreateUnitEnabledOption("tank", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("tank", 10, true),
-                position = UF:CreateUnitPositionOption("tank", 11, true),
-                health = UF:CreateUnitHealthOption("tank", 12, true),
-                power = UF:CreateUnitPowerOption("tank", 13, true),
-                name = UF:CreateUnitNameOption("tank", 14, true)
+                forceShow = {
+                    order = 3,
+                    type = "execute",
+                    name = function()
+                        return UF.forceShowTanks and "Hide Frames" or "Show Frames"
+                    end,
+                    desc = "Forcibly show/hide the tank frames.",
+                    func = function()
+                        if not UF.forceShowTanks then
+                            UF:ForceShowTanks()
+                        else
+                            UF:UnforceShowTanks()
+                        end
+                    end
+                },
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("tank", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.unitAnchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.unitAnchors) do
+                                    if UF.config.tank.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                UF.config.tank.unitAnchorPoint = UF.unitAnchors[key]
+                                UF:UpdateUnit("tank")
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return UF.config.tank.unitSpacing
+                            end,
+                            set = function(_, val)
+                                UF.config.tank.unitSpacing = val
+                                UF:UpdateUnit("tank")
+                            end
+                        }
+                    }
+                },
+                health = UF:CreateUnitHealthOption("tank", 11),
+                power = UF:CreateUnitPowerOption("tank", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("tank", 1), level = UF:CreateUnitLevelOption("tank", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("tank", 14)
             }
         },
         assist = {
             type = "group",
+            childGroups = "tab",
             name = "Assist",
             order = 21,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Assist", order = 0},
                 enabled = UF:CreateUnitEnabledOption("assist", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("assist", 10, true),
-                position = UF:CreateUnitPositionOption("assist", 11, true),
-                health = UF:CreateUnitHealthOption("assist", 12, true),
-                power = UF:CreateUnitPowerOption("assist", 13, true),
-                name = UF:CreateUnitNameOption("assist", 14, true)
+                forceShow = {
+                    order = 3,
+                    type = "execute",
+                    name = function()
+                        return UF.forceShowAssist and "Hide Frames" or "Show Frames"
+                    end,
+                    desc = "Forcibly show/hide the assist frames.",
+                    func = function()
+                        if not UF.forceShowAssist then
+                            UF:ForceShowAssist()
+                        else
+                            UF:UnforceShowAssist()
+                        end
+                    end
+                },
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("assist", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.unitAnchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.unitAnchors) do
+                                    if UF.config.assist.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                UF.config.assist.unitAnchorPoint = UF.unitAnchors[key]
+                                UF:UpdateUnit("assist")
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return UF.config.assist.unitSpacing
+                            end,
+                            set = function(_, val)
+                                UF.config.assist.unitSpacing = val
+                                UF:UpdateUnit("assist")
+                            end
+                        }
+                    }
+                },
+                health = UF:CreateUnitHealthOption("assist", 11),
+                power = UF:CreateUnitPowerOption("assist", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("assist", 1), level = UF:CreateUnitLevelOption("assist", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("assist", 14)
             }
         },
         boss = {
             type = "group",
+            childGroups = "tab",
             name = "Boss",
             order = 22,
             hidden = R.isClassic,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Boss", order = 0},
                 enabled = UF:CreateUnitEnabledOption("boss", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("boss", 10, true),
-                position = UF:CreateUnitPositionOption("boss", 11, true),
-                health = UF:CreateUnitHealthOption("boss", 12, true),
-                power = UF:CreateUnitPowerOption("boss", 13, true),
-                name = UF:CreateUnitNameOption("boss", 14, true)
+                forceShow = {
+                    order = 3,
+                    type = "execute",
+                    name = function()
+                        return UF.forceShowBoss and "Hide Frames" or "Show Frames"
+                    end,
+                    desc = "Forcibly show/hide the boss frames.",
+                    func = function()
+                        if not UF.forceShowBoss then
+                            UF:ForceShowBoss()
+                        else
+                            UF:UnforceShowBoss()
+                        end
+                    end
+                },
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("boss", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.unitAnchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.unitAnchors) do
+                                    if UF.config.boss.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                UF.config.boss.unitAnchorPoint = UF.unitAnchors[key]
+                                UF:UpdateUnit("boss")
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return UF.config.boss.unitSpacing
+                            end,
+                            set = function(_, val)
+                                UF.config.boss.unitSpacing = val
+                                UF:UpdateUnit("boss")
+                            end
+                        }
+                    }
+                },
+                health = UF:CreateUnitHealthOption("boss", 11),
+                power = UF:CreateUnitPowerOption("boss", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("boss", 1), level = UF:CreateUnitLevelOption("boss", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("boss", 14)
             }
         },
         arena = {
             type = "group",
+            childGroups = "tab",
             name = "Arena",
             order = 23,
             hidden = R.isClassic,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Arena", order = 0},
                 enabled = UF:CreateUnitEnabledOption("arena", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("arena", 10, true),
-                position = UF:CreateUnitPositionOption("arena", 11, true),
-                health = UF:CreateUnitHealthOption("arena", 12, true),
-                power = UF:CreateUnitPowerOption("arena", 13, true),
-                name = UF:CreateUnitNameOption("arena", 14, true)
+                forceShow = {
+                    order = 3,
+                    type = "execute",
+                    name = function()
+                        return UF.forceShowArena and "Hide Frames" or "Show Frames"
+                    end,
+                    desc = "Forcibly show/hide the arena frames.",
+                    func = function()
+                        if not UF.forceShowArena then
+                            UF:ForceShowArena()
+                        else
+                            UF:UnforceShowArena()
+                        end
+                    end
+                },
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {
+                        size = UF:CreateUnitSizeOption("arena", 1, true),
+                        lineBreak1 = {type = "header", name = "", order = 2},
+                        unitAnchorPoint = {
+                            type = "select",
+                            name = "Unit Anchor Point",
+                            order = 3,
+                            values = UF.unitAnchors,
+                            get = function()
+                                for key, anchor in ipairs(UF.unitAnchors) do
+                                    if UF.config.arena.unitAnchorPoint == anchor then
+                                        return key
+                                    end
+                                end
+                            end,
+                            set = function(_, key)
+                                UF.config.arena.unitAnchorPoint = UF.unitAnchors[key]
+                                UF:UpdateUnit("arena")
+                            end
+                        },
+                        unitSpacing = {
+                            type = "range",
+                            name = "Unit Spacing",
+                            order = 4,
+                            min = 0,
+                            softMax = 50,
+                            step = 1,
+                            get = function()
+                                return UF.config.arena.unitSpacing
+                            end,
+                            set = function(_, val)
+                                UF.config.arena.unitSpacing = val
+                                UF:UpdateUnit("arena")
+                            end
+                        }
+                    }
+                },
+                health = UF:CreateUnitHealthOption("arena", 11),
+                power = UF:CreateUnitPowerOption("arena", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("arena", 1), level = UF:CreateUnitLevelOption("arena", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("arena", 14)
             }
         },
         nameplates = {
             type = "group",
+            childGroups = "tab",
             name = "Nameplates",
             order = 24,
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Nameplates", order = 0},
                 enabled = UF:CreateUnitEnabledOption("nameplates", 1),
-                lineBreak1 = {type = "header", name = "", order = 2},
-                size = UF:CreateUnitSizeOption("nameplates", 10, true),
-                health = UF:CreateUnitHealthOption("nameplates", 11, true),
-                power = UF:CreateUnitPowerOption("nameplates", 12, true),
-                name = UF:CreateUnitNameOption("nameplates", 13, true)
+                layout = {
+                    type = "group",
+                    name = "Layout",
+                    order = 10,
+                    args = {size = UF:CreateUnitSizeOption("nameplates", 1, true)}
+                },
+                health = UF:CreateUnitHealthOption("nameplates", 11),
+                power = UF:CreateUnitPowerOption("nameplates", 12),
+                texts = {
+                    type = "group",
+                    name = "Texts",
+                    order = 13,
+                    args = {name = UF:CreateUnitNameOption("nameplates", 1), level = UF:CreateUnitLevelOption("nameplates", 2)}
+                },
+                castbar = UF:CreateUnitCastbarOption("nameplates", 14)
             }
         }
     }

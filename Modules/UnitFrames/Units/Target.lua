@@ -25,9 +25,7 @@ function UF:CreateTarget()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetSize(232, 100)
@@ -146,13 +144,18 @@ function UF:UpdateTarget(self)
 
         self.Power:SetHeight(10)
         self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
+        self.Power.Border:Hide()
+        self.Power.Shadow:Hide()
 
         self.Name:ClearAllPoints()
         self.Name:SetWidth(110)
+        self.Name:SetJustifyH("CENTER")
         self.Name:SetPoint("CENTER", self.Texture, -50, 19)
 
         self.Level:ClearAllPoints()
-        self.Level:SetPoint("CENTER", self.Texture, "CENTER", 63, -17)
+        self.Level:SetSize(18, 10)
+        self.Level:SetJustifyH("CENTER")
+        self.Level:SetPoint("CENTER", self.Texture, "CENTER", 62, -16)
 
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
@@ -187,9 +190,9 @@ function UF:UpdateTarget(self)
             leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
         end
 
-        self.Castbar:SetPoint("BOTTOMLEFT", self, "TOPLEFT", leftPadding, 5)
+        self.CastbarParent:SetPoint("BOTTOMLEFT", self, "TOPLEFT", leftPadding, 5)
         if self.cfg.auras.enabled and self.cfg.auras.showDebuffsOnTop then
-            self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.Castbar:GetHeight() + 5)
+            self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.CastbarParent:GetHeight() + 5)
         end
     end
 

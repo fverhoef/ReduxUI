@@ -145,25 +145,12 @@ function UF:CreateRaid()
     self:SetScript("OnLeave", UnitFrame_OnLeave)
 
     self:CreateBorder(self.cfg.border.size)
-    self:SetBorderPadding(1, 1, 0, 0)
     self:CreateShadow()
-    self:SetShadowPadding(1, 1, 0, 0)
 
-    -- health
     self:CreateHealth()
-
-    -- power
     self:CreatePower()
-    if self.cfg.power.enabled then
-        self.Power:SetHeight(self.cfg.power.size[2])
-        self.Power.Value:Hide()
-
-        self.Health:SetHeight(height - self.cfg.power.size[2])
-    end
-
-    -- name
     self:CreateName()
-    self.Name:SetPoint("TOP", self, "TOP", 0, -8)
+    self:CreateLevel()
 
     -- leader
     self:CreateLeaderIndicator()
@@ -199,9 +186,8 @@ function UF:CreateRaid()
     self.ReadyCheckIndicator:ClearAllPoints()
     self.ReadyCheckIndicator:SetPoint("LEFT", self, "RIGHT", -12, 0)
 
-    -- resurrect
     self:CreateResurrectIndicator()
-    
+
     self:CreateRange()
     self:CreateAuraHighlight()
 
