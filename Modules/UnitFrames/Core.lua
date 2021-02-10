@@ -16,10 +16,10 @@ function UF:Initialize()
 
     UF.frames.player = UF:SpawnPlayer()
     UF.frames.target = UF:SpawnTarget()
-    UF.frames.targetTarget = UF:SpawnTargetTarget()
+    UF.frames.targettarget = UF:SpawnTargetTarget()
     UF.frames.pet = UF:SpawnPet()
     UF.frames.focus = UF:SpawnFocus()
-    UF.frames.focusTarget = UF:SpawnFocusTarget()
+    UF.frames.focustarget = UF:SpawnFocusTarget()
     UF.frames.mouseover = UF:SpawnMouseOver()
 
     UF.frames.partyHeader = UF:SpawnPartyHeader()
@@ -33,15 +33,24 @@ function UF:Initialize()
     UF:UpdateAll()
 end
 
+function UF:UpdateUnit(unit)
+    local frame = UF.frames[unit] or UF.frames[unit .. "Header"]
+    if frame and frame.Update then
+        frame:Update()
+    elseif unit == "nameplates" then
+        UF:UpdateNamePlates()
+    end
+end
+
 function UF:UpdateAll()
     UF:UpdateColors()
 
     UF:UpdatePlayer(UF.frames.player)
     UF:UpdateTarget(UF.frames.target)
-    UF:UpdateTargetTarget(UF.frames.targetTarget)
+    UF:UpdateTargetTarget(UF.frames.targettarget)
     UF:UpdatePet(UF.frames.pet)
     UF:UpdateFocus(UF.frames.focus)
-    UF:UpdateFocusTarget(UF.frames.focusTarget)
+    UF:UpdateFocusTarget(UF.frames.focustarget)
     UF:UpdateMouseover(UF.frames.mouseover)
 
     UF:UpdatePartyHeader()
@@ -116,9 +125,9 @@ function UF:UpdateFrame(self)
     self:UpdatePower()
     self:UpdatePowerPrediction()
     self:UpdateAdditionalPower()
+    self:UpdateName()
     self:UpdatePortrait()
     self:UpdateCastbar()
-    self:UpdateName()
     self:UpdateAuraHighlight()
     self:UpdateAuras()
     self:UpdateCombatFeedback()

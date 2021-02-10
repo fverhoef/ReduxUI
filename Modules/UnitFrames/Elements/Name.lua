@@ -6,9 +6,6 @@ local oUF = ns.oUF or oUF
 UF.CreateName = function(self)
     self.Name = self:CreateFontString("$parentName", "OVERLAY")
     self.Name:SetFont(UF.config.font, 13, "OUTLINE")
-    -- self.Name:SetShadowOffset(1, -1)
-    self.Name:SetJustifyH("CENTER")
-    self.Name:SetHeight(10)
     self:Tag(self.Name, "[name]")
 
     return self.Name
@@ -21,9 +18,17 @@ UF.UpdateName = function(self)
         return
     end
 
-    if self.cfg.name.enabled then
+    local cfg = self.cfg.name
+    if cfg.enabled then
         self.Name:Show()
-        self.Name:SetFont(UF.config.font, self.cfg.name.fontSize, "OUTLINE")
+        self.Name:SetFont(cfg.font or UF.config.font, cfg.fontSize or 13, cfg.fontOutline or "OUTLINE")
+        self.Name:SetJustifyH(cfg.justifyH or "CENTER")
+        self.Name:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        self.Name:SetHeight(cfg.height)
+
+        if cfg.tag then
+            self:Tag(self.Name, cfg.tag)
+        end
     else
         self.Name:Hide()
     end

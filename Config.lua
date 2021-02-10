@@ -1,7 +1,11 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+R.JUSTIFY_H = {["NONE"] = "NONE", ["LEFT"] = "LEFT", ["CENTER"] = "CENTER", ["RIGHT"] = "RIGHT"}
+R.JUSTIFY_V = {["NONE"] = "NONE", ["TOP"] = "TOP", ["CENTER"] = "CENTER", ["BOTTOM"] = "BOTTOM"}
 R.FONT_OUTLINES = {["NONE"] = "NONE", ["OUTLINE"] = "OUTLINE", ["THICKOUTLINE"] = "THICKOUTLINE"}
+R.FONT_MIN_SIZE = 4
+R.FONT_MAX_SIZE = 20
 
 R.config = {}
 R.config.defaults = {

@@ -2,16 +2,30 @@ local parent, ns = ...
 ns.oUF = {}
 ns.oUF.Private = {}
 
-ns.oUF.isClassic = select(4, GetBuildInfo()) < 20000
-ns.oUF.isRetail = not ns.oUF.isClassic
+local build = select(4, GetBuildInfo())
+ns.oUF.isClassic = build < 20000
+ns.oUF.isTbc = build < 30000
+ns.oUF.isWotlk = build < 40000
 
 if ns.oUF.isClassic then
-    if not _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO then
-        _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO = {}
+    if not Enum.PowerType then
+        Enum.PowerType = {
+            HealthCost = -2,
+            None = -1,
+            Mana = 0,
+            Rage = 1,
+            Focus = 2,
+            Energy = 3,
+            ComboPoints = 4
+        }
     end
 
-    if not Enum.PowerType then
-        Enum.PowerType = {}
+    if not _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO then
+        _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO = {
+            DRUID = {
+                [Enum.PowerType.Mana] = true,
+            }
+        };
     end
 
     if not Enum.PvPUnitClassification then
@@ -105,6 +119,10 @@ if ns.oUF.isClassic then
         _G.UnitIsMercenary = function()
             return false
         end
+    end
+
+    if not _G.TotemFrame then
+        _G.TotemFrame = CreateFrame("Frame", "TotemFrame")
     end
 
     if not _G.GetThreatStatusColor then

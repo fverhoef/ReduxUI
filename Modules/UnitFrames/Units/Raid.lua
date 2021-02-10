@@ -29,6 +29,8 @@ function UF:SpawnRaidHeader()
         _G.CompactRaidFrameManager:UnregisterAllEvents()
         _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
 
+        parent.Update = UF.UpdateRaidHeader
+
         return parent
     end
 end

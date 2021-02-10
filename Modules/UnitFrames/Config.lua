@@ -4,7 +4,17 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
-UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT"}
+UF.themedUnits = {
+    ["player"] = true,
+    ["target"] = true,
+    ["targettarget"] = true,
+    ["pet"] = true,
+    ["focus"] = true,
+    ["focustarget"] = true,
+    ["party"] = true,
+    ["boss"] = true
+}
+UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
 UF.anchors = {"UIParent"}
 UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 UF.groupAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
@@ -116,7 +126,7 @@ function UF:CreateUnitPositionOption(unit, order, inline, name)
                 end,
                 set = function(_, key)
                     UF.config[unit].point[1] = UF.anchorPoints[key]
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             },
             anchor = {
@@ -134,7 +144,7 @@ function UF:CreateUnitPositionOption(unit, order, inline, name)
                 end,
                 set = function(_, key)
                     UF.config[unit].point[2] = UF.anchors[key]
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             },
             relativePoint = {
@@ -152,7 +162,7 @@ function UF:CreateUnitPositionOption(unit, order, inline, name)
                 end,
                 set = function(_, key)
                     UF.config[unit].point[3] = UF.anchorPoints[key]
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             },
             offsetX = {
@@ -167,8 +177,8 @@ function UF:CreateUnitPositionOption(unit, order, inline, name)
                     return UF.config[unit].point[4]
                 end,
                 set = function(_, val)
-                    UF.config[unit].size[4] = val
-                    UF:UpdateAll()
+                    UF.config[unit].point[4] = val
+                    UF:UpdateUnit(unit)
                 end
             },
             offsetY = {
@@ -183,8 +193,8 @@ function UF:CreateUnitPositionOption(unit, order, inline, name)
                     return UF.config[unit].point[5]
                 end,
                 set = function(_, val)
-                    UF.config[unit].size[5] = val
-                    UF:UpdateAll()
+                    UF.config[unit].point[5] = val
+                    UF:UpdateUnit(unit)
                 end
             }
         }
@@ -205,12 +215,13 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
                 get = function()
                     return UF.config[unit].size[1]
                 end,
                 set = function(_, val)
                     UF.config[unit].size[1] = val
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             },
             height = {
@@ -220,12 +231,13 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
                 get = function()
                     return UF.config[unit].size[2]
                 end,
                 set = function(_, val)
                     UF.config[unit].size[2] = val
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             },
             scale = {
@@ -240,7 +252,7 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 end,
                 set = function(_, val)
                     UF.config[unit].scale = val
-                    UF:UpdateAll()
+                    UF:UpdateUnit(unit)
                 end
             }
         }
@@ -254,20 +266,463 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
         order = order,
         inline = inline,
         args = {
+            desc = {
+                order = 1,
+                type = "description",
+                name = "NOTE: The size of the health bar for a unit always matches the frame size; to resize it, adjust the size of the frame."
+            },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the health bar to attach value text to.",
+                order = 11,
+                values = UF.anchorPoints,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].health.value.point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].health.value.point[1] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetX = {
+                type = "range",
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 12,
+                min = -50,
+                softMax = 50,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].health.value.point[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit].health.value.point[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 13,
+                min = -50,
+                softMax = 50,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].health.value.point[3]
+                end,
+                set = function(_, val)
+                    UF.config[unit].health.value.point[3] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            font = {
+                name = "Font Family",
+                type = "select",
+                desc = "The font family for health text.",
+                order = 21,
+                dialogControl = "LSM30_Font",
+                values = R.Libs.SharedMedia:HashTable("font"),
+                get = function()
+                    for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                        if UF.config[unit].health.value.font == font then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].health.value.font = R.Libs.SharedMedia:Fetch("font", key)
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontSize = {
+                name = "Font Size",
+                type = "range",
+                desc = "The size of health text.",
+                order = 22,
+                min = R.FONT_MIN_SIZE,
+                max = R.FONT_MAX_SIZE,
+                step = 1,
+                get = function()
+                    return UF.config[unit].health.value.fontSize
+                end,
+                set = function(_, val)
+                    UF.config[unit].health.value.fontSize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontOutline = {
+                name = "Font Outline",
+                type = "select",
+                desc = "The outline style of health text.",
+                order = 23,
+                values = R.FONT_OUTLINES,
+                get = function()
+                    return UF.config[unit].health.value.fontOutline
+                end,
+                set = function(_, key)
+                    UF.config[unit].health.value.fontOutline = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontShadow = {
+                name = "Font Shadows",
+                type = "toggle",
+                desc = "Whether to show shadow for health text.",
+                order = 24,
+                get = function()
+                    return UF.config[unit].health.value.fontShadow
+                end,
+                set = function(_, val)
+                    UF.config[unit].health.value.fontShadow = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            tag = {
+                name = "Tag",
+                type = "input",
+                desc = "The tag determines what is displayed in the health value string.",
+                order = 31,
+                get = function()
+                    return UF.config[unit].health.value.tag
+                end,
+                set = function(_, val)
+                    UF.config[unit].health.value.tag = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitPowerOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Power",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].power.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "header", name = "", order = 2},
+            detached = {
+                type = "toggle",
+                name = "Detached",
+                desc = "Whether the power bar is detached from the health bar.",
+                order = 10,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].power.detached
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.detached = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            width = {
+                type = "range",
+                name = "Detached Width",
+                desc = "The width of the power bar when detached.",
+                order = 11,
+                min = 0,
+                softMax = 500,
+                step = 1,
+                disabled = function()
+                    return not UF.config[unit].power.detached or UF.themedUnits[unit] and UF:IsBlizzardTheme()
+                end,
+                get = function()
+                    return UF.config[unit].power.size[1]
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.size[1] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
             height = {
                 type = "range",
                 name = "Height",
-                desc = "The height of the unit's health bar. Note the width is always equal to the frame's width.",
-                order = 1,
-                min = 1,
-                softMax = 400,
+                desc = "The height of the power bar.",
+                order = 12,
+                min = 0,
+                softMax = 100,
                 step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
                 get = function()
-                    return UF.config[unit].health.height
+                    return UF.config[unit].power.size[2]
                 end,
                 set = function(_, val)
-                    UF.config[unit].health.height = val
-                    UF:UpdateAll()
+                    UF.config[unit].power.size[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            value = {
+                type = "group",
+                name = "Value",
+                inline = true,
+                order = 20,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].power.value.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    lineBreak1 = {type = "header", name = "", order = 2},
+                    relativePoint = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the power bar to attach to.",
+                        order = 11,
+                        values = UF.anchorPoints,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].power.value.point[1] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.point[1] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetX = {
+                        type = "range",
+                        name = "Offset (X)",
+                        desc = "The horizontal offset from the anchor point.",
+                        order = 12,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        get = function()
+                            return UF.config[unit].power.value.point[2]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.point[2] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetY = {
+                        type = "range",
+                        name = "Offset (Y)",
+                        desc = "The vertical offset from the anchor point.",
+                        order = 13,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        get = function()
+                            return UF.config[unit].power.value.point[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.point[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    font = {
+                        name = "Font Family",
+                        type = "select",
+                        desc = "The font family for power text.",
+                        order = 21,
+                        dialogControl = "LSM30_Font",
+                        values = R.Libs.SharedMedia:HashTable("font"),
+                        get = function()
+                            for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                                if UF.config[unit].power.value.font == font then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.value.font = R.Libs.SharedMedia:Fetch("font", key)
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontSize = {
+                        name = "Font Size",
+                        type = "range",
+                        desc = "The size of power text.",
+                        order = 22,
+                        min = R.FONT_MIN_SIZE,
+                        max = R.FONT_MAX_SIZE,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].power.value.fontSize
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.fontSize = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontOutline = {
+                        name = "Font Outline",
+                        type = "select",
+                        desc = "The outline style of health text.",
+                        order = 23,
+                        values = R.FONT_OUTLINES,
+                        get = function()
+                            return UF.config[unit].power.value.fontOutline
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.value.fontOutline = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontShadow = {
+                        name = "Font Shadows",
+                        type = "toggle",
+                        desc = "Whether to show shadow for power text.",
+                        order = 24,
+                        get = function()
+                            return UF.config[unit].power.value.fontShadow
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.fontShadow = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    tag = {
+                        name = "Tag",
+                        type = "input",
+                        desc = "The tag determines what is displayed in the power value string.",
+                        order = 31,
+                        get = function()
+                            return UF.config[unit].power.value.tag
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.value.tag = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            }
+        }
+    }
+end
+
+function UF:CreateUnitNameOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Name",
+        order = order,
+        inline = inline,
+        args = {
+            height = {
+                type = "range",
+                name = "Height",
+                desc = "The height of the name text.",
+                order = 12,
+                min = 0,
+                softMax = 50,
+                step = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].name.height
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.height = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            font = {
+                name = "Font Family",
+                type = "select",
+                desc = "The font family for name text.",
+                order = 21,
+                dialogControl = "LSM30_Font",
+                values = R.Libs.SharedMedia:HashTable("font"),
+                get = function()
+                    for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                        if UF.config[unit].name.font == font then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].name.font = R.Libs.SharedMedia:Fetch("font", key)
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontSize = {
+                name = "Font Size",
+                type = "range",
+                desc = "The size of name text.",
+                order = 22,
+                min = R.FONT_MIN_SIZE,
+                max = R.FONT_MAX_SIZE,
+                step = 1,
+                get = function()
+                    return UF.config[unit].name.fontSize
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.fontSize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontOutline = {
+                name = "Font Outline",
+                type = "select",
+                desc = "The outline style of name text.",
+                order = 23,
+                values = R.FONT_OUTLINES,
+                get = function()
+                    return UF.config[unit].name.fontOutline
+                end,
+                set = function(_, key)
+                    UF.config[unit].name.fontOutline = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontShadow = {
+                name = "Font Shadows",
+                type = "toggle",
+                desc = "Whether to show shadow for name text.",
+                order = 24,
+                get = function()
+                    return UF.config[unit].name.fontShadow
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.fontShadow = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            tag = {
+                name = "Tag",
+                type = "input",
+                desc = "The tag determines what is displayed in the unit name text.",
+                order = 31,
+                get = function()
+                    return UF.config[unit].name.tag
+                end,
+                set = function(_, val)
+                    UF.config[unit].name.tag = val
+                    UF:UpdateUnit(unit)
                 end
             }
         }
@@ -329,9 +784,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = true, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 13},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = true, detached = false, attachedPoint = "LEFT", size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -367,9 +856,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = true, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 13},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = true, detached = false, attachedPoint = "RIGHT", size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -404,9 +927,43 @@ R:RegisterModuleConfig(UF, {
         size = {93, 45},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 11},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, attachedPoint = "LEFT", size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -441,9 +998,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 11},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -478,9 +1069,43 @@ R:RegisterModuleConfig(UF, {
         size = {93, 45},
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 11},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -515,9 +1140,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 11},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -553,9 +1212,43 @@ R:RegisterModuleConfig(UF, {
         size = {105, 30},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 11},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = true, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -602,11 +1295,41 @@ R:RegisterModuleConfig(UF, {
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         health = {
             enabled = true,
-            height = 6,
-            value = {enabled = true, point = {"TOP", 0, -20}, fontSize = 11, tag = "[curhp_status]"}
+            value = {
+                enabled = true,
+                point = {"TOP", 0, -20},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
         },
-        power = {enabled = true, detached = false, size = {150, 8}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 12},
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 8},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -640,8 +1363,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -676,8 +1434,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -712,8 +1505,43 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
-        health = {enabled = true, height = 6, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = true, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -747,9 +1575,43 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {150, 16},
         scale = 1,
-        health = {enabled = true, height = 16, value = {enabled = true, tag = "[curhp_status]"}},
-        power = {enabled = false, detached = false, size = {150, 12}, value = {enabled = false, tag = "[curpp]"}},
-        name = {enabled = true, fontSize = 13},
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = false,
+            detached = false,
+            size = {150, 4},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            height = 10,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "CENTER",
+            tag = "[name]"
+        },
         portrait = {enabled = false, detached = false, size = {42, 42}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -861,7 +1723,7 @@ R:RegisterModuleOptions(UF, {
                     type = "select",
                     name = "Theme",
                     desc = "Select the unit frame theme.",
-                    order = 3,
+                    order = 2,
                     values = UF.themes,
                     get = function()
                         return UF.themes[UF.config.theme]
@@ -874,10 +1736,11 @@ R:RegisterModuleOptions(UF, {
             }
         },
         lineBreak2 = {type = "header", name = "", order = 4},
+        fonts = {type = "group", name = "Fonts", order = 6, inline = true, args = {}},
         statusbarTextures = {
             type = "group",
             name = "Status Bar Textures",
-            order = 5,
+            order = 6,
             inline = true,
             args = {
                 health = UF:CreateStatusBarTextureOption("Health", "Set the texture to use for health bars.", "health", 1),
@@ -899,7 +1762,7 @@ R:RegisterModuleOptions(UF, {
         statusBarColors = {
             type = "group",
             name = "Status Bar Colors",
-            order = 6,
+            order = 7,
             inline = true,
             args = {
                 health = UF:CreateStatusBarColorOption("Health", "health", 2),
@@ -988,7 +1851,7 @@ R:RegisterModuleOptions(UF, {
         classcolors = {
             type = "group",
             name = "Class Colors",
-            order = 7,
+            order = 8,
             inline = true,
             args = {
                 deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 10, R.isClassic),
@@ -1015,7 +1878,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("player", 10, true),
                 position = UF:CreateUnitPositionOption("player", 11, true),
-                health = UF:CreateUnitHealthOption("player", 12, true)
+                health = UF:CreateUnitHealthOption("player", 12, true),
+                power = UF:CreateUnitPowerOption("player", 13, true),
+                name = UF:CreateUnitNameOption("player", 14, true)
             }
         },
         target = {
@@ -1028,7 +1893,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("target", 10, true),
                 position = UF:CreateUnitPositionOption("target", 11, true),
-                health = UF:CreateUnitHealthOption("target", 12, true)
+                health = UF:CreateUnitHealthOption("target", 12, true),
+                power = UF:CreateUnitPowerOption("target", 13, true),
+                name = UF:CreateUnitNameOption("target", 14, true)
             }
         },
         targettarget = {
@@ -1041,7 +1908,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("targettarget", 10, true),
                 position = UF:CreateUnitPositionOption("targettarget", 11, true),
-                health = UF:CreateUnitHealthOption("targettarget", 12, true)
+                health = UF:CreateUnitHealthOption("targettarget", 12, true),
+                power = UF:CreateUnitPowerOption("targettarget", 13, true),
+                name = UF:CreateUnitNameOption("targettarget", 14, true)
             }
         },
         pet = {
@@ -1054,7 +1923,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("pet", 10, true),
                 position = UF:CreateUnitPositionOption("pet", 11, true),
-                health = UF:CreateUnitHealthOption("pet", 12, true)
+                health = UF:CreateUnitHealthOption("pet", 12, true),
+                power = UF:CreateUnitPowerOption("pet", 13, true),
+                name = UF:CreateUnitNameOption("pet", 14, true)
             }
         },
         focus = {
@@ -1068,7 +1939,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("focus", 10, true),
                 position = UF:CreateUnitPositionOption("focus", 11, true),
-                health = UF:CreateUnitHealthOption("focus", 12, true)
+                health = UF:CreateUnitHealthOption("focus", 12, true),
+                power = UF:CreateUnitPowerOption("focus", 13, true),
+                name = UF:CreateUnitNameOption("focus", 14, true)
             }
         },
         focustarget = {
@@ -1082,7 +1955,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("focustarget", 10, true),
                 position = UF:CreateUnitPositionOption("focustarget", 11, true),
-                health = UF:CreateUnitHealthOption("focustarget", 12, true)
+                health = UF:CreateUnitHealthOption("focustarget", 12, true),
+                power = UF:CreateUnitPowerOption("focustarget", 13, true),
+                name = UF:CreateUnitNameOption("focustarget", 14, true)
             }
         },
         party = {
@@ -1148,13 +2023,10 @@ R:RegisterModuleOptions(UF, {
                         }
                     }
                 },
-                size = UF:CreateUnitSizeOption("party", 10, true),
-                position = UF:CreateUnitPositionOption("party", 11, true),
-                health = UF:CreateUnitHealthOption("party", 12, true),
                 showPlayer = {
                     type = "toggle",
                     name = "Show Player",
-                    order = 20,
+                    order = 5,
                     get = function()
                         return UF.config.party.showPlayer
                     end,
@@ -1166,7 +2038,7 @@ R:RegisterModuleOptions(UF, {
                 showRaid = {
                     type = "toggle",
                     name = "Show in Raid",
-                    order = 21,
+                    order = 6,
                     get = function()
                         return UF.config.party.showRaid
                     end,
@@ -1178,7 +2050,7 @@ R:RegisterModuleOptions(UF, {
                 showSolo = {
                     type = "toggle",
                     name = "Show when Solo",
-                    order = 22,
+                    order = 7,
                     get = function()
                         return UF.config.party.showSolo
                     end,
@@ -1186,7 +2058,12 @@ R:RegisterModuleOptions(UF, {
                         UF.config.party.showSolo = val
                         UF:UpdatePartyHeader()
                     end
-                }
+                },
+                size = UF:CreateUnitSizeOption("party", 10, true),
+                position = UF:CreateUnitPositionOption("party", 11, true),
+                health = UF:CreateUnitHealthOption("party", 12, true),
+                power = UF:CreateUnitPowerOption("party", 13, true),
+                name = UF:CreateUnitNameOption("party", 14, true)
             }
         },
         raid = {
@@ -1286,7 +2163,9 @@ R:RegisterModuleOptions(UF, {
                 },
                 size = UF:CreateUnitSizeOption("raid", 10, true, "Unit Size"),
                 position = UF:CreateUnitPositionOption("raid", 11, true),
-                health = UF:CreateUnitHealthOption("raid", 12, true)
+                health = UF:CreateUnitHealthOption("raid", 12, true),
+                power = UF:CreateUnitPowerOption("raid", 13, true),
+                name = UF:CreateUnitNameOption("raid", 14, true)
             }
         },
         tank = {
@@ -1299,7 +2178,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("tank", 10, true),
                 position = UF:CreateUnitPositionOption("tank", 11, true),
-                health = UF:CreateUnitHealthOption("tank", 12, true)
+                health = UF:CreateUnitHealthOption("tank", 12, true),
+                power = UF:CreateUnitPowerOption("tank", 13, true),
+                name = UF:CreateUnitNameOption("tank", 14, true)
             }
         },
         assist = {
@@ -1312,7 +2193,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("assist", 10, true),
                 position = UF:CreateUnitPositionOption("assist", 11, true),
-                health = UF:CreateUnitHealthOption("assist", 12, true)
+                health = UF:CreateUnitHealthOption("assist", 12, true),
+                power = UF:CreateUnitPowerOption("assist", 13, true),
+                name = UF:CreateUnitNameOption("assist", 14, true)
             }
         },
         boss = {
@@ -1326,7 +2209,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("boss", 10, true),
                 position = UF:CreateUnitPositionOption("boss", 11, true),
-                health = UF:CreateUnitHealthOption("boss", 12, true)
+                health = UF:CreateUnitHealthOption("boss", 12, true),
+                power = UF:CreateUnitPowerOption("boss", 13, true),
+                name = UF:CreateUnitNameOption("boss", 14, true)
             }
         },
         arena = {
@@ -1340,7 +2225,9 @@ R:RegisterModuleOptions(UF, {
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("arena", 10, true),
                 position = UF:CreateUnitPositionOption("arena", 11, true),
-                health = UF:CreateUnitHealthOption("arena", 12, true)
+                health = UF:CreateUnitHealthOption("arena", 12, true),
+                power = UF:CreateUnitPowerOption("arena", 13, true),
+                name = UF:CreateUnitNameOption("arena", 14, true)
             }
         },
         nameplates = {
@@ -1352,7 +2239,9 @@ R:RegisterModuleOptions(UF, {
                 enabled = UF:CreateUnitEnabledOption("nameplates", 1),
                 lineBreak1 = {type = "header", name = "", order = 2},
                 size = UF:CreateUnitSizeOption("nameplates", 10, true),
-                health = UF:CreateUnitHealthOption("nameplates", 11, true)
+                health = UF:CreateUnitHealthOption("nameplates", 11, true),
+                power = UF:CreateUnitPowerOption("nameplates", 12, true),
+                name = UF:CreateUnitNameOption("nameplates", 13, true)
             }
         }
     }

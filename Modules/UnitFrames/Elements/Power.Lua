@@ -10,7 +10,6 @@ UF.CreatePower = function(self)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
 
-    self.Power.frequentUpdates = true
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
     self.Power.colorSmooth = UF.config.colors.colorPowerSmooth
@@ -21,8 +20,8 @@ UF.CreatePower = function(self)
     self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
 
     self.Power.Value = self:CreateFontString("$parentPowerText", "OVERLAY")
+    self.Power.Value:SetParent(self.Power)
     self.Power.Value:SetFont(UF.config.font, 10)
-    self.Power.Value:SetShadowOffset(1, -1)
 
     self:Tag(self.Power.Value, "[curpp]")
 
@@ -41,6 +40,7 @@ UF.UpdatePower = function(self)
         self:EnableElement("Power")
 
         self.Power:SetStatusBarTexture(UF.config.statusbars.power)
+        self.Power:SetFrequentUpdates(self.cfg.power.frequentUpdates)
         self.Power.colorClass = UF.config.colors.colorPowerClass
         self.Power.colorSmooth = UF.config.colors.colorPowerSmooth
         self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
@@ -48,14 +48,17 @@ UF.UpdatePower = function(self)
         if cfg.value.enabled then
             self.Power.Value:Show()
             self.Power.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 10, cfg.value.fontOutline)
+            self.Power.Value:SetShadowOffset(cfg.value.fontShadow and 1 or 0, cfg.value.fontShadow and -1 or 0)
+
             if cfg.value.tag then
                 self:Tag(self.Power.Value, cfg.value.tag)
             end
+
             self.Power.Value:ClearAllPoints()
             if cfg.value.point then
                 self.Power.Value:SetPoint(unpack(cfg.value.point))
             else
-                self.Power.Value:SetPoint("CENTER", self.Power, 0, 0)
+                self.Power.Value:SetPoint("CENTER")
             end
         else
             self.Power.Value:Hide()
@@ -63,93 +66,15 @@ UF.UpdatePower = function(self)
 
         self.Power:SetSize(unpack(cfg.size))
         self.Power:ClearAllPoints()
-        self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
-        self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.cfg.border.enabled and -2 or 0, 0)
+        if cfg.detached then
+            self.Power:SetPoint(unpack(cfg.point))
+        else
+            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.cfg.border.enabled and -2 or 0, 0)
+        end
     else
         self:DisableElement("Power")
     end
 end
 
 oUF:RegisterMetaFunction("UpdatePower", UF.UpdatePower)
-
-UF.CreateEnergyManaRegen = function(self)
-    self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
-    self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
-    self.EnergyManaRegen:SetAllPoints()
-    self.EnergyManaRegen.Spark = self.EnergyManaRegen:CreateTexture(nil, "OVERLAY")
-
-    return self.EnergyManaRegen
-end
-
-oUF:RegisterMetaFunction("CreateEnergyManaRegen", UF.CreateEnergyManaRegen)
-
-UF.CreateAdditionalPower = function(self)
-    self.AdditionalPower = CreateFrame("StatusBar", "$parentPower", self)
-    self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
-    self.AdditionalPower:SetStatusBarColor(unpack(UF.config.colors.mana))
-    self.AdditionalPower:SetFrameLevel(self.Power:GetFrameLevel())
-    self.AdditionalPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
-    self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
-    self.AdditionalPower:SetSize(self.Power:GetWidth() - 4, self.Power:GetHeight())
-    self.AdditionalPower:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 2, -1)
-
-    self.AdditionalPower.frequentUpdates = true
-    self.AdditionalPower.Smooth = true
-
-    self.AdditionalPower:CreateBorder(12)
-
-    return self.AdditionalPower
-end
-
-oUF:RegisterMetaFunction("CreateAdditionalPower", UF.CreateAdditionalPower)
-
-UF.UpdateAdditionalPower = function(self)
-    if self.AdditionalPower then
-        self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
-    end
-end
-
-oUF:RegisterMetaFunction("UpdateAdditionalPower", UF.UpdateAdditionalPower)
-
-UF.CreatePowerPrediction = function(self)
-    local mainBar = CreateFrame("StatusBar", nil, self.Power)
-    mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
-    mainBar:SetFrameLevel(self:GetFrameLevel() - 1)
-    mainBar:SetReverseFill(true)
-    mainBar:SetPoint("TOP", self.Power, "TOP")
-    mainBar:SetPoint("BOTTOM", self.Power, "BOTTOM")
-    mainBar:SetPoint("RIGHT", self.Power:GetStatusBarTexture(), "RIGHT")
-    mainBar:SetSize(self.Power:GetWidth(), 0)
-
-    local altBar
-    if self.AdditionalPower then
-        altBar = CreateFrame("StatusBar", nil, self.AdditionalPower)
-        altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
-        altBar:SetFrameLevel(self:GetFrameLevel())
-        altBar:SetReverseFill(true)
-        altBar:SetPoint("TOP", self.AdditionalPower, "TOP")
-        altBar:SetPoint("BOTTOM", self.AdditionalPower, "BOTTOM")
-        altBar:SetPoint("RIGHT", self.AdditionalPower:GetStatusBarTexture(), "RIGHT")
-        altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
-    end
-
-    self.PowerPrediction = {mainBar = mainBar, altBar = altBar}
-
-    return self.PowerPrediction
-end
-
-oUF:RegisterMetaFunction("CreatePowerPrediction", UF.CreatePowerPrediction)
-
-UF.UpdatePowerPrediction = function(self)
-    if self.PowerPrediction then
-        self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
-        self.PowerPrediction.mainBar:SetSize(self.Power:GetWidth(), 0)
-
-        if self.PowerPrediction.altBar then
-            self.PowerPrediction.altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
-            self.PowerPrediction.altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
-        end
-    end
-end
-
-oUF:RegisterMetaFunction("UpdatePowerPrediction", UF.UpdatePowerPrediction)

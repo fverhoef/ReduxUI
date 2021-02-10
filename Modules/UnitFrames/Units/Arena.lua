@@ -20,6 +20,8 @@ function UF:SpawnArenaHeader()
             UF.frames["arena" .. i] = arena
 
             R:CreateDragFrame(arena, "Arena" .. i, default.point)
+
+            parent.Update = UF.UpdateRaidHeader
         end
     end
 end

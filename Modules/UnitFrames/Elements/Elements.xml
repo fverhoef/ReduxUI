@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="AdditionalPower.lua"/>
     <Script file="AssistantIndicator.lua"/>
     <Script file="AuraHighlight.lua"/>
     <Script file="Auras.lua"/>
@@ -6,6 +7,7 @@
     <Script file="CombatIndicator.lua"/>
     <Script file="CombatFeedback.lua"/>
     <Script file="ComboFrame.lua"/>
+    <Script file="EnergyManaRegen.lua"/>
     <Script file="GroupRoleIndicator.lua"/>
     <Script file="Health.lua"/>
     <Script file="LeaderIndicator.lua"/>
@@ -16,6 +18,7 @@
     <Script file="PhaseIndicator.lua"/>
     <Script file="Portrait.lua"/>
     <Script file="Power.lua"/> 
+    <Script file="PowerPrediction.lua"/> 
     <Script file="PvPClassificationIndicator.lua"/>
     <Script file="PVPIndicator.lua"/>
     <Script file="QuestIndicator.lua"/>

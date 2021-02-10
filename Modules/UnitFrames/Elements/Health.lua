@@ -10,7 +10,6 @@ UF.CreateHealth = function(self)
     self.Health:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Health:SetBackdropColor(0, 0, 0, 0.70)
 
-    self.Health.frequentUpdates = true
     self.Health.colorHealth = true
     self.Health.colorClass = UF.config.colors.colorHealthClass
     self.Health.colorSmooth = UF.config.colors.colorHealthSmooth
@@ -21,9 +20,6 @@ UF.CreateHealth = function(self)
     self.Health.Smooth = true
 
     self.Health.Value = self:CreateFontString("$parentHealthText", "OVERLAY")
-    self.Health.Value:SetFont(UF.config.font, 11)
-    self.Health.Value:SetShadowOffset(1, -1)
-    self.Health.Value:SetPoint("CENTER", self.Health, 0, 1)
 
     local myBar = CreateFrame("StatusBar", nil, self.Health)
     myBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
@@ -64,9 +60,10 @@ UF.CreateHealth = function(self)
         healAbsorbBar = healAbsorbBar,
         maxOverflow = 1
     }
-    self.HealthPrediction.frequentUpdates = true
 
     self:Tag(self.Health.Value, "[curhp_status]")
+    self.Health.Value:SetParent(self.Health)
+    self.Health.Value:SetFont(UF.config.font, 11)
 
     return self.Health
 end
@@ -92,12 +89,17 @@ UF.UpdateHealth = function(self)
     if cfg.value.enabled then
         self.Health.Value:Show()
         self.Health.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 11, cfg.value.fontOutline)
+        self.Health.Value:SetShadowOffset(cfg.value.fontShadow and 1 or 0, cfg.value.fontShadow and -1 or 0)
+
         if cfg.value.tag then
             self:Tag(self.Health.Value, cfg.value.tag)
         end
+
         if cfg.value.point then
             self.Health.Value:ClearAllPoints()
             self.Health.Value:SetPoint(unpack(cfg.value.point))
+        else
+            self.Health.Value:SetPoint("CENTER")
         end
     else
         self.Health.Value:Hide()

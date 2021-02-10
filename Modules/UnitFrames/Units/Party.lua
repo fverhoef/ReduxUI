@@ -19,6 +19,8 @@ function UF:SpawnPartyHeader()
 
         R:CreateDragFrame(parent, "Party", default.point, 200, 40)
 
+        parent.Update = UF.UpdatePartyHeader
+
         return parent
     end
 end

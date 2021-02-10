@@ -31,6 +31,8 @@ function UF:SpawnBossHeader()
 
         R:CreateDragFrame(parent, "Boss", default.point)
 
+        parent.Update = UF.UpdateBossHeader
+
         return parent
     end
 end
