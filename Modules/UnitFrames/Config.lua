@@ -475,6 +475,20 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            powerPrediction = {
+                type = "toggle",
+                name = "Power Prediction",
+                desc = "Whether the power prediction is enabled for the player's power bar.",
+                order = 13,
+                hidden = unit ~= "player",
+                get = function()
+                    return UF.config[unit].power.powerPrediction
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.powerPrediction = val
+                    UF:UpdateUnit(unit)
+                end
+            },
             value = {
                 type = "group",
                 name = "Value",
@@ -1327,6 +1341,9 @@ R:RegisterModuleConfig(UF, {
         colorPowerSmooth = false,
         colorPowerDisconnected = true
     },
+    buffFrame = {
+        point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -205, -13}
+    },
     player = {
         enabled = true,
         size = {180, 42},
@@ -1348,6 +1365,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
+            point = {"CENTER", "UIParent", "BOTTOM", 0, 360},
             border = {enabled = true, size = 12},
             shadow = {enabled = true},
             value = {
@@ -1359,7 +1377,8 @@ R:RegisterModuleConfig(UF, {
                 fontShadow = true,
                 tag = "[curpp]",
                 frequentUpdates = true
-            }
+            },
+            powerPrediction = true
         },
         name = {
             enabled = true,
@@ -2089,7 +2108,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {70, 10},
-            point = {"TOPLEFT", 0, -8},
+            point = {"TOP", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",

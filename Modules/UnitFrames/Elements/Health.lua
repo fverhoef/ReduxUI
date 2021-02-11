@@ -65,7 +65,13 @@ UF.CreateHealth = function(self)
     self.Health.Value:SetParent(self.Health)
     self.Health.Value:SetFont(UF.config.font, 11)
 
+    self:RegisterEvent("UNIT_HEALTH_FREQUENT", UF.Health_ForceUpdate)
+
     return self.Health
+end
+
+function UF:Health_ForceUpdate(event, ...)
+    self.Health:ForceUpdate()
 end
 
 oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)

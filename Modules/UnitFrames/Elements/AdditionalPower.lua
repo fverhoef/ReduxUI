@@ -24,9 +24,11 @@ end
 oUF:RegisterMetaFunction("CreateAdditionalPower", UF.CreateAdditionalPower)
 
 UF.UpdateAdditionalPower = function(self)
-    if self.AdditionalPower then
-        self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
+    if not self.AdditionalPower then
+        return
     end
+    
+    self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
 end
 
 oUF:RegisterMetaFunction("UpdateAdditionalPower", UF.UpdateAdditionalPower)

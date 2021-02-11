@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 R.dragFrames = {}
 
-function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
+function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, point)
     if not frame then
         return
     end
@@ -13,11 +13,16 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
     frame.defaultPoint = defaultPoint or R:GetPoint(frame)
 
     -- anchor a dragable frame on frame
-    local dragFrame = CreateFrame("Frame")
+    local dragFrame = CreateFrame("Frame", nil)
     dragFrame.frame = frame
     dragFrame.displayName = displayName or frame:GetName()
+
     if width or height then
-        dragFrame:SetPoint("CENTER", frame, "CENTER")
+        if point then
+            dragFrame:SetPoint(unpack(point))
+        else
+            dragFrame:SetPoint("CENTER", frame, "CENTER")
+        end
         dragFrame:SetSize(width or frame:GetWidth(), height or frame:GetHeight())
     else
         dragFrame:SetAllPoints(frame)
@@ -60,6 +65,10 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height)
 end
 
 function R:DragFrame_OnDragStart(button)
+    if self.isLocked then
+        return
+    end
+
     if IsShiftKeyDown() then
         if button == "LeftButton" then
             self.frame:StartMoving()
@@ -84,7 +93,7 @@ end
 
 function R:DragFrame_OnEnter()
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
-    GameTooltip:AddLine(self.frame:GetName(), 0, 1, 0.5, 1, 1, 1)
+    GameTooltip:AddLine(self.displayName, 0, 1, 0.5, 1, 1, 1)
     GameTooltip:AddLine("Hold SHIFT+LeftButton to drag!", 1, 1, 1, 1, 1, 1)
     if self.frame.__resizable then
         GameTooltip:AddLine("Hold SHIFT+RightButton to resize!", 1, 1, 1, 1, 1, 1)
@@ -97,45 +106,80 @@ function R:DragFrame_OnLeave()
 end
 
 function R:DragFrame_OnShow()
-    if self.frame.fader then
-        R:StartFadeIn(dragFrame.frame)
+    if self.frame.faderConfig then
+        self.frame:FadeIn()
     end
 end
 
 function R:DragFrame_OnHide()
-    if self.frame.fader then
-        R:StartFadeOut(dragFrame.frame)
+    if self.frame.faderConfig then
+        -- self.frame:FadeOut()
     end
 end
 
-function R:LockFrame(frame)
+function R:HideDragFrame(frame)
+    if not frame or not frame.DragFrame then
+        return
+    end
+
     if frame.frameVisibility then
         RegisterStateDriver(frame, "visibility", frame.frameVisibility)
     end
     frame.DragFrame:Hide()
 end
 
-function R:UnlockFrame(frame)
+function R:ShowDragFrame(frame)
+    if not frame or not frame.DragFrame or frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked then
+        return
+    end
+
     if frame.frameVisibility then
         RegisterStateDriver(frame, "visibility", "show")
     end
     frame.DragFrame:Show()
 end
 
-function R:LockFrames()
+function R:HideDragFrames()
     for idx, frame in next, R.dragFrames do
-        R:LockFrame(frame)
+        R:HideDragFrame(frame)
     end
     R:Print("Frames locked.")
     R.framesLocked = true
 end
 
-function R:UnlockFrames()
+function R:ShowDragFrames()
     for idx, frame in next, R.dragFrames do
-        R:UnlockFrame(frame)
+        R:ShowDragFrame(frame)
     end
     R:Print("Frames unlocked.")
     R.framesLocked = false
+end
+
+function R:LockDragFrame(frame, hideWhenLocked)
+    if not frame or not frame.DragFrame then
+        return
+    end
+
+    frame.DragFrame.isLocked = true
+    frame.DragFrame.hideWhenLocked = hideWhenLocked
+    frame.DragFrame.texture:SetVertexColor(1, 0, 0)
+
+    if not R.framesLocked then
+        R:HideDragFrame(frame)
+    end
+end
+
+function R:UnlockDragFrame(frame)
+    if not frame or not frame.DragFrame then
+        return
+    end
+
+    frame.DragFrame.isLocked = false
+    frame.DragFrame.texture:SetVertexColor(0, 1, 0)
+
+    if not R.framesLocked then
+        R:ShowDragFrame(frame)
+    end
 end
 
 function R:ResetFrames()
@@ -146,6 +190,10 @@ function R:ResetFrames()
     for _, frame in next, R.dragFrames do
         R:ResetPoint(frame)
         R:ResetSize(frame)
+
+        if frame.Update then
+            frame:Update()
+        end
     end
     R:Print("Frame positions and sizes have been reset.")
 end

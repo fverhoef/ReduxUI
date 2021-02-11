@@ -9,6 +9,7 @@ UF.CreatePower = function(self)
     self.Power:SetFrameLevel(self:GetFrameLevel() - 2)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
+    self.Power.cfg = self.cfg.power
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -39,6 +40,12 @@ UF.UpdatePower = function(self)
     end
 
     local cfg = self.cfg.power
+    if cfg.detached then
+        R:UnlockDragFrame(self.Power)
+    else
+        R:LockDragFrame(self.Power, true)
+    end
+
     if cfg.enabled then
         self:EnableElement("Power")
 

@@ -227,6 +227,9 @@ function UF:UpdateParty(self)
             self.GroupRoleIndicator:ClearAllPoints()
             self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
         end
+
+        self.CastbarParent:ClearAllPoints()
+        self.CastbarParent:SetPoint("TOPLEFT", self, "TOPRIGHT", 15, -13)
     end
 end
 

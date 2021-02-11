@@ -57,9 +57,9 @@ function R:OnInitialize()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
         if args:match("unlock") then
-            R:UnlockFrames()
+            R:ShowDragFrames()
         elseif args:match("lock") then
-            R:LockFrames()
+            R:HideDragFrames()
         elseif args:match("reset") then
             R:ResetFrames()
         elseif args:match("options") then

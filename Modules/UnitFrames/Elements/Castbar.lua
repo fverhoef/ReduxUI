@@ -6,12 +6,13 @@ local oUF = ns.oUF or oUF
 UF.CreateCastbar = function(self)
     local cfg = self.cfg.castbar
 
-    self.CastbarParent = CreateFrame("Frame", nil, self)
+    self.CastbarParent = CreateFrame("Frame", self:GetName() .. "CastbarParent", self)
     self.CastbarParent:SetFrameStrata("MEDIUM")
     self.CastbarParent.cfg = cfg
 
     -- statusbar
-    self.Castbar = CreateFrame("StatusBar", nil, self.CastbarParent)
+    self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self.CastbarParent)
+    self.Castbar.cfg = cfg
     self.Castbar:SetFrameStrata("MEDIUM")
     self.Castbar:SetOrientation("HORIZONTAL")
     self.Castbar:SetScript("OnShow", function()
@@ -25,7 +26,9 @@ UF.CreateCastbar = function(self)
 
     -- border
     self.CastbarParent:CreateBorder(cfg.borderSize)
+    self.CastbarParent.Border:Hide()
     self.CastbarParent:CreateShadow()
+    self.CastbarParent.Shadow:Hide()
 
     -- background
     self.Castbar.bg = self.Castbar:CreateTexture(nil, "BACKGROUND")
@@ -73,7 +76,17 @@ end
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
 
 UF.UpdateCastbar = function(self)
+    if not self.CastbarParent then
+        return
+    end
+
     local cfg = self.cfg.castbar
+    if cfg.detached then
+        R:UnlockDragFrame(self.CastbarParent)
+    else
+        R:LockDragFrame(self.CastbarParent, true)
+    end
+
     if cfg.enabled then
         self:EnableElement("Castbar")
         

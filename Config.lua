@@ -53,9 +53,9 @@ R.config.options = {
                     desc = "Lock/unlock all movable frames.",
                     func = function()
                         if R.framesLocked then
-                            R:UnlockFrames()
+                            R:ShowDragFrames()
                         else
-                            R:LockFrames()
+                            R:HideDragFrames()
                         end
                     end
                 },

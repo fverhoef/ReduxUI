@@ -31,6 +31,9 @@ function UF:Initialize()
 
     UF:SpawnNamePlates()
     UF:UpdateAll()
+
+    _G.BuffFrame.cfg = UF.config.buffFrame
+    R:CreateDragFrame(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
 end
 
 function UF:UpdateUnit(unit)
@@ -123,11 +126,11 @@ function UF:UpdateFrame(self)
 
     self:UpdateHealth()
     self:UpdatePower()
+    self:UpdatePowerPrediction()
     self:UpdateName()
     self:UpdateLevel()
     self:UpdateCastbar()
 
-    self:UpdatePowerPrediction()
     self:UpdateAdditionalPower()
     self:UpdateEnergyManaRegen()
     self:UpdatePortrait()
@@ -161,7 +164,7 @@ function UF:GetAnchor(anchor)
     elseif not string.find(anchor, addonName) then
         return _G[addonName .. anchor]
     end
-    
+
     return _G[anchor]
 end
 

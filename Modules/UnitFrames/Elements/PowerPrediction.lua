@@ -17,7 +17,7 @@ UF.CreatePowerPrediction = function(self)
     if self.AdditionalPower then
         altBar = CreateFrame("StatusBar", nil, self.AdditionalPower)
         altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
-        altBar:SetFrameLevel(self:GetFrameLevel())
+        altBar:SetFrameLevel(self:GetFrameLevel() - 1)
         altBar:SetReverseFill(true)
         altBar:SetPoint("TOP", self.AdditionalPower, "TOP")
         altBar:SetPoint("BOTTOM", self.AdditionalPower, "BOTTOM")
@@ -37,12 +37,18 @@ UF.UpdatePowerPrediction = function(self)
         return
     end
 
-    self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
-    self.PowerPrediction.mainBar:SetSize(self.Power:GetWidth(), 0)
+    if self.cfg.power.powerPrediction then
+        self:EnableElement("PowerPrediction")
 
-    if self.PowerPrediction.altBar then
-        self.PowerPrediction.altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
-        self.PowerPrediction.altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
+        self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
+        self.PowerPrediction.mainBar:SetSize(self.Power:GetWidth(), 0)
+
+        if self.PowerPrediction.altBar then
+            self.PowerPrediction.altBar:SetStatusBarTexture(UF.config.statusbars.additionalPowerPrediction)
+            self.PowerPrediction.altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
+        end
+    else
+        self:DisableElement("PowerPrediction")
     end
 end
 

@@ -84,7 +84,6 @@ function UF:CreatePlayer()
 
     self:CreateAuras()
     self:CreateCastbar()
-    R:CreateDragFrame(self.CastbarParent, "Player Castbar", UF.defaults.player.castbar.point)
 
     if not R.isClassic then
         self:CreateComboFrame()
@@ -98,6 +97,9 @@ function UF:CreatePlayer()
     self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", UF.Player_OnEvent, true)
     self:RegisterEvent("GROUP_ROSTER_UPDATE", UF.Player_OnEvent, true)
     self:RegisterEvent("CINEMATIC_STOP", UF.Player_OnEvent, true)
+
+    R:CreateDragFrame(self.Power, "Player Power", UF.defaults.player.power.point)
+    R:CreateDragFrame(self.CastbarParent, "Player Castbar", UF.defaults.player.castbar.point)
 
     self.Update = function(self)
         UF:UpdatePlayer(self)
@@ -120,7 +122,7 @@ function UF:UpdatePlayer(self)
         self:EnableElement("LeaderIndicator")
         self:EnableElement("AssistantIndicator")
         self:EnableElement("MasterLooterIndicator")
-        
+
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
         self.Power:ClearAllPoints()
@@ -174,7 +176,7 @@ function UF:UpdatePlayer(self)
         self.Portrait:ClearAllPoints()
         self.Portrait:SetSize(64, 64)
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
-		self.Portrait:SetTexCoord(0, 1, 0, 1)
+        self.Portrait:SetTexCoord(0, 1, 0, 1)
 
         self.PvPIndicator:ClearAllPoints()
         self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
