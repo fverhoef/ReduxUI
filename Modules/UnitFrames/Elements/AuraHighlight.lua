@@ -47,12 +47,12 @@ end
 
 oUF:RegisterMetaFunction("UpdateAuraHighlight", UF.UpdateAuraHighlight)
 
-function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
-    if self.AuraHighlightBorder then
-        if debuffType and not wasFiltered then
-            object:SetBorderColor(unpack(color))
+function UF:PostUpdate_AuraHighlight(object, debuffType, texture, wasFiltered, style, color)
+    --if self.AuraHighlightBorder then
+        if debuffType and not wasFiltered and color then
+            object:SetBorderColor(color.r, color.g, color.b, color.a)
         else
             object:SetBorderColor(unpack(R.config.db.profile.borders.color))
         end
-    end
+    --end
 end

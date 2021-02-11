@@ -14,3 +14,18 @@ UF.CreatePvPIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreatePvPIndicator", UF.CreatePvPIndicator)
+
+UF.UpdatePvPIndicator = function(self)
+    if not self.PvPIndicator then
+        return
+    end
+
+    local cfg = self.cfg.pvpIndicator
+    if cfg.enabled then
+        self:EnableElement("UpdatePvPIndicator")
+    else
+        self:DisableElement("UpdatePvPIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdatePvPIndicator", UF.UpdatePvPIndicator)

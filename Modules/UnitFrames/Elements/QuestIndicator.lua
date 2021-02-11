@@ -15,3 +15,18 @@ UF.CreateQuestIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateQuestIndicator", UF.CreateQuestIndicator)
+
+UF.UpdateQuestIndicator = function(self)
+    if not self.QuestIndicator then
+        return
+    end
+
+    local cfg = self.cfg.questIndicator
+    if cfg.enabled then
+        self:EnableElement("UpdateQuestIndicator")
+    else
+        self:DisableElement("UpdateQuestIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateQuestIndicator", UF.UpdateQuestIndicator)

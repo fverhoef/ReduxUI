@@ -18,6 +18,12 @@ UF.UpdateEnergyManaRegen = function(self)
     if not self.EnergyManaRegen then
         return
     end
+
+    if self.cfg.power.energyManaRegen then
+        self:EnableElement("EnergyManaRegen")
+    else
+        self:DisableElement("EnergyManaRegen")
+    end
 end
 
 oUF:RegisterMetaFunction("UpdateEnergyManaRegen", UF.UpdateEnergyManaRegen)

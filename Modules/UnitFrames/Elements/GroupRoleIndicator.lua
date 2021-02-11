@@ -22,3 +22,18 @@ UF.CreateGroupRoleIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateGroupRoleIndicator", UF.CreateGroupRoleIndicator)
+
+UF.UpdateGroupRoleIndicator = function(self)
+    if not self.GroupRoleIndicator then
+        return
+    end
+
+    local cfg = self.cfg.groupRoleIndicator
+    if cfg.enabled then
+        self:EnableElement("GroupRoleIndicator")
+    else
+        self:DisableElement("GroupRoleIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateGroupRoleIndicator", UF.UpdateGroupRoleIndicator)

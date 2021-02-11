@@ -24,3 +24,18 @@ UF.CreateRestingIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateRestingIndicator", UF.CreateRestingIndicator)
+
+UF.UpdateRestingIndicator = function(self)
+    if not self.RestingIndicator then
+        return
+    end
+
+    local cfg = self.cfg.restingIndicator
+    if cfg.enabled then
+        self:EnableElement("RestingIndicator")
+    else
+        self:DisableElement("RestingIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateRestingIndicator", UF.UpdateRestingIndicator)

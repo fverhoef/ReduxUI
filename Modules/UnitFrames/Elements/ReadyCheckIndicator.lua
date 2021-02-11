@@ -17,3 +17,18 @@ UF.CreateReadyCheckIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateReadyCheckIndicator", UF.CreateReadyCheckIndicator)
+
+UF.UpdateReadyCheckIndicator = function(self)
+    if not self.ReadyCheckIndicator then
+        return
+    end
+
+    local cfg = self.cfg.readyCheckIndicator
+    if cfg.enabled then
+        self:EnableElement("ReadyCheckIndicator")
+    else
+        self:DisableElement("ReadyCheckIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateReadyCheckIndicator", UF.UpdateReadyCheckIndicator)

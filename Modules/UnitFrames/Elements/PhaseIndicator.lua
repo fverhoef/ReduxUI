@@ -20,3 +20,18 @@ UF.CreatePhaseIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreatePhaseIndicator", UF.CreatePhaseIndicator)
+
+UF.UpdatePhaseIndicator = function(self)
+    if not self.PhaseIndicator then
+        return
+    end
+
+    local cfg = self.cfg.phaseIndicator
+    if cfg.enabled then
+        self:EnableElement("PhaseIndicator")
+    else
+        self:DisableElement("PhaseIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdatePhaseIndicator", UF.UpdatePhaseIndicator)

@@ -51,13 +51,14 @@ function UF:CreatePlayer()
     self:CreateRaidTargetIndicator()
 
     if not R.isClassic then
-        self:CreatePhaseIndicator()
         self:CreateGroupRoleIndicator()
+        self:CreatePhaseIndicator()
         self:CreatePvPClassificationIndicator()
+        self:CreateSummonIndicator()
     end
 
-    self:CreateOfflineIcon()
     self:CreateReadyCheckIndicator()
+    self:CreateOfflineIcon()
 
     UF.CreateRestingIndicator(self)
     self.RestingIndicator.PostUpdate = function()

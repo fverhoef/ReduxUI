@@ -489,6 +489,20 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            powerPrediction = {
+                type = "toggle",
+                name = "Energy/Mana Regen Tick",
+                desc = "Whether the energy/mana regen tick is enabled for the player's power bar.",
+                order = 14,
+                hidden = unit ~= "player",
+                get = function()
+                    return UF.config[unit].power.energyManaRegen
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.energyManaRegen = val
+                    UF:UpdateUnit(unit)
+                end
+            },
             value = {
                 type = "group",
                 name = "Value",
@@ -1022,6 +1036,153 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
     }
 end
 
+function UF:CreateUnitCombatFeedbackOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Combat Feedback",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].combatfeedback.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "header", name = "", order = 2},
+            font = {
+                name = "Font Family",
+                type = "select",
+                desc = "The font family for combat feedback text.",
+                order = 3,
+                dialogControl = "LSM30_Font",
+                values = R.Libs.SharedMedia:HashTable("font"),
+                get = function()
+                    for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                        if UF.config[unit].combatfeedback.font == font then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].combatfeedback.font = R.Libs.SharedMedia:Fetch("font", key)
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontSize = {
+                name = "Font Size",
+                type = "range",
+                desc = "The size of combat feedback text.",
+                order = 4,
+                min = R.FONT_MIN_SIZE,
+                max = R.FONT_MAX_SIZE,
+                step = 1,
+                get = function()
+                    return UF.config[unit].combatfeedback.fontSize
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.fontSize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontOutline = {
+                name = "Font Outline",
+                type = "select",
+                desc = "The outline style of combat feedback text.",
+                order = 5,
+                values = R.FONT_OUTLINES,
+                get = function()
+                    return UF.config[unit].combatfeedback.fontOutline
+                end,
+                set = function(_, key)
+                    UF.config[unit].combatfeedback.fontOutline = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            fontShadow = {
+                name = "Font Shadows",
+                type = "toggle",
+                desc = "Whether to show shadow for combat feedback text.",
+                order = 6,
+                get = function()
+                    return UF.config[unit].combatfeedback.fontShadow
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.fontShadow = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak2 = {type = "description", name = "", order = 9},
+            ignoreImmune = {
+                type = "toggle",
+                name = "Ignore Immune",
+                order = 10,
+                get = function()
+                    return UF.config[unit].combatfeedback.ignoreImmune
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.ignoreImmune = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            ignoreDamage = {
+                type = "toggle",
+                name = "Ignore Damage",
+                order = 11,
+                get = function()
+                    return UF.config[unit].combatfeedback.ignoreDamage
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.ignoreDamage = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            ignoreHeal = {
+                type = "toggle",
+                name = "Ignore Healing",
+                order = 12,
+                get = function()
+                    return UF.config[unit].combatfeedback.ignoreHeal
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.ignoreHeal = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            ignoreEnergize = {
+                type = "toggle",
+                name = "Ignore Energize",
+                order = 13,
+                get = function()
+                    return UF.config[unit].combatfeedback.ignoreEnergize
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.ignoreEnergize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            ignoreOther = {
+                type = "toggle",
+                name = "Ignore Other",
+                order = 14,
+                get = function()
+                    return UF.config[unit].combatfeedback.ignoreOther
+                end,
+                set = function(_, val)
+                    UF.config[unit].combatfeedback.ignoreOther = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
 function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
     return {
         type = "group",
@@ -1291,6 +1452,45 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
     }
 end
 
+function UF:CreateUnitIndicatorsOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Indicators",
+        order = order,
+        inline = inline,
+        args = {
+            combatIndicator = {type = "group", name = "Combat", order = 1, args = {}},
+            restingIndicator = {type = "group", name = "Resting", order = 2, hidden = unit ~= "player", args = {}},
+            pvpIndicator = {type = "group", name = "PvP Status", order = 3, args = {}},
+            pvpClassificationIndicator = {
+                type = "group",
+                name = "PvP Classification",
+                order = 4,
+                hidden = R.isClassic,
+                args = {}
+            },
+            masterLooterIndicator = {type = "group", name = "Master Looter", order = 5, hidden = R.isRetail, args = {}},
+            leaderIndicator = {type = "group", name = "Raid Leader", order = 6, args = {}},
+            assistantIndicator = {type = "group", name = "Raid Assistant", order =7, args = {}},
+            raidRoleIndicator = {type = "group", name = "Raid Role", order = 8, args = {}},
+            groupRoleIndicator = {type = "group", name = "Group Role", order = 9, hidden = R.isClassic, args = {}},
+            raidTargetIndicator = {type = "group", name = "Raid Target", order = 10, args = {}},
+            readyCheckIndicator = {type = "group", name = "Ready Check", order = 11, args = {}},
+            phaseIndicator = {type = "group", name = "Phase", order = 12, args = {}},
+            resurrectIndicator = {type = "group", name = "Resurrect", order = 13, args = {}},
+            summonIndicator = {type = "group", name = "Summon", order = 14, hidden = R.isClassic, args = {}},
+            questIndicator = {
+                type = "group",
+                name = "Quest Indicator",
+                order = 15,
+                hidden = R.isClassic or (unit ~= "target" and unit ~= "nameplates"),
+                args = {}
+            },
+            offlineIcon = {type = "group", name = "Offline Icon", order = 14, hidden = R.isClassic, args = {}},
+        }
+    }
+end
+
 R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -1341,9 +1541,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerSmooth = false,
         colorPowerDisconnected = true
     },
-    buffFrame = {
-        point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -205, -13}
-    },
+    buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -205, -13}},
     player = {
         enabled = true,
         size = {180, 42},
@@ -1378,7 +1576,8 @@ R:RegisterModuleConfig(UF, {
                 tag = "[curpp]",
                 frequentUpdates = true
             },
-            powerPrediction = true
+            powerPrediction = true,
+            energyManaRegen = true
         },
         name = {
             enabled = true,
@@ -1403,9 +1602,21 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "LEFT", size = {42, 42}},
+        combatIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        restingIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1435,7 +1646,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = true,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -1506,9 +1720,21 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "RIGHT", size = {42, 42}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -1537,7 +1763,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = true,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -1608,9 +1837,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, attachedPoint = "LEFT", size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1639,7 +1879,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -1710,9 +1953,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -1741,7 +1995,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = true,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -1812,9 +2069,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -1843,7 +2111,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -1914,9 +2185,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1945,7 +2227,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2017,9 +2302,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 16,
@@ -2048,7 +2344,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = true,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 14,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2128,9 +2427,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 16,
@@ -2160,7 +2470,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
-            fontSize = 14,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2245,9 +2558,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2276,7 +2600,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2347,9 +2674,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2378,7 +2716,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2449,9 +2790,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2480,7 +2832,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2550,9 +2905,21 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidRoleIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        readyCheckIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2581,7 +2948,10 @@ R:RegisterModuleConfig(UF, {
         },
         combatfeedback = {
             enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
             ignoreImmune = false,
             ignoreDamage = false,
             ignoreHeal = false,
@@ -2838,9 +3208,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("player", 1), level = UF:CreateUnitLevelOption("player", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("player", 1),
+                        level = UF:CreateUnitLevelOption("player", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("player", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("player", 14, false, true)
+                castbar = UF:CreateUnitCastbarOption("player", 14, false, true),
+                indicators = UF:CreateUnitIndicatorsOption("player", 15)
             }
         },
         target = {
@@ -2866,9 +3241,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("target", 1), level = UF:CreateUnitLevelOption("target", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("target", 1),
+                        level = UF:CreateUnitLevelOption("target", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("target", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("target", 14)
+                castbar = UF:CreateUnitCastbarOption("target", 14),
+                indicators = UF:CreateUnitIndicatorsOption("target", 15)
             }
         },
         targettarget = {
@@ -2896,10 +3276,12 @@ R:RegisterModuleOptions(UF, {
                     order = 13,
                     args = {
                         name = UF:CreateUnitNameOption("targettarget", 1),
-                        level = UF:CreateUnitLevelOption("targettarget", 2)
+                        level = UF:CreateUnitLevelOption("targettarget", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("targettarget", 3)
                     }
                 },
-                castbar = UF:CreateUnitCastbarOption("targettarget", 14)
+                castbar = UF:CreateUnitCastbarOption("targettarget", 14),
+                indicators = UF:CreateUnitIndicatorsOption("targettarget", 15)
             }
         },
         pet = {
@@ -2925,9 +3307,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("pet", 1), level = UF:CreateUnitLevelOption("pet", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("pet", 1),
+                        level = UF:CreateUnitLevelOption("pet", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("pet", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("pet", 14)
+                castbar = UF:CreateUnitCastbarOption("pet", 14),
+                indicators = UF:CreateUnitIndicatorsOption("pet", 15)
             }
         },
         focus = {
@@ -2954,9 +3341,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("focus", 1), level = UF:CreateUnitLevelOption("focus", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("focus", 1),
+                        level = UF:CreateUnitLevelOption("focus", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("focus", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("focus", 14)
+                castbar = UF:CreateUnitCastbarOption("focus", 14),
+                indicators = UF:CreateUnitIndicatorsOption("focus", 15)
             }
         },
         focustarget = {
@@ -2983,9 +3375,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("focustarget", 1), level = UF:CreateUnitLevelOption("focustarget", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("focustarget", 1),
+                        level = UF:CreateUnitLevelOption("focustarget", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("focustarget", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("focustarget", 14)
+                castbar = UF:CreateUnitCastbarOption("focustarget", 14),
+                indicators = UF:CreateUnitIndicatorsOption("focustarget", 15)
             }
         },
         party = {
@@ -3094,9 +3491,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("party", 1), level = UF:CreateUnitLevelOption("party", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("party", 1),
+                        level = UF:CreateUnitLevelOption("party", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("party", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("party", 14)
+                castbar = UF:CreateUnitCastbarOption("party", 14),
+                indicators = UF:CreateUnitIndicatorsOption("party", 15)
             }
         },
         raid = {
@@ -3202,9 +3604,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("raid", 1), level = UF:CreateUnitLevelOption("raid", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("raid", 1),
+                        level = UF:CreateUnitLevelOption("raid", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("raid", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("raid", 14)
+                castbar = UF:CreateUnitCastbarOption("raid", 14),
+                indicators = UF:CreateUnitIndicatorsOption("raid", 15)
             }
         },
         tank = {
@@ -3277,9 +3684,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("tank", 1), level = UF:CreateUnitLevelOption("tank", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("tank", 1),
+                        level = UF:CreateUnitLevelOption("tank", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("tank", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("tank", 14)
+                castbar = UF:CreateUnitCastbarOption("tank", 14),
+                indicators = UF:CreateUnitIndicatorsOption("tank", 15)
             }
         },
         assist = {
@@ -3352,9 +3764,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("assist", 1), level = UF:CreateUnitLevelOption("assist", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("assist", 1),
+                        level = UF:CreateUnitLevelOption("assist", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("assist", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("assist", 14)
+                castbar = UF:CreateUnitCastbarOption("assist", 14),
+                indicators = UF:CreateUnitIndicatorsOption("assist", 15)
             }
         },
         boss = {
@@ -3428,9 +3845,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("boss", 1), level = UF:CreateUnitLevelOption("boss", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("boss", 1),
+                        level = UF:CreateUnitLevelOption("boss", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("boss", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("boss", 14)
+                castbar = UF:CreateUnitCastbarOption("boss", 14),
+                indicators = UF:CreateUnitIndicatorsOption("boss", 15)
             }
         },
         arena = {
@@ -3504,9 +3926,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("arena", 1), level = UF:CreateUnitLevelOption("arena", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("arena", 1),
+                        level = UF:CreateUnitLevelOption("arena", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("arena", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("arena", 14)
+                castbar = UF:CreateUnitCastbarOption("arena", 14),
+                indicators = UF:CreateUnitIndicatorsOption("arena", 15)
             }
         },
         nameplates = {
@@ -3529,9 +3956,14 @@ R:RegisterModuleOptions(UF, {
                     type = "group",
                     name = "Texts",
                     order = 13,
-                    args = {name = UF:CreateUnitNameOption("nameplates", 1), level = UF:CreateUnitLevelOption("nameplates", 2)}
+                    args = {
+                        name = UF:CreateUnitNameOption("nameplates", 1),
+                        level = UF:CreateUnitLevelOption("nameplates", 2),
+                        combatfeedback = UF:CreateUnitCombatFeedbackOption("nameplates", 3)
+                    }
                 },
-                castbar = UF:CreateUnitCastbarOption("nameplates", 14)
+                castbar = UF:CreateUnitCastbarOption("nameplates", 14),
+                indicators = UF:CreateUnitIndicatorsOption("nameplates", 15)
             }
         }
     }

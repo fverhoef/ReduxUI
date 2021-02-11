@@ -24,8 +24,18 @@ end
 oUF:RegisterMetaFunction("CreateCombatFeedback", UF.CreateCombatFeedback)
 
 UF.UpdateCombatFeedback = function(self)
-    if self.cfg.combatfeedback.enabled then
+    local cfg = self.cfg.combatfeedback
+    if cfg.enabled then
         self:EnableElement("CombatFeedbackText")
+
+        self.CombatFeedbackText:SetFont(cfg.font or UF.config.font, cfg.fontSize or 19, cfg.fontOutline or "OUTLINE")
+        self.CombatFeedbackText:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        
+        self.CombatFeedbackText.ignoreImmune = cfg.ignoreImmune
+        self.CombatFeedbackText.ignoreDamage = cfg.ignoreDamage
+        self.CombatFeedbackText.ignoreHeal = cfg.ignoreHeal
+        self.CombatFeedbackText.ignoreEnergize = cfg.ignoreEnergize
+        self.CombatFeedbackText.ignoreOther = cfg.ignoreOther
     else
         self:DisableElement("CombatFeedbackText")
     end

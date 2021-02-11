@@ -13,3 +13,18 @@ UF.CreateResurrectIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateResurrectIndicator", UF.CreateResurrectIndicator)
+
+UF.UpdateResurrectIndicator = function(self)
+    if not self.ResurrectIndicator then
+        return
+    end
+
+    local cfg = self.cfg.resurrectIndicator
+    if cfg.enabled then
+        self:EnableElement("ResurrectIndicator")
+    else
+        self:DisableElement("ResurrectIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateResurrectIndicator", UF.UpdateResurrectIndicator)

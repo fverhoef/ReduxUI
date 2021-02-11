@@ -113,16 +113,16 @@ function UF:UpdateRaidHeader()
                                                (group.cfg.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
                 xOffset = -group.cfg.groupSpacing
             elseif group.cfg.groupAnchorPoint == "TOP" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPLEFT") or
-                                       (group.cfg.unitAnchorPoint == "LEFT" and "TOPRIGHT") or "TOP"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMLEFT") or
-                                               (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMRIGHT") or "BOTTOM"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
+                                       (group.cfg.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
+                                               (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
                 yOffset = -group.cfg.groupSpacing
             elseif group.cfg.groupAnchorPoint == "BOTTOM" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMLEFT") or
-                                       (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMRIGHT") or "BOTTOM"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPLEFT") or
-                                               (group.cfg.unitAnchorPoint == "LEFT" and "TOPRIGHT") or "TOP"
+                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
+                                       (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
+                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
+                                               (group.cfg.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
                 yOffset = group.cfg.groupSpacing
             end
 
@@ -151,6 +151,7 @@ function UF:CreateRaid()
     self:CreatePower()
     self:CreateName()
     self:CreateLevel()
+    self:CreateCombatFeedback()
 
     -- leader
     self:CreateLeaderIndicator()

@@ -40,6 +40,7 @@ function UF:CreateTargetTarget()
     self:CreateName()
     self:CreateLevel()
     self:CreatePortrait()
+    self:CreateCombatFeedback()
     self:CreateRange()
 
     self.Update = function(self)

@@ -26,3 +26,18 @@ UF.CreateCombatIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateCombatIndicator", UF.CreateCombatIndicator)
+
+UF.UpdateCombatIndicator = function(self)
+    if not self.CombatIndicator then
+        return
+    end
+
+    local cfg = self.cfg.combatIndicator
+    if cfg.enabled then
+        self:EnableElement("CombatIndicator")
+    else
+        self:DisableElement("CombatIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateCombatIndicator", UF.UpdateCombatIndicator)

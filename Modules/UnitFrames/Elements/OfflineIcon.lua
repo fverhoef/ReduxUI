@@ -12,3 +12,18 @@ UF.CreateOfflineIcon = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateOfflineIcon", UF.CreateOfflineIcon)
+
+UF.UpdateOfflineIcon = function(self)
+    if not self.OfflineIcon then
+        return
+    end
+
+    local cfg = self.cfg.offlineIcon
+    if cfg.enabled then
+        self:EnableElement("OfflineIcon")
+    else
+        self:DisableElement("OfflineIcon")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateOfflineIcon", UF.UpdateOfflineIcon)

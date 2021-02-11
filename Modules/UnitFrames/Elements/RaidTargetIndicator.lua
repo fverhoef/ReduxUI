@@ -19,3 +19,18 @@ UF.CreateRaidTargetIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateRaidTargetIndicator", UF.CreateRaidTargetIndicator)
+
+UF.UpdateRaidTargetIndicator = function(self)
+    if not self.RaidTargetIndicator then
+        return
+    end
+
+    local cfg = self.cfg.raidTargetIndicator
+    if cfg.enabled then
+        self:EnableElement("RaidTargetIndicator")
+    else
+        self:DisableElement("RaidTargetIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateRaidTargetIndicator", UF.UpdateRaidTargetIndicator)

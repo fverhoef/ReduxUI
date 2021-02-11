@@ -29,6 +29,7 @@
     <Script file="ResurrectIndicator.lua"/>
     <Script file="RestingIndicator.lua"/>
     <Script file="StatusFlash.lua"/>
+    <Script file="SummonIndicator.lua"/>
     <Script file="Tab.lua"/>
     <Script file="TargetIndicator.lua"/>
     <Script file="ThreatIndicator.lua"/>

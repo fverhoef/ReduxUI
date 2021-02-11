@@ -32,6 +32,7 @@ function UF:CreateNamePlate()
     self:CreatePower()
     self:CreateName()
     self:CreateLevel()
+    self:CreateCombatFeedback()
 
     -- auras
     self:CreateAuras()

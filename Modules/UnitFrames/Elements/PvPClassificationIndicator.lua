@@ -15,3 +15,18 @@ UF.CreatePvPClassificationIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreatePvPClassificationIndicator", UF.CreatePvPClassificationIndicator)
+
+UF.UpdatePvPClassificationIndicator = function(self)
+    if not self.PvPClassificationIndicator then
+        return
+    end
+
+    local cfg = self.cfg.pvpIndicator
+    if cfg.enabled then
+        self:EnableElement("PvPClassificationIndicator")
+    else
+        self:DisableElement("PvPClassificationIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdatePvPClassificationIndicator", UF.UpdatePvPClassificationIndicator)

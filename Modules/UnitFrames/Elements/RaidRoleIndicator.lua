@@ -15,3 +15,18 @@ UF.CreateRaidRoleIndicator = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateRaidRoleIndicator", UF.CreateRaidRoleIndicator)
+
+UF.UpdateRaidRoleIndicator = function(self)
+    if not self.RaidRoleIndicator then
+        return
+    end
+
+    local cfg = self.cfg.raidRoleIndicator
+    if cfg.enabled then
+        self:EnableElement("RaidRoleIndicator")
+    else
+        self:DisableElement("RaidRoleIndicator")
+    end
+end
+
+oUF:RegisterMetaFunction("UpdateRaidRoleIndicator", UF.UpdateRaidRoleIndicator)
