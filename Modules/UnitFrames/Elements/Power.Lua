@@ -9,7 +9,7 @@ UF.CreatePower = function(self)
     self.Power:SetFrameLevel(self:GetFrameLevel() - 2)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
-    self.Power.cfg = self.cfg.power
+    self.Power.config = self.config.power
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -24,7 +24,7 @@ UF.CreatePower = function(self)
     self.Power.Value:SetParent(self.Power)
     self.Power.Value:SetFont(UF.config.font, 10)
 
-    self.Power:CreateBorder(self.cfg.power.border.size)
+    self.Power:CreateBorder(self.config.power.border.size)
     self.Power:CreateShadow()
 
     self:Tag(self.Power.Value, "[curpp]")
@@ -39,51 +39,51 @@ UF.UpdatePower = function(self)
         return
     end
 
-    local cfg = self.cfg.power
-    if cfg.detached then
+    local config = self.config.power
+    if config.detached then
         R:UnlockDragFrame(self.Power)
     else
         R:LockDragFrame(self.Power, true)
     end
 
-    if cfg.enabled then
+    if config.enabled then
         self:EnableElement("Power")
 
         self.Power:SetStatusBarTexture(UF.config.statusbars.power)
-        self.Power:SetFrequentUpdates(self.cfg.power.frequentUpdates)
+        self.Power:SetFrequentUpdates(self.config.power.frequentUpdates)
         self.Power.colorClass = UF.config.colors.colorPowerClass
         self.Power.colorSmooth = UF.config.colors.colorPowerSmooth
         self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
 
-        if cfg.value.enabled then
+        if config.value.enabled then
             self.Power.Value:Show()
-            self.Power.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 10, cfg.value.fontOutline)
-            self.Power.Value:SetShadowOffset(cfg.value.fontShadow and 1 or 0, cfg.value.fontShadow and -1 or 0)
+            self.Power.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, config.value.fontOutline)
+            self.Power.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
-            if cfg.value.tag then
-                self:Tag(self.Power.Value, cfg.value.tag)
+            if config.value.tag then
+                self:Tag(self.Power.Value, config.value.tag)
             end
 
             self.Power.Value:ClearAllPoints()
-            self.Power.Value:SetPoint(unpack(cfg.value.point))
+            self.Power.Value:SetPoint(unpack(config.value.point))
         else
             self.Power.Value:Hide()
         end
 
-        self.Power:SetSize(unpack(cfg.size))
+        self.Power:SetSize(unpack(config.size))
         self.Power:ClearAllPoints()
-        if cfg.detached then
-            self.Power:SetPoint(unpack(cfg.point))
+        if config.detached then
+            self.Power:SetPoint(unpack(config.point))
         else
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.cfg.border.enabled and -2 or 0, 0)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.config.border.enabled and -2 or 0, 0)
         end
 
-        self.Power.Border:SetShown(cfg.detached and cfg.border.enabled)
-        self.Power:SetBorderPadding(cfg.border.enabled and 1 or 0, cfg.border.enabled and 1 or 0, 0, 0)
+        self.Power.Border:SetShown(config.detached and config.border.enabled)
+        self.Power:SetBorderPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
     
-        self.Power.Shadow:SetShown(cfg.detached and cfg.shadow.enabled)
-        self.Power:SetShadowPadding(cfg.border.enabled and 1 or 0, cfg.border.enabled and 1 or 1, 0, 0)
+        self.Power.Shadow:SetShown(config.detached and config.shadow.enabled)
+        self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 1, 0, 0)
     else
         self:DisableElement("Power")
     end

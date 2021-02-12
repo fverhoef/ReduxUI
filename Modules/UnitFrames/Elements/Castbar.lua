@@ -4,15 +4,15 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateCastbar = function(self)
-    local cfg = self.cfg.castbar
+    local config = self.config.castbar
 
     self.CastbarParent = CreateFrame("Frame", self:GetName() .. "CastbarParent", self)
     self.CastbarParent:SetFrameStrata("MEDIUM")
-    self.CastbarParent.cfg = cfg
+    self.CastbarParent.config = config
 
     -- statusbar
     self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self.CastbarParent)
-    self.Castbar.cfg = cfg
+    self.Castbar.config = config
     self.Castbar:SetFrameStrata("MEDIUM")
     self.Castbar:SetOrientation("HORIZONTAL")
     self.Castbar:SetScript("OnShow", function()
@@ -25,7 +25,7 @@ UF.CreateCastbar = function(self)
     end)
 
     -- border
-    self.CastbarParent:CreateBorder(cfg.borderSize)
+    self.CastbarParent:CreateBorder(config.borderSize)
     self.CastbarParent.Border:Hide()
     self.CastbarParent:CreateShadow()
     self.CastbarParent.Shadow:Hide()
@@ -41,7 +41,7 @@ UF.CreateCastbar = function(self)
 
     -- text
     self.Castbar.Text = self.Castbar:CreateFontString(nil, "OVERLAY")
-    self.Castbar.Text:SetFont(UF.config.font, cfg.fontSize or 10)
+    self.Castbar.Text:SetFont(UF.config.font, config.fontSize or 10)
     self.Castbar.Text:SetPoint("LEFT", self.Castbar, 2, 0)
     self.Castbar.Text:SetPoint("RIGHT", self.Castbar, -15, 0)
     self.Castbar.Text:SetJustifyH("LEFT")
@@ -49,7 +49,7 @@ UF.CreateCastbar = function(self)
 
     -- time
     self.Castbar.Time = self.Castbar:CreateFontString(nil, "OVERLAY")
-    self.Castbar.Time:SetFont(UF.config.font, cfg.fontSize or 10)
+    self.Castbar.Time:SetFont(UF.config.font, config.fontSize or 10)
     self.Castbar.Time:SetPoint("RIGHT", self.Castbar, -2, 0)
 
     -- icon
@@ -57,7 +57,7 @@ UF.CreateCastbar = function(self)
     self.Castbar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     self.Castbar.IconOverlay = CreateFrame("Frame", "$parentIconOverlay", self.Castbar)
     self.Castbar.IconOverlay:SetAllPoints(self.Castbar.Icon)
-    self.Castbar.IconOverlay:CreateBorder(cfg.borderSize)
+    self.Castbar.IconOverlay:CreateBorder(config.borderSize)
     self.Castbar.IconOverlay:SetBorderPadding(2)
 
     -- safezone/latency
@@ -80,17 +80,17 @@ UF.UpdateCastbar = function(self)
         return
     end
 
-    local cfg = self.cfg.castbar
-    if cfg.detached then
+    local config = self.config.castbar
+    if config.detached then
         R:UnlockDragFrame(self.CastbarParent)
     else
         R:LockDragFrame(self.CastbarParent, true)
     end
 
-    if cfg.enabled then
+    if config.enabled then
         self:EnableElement("Castbar")
         
-        local width, height = unpack(cfg.size)
+        local width, height = unpack(config.size)
         self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
         self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
 
@@ -98,27 +98,27 @@ UF.UpdateCastbar = function(self)
         self.Castbar.bg:SetVertexColor(0.3 * UF.config.colors.castbar[1], 0.3 * UF.config.colors.castbar[2],
                                        0.3 * UF.config.colors.castbar[3])
 
-        self.Castbar.Spark:SetSize(height - cfg.borderSize, height - cfg.borderSize)
+        self.Castbar.Spark:SetSize(height - config.borderSize, height - config.borderSize)
 
-        self.Castbar.Text:SetFont(cfg.font or UF.config.font, cfg.fontSize or 10, cfg.fontOutline)
-        self.Castbar.Text:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        self.Castbar.Text:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
+        self.Castbar.Text:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
-        self.Castbar.Time:SetFont(cfg.font or UF.config.font, cfg.fontSize or 10, cfg.fontOutline)
-        self.Castbar.Time:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        self.Castbar.Time:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
+        self.Castbar.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
-        local leftOffset = cfg.borderSize / 2 - 3
-        local bottomOffset = cfg.borderSize / 2 - 3
-        local rightOffset = -cfg.borderSize / 2 + 3
-        local topOffset = -cfg.borderSize / 2 + 3
+        local leftOffset = config.borderSize / 2 - 3
+        local bottomOffset = config.borderSize / 2 - 3
+        local rightOffset = -config.borderSize / 2 + 3
+        local topOffset = -config.borderSize / 2 + 3
 
-        if cfg.showIcon then
+        if config.showIcon then
             self.Castbar.Icon:Show()
 
-            local iconSize = height - (not cfg.showIconOutside and (cfg.borderSize / 2 + 1) or 0)
+            local iconSize = height - (not config.showIconOutside and (config.borderSize / 2 + 1) or 0)
             self.Castbar.Icon:SetSize(iconSize, iconSize)
             self.Castbar.IconOverlay:SetSize(iconSize, iconSize)
 
-            if cfg.showIconOutside then
+            if config.showIconOutside then
                 self.Castbar.Icon:SetPoint("RIGHT", self.Castbar, "LEFT", -8, 0)
                 self.Castbar.IconOverlay:Show()
             else
@@ -135,7 +135,7 @@ UF.UpdateCastbar = function(self)
         self.Castbar:SetPoint("BOTTOMLEFT", self.CastbarParent, "BOTTOMLEFT", leftOffset, bottomOffset)
         self.Castbar:SetPoint("TOPRIGHT", self.CastbarParent, "TOPRIGHT", rightOffset, topOffset)
 
-        if cfg.showSafeZone then
+        if config.showSafeZone then
             self.Castbar.SafeZone:Show()
         else
             self.Castbar.SafeZone:Hide()
@@ -143,7 +143,7 @@ UF.UpdateCastbar = function(self)
 
         self.CastbarParent:SetSize(width, height)
         self.CastbarParent:ClearAllPoints()
-        self.CastbarParent:SetPoint(unpack(cfg.point))
+        self.CastbarParent:SetPoint(unpack(config.point))
     else
         self:DisableElement("Castbar")
     end

@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreatePvPIndicator = function(self)
-    self.PvPIndicatorParent = CreateFrame("Frame", nil, self)
-    self.PvPIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.PvPIndicator = self.PvPIndicatorParent:CreateTexture("$parentPvPIcon", "OVERLAY", nil, 7)
+    self.PvPIndicator = self:CreateTexture("$parentPvPIcon", "OVERLAY", nil, 7)
+    self.PvPIndicator:SetParent(self.Overlay)
     self.PvPIndicator:SetSize(40, 42)
 
     return self.PvPIndicator
@@ -20,9 +18,13 @@ UF.UpdatePvPIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.pvpIndicator
-    if cfg.enabled then
+    local config = self.config.pvpIndicator
+    if config.enabled then
         self:EnableElement("UpdatePvPIndicator")
+
+        self.PvPIndicator:SetSize(unpack(config.size))
+        self.PvPIndicator:ClearAllPoints()
+        self.PvPIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("UpdatePvPIndicator")
     end

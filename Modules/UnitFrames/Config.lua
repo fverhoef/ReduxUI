@@ -1452,43 +1452,198 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
     }
 end
 
-function UF:CreateUnitIndicatorsOption(unit, order, inline, name)
+function UF:CreateUnitIndicatorOption(unit, indicatorName, order, title)
     return {
         type = "group",
-        name = name or "Indicators",
+        name = title,
         order = order,
-        inline = inline,
         args = {
-            combatIndicator = {type = "group", name = "Combat", order = 1, args = {}},
-            restingIndicator = {type = "group", name = "Resting", order = 2, hidden = unit ~= "player", args = {}},
-            pvpIndicator = {type = "group", name = "PvP Status", order = 3, args = {}},
-            pvpClassificationIndicator = {
-                type = "group",
-                name = "PvP Classification",
-                order = 4,
-                hidden = R.isClassic,
-                args = {}
-            },
-            masterLooterIndicator = {type = "group", name = "Master Looter", order = 5, hidden = R.isRetail, args = {}},
-            leaderIndicator = {type = "group", name = "Raid Leader", order = 6, args = {}},
-            assistantIndicator = {type = "group", name = "Raid Assistant", order =7, args = {}},
-            raidRoleIndicator = {type = "group", name = "Raid Role", order = 8, args = {}},
-            groupRoleIndicator = {type = "group", name = "Group Role", order = 9, hidden = R.isClassic, args = {}},
-            raidTargetIndicator = {type = "group", name = "Raid Target", order = 10, args = {}},
-            readyCheckIndicator = {type = "group", name = "Ready Check", order = 11, args = {}},
-            phaseIndicator = {type = "group", name = "Phase", order = 12, args = {}},
-            resurrectIndicator = {type = "group", name = "Resurrect", order = 13, args = {}},
-            summonIndicator = {type = "group", name = "Summon", order = 14, hidden = R.isClassic, args = {}},
-            questIndicator = {
-                type = "group",
-                name = "Quest Indicator",
-                order = 15,
-                hidden = R.isClassic or (unit ~= "target" and unit ~= "nameplates"),
-                args = {}
-            },
-            offlineIcon = {type = "group", name = "Offline Icon", order = 14, hidden = R.isClassic, args = {}},
+            enabled = UF:CreateUnitIndicatorEnabledOption(unit, indicatorName, 1),
+            point = UF:CreateUnitIndicatorPointOption(unit, indicatorName, 2),
+            size = UF:CreateUnitIndicatorSizeOption(unit, indicatorName, 3)
         }
     }
+end
+
+function UF:CreateUnitIndicatorEnabledOption(unit, indicatorName, order)
+    return {
+        type = "toggle",
+        name = "Enabled",
+        order = order,
+        get = function()
+            return UF.config[unit][indicatorName].enabled
+        end,
+        set = function(_, val)
+            UF.config[unit][indicatorName].enabled = val
+            UF:UpdateUnit(unit)
+        end
+    }
+end
+
+function UF:CreateUnitIndicatorPointOption(unit, indicatorName, order)
+    return {
+        type = "group",
+        name = "Position",
+        order = order,
+        inline = true,
+        args = {
+            point = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 1,
+                values = UF.anchorPoints,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit][indicatorName].point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit][indicatorName].point[1] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetX = {
+                type = "range",
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 2,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                get = function()
+                    return UF.config[unit][indicatorName].point[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit][indicatorName].point[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 3,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                get = function()
+                    return UF.config[unit][indicatorName].point[3]
+                end,
+                set = function(_, val)
+                    UF.config[unit][indicatorName].point[3] = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitIndicatorSizeOption(unit, indicatorName, order)
+    return {
+        type = "group",
+        name = "Size",
+        order = order,
+        inline = true,
+        args = {
+            width = {
+                type = "range",
+                name = "Width",
+                desc = "The width of the indicator.",
+                order = 1,
+                min = 0,
+                softMax = 100,
+                step = 1,
+                get = function()
+                    return UF.config[unit][indicatorName].size[1]
+                end,
+                set = function(_, val)
+                    UF.config[unit][indicatorName].size[1] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            height = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The height of the indicator.",
+                order = 2,
+                min = 0,
+                softMax = 100,
+                step = 1,
+                get = function()
+                    return UF.config[unit][indicatorName].size[2]
+                end,
+                set = function(_, val)
+                    UF.config[unit][indicatorName].size[2] = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
+function UF:CreateUnitIndicatorsOption(unit, order, inline, name)
+    local indicators = {type = "group", name = name or "Indicators", order = order, inline = inline, args = {}}
+
+    if not UF.defaults[unit] then
+        return
+    end
+
+    local args = indicators.args
+
+    if UF.defaults[unit].combatIndicator then
+        args.combatIndicator = UF:CreateUnitIndicatorOption(unit, "combatIndicator", #args, "Combat")
+    end
+    if UF.defaults[unit].restingIndicator then
+        args.restingIndicator = UF:CreateUnitIndicatorOption(unit, "restingIndicator", #args, "Resting")
+    end
+    if UF.defaults[unit].pvpIndicator then
+        args.pvpIndicator = UF:CreateUnitIndicatorOption(unit, "pvpIndicator", #args, "PvP Status")
+    end
+    if not R.isClassic and UF.defaults[unit].pvpClassificationIndicator then
+        args.pvpClassificationIndicator = UF:CreateUnitIndicatorOption(unit, "pvpClassificationIndicator", #args,
+                                                                       "PvP Classification")
+    end
+    if not R.isRetail and UF.defaults[unit].masterLooterIndicator then
+        args.masterLooterIndicator = UF:CreateUnitIndicatorOption(unit, "masterLooterIndicator", #args, "Master Looter")
+    end
+    if UF.defaults[unit].leaderIndicator then
+        args.leaderIndicator = UF:CreateUnitIndicatorOption(unit, "leaderIndicator", #args, "Raid Leader")
+    end
+    if UF.defaults[unit].assistantIndicator then
+        args.assistantIndicator = UF:CreateUnitIndicatorOption(unit, "assistantIndicator", #args, "Raid Assistant")
+    end
+    if UF.defaults[unit].raidRoleIndicator then
+        args.raidRoleIndicator = UF:CreateUnitIndicatorOption(unit, "raidRoleIndicator", #args, "Raid Role")
+    end
+    if not R.isClassic and UF.defaults[unit].groupRoleIndicator then
+        args.groupRoleIndicator = UF:CreateUnitIndicatorOption(unit, "groupRoleIndicator", #args, "Group Role")
+    end
+    if UF.defaults[unit].raidTargetIndicator then
+        args.raidTargetIndicator = UF:CreateUnitIndicatorOption(unit, "raidTargetIndicator", #args, "Raid Target Icon")
+    end
+    if UF.defaults[unit].readyCheckIndicator then
+        args.readyCheckIndicator = UF:CreateUnitIndicatorOption(unit, "readyCheckIndicator", #args, "Ready Check")
+    end
+    if UF.defaults[unit].phaseIndicator then
+        args.restingIndicator = UF:CreateUnitIndicatorOption(unit, "phaseIndicator", #args, "Phase")
+    end
+    if UF.defaults[unit].resurrectIndicator then
+        args.resurrectIndicator = UF:CreateUnitIndicatorOption(unit, "resurrectIndicator", #args, "Resurrect")
+    end
+    if not R.isClassic and UF.defaults[unit].summonIndicator then
+        args.summonIndicator = UF:CreateUnitIndicatorOption(unit, "summonIndicator", #args, "Summon")
+    end
+    if not R.isClassic and UF.defaults[unit].questIndicator then
+        args.questIndicator = UF:CreateUnitIndicatorOption(unit, "questIndicator", #args, "Quest")
+    end
+    if UF.defaults[unit].offlineIcon then
+        args.offlineIcon = UF:CreateUnitIndicatorOption(unit, "offlineIcon", #args, "Offline Icon")
+    end
+
+    return indicators
 end
 
 R:RegisterModuleConfig(UF, {
@@ -1547,6 +1702,7 @@ R:RegisterModuleConfig(UF, {
         size = {180, 42},
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -1602,21 +1758,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "LEFT", size = {42, 42}},
-        combatIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        restingIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", 0, 0}},
+        restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1668,6 +1823,7 @@ R:RegisterModuleConfig(UF, {
         size = {180, 42},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -1720,21 +1876,21 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, attachedPoint = "RIGHT", size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
         questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -1785,6 +1941,7 @@ R:RegisterModuleConfig(UF, {
         size = {95, 45},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 20,
         health = {
             enabled = true,
             value = {
@@ -1837,20 +1994,7 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, attachedPoint = "LEFT", size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1901,6 +2045,7 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
+        frameLevel = 20,
         health = {
             enabled = true,
             value = {
@@ -1953,20 +2098,8 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2017,6 +2150,7 @@ R:RegisterModuleConfig(UF, {
         size = {90, 45},
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -2069,20 +2203,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2133,6 +2267,7 @@ R:RegisterModuleConfig(UF, {
         size = {90, 30},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 20,
         health = {
             enabled = true,
             value = {
@@ -2185,20 +2320,7 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2250,6 +2372,7 @@ R:RegisterModuleConfig(UF, {
         size = {105, 30},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        frameLevel = 11,
         health = {
             enabled = true,
             value = {
@@ -2302,20 +2425,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = true, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 16,
@@ -2375,6 +2498,7 @@ R:RegisterModuleConfig(UF, {
         size = {90, 36},
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        frameLevel = 20,
         health = {
             enabled = true,
             value = {
@@ -2427,20 +2551,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 16,
@@ -2506,6 +2630,7 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -2558,20 +2683,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2622,6 +2747,7 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -2674,20 +2800,20 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2738,6 +2864,7 @@ R:RegisterModuleConfig(UF, {
         size = {175, 42},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -2790,20 +2917,137 @@ R:RegisterModuleConfig(UF, {
             tag = "[difficultycolor][level]"
         },
         portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        auras = {
+            enabled = false,
+            iconSize = 25,
+            spacing = 2,
+            numColumns = 5,
+            showDuration = true,
+            onlyShowPlayer = false,
+            numBuffs = 0,
+            onlyShowPlayerBuffs = true,
+            numDebuffs = 16,
+            onlyShowPlayerDebuffs = true,
+            showDebuffsOnTop = false
+        },
+        castbar = {
+            enabled = false,
+            size = {89, 15},
+            point = {"RIGHT", 20, 0},
+            showIcon = false,
+            showIconOutside = false,
+            showSafeZone = false,
+            borderSize = 12,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "NONE",
+            fontShadow = true
+        },
+        combatfeedback = {
+            enabled = false,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 19,
+            fontOutline = "OUTLINE",
+            fontShadow = false,
+            ignoreImmune = false,
+            ignoreDamage = false,
+            ignoreHeal = false,
+            ignoreEnergize = false,
+            ignoreOther = false
+        },
+        auraHighlight = {enabled = true, glow = true, border = true},
+        border = {enabled = true, size = 12},
+        shadow = {enabled = true},
+        fader = R.config.faders.onShow,
+        texture = nil,
+        textureColor = {0.5, 0.5, 0.5, 1}
+    },
+    arena = {
+        enabled = true,
+        size = {175, 42},
+        scale = 1,
+        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        frameLevel = 10,
+        health = {
+            enabled = true,
+            value = {
+                enabled = true,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curhp_status] ([perhp]%)"
+            }
+        },
+        power = {
+            enabled = true,
+            detached = false,
+            size = {150, 12},
+            border = {enabled = true, size = 12},
+            shadow = {enabled = true},
+            value = {
+                enabled = false,
+                point = {"CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curpp]",
+                frequentUpdates = true
+            }
+        },
+        name = {
+            enabled = true,
+            size = {155, 10},
+            point = {"TOPLEFT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "LEFT",
+            tag = "[name]"
+        },
+        level = {
+            enabled = false,
+            size = {20, 10},
+            point = {"TOPRIGHT", 0, 0},
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 13,
+            fontOutline = "NONE",
+            fontShadow = true,
+            justifyH = "RIGHT",
+            tag = "[difficultycolor][level]"
+        },
+        portrait = {enabled = false, detached = false, size = {42, 42}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2853,6 +3097,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {150, 16},
         scale = 1,
+        frameLevel = 10,
         health = {
             enabled = true,
             value = {
@@ -2904,22 +3149,8 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        leaderIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        assistantIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        masterLooterIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidRoleIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        readyCheckIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2958,7 +3189,6 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = false, glow = true, border = true},
         border = {enabled = true, size = 12},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3397,14 +3627,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowParty and "Hide Frames" or "Show Frames"
+                        return UF.headers.party.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the party frames.",
                     func = function()
-                        if not UF.forceShowParty then
-                            UF:ForceShowParty()
+                        if not UF.headers.party.forceShow then
+                            UF.headers.party:ForceShow()
                         else
-                            UF:UnforceShowParty()
+                            UF.headers.party:UnforceShow()
                         end
                     end
                 },
@@ -3514,14 +3744,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowRaid and "Hide Frames" or "Show Frames"
+                        return UF.headers.raid.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the raid frames.",
                     func = function()
-                        if not UF.forceShowRaid then
-                            UF:ForceShowRaid()
+                        if not UF.headers.raid.forceShow then
+                            UF.headers.raid:ForceShow()
                         else
-                            UF:UnforceShowRaid()
+                            UF.headers.raid:UnforceShow()
                         end
                     end
                 },
@@ -3626,14 +3856,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowTanks and "Hide Frames" or "Show Frames"
+                        return UF.headers.tank.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the tank frames.",
                     func = function()
-                        if not UF.forceShowTanks then
-                            UF:ForceShowTanks()
+                        if not UF.headers.tank.forceShow then
+                            UF.headers.tank:ForceShow()
                         else
-                            UF:UnforceShowTanks()
+                            UF.headers.tank:UnforceShow()
                         end
                     end
                 },
@@ -3706,14 +3936,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowAssist and "Hide Frames" or "Show Frames"
+                        return UF.headers.assist.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the assist frames.",
                     func = function()
-                        if not UF.forceShowAssist then
-                            UF:ForceShowAssist()
+                        if not UF.headers.assist.forceShow then
+                            UF.headers.assist:ForceShow()
                         else
-                            UF:UnforceShowAssist()
+                            UF.headers.assist:UnforceShow()
                         end
                     end
                 },
@@ -3787,14 +4017,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowBoss and "Hide Frames" or "Show Frames"
+                        return UF.headers.boss.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the boss frames.",
                     func = function()
-                        if not UF.forceShowBoss then
-                            UF:ForceShowBoss()
+                        if not UF.headers.boss.forceShow then
+                            UF.headers.boss:ForceShow()
                         else
-                            UF:UnforceShowBoss()
+                            UF.headers.boss:UnforceShow()
                         end
                     end
                 },
@@ -3868,14 +4098,14 @@ R:RegisterModuleOptions(UF, {
                     order = 3,
                     type = "execute",
                     name = function()
-                        return UF.forceShowArena and "Hide Frames" or "Show Frames"
+                        return UF.headers.arena.forceShow and "Hide Frames" or "Show Frames"
                     end,
                     desc = "Forcibly show/hide the arena frames.",
                     func = function()
-                        if not UF.forceShowArena then
-                            UF:ForceShowArena()
+                        if not UF.headers.arena.forceShow then
+                            UF.headers.arena:ForceShow()
                         else
-                            UF:UnforceShowArena()
+                            UF.headers.arena:UnforceShowArena()
                         end
                     end
                 },

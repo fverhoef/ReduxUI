@@ -81,7 +81,7 @@ UF.UpdateHealth = function(self)
         return
     end
 
-    local cfg = self.cfg.health
+    local config = self.config.health
     self.Health:SetStatusBarTexture(UF.config.statusbars.health)
     self.Health.colorClass = UF.config.colors.colorHealthClass
     self.Health.colorSmooth = UF.config.colors.colorHealthSmooth
@@ -92,25 +92,25 @@ UF.UpdateHealth = function(self)
     self.HealthPrediction.absorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
     self.HealthPrediction.healAbsorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
 
-    if cfg.value.enabled then
+    if config.value.enabled then
         self.Health.Value:Show()
-        self.Health.Value:SetFont(cfg.value.font or UF.config.font, cfg.value.fontSize or 11, cfg.value.fontOutline)
-        self.Health.Value:SetShadowOffset(cfg.value.fontShadow and 1 or 0, cfg.value.fontShadow and -1 or 0)
+        self.Health.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 11, config.value.fontOutline)
+        self.Health.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
-        if cfg.value.tag then
-            self:Tag(self.Health.Value, cfg.value.tag)
+        if config.value.tag then
+            self:Tag(self.Health.Value, config.value.tag)
         end
 
         self.Health.Value:ClearAllPoints()
-        self.Health.Value:SetPoint(unpack(cfg.value.point))
+        self.Health.Value:SetPoint(unpack(config.value.point))
     else
         self.Health.Value:Hide()
     end
 
-    local leftOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.portrait.enabled and not self.cfg.portrait.detached and self.cfg.portrait.size[1] or 0)
-    local rightOffset = self.cfg.border.enabled and -2 or 0
-    local topOffset = (self.cfg.border.enabled and -2 or 0)
-    local bottomOffset = (self.cfg.border.enabled and 2 or 0) + (self.cfg.power.enabled and not self.cfg.power.detached and self.cfg.power.size[2] or 0)
+    local leftOffset = (self.config.border.enabled and 2 or 0) + (self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached and self.config.portrait.size[1] or 0)
+    local rightOffset = self.config.border.enabled and -2 or 0
+    local topOffset = (self.config.border.enabled and -2 or 0)
+    local bottomOffset = (self.config.border.enabled and 2 or 0) + (self.config.power.enabled and not self.config.power.detached and self.config.power.size[2] or 0)
     self.Health:ClearAllPoints()
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", leftOffset, topOffset)
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", rightOffset, bottomOffset)

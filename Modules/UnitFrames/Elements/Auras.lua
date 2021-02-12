@@ -4,34 +4,34 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateAuras = function(self)
-    local cfg = self.cfg.auras
-    if cfg.showDebuffsOnTop then
+    local config = self.config.auras
+    if config.showDebuffsOnTop then
         self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
-        self.Debuffs.size = cfg.iconSize or 25
-        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(cfg.numDebuffs / (cfg.numColumns or 5))))
-        self.Debuffs:SetWidth(self.Debuffs.size * (cfg.numColumns or 5))
+        self.Debuffs.size = config.iconSize or 25
+        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.numDebuffs / (config.numColumns or 5))))
+        self.Debuffs:SetWidth(self.Debuffs.size * (config.numColumns or 5))
         self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5)
         self.Debuffs.initialAnchor = "BOTTOMLEFT"
         self.Debuffs["growth-x"] = "RIGHT"
         self.Debuffs["growth-y"] = "UP"
-        self.Debuffs.num = cfg.numDebuffs
-        self.Debuffs.onlyShowPlayer = cfg.onlyShowPlayerDebuffs
-        self.Debuffs.spacing = cfg.spacing
+        self.Debuffs.num = config.numDebuffs
+        self.Debuffs.onlyShowPlayer = config.onlyShowPlayerDebuffs
+        self.Debuffs.spacing = config.spacing
         self.Debuffs.showDebuffType = false
         self.Debuffs.PostCreateIcon = UF.PostCreateAura
         self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
 
         self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
-        self.Buffs.size = cfg.iconSize or 25
-        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(cfg.numBuffs / (cfg.numColumns or 5))))
-        self.Buffs:SetWidth(self.Buffs.size * (cfg.numColumns or 5))
+        self.Buffs.size = config.iconSize or 25
+        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.numBuffs / (config.numColumns or 5))))
+        self.Buffs:SetWidth(self.Buffs.size * (config.numColumns or 5))
         self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
         self.Buffs.initialAnchor = "TOPLEFT"
         self.Buffs["growth-x"] = "RIGHT"
         self.Buffs["growth-y"] = "DOWN"
-        self.Buffs.num = cfg.numBuffs
-        self.Buffs.onlyShowPlayer = cfg.onlyShowPlayerBuffs
-        self.Buffs.spacing = cfg.spacing
+        self.Buffs.num = config.numBuffs
+        self.Buffs.onlyShowPlayer = config.onlyShowPlayerBuffs
+        self.Buffs.spacing = config.spacing
         self.Buffs.showStealableBuffs = true
         self.Buffs.showBuffType = false
         self.Buffs.PostCreateIcon = UF.PostCreateAura
@@ -39,17 +39,17 @@ UF.CreateAuras = function(self)
     else
         self.Auras = CreateFrame("Frame", "$parentAuras", self)
         self.Auras.gap = true
-        self.Auras.size = cfg.iconSize or 25
-        self.Auras:SetHeight(self.Auras.size * (math.ceil((cfg.numBuffs + cfg.numDebuffs) / (cfg.numColumns or 5))))
-        self.Auras:SetWidth(self.Auras.size * (cfg.numColumns or 5))
+        self.Auras.size = config.iconSize or 25
+        self.Auras:SetHeight(self.Auras.size * (math.ceil((config.numBuffs + config.numDebuffs) / (config.numColumns or 5))))
+        self.Auras:SetWidth(self.Auras.size * (config.numColumns or 5))
         self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
         self.Auras.initialAnchor = "TOPLEFT"
         self.Auras["growth-x"] = "RIGHT"
         self.Auras["growth-y"] = "DOWN"
-        self.Auras.numBuffs = cfg.numBuffs
-        self.Auras.numDebuffs = cfg.numDebuffs
-        self.Auras.onlyShowPlayer = cfg.onlyShowPlayer
-        self.Auras.spacing = cfg.spacing
+        self.Auras.numBuffs = config.numBuffs
+        self.Auras.numDebuffs = config.numDebuffs
+        self.Auras.onlyShowPlayer = config.onlyShowPlayer
+        self.Auras.spacing = config.spacing
         self.Auras.showStealableBuffs = true
         self.Auras.showBuffType = false
         self.Auras.showDebuffType = false
@@ -94,8 +94,8 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
         else
             button.cd:Hide()
         end
-        if self.__owner and self.__owner.cfg then
-            button.cd:SetHideCountdownNumbers(not self.__owner.cfg.auras.showDuration)
+        if self.__owner and self.__owner.config then
+            button.cd:SetHideCountdownNumbers(not self.__owner.config.auras.showDuration)
         end
     end
 
@@ -103,7 +103,7 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
 end
 
 UF.UpdateAuras = function(self)
-    if self.cfg.auras.enabled then
+    if self.config.auras.enabled then
         self:EnableElement("Auras")
     else
         self:DisableElement("Auras")

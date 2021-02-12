@@ -4,6 +4,7 @@ local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-
 local oUF = ns.oUF or oUF
 
 UF.frames = {}
+UF.headers = {}
 UF.nameplates = {}
 UF.forceShowRaid = false
 
@@ -22,24 +23,25 @@ function UF:Initialize()
     UF.frames.focustarget = UF:SpawnFocusTarget()
     UF.frames.mouseover = UF:SpawnMouseOver()
 
-    UF.frames.partyHeader = UF:SpawnPartyHeader()
-    UF.frames.raidHeader = UF:SpawnRaidHeader()
-    UF.frames.tankHeader = UF:SpawnTankHeader()
-    UF.frames.assistHeader = UF:SpawnAssistHeader()
-    UF.frames.bossHeader = UF:SpawnBossHeader()
-    UF.frames.arenaHeader = UF:SpawnArenaHeader()
+    UF.headers.party = UF:SpawnPartyHeader()
+    UF.headers.raid = UF:SpawnRaidHeader()
+    UF.headers.tank = UF:SpawnTankHeader()
+    UF.headers.assist = UF:SpawnAssistHeader()
+    UF.headers.boss = UF:SpawnBossHeader()
+    UF.headers.arena = UF:SpawnArenaHeader()
 
     UF:SpawnNamePlates()
     UF:UpdateAll()
 
-    _G.BuffFrame.cfg = UF.config.buffFrame
-    R:CreateDragFrame(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
+    _G.BuffFrame.config = UF.config.buffFrame
+    R:CreateDragFrame(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200,
+                      {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
 end
 
 function UF:UpdateUnit(unit)
-    local frame = UF.frames[unit] or UF.frames[unit .. "Header"]
-    if frame and frame.Update then
-        frame:Update()
+    local object = UF.frames[unit] or UF.headers[unit]
+    if object and object.Update then
+        object:Update()
     elseif unit == "nameplates" then
         UF:UpdateNamePlates()
     end
@@ -48,22 +50,19 @@ end
 function UF:UpdateAll()
     UF:UpdateColors()
 
-    UF:UpdatePlayer(UF.frames.player)
-    UF:UpdateTarget(UF.frames.target)
-    UF:UpdateTargetTarget(UF.frames.targettarget)
-    UF:UpdatePet(UF.frames.pet)
-    UF:UpdateFocus(UF.frames.focus)
-    UF:UpdateFocusTarget(UF.frames.focustarget)
-    UF:UpdateMouseover(UF.frames.mouseover)
+    for _, frame in pairs(UF.frames) do
+        if frame and frame.Update then
+            frame:Update()
+        end
+    end
 
-    UF:UpdatePartyHeader()
-    UF:UpdateRaidHeader()
-    UF:UpdateTankHeader()
-    UF:UpdateAssistHeader()
-    UF:UpdateBossHeader()
-    UF:UpdateArenaHeader()
+    for _, header in pairs(UF.headers) do
+        if header and header.Update then
+            header:Update()
+        end
+    end
 
-    UF:UpdateNamePlates()
+    UF.UpdateNamePlates()
 end
 
 function UF:UpdateColors()
@@ -117,21 +116,122 @@ function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index,
     return header
 end
 
+function UF:SetupFrame(self)
+    self:SetFrameStrata(self.unit == "nameplate" and "BACKGROUND" or "LOW")
+    if not string.match(self.unit, "nameplate") then
+        self:RegisterForClicks("AnyUp")
+        self:SetScript("OnEnter", UnitFrame_OnEnter)
+        self:SetScript("OnLeave", UnitFrame_OnLeave)
+    end
+
+    self.Overlay = CreateFrame("Frame", "$parentOverlay", self)
+    self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
+    self.Overlay:SetAllPoints()
+
+    self:CreateBorder(self.config.border.size)
+    self:CreateShadow()
+
+    self:CreateHealth()
+    self:CreatePower()
+    if self.config.name then
+        self:CreateName()
+    end
+    if self.config.level then
+        self:CreateLevel()
+    end
+    if self.config.portrait then
+        self:CreatePortrait()
+    end
+    if self.config.combatfeedback then
+        self:CreateCombatFeedback()
+    end
+    if self.config.castbar then
+        self:CreateCastbar()
+    end
+
+    do -- indicators
+        if self.config.combatIndicator then
+            self:CreateCombatIndicator()
+        end
+        if self.config.restingIndicator then
+            self:CreateRestingIndicator()
+        end
+        if not R.isClassic and self.config.groupRoleIndicator then
+            self:CreateGroupRoleIndicator()
+        end
+        if self.config.raidRoleIndicator then
+            self:CreateRaidRoleIndicator()
+        end
+        if self.config.raidTargetIndicator then
+            self:CreateRaidTargetIndicator()
+        end
+        if self.config.readyCheckIndicator then
+            self:CreateReadyCheckIndicator()
+        end
+        if self.config.assistantIndicator then
+            self:CreateAssistantIndicator()
+        end
+        if self.config.leaderIndicator then
+            self:CreateLeaderIndicator()
+        end
+        if not R.isRetail and self.config.masterLooterIndicator then
+            self:CreateMasterLooterIndicator()
+        end
+        if self.config.pvpIndicator then
+            self:CreatePvPIndicator()
+        end
+        if not R.isClassic and self.config.pvpClassificationIndicator then
+            self:CreatePvPClassificationIndicator()
+        end
+        if not R.isClassic and self.config.phaseIndicator then
+            self:CreatePhaseIndicator()
+        end
+        if not R.isClassic and self.config.questIndicator then
+            self:CreateQuestIndicator()
+        end
+        if self.config.restingIndicator then
+            self:CreateResurrectIndicator()
+        end
+        if not R.isClassic and self.config.summonIndicator then
+            self:CreateSummonIndicator()
+        end
+        if self.config.offlineIcon then
+            self:CreateOfflineIcon()
+        end
+    end
+
+    if self.config.auras then
+        self:CreateAuras()
+    end
+    if self.config.auraHighlight then
+        self:CreateAuraHighlight()
+    end
+end
+
 function UF:UpdateFrame(self)
     if not self then
         return
     end
 
-    self:SetScale(self.cfg.scale or 1)
+    self:SetSize(unpack(self.config.size))
+    if self.config.point and not self.isGroupUnit then
+        self:SetPoint(unpack(self.config.point))
+    end
+    self:SetScale(self.config.scale or 1)
+    self:SetFrameLevel(self.config.frameLevel or 10)
 
     self:UpdateHealth()
     self:UpdatePower()
     self:UpdatePowerPrediction()
+    self:UpdateAdditionalPower()
     self:UpdateEnergyManaRegen()
     self:UpdateName()
     self:UpdateLevel()
-    self:UpdateCastbar()
+    self:UpdatePortrait()
     self:UpdateCombatFeedback()
+    self:UpdateCastbar()
+    self:UpdateAuras()
+    self:UpdateAuraHighlight()
 
     self:UpdateCombatIndicator()
     self:UpdateRestingIndicator()
@@ -150,19 +250,13 @@ function UF:UpdateFrame(self)
     self:UpdateSummonIndicator()
     self:UpdateOfflineIcon()
 
-    -- TODO: make the following configurable
-    self:UpdateAdditionalPower()
-    self:UpdatePortrait()
-    self:UpdateAuras()
-    self:UpdateAuraHighlight()
-
     if self.Texture then
-        self.Texture:SetTexture(self.cfg.texture)
-        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
+        self.Texture:SetTexture(self.config.texture)
+        self.Texture:SetVertexColor(unpack(self.config.textureColor))
     end
 
-    self.Border:SetShown(self.cfg.border.enabled)
-    self.Shadow:SetShown(self.cfg.shadow.enabled)
+    self.Border:SetShown(self.config.border.enabled)
+    self.Shadow:SetShown(self.config.shadow.enabled)
 
     self:UpdateAllElements("OnUpdate")
 end
@@ -326,8 +420,11 @@ function UF:UnforceShowHeader(header)
 end
 
 function UF:PLAYER_REGEN_DISABLED()
-    UF:UnforceShowParty()
-    UF:UnforceShowRaid()
+    for _, header in pairs(UF.headers) do
+        if header and header.UnforceShow then
+            header:UnforceShow()
+        end
+    end
 end
 
 UF:RegisterEvent("PLAYER_REGEN_DISABLED")

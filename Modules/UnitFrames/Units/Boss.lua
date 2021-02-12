@@ -6,7 +6,7 @@ local oUF = ns.oUF or oUF
 function UF:SpawnBossHeader()
     local config = UF.config.boss
     local default = UF.defaults.boss
-    
+
     if R.isRetail and config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Boss")
         parent:SetPoint(unpack(config.point))
@@ -37,29 +37,23 @@ function UF:SpawnBossHeader()
     end
 end
 
-function UF:UpdateBossHeader()  
-    if R.isRetail then
-        for i = 1, MAX_BOSS_FRAMES do
-            UF:UpdateBoss(UF.bossHeader.bosses[i])  
-        end
-    end
+function UF:UpdateBossHeader()
 end
 
 function UF:CreateBoss()
-    self.cfg = UF.config.boss
+    self.config = UF.config.boss
+    self.defaults = UF.defaults.boss
+    self.isGroupUnit = true
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateBoss(self)
-    end
+    self.Update = UF.UpdateBoss
 end
 
-function UF:UpdateBoss(self)
+function UF:UpdateBoss()
     if not self then
         return
     end
-    
+
     UF:UpdateFrame(self)
 end

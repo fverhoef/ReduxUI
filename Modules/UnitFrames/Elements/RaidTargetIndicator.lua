@@ -4,15 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateRaidTargetIndicator = function(self)
-    self.RaidTargetIndicatorParent = CreateFrame("Frame", nil, self)
-    self.RaidTargetIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.RaidTargetIndicator = self.RaidTargetIndicatorParent:CreateTexture("$parentRaidTargetIcon", "OVERLAY")
-    if self.Portrait then
-        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
-    else
-        self.RaidTargetIndicator:SetPoint("RIGHT", self.Health, "LEFT", -5, 0)
-    end
+    self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "OVERLAY", nil, 7)
+    self.RaidTargetIndicator:SetParent(self.Overlay)
     self.RaidTargetIndicator:SetSize(24, 24)
 
     return self.RaidTargetIndicator
@@ -25,9 +18,13 @@ UF.UpdateRaidTargetIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.raidTargetIndicator
-    if cfg.enabled then
+    local config = self.config.raidTargetIndicator
+    if config.enabled then
         self:EnableElement("RaidTargetIndicator")
+
+        self.RaidTargetIndicator:SetSize(unpack(config.size))
+        self.RaidTargetIndicator:ClearAllPoints()
+        self.RaidTargetIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("RaidTargetIndicator")
     end

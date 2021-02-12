@@ -4,11 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateAuraHighlight = function(self)
-    self.AuraHighlightParent = CreateFrame("Frame", nil, self)
-    self.AuraHighlightParent:SetFrameLevel(self:GetFrameLevel() + 10)
-    self.AuraHighlightParent:SetAllPoints(self)
-
-    self.AuraHighlight = self.AuraHighlightParent:CreateTexture("$parentAuraHighlight", "OVERLAY")
+    self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
+    self.AuraHighlight:SetParent(self.Overlay)
     self.AuraHighlight:SetInside(self)
     self.AuraHighlight:SetTexture(R.media.textures.blank)
     self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
@@ -31,15 +28,15 @@ UF.UpdateAuraHighlight = function(self)
         return
     end
 
-    local cfg = self.cfg.auraHighlight
-    if cfg and cfg.enabled then
+    local config = self.config.auraHighlight
+    if config.enabled then
         self:EnableElement("AuraHighlight")
 
         self.AuraHighlight:SetBlendMode(UF.config.colors.auraHighlight.blendMode)
         self.AuraHighlight:SetAllPoints(self.Health:GetStatusBarTexture())
 
-        self.AuraHighlightBackdrop = cfg.glow
-        self.AuraHighlightBorder = cfg.border
+        self.AuraHighlightBackdrop = config.glow
+        self.AuraHighlightBorder = config.border
     else
         self:EnableElement("AuraHighlight")
     end

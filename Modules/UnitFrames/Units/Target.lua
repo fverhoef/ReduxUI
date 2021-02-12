@@ -13,19 +13,10 @@ function UF:SpawnTarget()
 end
 
 function UF:CreateTarget()
-    self.cfg = UF.config.target
+    self.config = UF.config.target
+    self.defaults = UF.defaults.target
 
-    self:SetSize(unpack(self.cfg.size))
-    self:SetPoint(unpack(self.cfg.point))
-    self:SetFrameStrata("LOW")
-    self:SetFrameLevel(10)
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetSize(232, 100)
@@ -46,47 +37,13 @@ function UF:CreateTarget()
     self.RareEliteTexture:SetSize(232, 100)
     self.RareEliteTexture:SetAllPoints(self.Texture)
 
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreatePortrait()
-    self:CreateCombatFeedback()
-
-    self:CreatePvPIndicator()
-    self:CreateLeaderIndicator()
-    self:CreateAssistantIndicator()
-    self:CreateMasterLooterIndicator()
-    self:CreateRaidRoleIndicator()
-    self:CreateRaidTargetIndicator()
-
-    if not R.isClassic then
-        self:CreatePhaseIndicator()
-    end
-
-    self:CreateOfflineIcon()
-    self:CreateReadyCheckIndicator()
-    self:CreateResurrectIndicator()
-
-    if not R.isClassic then
-        self:CreateGroupRoleIndicator()
-    end
-
-    self:CreateThreatIndicator()
-    self:CreateAuras()
-    self:CreateCastbar()
-
     self:CreateRange()
-
-    if not R.isClassic then
-        UF.CreateQuestIndicator(self)
-    end
+    self:CreateThreatIndicator()
 
     if R.isClassic then
         self:CreateComboFrame()
     end
 
-    -- register events
     self:RegisterEvent("PLAYER_ENTERING_WORLD", UF.TargetFrame_OnEvent)
     self:RegisterEvent("PLAYER_REGEN_DISABLED", UF.TargetFrame_OnEvent, true)
     self:RegisterEvent("PLAYER_REGEN_ENABLED", UF.TargetFrame_OnEvent, true)
@@ -98,12 +55,10 @@ function UF:CreateTarget()
     self:RegisterEvent("UNIT_LEVEL", UF.TargetFrame_OnEvent)
     UF.UpdateTargetFrameTexture(self)
 
-    self.Update = function(self)
-        UF:UpdateTarget(self)
-    end
+    self.Update = UF.UpdateTarget
 end
 
-function UF:UpdateTarget(self)
+function UF:UpdateTarget()
     if not self then
         return
     end
@@ -119,6 +74,8 @@ function UF:UpdateTarget(self)
         self:EnableElement("LeaderIndicator")
         self:EnableElement("AssistantIndicator")
         self:EnableElement("MasterLooterIndicator")
+
+        self:SetSize(180, 42)
 
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
@@ -147,15 +104,15 @@ function UF:UpdateTarget(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetWidth(110)
-        self.NameParent:SetPoint("CENTER", self.Texture, -50, 19)
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("CENTER", self.Texture, -50, 19)
         self.Name:SetJustifyH("CENTER")
         self.Name:Show()
 
-        self.LevelParent:ClearAllPoints()
-        self.LevelParent:SetSize(20, 10)
-        self.LevelParent:SetPoint("CENTER", self.Texture, "CENTER", 62, -16)
+        self.Level:ClearAllPoints()
+        self.Level:SetSize(20, 10)
+        self.Level:SetPoint("CENTER", self.Texture, "CENTER", 62, -16)
         self.Level:SetJustifyH("CENTER")
         self.Level:Show()
 
@@ -164,6 +121,11 @@ function UF:UpdateTarget(self)
         self.Portrait:SetPoint("TOPRIGHT", self.Texture, -42, -12)
         self.Portrait:SetTexCoord(0, 1, 0, 1)
 
+        self.OfflineIcon:SetSize(64, 64)
+        self.OfflineIcon:ClearAllPoints()
+        self.OfflineIcon:SetPoint("CENTER", self.Portrait, 0, 0)
+
+        self.PvPIndicator:SetSize(40, 42)
         self.PvPIndicator:ClearAllPoints()
         self.PvPIndicator:SetPoint("TOPRIGHT", self.Texture, -16, -23)
 
@@ -185,11 +147,18 @@ function UF:UpdateTarget(self)
         end
         self.RaidRoleIndicator:ClearAllPoints()
         self.RaidRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
+        
+        self.RaidTargetIndicator:ClearAllPoints()
+        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
+        
+        self.ReadyCheckIndicator:ClearAllPoints()
+        self.ReadyCheckIndicator:SetPoint("TOPRIGHT", self.Portrait, -7, -7)
+        self.ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Portrait, 7, 7)
 
         self.CastbarParent:ClearAllPoints()
         self.CastbarParent:SetPoint("BOTTOMLEFT", self, "TOPLEFT", -2, 5)
         self.CastbarParent:SetWidth(122)
-        if self.cfg.auras.enabled and self.cfg.auras.showDebuffsOnTop then
+        if self.config.auras.enabled and self.config.auras.showDebuffsOnTop then
             self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.CastbarParent:GetHeight() + 5)
         end
     end

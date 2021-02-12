@@ -81,13 +81,13 @@ end
 
 function R:DragFrame_OnDragStop()
     self.frame:StopMovingOrSizing()
-    if self.frame.cfg and self.frame.cfg.point then
+    if self.frame.config and self.frame.config.point then
         local _, _, _, x, y = self.frame:GetPoint()
-        self.frame.cfg.point[1] = "CENTER"
-        self.frame.cfg.point[2] = "UIParent"
-        self.frame.cfg.point[3] = "CENTER"
-        self.frame.cfg.point[4] = x
-        self.frame.cfg.point[5] = y
+        self.frame.config.point[1] = "CENTER"
+        self.frame.config.point[2] = "UIParent"
+        self.frame.config.point[3] = "CENTER"
+        self.frame.config.point[4] = x
+        self.frame.config.point[5] = y
     end
 end
 
@@ -203,8 +203,8 @@ function R:ResetSize(frame)
         return
     end
     frame:SetSize(unpack(frame.defaultSize))
-    if frame.cfg then
-        frame.cfg.size = frame.defaultSize
+    if frame.config then
+        frame.config.size = frame.defaultSize
     end
 end
 
@@ -214,7 +214,7 @@ function R:ResetPoint(frame)
     end
     frame:ClearAllPoints()
     frame:SetPoint(unpack(frame.defaultPoint))
-    if frame.cfg then
-        frame.cfg.point = frame.defaultPoint
+    if frame.config then
+        frame.config.point = frame.defaultPoint
     end
 end

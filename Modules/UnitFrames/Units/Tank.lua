@@ -10,15 +10,19 @@ function UF:UpdateTankHeader()
 end
 
 function UF:CreateTank()
-    self.cfg = UF.config.tank
+    self.config = UF.config.tank
+    self.defaults = UF.defaults.tank
+    self.isGroupUnit = true
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateTank(self)
-    end
+    self.Update = UF.UpdateTank
 end
 
-function UF:UpdateTank(self)
+function UF:UpdateTank()
+    if not self then
+        return
+    end
+
+    UF:UpdateFrame(self)
 end

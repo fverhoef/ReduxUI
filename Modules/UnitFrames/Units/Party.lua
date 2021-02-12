@@ -12,47 +12,54 @@ function UF:SpawnPartyHeader()
         parent:SetPoint(unpack(config.point))
         parent:SetSize(200, 40)
         parent:Show()
+        parent.config = config
+        parent.defaults = default
 
         local group = UF:SpawnHeader("Party", UF.CreateParty, config, default, true)
-        group.cfg = config
         parent.group = group
 
         R:CreateDragFrame(parent, "Party", default.point, 200, 40)
 
         parent.Update = UF.UpdatePartyHeader
+        parent.ForceShow = UF.ForceShowParty
+        parent.UnforceShow = UF.UnforceShowParty
 
         return parent
     end
 end
 
 function UF:UpdatePartyHeader()
-    local group = UF.frames.partyHeader.group
+    local group = self.group
     if not group then
         return
     end
 
+    local config = self.config
+
     for i = 1, group:GetNumChildren() do
         local child = group:GetAttribute("child" .. i)
         child:ClearAllPoints()
-        UF:UpdateParty(child)
+        if child.Update then
+            child:Update()
+        end
     end
 
-    group:SetAttribute("point", group.cfg.unitAnchorPoint)
-    group:SetAttribute("columnAnchorPoint", group.cfg.unitAnchorPoint)
-    if group.cfg.unitAnchorPoint == "LEFT" or group.cfg.unitAnchorPoint == "RIGHT" then
-        group:SetAttribute("xOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "RIGHT" and -1 or 1))
+    group:SetAttribute("point", config.unitAnchorPoint)
+    group:SetAttribute("columnAnchorPoint", config.unitAnchorPoint)
+    if config.unitAnchorPoint == "LEFT" or config.unitAnchorPoint == "RIGHT" then
+        group:SetAttribute("xOffset", config.unitSpacing * (config.unitAnchorPoint == "RIGHT" and -1 or 1))
         group:SetAttribute("yOffset", 0)
-        group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+        group:SetAttribute("columnSpacing", config.unitSpacing)
     else
         group:SetAttribute("xOffset", 0)
-        group:SetAttribute("yOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "TOP" and -1 or 1))
-        group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+        group:SetAttribute("yOffset", config.unitSpacing * (config.unitAnchorPoint == "TOP" and -1 or 1))
+        group:SetAttribute("columnSpacing", config.unitSpacing)
     end
 
     group:SetAttribute("maxColumns", 1)
     group:SetAttribute("unitsPerColumn", 5)
-    group:SetAttribute("sortMethod", group.cfg.sortMethod)
-    group:SetAttribute("sortDir", group.cfg.sortDir)
+    group:SetAttribute("sortMethod", config.sortMethod)
+    group:SetAttribute("sortDir", config.sortDir)
 
     if not group.isForced then
         if not group.initialized then
@@ -62,63 +69,38 @@ function UF:UpdatePartyHeader()
         end
         group:SetAttribute("startingIndex", 1)
     end
-    UF:UpdateHeaderVisibility(group, (group.isForced and "show") or (group.cfg.showRaid and "party,raid") or "party")
+    UF:UpdateHeaderVisibility(group, (group.isForced and "show") or (config.showRaid and "party,raid") or "party")
 
     group:ClearAllPoints()
-    if group.cfg.unitAnchorPoint == "LEFT" then
-        group:SetPoint("TOPLEFT", UF.frames.partyHeader, "TOPLEFT")
-    elseif group.cfg.unitAnchorPoint == "RIGHT" then
-        group:SetPoint("TOPRIGHT", UF.frames.partyHeader, "TOPRIGHT")
-    elseif group.cfg.unitAnchorPoint == "BOTTOM" then
-        group:SetPoint("BOTTOMLEFT", UF.frames.partyHeader, "BOTTOMLEFT")
-    elseif group.cfg.unitAnchorPoint == "TOP" then
-        group:SetPoint("TOPLEFT", UF.frames.partyHeader, "TOPLEFT")
+    if config.unitAnchorPoint == "LEFT" then
+        group:SetPoint("TOPLEFT", self, "TOPLEFT")
+    elseif config.unitAnchorPoint == "RIGHT" then
+        group:SetPoint("TOPRIGHT", self, "TOPRIGHT")
+    elseif config.unitAnchorPoint == "BOTTOM" then
+        group:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
+    elseif config.unitAnchorPoint == "TOP" then
+        group:SetPoint("TOPLEFT", self, "TOPLEFT")
     end
 
-    group:SetAttribute("showPlayer", group.cfg.showPlayer)
-    group:SetAttribute("showSolo", group.cfg.showSolo)
-    group:SetAttribute("showParty", group.cfg.showParty)
-    group:SetAttribute("showRaid", group.cfg.showRaid)
+    group:SetAttribute("showPlayer", config.showPlayer)
+    group:SetAttribute("showSolo", config.showSolo)
+    group:SetAttribute("showParty", config.showParty)
+    group:SetAttribute("showRaid", config.showRaid)
 end
 
 function UF:CreateParty()
-    self.cfg = UF.config.party
+    self.config = UF.config.party
+    self.defaults = UF.defaults.party
+    self.isGroupUnit = true
 
-    self:SetSize(unpack(self.cfg.size))
-    self:SetFrameStrata("LOW")
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreatePortrait()
-    self:CreateCombatFeedback()
-    self:CreatePvPIndicator()
-    self:CreateLeaderIndicator()
-    self:CreateAssistantIndicator()
-    self:CreateMasterLooterIndicator()
-    self:CreateRaidTargetIndicator()
-    self:CreateOfflineIcon()
-    self:CreateReadyCheckIndicator()
-    self:CreateRaidRoleIndicator()
-    self:CreateResurrectIndicator()
+    self:CreateRange()
+    self:CreateAuraHighlight()
 
-    if not R.isClassic then
-        self:CreatePhaseIndicator()
-        self:CreateGroupRoleIndicator()
-    end
-
-    self:CreateAuras()
-    if self.cfg.auras.enabled then
+    if self.config.auras.enabled then
         if self.Auras then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
@@ -133,26 +115,10 @@ function UF:CreateParty()
         end
     end
 
-    self:CreateCastbar()
-    if self.cfg.castbar.enabled then
-        if self.cfg.castbar.showIcon and not self.cfg.castbar.showIconOutside then
-            local _, height = unpack(self.cfg.castbar.size)
-            local leftPadding = height - self.cfg.castbar.borderSize / 2 - 1
-            self.Castbar:SetPoint("LEFT", self, "RIGHT", 16 + leftPadding + 2, -5)
-        else
-            self.Castbar:SetPoint("LEFT", self, "RIGHT", 16, -5)
-        end
-    end
-
-    self:CreateRange()
-    self:CreateAuraHighlight()
-
-    self.Update = function(self)
-        UF:UpdateParty(self)
-    end
+    self.Update = UF.UpdateParty
 end
 
-function UF:UpdateParty(self)
+function UF:UpdateParty()
     if not self then
         return
     end
@@ -186,9 +152,9 @@ function UF:UpdateParty(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetWidth(110)
-        self.NameParent:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 5)
         self.Name:SetJustifyH("LEFT")
         self.Name:Show()
 
@@ -197,9 +163,11 @@ function UF:UpdateParty(self)
         self.Portrait:SetSize(37, 37)
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 7, -6)
-		self.Portrait:SetTexCoord(0, 1, 0, 1)
+        self.Portrait:SetTexCoord(0, 1, 0, 1)
 
         self.OfflineIcon:SetSize(48, 48)
+        self.OfflineIcon:ClearAllPoints()
+        self.OfflineIcon:SetPoint("CENTER", self.Portrait, 0, 0)
 
         self.PvPIndicator:SetSize(25, 25)
         self.PvPIndicator:ClearAllPoints()
@@ -217,11 +185,15 @@ function UF:UpdateParty(self)
         self.MasterLooterIndicator:ClearAllPoints()
         self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOPRIGHT", -4, 0)
 
+        self.RaidRoleIndicator:ClearAllPoints()
+        self.RaidRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
+
         self.RaidTargetIndicator:ClearAllPoints()
         self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, 2)
 
-        self.RaidRoleIndicator:ClearAllPoints()
-        self.RaidRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
+        self.ReadyCheckIndicator:ClearAllPoints()
+        self.ReadyCheckIndicator:SetPoint("TOPRIGHT", self.Portrait, -7, -7)
+        self.ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Portrait, 7, 7)
 
         if not R.isClassic then
             self.GroupRoleIndicator:ClearAllPoints()
@@ -234,13 +206,13 @@ function UF:UpdateParty(self)
 end
 
 function UF:ForceShowParty()
-    UF:ForceShowHeader(UF.frames.partyHeader.group)
+    UF:ForceShowHeader(self.group)
     UF:UpdatePartyHeader()
-    UF.forceShowParty = true
+    self.forceShow = true
 end
 
 function UF:UnforceShowParty()
-    UF:UnforceShowHeader(UF.frames.partyHeader.group)
+    UF:UnforceShowHeader(self.group)
     UF:UpdatePartyHeader()
-    UF.forceShowParty = false
+    self.forceShow = false
 end

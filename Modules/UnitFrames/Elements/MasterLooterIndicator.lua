@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateMasterLooterIndicator = function(self)
-    self.MasterLooterIndicatorParent = CreateFrame("Frame", nil, self)
-    self.MasterLooterIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.MasterLooterIndicator = self.MasterLooterIndicatorParent:CreateTexture(nil, "OVERLAY")
+    self.MasterLooterIndicator = self:CreateTexture(nil, "OVERLAY")
+    self.MasterLooterIndicator:SetParent(self.Overlay)
     self.MasterLooterIndicator:SetSize(14, 14)
 
     return self.MasterLooterIndicator
@@ -20,9 +18,13 @@ UF.UpdateMasterLooterIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.masterLooterIndicator
-    if cfg.enabled then
+    local config = self.config.masterLooterIndicator
+    if config.enabled then
         self:EnableElement("MasterLooterIndicator")
+
+        self.MasterLooterIndicator:SetSize(unpack(config.size))
+        self.MasterLooterIndicator:ClearAllPoints()
+        self.MasterLooterIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("MasterLooterIndicator")
     end

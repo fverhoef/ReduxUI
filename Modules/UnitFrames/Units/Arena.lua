@@ -21,7 +21,7 @@ function UF:SpawnArenaHeader()
 
             R:CreateDragFrame(arena, "Arena" .. i, default.point)
 
-            parent.Update = UF.UpdateRaidHeader
+            parent.Update = UF.UpdateArenaHeader
         end
     end
 end
@@ -35,24 +35,19 @@ function UF:UpdateArenaHeader()
 end
 
 function UF:CreateArena()
-    self.cfg = UF.config.arena
+    self.config = UF.config.arena
+    self.defaults = UF.defaults.arena
+    self.isGroupUnit = true
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateArena(self)
-    end
+    self.Update = UF.UpdateArena
 end
 
-function UF:UpdateArena(self)
+function UF:UpdateArena()
     if not self then
         return
     end
 
     UF:UpdateFrame(self)
-
-    if UF:IsBlizzardTheme() then
-    else
-    end
 end

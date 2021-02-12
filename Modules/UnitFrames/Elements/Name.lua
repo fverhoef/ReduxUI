@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateName = function(self)
-    self.NameParent = CreateFrame("Frame", nil, self)
-    self.NameParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.Name = self.NameParent:CreateFontString("$parentName", "OVERLAY")
+    self.Name = self:CreateFontString("$parentName", "OVERLAY")
+    self.Name:SetParent(self.Overlay)
     self.Name:SetFont(UF.config.font, 13, "OUTLINE")
 
     self:Tag(self.Name, "[name]")
@@ -22,23 +20,19 @@ UF.UpdateName = function(self)
         return
     end
 
-    local cfg = self.cfg.name
-    if cfg.enabled then
+    local config = self.config.name
+    if config.enabled then
         self.Name:Show()
-        self.Name:SetFont(cfg.font or UF.config.font, cfg.fontSize or 13, cfg.fontOutline or "OUTLINE")
-        self.Name:SetJustifyH(cfg.justifyH or "CENTER")
-        self.Name:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        self.Name:SetFont(config.font or UF.config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+        self.Name:SetJustifyH(config.justifyH or "CENTER")
+        self.Name:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
         self.Name:ClearAllPoints()
-        self.Name:SetAllPoints(self.NameParent)
+        self.Name:SetSize(unpack(config.size))
+        self.Name:SetPoint(unpack(config.point))
 
-        self.NameParent:Show()
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetSize(unpack(cfg.size))
-        self.NameParent:SetPoint(unpack(cfg.point))
-
-        if cfg.tag then
-            self:Tag(self.Name, cfg.tag)
+        if config.tag then
+            self:Tag(self.Name, config.tag)
         end
     else
         self.Name:Hide()

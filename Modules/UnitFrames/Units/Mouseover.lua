@@ -11,17 +11,15 @@ function UF:SpawnMouseOver()
 end
 
 function UF:CreateMouseover()
-    self.cfg = UF.config.mouseover
+    self.config = UF.config.mouseover
+    self.defaults = UF.defaults.mouseover
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateMouseover(self)
-    end
+    self.Update = UF.UpdateMouseover
 end
 
-function UF:UpdateMouseover(self)
+function UF:UpdateMouseover()
     if not self then
         return
     end

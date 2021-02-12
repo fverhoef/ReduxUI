@@ -186,7 +186,7 @@ end
 
 function MM:StyleMinimap()
     -- MinimapCluster
-    MinimapCluster.cfg = MM.config
+    MinimapCluster.config = MM.config
     MinimapCluster:SetSize(190, 240)
     MinimapCluster:ClearAllPoints()
     MinimapCluster:SetPoint(unpack(MM.config.point))

@@ -19,7 +19,7 @@ UF.UpdateEnergyManaRegen = function(self)
         return
     end
 
-    if self.cfg.power.energyManaRegen then
+    if self.config.power.energyManaRegen then
         self:EnableElement("EnergyManaRegen")
     else
         self:DisableElement("EnergyManaRegen")

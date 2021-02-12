@@ -12,13 +12,14 @@ function UF:SpawnRaidHeader()
         parent:SetPoint(unpack(config.point))
         parent:SetSize(200, 40)
         parent:Show()
+        parent.config = config
+        parent.defaults = default
         parent.groups = {}
 
         oUF:RegisterStyle(addonName .. "Raid", UF.CreateRaid)
         oUF:SetActiveStyle(addonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
             local group = UF:SpawnHeader("Raid", UF.CreateRaid, config, default, false, i)
-            group.cfg = config
             parent.groups[i] = group
         end
 
@@ -30,45 +31,50 @@ function UF:SpawnRaidHeader()
         _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
 
         parent.Update = UF.UpdateRaidHeader
+        parent.ForceShow = UF.ForceShowRaid
+        parent.UnforceShow = UF.UnforceShowRaid
 
         return parent
     end
 end
 
 function UF:UpdateRaidHeader()
-    if not UF.frames.raidHeader then
+    if not self or not self.groups then
         return
     end
 
-    for i, group in ipairs(UF.frames.raidHeader.groups) do
+    local config = self.config
+
+    for i, group in ipairs(self.groups) do
         group:ClearAllPoints()
 
         for j = 1, group:GetNumChildren() do
             local child = group:GetAttribute("child" .. j)
-            child:ClearAllPoints()
-            UF:UpdateRaid(child)
+            if child.Update then
+                child:Update()
+            end
         end
 
-        group:SetAttribute("point", group.cfg.unitAnchorPoint)
-        if group.cfg.unitAnchorPoint == "LEFT" or group.cfg.unitAnchorPoint == "RIGHT" then
-            group:SetAttribute("xOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "RIGHT" and -1 or 1))
+        group:SetAttribute("point", config.unitAnchorPoint)
+        if config.unitAnchorPoint == "LEFT" or config.unitAnchorPoint == "RIGHT" then
+            group:SetAttribute("xOffset", config.unitSpacing * (config.unitAnchorPoint == "RIGHT" and -1 or 1))
             group:SetAttribute("yOffset", 0)
-            group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+            group:SetAttribute("columnSpacing", config.unitSpacing)
         else
             group:SetAttribute("xOffset", 0)
-            group:SetAttribute("yOffset", group.cfg.unitSpacing * (group.cfg.unitAnchorPoint == "TOP" and -1 or 1))
-            group:SetAttribute("columnSpacing", group.cfg.unitSpacing)
+            group:SetAttribute("yOffset", config.unitSpacing * (config.unitAnchorPoint == "TOP" and -1 or 1))
+            group:SetAttribute("columnSpacing", config.unitSpacing)
         end
 
-        -- group:SetAttribute("columnAnchorPoint", group.cfg.columnAnchorPoint)
+        -- group:SetAttribute("columnAnchorPoint", config.columnAnchorPoint)
 
-        group:SetAttribute("maxColumns", group.cfg.raidWideSorting and 40 or 1)
-        group:SetAttribute("unitsPerColumn", group.cfg.raidWideSorting and 40 or 5)
+        group:SetAttribute("maxColumns", config.raidWideSorting and 40 or 1)
+        group:SetAttribute("unitsPerColumn", config.raidWideSorting and 40 or 5)
 
-        group:SetAttribute("groupBy", group.cfg.groupBy)
-        group:SetAttribute("groupingOrder", group.cfg.groupingOrder)
-        group:SetAttribute("sortMethod", group.cfg.sortMethod)
-        group:SetAttribute("sortDir", group.cfg.sortDir)
+        group:SetAttribute("groupBy", config.groupBy)
+        group:SetAttribute("groupingOrder", config.groupingOrder)
+        group:SetAttribute("sortMethod", config.sortMethod)
+        group:SetAttribute("sortDir", config.sortDir)
 
         if not group.isForced then
             if not group.initialized then
@@ -78,155 +84,99 @@ function UF:UpdateRaidHeader()
             end
             group:SetAttribute("startingIndex", 1)
         end
-        UF:UpdateHeaderVisibility(group, (group.isForced and "show") or group.cfg.visibility or "show")
+        UF:UpdateHeaderVisibility(group, (group.isForced and "show") or config.visibility or "show")
 
-        group:SetAttribute("showPlayer", group.cfg.showPlayer)
-        group:SetAttribute("showSolo", group.cfg.showSolo)
-        group:SetAttribute("showParty", group.cfg.showParty)
-        group:SetAttribute("showRaid", group.cfg.showRaid)
+        group:SetAttribute("showPlayer", config.showPlayer)
+        group:SetAttribute("showSolo", config.showSolo)
+        group:SetAttribute("showParty", config.showParty)
+        group:SetAttribute("showRaid", config.showRaid)
 
         if i == 1 then
             local groupAnchorPoint
-            if group.cfg.groupAnchorPoint == "LEFT" then
-                groupAnchorPoint = group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT" or "TOPLEFT"
-            elseif group.cfg.groupAnchorPoint == "RIGHT" then
-                groupAnchorPoint = group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT" or "TOPRIGHT"
-            elseif group.cfg.groupAnchorPoint == "TOP" then
-                groupAnchorPoint = group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT" or "TOPLEFT"
-            elseif group.cfg.groupAnchorPoint == "BOTTOM" then
-                groupAnchorPoint = group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT" or "TOPLEFT"
+            if config.groupAnchorPoint == "LEFT" then
+                groupAnchorPoint = config.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT" or "TOPLEFT"
+            elseif config.groupAnchorPoint == "RIGHT" then
+                groupAnchorPoint = config.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT" or "TOPRIGHT"
+            elseif config.groupAnchorPoint == "TOP" then
+                groupAnchorPoint = config.unitAnchorPoint == "RIGHT" and "TOPRIGHT" or "TOPLEFT"
+            elseif config.groupAnchorPoint == "BOTTOM" then
+                groupAnchorPoint = config.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT" or "TOPLEFT"
             end
 
-            group:SetPoint(groupAnchorPoint, UF.frames.raidHeader, groupAnchorPoint)
+            group:SetPoint(groupAnchorPoint, self, groupAnchorPoint)
         else
             local groupAnchorPoint, groupRelativeAnchorPoint, xOffset, yOffset
-            if group.cfg.groupAnchorPoint == "LEFT" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
-                                       (group.cfg.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
-                                               (group.cfg.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
-                xOffset = group.cfg.groupSpacing
-            elseif group.cfg.groupAnchorPoint == "RIGHT" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
-                                       (group.cfg.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
-                                               (group.cfg.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
-                xOffset = -group.cfg.groupSpacing
-            elseif group.cfg.groupAnchorPoint == "TOP" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
-                                       (group.cfg.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
-                                               (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
-                yOffset = -group.cfg.groupSpacing
-            elseif group.cfg.groupAnchorPoint == "BOTTOM" then
-                groupAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
-                                       (group.cfg.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
-                groupRelativeAnchorPoint = (group.cfg.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
-                                               (group.cfg.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
-                yOffset = group.cfg.groupSpacing
+            if config.groupAnchorPoint == "LEFT" then
+                groupAnchorPoint = (config.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
+                                       (config.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
+                groupRelativeAnchorPoint = (config.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
+                                               (config.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
+                xOffset = config.groupSpacing
+            elseif config.groupAnchorPoint == "RIGHT" then
+                groupAnchorPoint = (config.unitAnchorPoint == "BOTTOM" and "BOTTOMRIGHT") or
+                                       (config.unitAnchorPoint == "TOP" and "TOPRIGHT") or "RIGHT"
+                groupRelativeAnchorPoint = (config.unitAnchorPoint == "BOTTOM" and "BOTTOMLEFT") or
+                                               (config.unitAnchorPoint == "TOP" and "TOPLEFT") or "LEFT"
+                xOffset = -config.groupSpacing
+            elseif config.groupAnchorPoint == "TOP" then
+                groupAnchorPoint = (config.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
+                                       (config.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
+                groupRelativeAnchorPoint = (config.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
+                                               (config.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
+                yOffset = -config.groupSpacing
+            elseif config.groupAnchorPoint == "BOTTOM" then
+                groupAnchorPoint = (config.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT") or
+                                       (config.unitAnchorPoint == "LEFT" and "BOTTOMLEFT") or "BOTTOM"
+                groupRelativeAnchorPoint = (config.unitAnchorPoint == "RIGHT" and "TOPRIGHT") or
+                                               (config.unitAnchorPoint == "LEFT" and "TOPLEFT") or "TOP"
+                yOffset = config.groupSpacing
             end
 
-            group:SetPoint(groupAnchorPoint, UF.frames.raidHeader.groups[i - 1], groupRelativeAnchorPoint, xOffset or 0,
-                           yOffset or 0)
+            group:SetPoint(groupAnchorPoint, self.groups[i - 1], groupRelativeAnchorPoint, xOffset or 0, yOffset or 0)
         end
     end
 end
 
 function UF:CreateRaid()
-    self.cfg = UF.config.raid
+    self.config = UF.config.raid
+    self.defaults = UF.defaults.raid
+    self.isGroupUnit = true
 
-    local width, height = unpack(self.cfg.size)
-    self:SetSize(width, height)
-    self:SetFrameStrata("LOW")
-    self:SetFrameLevel(20)
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
-
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreateCombatFeedback()
-
-    -- leader
-    self:CreateLeaderIndicator()
-    self.LeaderIndicator:SetSize(14, 14)
-    self.LeaderIndicator:ClearAllPoints()
-    self.LeaderIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", -6, 5)
-
-    -- assistant
-    self:CreateAssistantIndicator()
-    self.AssistantIndicator:ClearAllPoints()
-    self.AssistantIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", -6, 5)
-
-    -- master loot
-    self:CreateMasterLooterIndicator()
-    self.MasterLooterIndicator:ClearAllPoints()
-    self.MasterLooterIndicator:SetPoint("TOPLEFT", self, "TOPLEFT", 10, 5)
-
-    -- raid role
-    self:CreateRaidRoleIndicator()
-    self.RaidRoleIndicator:SetSize(14, 14)
-    self.RaidRoleIndicator:ClearAllPoints()
-    self.RaidRoleIndicator:SetPoint("TOPRIGHT", self, "TOPRIGHT", 6, 5)
-
-    -- raid target
-    self:CreateRaidTargetIndicator()
-    self.RaidTargetIndicator:SetSize(20, 20)
-    self.RaidTargetIndicator:ClearAllPoints()
-    self.RaidTargetIndicator:SetPoint("TOP", self, "TOP", 0, 10)
-
-    -- ready check
-    self:CreateReadyCheckIndicator()
-    self.ReadyCheckIndicator:SetSize(24, 24)
-    self.ReadyCheckIndicator:ClearAllPoints()
-    self.ReadyCheckIndicator:SetPoint("LEFT", self, "RIGHT", -12, 0)
-
-    self:CreateResurrectIndicator()
+    UF:SetupFrame(self)
 
     self:CreateRange()
-    self:CreateAuraHighlight()
 
-    self.Update = function(self)
-        UF:UpdateRaid(self)
-    end
+    self.Update = UF.UpdateRaid
 end
 
-function UF:UpdateRaid(self)
+function UF:UpdateRaid()
     if not self then
         return
     end
 
     UF:UpdateFrame(self)
-
-    self:SetSize(unpack(self.cfg.size))
 end
 
 function UF:ForceShowRaid()
-    if InCombatLockdown() or not UF.frames.raidHeader then
+    if InCombatLockdown() then
         return
     end
 
-    for _, group in ipairs(UF.frames.raidHeader.groups) do
+    for _, group in ipairs(self.groups) do
         UF:ForceShowHeader(group)
     end
 
-    UF.forceShowRaid = true
+    self.forceShow = true
 end
 
 function UF:UnforceShowRaid()
-    if InCombatLockdown() or not UF.frames.raidHeader then
+    if InCombatLockdown() then
         return
     end
 
-    for _, group in ipairs(UF.frames.raidHeader.groups) do
+    for _, group in ipairs(self.groups) do
         UF:UnforceShowHeader(group)
     end
 
-    UF.forceShowRaid = false
+    self.forceShow = false
 end

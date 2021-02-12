@@ -19,13 +19,13 @@ UF.UpdatePortrait = function(self)
         return
     end
 
-    local cfg = self.cfg.portrait
-    if cfg.enabled then
+    local config = self.config.portrait
+    if config.enabled then
         self:EnableElement("Portrait")
 
-        self.Portrait:SetSize(unpack(cfg.size))
+        self.Portrait:SetSize(unpack(config.size))
 
-        local xOffset = self.cfg.border.enabled and 2 or 0
+        local xOffset = self.config.border.enabled and 2 or 0
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, 0)
         self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, 0)

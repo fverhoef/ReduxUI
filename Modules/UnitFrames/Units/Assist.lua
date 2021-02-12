@@ -10,15 +10,19 @@ function UF:UpdateAssistHeader()
 end
 
 function UF:CreateAssist()
-    self.cfg = UF.config.assist
+    self.config = UF.config.assist
+    self.defaults = UF.defaults.assist
+    self.isGroupUnit = true
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateAssist(self)
-    end
+    self.Update = UF.UpdateAssist
 end
 
 function UF:UpdateAssist()
+    if not self then
+        return
+    end
+
+    UF:UpdateFrame(self)
 end

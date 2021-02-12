@@ -4,19 +4,16 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateRestingIndicator = function(self)
-    self.RestingIndicatorParent = CreateFrame("Frame", nil, self)
-    self.RestingIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.RestingIndicator = self.RestingIndicatorParent:CreateTexture("$parentRestingIcon", "OVERLAY")
-    self.RestingIndicator:SetPoint("TOPLEFT", self.Texture, 39, -50)
+    self.RestingIndicator = self:CreateTexture("$parentRestingIcon", "OVERLAY")
+    self.RestingIndicator:SetParent(self.Overlay)
+    self.RestingIndicator:SetDrawLayer("OVERLAY", 7)
     self.RestingIndicator:SetSize(31, 31) -- 31,34
 
     self.RestingIndicator.Glow = self:CreateTexture("$parentRestingIconGlow", "OVERLAY")
     self.RestingIndicator.Glow:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
     self.RestingIndicator.Glow:SetTexCoord(0.0, 0.5, 0.5, 1.0)
     self.RestingIndicator.Glow:SetBlendMode("ADD")
-    self.RestingIndicator.Glow:SetSize(32, 32)
-    self.RestingIndicator.Glow:SetPoint("TOPLEFT", self.RestingIndicator)
+    self.RestingIndicator.Glow:SetAllPoints(self.RestingIndicator)
     self.RestingIndicator.Glow:SetAlpha(0)
     self.RestingIndicator.Glow:Hide()
 
@@ -30,9 +27,13 @@ UF.UpdateRestingIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.restingIndicator
-    if cfg.enabled then
+    local config = self.config.restingIndicator
+    if config.enabled then
         self:EnableElement("RestingIndicator")
+
+        self.RestingIndicator:SetSize(unpack(config.size))
+        self.RestingIndicator:ClearAllPoints()
+        self.RestingIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("RestingIndicator")
     end

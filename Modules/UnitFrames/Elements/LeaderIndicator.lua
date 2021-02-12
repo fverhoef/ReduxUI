@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateLeaderIndicator = function(self)
-    self.LeaderIndicatorParent = CreateFrame("Frame", nil, self)
-    self.LeaderIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.LeaderIndicator = self.LeaderIndicatorParent:CreateTexture("$parentLeaderIcon", "OVERLAY")
+    self.LeaderIndicator = self:CreateTexture("$parentLeaderIcon", "OVERLAY")
+    self.LeaderIndicator:SetParent(self.Overlay)
     self.LeaderIndicator:SetSize(16, 16)
 
     return self.LeaderIndicator
@@ -20,11 +18,13 @@ UF.UpdateLeaderIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.leaderIndicator
-    if cfg.enabled then
+    local config = self.config.leaderIndicator
+    if config.enabled then
         self:EnableElement("LeaderIndicator")
-        self.LeaderIndicator:SetSize(unpack(cfg.size))
-        self.LeaderIndicator:SetPoint(unpack(cfg.point))
+
+        self.LeaderIndicator:SetSize(unpack(config.size))
+        self.LeaderIndicator:ClearAllPoints()
+        self.LeaderIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("LeaderIndicator")
     end

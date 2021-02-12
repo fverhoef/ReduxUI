@@ -13,17 +13,15 @@ function UF:SpawnFocusTarget()
 end
 
 function UF:CreateFocusTarget()
-    self.cfg = UF.config.focustarget
+    self.config = UF.config.focustarget
+    self.defaults = UF.defaults.focustarget
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
-    self.Update = function(self)
-        UF:UpdateFocusTarget(self)
-    end
+    self.Update = UF.UpdateFocusTarget
 end
 
-function UF:UpdateFocusTarget(self)
+function UF:UpdateFocusTarget()
     if not self then
         return
     end

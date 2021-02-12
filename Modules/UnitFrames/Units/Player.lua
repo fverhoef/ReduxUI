@@ -13,54 +13,17 @@ function UF:SpawnPlayer()
 end
 
 function UF:CreatePlayer()
-    self.cfg = UF.config.player
+    self.config = UF.config.player
+    self.defaults = UF.defaults.player
 
-    self:SetSize(unpack(self.cfg.size))
-    self:SetPoint(unpack(self.cfg.point))
-    self:SetFrameStrata("LOW")
-    self:SetFrameLevel(10)
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
-    self:CreateHealth()
-    self:CreatePower()
-
-    if R.PlayerClass == "DRUID" then
-        self:CreateAdditionalPower()
-    end
-
+    self:CreateAdditionalPower()
     self:CreatePowerPrediction()
     self:CreateEnergyManaRegen()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreatePortrait()
-    self:CreateCombatFeedback()
 
-    self:CreatePvPIndicator()
-    self:CreateLeaderIndicator()
-    self:CreateAssistantIndicator()
-    self:CreateMasterLooterIndicator()
-    self:CreateRaidRoleIndicator()
-    self:CreateRaidTargetIndicator()
-
-    if not R.isClassic then
-        self:CreateGroupRoleIndicator()
-        self:CreatePhaseIndicator()
-        self:CreatePvPClassificationIndicator()
-        self:CreateSummonIndicator()
-    end
-
-    self:CreateReadyCheckIndicator()
-    self:CreateOfflineIcon()
-
-    UF.CreateRestingIndicator(self)
     self.RestingIndicator.PostUpdate = function()
         self.RestingIndicator.Glow:SetShown(self.RestingIndicator:IsShown())
         if UF:IsBlizzardTheme() and (self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown()) then
@@ -69,7 +32,6 @@ function UF:CreatePlayer()
             self.Level:SetAlpha(1)
         end
     end
-    UF.CreateCombatIndicator(self)
     self.CombatIndicator.PostUpdate = function()
         self.CombatIndicator.Glow:SetShown(self.CombatIndicator:IsShown())
         if UF:IsBlizzardTheme() and (self.RestingIndicator:IsShown() or self.CombatIndicator:IsShown()) then
@@ -78,14 +40,12 @@ function UF:CreatePlayer()
             self.Level:SetAlpha(1)
         end
     end
-    self:CreateResurrectIndicator()
+    
     -- UF.CreateStatusFlash(self)
-    self:CreateThreatIndicator()
     self:CreateTab()
+    self:CreateThreatIndicator()
 
-    self:CreateAuras()
-    self:CreateCastbar()
-
+    -- TODO: replace with oUF class power?
     if not R.isClassic then
         self:CreateComboFrame()
     end
@@ -102,12 +62,10 @@ function UF:CreatePlayer()
     R:CreateDragFrame(self.Power, "Player Power", UF.defaults.player.power.point)
     R:CreateDragFrame(self.CastbarParent, "Player Castbar", UF.defaults.player.castbar.point)
 
-    self.Update = function(self)
-        UF:UpdatePlayer(self)
-    end
+    self.Update = UF.UpdatePlayer
 end
 
-function UF:UpdatePlayer(self)
+function UF:UpdatePlayer()
     if not self then
         return
     end
@@ -123,6 +81,8 @@ function UF:UpdatePlayer(self)
         self:EnableElement("LeaderIndicator")
         self:EnableElement("AssistantIndicator")
         self:EnableElement("MasterLooterIndicator")
+
+        self:SetSize(180, 42)
 
         self.Health:ClearAllPoints()
         self.Health.Value:ClearAllPoints()
@@ -162,15 +122,15 @@ function UF:UpdatePlayer(self)
         self.Power.Shadow:Hide()
         UF.UpdatePowerPrediction(self)
 
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetWidth(110)
-        self.NameParent:SetPoint("CENTER", self.Texture, 50, 19)
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("CENTER", self.Texture, 50, 19)
         self.Name:SetJustifyH("CENTER")
         self.Name:Show()
 
-        self.LevelParent:ClearAllPoints()
-        self.LevelParent:SetSize(20, 10)
-        self.LevelParent:SetPoint("CENTER", self.Texture, "CENTER", -60, -16)
+        self.Level:ClearAllPoints()
+        self.Level:SetSize(20, 10)
+        self.Level:SetPoint("CENTER", self.Texture, "CENTER", -60, -16)
         self.Level:SetJustifyH("CENTER")
         self.Level:Show()
 
@@ -179,6 +139,7 @@ function UF:UpdatePlayer(self)
         self.Portrait:SetPoint("TOPLEFT", self.Texture, 42, -12)
         self.Portrait:SetTexCoord(0, 1, 0, 1)
 
+        self.PvPIndicator:SetSize(40, 42)
         self.PvPIndicator:ClearAllPoints()
         self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 18, -20)
 
@@ -200,17 +161,32 @@ function UF:UpdatePlayer(self)
         end
         self.RaidRoleIndicator:ClearAllPoints()
         self.RaidRoleIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, -2)
+        
+        self.RaidTargetIndicator:ClearAllPoints()
+        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
+        
+        self.ReadyCheckIndicator:ClearAllPoints()
+        self.ReadyCheckIndicator:SetPoint("TOPRIGHT", self.Portrait, -7, -7)
+        self.ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Portrait, 7, 7)
+        
+        self.RestingIndicator:ClearAllPoints()
+        self.RestingIndicator:SetPoint("TOPLEFT", self.Texture, 39, -50)
+        self.RestingIndicator:SetSize(31, 31)
+        
+        self.CombatIndicator:ClearAllPoints()
+        self.CombatIndicator:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
+        self.CombatIndicator:SetSize(32, 31)
     end
 end
 
 UF.Player_OnEvent = function(self, event, ...)
     -- in classic, hide additional mana bar in caster form
-    if R.isClassic and R.PlayerClass == "DRUID" and UF.frames.player.AdditionalPower then
+    if R.isClassic and R.PlayerClass == "DRUID" and self.AdditionalPower then
         local form = GetShapeshiftForm()
         if form == 1 or form == 3 then
-            UF.frames.player.AdditionalPower:Show()
+            self.AdditionalPower:Show()
         else
-            UF.frames.player.AdditionalPower:Hide()
+            self.AdditionalPower:Hide()
         end
     end
 
@@ -241,8 +217,5 @@ UF.Player_OnEvent = function(self, event, ...)
         UF.UpdateTab(self)
     elseif event == "PLAYER_TARGET_CHANGED" then
         UF.UpdateTargetFrameTexture(UF.frames.target)
-        if UF.frames.target.Range and UF.frames.target.Range.ForceUpdate then
-            -- UF.frames.target.Range:ForceUpdate()
-        end
     end
 end

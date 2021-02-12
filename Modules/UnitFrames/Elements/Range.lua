@@ -13,3 +13,14 @@ UF.CreateRange = function(self)
 end
 
 oUF:RegisterMetaFunction("CreateRange", UF.CreateRange)
+
+UF.UpdateRange = function(self)
+    if not self.Range then
+        return
+    end
+    
+    self.Range.insideAlpha = 1
+    self.Range.outsideAlpha = 0.5
+end
+
+oUF:RegisterMetaFunction("UpdateRange", UF.UpdateRange)

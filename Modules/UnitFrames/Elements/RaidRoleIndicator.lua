@@ -4,12 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateRaidRoleIndicator = function(self)
-    self.RaidRoleIndicatorParent = CreateFrame("Frame", nil, self)
-    self.RaidRoleIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.RaidRoleIndicator = self.RaidRoleIndicatorParent:CreateTexture(nil, "OVERLAY")
+    self.RaidRoleIndicator = self:CreateTexture(nil, "OVERLAY")
+    self.RaidRoleIndicator:SetParent(self.Overlay)
     self.RaidRoleIndicator:SetSize(14, 14)
-    self.RaidRoleIndicator:SetPoint("CENTER")
 
     return self.RaidRoleIndicator
 end
@@ -21,9 +18,13 @@ UF.UpdateRaidRoleIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.raidRoleIndicator
-    if cfg.enabled then
+    local config = self.config.raidRoleIndicator
+    if config.enabled then
         self:EnableElement("RaidRoleIndicator")
+
+        self.RaidRoleIndicator:SetSize(unpack(config.size))
+        self.RaidRoleIndicator:ClearAllPoints()
+        self.RaidRoleIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("RaidRoleIndicator")
     end

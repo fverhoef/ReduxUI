@@ -13,42 +13,19 @@ function UF:SpawnTargetTarget()
 end
 
 function UF:CreateTargetTarget()
-    self.cfg = UF.config.targettarget
+    self.config = UF.config.targettarget
+    self.defaults = UF.defaults.targettarget
 
-    local target = UF.frames.target
-
-    self:SetSize(unpack(self.cfg.size))
-    self:SetPoint(unpack(self.cfg.point))
-    self:SetFrameStrata("LOW")
-    self:SetFrameLevel(20)
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
+    UF:SetupFrame(self)
 
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
 
-    if self.Texture then
-        self.Texture:SetVertexColor(unpack(self.cfg.textureColor))
-    end
-
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreatePortrait()
-    self:CreateCombatFeedback()
     self:CreateRange()
 
-    self.Update = function(self)
-        UF:UpdateTargetTarget(self)
-    end
+    self.Update = UF.UpdateTargetTarget
 end
 
-function UF:UpdateTargetTarget(self)
+function UF:UpdateTargetTarget()
     if not self then
         return
     end
@@ -61,9 +38,6 @@ function UF:UpdateTargetTarget(self)
 
         self:EnableElement("Power")
         self:EnableElement("Portrait")
-        self:EnableElement("LeaderIndicator")
-        self:EnableElement("AssistantIndicator")
-        self:EnableElement("MasterLooterIndicator")
 
         self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
         self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
@@ -83,9 +57,9 @@ function UF:UpdateTargetTarget(self)
         self.Power.Border:Hide()
         self.Power.Shadow:Hide()
 
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetWidth(110)
-        self.NameParent:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("TOPLEFT", self.Texture, "BOTTOMLEFT", 16, 10)
         self.Name:SetJustifyH("LEFT")
         self.Name:Show()
 

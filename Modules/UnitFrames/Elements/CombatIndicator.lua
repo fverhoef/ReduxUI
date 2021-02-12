@@ -4,13 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateCombatIndicator = function(self)
-    self.CombatIndicatorParent = CreateFrame("Frame", nil, self)
-    self.CombatIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.CombatIndicator = self.CombatIndicatorParent:CreateTexture("$parentCombatIcon", "OVERLAY")
+    self.CombatIndicator = self:CreateTexture("$parentCombatIcon", "OVERLAY")
+    self.CombatIndicator:SetParent(self.Overlay)
     self.CombatIndicator:SetDrawLayer("OVERLAY", 7)
-    self.CombatIndicator:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
-    self.CombatIndicator:SetSize(32, 31)
 
     self.CombatIndicator.Glow = self:CreateTexture("$parentCombatIconGlow", "OVERLAY")
     self.CombatIndicator.Glow:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
@@ -18,7 +14,7 @@ UF.CreateCombatIndicator = function(self)
     self.CombatIndicator.Glow:SetVertexColor(1.0, 0.0, 0.0)
     self.CombatIndicator.Glow:SetBlendMode("ADD")
     self.CombatIndicator.Glow:SetSize(32, 32)
-    self.CombatIndicator.Glow:SetPoint("TOPLEFT", self.CombatIndicator, 1, 1)
+    self.CombatIndicator.Glow:SetAllPoints(self.CombatIndicator)
     self.CombatIndicator.Glow:SetAlpha(0)
     self.CombatIndicator.Glow:Hide()
 
@@ -32,9 +28,13 @@ UF.UpdateCombatIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.combatIndicator
-    if cfg.enabled then
+    local config = self.config.combatIndicator
+    if config.enabled then
         self:EnableElement("CombatIndicator")
+
+        self.CombatIndicator:SetSize(unpack(config.size))
+        self.CombatIndicator:ClearAllPoints()
+        self.CombatIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("CombatIndicator")
     end

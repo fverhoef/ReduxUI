@@ -4,19 +4,19 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateCombatFeedback = function(self)
-    local cfg = self.cfg.combatfeedback
+    local config = self.config.combatfeedback
     self.CombatFeedbackText = self:CreateFontString(nil, "OVERLAY")
     if self.Portrait then
         self.CombatFeedbackText:SetPoint("CENTER", self.Portrait, "CENTER")
     else
         self.CombatFeedbackText:SetPoint("CENTER", self.Health, "CENTER")
     end
-    self.CombatFeedbackText:SetFont(UF.config.font, cfg.fontSize or 19, "OUTLINE")
-    self.CombatFeedbackText.ignoreImmune = cfg.ignoreImmune
-    self.CombatFeedbackText.ignoreDamage = cfg.ignoreDamage
-    self.CombatFeedbackText.ignoreHeal = cfg.ignoreHeal
-    self.CombatFeedbackText.ignoreEnergize = cfg.ignoreEnergize
-    self.CombatFeedbackText.ignoreOther = cfg.ignoreOther
+    self.CombatFeedbackText:SetFont(UF.config.font, config.fontSize or 19, "OUTLINE")
+    self.CombatFeedbackText.ignoreImmune = config.ignoreImmune
+    self.CombatFeedbackText.ignoreDamage = config.ignoreDamage
+    self.CombatFeedbackText.ignoreHeal = config.ignoreHeal
+    self.CombatFeedbackText.ignoreEnergize = config.ignoreEnergize
+    self.CombatFeedbackText.ignoreOther = config.ignoreOther
 
     return self.CombatFeedbackText
 end
@@ -24,18 +24,18 @@ end
 oUF:RegisterMetaFunction("CreateCombatFeedback", UF.CreateCombatFeedback)
 
 UF.UpdateCombatFeedback = function(self)
-    local cfg = self.cfg.combatfeedback
-    if cfg.enabled then
+    local config = self.config.combatfeedback
+    if config.enabled then
         self:EnableElement("CombatFeedbackText")
 
-        self.CombatFeedbackText:SetFont(cfg.font or UF.config.font, cfg.fontSize or 19, cfg.fontOutline or "OUTLINE")
-        self.CombatFeedbackText:SetShadowOffset(cfg.fontShadow and 1 or 0, cfg.fontShadow and -1 or 0)
+        self.CombatFeedbackText:SetFont(config.font or UF.config.font, config.fontSize or 19, config.fontOutline or "OUTLINE")
+        self.CombatFeedbackText:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
         
-        self.CombatFeedbackText.ignoreImmune = cfg.ignoreImmune
-        self.CombatFeedbackText.ignoreDamage = cfg.ignoreDamage
-        self.CombatFeedbackText.ignoreHeal = cfg.ignoreHeal
-        self.CombatFeedbackText.ignoreEnergize = cfg.ignoreEnergize
-        self.CombatFeedbackText.ignoreOther = cfg.ignoreOther
+        self.CombatFeedbackText.ignoreImmune = config.ignoreImmune
+        self.CombatFeedbackText.ignoreDamage = config.ignoreDamage
+        self.CombatFeedbackText.ignoreHeal = config.ignoreHeal
+        self.CombatFeedbackText.ignoreEnergize = config.ignoreEnergize
+        self.CombatFeedbackText.ignoreOther = config.ignoreOther
     else
         self:DisableElement("CombatFeedbackText")
     end

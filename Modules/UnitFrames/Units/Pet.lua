@@ -13,38 +13,17 @@ function UF:SpawnPet()
 end
 
 function UF:CreatePet()
-    self.cfg = UF.config.pet
+    self.config = UF.config.pet
+    self.defaults = UF.defaults.pet
 
-    local player = UF.frames.player
+    UF:SetupFrame(self)
 
-    self:SetSize(unpack(self.cfg.size))
-    self:SetPoint(unpack(self.cfg.point))
-    self:SetFrameStrata("LOW")
-    self:SetFrameLevel(20)
-
-    self:RegisterForClicks("AnyUp")
-    self:SetScript("OnEnter", UnitFrame_OnEnter)
-    self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
-
-    -- texture
     self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
     self.Texture:SetSize(128, 64)
     self.Texture:SetPoint("TOPLEFT", self, 0, -2)
     self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
 
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreatePortrait()
-    self:CreateCombatFeedback()
-    self:CreateRaidTargetIndicator()
-
-    if self.cfg.auras.enabled then
-        self:CreateAuras()
+    if self.config.auras.enabled then
         if self.Auras then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
@@ -59,16 +38,13 @@ function UF:CreatePet()
         end
     end
 
-    self:CreateCastbar()
-
     self:CreateRange()
+    self:CreateAuraHighlight()
 
-    self.Update = function(self)
-        UF:UpdatePet(self)
-    end
+    self.Update = UF.UpdatePet
 end
 
-function UF:UpdatePet(self)
+function UF:UpdatePet()
     if not self then
         return
     end
@@ -98,9 +74,9 @@ function UF:UpdatePet(self)
         self.Texture:SetPoint("TOPLEFT", self, 0, -2)
         self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
 
-        self.NameParent:ClearAllPoints()
-        self.NameParent:SetWidth(110)
-        self.NameParent:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
+        self.Name:ClearAllPoints()
+        self.Name:SetWidth(110)
+        self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 2, 3)
         self.Name:SetJustifyH("LEFT")
         self.Name:Show()
 
@@ -113,5 +89,8 @@ function UF:UpdatePet(self)
 
         self.CastbarParent:ClearAllPoints()
         self.CastbarParent:SetPoint("LEFT", self, "RIGHT", 16, -5)
+        
+        self.RaidTargetIndicator:ClearAllPoints()
+        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
     end
 end

@@ -104,7 +104,7 @@ function BS:StyleActionButton(button)
     end
 
     local buttonName = button:GetName()
-    button.cfg = BS.config.actionBars
+    button.config = BS.config.actionBars
 
     -- hide floating background
     local floatingBG = _G[buttonName .. "FloatingBG"]
@@ -171,13 +171,13 @@ function BS:StyleActionButton(button)
     -- flash:SetPoint("TOPLEFT", 1, -1)
     -- flash:SetPoint("BOTTOMRIGHT", -1, 1)
     R:ApplyTexture(flash, nil)
-    -- SetupTexture(flash, button.cfg.flash, "SetTexture", flash)
+    -- SetupTexture(flash, button.config.flash, "SetTexture", flash)
 
     -- local flyoutBorder = _G[buttonName .. "FlyoutBorder"]
-    -- SetupTexture(flyoutBorder, button.cfg.flyoutBorder, "SetTexture", flyoutBorder)
+    -- SetupTexture(flyoutBorder, button.config.flyoutBorder, "SetTexture", flyoutBorder)
 
     -- local flyoutBorderShadow = _G[buttonName .. "FlyoutBorderShadow"]
-    -- SetupTexture(flyoutBorderShadow, button.cfg.flyoutBorderShadow, "SetTexture", flyoutBorderShadow)
+    -- SetupTexture(flyoutBorderShadow, button.config.flyoutBorderShadow, "SetTexture", flyoutBorderShadow)
 
     -- local flyoutArrow = _G[buttonName .. "FlyoutArrow"]
     -- local NewActionTexture = button.NewActionTexture
@@ -195,21 +195,21 @@ function BS:StyleActionButton(button)
     local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
-        count:SetFont(unpack(button.cfg.font))
+        count:SetFont(unpack(button.config.font))
     end
     local hotkey = _G[buttonName .. "HotKey"]
     if hotkey then
         hotkey:SetParent(overlay)
-        hotkey:SetFont(unpack(button.cfg.font))
-        if button.cfg.hideKeybindText then
+        hotkey:SetFont(unpack(button.config.font))
+        if button.config.hideKeybindText then
             hotkey:SetAlpha(0)
         end
     end
     local name = _G[buttonName .. "Name"]
     if name then
         name:SetParent(overlay)
-        name:SetFont(unpack(button.cfg.font))
-        if button.cfg.hideMacroText then
+        name:SetFont(unpack(button.config.font))
+        if button.config.hideMacroText then
             name:SetAlpha(0)
         end
     end
@@ -263,7 +263,7 @@ function BS:StyleAuraButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = BS.config.auras
+    local config = BS.config.auras
 
     -- setup icon texture
     local icon = _G[buttonName .. "Icon"]
@@ -277,7 +277,7 @@ function BS:StyleAuraButton(button)
     if border then
         border:Hide()
     end
-    button:CreateBorder(cfg.borderSize)
+    button:CreateBorder(config.borderSize)
 
     -- shadow
     button:CreateShadow()
@@ -289,18 +289,18 @@ function BS:StyleAuraButton(button)
     local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
-        count:SetFont(unpack(cfg.font))
+        count:SetFont(unpack(config.font))
     end
 
     local duration = _G[buttonName .. "Duration"]
     if duration then
         duration:SetParent(overlay)
-        duration:SetFont(unpack(cfg.font))
+        duration:SetFont(unpack(config.font))
     end
 
     local symbol = button.symbol
     if symbol then
-        symbol:SetFont(unpack(cfg.font))
+        symbol:SetFont(unpack(config.font))
     end
 
     button.__styled = true
@@ -344,7 +344,7 @@ function BS:StyleBagButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = BS.config.bags
+    local config = BS.config.bags
 
     -- backdrop
     local bg = CreateFrame("Frame", nil, button)
@@ -402,12 +402,12 @@ function BS:StyleBagButton(button)
 
     local count = _G[buttonName .. "Count"]
     if count then
-        count:SetFont(unpack(cfg.font))
+        count:SetFont(unpack(config.font))
     end
 
     local stock = _G[buttonName .. "Stock"]
     if stock then
-        stock:SetFont(unpack(cfg.font))
+        stock:SetFont(unpack(config.font))
     end
 
     button.__styled = true
@@ -437,7 +437,7 @@ function BS:StyleItemButton(button)
     end
 
     local buttonName = button:GetName()
-    local cfg = BS.config.items
+    local config = BS.config.items
 
     -- backdrop
     local bg = CreateFrame("Frame", nil, button)
@@ -507,12 +507,12 @@ function BS:StyleItemButton(button)
 
     local count = _G[buttonName .. "Count"]
     if count then
-        count:SetFont(unpack(cfg.font))
+        count:SetFont(unpack(config.font))
     end
 
     local stock = _G[buttonName .. "Stock"]
     if stock then
-        stock:SetFont(unpack(cfg.font))
+        stock:SetFont(unpack(config.font))
     end
 
     button.__styled = true
@@ -558,7 +558,7 @@ function BS:StyleMicroButton(button)
     end
     local buttonName = button:GetName()
 
-    local cfg = BS.config.microMenu
+    local config = BS.config.microMenu
 
     button.__styled = true
 end

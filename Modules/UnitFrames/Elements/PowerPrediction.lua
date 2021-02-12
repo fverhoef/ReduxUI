@@ -37,7 +37,7 @@ UF.UpdatePowerPrediction = function(self)
         return
     end
 
-    if self.cfg.power.powerPrediction then
+    if self.config.power.powerPrediction then
         self:EnableElement("PowerPrediction")
 
         self.PowerPrediction.mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)

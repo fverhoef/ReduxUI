@@ -4,12 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateReadyCheckIndicator = function(self)
-    self.ReadyCheckIndicatorParent = CreateFrame("Frame", nil, self)
-    self.ReadyCheckIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.ReadyCheckIndicator = self.ReadyCheckIndicatorParent:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
-    self.ReadyCheckIndicator:SetPoint("TOPRIGHT", self.Portrait, -7, -7)
-    self.ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Portrait, 7, 7)
+    self.ReadyCheckIndicator = self:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
+    self.ReadyCheckIndicator:SetParent(self.Overlay)
     self.ReadyCheckIndicator.delayTime = 2
     self.ReadyCheckIndicator.fadeTime = 0.5
 
@@ -23,9 +19,13 @@ UF.UpdateReadyCheckIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.readyCheckIndicator
-    if cfg.enabled then
+    local config = self.config.readyCheckIndicator
+    if config.enabled then
         self:EnableElement("ReadyCheckIndicator")
+
+        self.ReadyCheckIndicator:SetSize(unpack(config.size))
+        self.ReadyCheckIndicator:ClearAllPoints()
+        self.ReadyCheckIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("ReadyCheckIndicator")
     end

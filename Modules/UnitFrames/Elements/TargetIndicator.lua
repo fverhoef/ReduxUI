@@ -32,12 +32,12 @@ oUF:RegisterMetaFunction("CreateTargetIndicator", UF.CreateTargetIndicator)
 
 UF.UpdateTargetIndicator = function(self)
     if self.unit and UnitIsUnit(self.unit, "target") then
-        if self.cfg.targetGlow then
+        if self.config.targetGlow then
             self:SetShadowColor({1, 1, 1, 0.7})
         else
             self:SetShadowColor({0, 0, 0, 0.7})
         end
-        if self.cfg.targetArrows then
+        if self.config.targetArrows then
             self.TargetIndicator.Left:Show()
             self.TargetIndicator.Right:Show()
         else

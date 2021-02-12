@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateAssistantIndicator = function(self)
-    self.AssistantIndicatorParent = CreateFrame("Frame", nil, self)
-    self.AssistantIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.AssistantIndicator = self.AssistantIndicatorParent:CreateTexture("$parentAssistIcon", "OVERLAY")
+    self.AssistantIndicator = self:CreateTexture("$parentAssistIcon", "OVERLAY")
+    self.AssistantIndicator:SetParent(self.Overlay)
     self.AssistantIndicator:SetSize(16, 16)
 
     return self.AssistantIndicator
@@ -20,9 +18,13 @@ UF.UpdateAssistantIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.assistantIndicator
-    if cfg.enabled then
+    local config = self.config.assistantIndicator
+    if config.enabled then
         self:EnableElement("AssistantIndicator")
+
+        self.AssistantIndicator:SetSize(unpack(config.size))
+        self.AssistantIndicator:ClearAllPoints()
+        self.AssistantIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("AssistantIndicator")
     end

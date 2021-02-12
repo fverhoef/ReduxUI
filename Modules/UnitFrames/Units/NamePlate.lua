@@ -19,25 +19,14 @@ function UF:UpdateNamePlates()
 end
 
 function UF:CreateNamePlate()
-    self.cfg = UF.config.nameplates
-
-    self:SetSize(unpack(self.cfg.size))
+    self.config = UF.config.nameplates
+    self.defaults = UF.defaults.nameplates
+    
+    UF:SetupFrame(self)
     self:SetPoint("CENTER")
-    self:SetFrameStrata("BACKGROUND")
 
-    self:CreateBorder(self.cfg.border.size)
-    self:CreateShadow()
-
-    self:CreateHealth()
-    self:CreatePower()
-    self:CreateName()
-    self:CreateLevel()
-    self:CreateCombatFeedback()
-
-    -- auras
-    self:CreateAuras()
-    if self.cfg.auras.enabled then
-        if not self.cfg.auras.showDebuffsOnTop then
+    if self.config.auras.enabled then
+        if not self.config.auras.showDebuffsOnTop then
             self.Auras:ClearAllPoints()
             self.Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 15)
             self.Auras.initialAnchor = "BOTTOMLEFT"
@@ -46,14 +35,10 @@ function UF:CreateNamePlate()
         end
     end
 
-    self:CreateCastbar()
-
-    -- combo points
-    if self.cfg.showComboPoints then
+    if self.config.showComboPoints then
         self:CreateComboFrame()
     end
 
-    self:CreateRaidTargetIndicator()
     self:CreateThreatIndicator()
     self:CreateTargetIndicator()
 
@@ -70,7 +55,7 @@ function UF:UpdateNamePlate(self)
     end
 
     UF:UpdateFrame(self)
-    self:SetScale((self.cfg.scale or 1) * UIParent:GetScale())
+    self:SetScale((self.config.scale or 1) * UIParent:GetScale())
 end
 
 UF.NamePlate_Callback = function(self, event, unit)

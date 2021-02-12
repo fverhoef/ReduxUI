@@ -4,17 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreatePhaseIndicator = function(self)
-    self.PhaseIndicatorParent = CreateFrame("Frame", nil, self)
-    self.PhaseIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.PhaseIndicator = self.PhaseIndicatorParent:CreateTexture("$parentPhaseIcon", "OVERLAY")
-    self.PhaseIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM")
-
-    if self.IsMainFrame then
-        self.PhaseIndicator:SetSize(26, 26)
-    else
-        self.PhaseIndicator:SetSize(18, 18)
-    end
+    self.PhaseIndicator = self:CreateTexture("$parentPhaseIcon", "OVERLAY")
+    self.PhaseIndicator:SetParent(self.Overlay)
+    self.PhaseIndicator:SetSize(18, 18)
 
     return self.PhaseIndicator
 end
@@ -26,9 +18,13 @@ UF.UpdatePhaseIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.phaseIndicator
-    if cfg.enabled then
+    local config = self.config.phaseIndicator
+    if config.enabled then
         self:EnableElement("PhaseIndicator")
+
+        self.PhaseIndicator:SetSize(unpack(config.size))
+        self.PhaseIndicator:ClearAllPoints()
+        self.PhaseIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("PhaseIndicator")
     end

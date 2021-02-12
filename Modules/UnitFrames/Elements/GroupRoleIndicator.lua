@@ -4,19 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateGroupRoleIndicator = function(self)
-    self.GroupRoleIndicatorParent = CreateFrame("Frame", nil, self)
-    self.GroupRoleIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
     self.GroupRoleIndicator = self.GroupRoleIndicatorParent:CreateTexture("$parentGroupRoleIcon", "OVERLAY", nil, 7)
+    self.GroupRoleIndicator:SetParent(self.Overlay)
     self.GroupRoleIndicator:SetSize(20, 20)
-
-    if unit == "player" then
-        self.GroupRoleIndicator:SetPoint("BOTTOMRIGHT", self.Portrait, -2, -3)
-    elseif unit == "target" then
-        self.GroupRoleIndicator:SetPoint("TOPLEFT", self.Portrait, -10, -2)
-    else
-        self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
-    end
 
     return self.GroupRoleIndicator
 end
@@ -28,9 +18,13 @@ UF.UpdateGroupRoleIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.groupRoleIndicator
-    if cfg.enabled then
+    local config = self.config.groupRoleIndicator
+    if config.enabled then
         self:EnableElement("GroupRoleIndicator")
+
+        self.GroupRoleIndicator:SetSize(unpack(config.size))
+        self.GroupRoleIndicator:ClearAllPoints()
+        self.GroupRoleIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("GroupRoleIndicator")
     end

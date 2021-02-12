@@ -4,12 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateQuestIndicator = function(self)
-    self.QuestIndicatorParent = CreateFrame("Frame", nil, self)
-    self.QuestIndicatorParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
-    self.QuestIndicator = self.QuestIndicatorParent:CreateTexture("$parentQuestIcon", "OVERLAY")
+    self.QuestIndicator = self:CreateTexture("$parentQuestIcon", "OVERLAY")
+    self.QuestIndicator:SetParent(self.Overlay)
     self.QuestIndicator:SetSize(32, 32)
-    self.QuestIndicator:SetPoint("CENTER", self.Health, "TOPRIGHT", 1, 10)
 
     return self.QuestIndicator
 end
@@ -21,9 +18,13 @@ UF.UpdateQuestIndicator = function(self)
         return
     end
 
-    local cfg = self.cfg.questIndicator
-    if cfg.enabled then
+    local config = self.config.questIndicator
+    if config.enabled then
         self:EnableElement("UpdateQuestIndicator")
+
+        self.QuestIndicator:SetSize(unpack(config.size))
+        self.QuestIndicator:ClearAllPoints()
+        self.QuestIndicator:SetPoint(unpack(config.point))
     else
         self:DisableElement("UpdateQuestIndicator")
     end
