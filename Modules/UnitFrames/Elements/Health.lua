@@ -116,7 +116,7 @@ UF.UpdateHealth = function(self)
         bottomOffset = bottomOffset + (self.config.power.size[2] or 0)
     end
 
-    if self.config.portrait.enabled and not self.config.portrait.detached then
+    if self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached then
         if self.config.portrait.attachedPoint == "LEFT" then
             leftOffset = leftOffset + (self.config.portrait.size[1] or 0)
         elseif self.config.portrait.attachedPoint == "RIGHT" then

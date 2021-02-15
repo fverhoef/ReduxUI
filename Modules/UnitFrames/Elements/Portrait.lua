@@ -9,6 +9,10 @@ UF.CreatePortrait = function(self)
         self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
     end
 
+    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
+    self.PortraitHolder:SetAllPoints(self.portrait)
+    self.PortraitHolder:CreateBorder()
+
     return self.Portrait
 end
 
@@ -39,7 +43,8 @@ UF.UpdatePortrait = function(self)
 
         self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 
-        -- TODO: support detached portrait
+        self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
+        self.PortraitHolder:SetBorderSize(config.border.size)
     else
         self:DisableElement("Portrait")
     end

@@ -75,8 +75,8 @@ UF.UpdatePower = function(self)
         if config.detached then
             self.Power:SetPoint(unpack(config.point))
         else
-            if self.config.portrait.enabled and not self.config.portrait.detached and self.config.portrait.attachedPoint ==
-                "RIGHT" then
+            if self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached and
+                self.config.portrait.attachedPoint == "RIGHT" then
                 self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT")
                 self.Power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", self.config.border.enabled and 2 or 0, 0)
             else

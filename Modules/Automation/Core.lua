@@ -23,15 +23,18 @@ function AM:Initialize()
     AM:RegisterEvent("LOOT_BIND_CONFIRM")
     AM:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
     AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
+    AM:RegisterEvent("CHAT_MSG_WHISPER")
+    AM:RegisterEvent("CHAT_MSG_BN_WHISPER")
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)
     if AM.config.standDismount then
-        if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
+        if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg ==
+            ERR_TAXINOTSTANDING then
             DoEmote("stand")
             UIErrorsFrame:Clear()
-        elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg == ERR_TAXIPLAYERALREADYMOUNTED or msg ==
-            SPELL_FAILED_NOT_MOUNTED then
+        elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg ==
+            ERR_TAXIPLAYERALREADYMOUNTED or msg == SPELL_FAILED_NOT_MOUNTED then
             if IsMounted() then
                 Dismount()
                 UIErrorsFrame:Clear()
@@ -106,6 +109,42 @@ function AM:MAIL_LOCK_SEND_ITEMS(event, attachSlot, itemLink)
     if AM.config.disableMailRefundWarning then
         RespondMailLockSendItem(attachSlot, true)
     end
+end
+
+function AM:CHAT_MSG_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID,
+                             channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile, isSubtitle,
+                             hideSenderInLetterbox, supressRaidIcons)
+    if not AM.config.autoInvite then
+        return
+    end
+
+    if R:PlayerCanInvite() and AM:TextMatchesAutoInvitePassword(text) then
+        InviteUnit(playerName)
+    end
+end
+
+function AM:CHAT_MSG_BN_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID,
+                                channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile, isSubtitle,
+                                hideSenderInLetterbox, supressRaidIcons)
+    if not AM.config.autoInvite then
+        return
+    end
+
+    if R:PlayerCanInvite() and AM:TextMatchesAutoInvitePassword(text) then
+        if bnSenderID and BNIsFriend(bnSenderID) then
+            local index = BNGetFriendIndex(bnSenderID)
+            if index then
+                local toonID = select(6, BNGetFriendInfo(index))
+                if toonID then
+                    BNInviteFriend(toonID)
+                end
+            end
+        end
+    end
+end
+
+function AM:TextMatchesAutoInvitePassword(text)
+    return string.lower(string.trim(text)) == string.lower(AM.config.autoInvitePassword)
 end
 
 function AM:Repair()

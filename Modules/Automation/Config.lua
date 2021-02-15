@@ -13,7 +13,9 @@ R:RegisterModuleConfig(AM, {
     disableLootRollConfirmation = true,
     disableLootBindConfirmation = false,
     disableVendorRefundWarning = true,
-    disableMailRefundWarning = true
+    disableMailRefundWarning = true,
+    autoInvite = true,
+    autoInvitePassword = "safari"
 })
 
 R:RegisterModuleOptions(AM, {
@@ -163,6 +165,34 @@ R:RegisterModuleOptions(AM, {
             end,
             set = function(_, val)
                 AM.config.disableMailRefundWarning = val
+            end
+        },
+        lineBreak2 = {
+            type = "description",
+            name = "",
+            order = 20
+        },
+        autoInvite = {
+            type = "toggle",
+            name = "Auto Invite",
+            order = 21,
+            get = function()
+                return AM.config.autoInvite
+            end,
+            set = function(_, val)
+                AM.config.autoInvite = val
+            end
+        },
+        autoInvitePassword = {
+            type = "input",
+            name = "Auto Invite Password",
+            order = 22,
+            disabled = function() return not AM.config.autoInvite end,
+            get = function()
+                return AM.config.autoInvitePassword
+            end,
+            set = function(_, val)
+                AM.config.autoInvitePassword = val
             end
         }
     }

@@ -259,6 +259,45 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
     }
 end
 
+function UF:CreateUnitBorderOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Border",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                get = function()
+                    return UF.config[unit].border.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].border.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            size = {
+                type = "range",
+                name = "Size",
+                order = 2,
+                min = 1,
+                softMax = 20,
+                step = 1,
+                get = function()
+                    return UF.config[unit].border.size
+                end,
+                set = function(_, val)
+                    UF.config[unit].border.size = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
 function UF:CreateUnitHealthOption(unit, order, inline, name)
     return {
         type = "group",
@@ -1757,7 +1796,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, attachedPoint = "LEFT", size = {42, 42}},
+        portrait = {
+            enabled = true,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 12}
+        },
         combatIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", 0, 0}},
         restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
@@ -1875,7 +1920,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "LEFT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, attachedPoint = "RIGHT", size = {42, 42}},
+        portrait = {
+            enabled = true,
+            detached = false,
+            attachedPoint = "RIGHT",
+            size = {42, 42},
+            border = {enabled = true, size = 12}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -1993,7 +2044,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, attachedPoint = "LEFT", size = {42, 42}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 12}
+        },
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = false,
@@ -2097,7 +2154,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}},
+        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
@@ -2202,7 +2259,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}},
+        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2319,7 +2376,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = false,
@@ -2424,7 +2481,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}},
+        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2550,7 +2607,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2682,7 +2739,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2799,7 +2856,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2916,7 +2973,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -3033,7 +3090,7 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}},
+        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -3423,13 +3480,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Player", order = 0},
                 enabled = UF:CreateUnitEnabledOption("player", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("player", 1, true),
-                        position = UF:CreateUnitPositionOption("player", 2, true)
+                        position = UF:CreateUnitPositionOption("player", 2, true),
+                        border = UF:CreateUnitBorderOption("player", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("player", 11),
@@ -3456,13 +3514,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("target", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("target", 1, true),
-                        position = UF:CreateUnitPositionOption("target", 2, true)
+                        position = UF:CreateUnitPositionOption("target", 2, true),
+                        border = UF:CreateUnitBorderOption("target", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("target", 11),
@@ -3489,13 +3548,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Target's Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("targettarget", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("targettarget", 1, true),
-                        position = UF:CreateUnitPositionOption("targettarget", 2, true)
+                        position = UF:CreateUnitPositionOption("targettarget", 2, true),
+                        border = UF:CreateUnitBorderOption("targettarget", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("targettarget", 11),
@@ -3522,13 +3582,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Pet", order = 0},
                 enabled = UF:CreateUnitEnabledOption("pet", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("pet", 1, true),
-                        position = UF:CreateUnitPositionOption("pet", 2, true)
+                        position = UF:CreateUnitPositionOption("pet", 2, true),
+                        border = UF:CreateUnitBorderOption("pet", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("pet", 11),
@@ -3556,13 +3617,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Focus Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("focus", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("focus", 1, true),
-                        position = UF:CreateUnitPositionOption("focus", 2, true)
+                        position = UF:CreateUnitPositionOption("focus", 2, true),
+                        border = UF:CreateUnitBorderOption("focus", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("focus", 11),
@@ -3590,13 +3652,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Focus Target's Target", order = 0},
                 enabled = UF:CreateUnitEnabledOption("focustarget", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("focustarget", 1, true),
-                        position = UF:CreateUnitPositionOption("focustarget", 2, true)
+                        position = UF:CreateUnitPositionOption("focustarget", 2, true),
+                        border = UF:CreateUnitBorderOption("focustarget", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("focustarget", 11),
@@ -3638,49 +3701,56 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("party", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 3,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.party.unitAnchorPoint == anchor then
-                                        return key
+                        layout = {
+                            type = "group",
+                            name = "Layout",
+                            order = 2,
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 3,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.party.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.party.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("party")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.party.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("party")
-                            end
-                        },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.party.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.party.unitSpacing = val
-                                UF:UpdateUnit("party")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.party.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.party.unitSpacing = val
+                                        UF:UpdateUnit("party")
+                                    end
+                                }
+                            }
                         },
                         showPlayer = {
                             type = "toggle",
                             name = "Show Player",
-                            order = 5,
+                            order = 3,
                             get = function()
                                 return UF.config.party.showPlayer
                             end,
@@ -3692,7 +3762,7 @@ R:RegisterModuleOptions(UF, {
                         showRaid = {
                             type = "toggle",
                             name = "Show in Raid",
-                            order = 6,
+                            order = 4,
                             get = function()
                                 return UF.config.party.showRaid
                             end,
@@ -3704,7 +3774,7 @@ R:RegisterModuleOptions(UF, {
                         showSolo = {
                             type = "toggle",
                             name = "Show when Solo",
-                            order = 7,
+                            order = 5,
                             get = function()
                                 return UF.config.party.showSolo
                             end,
@@ -3712,7 +3782,8 @@ R:RegisterModuleOptions(UF, {
                                 UF.config.party.showSolo = val
                                 UF:UpdateUnit("party")
                             end
-                        }
+                        },
+                        border = UF:CreateUnitBorderOption("party", 6, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("party", 11),
@@ -3755,77 +3826,85 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("raid", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 1,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.raid.unitAnchorPoint == anchor then
-                                        return key
-                                    end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.raid.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("raid")
-                            end
-                        },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
+                        layout = {
+                            type = "group",
+                            name = "Layout",
                             order = 2,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.raid.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.raid.unitSpacing = val
-                                UF:UpdateUnit("raid")
-                            end
-                        },
-                        groupAnchorPoint = {
-                            type = "select",
-                            name = "Group Anchor Point",
-                            order = 3,
-                            values = UF.groupAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.groupAnchors) do
-                                    if UF.config.raid.groupAnchorPoint == anchor then
-                                        return key
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 1,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.raid.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.raid.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("raid")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.raid.groupAnchorPoint = UF.groupAnchors[key]
-                                UF:UpdateUnit("raid")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 2,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.raid.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.raid.unitSpacing = val
+                                        UF:UpdateUnit("raid")
+                                    end
+                                },
+                                groupAnchorPoint = {
+                                    type = "select",
+                                    name = "Group Anchor Point",
+                                    order = 3,
+                                    values = UF.groupAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.groupAnchors) do
+                                            if UF.config.raid.groupAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.raid.groupAnchorPoint = UF.groupAnchors[key]
+                                        UF:UpdateUnit("raid")
+                                    end
+                                },
+                                groupSpacing = {
+                                    type = "range",
+                                    name = "Group Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.raid.groupSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.raid.groupSpacing = val
+                                        UF:UpdateUnit("raid")
+                                    end
+                                }
+                            }
                         },
-                        groupSpacing = {
-                            type = "range",
-                            name = "Group Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.raid.groupSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.raid.groupSpacing = val
-                                UF:UpdateUnit("raid")
-                            end
-                        }
+                        border = UF:CreateUnitBorderOption("raid", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("raid", 11),
@@ -3867,45 +3946,53 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("tank", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 3,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.tank.unitAnchorPoint == anchor then
-                                        return key
+                        layout = {
+                            type = "group",
+                            name = "Layout",
+                            order = 2,
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 3,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.tank.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.tank.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("tank")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.tank.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("tank")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.tank.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.tank.unitSpacing = val
+                                        UF:UpdateUnit("tank")
+                                    end
+                                }
+                            }
                         },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.tank.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.tank.unitSpacing = val
-                                UF:UpdateUnit("tank")
-                            end
-                        }
+                        border = UF:CreateUnitBorderOption("tank", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("tank", 11),
@@ -3947,45 +4034,53 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("assist", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 3,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.assist.unitAnchorPoint == anchor then
-                                        return key
+                        layout = {
+                            type = "group",
+                            name = "Layout",
+                            order = 2,
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 3,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.assist.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.assist.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("assist")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.assist.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("assist")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.assist.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.assist.unitSpacing = val
+                                        UF:UpdateUnit("assist")
+                                    end
+                                }
+                            }
                         },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.assist.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.assist.unitSpacing = val
-                                UF:UpdateUnit("assist")
-                            end
-                        }
+                        border = UF:CreateUnitBorderOption("assist", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("assist", 11),
@@ -4028,45 +4123,53 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("boss", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 3,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.boss.unitAnchorPoint == anchor then
-                                        return key
+                        layout = {
+                            type = "group",
+                            name = "Layout",
+                            order = 2,
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 3,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.boss.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.boss.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("boss")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.boss.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("boss")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.boss.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.boss.unitSpacing = val
+                                        UF:UpdateUnit("boss")
+                                    end
+                                }
+                            }
                         },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.boss.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.boss.unitSpacing = val
-                                UF:UpdateUnit("boss")
-                            end
-                        }
+                        border = UF:CreateUnitBorderOption("boss", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("boss", 11),
@@ -4109,45 +4212,53 @@ R:RegisterModuleOptions(UF, {
                         end
                     end
                 },
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("arena", 1, true),
-                        lineBreak1 = {type = "header", name = "", order = 2},
-                        unitAnchorPoint = {
-                            type = "select",
-                            name = "Unit Anchor Point",
-                            order = 3,
-                            values = UF.unitAnchors,
-                            get = function()
-                                for key, anchor in ipairs(UF.unitAnchors) do
-                                    if UF.config.arena.unitAnchorPoint == anchor then
-                                        return key
+                        layout = {
+                            type = "group",
+                            name = "Layout",
+                            order = 2,
+                            inline = true,
+                            args = {
+                                unitAnchorPoint = {
+                                    type = "select",
+                                    name = "Unit Anchor Point",
+                                    order = 3,
+                                    values = UF.unitAnchors,
+                                    get = function()
+                                        for key, anchor in ipairs(UF.unitAnchors) do
+                                            if UF.config.arena.unitAnchorPoint == anchor then
+                                                return key
+                                            end
+                                        end
+                                    end,
+                                    set = function(_, key)
+                                        UF.config.arena.unitAnchorPoint = UF.unitAnchors[key]
+                                        UF:UpdateUnit("arena")
                                     end
-                                end
-                            end,
-                            set = function(_, key)
-                                UF.config.arena.unitAnchorPoint = UF.unitAnchors[key]
-                                UF:UpdateUnit("arena")
-                            end
+                                },
+                                unitSpacing = {
+                                    type = "range",
+                                    name = "Unit Spacing",
+                                    order = 4,
+                                    min = 0,
+                                    softMax = 50,
+                                    step = 1,
+                                    get = function()
+                                        return UF.config.arena.unitSpacing
+                                    end,
+                                    set = function(_, val)
+                                        UF.config.arena.unitSpacing = val
+                                        UF:UpdateUnit("arena")
+                                    end
+                                }
+                            }
                         },
-                        unitSpacing = {
-                            type = "range",
-                            name = "Unit Spacing",
-                            order = 4,
-                            min = 0,
-                            softMax = 50,
-                            step = 1,
-                            get = function()
-                                return UF.config.arena.unitSpacing
-                            end,
-                            set = function(_, val)
-                                UF.config.arena.unitSpacing = val
-                                UF:UpdateUnit("arena")
-                            end
-                        }
+                        border = UF:CreateUnitBorderOption("arena", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("arena", 11),
@@ -4174,11 +4285,14 @@ R:RegisterModuleOptions(UF, {
             args = {
                 header = {type = "header", name = R.title .. " > Unit Frames: Nameplates", order = 0},
                 enabled = UF:CreateUnitEnabledOption("nameplates", 1),
-                layout = {
+                general = {
                     type = "group",
-                    name = "Layout",
+                    name = "General",
                     order = 10,
-                    args = {size = UF:CreateUnitSizeOption("nameplates", 1, true)}
+                    args = {
+                        size = UF:CreateUnitSizeOption("nameplates", 1, true),
+                        border = UF:CreateUnitBorderOption("nameplates", 2, true)
+                    }
                 },
                 health = UF:CreateUnitHealthOption("nameplates", 11),
                 power = UF:CreateUnitPowerOption("nameplates", 12),

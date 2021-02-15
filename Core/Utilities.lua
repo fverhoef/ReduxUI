@@ -236,6 +236,10 @@ function R:FindButtonBorder(button)
     return _G[button:GetName() .. "IconBorder"] or button.IconBorder
 end
 
+function R:PlayerCanInvite()
+    return not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
+end
+
 function R:FixNormalTextureSize(button)
     local normalTexture = button:GetNormalTexture()
     if normalTexture then
