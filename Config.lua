@@ -6,6 +6,16 @@ R.JUSTIFY_V = {["TOP"] = "TOP", ["CENTER"] = "CENTER", ["BOTTOM"] = "BOTTOM"}
 R.FONT_OUTLINES = {["NONE"] = "NONE", ["OUTLINE"] = "OUTLINE", ["THICKOUTLINE"] = "THICKOUTLINE"}
 R.FONT_MIN_SIZE = 4
 R.FONT_MAX_SIZE = 30
+R.BORDER_STYLES = {
+    [R.media.textures.borders.beautycase] = "BeautyCase",
+    [R.media.textures.borders.cainyx] = "Cainyx",
+    [R.media.textures.borders.caith] = "Caith",
+    [R.media.textures.borders.diablo] = "Diablo",
+    [R.media.textures.borders.entropy] = "Entropy",
+    [R.media.textures.borders.goldpaw] = "Goldpaw",
+    [R.media.textures.borders.onyx] = "Onyx",
+    [R.media.textures.borders.retina] = "Retina",
+}
 
 R.config = {}
 R.config.defaults = {
@@ -167,17 +177,51 @@ R.config.options = {
                             end
                         }
                     }
+                },
+                borders = {
+                    type = "group",
+                    name = "Borders",
+                    order = 20,
+                    inline = true,
+                    args = {
+                        point = {
+                            type = "select",
+                            name = "Style",
+                            desc = "The default style of borders.",
+                            order = 1,
+                            values = R.BORDER_STYLES,
+                            get = function()
+                                return R.config.db.profile.borders.texture
+                            end,
+                            set = function(_, key)
+                                R.config.db.profile.borders.texture = key
+                                R:UpdateAllBorders(nil, R.config.db.profile.borders.texture)
+                            end
+                        },
+                        size = {
+                            type = "range",
+                            name = "Default Size",
+                            desc = "The default size of borders.",
+                            order = 2,
+                            min = 0,
+                            softMax = 100,
+                            step = 1,
+                            get = function()
+                                return R.config.db.profile.borders.size
+                            end,
+                            set = function(_, val)
+                                R.config.db.profile.borders.size = val
+                                R:UpdateAllBorders(R.config.db.profile.borders.size)
+                            end
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-R.config.faders = {
-    none = nil,
-    onShow = 1,
-    mouseOver = 2
-}
+R.config.faders = {none = nil, onShow = 1, mouseOver = 2}
 
 local function FindPanel(name, parent)
     for i, button in next, InterfaceOptionsFrameAddOns.buttons do

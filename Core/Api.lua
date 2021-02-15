@@ -38,6 +38,8 @@ function R:Offset(offsetX, offsetY)
     end
 end
 
+local borders = {}
+
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
     if self.Border then
         return
@@ -64,6 +66,7 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border.color = color
         self.Border.texture = texture
         self.Border.padding = {left, right, top, bottom}
+        self.Border.parent = self
         self.Border.Show = function(self)
             for i = 1, 8 do
                 self[i]:Show()
@@ -115,6 +118,8 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border[8]:SetTexCoord(2 / 3, 1, 1 / 3, 2 / 3)
         self.Border[8]:SetPoint("TOPRIGHT", self.Border[2], "BOTTOMRIGHT")
         self.Border[8]:SetPoint("BOTTOMRIGHT", self.Border[4], "TOPRIGHT")
+
+        borders[self.Border] = true
     end
 end
 
@@ -172,6 +177,18 @@ function R:SetBorderTexture(texture)
 
     for i = 1, 8 do
         self.Border[i]:SetTexture(texture)
+    end
+end
+
+function R:UpdateAllBorders(size, texture)
+    local parent
+    for border, _ in pairs(borders) do
+        if size then
+            border.parent:SetBorderSize(size)
+        end
+        if texture then
+            border.parent:SetBorderTexture(texture)
+        end
     end
 end
 

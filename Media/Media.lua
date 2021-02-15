@@ -50,9 +50,13 @@ R.media = {
 
         borders = {
             beautycase = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Beautycase",
-            beautycaseGloss = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseGloss",
-            beautycaseWhite = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseWhite",
-            beautycaseShadow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\BeautycaseShadow"
+            cainyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Cainyx",
+            caith = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Caith",
+            diablo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Diablo",
+            entropy = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Entropy",
+            goldpaw = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Goldpaw",
+            onyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Onyx"
+            retina = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Retina"
         },
 
         buttons = {
