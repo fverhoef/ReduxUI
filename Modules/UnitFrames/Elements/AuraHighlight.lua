@@ -10,7 +10,7 @@ UF.CreateAuraHighlight = function(self)
     self.AuraHighlight:SetTexture(R.media.textures.blank)
     self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
     self.AuraHighlight:SetBlendMode("ADD")
-    self.AuraHighlight.PostUpdate = UF.PostUpdate_AuraHighlight
+    self.AuraHighlight.PostUpdate = UF.AuraHighlight_PostUpdate
 
     self.AuraHightlightGlow = self:CreateShadow(nil, nil, true)
     self.AuraHightlightGlow:Hide()
@@ -44,7 +44,7 @@ end
 
 oUF:RegisterMetaFunction("UpdateAuraHighlight", UF.UpdateAuraHighlight)
 
-function UF:PostUpdate_AuraHighlight(object, debuffType, texture, wasFiltered, style, color)
+function UF:AuraHighlight_PostUpdate(object, debuffType, texture, wasFiltered, style, color)
     --if self.AuraHighlightBorder then
         if debuffType and not wasFiltered and color then
             object:SetBorderColor(color.r, color.g, color.b, color.a)

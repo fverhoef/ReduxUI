@@ -28,7 +28,7 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
-        borders = {size = 5, texture = R.media.textures.borders.beautycaseWhite, color = {89 / 255, 89 / 255, 89 / 255}},
+        borders = {size = 10, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255}},
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
             highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight

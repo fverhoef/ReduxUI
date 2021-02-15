@@ -75,13 +75,19 @@ UF.UpdatePower = function(self)
         if config.detached then
             self.Power:SetPoint(unpack(config.point))
         else
-            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.config.border.enabled and -2 or 0, 0)
+            if self.config.portrait.enabled and not self.config.portrait.detached and self.config.portrait.attachedPoint ==
+                "RIGHT" then
+                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT")
+                self.Power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", self.config.border.enabled and 2 or 0, 0)
+            else
+                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
+                self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.config.border.enabled and -2 or 0, 0)
+            end
         end
 
         self.Power.Border:SetShown(config.detached and config.border.enabled)
         self.Power:SetBorderPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
-    
+
         self.Power.Shadow:SetShown(config.detached and config.shadow.enabled)
         self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 1, 0, 0)
     else

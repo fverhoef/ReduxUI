@@ -107,10 +107,23 @@ UF.UpdateHealth = function(self)
         self.Health.Value:Hide()
     end
 
-    local leftOffset = (self.config.border.enabled and 2 or 0) + (self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached and self.config.portrait.size[1] or 0)
+    local leftOffset = self.config.border.enabled and 2 or 0
     local rightOffset = self.config.border.enabled and -2 or 0
-    local topOffset = (self.config.border.enabled and -2 or 0)
-    local bottomOffset = (self.config.border.enabled and 2 or 0) + (self.config.power.enabled and not self.config.power.detached and self.config.power.size[2] or 0)
+    local topOffset = self.config.border.enabled and -2 or 0
+    local bottomOffset = self.config.border.enabled and 2 or 0
+
+    if self.config.power.enabled and not self.config.power.detached then
+        bottomOffset = bottomOffset + (self.config.power.size[2] or 0)
+    end
+
+    if self.config.portrait.enabled and not self.config.portrait.detached then
+        if self.config.portrait.attachedPoint == "LEFT" then
+            leftOffset = leftOffset + (self.config.portrait.size[1] or 0)
+        elseif self.config.portrait.attachedPoint == "RIGHT" then
+            rightOffset = rightOffset - (self.config.portrait.size[1] or 0)
+        end
+    end
+
     self.Health:ClearAllPoints()
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", leftOffset, topOffset)
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", rightOffset, bottomOffset)

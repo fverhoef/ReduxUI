@@ -27,9 +27,17 @@ UF.UpdatePortrait = function(self)
 
         local xOffset = self.config.border.enabled and 2 or 0
         self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, 0)
-        self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, 0)
-		self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+        if config.detached then
+            self.Portrait:SetPoint(unpack(config.point))
+        elseif config.attachedPoint == "LEFT" then
+            self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, 0)
+            self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, 0)
+        elseif config.attachedPoint == "RIGHT" then
+            self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -xOffset, 0)
+            self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, 0)
+        end
+
+        self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 
         -- TODO: support detached portrait
     else
