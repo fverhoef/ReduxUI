@@ -39,6 +39,8 @@ function UF:UpdateTargetTarget()
         self:EnableElement("Power")
         self:EnableElement("Portrait")
 
+        self:SetSize(95, 45)
+
         self.Texture:SetTexture(R.media.textures.unitFrames.targetTargetFrame)
         self.Texture:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
         self.Texture:ClearAllPoints()

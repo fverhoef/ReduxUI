@@ -10,7 +10,7 @@ UF.CreatePortrait = function(self)
     end
 
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
-    self.PortraitHolder:SetAllPoints(self.portrait)
+    self.PortraitHolder:SetAllPoints(self.Portrait)
     self.PortraitHolder:CreateBorder()
 
     return self.Portrait
@@ -47,6 +47,7 @@ UF.UpdatePortrait = function(self)
         self.PortraitHolder:SetBorderSize(config.border.size)
     else
         self:DisableElement("Portrait")
+        self.PortraitHolder.Border:Hide()
     end
 end
 

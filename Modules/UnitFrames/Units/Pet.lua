@@ -58,6 +58,8 @@ function UF:UpdatePet()
         self:EnableElement("Power")
         self:EnableElement("Portrait")
 
+        self:SetSize(175, 42)
+
         self.Health:ClearAllPoints()
         self.Health:SetSize(70, 9)
         self.Health:SetPoint("TOPLEFT", self.Texture, 45, -20)

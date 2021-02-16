@@ -1803,7 +1803,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 12}
         },
-        combatIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", 0, 0}},
         restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -1812,7 +1812,7 @@ R:RegisterModuleConfig(UF, {
         raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = true, size = {24, 24}, point = {"LEFT", -12, 0}},
         pvpClassificationIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1927,7 +1927,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 12}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -1936,7 +1936,7 @@ R:RegisterModuleConfig(UF, {
         raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
+        pvpIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
         phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
         resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
@@ -1989,7 +1989,7 @@ R:RegisterModuleConfig(UF, {
     },
     targettarget = {
         enabled = true,
-        size = {95, 45},
+        size = {95, 30},
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
         frameLevel = 20,
@@ -2006,7 +2006,7 @@ R:RegisterModuleConfig(UF, {
             }
         },
         power = {
-            enabled = true,
+            enabled = false,
             detached = false,
             size = {150, 12},
             border = {enabled = true, size = 12},
@@ -2445,7 +2445,7 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            size = {150, 6},
             border = {enabled = true, size = 12},
             shadow = {enabled = true},
             value = {
@@ -2462,10 +2462,10 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {85, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"TOPLEFT", 0, 12},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
-            fontOutline = "NONE",
+            fontOutline = "OUTLINE",
             fontShadow = true,
             justifyH = "LEFT",
             tag = "[name]"
@@ -2473,10 +2473,10 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"TOPRIGHT", 0, 12},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            fontSize = 13,
-            fontOutline = "NONE",
+            fontSize = 11,
+            fontOutline = "OUTLINE",
             fontShadow = true,
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
