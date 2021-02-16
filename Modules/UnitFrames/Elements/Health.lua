@@ -102,7 +102,7 @@ UF.UpdateHealth = function(self)
         end
 
         self.Health.Value:ClearAllPoints()
-        self.Health.Value:SetPoint(unpack(config.value.point))
+        self.Health.Value:Point(unpack(config.value.point))
     else
         self.Health.Value:Hide()
     end

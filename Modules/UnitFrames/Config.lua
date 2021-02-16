@@ -215,7 +215,9 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].size[1]
                 end,
@@ -231,7 +233,9 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].size[2]
                 end,
@@ -270,7 +274,9 @@ function UF:CreateUnitBorderOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Enabled",
                 order = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].border.enabled
                 end,
@@ -310,135 +316,170 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                 type = "description",
                 name = "NOTE: The size of the health bar for a unit always matches the frame size; to resize it, adjust the size of the frame."
             },
-            relativePoint = {
-                type = "select",
-                name = "Relative Point",
-                desc = "The point on the health bar to attach value text to.",
-                order = 11,
-                values = UF.anchorPoints,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
-                get = function()
-                    for key, value in ipairs(UF.anchorPoints) do
-                        if value == UF.config[unit].health.value.point[1] then
-                            return key
+            value = {
+                type = "group",
+                name = "Value",
+                inline = true,
+                order = 10,
+                args = {
+                    point = {
+                        type = "select",
+                        name = "Point",
+                        desc = "The anchor point on the text to attach.",
+                        order = 11,
+                        values = UF.anchorPoints,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].health.value.point[1] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].health.value.point[1] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
                         end
-                    end
-                end,
-                set = function(_, key)
-                    UF.config[unit].health.value.point[1] = UF.anchorPoints[key]
-                    UF:UpdateUnit(unit)
-                end
-            },
-            offsetX = {
-                type = "range",
-                name = "Offset (X)",
-                desc = "The horizontal offset from the anchor point.",
-                order = 12,
-                min = -50,
-                softMax = 50,
-                step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
-                get = function()
-                    return UF.config[unit].health.value.point[2]
-                end,
-                set = function(_, val)
-                    UF.config[unit].health.value.point[2] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            offsetY = {
-                type = "range",
-                name = "Offset (Y)",
-                desc = "The vertical offset from the anchor point.",
-                order = 13,
-                min = -50,
-                softMax = 50,
-                step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
-                get = function()
-                    return UF.config[unit].health.value.point[3]
-                end,
-                set = function(_, val)
-                    UF.config[unit].health.value.point[3] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            lineBreakFont = {type = "header", name = "", order = 20},
-            font = {
-                name = "Font Family",
-                type = "select",
-                desc = "The font family for health text.",
-                order = 21,
-                dialogControl = "LSM30_Font",
-                values = R.Libs.SharedMedia:HashTable("font"),
-                get = function()
-                    for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                        if UF.config[unit].health.value.font == font then
-                            return key
+                    },
+                    relativePoint = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the health bar to attach value text to.",
+                        order = 12,
+                        values = UF.anchorPoints,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].health.value.point[2] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].health.value.point[2] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
                         end
-                    end
-                end,
-                set = function(_, key)
-                    UF.config[unit].health.value.font = R.Libs.SharedMedia:Fetch("font", key)
-                    UF:UpdateUnit(unit)
-                end
-            },
-            fontSize = {
-                name = "Font Size",
-                type = "range",
-                desc = "The size of health text.",
-                order = 22,
-                min = R.FONT_MIN_SIZE,
-                max = R.FONT_MAX_SIZE,
-                step = 1,
-                get = function()
-                    return UF.config[unit].health.value.fontSize
-                end,
-                set = function(_, val)
-                    UF.config[unit].health.value.fontSize = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            fontOutline = {
-                name = "Font Outline",
-                type = "select",
-                desc = "The outline style of health text.",
-                order = 23,
-                values = R.FONT_OUTLINES,
-                get = function()
-                    return UF.config[unit].health.value.fontOutline
-                end,
-                set = function(_, key)
-                    UF.config[unit].health.value.fontOutline = key
-                    UF:UpdateUnit(unit)
-                end
-            },
-            fontShadow = {
-                name = "Font Shadows",
-                type = "toggle",
-                desc = "Whether to show shadow for health text.",
-                order = 24,
-                get = function()
-                    return UF.config[unit].health.value.fontShadow
-                end,
-                set = function(_, val)
-                    UF.config[unit].health.value.fontShadow = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            lineBreakTag = {type = "header", name = "", order = 30},
-            tag = {
-                name = "Tag",
-                type = "input",
-                desc = "The tag determines what is displayed in the health value string.",
-                order = 31,
-                get = function()
-                    return UF.config[unit].health.value.tag
-                end,
-                set = function(_, val)
-                    UF.config[unit].health.value.tag = val
-                    UF:UpdateUnit(unit)
-                end
+                    },
+                    offsetX = {
+                        type = "range",
+                        name = "Offset (X)",
+                        desc = "The horizontal offset from the anchor point.",
+                        order = 13,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        get = function()
+                            return UF.config[unit].health.value.point[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].health.value.point[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetY = {
+                        type = "range",
+                        name = "Offset (Y)",
+                        desc = "The vertical offset from the anchor point.",
+                        order = 14,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        get = function()
+                            return UF.config[unit].health.value.point[4]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].health.value.point[4] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    lineBreakFont = {type = "header", name = "", order = 20},
+                    font = {
+                        name = "Font Family",
+                        type = "select",
+                        desc = "The font family for health text.",
+                        order = 21,
+                        dialogControl = "LSM30_Font",
+                        values = R.Libs.SharedMedia:HashTable("font"),
+                        get = function()
+                            for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                                if UF.config[unit].health.value.font == font then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].health.value.font = R.Libs.SharedMedia:Fetch("font", key)
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontSize = {
+                        name = "Font Size",
+                        type = "range",
+                        desc = "The size of health text.",
+                        order = 22,
+                        min = R.FONT_MIN_SIZE,
+                        max = R.FONT_MAX_SIZE,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].health.value.fontSize
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].health.value.fontSize = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontOutline = {
+                        name = "Font Outline",
+                        type = "select",
+                        desc = "The outline style of health text.",
+                        order = 23,
+                        values = R.FONT_OUTLINES,
+                        get = function()
+                            return UF.config[unit].health.value.fontOutline
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].health.value.fontOutline = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    fontShadow = {
+                        name = "Font Shadows",
+                        type = "toggle",
+                        desc = "Whether to show shadow for health text.",
+                        order = 24,
+                        get = function()
+                            return UF.config[unit].health.value.fontShadow
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].health.value.fontShadow = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    lineBreakTag = {type = "header", name = "", order = 30},
+                    tag = {
+                        name = "Tag",
+                        type = "input",
+                        desc = "The tag determines what is displayed in the health value string.",
+                        order = 31,
+                        get = function()
+                            return UF.config[unit].health.value.tag
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].health.value.tag = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
             }
         }
     }
@@ -469,7 +510,9 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 name = "Detached",
                 desc = "Whether the power bar is detached from the health bar.",
                 order = 10,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].power.detached
                 end,
@@ -505,7 +548,9 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 min = 0,
                 softMax = 100,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].power.size[2]
                 end,
@@ -561,13 +606,15 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         end
                     },
                     lineBreakPoint = {type = "header", name = "", order = 2},
-                    relativePoint = {
+                    point = {
                         type = "select",
-                        name = "Relative Point",
-                        desc = "The point on the power bar to attach to.",
+                        name = "Point",
+                        desc = "The anchor point on the text string.",
                         order = 11,
                         values = UF.anchorPoints,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         get = function()
                             for key, value in ipairs(UF.anchorPoints) do
                                 if value == UF.config[unit].power.value.point[1] then
@@ -576,7 +623,28 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             end
                         end,
                         set = function(_, key)
-                            UF.config[unit].power.point[1] = UF.anchorPoints[key]
+                            UF.config[unit].power.value.point[1] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    relativePoint = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the power bar to attach to.",
+                        order = 12,
+                        values = UF.anchorPoints,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].power.value.point[2] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.value.point[2] = UF.anchorPoints[key]
                             UF:UpdateUnit(unit)
                         end
                     },
@@ -584,16 +652,18 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         type = "range",
                         name = "Offset (X)",
                         desc = "The horizontal offset from the anchor point.",
-                        order = 12,
+                        order = 13,
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         get = function()
-                            return UF.config[unit].power.value.point[2]
+                            return UF.config[unit].power.value.point[3]
                         end,
                         set = function(_, val)
-                            UF.config[unit].power.value.point[2] = val
+                            UF.config[unit].power.value.point[3] = val
                             UF:UpdateUnit(unit)
                         end
                     },
@@ -601,16 +671,18 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         type = "range",
                         name = "Offset (Y)",
                         desc = "The vertical offset from the anchor point.",
-                        order = 13,
+                        order = 14,
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         get = function()
-                            return UF.config[unit].power.value.point[3]
+                            return UF.config[unit].power.value.point[4]
                         end,
                         set = function(_, val)
-                            UF.config[unit].power.value.point[3] = val
+                            UF.config[unit].power.value.point[4] = val
                             UF:UpdateUnit(unit)
                         end
                     },
@@ -712,7 +784,9 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = 0,
                 softMax = 400,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].name.size[1]
                 end,
@@ -729,7 +803,9 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].name.size[2]
                 end,
@@ -739,13 +815,15 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 end
             },
             lineBreakPoint = {type = "header", name = "", order = 15},
-            relativePoint = {
+            point = {
                 type = "select",
                 name = "Relative Point",
-                desc = "The point on the unit frame to attach to.",
+                desc = "The anchor point on the name text.",
                 order = 16,
                 values = UF.anchorPoints,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].name.point[1] then
@@ -758,20 +836,43 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 17,
+                values = UF.anchorPoints,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].name.point[2] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].name.point[2] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
             offsetX = {
                 type = "range",
                 name = "Offset (X)",
                 desc = "The horizontal offset from the anchor point.",
-                order = 17,
+                order = 18,
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
-                    return UF.config[unit].name.point[2]
+                    return UF.config[unit].name.point[3]
                 end,
                 set = function(_, val)
-                    UF.config[unit].name.point[2] = val
+                    UF.config[unit].name.point[3] = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -779,16 +880,18 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 type = "range",
                 name = "Offset (Y)",
                 desc = "The vertical offset from the anchor point.",
-                order = 18,
+                order = 19,
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
-                    return UF.config[unit].name.point[3]
+                    return UF.config[unit].name.point[4]
                 end,
                 set = function(_, val)
-                    UF.config[unit].name.point[3] = val
+                    UF.config[unit].name.point[4] = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -901,7 +1004,9 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].level.size[1]
                 end,
@@ -918,7 +1023,9 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     return UF.config[unit].level.size[2]
                 end,
@@ -928,13 +1035,15 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 end
             },
             lineBreakPoint = {type = "header", name = "", order = 15},
-            relativePoint = {
+            point = {
                 type = "select",
                 name = "Relative Point",
-                desc = "The point on the unit frame to attach to.",
+                desc = "The anchor point on the level text.",
                 order = 16,
                 values = UF.anchorPoints,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].level.point[1] then
@@ -947,20 +1056,43 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 17,
+                values = UF.anchorPoints,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].level.point[2] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].level.point[2] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
             offsetX = {
                 type = "range",
                 name = "Offset (X)",
                 desc = "The horizontal offset from the anchor point.",
-                order = 17,
+                order = 18,
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
-                    return UF.config[unit].level.point[2]
+                    return UF.config[unit].level.point[3]
                 end,
                 set = function(_, val)
-                    UF.config[unit].level.point[2] = val
+                    UF.config[unit].level.point[3] = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -968,16 +1100,18 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 type = "range",
                 name = "Offset (Y)",
                 desc = "The vertical offset from the anchor point.",
-                order = 18,
+                order = 19,
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                disabled = function()
+                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                end,
                 get = function()
-                    return UF.config[unit].level.point[3]
+                    return UF.config[unit].level.point[4]
                 end,
                 set = function(_, val)
-                    UF.config[unit].level.point[3] = val
+                    UF.config[unit].level.point[4] = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -1299,7 +1433,9 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = 10,
                         softMax = 400,
                         step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         get = function()
                             return UF.config[unit].castbar.size[1]
                         end,
@@ -1315,7 +1451,9 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = 8,
                         softMax = 400,
                         step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         get = function()
                             return UF.config[unit].castbar.size[2]
                         end,
@@ -1342,11 +1480,13 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                     lineBreak2 = {type = "description", name = "", order = 20},
                     point = {
                         type = "select",
-                        name = "Relative Point",
-                        desc = "The point on the unit frame to attach to.",
+                        name = "Point",
+                        desc = "The anchor point on the castbar.",
                         order = 21,
                         values = UF.anchorPoints,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -1362,35 +1502,41 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                             UF:UpdateUnit(unit)
                         end
                     },
-                    offsetX = {
-                        type = "range",
-                        name = "Offset (X)",
-                        desc = "The horizontal offset from the anchor point.",
+                    relativePoint = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the unit frame to attach to.",
                         order = 22,
-                        min = -500,
-                        softMax = 500,
-                        step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        values = UF.anchorPoints,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
                         get = function()
-                            return UF.config[unit].castbar.point[2]
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].castbar.point[2] then
+                                    return key
+                                end
+                            end
                         end,
-                        set = function(_, val)
-                            UF.config[unit].castbar.point[2] = val
+                        set = function(_, key)
+                            UF.config[unit].castbar.point[2] = UF.anchorPoints[key]
                             UF:UpdateUnit(unit)
                         end
                     },
-                    offsetY = {
+                    offsetX = {
                         type = "range",
-                        name = "Offset (Y)",
-                        desc = "The vertical offset from the anchor point.",
+                        name = "Offset (X)",
+                        desc = "The horizontal offset from the anchor point.",
                         order = 23,
                         min = -500,
                         softMax = 500,
                         step = 1,
-                        disabled = UF.themedUnits[unit] and UF.IsBlizzardTheme or nil,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -1399,6 +1545,28 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         end,
                         set = function(_, val)
                             UF.config[unit].castbar.point[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetY = {
+                        type = "range",
+                        name = "Offset (Y)",
+                        desc = "The vertical offset from the anchor point.",
+                        order = 24,
+                        min = -500,
+                        softMax = 500,
+                        step = 1,
+                        disabled = function()
+                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
+                        end,
+                        hidden = function()
+                            return UF.config[unit].castbar.detached
+                        end,
+                        get = function()
+                            return UF.config[unit].castbar.point[4]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.point[4] = val
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -1528,8 +1696,8 @@ function UF:CreateUnitIndicatorPointOption(unit, indicatorName, order)
         args = {
             point = {
                 type = "select",
-                name = "Relative Point",
-                desc = "The point on the unit frame to attach to.",
+                name = "Point",
+                desc = "The anchor point on the indicator.",
                 order = 1,
                 values = UF.anchorPoints,
                 get = function()
@@ -1544,26 +1712,28 @@ function UF:CreateUnitIndicatorPointOption(unit, indicatorName, order)
                     UF:UpdateUnit(unit)
                 end
             },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
+                order = 2,
+                values = UF.anchorPoints,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit][indicatorName].point[2] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit][indicatorName].point[2] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
             offsetX = {
                 type = "range",
                 name = "Offset (X)",
                 desc = "The horizontal offset from the anchor point.",
-                order = 2,
-                min = -500,
-                softMax = 500,
-                step = 1,
-                get = function()
-                    return UF.config[unit][indicatorName].point[2]
-                end,
-                set = function(_, val)
-                    UF.config[unit][indicatorName].point[2] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            offsetY = {
-                type = "range",
-                name = "Offset (Y)",
-                desc = "The vertical offset from the anchor point.",
                 order = 3,
                 min = -500,
                 softMax = 500,
@@ -1573,6 +1743,22 @@ function UF:CreateUnitIndicatorPointOption(unit, indicatorName, order)
                 end,
                 set = function(_, val)
                     UF.config[unit][indicatorName].point[3] = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            offsetY = {
+                type = "range",
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 4,
+                min = -500,
+                softMax = 500,
+                step = 1,
+                get = function()
+                    return UF.config[unit][indicatorName].point[4]
+                end,
+                set = function(_, val)
+                    UF.config[unit][indicatorName].point[4] = val
                     UF:UpdateUnit(unit)
                 end
             }
@@ -1746,7 +1932,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -1763,7 +1949,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -1777,7 +1963,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 12},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -1788,7 +1974,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 12},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -1803,20 +1989,20 @@ R:RegisterModuleConfig(UF, {
             size = {38, 38},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = true, size = {24, 24}, point = {"LEFT", -12, 0}},
-        pvpClassificationIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
+        combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+        pvpClassificationIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -1834,6 +2020,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             size = {250, 25},
             point = {"CENTER", "UIParent", "BOTTOM", 0, 160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             detached = true,
             showIcon = true,
             showIconOutside = false,
@@ -1874,7 +2061,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -1890,7 +2077,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -1902,7 +2089,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPRIGHT", 0, 12},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -1913,7 +2100,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPLEFT", 0, 12},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -1928,21 +2115,21 @@ R:RegisterModuleConfig(UF, {
             size = {38, 38},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {24, 24}, point = {"LEFT", -12, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        questIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "LEFT", 0, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "RIGHT", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -1959,7 +2146,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {180, 20},
-            point = {"BOTTOM", 0, -22},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
@@ -1999,7 +2187,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2015,7 +2203,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2027,7 +2215,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {75, 10},
-            point = {"CENTER", 0, 1},
+            point = {"CENTER", "CENTER", 0, 1},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -2038,7 +2226,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2053,7 +2241,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
+        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2070,7 +2258,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"BOTTOM", 0, 20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -2110,7 +2299,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2126,7 +2315,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2138,7 +2327,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
@@ -2149,7 +2338,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2164,8 +2353,8 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"RIGHT", 12, 0}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "RIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2182,7 +2371,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {89, 15},
-            point = {"BOTTOM", 0, 20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -2222,7 +2412,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2238,7 +2428,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2250,7 +2440,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {70, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
@@ -2261,7 +2451,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2276,20 +2466,20 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
+        summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -2306,7 +2496,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {113, 15},
-            point = {"BOTTOM", 0, 20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
@@ -2346,7 +2537,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2362,7 +2553,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2374,7 +2565,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {70, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
@@ -2385,7 +2576,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2400,7 +2591,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
+        raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2417,7 +2608,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"BOTTOM", 0, 20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -2458,7 +2650,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2474,7 +2666,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2486,7 +2678,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {85, 10},
-            point = {"TOPLEFT", 0, 12},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "OUTLINE",
@@ -2497,7 +2689,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 12},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "OUTLINE",
@@ -2512,20 +2704,20 @@ R:RegisterModuleConfig(UF, {
             size = {26, 26},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "CENTER", 0, 0}},
+        summonIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "CENTER", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 16,
@@ -2541,8 +2733,9 @@ R:RegisterModuleConfig(UF, {
         },
         castbar = {
             enabled = true,
-            size = {89, 15},
-            point = {"LEFT", "RIGHT", 5, 0},
+            size = {130, 18},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
@@ -2607,7 +2800,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2619,7 +2812,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {70, 10},
-            point = {"TOP", 0, -8},
+            point = {"TOP", "TOP", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -2630,7 +2823,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2645,20 +2838,20 @@ R:RegisterModuleConfig(UF, {
             size = {36, 36},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "CENTER", 0, 0}},
+        summonIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "CENTER", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 16,
@@ -2676,7 +2869,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"BOTTOM", 0, 20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"LEFT", "RIGHT", 5, 0},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
@@ -2730,7 +2924,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2746,7 +2940,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2758,7 +2952,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
             fontOutline = "NONE",
@@ -2769,7 +2963,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2784,19 +2978,19 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2813,7 +3007,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"LEFT", 20, 0},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"LEFT", "RIGHT", 5, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -2853,7 +3048,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2869,7 +3064,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2881,7 +3076,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"TOP", "TOP", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -2892,7 +3087,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -2907,19 +3102,19 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -2936,7 +3131,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"RIGHT", 20, 0},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"LEFT", "RIGHT", 5, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -2976,7 +3172,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -2992,7 +3188,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -3004,7 +3200,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"TOP", "TOP", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -3015,7 +3211,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -3030,19 +3226,19 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -3059,7 +3255,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"RIGHT", 20, 0},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"LEFT", "RIGHT", 5, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -3099,7 +3296,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -3115,7 +3312,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -3127,7 +3324,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {155, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -3138,7 +3335,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = false,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 0},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "NONE",
@@ -3153,20 +3350,20 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"LEFT", -12, 0}},
-        leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
-        assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
-        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
-        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"TOPRIGHT", 6, 5}},
-        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"TOPRIGHT", 6, 5}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
-        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
-        pvpIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"TOP", 0, 0}},
-        phaseIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        summonIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
+        leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+        masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+        groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+        readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+        pvpIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        pvpClassificationIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        resurrectIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
             iconSize = 25,
@@ -3183,7 +3380,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = false,
             size = {89, 15},
-            point = {"RIGHT", 20, 0},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"RIGHT", "LEFT", -5, 0},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
@@ -3222,7 +3420,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             value = {
                 enabled = true,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -3238,7 +3436,7 @@ R:RegisterModuleConfig(UF, {
             shadow = {enabled = true},
             value = {
                 enabled = false,
-                point = {"CENTER", 0, 0},
+                point = {"CENTER", "CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -3250,7 +3448,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {130, 10},
-            point = {"TOPLEFT", 0, 12},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -3261,7 +3459,7 @@ R:RegisterModuleConfig(UF, {
         level = {
             enabled = true,
             size = {20, 10},
-            point = {"TOPRIGHT", 0, 12},
+            point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 13,
             fontOutline = "OUTLINE",
@@ -3269,8 +3467,8 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        questIndicator = {enabled = true, size = {16, 16}, point = {"TOP", 0, 0}},
-        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
+        questIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+        raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = true,
             iconSize = 25,
@@ -3287,7 +3485,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {150, 12},
-            point = {"TOP", 0, -20},
+            point = {"CENTER", "UIParent", "TOP", 0, -160},
+            attachedPoint = {"TOP", "BOTTOM", 0, -2},
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,

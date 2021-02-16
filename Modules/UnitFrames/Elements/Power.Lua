@@ -65,7 +65,7 @@ UF.UpdatePower = function(self)
             end
 
             self.Power.Value:ClearAllPoints()
-            self.Power.Value:SetPoint(unpack(config.value.point))
+            self.Power.Value:Point(unpack(config.value.point))
         else
             self.Power.Value:Hide()
         end

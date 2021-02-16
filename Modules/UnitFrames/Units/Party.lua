@@ -203,6 +203,7 @@ function UF:UpdateParty()
         end
 
         self.CastbarParent:ClearAllPoints()
+        self.CastbarParent:SetSize(89, 15)
         self.CastbarParent:SetPoint("TOPLEFT", self, "TOPRIGHT", 15, -13)
         
         self.ThreatIndicator:ClearAllPoints()
