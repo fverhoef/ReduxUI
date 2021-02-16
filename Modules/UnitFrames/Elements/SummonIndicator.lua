@@ -22,7 +22,7 @@ UF.UpdateSummonIndicator = function(self)
 
         self.SummonIndicator:SetSize(unpack(config.size))
         self.SummonIndicator:ClearAllPoints()
-        self.SummonIndicator:SetPoint(unpack(config.point))
+        self.SummonIndicator:Point(unpack(config.point))
     else
         self:DisableElement("SummonIndicator")
     end

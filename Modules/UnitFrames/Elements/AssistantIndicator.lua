@@ -24,7 +24,7 @@ UF.UpdateAssistantIndicator = function(self)
 
         self.AssistantIndicator:SetSize(unpack(config.size))
         self.AssistantIndicator:ClearAllPoints()
-        self.AssistantIndicator:SetPoint(unpack(config.point))
+        self.AssistantIndicator:Point(unpack(config.point))
     else
         self:DisableElement("AssistantIndicator")
     end

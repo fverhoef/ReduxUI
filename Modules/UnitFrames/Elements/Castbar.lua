@@ -144,7 +144,7 @@ UF.UpdateCastbar = function(self)
 
         self.CastbarParent:SetSize(width, height)
         self.CastbarParent:ClearAllPoints()
-        self.CastbarParent:SetPoint(unpack(config.point))
+        self.CastbarParent:Point(unpack(config.point))
         self.CastbarParent:SetBorderSize(config.borderSize)
     else
         self:DisableElement("Castbar")

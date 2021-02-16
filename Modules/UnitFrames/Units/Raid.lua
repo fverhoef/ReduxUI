@@ -9,7 +9,7 @@ function UF:SpawnRaidHeader()
 
     if config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Raid")
-        parent:SetPoint(unpack(config.point))
+        parent:Point(unpack(config.point))
         parent:SetSize(200, 40)
         parent:Show()
         parent.config = config

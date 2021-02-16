@@ -43,7 +43,6 @@ function UF:CreatePlayer()
     
     -- UF.CreateStatusFlash(self)
     self:CreateTab()
-    self:CreateThreatIndicator()
 
     -- TODO: replace with oUF class power?
     if not R.isClassic then
@@ -176,6 +175,12 @@ function UF:UpdatePlayer()
         self.CombatIndicator:ClearAllPoints()
         self.CombatIndicator:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
         self.CombatIndicator:SetSize(32, 31)
+        
+        self.ThreatIndicator:ClearAllPoints()
+        self.ThreatIndicator:SetSize(242, 93)
+        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, 13, 0)
+        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
+        self.ThreatIndicator:SetTexCoord(0.9453125, 0, 0, 0.181640625)
     end
 end
 
@@ -195,7 +200,6 @@ UF.Player_OnEvent = function(self, event, ...)
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_ENTERING_WORLD" then
         self.inCombat = nil
-        self.onHateList = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_ENTER_COMBAT" then
         self.inCombat = 1
@@ -204,10 +208,8 @@ UF.Player_OnEvent = function(self, event, ...)
         self.inCombat = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_REGEN_DISABLED" then
-        self.onHateList = 1
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_REGEN_ENABLED" then
-        self.onHateList = nil
         UF.UpdateStatusFlashVisibility(self)
     elseif event == "PLAYER_UPDATE_RESTING" then
         UF.UpdateStatusFlashVisibility(self)

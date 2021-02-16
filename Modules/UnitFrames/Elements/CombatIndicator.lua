@@ -34,7 +34,7 @@ UF.UpdateCombatIndicator = function(self)
 
         self.CombatIndicator:SetSize(unpack(config.size))
         self.CombatIndicator:ClearAllPoints()
-        self.CombatIndicator:SetPoint(unpack(config.point))
+        self.CombatIndicator:Point(unpack(config.point))
     else
         self:DisableElement("CombatIndicator")
     end

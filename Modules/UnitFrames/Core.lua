@@ -206,6 +206,12 @@ function UF:SetupFrame(self)
     if self.config.auraHighlight then
         self:CreateAuraHighlight()
     end
+    if self.config.threat then
+        self:CreateThreatIndicator()
+    end
+    if self.config.target then
+        self:CreateTargetIndicator()
+    end
 end
 
 function UF:UpdateFrame(self)
@@ -232,6 +238,8 @@ function UF:UpdateFrame(self)
     self:UpdateCastbar()
     self:UpdateAuras()
     self:UpdateAuraHighlight()
+    self:UpdateThreatIndicator()
+    self:UpdateTargetIndicator()
 
     self:UpdateCombatIndicator()
     self:UpdateRestingIndicator()

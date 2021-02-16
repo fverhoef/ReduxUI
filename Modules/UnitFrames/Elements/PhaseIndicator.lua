@@ -24,7 +24,7 @@ UF.UpdatePhaseIndicator = function(self)
 
         self.PhaseIndicator:SetSize(unpack(config.size))
         self.PhaseIndicator:ClearAllPoints()
-        self.PhaseIndicator:SetPoint(unpack(config.point))
+        self.PhaseIndicator:Point(unpack(config.point))
     else
         self:DisableElement("PhaseIndicator")
     end

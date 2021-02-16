@@ -9,7 +9,7 @@ function UF:SpawnBossHeader()
 
     if R.isRetail and config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Boss")
-        parent:SetPoint(unpack(config.point))
+        parent:Point(unpack(config.point))
         parent:SetSize(200, 40)
         parent:Show()
         parent.bosses = {}
@@ -21,7 +21,7 @@ function UF:SpawnBossHeader()
             boss:SetParent(parent)
 
             if (i == 1) then
-                boss:SetPoint(unpack(config.point))
+                boss:Point(unpack(config.point))
             else
                 boss:SetPoint(config.point, UF.frames["boss" .. (i - 1)], config.relativePoint, config.xOffset, config.yOffset)
             end

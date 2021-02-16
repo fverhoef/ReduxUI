@@ -39,9 +39,6 @@ function UF:CreateNamePlate()
         self:CreateComboFrame()
     end
 
-    self:CreateThreatIndicator()
-    self:CreateTargetIndicator()
-
     table.insert(UF.nameplates, self)
 
     self.Update = function(self)
@@ -60,7 +57,12 @@ end
 
 UF.NamePlate_Callback = function(self, event, unit)
     if self then
-        UF.UpdateTargetIndicator(self)
+        if self.TargetIndicator then
+            self.TargetIndicator:ForceUpdate()
+        end
+        if self.ThreatIndicator then
+            self.ThreatIndicator:ForceUpdate()
+        end
     end
 end
 

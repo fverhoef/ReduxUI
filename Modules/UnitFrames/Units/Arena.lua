@@ -13,7 +13,7 @@ function UF:SpawnArenaHeader()
         for i = 1, MAX_ARENA_FRAMES do
             local arena = oUF:Spawn("arena" .. i, addonName .. "Arena" .. i)
             if (i == 1) then
-                arena:SetPoint(unpack(config.point))
+                arena:Point(unpack(config.point))
             else
                 arena:SetPoint(config.point, UF.frames["arena" .. (i - 1)], config.relativePoint, config.xOffset, config.yOffset)
             end

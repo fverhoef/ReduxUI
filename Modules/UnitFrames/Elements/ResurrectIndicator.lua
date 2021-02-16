@@ -22,7 +22,7 @@ UF.UpdateResurrectIndicator = function(self)
 
         self.ResurrectIndicator:SetSize(unpack(config.size))
         self.ResurrectIndicator:ClearAllPoints()
-        self.ResurrectIndicator:SetPoint(unpack(config.point))
+        self.ResurrectIndicator:Point(unpack(config.point))
     else
         self:DisableElement("ResurrectIndicator")
     end

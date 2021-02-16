@@ -24,7 +24,7 @@ UF.UpdateRaidTargetIndicator = function(self)
 
         self.RaidTargetIndicator:SetSize(unpack(config.size))
         self.RaidTargetIndicator:ClearAllPoints()
-        self.RaidTargetIndicator:SetPoint(unpack(config.point))
+        self.RaidTargetIndicator:Point(unpack(config.point))
     else
         self:DisableElement("RaidTargetIndicator")
     end

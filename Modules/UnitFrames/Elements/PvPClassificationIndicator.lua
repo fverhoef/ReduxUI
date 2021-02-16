@@ -24,7 +24,7 @@ UF.UpdatePvPClassificationIndicator = function(self)
 
         self.PvPClassificationIndicator:SetSize(unpack(config.size))
         self.PvPClassificationIndicator:ClearAllPoints()
-        self.PvPClassificationIndicator:SetPoint(unpack(config.point))
+        self.PvPClassificationIndicator:Point(unpack(config.point))
     else
         self:DisableElement("PvPClassificationIndicator")
     end

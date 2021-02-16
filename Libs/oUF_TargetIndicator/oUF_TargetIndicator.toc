@@ -1,0 +1,9 @@
+## Interface: 11304
+## Title: oUF CombatFeedback
+## Author: Astromech
+## Version: 1.6.8-8
+## Notes: Adds combat feedback to oUF
+## RequiredDeps: oUF
+## X-oUF: oUF
+
+oUF_CombatFeedback.lua

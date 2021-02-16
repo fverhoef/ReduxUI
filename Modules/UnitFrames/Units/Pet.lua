@@ -94,5 +94,11 @@ function UF:UpdatePet()
         
         self.RaidTargetIndicator:ClearAllPoints()
         self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
+
+        self.ThreatIndicator:ClearAllPoints()
+        self.ThreatIndicator:SetSize(129, 64)
+        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, -5, 13)
+        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
+        self.ThreatIndicator:SetTexCoord(0, 1, 1, 0)
     end
 end

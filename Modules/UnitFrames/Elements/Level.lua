@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.CreateLevel = function(self)
-    self.Level = self:CreateFontString("$parentLevel", "ARTWORK")
+    self.Level = self:CreateFontString("$parentLevel", "OVERLAY")
     self.Level:SetParent(self.Overlay)
     self.Level:SetFont(UF.config.font, 12, "THICKOUTLINE")
 
@@ -29,7 +29,7 @@ UF.UpdateLevel = function(self)
 
         self.Level:ClearAllPoints()
         self.Level:SetSize(unpack(config.size))
-        self.Level:SetPoint(unpack(config.point))
+        self.Level:Point(unpack(config.point))
 
         if config.tag then
             self:Tag(self.Level, config.tag)

@@ -24,7 +24,7 @@ UF.UpdateOfflineIcon = function(self)
 
         self.OfflineIcon:SetSize(unpack(config.size))
         self.OfflineIcon:ClearAllPoints()
-        self.OfflineIcon:SetPoint(unpack(config.point))
+        self.OfflineIcon:Point(unpack(config.point))
     else
         self:DisableElement("OfflineIcon")
     end

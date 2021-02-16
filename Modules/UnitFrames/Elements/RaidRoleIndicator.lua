@@ -24,7 +24,7 @@ UF.UpdateRaidRoleIndicator = function(self)
 
         self.RaidRoleIndicator:SetSize(unpack(config.size))
         self.RaidRoleIndicator:ClearAllPoints()
-        self.RaidRoleIndicator:SetPoint(unpack(config.point))
+        self.RaidRoleIndicator:Point(unpack(config.point))
     else
         self:DisableElement("RaidRoleIndicator")
     end

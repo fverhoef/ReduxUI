@@ -24,7 +24,7 @@ UF.UpdateGroupRoleIndicator = function(self)
 
         self.GroupRoleIndicator:SetSize(unpack(config.size))
         self.GroupRoleIndicator:ClearAllPoints()
-        self.GroupRoleIndicator:SetPoint(unpack(config.point))
+        self.GroupRoleIndicator:Point(unpack(config.point))
     else
         self:DisableElement("GroupRoleIndicator")
     end

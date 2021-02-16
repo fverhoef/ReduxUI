@@ -73,7 +73,7 @@ UF.UpdatePower = function(self)
         self.Power:SetSize(unpack(config.size))
         self.Power:ClearAllPoints()
         if config.detached then
-            self.Power:SetPoint(unpack(config.point))
+            self.Power:Point(unpack(config.point))
         else
             if self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached and
                 self.config.portrait.attachedPoint == "RIGHT" then

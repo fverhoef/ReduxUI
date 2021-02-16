@@ -38,6 +38,29 @@ function R:Offset(offsetX, offsetY)
     end
 end
 
+function R:Point(arg1, arg2, arg3, arg4, arg5)
+    if not self or not arg1 or not self.SetPoint then
+        return
+    end
+
+    if type(arg1) == "table" then
+        arg1, arg2, arg3, arg4, arg5 = unpack(arg1)
+    end
+
+    local point, anchor, relativePoint, offsetX, offsetY
+    if arg5 then
+        point, anchor, relativePoint, offsetX, offsetY = arg1, arg2, arg3, arg4, arg5
+    elseif arg4 then
+        point, anchor, relativePoint, offsetX, offsetY = arg1, self:GetParent(), arg2, arg3, arg4
+    elseif arg3 then
+        point, anchor, relativePoint, offsetX, offsetY = arg1, self:GetParent(), arg1, arg2, arg3
+    else
+        point, anchor, relativePoint, offsetX, offsetY = arg1, self:GetParent(), arg1, 0, 0
+    end
+
+    self:SetPoint(point, anchor, relativePoint, offsetX, offsetY)
+end
+
 local borders = {}
 
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
@@ -168,6 +191,20 @@ function R:SetBorderColor(r, g, b, a)
     end
 end
 
+function R:GetBorderColor()
+    if not self.Border then
+        return
+    end
+
+    local color = {self.Border[1]:GetVertexColor()}
+
+    if not color[4] then
+        color[4] = 1
+    end
+
+    return color
+end
+
 function R:SetBorderSize(size)
     if not self.Border then
         return
@@ -250,16 +287,16 @@ function R:SetShadowPadding(left, right, top, bottom)
     self.Shadow:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.Shadow.size + right, -self.Shadow.size - bottom)
 end
 
-function R:SetShadowColor(color)
+function R:SetShadowColor(r, g, b, a)
     if not self.Shadow then
         return
     end
 
-    if not color[4] then
-        color[4] = 0.7
+    if not a then
+        a = 0.7
     end
 
-    self.Shadow:SetBackdropBorderColor(unpack(color))
+    self.Shadow:SetBackdropBorderColor(r, g, b, a)
 end
 
 function R:GetShadowColor()
@@ -343,6 +380,9 @@ local function AddApi(object)
     if not object.Offset then
         mt.Offset = R.Offset
     end
+    if not object.Point then
+        mt.Point = R.Point
+    end
     if not object.CreateBackdrop then
         mt.CreateBackdrop = R.CreateBackdrop
     end
@@ -354,6 +394,9 @@ local function AddApi(object)
     end
     if not object.SetBorderColor then
         mt.SetBorderColor = R.SetBorderColor
+    end
+    if not object.GetBorderColor then
+        mt.GetBorderColor = R.GetBorderColor
     end
     if not object.SetBorderSize then
         mt.SetBorderSize = R.SetBorderSize

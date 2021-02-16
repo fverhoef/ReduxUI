@@ -24,7 +24,7 @@ UF.UpdateQuestIndicator = function(self)
 
         self.QuestIndicator:SetSize(unpack(config.size))
         self.QuestIndicator:ClearAllPoints()
-        self.QuestIndicator:SetPoint(unpack(config.point))
+        self.QuestIndicator:Point(unpack(config.point))
     else
         self:DisableElement("UpdateQuestIndicator")
     end

@@ -34,7 +34,7 @@ UF.UpdatePortrait = function(self)
 
         self.Portrait:ClearAllPoints()
         if config.detached then
-            self.Portrait:SetPoint(unpack(config.point))
+            self.Portrait:Point(unpack(config.point))
         elseif config.attachedPoint == "LEFT" then
             self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, -yOffset)
             self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, yOffset)

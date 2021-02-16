@@ -24,7 +24,7 @@ UF.UpdatePvPIndicator = function(self)
 
         self.PvPIndicator:SetSize(unpack(config.size))
         self.PvPIndicator:ClearAllPoints()
-        self.PvPIndicator:SetPoint(unpack(config.point))
+        self.PvPIndicator:Point(unpack(config.point))
     else
         self:DisableElement("UpdatePvPIndicator")
     end

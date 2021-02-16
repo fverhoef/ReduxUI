@@ -1800,10 +1800,10 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             attachedPoint = "LEFT",
-            size = {42, 42},
+            size = {38, 38},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = true, size = {24, 24}, point = {"RIGHT", 12, 0}},
         restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -1857,6 +1857,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -1924,10 +1925,10 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             attachedPoint = "RIGHT",
-            size = {42, 42},
+            size = {38, 38},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"LEFT", -12, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -1981,6 +1982,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2091,6 +2093,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2161,7 +2164,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"RIGHT", 12, 0}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = true,
@@ -2202,6 +2205,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2272,7 +2276,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -2325,6 +2329,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2435,6 +2440,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2444,7 +2450,7 @@ R:RegisterModuleConfig(UF, {
     mouseover = {enabled = false},
     party = {
         enabled = true,
-        size = {105, 30},
+        size = {130, 30},
         scale = 1,
         point = {"RIGHT", "UIParent", "BOTTOM", -160, 240},
         frameLevel = 11,
@@ -2503,10 +2509,10 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             attachedPoint = "LEFT",
-            size = {30, 30},
+            size = {26, 26},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -2536,7 +2542,7 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {89, 15},
-            point = {"RIGHT", 20, 0},
+            point = {"LEFT", "RIGHT", 5, 0},
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
@@ -2559,13 +2565,14 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
         textureColor = {0.5, 0.5, 0.5, 1},
 
-        unitAnchorPoint = "TOP",
+        unitAnchorPoint = "BOTTOM",
         unitSpacing = 50,
         sortMethod = "INDEX", -- NAME, INDEX
         sortDir = "ASC", -- ASC, DESC
@@ -2638,7 +2645,7 @@ R:RegisterModuleConfig(UF, {
             size = {36, 36},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {24, 24}, point = {"RIGHT", 12, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -2692,6 +2699,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2776,7 +2784,6 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -2829,6 +2836,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2899,7 +2907,6 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -2952,6 +2959,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3022,7 +3030,6 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -3075,6 +3082,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3145,7 +3153,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4}
         },
-        combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
+        combatIndicator = {enabled = false, size = {16, 16}, point = {"LEFT", -12, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", 10, 5}},
@@ -3198,6 +3206,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
+        threat = {enabled = true, glow = true, border = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3300,13 +3309,13 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
+        threat = {enabled = true, glow = true, border = true},
+        target = {enabled = true, glow = true, border = true, arrows = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
 
         showComboPoints = false,
-        targetGlow = true,
-        targetArrows = true,
         cvars = {
             nameplateMinScale = 1,
             nameplateMaxScale = 1,

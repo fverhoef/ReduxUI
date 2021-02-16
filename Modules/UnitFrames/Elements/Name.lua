@@ -29,7 +29,7 @@ UF.UpdateName = function(self)
 
         self.Name:ClearAllPoints()
         self.Name:SetSize(unpack(config.size))
-        self.Name:SetPoint(unpack(config.point))
+        self.Name:Point(unpack(config.point))
 
         if config.tag then
             self:Tag(self.Name, config.tag)

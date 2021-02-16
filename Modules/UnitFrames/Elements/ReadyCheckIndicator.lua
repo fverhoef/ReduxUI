@@ -25,7 +25,7 @@ UF.UpdateReadyCheckIndicator = function(self)
 
         self.ReadyCheckIndicator:SetSize(unpack(config.size))
         self.ReadyCheckIndicator:ClearAllPoints()
-        self.ReadyCheckIndicator:SetPoint(unpack(config.point))
+        self.ReadyCheckIndicator:Point(unpack(config.point))
     else
         self:DisableElement("ReadyCheckIndicator")
     end

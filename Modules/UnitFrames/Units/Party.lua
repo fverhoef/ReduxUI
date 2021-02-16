@@ -9,7 +9,7 @@ function UF:SpawnPartyHeader()
 
     if config.enabled then
         local parent = CreateFrame("Frame", addonName .. "Party")
-        parent:SetPoint(unpack(config.point))
+        parent:Point(unpack(config.point))
         parent:SetSize(200, 40)
         parent:Show()
         parent.config = config
@@ -135,6 +135,8 @@ function UF:UpdateParty()
         self:EnableElement("AssistantIndicator")
         self:EnableElement("MasterLooterIndicator")
 
+        self:SetSize(105, 30)
+
         self.Texture:SetTexture(R.media.textures.unitFrames.partyFrame)
         self.Texture:SetSize(128, 64)
         self.Texture:SetPoint("TOPLEFT", self, 0, -2)
@@ -202,6 +204,11 @@ function UF:UpdateParty()
 
         self.CastbarParent:ClearAllPoints()
         self.CastbarParent:SetPoint("TOPLEFT", self, "TOPRIGHT", 15, -13)
+        
+        self.ThreatIndicator:ClearAllPoints()
+        self.ThreatIndicator:SetSize(128, 63)
+        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, -3, 4)
+        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
     end
 end
 

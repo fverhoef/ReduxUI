@@ -24,7 +24,7 @@ UF.UpdateMasterLooterIndicator = function(self)
 
         self.MasterLooterIndicator:SetSize(unpack(config.size))
         self.MasterLooterIndicator:ClearAllPoints()
-        self.MasterLooterIndicator:SetPoint(unpack(config.point))
+        self.MasterLooterIndicator:Point(unpack(config.point))
     else
         self:DisableElement("MasterLooterIndicator")
     end

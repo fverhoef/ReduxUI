@@ -33,7 +33,7 @@ UF.UpdateRestingIndicator = function(self)
 
         self.RestingIndicator:SetSize(unpack(config.size))
         self.RestingIndicator:ClearAllPoints()
-        self.RestingIndicator:SetPoint(unpack(config.point))
+        self.RestingIndicator:Point(unpack(config.point))
     else
         self:DisableElement("RestingIndicator")
     end

@@ -34,4 +34,5 @@
     <Script file="oUF_FloatingCombatFeedback\oUF_FloatingCombatFeedback.lua"/>
     <Script file="oUF_OfflineIcon\oUF_OfflineIcon.lua"/>
     <Script file="oUF_Smooth\oUF_Smooth.lua"/>
+    <Script file="oUF_TargetIndicator\oUF_TargetIndicator.lua"/>
 </Ui>

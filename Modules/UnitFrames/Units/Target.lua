@@ -38,7 +38,6 @@ function UF:CreateTarget()
     self.RareEliteTexture:SetAllPoints(self.Texture)
 
     self:CreateRange()
-    self:CreateThreatIndicator()
 
     if R.isClassic then
         self:CreateComboFrame()
@@ -161,6 +160,12 @@ function UF:UpdateTarget()
         if self.config.auras.enabled and self.config.auras.showDebuffsOnTop then
             self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.CastbarParent:GetHeight() + 5)
         end
+        
+        self.ThreatIndicator:ClearAllPoints()
+        self.ThreatIndicator:SetSize(239, 92)
+        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, -23, 0)
+        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
+        self.ThreatIndicator:SetTexCoord(0, 0.9453125, 0, 0.182)
     end
 
     UF.UpdateTargetFrameTexture(self)
