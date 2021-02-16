@@ -1759,7 +1759,7 @@ R:RegisterModuleConfig(UF, {
             detached = false,
             size = {150, 12},
             point = {"CENTER", "UIParent", "BOTTOM", 0, 360},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = true,
@@ -1801,7 +1801,7 @@ R:RegisterModuleConfig(UF, {
             detached = false,
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 12}
+            border = {enabled = true, size = 4}
         },
         combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", 0, 0}},
         restingIndicator = {enabled = true, size = {16, 16}, point = {"LEFT", -8, 0}},
@@ -1838,7 +1838,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = true,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -1857,7 +1857,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -1885,7 +1885,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = true,
@@ -1925,7 +1925,7 @@ R:RegisterModuleConfig(UF, {
             detached = false,
             attachedPoint = "RIGHT",
             size = {42, 42},
-            border = {enabled = true, size = 12}
+            border = {enabled = true, size = 4}
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
@@ -1962,7 +1962,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -1981,7 +1981,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -1996,7 +1996,7 @@ R:RegisterModuleConfig(UF, {
         health = {
             enabled = true,
             value = {
-                enabled = true,
+                enabled = false,
                 point = {"CENTER", 0, 0},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
@@ -2009,7 +2009,7 @@ R:RegisterModuleConfig(UF, {
             enabled = false,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2025,9 +2025,9 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {75, 10},
-            point = {"TOPLEFT", 0, 0},
+            point = {"CENTER", 0, 1},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            fontSize = 11,
+            fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
             justifyH = "CENTER",
@@ -2049,7 +2049,7 @@ R:RegisterModuleConfig(UF, {
             detached = false,
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 12}
+            border = {enabled = true, size = 4}
         },
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
@@ -2072,7 +2072,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2091,7 +2091,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2119,7 +2119,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2154,7 +2154,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = true,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
@@ -2177,7 +2183,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2196,7 +2202,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2224,7 +2230,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2259,7 +2265,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = true,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2294,7 +2306,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2313,7 +2325,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2341,7 +2353,7 @@ R:RegisterModuleConfig(UF, {
             enabled = false,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2376,7 +2388,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "CENTER",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"TOP", 0, 10}},
         auras = {
             enabled = false,
@@ -2398,7 +2416,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2417,7 +2435,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2428,7 +2446,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {105, 30},
         scale = 1,
-        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        point = {"RIGHT", "UIParent", "BOTTOM", -160, 240},
         frameLevel = 11,
         health = {
             enabled = true,
@@ -2446,7 +2464,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 6},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2481,7 +2499,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = true, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = true,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {30, 30},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2516,7 +2540,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2535,7 +2559,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2572,7 +2596,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 8},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2607,7 +2631,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {36, 36},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2643,7 +2673,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2662,7 +2692,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
 
@@ -2704,7 +2734,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2739,7 +2769,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2774,7 +2810,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2793,7 +2829,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2821,7 +2857,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2856,7 +2892,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -2891,7 +2933,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -2910,7 +2952,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -2938,7 +2980,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -2973,7 +3015,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -3008,7 +3056,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -3027,7 +3075,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -3055,7 +3103,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             size = {150, 12},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -3090,7 +3138,13 @@ R:RegisterModuleConfig(UF, {
             justifyH = "RIGHT",
             tag = "[difficultycolor][level]"
         },
-        portrait = {enabled = false, detached = false, size = {42, 42}, border = {enabled = true, size = 12}},
+        portrait = {
+            enabled = false,
+            detached = false,
+            attachedPoint = "LEFT",
+            size = {42, 42},
+            border = {enabled = true, size = 4}
+        },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"TOPLEFT", -6, 5}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"TOPLEFT", -6, 5}},
@@ -3125,7 +3179,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -3144,7 +3198,7 @@ R:RegisterModuleConfig(UF, {
             ignoreOther = false
         },
         auraHighlight = {enabled = true, glow = true, border = true},
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
         texture = nil,
@@ -3171,7 +3225,7 @@ R:RegisterModuleConfig(UF, {
             enabled = false,
             detached = false,
             size = {150, 4},
-            border = {enabled = true, size = 12},
+            border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
                 enabled = false,
@@ -3228,7 +3282,7 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 12,
+            borderSize = 4,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
@@ -3246,7 +3300,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        border = {enabled = true, size = 12},
+        border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
 

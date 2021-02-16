@@ -68,7 +68,7 @@ function SS:Initialize()
 
     SS.Canvas.Bottom.Faction = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
     SS.Canvas.Bottom.Faction:SetPoint("BOTTOMLEFT", SS.Canvas.Bottom, "BOTTOMLEFT", -20, -16)
-    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], 140))
+    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], R.PlayerFaction))
     SS.Canvas.Bottom.Faction:SetSize(140, 140)
 
     local classColor = _G.RAID_CLASS_COLORS[R.PlayerClass]

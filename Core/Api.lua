@@ -91,31 +91,39 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
             self.Border[i]:SetVertexColor(unpack(color))
         end
 
-        self.Border[1]:SetTexCoord(0, 1 / 3, 0, 1 / 3)
+        -- Top Left Corner
+        self.Border[1]:SetTexCoord(0, 8 / 64, 0, 8 / 64)
         self.Border[1]:SetPoint("TOPLEFT", self, -left, top)
 
-        self.Border[2]:SetTexCoord(2 / 3, 1, 0, 1 / 3)
+        -- Top Right Corner
+        self.Border[2]:SetTexCoord(56 / 64, 1, 0, 8 / 64)
         self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
 
-        self.Border[3]:SetTexCoord(0, 1 / 3, 2 / 3, 1)
+        -- Bottom Left Corner
+        self.Border[3]:SetTexCoord(0, 8 / 64, 56 / 64, 1)
         self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
 
-        self.Border[4]:SetTexCoord(2 / 3, 1, 2 / 3, 1)
+        -- Bottom Right Corner
+        self.Border[4]:SetTexCoord(56 / 64, 1, 56 / 64, 1)
         self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
 
-        self.Border[5]:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
+        -- Top
+        self.Border[5]:SetTexCoord(8 / 64, 56 / 64, 0, 8 / 64)
         self.Border[5]:SetPoint("TOPLEFT", self.Border[1], "TOPRIGHT")
         self.Border[5]:SetPoint("TOPRIGHT", self.Border[2], "TOPLEFT")
 
-        self.Border[6]:SetTexCoord(1 / 3, 2 / 3, 2 / 3, 1)
+        -- Bottom
+        self.Border[6]:SetTexCoord(8 / 64, 56 / 64, 56 / 64, 1)
         self.Border[6]:SetPoint("BOTTOMLEFT", self.Border[3], "BOTTOMRIGHT")
         self.Border[6]:SetPoint("BOTTOMRIGHT", self.Border[4], "BOTTOMLEFT")
 
-        self.Border[7]:SetTexCoord(0, 1 / 3, 1 / 3, 2 / 3)
+        -- Left
+        self.Border[7]:SetTexCoord(0, 8 / 64, 8 / 64, 56 / 64)
         self.Border[7]:SetPoint("TOPLEFT", self.Border[1], "BOTTOMLEFT")
         self.Border[7]:SetPoint("BOTTOMLEFT", self.Border[3], "TOPLEFT")
 
-        self.Border[8]:SetTexCoord(2 / 3, 1, 1 / 3, 2 / 3)
+        -- Right
+        self.Border[8]:SetTexCoord(56 / 64, 1, 8 / 64, 56 / 64)
         self.Border[8]:SetPoint("TOPRIGHT", self.Border[2], "BOTTOMRIGHT")
         self.Border[8]:SetPoint("BOTTOMRIGHT", self.Border[4], "TOPRIGHT")
 

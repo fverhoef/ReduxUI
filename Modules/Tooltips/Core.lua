@@ -71,7 +71,7 @@ function TT:Initialize()
 
     GameTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
     GameTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
-    
+
     ItemRefTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
     ItemRefTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
 
@@ -296,7 +296,7 @@ function TT:SetBackdropStyle()
     })
     self:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
-    self:CreateBorder(12)
+    self:CreateBorder(4)
     self:CreateShadow()
 end
 
@@ -465,10 +465,7 @@ end
 
 function TT:AddItemLevel(tooltip, itemLevel)
     if TT.config.showItemLevel then
-        TT:InsertLine(tooltip, 2, {
-            left = {text = "Item Level " .. itemLevel, color = TT.config.colors.itemLevel},
-            right = {}
-        })
+        TT:InsertLine(tooltip, 2, {left = {text = "Item Level " .. itemLevel, color = TT.config.colors.itemLevel}, right = {}})
     end
 end
 
@@ -514,8 +511,7 @@ function TT:UpdateScale()
 end
 
 function TT:UpdateFonts()
-    GameTooltipHeaderText:SetFont(TT.config.fontFamily,
-                                  TT.config.headerFontSize, "NONE")
+    GameTooltipHeaderText:SetFont(TT.config.fontFamily, TT.config.headerFontSize, "NONE")
     GameTooltipHeaderText:SetShadowOffset(1, -2)
     GameTooltipHeaderText:SetShadowColor(0, 0, 0, 0.75)
 
@@ -523,12 +519,10 @@ function TT:UpdateFonts()
     GameTooltipText:SetShadowOffset(1, -2)
     GameTooltipText:SetShadowColor(0, 0, 0, 0.75)
 
-    Tooltip_Small:SetFont(TT.config.fontFamily, TT.config.smallFontSize,
-                          "NONE")
+    Tooltip_Small:SetFont(TT.config.fontFamily, TT.config.smallFontSize, "NONE")
     Tooltip_Small:SetShadowOffset(1, -2)
     Tooltip_Small:SetShadowColor(0, 0, 0, 0.75)
 
-    GameTooltipStatusBar.text:SetFont(TT.config.fontFamily,
-                                      TT.config.healthFontSize, "OUTLINE")
+    GameTooltipStatusBar.text:SetFont(TT.config.fontFamily, TT.config.healthFontSize, "OUTLINE")
 end
 

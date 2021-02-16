@@ -29,16 +29,18 @@ UF.UpdatePortrait = function(self)
 
         self.Portrait:SetSize(unpack(config.size))
 
-        local xOffset = self.config.border.enabled and 2 or 0
+        local xOffset = self.config.border.enabled and self.config.border.size / 2 or 0
+        local yOffset = self.config.border.enabled and self.config.border.size / 2 or 0
+
         self.Portrait:ClearAllPoints()
         if config.detached then
             self.Portrait:SetPoint(unpack(config.point))
         elseif config.attachedPoint == "LEFT" then
-            self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, 0)
-            self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, 0)
+            self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, -yOffset)
+            self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, yOffset)
         elseif config.attachedPoint == "RIGHT" then
-            self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -xOffset, 0)
-            self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, 0)
+            self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -xOffset, -yOffset)
+            self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
         end
 
         self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)

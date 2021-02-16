@@ -107,10 +107,10 @@ UF.UpdateHealth = function(self)
         self.Health.Value:Hide()
     end
 
-    local leftOffset = self.config.border.enabled and 2 or 0
-    local rightOffset = self.config.border.enabled and -2 or 0
-    local topOffset = self.config.border.enabled and -2 or 0
-    local bottomOffset = self.config.border.enabled and 2 or 0
+    local leftOffset = self.config.border.enabled and self.config.border.size / 2 or 0
+    local rightOffset = self.config.border.enabled and -self.config.border.size / 2 or 0
+    local topOffset = self.config.border.enabled and -self.config.border.size / 2 or 0
+    local bottomOffset = self.config.border.enabled and self.config.border.size / 2 or 0
 
     if self.config.power.enabled and not self.config.power.detached then
         bottomOffset = bottomOffset + (self.config.power.size[2] or 0)

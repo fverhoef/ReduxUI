@@ -16,7 +16,7 @@ UF.CreateAdditionalPower = function(self)
     self.AdditionalPower.frequentUpdates = true
     self.AdditionalPower.Smooth = true
 
-    self.AdditionalPower:CreateBorder(12)
+    self.AdditionalPower:CreateBorder(4)
 
     return self.AdditionalPower
 end
@@ -27,7 +27,7 @@ UF.UpdateAdditionalPower = function(self)
     if not self.AdditionalPower then
         return
     end
-    
+
     self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
 end
 

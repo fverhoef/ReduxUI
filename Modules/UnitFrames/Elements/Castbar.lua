@@ -14,6 +14,7 @@ UF.CreateCastbar = function(self)
     self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self.CastbarParent)
     self.Castbar.config = config
     self.Castbar:SetFrameStrata("MEDIUM")
+    self.Castbar:SetFrameLevel(self.CastbarParent:GetFrameLevel() - 1)
     self.Castbar:SetOrientation("HORIZONTAL")
     self.Castbar:SetScript("OnShow", function()
         self.CastbarParent.Border:Show()
@@ -106,10 +107,10 @@ UF.UpdateCastbar = function(self)
         self.Castbar.Time:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
         self.Castbar.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
-        local leftOffset = config.borderSize / 2 - 3
-        local bottomOffset = config.borderSize / 2 - 3
-        local rightOffset = -config.borderSize / 2 + 3
-        local topOffset = -config.borderSize / 2 + 3
+        local leftOffset = config.borderSize / 2
+        local bottomOffset = config.borderSize / 2
+        local rightOffset = -config.borderSize / 2
+        local topOffset = -config.borderSize / 2
 
         if config.showIcon then
             self.Castbar.Icon:Show()
@@ -144,6 +145,7 @@ UF.UpdateCastbar = function(self)
         self.CastbarParent:SetSize(width, height)
         self.CastbarParent:ClearAllPoints()
         self.CastbarParent:SetPoint(unpack(config.point))
+        self.CastbarParent:SetBorderSize(config.borderSize)
     else
         self:DisableElement("Castbar")
     end

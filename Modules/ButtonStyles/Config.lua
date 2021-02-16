@@ -13,14 +13,14 @@ R:RegisterModuleConfig(BS, {
     },
     actionBars = {
         font = {R.config.defaults.profile.fonts.normal, 11, "OUTLINE"},
-        borderSize = 12,
+        borderSize = 4,
         hideKeybindText = false,
         hideMacroText = true
     },
-    auras = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12},
-    bags = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12},
-    items = {font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"}, borderSize = 12},
-    microMenu = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 12}
+    auras = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4},
+    bags = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4},
+    items = {font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"}, borderSize = 4},
+    microMenu = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4}
 })
 
 R:RegisterModuleOptions(BS, {
