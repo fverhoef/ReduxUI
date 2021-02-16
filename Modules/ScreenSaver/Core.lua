@@ -41,10 +41,11 @@ function SS:Initialize()
     SS.Canvas.Bottom:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
     SS.Canvas.Bottom.Border = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
-    SS.Canvas.Bottom.Border:SetTexture(R.media.textures.borders.beautycase)
+    SS.Canvas.Bottom.Border:SetTexture(R.config.db.profile.borders.texture)
+    SS.Canvas.Bottom.Border:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
+    SS.Canvas.Bottom.Border:SetVertexColor(unpack(R.config.db.profile.borders.color))
     SS.Canvas.Bottom.Border:SetParent(SS.Canvas.Bottom)
     SS.Canvas.Bottom.Border:SetHeight(6)
-    SS.Canvas.Bottom.Border:SetTexCoord(1 / 3, 2 / 3, 0, 1 / 3)
     SS.Canvas.Bottom.Border:SetPoint("TOPLEFT", SS.Canvas.Bottom, "TOPLEFT")
     SS.Canvas.Bottom.Border:SetPoint("TOPRIGHT", SS.Canvas.Bottom, "TOPRIGHT")
 
@@ -60,25 +61,21 @@ function SS:Initialize()
     SS.Canvas.Bottom.LogoTop = SS.Canvas:CreateTexture(nil, "OVERLAY")
     SS.Canvas.Bottom.LogoTop:SetSize(320, 150)
     SS.Canvas.Bottom.LogoTop:SetPoint("CENTER", SS.Canvas.Bottom, "CENTER", 0, 50)
-    -- SS.Canvas.Bottom.LogoTop:SetTexture(E.Media.Textures.LogoTop)
 
     SS.Canvas.Bottom.LogoBottom = SS.Canvas:CreateTexture(nil, "OVERLAY")
     SS.Canvas.Bottom.LogoBottom:SetSize(320, 150)
     SS.Canvas.Bottom.LogoBottom:SetPoint("CENTER", SS.Canvas.Bottom, "CENTER", 0, 50)
-    -- SS.Canvas.Bottom.LogoBottom:SetTexture(E.Media.Textures.LogoBottom)
-
-    local factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = R.PlayerFaction, 140, -20, -16, -10, -28
 
     SS.Canvas.Bottom.Faction = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
-    SS.Canvas.Bottom.Faction:SetPoint("BOTTOMLEFT", SS.Canvas.Bottom, "BOTTOMLEFT", offsetX, offsetY)
-    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], factionGroup))
-    SS.Canvas.Bottom.Faction:SetSize(size, size)
+    SS.Canvas.Bottom.Faction:SetPoint("BOTTOMLEFT", SS.Canvas.Bottom, "BOTTOMLEFT", -20, -16)
+    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], 140))
+    SS.Canvas.Bottom.Faction:SetSize(140, 140)
 
     local classColor = _G.RAID_CLASS_COLORS[R.PlayerClass]
     SS.Canvas.Bottom.Name = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
     SS.Canvas.Bottom.Name:SetFont(unpack(config.font))
     SS.Canvas.Bottom.Name:SetFormattedText("%s-%s", R.PlayerName, R.PlayerRealm)
-    SS.Canvas.Bottom.Name:SetPoint("TOPLEFT", SS.Canvas.Bottom.Faction, "TOPRIGHT", nameOffsetX, nameOffsetY)
+    SS.Canvas.Bottom.Name:SetPoint("TOPLEFT", SS.Canvas.Bottom.Faction, "TOPRIGHT", -10, -28)
     SS.Canvas.Bottom.Name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
     SS.Canvas.Bottom.Guild = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
@@ -93,15 +90,14 @@ function SS:Initialize()
     SS.Canvas.Bottom.Time:SetPoint("TOPLEFT", SS.Canvas.Bottom.Guild, "BOTTOMLEFT", 0, -6)
     SS.Canvas.Bottom.Time:SetTextColor(0.7, 0.7, 0.7)
 
-    -- Use this frame to control position of the model
     SS.Canvas.Bottom.ModelHolder = CreateFrame("Frame", nil, SS.Canvas.Bottom)
     SS.Canvas.Bottom.ModelHolder:SetSize(150, 150)
     SS.Canvas.Bottom.ModelHolder:SetPoint("BOTTOMRIGHT", SS.Canvas.Bottom, "BOTTOMRIGHT", -200, 220)
 
     SS.Canvas.Bottom.Model = CreateFrame("PlayerModel", "ScreenSaverPlayerModel", SS.Canvas.Bottom.ModelHolder)
     SS.Canvas.Bottom.Model:SetPoint("CENTER", SS.Canvas.Bottom.ModelHolder, "CENTER")
-    SS.Canvas.Bottom.Model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) -- YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
-    SS.Canvas.Bottom.Model:SetCamDistanceScale(4.5) -- Since the model frame is huge, we need to zoom out quite a bit.
+    SS.Canvas.Bottom.Model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2)
+    SS.Canvas.Bottom.Model:SetCamDistanceScale(4.5)
     SS.Canvas.Bottom.Model:SetFacing(6)
 
     SS:Toggle()
@@ -210,7 +206,6 @@ function SS:Hide()
     SS:CancelTimer(SS.timer)
     SS.timer = nil
     UIFrameFadeOut(SS.Canvas, 0.2, 1, 0)
-    --R:StartFadeOut(SS.Canvas)
 end
 
 function SS:UpdateTimer()
