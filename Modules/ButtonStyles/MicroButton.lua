@@ -18,6 +18,8 @@ function BS:StyleMicroButton(button)
 
     BS.microButtons[button] = true
     button.__styled = true
+
+    BS:UpdateMicroButton(button)
 end
 
 function BS:UpdateMicroButton(button)

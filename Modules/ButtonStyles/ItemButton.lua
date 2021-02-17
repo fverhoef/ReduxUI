@@ -70,6 +70,8 @@ function BS:StyleItemButton(button)
 
     BS.itemButtons[button] = true
     button.__styled = true
+
+    BS:UpdateItemButton(button)
 end
 
 function BS:UpdateItemButton(button)

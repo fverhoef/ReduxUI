@@ -9,7 +9,7 @@ local bagIDs =
 } 
 
 function ID:Initialize()   
-    if not ID.config then
+    if not ID.config or not ID.config.enabled then
         return
     end
 

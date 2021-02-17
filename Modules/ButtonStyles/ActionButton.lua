@@ -88,6 +88,8 @@ function BS:StyleActionButton(button)
 
     BS.actionButtons[button] = true
     button.__styled = true
+
+    BS:UpdateActionButton(button)
 end
 
 function BS:UpdateActionButton(button)
@@ -109,7 +111,6 @@ function BS:UpdateActionButton(button)
 end
 
 function BS:StyleAllActionButtons()
-    -- action bar buttons
     for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
         BS:StyleActionButton(_G["ActionButton" .. i])
         BS:StyleActionButton(_G["MultiBarBottomLeftButton" .. i])
@@ -118,17 +119,14 @@ function BS:StyleAllActionButtons()
         BS:StyleActionButton(_G["MultiBarLeftButton" .. i])
     end
 
-    -- petbar buttons
     for i = 1, _G.NUM_PET_ACTION_SLOTS do
         BS:StyleActionButton(_G["PetActionButton" .. i])
     end
 
-    -- stancebar buttons
     for i = 1, _G.NUM_STANCE_SLOTS do
         BS:StyleActionButton(_G["StanceButton" .. i])
     end
 
-    -- vehicle leave
     _G.MainMenuBarVehicleLeaveButton:CreateBorder(BS.config.borderSize)
     _G.MainMenuBarVehicleLeaveButton:CreateShadow()
 
@@ -144,7 +142,11 @@ function BS:UpdateAllActionButtons()
 
         button:SetNormalTexture(BS.config.borders.texture)
         local normalTexture = button:GetNormalTexture()
-        normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+        if button.action and IsEquippedAction(button.action) then
+            normalTexture:SetVertexColor(0, 1.0, 0, 1)
+        else
+            normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+        end
 
         button:SetPushedTexture(BS.config.borders.texture)
         local pushedTexture = button:GetPushedTexture()

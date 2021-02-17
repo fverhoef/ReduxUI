@@ -66,6 +66,8 @@ function BS:StyleAuraButton(button)
 
     BS.auraButtons[button] = true
     button.__styled = true
+
+    BS:UpdateAuraButton(button)
 end
 
 function BS:UpdateAuraButton(button)
