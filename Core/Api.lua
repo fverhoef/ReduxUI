@@ -82,6 +82,39 @@ function R:DisableScripts()
     end
 end
 
+function R:CreateBackdrop(texture, tile, tileSize, edgeSize, inset)
+    if self.Backdrop then
+        return
+    end
+
+    texture = texture or [[Interface\Buttons\WHITE8X8]]
+    tile = tile or false
+    tileSize = tileSize or 32
+    edgeSize = edgeSize or 0
+    inset = inset or 0
+    
+    local backdrop = CreateFrame("Frame", nil, self)
+    backdrop:SetOutside(0, 0)
+    backdrop:SetFrameLevel(self:GetFrameLevel() - 1)
+    backdrop:SetBackdrop({
+        bgFile = texture,
+        tile = tile,
+        tileSize = tileSize,
+        edgeSize = edgeSize,
+        insets = {left = inset, right = inset, top = inset, bottom = inset}
+    })
+    backdrop:SetBackdropColor(0.1, 0.1, 0.1, 0.8)
+
+    self.Backdrop = backdrop
+end
+
+function R:SetBackdropColor(r, g, b, a)
+    if not self.Backdrop then
+        return
+    end
+    self.Backdrop:SetBackdropColor(r or 0.1, g or 0.1, b or 0.1, a or 0.8)
+end
+
 local borders = {}
 
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
@@ -124,6 +157,16 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border.SetShown = function(self, val)
             for i = 1, 8 do
                 self[i]:SetShown(val)
+            end
+        end
+        self.Border.SetTexture = function(self, texture)
+            for i = 1, 8 do
+                self[i]:SetTexture(texture)
+            end
+        end
+        self.Border.SetVertexColor = function(self, r, g, b, a)
+            for i = 1, 8 do
+                self[i]:SetVertexColor(r, g, b, a)
             end
         end
 
@@ -207,9 +250,7 @@ function R:SetBorderColor(r, g, b, a)
         return
     end
 
-    for i = 1, 8 do
-        self.Border[i]:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
-    end
+    self.Border:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
 end
 
 function R:GetBorderColor()
@@ -241,9 +282,7 @@ function R:SetBorderTexture(texture)
         return
     end
 
-    for i = 1, 8 do
-        self.Border[i]:SetTexture(texture)
-    end
+    self.Border:SetTexture(texture)
 end
 
 function R:UpdateAllBorders(size, texture)
@@ -277,7 +316,7 @@ function R:CreateShadow(size, edgeSize, pass, color)
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
     shadow:SetOutside(self, size, size)
-    shadow:SetBackdrop({edgeFile = R.media.textures.backdrops.glow, edgeSize = edgeSize})
+    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = edgeSize})
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(unpack(color))
 
@@ -409,6 +448,9 @@ local function AddApi(object)
     end
     if not object.CreateBackdrop then
         mt.CreateBackdrop = R.CreateBackdrop
+    end
+    if not object.SetBackdropColor then
+        mt.SetBackdropColor = R.SetBackdropColor
     end
     if not object.CreateBorder then
         mt.CreateBorder = R.CreateBorder

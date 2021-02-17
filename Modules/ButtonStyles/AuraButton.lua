@@ -1,0 +1,109 @@
+local addonName, ns = ...
+local R = _G.ReduxUI
+local BS = R.Modules.ButtonStyles
+
+function BS:StyleAuraButton(button)
+    if not button then
+        return
+    end
+    if BS.masque then
+        if button.isDebuff then
+            BS.masqueGroups.debuffs:AddButton(button)
+        elseif button.isTempEnchant then
+            BS.masqueGroups.tempEnchants:AddButton(button)
+        else
+            BS.masqueGroups.buffs:AddButton(button)
+        end
+        return
+    end
+    if button.__styled then
+        BS:UpdateAuraButton(button)
+        return
+    end
+
+    local buttonName = button:GetName()
+    local config = BS.config.auras
+
+    local border = _G[buttonName .. "Border"] or button.Border
+    if border then
+        border:Hide()
+        button.Border = nil
+    end
+
+    button:CreateBorder(config.borderSize)
+    button:CreateShadow()
+
+    local icon = _G[buttonName .. "Icon"]
+    if icon then
+        icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        icon:SetInside(button, 3, 3)
+    end
+
+    local overlay = CreateFrame("Frame", nil, button)
+    overlay:SetAllPoints()
+
+    local count = _G[buttonName .. "Count"]
+    if count then
+        count:SetParent(overlay)
+        count:SetFont(unpack(config.font))
+    end
+
+    local duration = _G[buttonName .. "Duration"]
+    if duration then
+        duration:SetParent(overlay)
+        duration:SetFont(unpack(config.font))
+    end
+
+    local symbol = button.symbol
+    if symbol then
+        symbol:SetFont(unpack(config.font))
+    end
+
+    button.__styled = true
+end
+
+function BS:UpdateAuraButton(button)
+    if not button or not button.__styled then
+        return
+    end
+
+    local borderColor = R.config.db.profile.borders.color
+    if button.isDebuff then
+        local debuffColor = _G.DebuffTypeColor[(button.debuffType or "none")]
+        if debuffColor then
+            borderColor = {debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1}
+        end
+    end
+    if button.isTempEnchant then
+        local quality = GetInventoryItemQuality("player", button:GetID())
+        if quality and quality > 1 then
+            borderColor = {GetItemQualityColor(quality)}
+        end
+    end
+    button:SetBorderColor(unpack(borderColor))
+end
+
+function BS:BuffFrame_Update()
+    local button
+    for i = 1, BUFF_MAX_DISPLAY do
+        button = _G["BuffButton" .. i]
+        if button then
+            button.isBuff = true
+            button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
+            BS:StyleAuraButton(button)
+        end
+    end
+    for i = 1, DEBUFF_MAX_DISPLAY do
+        button = _G["DebuffButton" .. i]
+        if button then
+            button.isDebuff = true
+            button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
+            BS:StyleAuraButton(button)
+        end
+    end
+    for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+        button = _G["TempEnchant" .. i]
+        button.isTempEnchant = true
+        BS:StyleAuraButton(button)
+    end
+end

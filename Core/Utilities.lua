@@ -270,25 +270,6 @@ function R:ResetTexCoord(texCoord)
     self:SetTexCoord(unpack(self.__texCoord))
 end
 
-function R:ApplyTexture(texture, file)
-    if not texture or not file or texture.__textureFile == file then
-        return
-    end
-    texture.__textureFile = file
-    texture:SetTexture(file)
-    if not texture.hookedSetTexture then
-        texture.hookedSetTexture = true
-        R:SecureHook(texture, "SetTexture", R.ResetTexture)
-    end
-end
-
-function R:ResetTexture(file)
-    if not self.__textureFile or file == self.__textureFile then
-        return
-    end
-    self:SetTexture(self.__textureFile)
-end
-
 function R:ApplyNormalTexture(button, file)
     if not button or not file or button.__normalTextureFile == file then
         return

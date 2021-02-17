@@ -44,8 +44,7 @@ R.media = {
         },
 
         backdrops = {
-            beautycase = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Beautycase",
-            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Glow"
+            button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"
         },
 
         borders = {
@@ -66,9 +65,11 @@ R.media = {
             buttonChecked = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonChecked",
             buttonFlash = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonFlash",
             buttonBorderWhite = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonBorderWhite",
-            buttonBorderWhiteThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonBorderWhiteThin",
-            buttonBackdrop = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonBackdrop",
-            buttonBackdropBorder = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonBackdropBorder"
+            buttonBorderWhiteThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Buttons\\ButtonBorderWhiteThin"
+        },
+
+        edgeFiles = {
+            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow"
         },
 
         minimap = {

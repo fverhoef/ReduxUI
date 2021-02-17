@@ -231,10 +231,6 @@ function B:BagSlotButton_OnLeave()
 end
 
 function B:UpdateBagSlotButton(button)
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleBagButton(button)
-    end
-
     if button.bagID ~= KEYRING_CONTAINER then
         button.freeSlots = GetContainerNumFreeSlots(button.bagID)
         if button.SlotCount and button.freeSlots ~= nil then

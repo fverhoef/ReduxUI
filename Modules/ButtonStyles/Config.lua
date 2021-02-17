@@ -18,7 +18,6 @@ R:RegisterModuleConfig(BS, {
         hideMacroText = true
     },
     auras = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4},
-    bags = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4},
     items = {font = {R.config.defaults.profile.fonts.normal, 12, "OUTLINE"}, borderSize = 4},
     microMenu = {font = {R.config.defaults.profile.fonts.normal, 10, "OUTLINE"}, borderSize = 4}
 })

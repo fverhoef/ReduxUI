@@ -287,7 +287,6 @@ function TT:SetBackdropStyle()
 
     self:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8x8",
-        -- edgeFile = R.media.textures.backdrops.beautycase,
         tile = false,
         tileEdge = false,
         tileSize = 16,
