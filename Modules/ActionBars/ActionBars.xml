@@ -1,4 +1,16 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Core.lua"/>
     <Script file="Config.lua"/>
+    <Script file="MainMenuBar.lua"/>
+    <Script file="MultiBarBottomLeft.lua"/>
+    <Script file="MultiBarBottomRight.lua"/>
+    <Script file="MultiBarRight.lua"/>
+    <Script file="MultiBarLeft.lua"/>
+    <Script file="StanceBar.lua"/>
+    <Script file="PetActionBar.lua"/>
+    <Script file="VehicleExitBar.lua"/>
+    <Script file="MicroButtonAndBagsBar.lua"/>
+    <Script file="ExperienceBar.lua"/>
+    <Script file="ReputationBar.lua"/>
+    <Script file="MaxLevelBar.lua"/>
 </Ui>

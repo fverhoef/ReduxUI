@@ -61,6 +61,27 @@ function R:Point(arg1, arg2, arg3, arg4, arg5)
     self:SetPoint(point, anchor, relativePoint, offsetX, offsetY)
 end
 
+function R:DisableScripts()
+    local scripts = {
+        "OnShow",
+        "OnHide",
+        "OnEvent",
+        "OnEnter",
+        "OnLeave",
+        "OnUpdate",
+        "OnValueChanged",
+        "OnClick",
+        "OnMouseDown",
+        "OnMouseUp"
+    }
+
+    for _, script in next, scripts do
+        if self:HasScript(script) then
+            self:SetScript(script, nil)
+        end
+    end
+end
+
 local borders = {}
 
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
@@ -382,6 +403,9 @@ local function AddApi(object)
     end
     if not object.Point then
         mt.Point = R.Point
+    end
+    if not object.DisableScripts then
+        mt.DisableScripts = R.DisableScripts
     end
     if not object.CreateBackdrop then
         mt.CreateBackdrop = R.CreateBackdrop

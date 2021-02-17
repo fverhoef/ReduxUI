@@ -817,7 +817,7 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
             lineBreakPoint = {type = "header", name = "", order = 15},
             point = {
                 type = "select",
-                name = "Relative Point",
+                name = "Point",
                 desc = "The anchor point on the name text.",
                 order = 16,
                 values = UF.anchorPoints,
@@ -1037,7 +1037,7 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
             lineBreakPoint = {type = "header", name = "", order = 15},
             point = {
                 type = "select",
-                name = "Relative Point",
+                name = "Point",
                 desc = "The anchor point on the level text.",
                 order = 16,
                 values = UF.anchorPoints,
@@ -1291,7 +1291,7 @@ function UF:CreateUnitCombatFeedbackOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak2 = {type = "description", name = "", order = 9},
+            lineBreak2 = {type = "header", name = "", order = 9},
             ignoreImmune = {
                 type = "toggle",
                 name = "Ignore Immune",
