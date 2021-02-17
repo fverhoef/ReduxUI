@@ -2,6 +2,8 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
+BS.auraButtons = {}
+
 function BS:StyleAuraButton(button)
     if not button then
         return
@@ -31,6 +33,8 @@ function BS:StyleAuraButton(button)
     end
 
     button:CreateBorder(config.borderSize)
+    button:SetBorderTexture(BS.config.borders.texture)
+    button:SetBorderColor(BS.config.borders.color)
     button:CreateShadow()
 
     local icon = _G[buttonName .. "Icon"]
@@ -45,20 +49,22 @@ function BS:StyleAuraButton(button)
     local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
-        count:SetFont(unpack(config.font))
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local duration = _G[buttonName .. "Duration"]
     if duration then
         duration:SetParent(overlay)
-        duration:SetFont(unpack(config.font))
+        duration:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local symbol = button.symbol
     if symbol then
-        symbol:SetFont(unpack(config.font))
+        symbol:SetParent(overlay)
+        symbol:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
+    BS.auraButtons[button] = true
     button.__styled = true
 end
 
@@ -81,6 +87,33 @@ function BS:UpdateAuraButton(button)
         end
     end
     button:SetBorderColor(unpack(borderColor))
+end
+
+function BS:UpdateAllAuraButtons()
+    local config = BS.config.auras
+    for button in pairs(BS.auraButtons) do
+        local buttonName = button:GetName()
+
+        button:SetBorderTexture(BS.config.borders.texture)
+        button:SetBorderColor(BS.config.borders.color)
+
+        local count = _G[buttonName .. "Count"]
+        if count then
+            count:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+    
+        local duration = _G[buttonName .. "Duration"]
+        if duration then
+            duration:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+    
+        local symbol = button.symbol
+        if symbol then
+            symbol:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+
+        BS:UpdateAuraButton(button)
+    end
 end
 
 function BS:BuffFrame_Update()

@@ -2,6 +2,8 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
+BS.itemButtons = {}
+
 function BS:StyleItemButton(button)
     if not button then
         return
@@ -27,17 +29,17 @@ function BS:StyleItemButton(button)
     button:CreateBackdrop(R.media.textures.backdrops.button)
     button.Backdrop:SetOutside(3, 3)
 
-    button:SetNormalTexture(R.config.db.profile.borders.texture)
+    button:SetNormalTexture(BS.config.borders.texture)
     local normalTexture = button:GetNormalTexture()
     normalTexture:SetPoint("TOPLEFT", 0, 0)
     normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    normalTexture:SetVertexColor(unpack(R.config.db.profile.borders.color))
+    normalTexture:SetVertexColor(unpack(BS.config.borders.color))
 
-    button:SetPushedTexture(R.config.db.profile.borders.texture)
+    button:SetPushedTexture(BS.config.borders.texture)
     local pushedTexture = button:GetPushedTexture()
     pushedTexture:SetPoint("TOPLEFT", 0, 0)
     pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    pushedTexture:SetVertexColor(1, 200 / 255, 0, 1)
+    pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
 
     local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
     if icon then
@@ -57,15 +59,16 @@ function BS:StyleItemButton(button)
     local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
-        count:SetFont(unpack(config.font))
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local stock = _G[buttonName .. "Stock"]
     if stock then
         stock:SetParent(overlay)
-        stock:SetFont(unpack(config.font))
+        stock:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
+    BS.itemButtons[button] = true
     button.__styled = true
 end
 
@@ -106,6 +109,33 @@ function BS:StyleAllItemButtons()
             button.itemIDOrLink = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
             BS:StyleItemButton(button)
         end
+    end
+end
+
+function BS:UpdateAllItemButtons()
+    local config = BS.config.items
+    for button in pairs(BS.itemButtons) do
+        local buttonName = button:GetName()
+
+        button:SetNormalTexture(BS.config.borders.texture)
+        local normalTexture = button:GetNormalTexture()
+        normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+
+        button:SetPushedTexture(BS.config.borders.texture)
+        local pushedTexture = button:GetPushedTexture()
+        pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
+
+        local count = _G[buttonName .. "Count"]
+        if count then
+            count:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+    
+        local stock = _G[buttonName .. "Stock"]
+        if stock then
+            stock:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+
+        BS:UpdateItemButton(button)
     end
 end
 

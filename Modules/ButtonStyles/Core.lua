@@ -33,6 +33,13 @@ function BS:Initialize()
     end
 end
 
+function BS:UpdateAll()
+    BS:UpdateAllActionButtons()
+    BS:UpdateAllAuraButtons()
+    BS:UpdateAllItemButtons()
+    BS:UpdateAllMicroButtons()
+end
+
 function BS:PLAYER_EQUIPMENT_CHANGED(event)
     BS:StyleAllItemButtons()
 end

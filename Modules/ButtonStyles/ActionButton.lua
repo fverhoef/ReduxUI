@@ -2,6 +2,8 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
+BS.actionButtons = {}
+
 function BS:StyleActionButton(button)
     if not button then
         return
@@ -27,32 +29,25 @@ function BS:StyleActionButton(button)
     button:CreateBackdrop(R.media.textures.backdrops.button)
     button.Backdrop:SetOutside(3, 3)
 
-    button:SetNormalTexture(R.config.db.profile.borders.texture)
+    button:SetNormalTexture(BS.config.borders.texture)
     local normalTexture = button:GetNormalTexture()
     normalTexture:SetPoint("TOPLEFT", 0, 0)
     normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    normalTexture:SetVertexColor(unpack(R.config.db.profile.borders.color))
+    normalTexture:SetVertexColor(unpack(BS.config.borders.color))
 
-    button:SetPushedTexture(R.config.db.profile.borders.texture)
+    -- null the reference to the normal texture to prevent Blizz code from overriding its color
+    button.NormalTexture = nil
+
+    button:SetPushedTexture(BS.config.borders.texture)
     local pushedTexture = button:GetPushedTexture()
     pushedTexture:SetPoint("TOPLEFT", 0, 0)
     pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    pushedTexture:SetVertexColor(1, 200 / 255, 0, 1)
+    pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
 
     local icon = _G[buttonName .. "Icon"] or button.icon
     if icon then
         icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         icon:SetInside(button, 3, 3)
-    end
-
-    local overlay = CreateFrame("Frame", nil, button)
-    overlay:SetAllPoints()
-    overlay:SetFrameLevel(button:GetFrameLevel() + 1)
-
-    local count = _G[buttonName .. "Count"]
-    if count then
-        count:SetParent(overlay)
-        count:SetFont(unpack(config.font))
     end
 
     local cooldown = _G[buttonName .. "Cooldown"]
@@ -62,22 +57,28 @@ function BS:StyleActionButton(button)
         cooldown:SetPoint("BOTTOMRIGHT", 0, 0)
     end
 
+    local overlay = CreateFrame("Frame", nil, button)
+    overlay:SetAllPoints()
+    overlay:SetFrameLevel(button:GetFrameLevel() + 1)
+
+    local count = _G[buttonName .. "Count"]
+    if count then
+        count:SetParent(overlay)
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
+    end
+
     local hotkey = _G[buttonName .. "HotKey"]
     if hotkey then
         hotkey:SetParent(overlay)
-        hotkey:SetFont(unpack(config.font))
-        if config.hideKeybindText then
-            hotkey:SetAlpha(0)
-        end
+        hotkey:SetFont(config.font, config.fontSize, config.fontOutline)
+        hotkey:SetAlpha(not config.hideKeybindText and 1 or 0)
     end
 
     local name = _G[buttonName .. "Name"]
     if name then
         name:SetParent(overlay)
-        name:SetFont(unpack(config.font))
-        if config.hideMacroText then
-            name:SetAlpha(0)
-        end
+        name:SetFont(config.font, config.fontSize, config.fontOutline)
+        name:SetAlpha(not config.hideMacroText and 1 or 0)
     end
 
     local floatingBG = _G[buttonName .. "FloatingBG"]
@@ -85,6 +86,7 @@ function BS:StyleActionButton(button)
         floatingBG:Hide()
     end
 
+    BS.actionButtons[button] = true
     button.__styled = true
 end
 
@@ -135,6 +137,40 @@ function BS:StyleAllActionButtons()
     BS:SecureHook("ActionButton_UpdateCount", BS.ActionBarButton_UpdateCount)
 end
 
+function BS:UpdateAllActionButtons()
+    local config = BS.config.actionBars
+    for button in pairs(BS.actionButtons) do
+        local buttonName = button:GetName()
+
+        button:SetNormalTexture(BS.config.borders.texture)
+        local normalTexture = button:GetNormalTexture()
+        normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+
+        button:SetPushedTexture(BS.config.borders.texture)
+        local pushedTexture = button:GetPushedTexture()
+        pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
+
+        local count = _G[buttonName .. "Count"]
+        if count then
+            count:SetFont(config.font, config.fontSize, config.fontOutline)
+        end
+    
+        local hotkey = _G[buttonName .. "HotKey"]
+        if hotkey then
+            hotkey:SetFont(config.font, config.fontSize, config.fontOutline)
+            hotkey:SetAlpha(not config.hideKeybindText and 1 or 0)
+        end
+    
+        local name = _G[buttonName .. "Name"]
+        if name then
+            name:SetFont(config.font, config.fontSize, config.fontOutline)
+            name:SetAlpha(not config.hideMacroText and 1 or 0)
+        end
+
+        BS:UpdateActionButton(button)
+    end
+end
+
 function BS:ActionButton_UpdateUsable()
     if (self.action or self.spellID) and (not self.checksRange or self.inRange) then
         if self.spellID then
@@ -156,7 +192,7 @@ function BS:ActionButton_UpdateUsable()
 end
 
 function BS:ActionButton_UpdateRangeIndicator(checksRange, inRange)
-    if BS.config.outOfRangeColoring == "button" and (self.action or self.spellID) then
+    if BS.config.outOfRangeColoring == BS.OUT_OF_RANGE_MODES.Button and (self.action or self.spellID) then
         self.checksRange = checksRange
         self.inRange = inRange
 
