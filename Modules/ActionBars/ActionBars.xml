@@ -2,6 +2,7 @@
     <Script file="Core.lua"/>
     <Script file="SpellFlyout.lua"/>
     <Script file="Config.lua"/>
+    <Script file="Artwork.lua"/>
     <Script file="MainMenuBar.lua"/>
     <Script file="MultiBarBottomLeft.lua"/>
     <Script file="MultiBarBottomRight.lua"/>

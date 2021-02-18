@@ -5,10 +5,10 @@ local AB = R.Modules.ActionBars
 function AB:CreateMaxLevelBar()
     local config = AB.config.maxLevelBar
 
-    local frame = CreateFrame("Frame", addonName .. "MaxLevelBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MaxLevelBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetHeight(11)
-    frame:SetPoint("BOTTOMLEFT", 3, -10)
-    frame:SetPoint("BOTTOMRIGHT", -3, -10)
+    frame:SetPoint("BOTTOMLEFT", AB.bars.Artwork, "BOTTOMLEFT", 3, 0)
+    frame:SetPoint("BOTTOMRIGHT", AB.bars.Artwork, "BOTTOMRIGHT", -3, 0)
     frame:SetFrameLevel(AB.bars.MainMenuBar:GetFrameLevel() - 1)
 
     _G.MainMenuBarMaxLevelBar:SetParent(frame)
@@ -22,7 +22,7 @@ end
 function AB:UpdateMaxLevelBar()
     local config = AB.config.maxLevelBar
     local frame = AB.bars.MaxLevelBar
-    local artworkConfig = AB.config.mainMenuBar.artwork
+    local artworkConfig = AB.config.artwork
 
     if config.enabled and artworkConfig.enabled then
         frame:Show()

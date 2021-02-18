@@ -24,22 +24,14 @@ function AB:CreateMultiBarBottomRight()
         table.insert(frame.buttons, button)
     end
 
-    for i, button in next, frame.buttons do
-        local parent = frame
-        local point = {"BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 4}
-
-        if i == 7 then
-            parent = frame.buttons[1]
-            point = {"TOPLEFT", parent, "BOTTOMLEFT", 0, -10}
-        elseif i > 1 then
-            parent = frame.buttons[i - 1]
-            point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
-        end
-
-        AB:SetupButton(button, frame, 36, 36, point)
-    end
+    AB:SetupButtons(frame)
 
     frame:SetAttribute("actionpage", 5) -- 5 = MultiBarBottomRight
+        
+    if config.frameVisibility then
+        frame.frameVisibility = config.frameVisibility
+        RegisterStateDriver(frame, "visibility", config.frameVisibility)
+    end
 
     frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Action Bar 3", default.point)
@@ -60,34 +52,25 @@ function AB:UpdateMultiBarBottomRight()
             frame:Point(config.point)
         else
             if config.attachedPoint == AB.ATTACHMENT_POINTS.Center then
-                frame:SetSize(506, 36)
                 frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0,
-                            -5 + (leftBarConfig.enabled and not leftBarConfig.detached and 40 or 0))
+                            12 + (leftBarConfig.enabled and not leftBarConfig.detached and leftBarConfig.buttonSize[2] or 0))
             elseif config.attachedPoint == AB.ATTACHMENT_POINTS.Right then
-                frame:SetSize(253, 72)
-                frame:Point("BOTTOMRIGHT", AB.bars.MainMenuBar, "TOPRIGHT", -10, -5)
+                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "BOTTOMRIGHT", 44, 0)
             end
         end
 
-        local buttonsPerRow = config.detached and config.buttonsPerRow or
-                                  (config.attachedPoint == AB.ATTACHMENT_POINTS.Center and 12 or 6)
-        for i, button in next, frame.buttons do
-            local parent = frame
+        config.buttonsPerRow = config.detached and config.buttonsPerRow or
+                                   (config.attachedPoint == AB.ATTACHMENT_POINTS.Center and 12 or 6)
+        AB:SetupButtons(frame)
 
-            local point
-            if i == 1 then
-                point = {"BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 4}
-            elseif (i - 1) % buttonsPerRow == 0 then
-                parent = frame.buttons[1]
-                point = {"TOPLEFT", parent, "BOTTOMLEFT", 0, -10}
-            else
-                parent = frame.buttons[i - 1]
-                point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
-            end
-
-            AB:SetupButton(button, frame, 36, 36, point)
+        if config.frameVisibility then
+            frame.frameVisibility = config.frameVisibility
+            RegisterStateDriver(frame, "visibility", config.frameVisibility)
         end
     else
+        if config.frameVisibility then
+            UnregisterStateDriver(frame, "visibility")
+        end
         frame:Hide()
     end
 

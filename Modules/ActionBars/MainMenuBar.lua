@@ -24,17 +24,7 @@ function AB:CreateMainMenuBar()
         table.insert(frame.buttons, button)
     end
 
-    for i, button in next, frame.buttons do
-        local parent = frame
-        local point = {"BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 4}
-
-        if i > 1 then
-            parent = frame.buttons[i - 1]
-            point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
-        end
-
-        AB:SetupButton(button, frame, 36, 36, point)
-    end
+    AB:SetupButtons(frame)
 
     if _G.ActionBarUpButton then
         _G.ActionBarUpButton:SetParent(frame)
@@ -107,121 +97,39 @@ function AB:UpdateMainMenuBar()
     local config = AB.config.mainMenuBar
     local rightBarConfig = AB.config.multiBarBottomRight
     local frame = AB.bars.MainMenuBar
+    local artwork = AB.bars.Artwork
 
-    frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, _G.MainMenuExpBar:IsShown() and _G.ReputationWatchBar:IsShown() and 22 or 10)
-    frame.PageNumber:SetText(GetActionBarPage())
+    if config.enabled then
+        frame:Show()
 
-    if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
-        frame:SetWidth(806)
-    else
-        frame:SetWidth(552)
-    end
-end
-
-function AB:CreateMainMenuBarArtwork()
-    local frame = AB.bars.MainMenuBar
-
-    local artwork = CreateFrame("Frame", "$parentArtwork", frame)
-    artwork:SetAllPoints()
-    artwork:SetFrameLevel(frame:GetFrameLevel() - 1)
-
-    artwork.Texture = artwork:CreateTexture("ARTWORK", 0)
-    artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
-    artwork.Texture:SetAllPoints()
-
-    artwork.TopEndCap = artwork:CreateTexture("ARTWORK", 1)
-
-    artwork.LeftEndCap = artwork:CreateTexture("ARTWORK", 2)
-    artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, 0)
-
-    artwork.RightEndCap = artwork:CreateTexture("ARTWORK", 2)
-    artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, 0)
-
-    frame.Artwork = artwork
-    return artwork
-end
-
-function AB:UpdateMainMenuBarArtwork()
-    local config = AB.config.mainMenuBar
-    local artwork = AB.bars.MainMenuBar.Artwork
-
-    if config.artwork.enabled then
-        artwork.Texture:Show()
-        artwork.TopEndCap:Show()
-        artwork.LeftEndCap:Show()
-        artwork.RightEndCap:Show()
-
-        local isExpBarShown = _G.MainMenuExpBar:IsShown()
-        local isRepBarShown = _G.ReputationWatchBar:IsShown()
-
-        local offset = 0
-        if isExpBarShown and isRepBarShown then
-            offset = 22
+        frame:ClearAllPoints()
+        if config.detached then
+            frame:Point(unpack(config.point))
         else
-            offset = 10
-        end
-
-        artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, -offset - 1)
-        artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, -offset - 1)
-
-        local endCapWidth = 128
-        local endCapHeight = 76
-        if config.artwork.theme == AB.MAIN_MENU_BAR_THEMES.Default then
-            artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
-            if AB.config.multiBarBottomRight.enabled then
-                artwork.Texture:SetTexCoord(113 / 1024, (113 + 806) / 1024, 115 / 255, 165 / 255)
+            local isExpBarShown = _G.MainMenuExpBar:IsShown()
+            local isRepBarShown = _G.ReputationWatchBar:IsShown()
+    
+            local offset = 0
+            if isExpBarShown and isRepBarShown then
+                offset = 22
             else
-                artwork.Texture:SetTexCoord(113 / 1024, (113 + 552) / 1024, 64 / 255, 114 / 255)
+                offset = 10
             end
 
-            artwork.TopEndCap:Hide()
+            frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 8, offset + 4)
+        end
+        frame.PageNumber:SetText(GetActionBarPage())
 
-            artwork.LeftEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
-            artwork.LeftEndCap:SetTexCoord(115 / 1024, (115 + endCapWidth) / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.LeftEndCap:SetSize(endCapWidth, 76)
-
-            artwork.RightEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
-            artwork.RightEndCap:SetTexCoord((115 + endCapWidth) / 1024, 115 / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.RightEndCap:SetSize(endCapWidth, 76)
-        else
-            local texture = R.media.textures.actionBars["mainMenuBar_" .. config.artwork.theme]
-            if config.artwork.theme == AB.MAIN_MENU_BAR_THEMES.Faction then
-                if UnitFactionGroup("player") == "Horde" then
-                    texture = R.media.textures.actionBars.mainMenuBar_Horde
-                else
-                    texture = R.media.textures.actionBars.mainMenuBar_Alliance
-                end
-            end
-            artwork.Texture:SetTexture(texture)
-            artwork.Texture:SetTexCoord(0, 1, 90 / 512, 184 / 512)
-            artwork.Texture:SetDrawLayer("ARTWORK", 0)
-
-            artwork.TopEndCap:Show()
-            artwork.TopEndCap:SetTexture(texture, true)
-            artwork.TopEndCap:SetTexCoord(0 / 512, 512 / 512, 2 / 512, 29 / 512)
-            artwork.TopEndCap:SetHorizTile(true)
-            artwork.TopEndCap:SetHeight(16)
-            artwork.TopEndCap:SetWidth(artwork:GetWidth())
-            artwork.TopEndCap:SetPoint("TOPLEFT", artwork.LeftEndCap, "TOPRIGHT", -30,
-                                       (isExpBarShown and isRepBarShown and -25) or -38)
-            artwork.TopEndCap:SetPoint("TOPRIGHT", artwork.RightEndCap, "TOPLEFT", 30,
-                                       (isExpBarShown and isRepBarShown and -25) or -38)
-            artwork.TopEndCap:SetDrawLayer("ARTWORK", 1)
-
-            artwork.LeftEndCap:SetTexture(texture)
-            artwork.LeftEndCap:SetTexCoord(0 / 512, 176 / 512, 365 / 512, 510 / 512)
-            artwork.LeftEndCap:SetSize(endCapWidth, 105)
-            artwork.LeftEndCap:SetDrawLayer("ARTWORK", 2)
-
-            artwork.RightEndCap:SetTexture(texture)
-            artwork.RightEndCap:SetTexCoord(176 / 512, 0 / 512, 365 / 512, 510 / 512)
-            artwork.RightEndCap:SetSize(endCapWidth, 105)
-            artwork.RightEndCap:SetDrawLayer("ARTWORK", 2)
+        if config.frameVisibility then
+            frame.frameVisibility = config.frameVisibility
+            RegisterStateDriver(frame, "visibility", config.frameVisibility)
         end
     else
-        artwork.Texture:Hide()
-        artwork.TopEndCap:Hide()
-        artwork.LeftEndCap:Hide()
-        artwork.RightEndCap:Hide()
+        if config.frameVisibility then
+            UnregisterStateDriver(frame, "visibility")
+        end
+        frame:Hide()
     end
+
+    AB:SetupButtons(frame)
 end

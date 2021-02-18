@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
+local SD = R.Modules.SpellDatabase
 
 local SPELLFLYOUT_DEFAULT_SPACING = 0
 local SPELLFLYOUT_INITIAL_SPACING = 0
@@ -172,11 +173,11 @@ function AB:UpdateSpellFlyout(button)
             -- generate a new button if known and not generated yet
             local isKnown = IsSpellKnown(action)
             if isKnown then
-                local shouldBeVisible = not button.showOnlyMaxRank or (button.showOnlyMaxRank and AB:IsMaxKnownRank(action))
-                if not actionButton and shouldBeVisible then
+                local show = not button.showOnlyMaxRank or SD:IsMaxKnownRank(action)
+                if not actionButton and show then
                     actionButton = AB:CreateSpellFlyoutChild(button, action, i, previousButton)
                     button.childButtons[action] = actionButton
-                elseif actionButton and not shouldBeVisible then
+                elseif actionButton and not show then
                     actionButton:Hide()
                     actionButton = nil
                     button.childButtons[action] = nil
@@ -191,7 +192,8 @@ function AB:UpdateSpellFlyout(button)
 
         -- if the default is not max rank, set it to max rank
         if button.showOnlyMaxRank then
-            defaultAction = AB:GetMaxKnownRank(defaultAction) or defaultAction
+            local maxKnownRank = SD:GetMaxKnownRank(defaultAction)
+            defaultAction = (maxKnownRank and maxKnownRank.id) or defaultAction
         end
 
         if defaultAction then

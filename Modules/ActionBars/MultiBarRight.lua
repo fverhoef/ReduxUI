@@ -10,36 +10,30 @@ function AB:CreateMultiBarRight()
     local framesToDisable = {_G.MultiBarRight}
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
-    -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MultiBarRight", UIParent, "SecureHandlerStateTemplate")
     frame.config = config
     frame:SetSize(36, 498)
     frame:SetPoint("RIGHT", UIParent, "RIGHT", 0, 0)
+    frame.buttons = {}
 
-    local buttonList = {}
     for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
         local button = _G["MultiBarRightButton" .. i]
         if not button then
             break
         end
-        table.insert(buttonList, button)
+        table.insert(frame.buttons, button)
     end
 
-    for i, button in next, buttonList do
-        local parent = frame
-        local point = {"TOPLEFT", frame, "TOPLEFT", 0, 0}
-
-        if i > 1 then
-            parent = buttonList[i - 1]
-            point = {"TOPLEFT", parent, "BOTTOMLEFT", 0, -2}
-        end
-
-        AB:SetupButton(button, frame, 36, 36, point)
+    AB:SetupButtons(frame)
+        
+    if config.frameVisibility then
+        frame.frameVisibility = config.frameVisibility
+        RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
     frame:SetAttribute("actionpage", 3) -- 3 = MultiBarRight
 
-    frame:CreateFader(config.fader, buttonList)
+    frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Action Bar 4", default.point)
 
     return frame
@@ -47,10 +41,24 @@ end
 
 function AB:UpdateMultiBarRight()
     local config = AB.config.multiBarRight
+    local frame = AB.bars.MultiBarRight
 
     if config.enabled then
-        AB.bars.MultiBarRight:Show()
+        frame:Show()
+
+        frame:ClearAllPoints()
+        frame:Point(config.point)
+
+        AB:SetupButtons(frame)
+
+        if config.frameVisibility then
+            frame.frameVisibility = config.frameVisibility
+            RegisterStateDriver(frame, "visibility", config.frameVisibility)
+        end
     else
-        AB.bars.MultiBarRight:Hide()
+        if config.frameVisibility then
+            UnregisterStateDriver(frame, "visibility")
+        end
+        frame:Hide()
     end
 end

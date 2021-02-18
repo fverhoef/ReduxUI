@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 
-AB.MAIN_MENU_BAR_THEMES = {
+AB.ARTWORK_THEMES = {
     Default = "Default",
     None = "None",
     Alliance = "Alliance",
@@ -21,41 +21,105 @@ AB.MAIN_MENU_BAR_THEMES = {
     Tree = "Tree",
     Wood = "Wood"
 }
-AB.ATTACHMENT_POINTS = {
-    Center = "Center",
-    Right = "Right"
-}
-AB.CLASS_BAR_DOCKS = {
-    MainActionBar_Left = 1,
-    MainActionBar_Right = 2
-}
+AB.ATTACHMENT_POINTS = {Center = "Center", Right = "Right"}
+AB.CLASS_BAR_DOCKS = {Left = "Left", Right = "Right"}
+AB.COLUMN_DIRECTIONS = {Right = "Right", Left = "Left"}
+AB.ROW_DIRECTIONS = {Up = "Up", Down = "Down"}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
+    artwork = {enabled = true, theme = AB.ARTWORK_THEMES.Default},
     mainMenuBar = {
+        enabled = true,
+        detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 10},
         fader = R.config.faders.onShow,
-        artwork = {enabled = true, theme = AB.MAIN_MENU_BAR_THEMES.Default},
+        frameVisibility = "show",
+        -- frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide"
         page = {enabled = true},
         experience = {enabled = true},
-        reputation = {enabled = true}
-        -- frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide"
+        reputation = {enabled = true},
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 12,
+        buttonSize = {36, 36},
+        buttonSpacing = 6
     },
-    multiBarBottomLeft = {enabled = true, detached = false, point = {"BOTTOM", "BOTTOM", 0, 50}, fader = R.config.faders.none, buttonsPerRow = 12},
-    multiBarBottomRight = {enabled = true, detached = false, point = {"BOTTOM", "BOTTOM", 0, 90}, attachedPoint = AB.ATTACHMENT_POINTS.Right, fader = R.config.faders.none, buttonsPerRow = 12},
-    multiBarLeft = {enabled = true, point = {"RIGHT", "RIGHT", 0, 0}, fader = R.config.faders.mouseOver},
-    multiBarRight = {enabled = true, point = {"RIGHT", "RIGHT", 40, 0}, fader = R.config.faders.mouseOver},
+    multiBarBottomLeft = {
+        enabled = true,
+        detached = false,
+        point = {"BOTTOM", "BOTTOM", 0, 50},
+        fader = R.config.faders.none,
+        frameVisibility = "show",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 12,
+        buttonSize = {36, 36},
+        buttonSpacing = 6
+    },
+    multiBarBottomRight = {
+        enabled = true,
+        detached = false,
+        point = {"BOTTOM", "BOTTOM", 0, 90},
+        attachedPoint = AB.ATTACHMENT_POINTS.Right,
+        fader = R.config.faders.none,
+        frameVisibility = "show",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 12,
+        buttonSize = {36, 36},
+        buttonSpacing = 6
+    },
+    multiBarLeft = {
+        enabled = true,
+        point = {"RIGHT", "RIGHT", -38, 0},
+        fader = R.config.faders.mouseOver,
+        frameVisibility = "show",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 1,
+        buttonSize = {36, 36},
+        buttonSpacing = 6
+    },
+    multiBarRight = {
+        enabled = true,
+        point = {"RIGHT", "RIGHT", 0, 0},
+        fader = R.config.faders.mouseOver,
+        frameVisibility = "show",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 1,
+        buttonSize = {36, 36},
+        buttonSpacing = 6
+    },
     stanceBar = {
         enabled = true,
         point = {"BOTTOM", "BOTTOM", 0, 130},
         fader = R.config.faders.onShow,
-        frameVisibility = "[overridebar][vehicleui][possessbar] hide; show"
+        frameVisibility = "[overridebar][vehicleui][possessbar] hide; show",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 12,
+        buttonSize = {30, 30},
+        buttonSpacing = 6
     },
     petActionBar = {
         enabled = true,
         point = {"BOTTOM", "BOTTOM", 0, 130},
         fader = R.config.faders.onShow,
-        frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
+        frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide",
+        columnDirection = AB.COLUMN_DIRECTIONS.Right,
+        rowDirection = AB.ROW_DIRECTIONS.Down,
+        buttons = 12,
+        buttonsPerRow = 12,
+        buttonSize = {30, 30},
+        buttonSpacing = 6
     },
     vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 130}, fader = R.config.faders.onShow},
     experienceBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},
@@ -82,7 +146,7 @@ R:RegisterModuleConfig(AB, {
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         buttonSize = 36,
         buttonSpacing = 6,
-        dock = AB.CLASS_BAR_DOCKS.MainActionBar_Left,
+        dock = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow
     },
     shamanBar = {
@@ -90,7 +154,7 @@ R:RegisterModuleConfig(AB, {
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         buttonSize = 36,
         buttonSpacing = 6,
-        dock = AB.CLASS_BAR_DOCKS.MainActionBar_Left,
+        dock = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow
     }
 })
@@ -115,55 +179,67 @@ R:RegisterModuleOptions(AB, {
                 ReloadUI()
             end
         },
-        mainMenuBar = {
+        artwork = {
             type = "group",
-            name = "Main Action Bar",
+            name = "Artwork",
             order = 2,
             inline = true,
             args = {
-                artwork = {
-                    type = "group",
-                    name = "Artwork",
-                    order = 10,
-                    inline = true,
-                    args = {
-                        enabled = {
-                            type = "toggle",
-                            name = "Enabled",
-                            order = 1,
-                            get = function()
-                                return AB.config.mainMenuBar.artwork.enabled
-                            end,
-                            set = function(_, val)
-                                AB.config.mainMenuBar.artwork.enabled = val
-                                AB:UpdateAll()
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return AB.config.artwork.enabled
+                    end,
+                    set = function(_, val)
+                        AB.config.artwork.enabled = val
+                        AB:UpdateAll()
+                    end
+                },
+                theme = {
+                    type = "select",
+                    name = "Theme",
+                    order = 2,
+                    values = AB.ARTWORK_THEMES,
+                    get = function()
+                        for key, val in pairs(AB.ARTWORK_THEMES) do
+                            if AB.config.artwork.theme == val then
+                                return val
                             end
-                        },
-                        theme = {
-                            type = "select",
-                            name = "Theme",
-                            order = 2,
-                            values = AB.MAIN_MENU_BAR_THEMES,
-                            get = function()
-                                for key, val in pairs(AB.MAIN_MENU_BAR_THEMES) do
-                                    if AB.config.mainMenuBar.artwork.theme == val then
-                                        return val
-                                    end
-                                end
-                            end,
-                            set = function(_, key)
-                                AB.config.mainMenuBar.artwork.theme = AB.MAIN_MENU_BAR_THEMES[key]
-                                AB:UpdateAll()
-                            end
-                        }
-                    }
+                        end
+                    end,
+                    set = function(_, key)
+                        AB.config.artwork.theme = AB.ARTWORK_THEMES[key]
+                        AB:UpdateAll()
+                    end
+                }
+            }
+        },
+        mainMenuBar = {
+            type = "group",
+            name = "Main Action Bar",
+            order = 3,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return AB.config.mainMenuBar.enabled
+                    end,
+                    set = function(_, val)
+                        AB.config.mainMenuBar.enabled = val
+                        AB:UpdateAll()
+                    end
                 }
             }
         },
         multiBarBottomLeft = {
             type = "group",
             name = "Action Bar 2",
-            order = 3,
+            order = 4,
             inline = true,
             args = {
                 enabled = {
@@ -197,7 +273,7 @@ R:RegisterModuleOptions(AB, {
         multiBarBottomRight = {
             type = "group",
             name = "Action Bar 3",
-            order = 4,
+            order = 5,
             inline = true,
             args = {
                 enabled = {
@@ -231,7 +307,9 @@ R:RegisterModuleOptions(AB, {
                     name = "Attach To",
                     order = 4,
                     values = AB.ATTACHMENT_POINTS,
-                    disabled = function() return AB.config.multiBarBottomRight.detached end,
+                    disabled = function()
+                        return AB.config.multiBarBottomRight.detached
+                    end,
                     get = function()
                         for key, val in pairs(AB.ATTACHMENT_POINTS) do
                             if AB.config.multiBarBottomRight.attachedPoint == val then
@@ -249,7 +327,7 @@ R:RegisterModuleOptions(AB, {
         multiBarLeft = {
             type = "group",
             name = "Action Bar 4",
-            order = 5,
+            order = 6,
             inline = true,
             args = {
                 enabled = {
@@ -270,7 +348,7 @@ R:RegisterModuleOptions(AB, {
         multiBarRight = {
             type = "group",
             name = "Action Bar 5",
-            order = 6,
+            order = 7,
             inline = true,
             args = {
                 enabled = {
@@ -291,7 +369,7 @@ R:RegisterModuleOptions(AB, {
         stanceBar = {
             type = "group",
             name = "Stance Bar",
-            order = 7,
+            order = 8,
             inline = true,
             args = {
                 enabled = {
@@ -311,7 +389,7 @@ R:RegisterModuleOptions(AB, {
         petActionBar = {
             type = "group",
             name = "Pet Action Bar",
-            order = 8,
+            order = 9,
             inline = true,
             args = {
                 enabled = {
@@ -331,7 +409,7 @@ R:RegisterModuleOptions(AB, {
         vehicleExitBar = {
             type = "group",
             name = "Vehicle Exit Bar",
-            order = 9,
+            order = 10,
             inline = true,
             args = {
                 enabled = {
@@ -351,7 +429,7 @@ R:RegisterModuleOptions(AB, {
         experienceBar = {
             type = "group",
             name = "Experience Bar",
-            order = 10,
+            order = 11,
             inline = true,
             args = {
                 enabled = {
@@ -371,7 +449,7 @@ R:RegisterModuleOptions(AB, {
         reputationBar = {
             type = "group",
             name = "Reputation Bar",
-            order = 11,
+            order = 12,
             inline = true,
             args = {
                 enabled = {
@@ -391,7 +469,7 @@ R:RegisterModuleOptions(AB, {
         maxLevelBar = {
             type = "group",
             name = "Max Level Bar",
-            order = 12,
+            order = 13,
             inline = true,
             args = {
                 enabled = {
@@ -411,7 +489,7 @@ R:RegisterModuleOptions(AB, {
         microButtonAndBags = {
             type = "group",
             name = "Micro Buttons & Bags Bar",
-            order = 20,
+            order = 14,
             inline = true,
             args = {
                 enabled = {
@@ -423,6 +501,46 @@ R:RegisterModuleOptions(AB, {
                     end,
                     set = function(_, val)
                         AB.config.microButtonAndBags.enabled = val
+                        AB:UpdateAll()
+                    end
+                }
+            }
+        },
+        mageBar = {
+            type = "group",
+            name = "Class Bars: Mage",
+            order = 15,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return AB.config.mageBar.enabled
+                    end,
+                    set = function(_, val)
+                        AB.config.mageBar.enabled = val
+                        AB:UpdateAll()
+                    end
+                }
+            }
+        },
+        shamanBar = {
+            type = "group",
+            name = "Class Bars: Shaman",
+            order = 15,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return AB.config.shamanBar.enabled
+                    end,
+                    set = function(_, val)
+                        AB.config.shamanBar.enabled = val
                         AB:UpdateAll()
                     end
                 }

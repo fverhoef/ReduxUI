@@ -245,6 +245,8 @@ function TT:OnTooltipSetSpell()
 
         TT:AddIcon(self, icon)
         TT:AddSpellID(self, spellId)
+        TT:ModifySpellDamage(self, spellId)
+        TT:ShowNextRank(self, spellId)
 
         self:Show()
     end
@@ -489,7 +491,36 @@ end
 
 function TT:ModifySpellDamage(tooltip, spellId)
     if spellId and TT.config.modifySpellDamage then
-        SD:ModifyTooltip(tooltip, spellId)
+        local rank = SD:GetSpellById(spellId)
+        if rank and rank.spell.hasSpellCoefficient then
+            local name = tooltip:GetName()
+            local tooltipText = _G[name .. "TextLeft4"]
+            local description = tooltipText:GetText()
+            if description then
+                -- TODO: localize this or find another way of doing it
+                if string.find(description, "Cooldown remaining:") then
+                    tooltipText = _G[name .. "TextLeft5"]
+                    description = tooltipText:GetText()
+                end
+
+                SD:ParseDescription(rank, description)
+                SD:UpdateDescription(rank)
+                tooltipText:SetText(rank.description)
+            end
+        end
+    end
+end
+
+function TT:ShowNextRank(tooltip, spellId)
+    if spellId and TT.config.showNextRank then
+        local isMaxKnownRank = SD:IsMaxKnownRank(spellId)
+        local isMaxRank = SD:IsMaxRank(spellId)
+        if isMaxKnownRank and not isMaxRank then
+            local nextRank = SD:GetNextRank(spellId)
+            if nextRank then
+                tooltip:AddLine("|cffa0bed2Next rank available at level " .. nextRank.level .. ".|r") -- TODO: Localize
+            end
+        end
     end
 end
 

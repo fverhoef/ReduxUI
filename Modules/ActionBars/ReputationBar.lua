@@ -5,10 +5,10 @@ local AB = R.Modules.ActionBars
 function AB:CreateReputationBar()
     local config = AB.config.reputationBar
 
-    local frame = CreateFrame("Frame", addonName .. "ReputationBar", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "ReputationBar", UIParent, "SecureHandlerStateTemplate")
     frame:SetHeight(11)
-    frame:SetPoint("BOTTOMLEFT", 3, -10)
-    frame:SetPoint("BOTTOMRIGHT", -3, -10)
+    frame:SetPoint("BOTTOMLEFT", AB.bars.Artwork, "BOTTOMLEFT", 3, 0)
+    frame:SetPoint("BOTTOMRIGHT", AB.bars.Artwork, "BOTTOMRIGHT", -3, 0)
     frame:SetFrameLevel(AB.bars.MainMenuBar:GetFrameLevel() - 1)
 
     _G.ReputationWatchBar:SetParent(frame)

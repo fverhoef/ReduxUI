@@ -79,18 +79,21 @@ function BS:UpdateItemButton(button)
         return
     end
 
-    local color = R.config.db.profile.borders.color
-    if button.itemIDOrLink then
-        local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
-        if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-            color = R.Modules.Bags.config.colors.questItem
-        elseif itemRarity and itemRarity > 1 then
-            color = {GetItemQualityColor(itemRarity)}
-        end
-    end
-
     local normalTexture = button:GetNormalTexture()
-    normalTexture:SetVertexColor(unpack(color))
+    if normalTexture then
+        local color = R.config.db.profile.borders.color
+
+        if button.itemIDOrLink then
+            local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
+            if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+                color = R.Modules.Bags.config.colors.questItem
+            elseif itemRarity and itemRarity > 1 then
+                color = {GetItemQualityColor(itemRarity)}
+            end
+        end
+
+        normalTexture:SetVertexColor(unpack(color))
+    end
 end
 
 function BS:StyleAllItemButtons()
@@ -131,7 +134,7 @@ function BS:UpdateAllItemButtons()
         if count then
             count:SetFont(config.font, config.fontSize, config.fontOutline)
         end
-    
+
         local stock = _G[buttonName .. "Stock"]
         if stock then
             stock:SetFont(config.font, config.fontSize, config.fontOutline)

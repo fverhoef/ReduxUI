@@ -14,9 +14,9 @@ function AB:Initialize()
     _G.SHOW_MULTI_ACTIONBAR_2 = AB.config.multiBarBottomRight.enabled
     _G.SHOW_MULTI_ACTIONBAR_3 = AB.config.multiBarLeft.enabled
     _G.SHOW_MULTI_ACTIONBAR_4 = AB.config.multiBarRight.enabled
-    
+
+    AB.bars.Artwork = AB:CreateArtwork()
     AB.bars.MainMenuBar = AB:CreateMainMenuBar()
-    AB:CreateMainMenuBarArtwork()
     AB.bars.MultiBarBottomLeft = AB:CreateMultiBarBottomLeft()
     AB.bars.MultiBarBottomRight = AB:CreateMultiBarBottomRight()
     AB.bars.MultiBarRight = AB:CreateMultiBarRight()
@@ -43,8 +43,8 @@ function AB:Initialize()
 end
 
 function AB:UpdateAll()
+    AB:UpdateArtwork()
     AB:UpdateMainMenuBar()
-    AB:UpdateMainMenuBarArtwork()
     AB:UpdateMultiBarBottomLeft()
     AB:UpdateMultiBarBottomRight()
     AB:UpdateMultiBarLeft()
@@ -66,7 +66,7 @@ function AB:ACTIONBAR_SHOW_BOTTOMLEFT()
     AB:UpdateAll()
 end
 
-function AB:BAG_UPDATE()    
+function AB:BAG_UPDATE()
     _G.MainMenuBarBackpackButtonCount:Show()
     _G.MainMenuBarBackpackButtonCount:ClearAllPoints()
     _G.MainMenuBarBackpackButtonCount:SetPoint("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -2, 4)
@@ -86,6 +86,79 @@ function AB:HideBlizzardBar(framesToHide, framesToDisable)
             frame:DisableScripts()
         end
     end
+end
+
+function AB:SetupButtons(frame)
+    local buttons = frame.config.buttons
+    local buttonsPerRow = frame.config.buttonsPerRow
+    local buttonSpacing = frame.config.buttonSpacing
+    local width = frame.config.buttonSize[1]
+    local height = frame.config.buttonSize[2]
+    local columnDirection = frame.config.columnDirection
+    local rowDirection = frame.config.rowDirection
+
+    local columnMultiplier, columnAnchor, relativeColumnAnchor, rowMultiplier, rowAnchor, relativeRowAnchor
+    if columnDirection == AB.COLUMN_DIRECTIONS.Right then
+        columnMultiplier = 1
+        columnAnchor = "TOPLEFT"
+        relativeColumnAnchor = "TOPRIGHT"
+
+        if rowDirection == AB.ROW_DIRECTIONS.Down then
+            rowMultiplier = -1
+            rowAnchor = "TOPLEFT"
+            relativeRowAnchor = "BOTTOMLEFT"
+        else
+            rowMultiplier = 1
+            rowAnchor = "BOTTOMLEFT"
+            relativeRowAnchor = "TOPLEFT"
+        end
+    elseif columnDirection == AB.COLUMN_DIRECTIONS.Left then
+        columnMultiplier = 1
+        columnAnchor = "TOPRIGHT"
+        relativeColumnAnchor = "TOPLEFT"
+
+        if rowDirection == AB.ROW_DIRECTIONS.Down then
+            rowMultiplier = -1
+            rowAnchor = "TOPRIGHT"
+            relativeRowAnchor = "BOTTOMRIGHT"
+        else
+            rowMultiplier = 1
+            rowAnchor = "BOTTOMRIGHT"
+            relativeRowAnchor = "TOPRIGHT"
+        end
+    end
+
+    local rowCount, columnCount = 0, 0
+    for i, button in next, frame.buttons do
+        local parent = frame
+
+        local point
+        if i == 1 then
+            point = {columnAnchor, frame, columnAnchor, 0, 0}
+        elseif (i - 1) % buttonsPerRow == 0 then
+            parent = frame.buttons[rowCount * buttonsPerRow + 1]
+            point = {rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * buttonSpacing}
+            rowCount = rowCount + 1
+        else
+            parent = frame.buttons[i - 1]
+            point = {columnAnchor, parent, relativeColumnAnchor, buttonSpacing, 0}
+        end
+
+        AB:SetupButton(button, frame, width, height, point)
+
+        if i > buttons then
+            button:Hide()
+        else
+            button:Show()
+        end
+
+        columnCount = columnCount + 1
+        if columnCount > buttonsPerRow then
+            columnCount = buttonsPerRow
+        end
+    end
+
+    frame:SetSize(columnCount * width + (columnCount - 1) * buttonSpacing, (rowCount + 1) * height + rowCount * buttonSpacing)
 end
 
 function AB:SetupButton(button, frame, width, height, point)
@@ -187,8 +260,8 @@ function AB:AddSystemInfo(tooltip)
                     tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, addonCpuUsage, R.SystemInfo:FormatMemory(mem)),
                                           labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
                 else
-                    tooltip:AddDoubleLine(cpu[2], format(cpuString, addonCpuUsage), labelColor[1], labelColor[2], labelColor[3], red,
-                                          green + .5, 0)
+                    tooltip:AddDoubleLine(cpu[2], format(cpuString, addonCpuUsage), labelColor[1], labelColor[2], labelColor[3],
+                                          red, green + .5, 0)
                 end
             end
         end
