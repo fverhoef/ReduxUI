@@ -92,7 +92,7 @@ function R:CreateBackdrop(texture, tile, tileSize, edgeSize, inset)
     tileSize = tileSize or 32
     edgeSize = edgeSize or 0
     inset = inset or 0
-    
+
     local backdrop = CreateFrame("Frame", nil, self)
     backdrop:SetOutside(0, 0)
     backdrop:SetFrameLevel(self:GetFrameLevel() - 1)
@@ -385,18 +385,17 @@ function R:CreateFader(faderConfig, children)
     if not self then
         return
     end
-    if self.faderConfig then
-        self.faderConfig = faderConfig
-        return
-    end
-    self.faderConfig = faderConfig
 
-    self:EnableMouse(true)
-    self:HookScript("OnShow", R.Fader_OnShow)
-    self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
-    self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
-    if self.faderConfig == R.config.faders.mouseOver then
-        R.Fader_OnEnterOrLeave(self)
+    if not self.faderConfig then
+        self.faderConfig = faderConfig
+
+        self:EnableMouse(true)
+        self:HookScript("OnShow", R.Fader_OnShow)
+        self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
+        self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
+        if self.faderConfig == R.config.faders.mouseOver then
+            R.Fader_OnEnterOrLeave(self)
+        end
     end
 
     if children then

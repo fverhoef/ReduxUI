@@ -1,18 +1,11 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local ID = R:AddModule("InventoryDatabase", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local CS = R.Modules.CharacterStats
 
-local bagIDs =
-{
-    bags = {0, 1, 2, 3, 4, -2},
-    bank = {-1, 5, 6, 7, 8, 9, 10}
-} 
+local bagIDs = {bags = {0, 1, 2, 3, 4, -2}, bank = {-1, 5, 6, 7, 8, 9, 10}}
 
-function ID:Initialize()   
-    if not ID.config or not ID.config.enabled then
-        return
-    end
-
+function ID:Initialize()
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
     ID:RegisterEvent("BAG_UPDATE", ID.Update)
     ID:RegisterEvent("BAG_UPDATE_COOLDOWN", ID.Update)
@@ -41,13 +34,13 @@ function ID:Update()
 end
 
 function ID:GetCharacterDatabase()
-    local db = R.config.db.realm.inventory[R.PlayerName]
+    local db = R.config.db.realm.inventory[CS.name]
     if not db then
-        R.config.db.realm.inventory[R.PlayerName] = {}
-        db = R.config.db.realm.inventory[R.PlayerName]
+        R.config.db.realm.inventory[CS.name] = {}
+        db = R.config.db.realm.inventory[CS.name]
     end
 
-    db.class = R.PlayerClass
+    db.class = CS.class
     db.bags = db.bags or {}
     db.bank = db.bank or {}
     db.equipped = db.equipped or {}

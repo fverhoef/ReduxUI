@@ -1,6 +1,8 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R:AddModule("ActionBars", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local CS = R.Modules.CharacterStats
+
 AB.bars = {}
 
 function AB:Initialize()
@@ -27,6 +29,11 @@ function AB:Initialize()
     AB.bars.MaxLevelBar = AB:CreateMaxLevelBar()
     AB.bars.MicroButtonAndBagsBar = AB:CreateMicroButtonAndBagsBar()
 
+    if R.isClassic then
+        AB.bars.MageBar = CS.class == "MAGE" and AB:CreateMageBar() or nil
+        AB.bars.ShamanBar = CS.class == "SHAMAN" and AB:CreateShamanBar() or nil
+    end
+
     AB:RegisterEvent("PLAYER_ENTERING_WORLD")
     AB:RegisterEvent("ACTIONBAR_SHOW_BOTTOMLEFT")
     AB:RegisterEvent("BAG_UPDATE")
@@ -48,6 +55,7 @@ function AB:UpdateAll()
     AB:UpdateReputationBar()
     AB:UpdateMaxLevelBar()
     AB:UpdateMicroButtonAndBagsBar()
+    AB:UpdateClassBars()
 end
 
 function AB:PLAYER_ENTERING_WORLD()

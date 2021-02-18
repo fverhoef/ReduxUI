@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 
-AB.themes = {
+AB.MAIN_MENU_BAR_THEMES = {
     Default = "Default",
     None = "None",
     Alliance = "Alliance",
@@ -21,41 +21,49 @@ AB.themes = {
     Tree = "Tree",
     Wood = "Wood"
 }
+AB.ATTACHMENT_POINTS = {
+    Center = "Center",
+    Right = "Right"
+}
+AB.CLASS_BAR_DOCKS = {
+    MainActionBar_Left = 1,
+    MainActionBar_Right = 2
+}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
     mainMenuBar = {
-        point = {},
+        point = {"BOTTOM", "BOTTOM", 0, 10},
         fader = R.config.faders.onShow,
-        artwork = {enabled = true, theme = AB.themes.Default},
+        artwork = {enabled = true, theme = AB.MAIN_MENU_BAR_THEMES.Default},
         page = {enabled = true},
         experience = {enabled = true},
         reputation = {enabled = true}
         -- frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide"
     },
-    multiBarBottomLeft = {enabled = true, point = {}, fader = R.config.faders.none},
-    multiBarBottomRight = {enabled = true, point = {}, fader = R.config.faders.none},
-    multiBarLeft = {enabled = true, point = {}, fader = R.config.faders.mouseOver},
-    multiBarRight = {enabled = true, point = {}, fader = R.config.faders.mouseOver},
+    multiBarBottomLeft = {enabled = true, detached = false, point = {"BOTTOM", "BOTTOM", 0, 50}, fader = R.config.faders.none, buttonsPerRow = 12},
+    multiBarBottomRight = {enabled = true, detached = false, point = {"BOTTOM", "BOTTOM", 0, 90}, attachedPoint = AB.ATTACHMENT_POINTS.Right, fader = R.config.faders.none, buttonsPerRow = 12},
+    multiBarLeft = {enabled = true, point = {"RIGHT", "RIGHT", 0, 0}, fader = R.config.faders.mouseOver},
+    multiBarRight = {enabled = true, point = {"RIGHT", "RIGHT", 40, 0}, fader = R.config.faders.mouseOver},
     stanceBar = {
         enabled = true,
-        point = {},
-        fader = R.config.faders.onShow
-        -- frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; show"
+        point = {"BOTTOM", "BOTTOM", 0, 130},
+        fader = R.config.faders.onShow,
+        frameVisibility = "[overridebar][vehicleui][possessbar] hide; show"
     },
     petActionBar = {
         enabled = true,
-        point = {},
+        point = {"BOTTOM", "BOTTOM", 0, 130},
         fader = R.config.faders.onShow,
         frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
     },
-    vehicleExitBar = {enabled = true, point = {}, fader = R.config.faders.onShow},
-    experienceBar = {enabled = true, point = {}, fader = R.config.faders.onShow},
-    reputationBar = {enabled = true, point = {}, fader = R.config.faders.onShow},
-    maxLevelBar = {enabled = true, point = {}, fader = R.config.faders.onShow},
+    vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 130}, fader = R.config.faders.onShow},
+    experienceBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},
+    reputationBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 20}, fader = R.config.faders.onShow},
+    maxLevelBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},
     microButtonAndBags = {
         enabled = true,
-        point = {},
+        point = {"BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0},
         fader = R.config.faders.mouseOver,
         lowLatencyTreshold = 70,
         lowLatencyColor = {0 / 255, 175 / 255, 0 / 255},
@@ -68,6 +76,22 @@ R:RegisterModuleConfig(AB, {
         mediumFpsColor = {225 / 255, 150 / 255, 0 / 255},
         highFpsColor = {0 / 255, 175 / 255, 0 / 255},
         addonsToDisplay = 10
+    },
+    mageBar = {
+        enabled = true,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
+        buttonSize = 36,
+        buttonSpacing = 6,
+        dock = AB.CLASS_BAR_DOCKS.MainActionBar_Left,
+        fader = R.config.faders.OnShow
+    },
+    shamanBar = {
+        enabled = true,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
+        buttonSize = 36,
+        buttonSpacing = 6,
+        dock = AB.CLASS_BAR_DOCKS.MainActionBar_Left,
+        fader = R.config.faders.OnShow
     }
 })
 
@@ -119,16 +143,16 @@ R:RegisterModuleOptions(AB, {
                             type = "select",
                             name = "Theme",
                             order = 2,
-                            values = AB.themes,
+                            values = AB.MAIN_MENU_BAR_THEMES,
                             get = function()
-                                for key, val in pairs(AB.themes) do
+                                for key, val in pairs(AB.MAIN_MENU_BAR_THEMES) do
                                     if AB.config.mainMenuBar.artwork.theme == val then
                                         return val
                                     end
                                 end
                             end,
                             set = function(_, key)
-                                AB.config.mainMenuBar.artwork.theme = AB.themes[key]
+                                AB.config.mainMenuBar.artwork.theme = AB.MAIN_MENU_BAR_THEMES[key]
                                 AB:UpdateAll()
                             end
                         }
@@ -154,6 +178,19 @@ R:RegisterModuleOptions(AB, {
                         _G.SHOW_MULTI_ACTIONBAR_1 = val
                         AB:UpdateAll()
                     end
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    order = 3,
+                    get = function()
+                        return AB.config.multiBarBottomLeft.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.multiBarBottomLeft.detached = val
+                        AB:UpdateAll()
+                    end
                 }
             }
         },
@@ -173,6 +210,37 @@ R:RegisterModuleOptions(AB, {
                     set = function(_, val)
                         AB.config.multiBarBottomRight.enabled = val
                         _G.SHOW_MULTI_ACTIONBAR_2 = val
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    order = 3,
+                    get = function()
+                        return AB.config.multiBarBottomRight.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.multiBarBottomRight.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                attachedPoint = {
+                    type = "select",
+                    name = "Attach To",
+                    order = 4,
+                    values = AB.ATTACHMENT_POINTS,
+                    disabled = function() return AB.config.multiBarBottomRight.detached end,
+                    get = function()
+                        for key, val in pairs(AB.ATTACHMENT_POINTS) do
+                            if AB.config.multiBarBottomRight.attachedPoint == val then
+                                return val
+                            end
+                        end
+                    end,
+                    set = function(_, key)
+                        AB.config.multiBarBottomRight.attachedPoint = AB.ATTACHMENT_POINTS[key]
                         AB:UpdateAll()
                     end
                 }

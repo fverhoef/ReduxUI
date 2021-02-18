@@ -1,14 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-R.PlayerName = UnitName("player")
-R.PlayerClass = select(2, UnitClass("player"))
-R.PlayerFaction = UnitFactionGroup("player")
-R.PlayerRealm = GetRealmName()
-R.PlayerSex = UnitSex("player")
-R.PlayerIsMale = R.PlayerSex == 2
-R.PlayerIsFemale = R.PlayerSex == 3
-
 R.HiddenFrame = CreateFrame("Frame")
 R.HiddenFrame:Hide()
 
@@ -51,7 +43,7 @@ end
 
 function R:LocalizedClassName(className)
     return (className and className ~= "") and
-               (R.PlayerIsMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.PlayerIsFemale and
+               (R.Modules.CharacterStats.isMale and _G.LOCALIZED_CLASS_NAMES_MALE[className] or R.Modules.CharacterStats.isFemale and
                    _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
 end
 
@@ -240,6 +232,35 @@ function R:PlayerCanInvite()
     return not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
 end
 
+function R:PlayerHasAura(auraId)
+    local i = 1
+    local spellId = select(10, UnitAura("player", i))
+    while spellId do
+        if spellId == auraId then
+            return true
+        end
+
+        i = i + 1
+        spellId = select(10, UnitAura("player", i))
+    end
+
+    return false
+end
+
+function R:GetAuraId(spellName, unit)
+    local auraName, spellId
+    for i = 1, 255 do
+        auraName, _, _, _, _, _, _, _, _, spellId = UnitBuff(unit, i)
+        if auraName == spellName then
+            break
+        elseif not auraName then
+            spellId = nil
+            break
+        end
+    end
+    return spellId
+end
+
 function R:FixNormalTextureSize(button)
     local normalTexture = button:GetNormalTexture()
     if normalTexture then
@@ -248,129 +269,5 @@ function R:FixNormalTextureSize(button)
             local size = 66 * (button:GetWidth() / 36)
             normalTexture:SetSize(size, size)
         end
-    end
-end
-
-function R:ApplyTexCoords(texture, texCoord)
-    if not texture or not texCoord or texture.__texCoord == texCoord then
-        return
-    end
-    texture.__texCoord = texCoord
-    texture:SetTexCoord(unpack(texCoord))
-    if not texture.hookedSetTexCoord then
-        texture.hookedSetTexCoord = true
-        R:SecureHook(texture, "SetTexCoord", R.ResetTexCoord)
-    end
-end
-
-function R:ResetTexCoord(texCoord)
-    if not self.__texCoord or texCoord == self.__texCoord then
-        return
-    end
-    self:SetTexCoord(unpack(self.__texCoord))
-end
-
-function R:ApplyNormalTexture(button, file)
-    if not button or not file or button.__normalTextureFile == file then
-        return
-    end
-    button.__normalTextureFile = file
-    button:SetNormalTexture(file)
-    if not button.hookedSetNormalTexture then
-        button.hookedSetNormalTexture = true
-        R:SecureHook(button, "SetNormalTexture", R.ResetNormalTexture)
-    end
-end
-
-function R:ResetNormalTexture(file)
-    if not self.__normalTextureFile or file == self.__normalTextureFile then
-        return
-    end
-    self:SetNormalTexture(self.__normalTextureFile)
-end
-
-function R:ApplyPushedTexture(button, file)
-    if not button or not file or button.__pushedTextureFile == file then
-        return
-    end
-    button.__pushedTextureFile = file
-    button:SetPushedTexture(file)
-    if not button.hookedSetPushedTexture then
-        button.hookedSetPushedTexture = true
-        R:SecureHook(button, "SetPushedTexture", R.ResetPushedTexture)
-    end
-end
-
-function R:ResetPushedTexture(file)
-    if not self.__pushedTextureFile or file == self.__pushedTextureFile then
-        return
-    end
-    self:SetPushedTexture(self.__pushedTextureFile)
-end
-
-function R:ApplyHighlightTexture(button, file)
-    if not button or not file or button.__highlightTextureFile == file then
-        return
-    end
-    button.__highlightTextureFile = file
-    button:SetHighlightTexture(file)
-    if not button.hookedSetHighlightTexture then
-        button.hookedSetHighlightTexture = true
-        R:SecureHook(button, "SetHighlightTexture", R.ResetHighlightTexture)
-    end
-end
-
-function R:ResetHighlightTexture(file)
-    if not self.__highlightTextureFile or file == self.__highlightTextureFile then
-        return
-    end
-    self:SetHighlightTexture(self.__highlightTextureFile)
-end
-
-function R:ApplyCheckedTexture(button, file)
-    if not button or not file or button.__checkedTextureFile == file then
-        return
-    end
-    button.__checkedTextureFile = file
-    button:SetCheckedTexture(file)
-    if not button.hookedSetCheckedTexture then
-        button.hookedSetCheckedTexture = true
-        R:SecureHook(button, "SetCheckedTexture", R.ResetCheckedTexture)
-    end
-end
-
-function R:ResetCheckedTexture(file)
-    if not self.__checkedTextureFile or file == self.__checkedTextureFile then
-        return
-    end
-    self:SetCheckedTexture(self.__checkedTextureFile)
-end
-
-function R:ApplyVertexColor(texture, color)
-    if not color or texture.__vertexColor == color then
-        return
-    end
-    if texture.__vertexColor and
-        (color[1] == texture.__vertexColor[1] and color[2] == texture.__vertexColor[2] and color[3] == texture.__vertexColor[3] and
-            (color[4] or 1) == (texture.__vertexColor[4] or 1)) then
-        return
-    end
-
-    texture.__vertexColor = color
-    texture:SetVertexColor(unpack(color))
-
-    if not texture.hookedSetVertexColor then
-        texture.hookedSetVertexColor = true
-        R:SecureHook(texture, "SetVertexColor", R.ResetVertexColor)
-    end
-end
-
-function R:ResetVertexColor(r, g, b, a)
-    if not self.__vertexColor then
-        return
-    end
-    if r ~= self.__vertexColor[1] or g ~= self.__vertexColor[2] or b ~= self.__vertexColor[3] or
-        ((a or 1) ~= (self.__vertexColor[4] or 1)) then
-        self:SetVertexColor(unpack(self.__vertexColor))
     end
 end

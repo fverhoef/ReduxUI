@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local TT = R:AddModule("Tooltips", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local SD = R.Modules.SpellDatabase
 
 TT.classColors = {}
 TT.factionColors = {}
@@ -483,6 +484,12 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
                 SetTooltipMoney(tooltip, sellPrice * count, "STATIC", SELL_PRICE .. ":")
             end
         end
+    end
+end
+
+function TT:ModifySpellDamage(tooltip, spellId)
+    if spellId and TT.config.modifySpellDamage then
+        SD:ModifyTooltip(tooltip, spellId)
     end
 end
 

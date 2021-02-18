@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
+local CS = R.Modules.CharacterStats
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPlayer()
@@ -186,7 +187,7 @@ end
 
 UF.Player_OnEvent = function(self, event, ...)
     -- in classic, hide additional mana bar in caster form
-    if R.isClassic and R.PlayerClass == "DRUID" and self.AdditionalPower then
+    if R.isClassic and CS.class == "DRUID" and self.AdditionalPower then
         local form = GetShapeshiftForm()
         if form == 1 or form == 3 then
             self.AdditionalPower:Show()

@@ -47,7 +47,8 @@ R:RegisterModuleConfig(TT, {
     showItemId = false,
     showItemLevel = true,
     showItemCount = true,
-    showVendorPrice = true
+    showVendorPrice = true,
+    modifySpellDamage = true
 })
 
 R:RegisterModuleOptions(TT, {
@@ -161,6 +162,20 @@ R:RegisterModuleOptions(TT, {
             end,
             set = function(_, val)
                 TT.config.showItemId = val
+            end
+        },
+        modifySpellDamage = {
+            type = "toggle",
+            name = "Modify Spell Damage",
+            desc = "When enabled, spell damage values will be updated to reflect the player's spellpower etc.",
+            order = 17,
+            width = "full",
+            hidden = R.isRetail,
+            get = function()
+                return TT.config.modifySpellDamage
+            end,
+            set = function(_, val)
+                TT.config.modifySpellDamage = val
             end
         },
         lineBreak2 = {type = "header", name = "", order = 20},

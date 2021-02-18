@@ -10,27 +10,26 @@ function AB:CreateMainMenuBar()
     local framesToDisable = {_G.MainMenuBar, _G.MicroButtonAndBagsBar, _G.MainMenuBarArtFrame}
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
-    -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "MainMenuBar", UIParent, "SecureHandlerStateTemplate")
     frame.config = config
     frame:SetSize(552, 51)
     frame:SetPoint("BOTTOM", _G.UIParent, "BOTTOM", 0, 0)
+    frame.buttons = {}
 
-    local buttonList = {}
     for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
         local button = _G["ActionButton" .. i]
         if not button then
             break
         end
-        table.insert(buttonList, button)
+        table.insert(frame.buttons, button)
     end
 
-    for i, button in next, buttonList do
+    for i, button in next, frame.buttons do
         local parent = frame
         local point = {"BOTTOMLEFT", frame, "BOTTOMLEFT", 8, 4}
 
         if i > 1 then
-            parent = buttonList[i - 1]
+            parent = frame.buttons[i - 1]
             point = {"BOTTOMLEFT", parent, "BOTTOMRIGHT", 6, 0}
         end
 
@@ -62,7 +61,7 @@ function AB:CreateMainMenuBar()
             return
         end
         local showgrid = tonumber(GetCVar("alwaysShowActionBars"))
-        for _, button in next, buttonList do
+        for _, button in next, frame.buttons do
             button:SetAttribute("showgrid", showgrid)
             ActionButton_ShowGrid(button)
         end
@@ -70,7 +69,7 @@ function AB:CreateMainMenuBar()
     AB:SecureHook("MultiActionBar_UpdateGridVisibility", UpdateGridVisibility)
 
     -- _onstate-page state driver
-    for i, button in next, buttonList do
+    for i, button in next, frame.buttons do
         frame:SetFrameRef("ActionButton" .. i, button)
     end
 
@@ -98,7 +97,7 @@ function AB:CreateMainMenuBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    frame:CreateFader(config.fader, buttonList)
+    frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Main Action Bar", default.point)
 
     return frame
@@ -106,12 +105,13 @@ end
 
 function AB:UpdateMainMenuBar()
     local config = AB.config.mainMenuBar
+    local rightBarConfig = AB.config.multiBarBottomRight
     local frame = AB.bars.MainMenuBar
 
     frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, _G.MainMenuExpBar:IsShown() and _G.ReputationWatchBar:IsShown() and 22 or 10)
     frame.PageNumber:SetText(GetActionBarPage())
 
-    if AB.config.multiBarBottomRight.enabled then
+    if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
         frame:SetWidth(806)
     else
         frame:SetWidth(552)
@@ -166,7 +166,7 @@ function AB:UpdateMainMenuBarArtwork()
 
         local endCapWidth = 128
         local endCapHeight = 76
-        if config.artwork.theme == AB.themes.Default then
+        if config.artwork.theme == AB.MAIN_MENU_BAR_THEMES.Default then
             artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
             if AB.config.multiBarBottomRight.enabled then
                 artwork.Texture:SetTexCoord(113 / 1024, (113 + 806) / 1024, 115 / 255, 165 / 255)
@@ -185,7 +185,7 @@ function AB:UpdateMainMenuBarArtwork()
             artwork.RightEndCap:SetSize(endCapWidth, 76)
         else
             local texture = R.media.textures.actionBars["mainMenuBar_" .. config.artwork.theme]
-            if config.artwork.theme == AB.themes.Faction then
+            if config.artwork.theme == AB.MAIN_MENU_BAR_THEMES.Faction then
                 if UnitFactionGroup("player") == "Horde" then
                     texture = R.media.textures.actionBars.mainMenuBar_Horde
                 else

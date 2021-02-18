@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local SS = R:AddModule("ScreenSaver", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local CS = R.Modules.CharacterStats
 local L = R.L
 
 local CAMERA_SPEED = 0.035
@@ -68,13 +69,13 @@ function SS:Initialize()
 
     SS.Canvas.Bottom.Faction = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
     SS.Canvas.Bottom.Faction:SetPoint("BOTTOMLEFT", SS.Canvas.Bottom, "BOTTOMLEFT", -20, -16)
-    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], R.PlayerFaction))
+    SS.Canvas.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], CS.faction))
     SS.Canvas.Bottom.Faction:SetSize(140, 140)
 
-    local classColor = _G.RAID_CLASS_COLORS[R.PlayerClass]
+    local classColor = _G.RAID_CLASS_COLORS[CS.class]
     SS.Canvas.Bottom.Name = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
     SS.Canvas.Bottom.Name:SetFont(unpack(config.font))
-    SS.Canvas.Bottom.Name:SetFormattedText("%s-%s", R.PlayerName, R.PlayerRealm)
+    SS.Canvas.Bottom.Name:SetFormattedText("%s-%s", CS.name, CS.realm)
     SS.Canvas.Bottom.Name:SetPoint("TOPLEFT", SS.Canvas.Bottom.Faction, "TOPRIGHT", -10, -28)
     SS.Canvas.Bottom.Name:SetTextColor(classColor.r, classColor.g, classColor.b)
 

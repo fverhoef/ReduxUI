@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R:AddModule("Bags", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local CS = R.Modules.CharacterStats
 
 local BACKPACK_CONTAINER = 0
 local BANK_CONTAINER = -1
@@ -403,7 +404,7 @@ function B:CreateInventoryFrame()
     frame.Title:SetFont(STANDARD_TEXT_FONT, 14, "OUTLINE")
     frame.Title:SetPoint("TOP", frame, "TOP", 10, -5)
     frame.Title:SetJustifyH("MIDDLE")
-    frame.Title:SetText(R.PlayerName .. "'s Inventory") -- TODO: localization
+    frame.Title:SetText(CS.name .. "'s Inventory") -- TODO: localization
 
     frame.BagIDs = {0, 1, 2, 3, 4, -2}
     frame.Bags = {}
@@ -558,7 +559,7 @@ function B:CreateBankFrame()
     frame.Title:SetFont(STANDARD_TEXT_FONT, 14, "OUTLINE")
     frame.Title:SetPoint("TOP", frame, "TOP", 10, -5)
     frame.Title:SetJustifyH("MIDDLE")
-    frame.Title:SetText(R.PlayerName .. "'s Bank") -- TODO: localization
+    frame.Title:SetText(CS.name .. "'s Bank") -- TODO: localization
 
     frame.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
     frame.Bags = {}
