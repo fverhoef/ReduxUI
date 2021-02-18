@@ -24,10 +24,10 @@ function AB:CreateMultiBarBottomRight()
         table.insert(frame.buttons, button)
     end
 
-    AB:SetupButtons(frame)
+    AB:UpdateBar(frame)
 
     frame:SetAttribute("actionpage", 5) -- 5 = MultiBarBottomRight
-        
+
     if config.frameVisibility then
         frame.frameVisibility = config.frameVisibility
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
@@ -61,7 +61,9 @@ function AB:UpdateMultiBarBottomRight()
 
         config.buttonsPerRow = config.detached and config.buttonsPerRow or
                                    (config.attachedPoint == AB.ATTACHMENT_POINTS.Center and 12 or 6)
-        AB:SetupButtons(frame)
+        config.columnSpacing = config.detached and config.columnSpacing or 6
+        config.rowSpacing = config.detached and config.rowSpacing or 8
+        AB:UpdateBar(frame)
 
         if config.frameVisibility then
             frame.frameVisibility = config.frameVisibility

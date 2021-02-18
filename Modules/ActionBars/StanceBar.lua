@@ -32,8 +32,8 @@ function AB:CreateStanceBar()
         table.insert(frame.buttons, button)
     end
 
-    AB:SetupButtons(frame)
-        
+    AB:UpdateBar(frame)
+
     if config.frameVisibility then
         frame.frameVisibility = config.frameVisibility
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
@@ -54,23 +54,28 @@ function AB:UpdateStanceBar()
     frame.__blizzardBar:SetParent(frame)
     frame.__blizzardBar:ClearAllPoints()
     frame.__blizzardBar:SetAllPoints()
-    
-    if config.enabled then
-        frame:ClearAllPoints()
 
-        local leftBarEnabledAndAttached = leftConfig.enabled and not leftConfig.detached
-        local rightBarEnabledAndAttachedToCenter =
-            rightConfig.enabled and not rightConfig.detached and rightConfig.attachedPoint == AB.ATTACHMENT_POINTS.Center
-            
-        if leftBarEnabledAndAttached and rightBarEnabledAndAttachedToCenter then
-            frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 85)
-        elseif leftBarEnabledAndAttached or rightBarEnabledAndAttachedToCenter then
-            frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 45)
+    if config.enabled then
+        frame:Show()
+
+        frame:ClearAllPoints()
+        if config.detached then
+            frame:Point(unpack(config.point))
         else
-            frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 5)
+            local leftBarEnabledAndAttached = leftConfig.enabled and not leftConfig.detached
+            local rightBarEnabledAndAttachedToCenter = rightConfig.enabled and not rightConfig.detached and
+                                                           rightConfig.attachedPoint == AB.ATTACHMENT_POINTS.Center
+
+            if leftBarEnabledAndAttached and rightBarEnabledAndAttachedToCenter then
+                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 85)
+            elseif leftBarEnabledAndAttached or rightBarEnabledAndAttachedToCenter then
+                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 45)
+            else
+                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 5)
+            end
         end
 
-        AB:SetupButtons(frame)
+        AB:UpdateBar(frame)
 
         if config.frameVisibility then
             frame.frameVisibility = config.frameVisibility

@@ -24,7 +24,7 @@ function AB:CreateMainMenuBar()
         table.insert(frame.buttons, button)
     end
 
-    AB:SetupButtons(frame)
+    AB:UpdateBar(frame)
 
     if _G.ActionBarUpButton then
         _G.ActionBarUpButton:SetParent(frame)
@@ -120,6 +120,11 @@ function AB:UpdateMainMenuBar()
         end
         frame.PageNumber:SetText(GetActionBarPage())
 
+        config.columnSpacing = config.detached and config.columnSpacing or 6
+        config.rowSpacing = config.detached and config.rowSpacing or 6
+
+        AB:UpdateBar(frame)
+
         if config.frameVisibility then
             frame.frameVisibility = config.frameVisibility
             RegisterStateDriver(frame, "visibility", config.frameVisibility)
@@ -130,6 +135,4 @@ function AB:UpdateMainMenuBar()
         end
         frame:Hide()
     end
-
-    AB:SetupButtons(frame)
 end

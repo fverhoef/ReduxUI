@@ -44,7 +44,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 12,
         buttonSize = {36, 36},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     multiBarBottomLeft = {
         enabled = true,
@@ -57,7 +58,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 12,
         buttonSize = {36, 36},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     multiBarBottomRight = {
         enabled = true,
@@ -71,7 +73,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 12,
         buttonSize = {36, 36},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     multiBarLeft = {
         enabled = true,
@@ -83,7 +86,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 1,
         buttonSize = {36, 36},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     multiBarRight = {
         enabled = true,
@@ -95,7 +99,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 1,
         buttonSize = {36, 36},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     stanceBar = {
         enabled = true,
@@ -107,7 +112,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 12,
         buttonSize = {30, 30},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     petActionBar = {
         enabled = true,
@@ -119,7 +125,8 @@ R:RegisterModuleConfig(AB, {
         buttons = 12,
         buttonsPerRow = 12,
         buttonSize = {30, 30},
-        buttonSpacing = 6
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 130}, fader = R.config.faders.onShow},
     experienceBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},

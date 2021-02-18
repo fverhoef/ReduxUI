@@ -216,30 +216,9 @@ end
 function AB:UpdateClassBars()
     if AB.bars.MageBar then
         AB:UpdateClassBar(AB.bars.MageBar)
-        AB:UpdateClassBarPosition(AB.bars.MageBar, AB.config.mageBar.dock)
-    elseif AB.bars.ShamanBar then
-        AB:UpdateClassBar(AB.bars.ShamanBar)
-        AB:UpdateClassBarPosition(AB.bars.ShamanBar, AB.config.shamanBar.dock)
     end
-end
-
-function AB:UpdateClassBarPosition(bar, dock)
-    if dock == AB.CLASS_BAR_DOCKS.Left then
-        if AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached then
-            bar:ClearAllPoints()
-            if AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached and
-                AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center then
-                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
-            else
-                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
-            end
-        else
-            bar:ClearAllPoints()
-            bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 6)
-        end
-    else
-        bar:ClearAllPoints()
-        bar:Point(unpack(bar.config.point))
+    if AB.bars.ShamanBar then
+        AB:UpdateClassBar(AB.bars.ShamanBar)
     end
 end
 
@@ -273,4 +252,22 @@ function AB:UpdateClassBar(bar)
     end
 
     bar:CreateFader(bar.faderConfig, buttonList)
+
+    if bar.config.dock == AB.CLASS_BAR_DOCKS.Left then
+        if AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached then
+            bar:ClearAllPoints()
+            if AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached and
+                AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center then
+                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
+            else
+                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
+            end
+        else
+            bar:ClearAllPoints()
+            bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 6)
+        end
+    else
+        bar:ClearAllPoints()
+        bar:Point(unpack(bar.config.point))
+    end
 end

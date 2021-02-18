@@ -24,7 +24,7 @@ function AB:CreateMultiBarLeft()
         table.insert(frame.buttons, button)
     end
 
-    AB:SetupButtons(frame)
+    AB:UpdateBar(frame)
         
     if config.frameVisibility then
         frame.frameVisibility = config.frameVisibility
@@ -49,7 +49,7 @@ function AB:UpdateMultiBarLeft()
         frame:ClearAllPoints()
         frame:Point(config.point)
 
-        AB:SetupButtons(frame)
+        AB:UpdateBar(frame)
 
         if config.frameVisibility then
             frame.frameVisibility = config.frameVisibility

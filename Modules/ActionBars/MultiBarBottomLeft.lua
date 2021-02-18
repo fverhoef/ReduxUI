@@ -24,10 +24,10 @@ function AB:CreateMultiBarBottomLeft()
         table.insert(frame.buttons, button)
     end
 
-    AB:SetupButtons(frame)
+    AB:UpdateBar(frame)
 
     frame:SetAttribute("actionpage", 6) -- 6 = MultiBarBottomLeft
-        
+
     if config.frameVisibility then
         frame.frameVisibility = config.frameVisibility
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
@@ -53,7 +53,10 @@ function AB:UpdateMultiBarBottomLeft()
             frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, 8)
         end
 
-        AB:SetupButtons(frame)
+        config.columnSpacing = config.detached and config.columnSpacing or 6
+        config.rowSpacing = config.detached and config.rowSpacing or 6
+
+        AB:UpdateBar(frame)
 
         if config.frameVisibility then
             frame.frameVisibility = config.frameVisibility

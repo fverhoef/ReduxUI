@@ -88,14 +88,15 @@ function AB:HideBlizzardBar(framesToHide, framesToDisable)
     end
 end
 
-function AB:SetupButtons(frame)
+function AB:UpdateBar(frame)
     local buttons = frame.config.buttons
     local buttonsPerRow = frame.config.buttonsPerRow
-    local buttonSpacing = frame.config.buttonSpacing
     local width = frame.config.buttonSize[1]
     local height = frame.config.buttonSize[2]
     local columnDirection = frame.config.columnDirection
+    local columnSpacing = frame.config.columnSpacing
     local rowDirection = frame.config.rowDirection
+    local rowSpacing = frame.config.rowSpacing
 
     local columnMultiplier, columnAnchor, relativeColumnAnchor, rowMultiplier, rowAnchor, relativeRowAnchor
     if columnDirection == AB.COLUMN_DIRECTIONS.Right then
@@ -137,11 +138,11 @@ function AB:SetupButtons(frame)
             point = {columnAnchor, frame, columnAnchor, 0, 0}
         elseif (i - 1) % buttonsPerRow == 0 then
             parent = frame.buttons[rowCount * buttonsPerRow + 1]
-            point = {rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * buttonSpacing}
+            point = {rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing}
             rowCount = rowCount + 1
         else
             parent = frame.buttons[i - 1]
-            point = {columnAnchor, parent, relativeColumnAnchor, buttonSpacing, 0}
+            point = {columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0}
         end
 
         AB:SetupButton(button, frame, width, height, point)
@@ -158,7 +159,7 @@ function AB:SetupButtons(frame)
         end
     end
 
-    frame:SetSize(columnCount * width + (columnCount - 1) * buttonSpacing, (rowCount + 1) * height + rowCount * buttonSpacing)
+    frame:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
 end
 
 function AB:SetupButton(button, frame, width, height, point)
