@@ -43,6 +43,7 @@ function AB:UpdateMultiBarBottomRight()
     local config = AB.config.multiBarBottomRight
     local leftBarConfig = AB.config.multiBarBottomLeft
     local frame = AB.bars.MultiBarBottomRight
+    local mainMenuBar = AB.bars.MainMenuBar
 
     if config.enabled then
         frame:Show()
@@ -52,10 +53,10 @@ function AB:UpdateMultiBarBottomRight()
             frame:Point(config.point)
         else
             if config.attachedPoint == AB.ATTACHMENT_POINTS.Center then
-                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0,
+                frame:Point("BOTTOMLEFT", mainMenuBar, "TOPLEFT", 0,
                             12 + (leftBarConfig.enabled and not leftBarConfig.detached and leftBarConfig.buttonSize or 0))
             elseif config.attachedPoint == AB.ATTACHMENT_POINTS.Right then
-                frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "BOTTOMRIGHT", 44, 0)
+                frame:Point("BOTTOMLEFT", mainMenuBar, "BOTTOMRIGHT", 44, 0)
             end
 
             config.columnDirection = AB.COLUMN_DIRECTIONS.Right

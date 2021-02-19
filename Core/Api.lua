@@ -374,11 +374,25 @@ function R:GetShadowColor()
 end
 
 function R:FadeIn(timeToFade, startAlpha, endAlpha)
+    self.faded = false
     UIFrameFadeIn(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 1)
+
+    for child, enabled in pairs(self.linkedFaders or {}) do
+        if enabled then
+            child:FadeIn(timeToFade, startAlpha, endAlpha)
+        end
+    end
 end
 
 function R:FadeOut(timeToFade, startAlpha, endAlpha)
+    self.faded = true
     UIFrameFadeOut(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 0)
+
+    for child, enabled in pairs(self.linkedFaders or {}) do
+        if enabled then
+            child:FadeOut(timeToFade, startAlpha, endAlpha)
+        end
+    end
 end
 
 function R:CreateFader(faderConfig, children)
@@ -388,9 +402,12 @@ function R:CreateFader(faderConfig, children)
 
     if not self.faderConfig then
         self.faderConfig = faderConfig
+        self.linkedFaders = {}
+        self.faded = false
 
         self:EnableMouse(true)
         self:HookScript("OnShow", R.Fader_OnShow)
+        self:HookScript("OnHide", R.Fader_OnHide)
         self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
         self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
         if self.faderConfig == R.config.faders.mouseOver then
@@ -410,10 +427,34 @@ function R:CreateFader(faderConfig, children)
     end
 end
 
+function R:LinkFader(parent)
+    if not self or not parent or parent.linkedFaders[self] then
+        return
+    end
+
+    parent.linkedFaders[self] = true
+end
+
+function R:UnlinkFader(parent)
+    if not self or not parent or not parent.linkedFaders[self] then
+        return
+    end
+
+    parent.linkedFaders[self] = false
+end
+
 function R:Fader_OnShow()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.onShow then
-        R.FadeIn(frame)
+        frame:FadeIn()
+    end
+end
+
+function R:Fader_OnHide()
+    local frame = self.faderParent or self
+
+    for child, enabled in pairs(self.linkedFaders or {}) do
+        child:FadeOut(0)
     end
 end
 
@@ -421,9 +462,9 @@ function R:Fader_OnEnterOrLeave()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.mouseOver then
         if MouseIsOver(frame) then
-            R.FadeIn(frame)
+            frame:FadeIn()
         else
-            R.FadeOut(frame)
+            frame:FadeOut()
         end
     end
 end
@@ -489,6 +530,12 @@ local function AddApi(object)
     end
     if not object.CreateFader then
         mt.CreateFader = R.CreateFader
+    end
+    if not object.LinkFader then
+        mt.LinkFader = R.LinkFader
+    end
+    if not object.UnlinkFader then
+        mt.UnlinkFader = R.UnlinkFader
     end
 end
 

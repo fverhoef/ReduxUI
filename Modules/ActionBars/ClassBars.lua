@@ -223,50 +223,62 @@ function AB:UpdateClassBars()
 end
 
 function AB:UpdateClassBar(bar)
-    local visibleIndex = 0
-    local lastVisibleButton
-    local buttonList = {}
-    for i, button in next, bar.buttons do
-        AB:UpdateSpellFlyout(button)
+    if bar.config.enabled then
+        local visibleIndex = 0
+        local lastVisibleButton
+        local buttonList = {}
+        for i, button in next, bar.buttons do
+            AB:UpdateSpellFlyout(button)
 
-        if button:IsVisible() then
-            visibleIndex = visibleIndex + 1
+            if button:IsVisible() then
+                visibleIndex = visibleIndex + 1
 
-            button:ClearAllPoints()
-            if visibleIndex == 1 then
-                button:SetPoint("BOTTOMLEFT", 0, 0)
-            else
-                button:SetPoint("BOTTOMLEFT", lastVisibleButton, "BOTTOMRIGHT", bar.buttonSpacing, 0)
-            end
+                button:ClearAllPoints()
+                if visibleIndex == 1 then
+                    button:SetPoint("BOTTOMLEFT", 0, 0)
+                else
+                    button:SetPoint("BOTTOMLEFT", lastVisibleButton, "BOTTOMRIGHT", bar.buttonSpacing, 0)
+                end
 
-            lastVisibleButton = button
+                lastVisibleButton = button
 
-            if bar.faderConfig then
-                table.insert(buttonList, button.CurrentAction)
+                if bar.faderConfig then
+                    table.insert(buttonList, button.CurrentAction)
 
-                for j, child in next, button.childButtons do
-                    table.insert(buttonList, child)
+                    for j, child in next, button.childButtons do
+                        table.insert(buttonList, child)
+                    end
                 end
             end
         end
-    end
 
-    bar:CreateFader(bar.faderConfig, buttonList)
-
-    bar:ClearAllPoints()
-    if bar.config.dock == AB.CLASS_BAR_DOCKS.Left then
-        local leftEnabledAndAttached = AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached
-        local rightEnabledAndAttached = AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached
-        local rightAttachedToCenter = AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center
-
-        if rightEnabledAndAttached and rightAttachedToCenter then
-            bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
-        elseif leftEnabledAndAttached then
-            bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
+        bar:CreateFader(bar.faderConfig, buttonList)
+        if not bar.detached then
+            bar:LinkFader(AB.bars.MainMenuBar)
         else
-            bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 8)
+            bar:UnlinkFader(AB.bars.MainMenuBar)
         end
+        bar:SetShown(bar.detached or not AB.bars.MainMenuBar.faded)
+
+        bar:ClearAllPoints()
+        if not bar.detached and bar.config.attachedPoint == AB.CLASS_BAR_DOCKS.Left then
+            local leftEnabledAndAttached = AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached
+            local rightEnabledAndAttached = AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached
+            local rightAttachedToCenter = AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center
+
+            if rightEnabledAndAttached and rightAttachedToCenter then
+                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
+            elseif leftEnabledAndAttached then
+                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
+            else
+                bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 8)
+            end
+        else
+            bar:Point(unpack(bar.config.point))
+        end
+
     else
-        bar:Point(unpack(bar.config.point))
+        bar:UnlinkFader(AB.bars.MainMenuBar)
+        bar:Hide()
     end
 end

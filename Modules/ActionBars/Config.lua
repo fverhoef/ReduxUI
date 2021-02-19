@@ -184,8 +184,8 @@ R:RegisterModuleConfig(AB, {
         detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 10},
         fader = R.config.faders.onShow,
-        frameVisibility = "show",
-        -- frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide"
+        --frameVisibility = "show",
+        frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide",
         page = {enabled = true},
         experience = {enabled = true},
         reputation = {enabled = true},
@@ -305,7 +305,8 @@ R:RegisterModuleConfig(AB, {
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         buttonSize = 36,
         buttonSpacing = 6,
-        dock = AB.CLASS_BAR_DOCKS.Left,
+        detached = false,
+        attachedPoint = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow
     },
     shamanBar = {
@@ -313,7 +314,8 @@ R:RegisterModuleConfig(AB, {
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         buttonSize = 36,
         buttonSpacing = 6,
-        dock = AB.CLASS_BAR_DOCKS.Left,
+        detached = false,
+        attachedPoint = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow
     }
 })
@@ -397,6 +399,7 @@ R:RegisterModuleOptions(AB, {
                 detached = {
                     type = "toggle",
                     name = "Detached",
+                    desc = "Whether to detach this action bar from the action bar artwork.",
                     order = 3,
                     get = function()
                         return AB.config.mainMenuBar.detached
@@ -441,6 +444,7 @@ R:RegisterModuleOptions(AB, {
                 detached = {
                     type = "toggle",
                     name = "Detached",
+                    desc = "Whether to detach this action bar from the action bar artwork.",
                     order = 3,
                     get = function()
                         return AB.config.multiBarBottomLeft.detached
@@ -485,6 +489,7 @@ R:RegisterModuleOptions(AB, {
                 detached = {
                     type = "toggle",
                     name = "Detached",
+                    desc = "Whether to detach this action bar from the action bar artwork.",
                     order = 3,
                     get = function()
                         return AB.config.multiBarBottomRight.detached

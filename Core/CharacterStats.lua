@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local CS = R:AddModule("CharacterStats", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local CS = R:AddModule("CharacterStats", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 CS.name = UnitName("player")
 CS.guid = UnitGUID("player")
@@ -10,7 +10,8 @@ CS.realm = GetRealmName()
 CS.sex = UnitSex("player")
 CS.isMale = R.sex == 2
 CS.isFemale = R.sex == 3
-CS.alwaysUpdate = false
+CS.instantUpdate = false
+CS.updateInterval = 1
 
 CS.STATS_UPDATED = "STATS_UPDATED"
 
@@ -38,20 +39,27 @@ function CS:Initialize()
 end
 
 CS.OnEvent = function(event, ...)
-    if not CS.alwaysUpdate then
-        return
-    end
-
+    local needsUpdate = false
     if string.find(event, "UNIT_") then
         if select(1, ...) == "player" then
-            CS:Update()
+            needsUpdate = true
         end
     else
         CS:Update()
     end
+
+    if needsUpdate then
+        if CS.instantUpdate then
+            CS:Update()
+        elseif not CS.timer then
+            CS.timer = CS:ScheduleTimer("Update", CS.updateInterval)
+        end
+    end
 end
 
 function CS:Update()
+    CS.timer = nil
+
     CS.sex = UnitSex("player")
     CS.isMale = R.sex == 2
     CS.isFemale = R.sex == 3

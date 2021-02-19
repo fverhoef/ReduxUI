@@ -23,6 +23,8 @@ function AB:CreateArtwork()
     artwork.RightEndCap = artwork:CreateTexture("ARTWORK", 2)
     artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, 0)
 
+    artwork:CreateFader(R.config.faders.onShow)
+
     return artwork
 end
 
@@ -32,6 +34,8 @@ function AB:UpdateArtwork()
     local artwork = AB.bars.Artwork
 
     if config.enabled then
+        artwork:LinkFader(AB.bars.MainMenuBar)
+        
         if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
             artwork:SetWidth(806)
         else
@@ -115,6 +119,8 @@ function AB:UpdateArtwork()
             artwork.RightEndCap:SetDrawLayer("ARTWORK", 2)
         end
     else
+        artwork:UnlinkFader(AB.bars.MainMenuBar)
+
         artwork.Texture:Hide()
         artwork.TopEndCap:Hide()
         artwork.LeftEndCap:Hide()

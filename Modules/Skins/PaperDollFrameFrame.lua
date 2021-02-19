@@ -127,16 +127,15 @@ function S:StylePaperDollFrame()
 end
 
 function S:CharacterFrame_OnShow()
-    CS.alwaysUpdate = true
+    CS.instantUpdate = true
     S:RegisterMessage(CS.STATS_UPDATED, S.UpdatePaperDollFrame)
     S:UpdatePaperDollFrame()
 end
 
 function S:CharacterFrame_OnHide()
-    CS.alwaysUpdate = false
+    CS.instantUpdate = false
     S:UnregisterMessage(CS.STATS_UPDATED)
 end
-
 
 function S:CreateCharacterStatsPane()
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPane", PaperDollFrame)

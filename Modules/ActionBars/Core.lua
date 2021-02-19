@@ -37,6 +37,7 @@ function AB:Initialize()
     AB:RegisterEvent("PLAYER_ENTERING_WORLD")
     AB:RegisterEvent("ACTIONBAR_SHOW_BOTTOMLEFT")
     AB:RegisterEvent("BAG_UPDATE")
+    AB:RegisterEvent("CVAR_UPDATE")
     AB:SecureHook("MainMenuBar_UpdateExperienceBars", AB.UpdateAll)
 
     AB:UpdateAll()
@@ -72,6 +73,10 @@ function AB:BAG_UPDATE()
     _G.MainMenuBarBackpackButtonCount:SetPoint("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -2, 4)
     _G.MainMenuBarBackpackButtonCount:SetFont(_G.STANDARD_TEXT_FONT, 11, "OUTLINE")
     _G.MainMenuBarBackpackButtonCount:SetText(format("(%d)", _G.MainMenuBarBackpackButton.freeSlots))
+end
+
+function AB:CVAR_UPDATE()
+    -- TODO: sync settings
 end
 
 function AB:HideBlizzardBar(framesToHide, framesToDisable)

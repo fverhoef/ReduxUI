@@ -42,6 +42,7 @@ end
 function AB:UpdateMultiBarBottomLeft()
     local config = AB.config.multiBarBottomLeft
     local frame = AB.bars.MultiBarBottomLeft
+    local mainMenuBar = AB.bars.MainMenuBar
 
     if config.enabled then
         frame:Show()
@@ -50,6 +51,8 @@ function AB:UpdateMultiBarBottomLeft()
         if config.detached then
             frame:Point(config.point)
         else
+            frame:Point("BOTTOMLEFT", mainMenuBar, "TOPLEFT", 0, 8)
+
             config.columnDirection = AB.COLUMN_DIRECTIONS.Right
             config.rowDirection = AB.ROW_DIRECTIONS.Down
             config.buttons = 12
@@ -57,8 +60,6 @@ function AB:UpdateMultiBarBottomLeft()
             config.buttonSize = 36
             config.columnSpacing = 6
             config.rowSpacing = 6
-
-            frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, 8)
         end
 
         AB:UpdateBar(frame)
