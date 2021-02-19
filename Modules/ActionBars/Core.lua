@@ -91,8 +91,8 @@ end
 function AB:UpdateBar(frame)
     local buttons = frame.config.buttons
     local buttonsPerRow = frame.config.buttonsPerRow
-    local width = frame.config.buttonSize[1]
-    local height = frame.config.buttonSize[2]
+    local width = frame.config.buttonSize
+    local height = frame.config.buttonSize
     local columnDirection = frame.config.columnDirection
     local columnSpacing = frame.config.columnSpacing
     local rowDirection = frame.config.rowDirection

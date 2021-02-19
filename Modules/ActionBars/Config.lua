@@ -26,6 +26,156 @@ AB.CLASS_BAR_DOCKS = {Left = "Left", Right = "Right"}
 AB.COLUMN_DIRECTIONS = {Right = "Right", Left = "Left"}
 AB.ROW_DIRECTIONS = {Up = "Up", Down = "Down"}
 
+function AB:CreateBarButtonCountOption(name, bar, order)
+    return {
+        type = "range",
+        name = name or "Button Count",
+        desc = "The number of buttons on this bar.",
+        order = order,
+        min = 1,
+        max = 12,
+        step = 1,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        get = function()
+            return AB.config[bar].buttons
+        end,
+        set = function(_, val)
+            AB.config[bar].buttons = val
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarButtonSizeOption(name, bar, order)
+    return {
+        type = "range",
+        name = name or "Button Size",
+        desc = "The size of the buttons on this bar.",
+        order = order,
+        min = 10,
+        max = 50,
+        step = 1,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        get = function()
+            return AB.config[bar].buttonSize
+        end,
+        set = function(_, val)
+            AB.config[bar].buttonSize = val
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarButtonsPerRowOption(name, bar, order)
+    return {
+        type = "range",
+        name = name or "Buttons Per Row",
+        desc = "The number of buttons in each row.",
+        order = order,
+        min = 1,
+        max = 12,
+        step = 1,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        get = function()
+            return AB.config[bar].buttonsPerRow
+        end,
+        set = function(_, val)
+            AB.config[bar].buttonsPerRow = val
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarColumnDirectionOption(name, bar, order)
+    return {
+        type = "select",
+        name = name or "Column Growth Direction",
+        desc = "The direction in which columns grow.",
+        order = order,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        values = AB.COLUMN_DIRECTIONS,
+        get = function()
+            return AB.config[bar].columnDirection
+        end,
+        set = function(_, key)
+            AB.config[bar].columnDirection = key
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarColumnSpacingOption(name, bar, order)
+    return {
+        type = "range",
+        name = name or "Column Spacing",
+        desc = "The spacing between each column.",
+        order = order,
+        min = 0,
+        max = 50,
+        step = 1,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        get = function()
+            return AB.config[bar].columnSpacing
+        end,
+        set = function(_, val)
+            AB.config[bar].columnSpacing = val
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarRowDirectionOption(name, bar, order)
+    return {
+        type = "select",
+        name = name or "Row Growth Direction",
+        desc = "The direction in which rows grow.",
+        order = order,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        values = AB.ROW_DIRECTIONS,
+        get = function()
+            return AB.config[bar].rowDirection
+        end,
+        set = function(_, key)
+            AB.config[bar].rowDirection = key
+            AB:UpdateAll()
+        end
+    }
+end
+
+function AB:CreateBarRowSpacingOption(name, bar, order)
+    return {
+        type = "range",
+        name = name or "Row Spacing",
+        desc = "The spacing between each row.",
+        order = order,
+        min = 0,
+        max = 50,
+        step = 1,
+        disabled = function()
+            return not AB.config[bar].detached
+        end,
+        get = function()
+            return AB.config[bar].rowSpacing
+        end,
+        set = function(_, val)
+            AB.config[bar].rowSpacing = val
+            AB:UpdateAll()
+        end
+    }
+end
+
 R:RegisterModuleConfig(AB, {
     enabled = true,
     artwork = {enabled = true, theme = AB.ARTWORK_THEMES.Default},
@@ -43,7 +193,7 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 12,
-        buttonSize = {36, 36},
+        buttonSize = 36,
         columnSpacing = 6,
         rowSpacing = 6
     },
@@ -57,7 +207,7 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 12,
-        buttonSize = {36, 36},
+        buttonSize = 36,
         columnSpacing = 6,
         rowSpacing = 6
     },
@@ -72,7 +222,7 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 12,
-        buttonSize = {36, 36},
+        buttonSize = 36,
         columnSpacing = 6,
         rowSpacing = 6
     },
@@ -85,7 +235,7 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 1,
-        buttonSize = {36, 36},
+        buttonSize = 36,
         columnSpacing = 6,
         rowSpacing = 6
     },
@@ -98,12 +248,13 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 1,
-        buttonSize = {36, 36},
+        buttonSize = 36,
         columnSpacing = 6,
         rowSpacing = 6
     },
     stanceBar = {
         enabled = true,
+        detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 130},
         fader = R.config.faders.onShow,
         frameVisibility = "[overridebar][vehicleui][possessbar] hide; show",
@@ -111,12 +262,13 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 12,
-        buttonSize = {30, 30},
+        buttonSize = 30,
         columnSpacing = 6,
         rowSpacing = 6
     },
     petActionBar = {
         enabled = true,
+        detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 130},
         fader = R.config.faders.onShow,
         frameVisibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide",
@@ -124,7 +276,7 @@ R:RegisterModuleConfig(AB, {
         rowDirection = AB.ROW_DIRECTIONS.Down,
         buttons = 12,
         buttonsPerRow = 12,
-        buttonSize = {30, 30},
+        buttonSize = 30,
         columnSpacing = 6,
         rowSpacing = 6
     },
@@ -240,7 +392,30 @@ R:RegisterModuleOptions(AB, {
                         AB.config.mainMenuBar.enabled = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    order = 3,
+                    get = function()
+                        return AB.config.mainMenuBar.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.mainMenuBar.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "mainMenuBar", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "mainMenuBar", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "mainMenuBar", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "mainMenuBar", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "mainMenuBar", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "mainMenuBar", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "mainMenuBar", 19)
             }
         },
         multiBarBottomLeft = {
@@ -274,7 +449,17 @@ R:RegisterModuleOptions(AB, {
                         AB.config.multiBarBottomLeft.detached = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "multiBarBottomLeft", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "multiBarBottomLeft", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "multiBarBottomLeft", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "multiBarBottomLeft", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "multiBarBottomLeft", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "multiBarBottomLeft", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "multiBarBottomLeft", 19)
             }
         },
         multiBarBottomRight = {
@@ -328,7 +513,17 @@ R:RegisterModuleOptions(AB, {
                         AB.config.multiBarBottomRight.attachedPoint = AB.ATTACHMENT_POINTS[key]
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "multiBarBottomRight", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "multiBarBottomRight", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "multiBarBottomRight", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "multiBarBottomRight", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "multiBarBottomRight", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "multiBarBottomRight", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "multiBarBottomRight", 19)
             }
         },
         multiBarLeft = {
@@ -349,7 +544,17 @@ R:RegisterModuleOptions(AB, {
                         _G.SHOW_MULTI_ACTIONBAR_3 = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "multiBarLeft", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "multiBarLeft", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "multiBarLeft", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "multiBarLeft", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "multiBarLeft", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "multiBarLeft", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "multiBarLeft", 19)
             }
         },
         multiBarRight = {
@@ -370,7 +575,17 @@ R:RegisterModuleOptions(AB, {
                         _G.SHOW_MULTI_ACTIONBAR_4 = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "multiBarRight", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "multiBarRight", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "multiBarRight", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "multiBarRight", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "multiBarRight", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "multiBarRight", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "multiBarRight", 19)
             }
         },
         stanceBar = {
@@ -390,7 +605,30 @@ R:RegisterModuleOptions(AB, {
                         AB.config.stanceBar.enabled = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    order = 3,
+                    get = function()
+                        return AB.config.stanceBar.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.stanceBar.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "stanceBar", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "stanceBar", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "stanceBar", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "stanceBar", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "stanceBar", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "stanceBar", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "stanceBar", 19)
             }
         },
         petActionBar = {
@@ -410,7 +648,30 @@ R:RegisterModuleOptions(AB, {
                         AB.config.petActionBar.enabled = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    order = 3,
+                    get = function()
+                        return AB.config.petActionBar.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.petActionBar.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttons = AB:CreateBarButtonCountOption(nil, "petActionBar", 11),
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "petActionBar", 12),
+                buttonsPerRow = AB:CreateBarButtonsPerRowOption(nil, "petActionBar", 13),
+                linebreak2 = {type = "description", name = "", order = 14},
+                columnDirection = AB:CreateBarColumnDirectionOption(nil, "petActionBar", 15),
+                columnSpacing = AB:CreateBarColumnSpacingOption(nil, "petActionBar", 16),
+                linebreak3 = {type = "description", name = "", order = 17},
+                rowDirection = AB:CreateBarRowDirectionOption(nil, "petActionBar", 18),
+                rowSpacing = AB:CreateBarRowSpacingOption(nil, "petActionBar", 19)
             }
         },
         vehicleExitBar = {

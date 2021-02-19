@@ -220,9 +220,7 @@ function AB:UpdateSpellFlyout(button)
     end
 
     AB:UpdateSpellFlyoutBackground(button)
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleActionButton(button.CurrentAction)
-    end
+    R.Modules.ButtonStyles:StyleActionButton(button.CurrentAction)
 
     if button.count > 0 then
         button:Show()
@@ -388,9 +386,7 @@ function AB:CreateSpellFlyoutChild(button, action, index, previousButton)
 
     actionButton:SetNormalTexture(nil)
     R:FixNormalTextureSize(actionButton)
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleActionButton(actionButton)
-    end
+    R.Modules.ButtonStyles:StyleActionButton(actionButton)
 
     return actionButton
 end
@@ -403,19 +399,7 @@ function AB:UpdateSpellFlyoutChild(button, child)
         end
         child.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(child.spellID)
 
-        if R.Modules.ButtonStyles then
-            R.Modules.ButtonStyles:UpdateActionButton(actionButton)
-        else
-            if child.isUsable then
-                child.icon:SetVertexColor(1.0, 1.0, 1.0)
-            elseif child.notEnoughMana then
-                child.icon:SetVertexColor(0.5, 0.5, 1.0)
-            else
-                child.icon:SetVertexColor(0.4, 0.4, 0.4)
-            end
-
-            child.Count:SetText(child.reagentCount or "")
-        end
+        R.Modules.ButtonStyles:UpdateActionButton(child)
 
         -- update cooldown
         local start, duration, enable, modRate = GetSpellCooldown(child.spellID)

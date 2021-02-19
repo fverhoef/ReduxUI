@@ -24,8 +24,6 @@ function AB:CreateMainMenuBar()
         table.insert(frame.buttons, button)
     end
 
-    AB:UpdateBar(frame)
-
     if _G.ActionBarUpButton then
         _G.ActionBarUpButton:SetParent(frame)
         _G.ActionBarUpButton:ClearAllPoints()
@@ -90,6 +88,8 @@ function AB:CreateMainMenuBar()
     frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Main Action Bar", default.point)
 
+    AB:UpdateBar(frame)
+
     return frame
 end
 
@@ -108,7 +108,7 @@ function AB:UpdateMainMenuBar()
         else
             local isExpBarShown = _G.MainMenuExpBar:IsShown()
             local isRepBarShown = _G.ReputationWatchBar:IsShown()
-    
+
             local offset = 0
             if isExpBarShown and isRepBarShown then
                 offset = 22
@@ -116,12 +116,17 @@ function AB:UpdateMainMenuBar()
                 offset = 10
             end
 
+            config.columnDirection = AB.COLUMN_DIRECTIONS.Right
+            config.rowDirection = AB.ROW_DIRECTIONS.Down
+            config.buttons = 12
+            config.buttonsPerRow = 12
+            config.buttonSize = 36
+            config.columnSpacing = 6
+            config.rowSpacing = 6
+
             frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 8, offset + 4)
         end
         frame.PageNumber:SetText(GetActionBarPage())
-
-        config.columnSpacing = config.detached and config.columnSpacing or 6
-        config.rowSpacing = config.detached and config.rowSpacing or 6
 
         AB:UpdateBar(frame)
 

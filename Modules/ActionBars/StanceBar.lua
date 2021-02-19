@@ -73,6 +73,14 @@ function AB:UpdateStanceBar()
             else
                 frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 40, 5)
             end
+
+            config.columnDirection = AB.COLUMN_DIRECTIONS.Right
+            config.rowDirection = AB.ROW_DIRECTIONS.Down
+            config.buttons = 12
+            config.buttonsPerRow = 12
+            config.buttonSize = 30
+            config.columnSpacing = 6
+            config.rowSpacing = 6
         end
 
         AB:UpdateBar(frame)

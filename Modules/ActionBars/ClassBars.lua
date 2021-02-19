@@ -253,21 +253,20 @@ function AB:UpdateClassBar(bar)
 
     bar:CreateFader(bar.faderConfig, buttonList)
 
+    bar:ClearAllPoints()
     if bar.config.dock == AB.CLASS_BAR_DOCKS.Left then
-        if AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached then
-            bar:ClearAllPoints()
-            if AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached and
-                AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center then
-                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
-            else
-                bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
-            end
+        local leftEnabledAndAttached = AB.config.multiBarBottomLeft.enabled and not AB.config.multiBarBottomLeft.detached
+        local rightEnabledAndAttached = AB.config.multiBarBottomRight.enabled and not AB.config.multiBarBottomRight.detached
+        local rightAttachedToCenter = AB.config.multiBarBottomRight.attachedPoint == AB.ATTACHMENT_POINTS.Center
+
+        if rightEnabledAndAttached and rightAttachedToCenter then
+            bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomRight, "TOPLEFT", 18, 4)
+        elseif leftEnabledAndAttached then
+            bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
         else
-            bar:ClearAllPoints()
-            bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 6)
+            bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 8)
         end
     else
-        bar:ClearAllPoints()
         bar:Point(unpack(bar.config.point))
     end
 end

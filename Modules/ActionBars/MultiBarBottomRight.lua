@@ -53,16 +53,20 @@ function AB:UpdateMultiBarBottomRight()
         else
             if config.attachedPoint == AB.ATTACHMENT_POINTS.Center then
                 frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0,
-                            12 + (leftBarConfig.enabled and not leftBarConfig.detached and leftBarConfig.buttonSize[2] or 0))
+                            12 + (leftBarConfig.enabled and not leftBarConfig.detached and leftBarConfig.buttonSize or 0))
             elseif config.attachedPoint == AB.ATTACHMENT_POINTS.Right then
                 frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "BOTTOMRIGHT", 44, 0)
             end
+
+            config.columnDirection = AB.COLUMN_DIRECTIONS.Right
+            config.rowDirection = AB.ROW_DIRECTIONS.Down
+            config.buttons = 12
+            config.buttonsPerRow = config.attachedPoint == AB.ATTACHMENT_POINTS.Center and 12 or 6
+            config.buttonSize = 36
+            config.columnSpacing = 6
+            config.rowSpacing = 8
         end
 
-        config.buttonsPerRow = config.detached and config.buttonsPerRow or
-                                   (config.attachedPoint == AB.ATTACHMENT_POINTS.Center and 12 or 6)
-        config.columnSpacing = config.detached and config.columnSpacing or 6
-        config.rowSpacing = config.detached and config.rowSpacing or 8
         AB:UpdateBar(frame)
 
         if config.frameVisibility then

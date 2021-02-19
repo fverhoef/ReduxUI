@@ -50,11 +50,16 @@ function AB:UpdateMultiBarBottomLeft()
         if config.detached then
             frame:Point(config.point)
         else
+            config.columnDirection = AB.COLUMN_DIRECTIONS.Right
+            config.rowDirection = AB.ROW_DIRECTIONS.Down
+            config.buttons = 12
+            config.buttonsPerRow = 12
+            config.buttonSize = 36
+            config.columnSpacing = 6
+            config.rowSpacing = 6
+
             frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, 8)
         end
-
-        config.columnSpacing = config.detached and config.columnSpacing or 6
-        config.rowSpacing = config.detached and config.rowSpacing or 6
 
         AB:UpdateBar(frame)
 
