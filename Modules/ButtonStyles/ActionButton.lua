@@ -96,6 +96,10 @@ function BS:UpdateActionButton(button)
     if not button or not button.__styled then
         return
     end
+    if not button.__styled then
+        BS:StyleActionButton(button)
+        return
+    end
 
     if button.checksRange and not button.inRange then
         button.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))

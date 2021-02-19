@@ -10,6 +10,9 @@ CS.realm = GetRealmName()
 CS.sex = UnitSex("player")
 CS.isMale = R.sex == 2
 CS.isFemale = R.sex == 3
+CS.alwaysUpdate = false
+
+CS.STATS_UPDATED = "STATS_UPDATED"
 
 function CS:Initialize()
     CS:RegisterEvent("PLAYER_DAMAGE_DONE_MODS", CS.OnEvent)
@@ -30,12 +33,17 @@ function CS:Initialize()
     CS:RegisterEvent("UNIT_RANGEDDAMAGE", CS.OnEvent)
     CS:RegisterEvent("UNIT_RESISTANCES", CS.OnEvent)
     CS:RegisterEvent("UNIT_STATS", CS.OnEvent)
+
+    CS:Update()
 end
 
 CS.OnEvent = function(event, ...)
+    if not CS.alwaysUpdate then
+        return
+    end
+
     if string.find(event, "UNIT_") then
-        local unitTarget = select(1, ...)
-        if unitTarget == "player" then
+        if select(1, ...) == "player" then
             CS:Update()
         end
     else
@@ -110,6 +118,8 @@ function CS:Update()
     CS.weaponSkill = CS:GetPlayerWeaponSkill() or 0
     CS.melee = CS:GetMelee()
     CS.ranged = CS:GetRanged()
+
+    CS:SendMessage(CS.STATS_UPDATED)
 end
 
 function CS:GetAverageItemLevel()

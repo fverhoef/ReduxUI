@@ -23,7 +23,11 @@ function BS:StyleMicroButton(button)
 end
 
 function BS:UpdateMicroButton(button)
-    if not button or not button.__styled then
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleMicroButton(button)
         return
     end
 end

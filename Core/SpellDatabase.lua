@@ -184,7 +184,8 @@ function SD:ParseDescription(rank, description)
 end
 
 function SD:UpdateDescription(rank)
-    SD:UpdateValues(rank, spellPower, spellDamage)
+    CS:Update()
+    SD:UpdateValues(rank)
 
     rank.description = rank.baseDescription
     if rank.pattern then

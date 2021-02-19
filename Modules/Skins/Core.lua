@@ -20,8 +20,6 @@ function S:Initialize()
 
     S:StyleWorldMapFrame()
 
-    _G.CharacterFrame:HookScript("OnShow", S.UpdatePaperDollFrame)
-
     --R:CreateDragFrame(_G.LootFrame, "Loot Frame", nil, 170, 240)
 end
 

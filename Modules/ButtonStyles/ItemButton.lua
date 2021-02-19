@@ -3,6 +3,7 @@ local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
 BS.itemButtons = {}
+BS.tags = {AuctionBrowse = 1, SendMail = 2}
 
 function BS:StyleItemButton(button)
     if not button then
@@ -29,17 +30,22 @@ function BS:StyleItemButton(button)
     button:CreateBackdrop(R.media.textures.backdrops.button)
     button.Backdrop:SetOutside(3, 3)
 
-    button:SetNormalTexture(BS.config.borders.texture)
-    local normalTexture = button:GetNormalTexture()
-    normalTexture:SetPoint("TOPLEFT", 0, 0)
-    normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+    if string.match(buttonName, "SendMailAttachment") then
+        button.tag = BS.tags.SendMail
+        button:CreateBorder()
+    else
+        button:SetNormalTexture(BS.config.borders.texture)
+        local normalTexture = button:GetNormalTexture()
+        normalTexture:SetPoint("TOPLEFT", 0, 0)
+        normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        normalTexture:SetVertexColor(unpack(BS.config.borders.color))
 
-    button:SetPushedTexture(BS.config.borders.texture)
-    local pushedTexture = button:GetPushedTexture()
-    pushedTexture:SetPoint("TOPLEFT", 0, 0)
-    pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-    pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
+        button:SetPushedTexture(BS.config.borders.texture)
+        local pushedTexture = button:GetPushedTexture()
+        pushedTexture:SetPoint("TOPLEFT", 0, 0)
+        pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
+    end
 
     local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
     if icon then
@@ -75,24 +81,32 @@ function BS:StyleItemButton(button)
 end
 
 function BS:UpdateItemButton(button)
-    if not button or not button.__styled then
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleItemButton(button)
         return
     end
 
-    local normalTexture = button:GetNormalTexture()
-    if normalTexture then
-        local color = R.config.db.profile.borders.color
+    local color = R.config.db.profile.borders.color
 
-        if button.itemIDOrLink then
-            local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
-            if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-                color = R.Modules.Bags.config.colors.questItem
-            elseif itemRarity and itemRarity > 1 then
-                color = {GetItemQualityColor(itemRarity)}
-            end
+    if button.itemIDOrLink then
+        local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
+        if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+            color = R.Modules.Bags.config.colors.questItem
+        elseif itemRarity and itemRarity > 1 then
+            color = {GetItemQualityColor(itemRarity)}
         end
+    end
 
-        normalTexture:SetVertexColor(unpack(color))
+    if button.Border then
+        button.Border:SetVertexColor(unpack(color))
+    else
+        local normalTexture = button:GetNormalTexture()
+        if normalTexture then
+            normalTexture:SetVertexColor(unpack(color))
+        end
     end
 end
 
@@ -144,9 +158,29 @@ function BS:UpdateAllItemButtons()
     end
 end
 
+function BS:SetItemButtonCount(count, abbreviate)
+    if not self then
+        return
+    end
+
+    BS:StyleItemButton(self)
+end
+
 function BS:SetItemButtonQuality(quality, itemIDOrLink, suppressOverlays)
+    if not self then
+        return
+    end
+
     self.quality = quality
     self.itemIDOrLink = itemIDOrLink
+    BS:StyleItemButton(self)
+end
+
+function BS:SetItemButtonTexture(texture)
+    if not self then
+        return
+    end
+
     BS:StyleItemButton(self)
 end
 

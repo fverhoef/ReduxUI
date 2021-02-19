@@ -26,8 +26,11 @@ function BS:Initialize()
 
     if not BS.masque then
         BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
+        BS:SecureHook(nil, "SetItemButtonCount", BS.SetItemButtonCount)
         BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
+        BS:SecureHook(nil, "SetItemButtonTexture", BS.SetItemButtonTexture)
         BS:SecureHook(nil, "SetItemButtonNormalTextureVertexColor", BS.SetItemButtonNormalTextureVertexColor)
+        BS:RegisterEvent("ADDON_LOADED")
         BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)
     end
@@ -38,6 +41,16 @@ function BS:UpdateAll()
     BS:UpdateAllAuraButtons()
     BS:UpdateAllItemButtons()
     BS:UpdateAllMicroButtons()
+end
+
+function BS:ADDON_LOADED(event, addonName)
+    if addonName == "Blizzard_AuctionUI" then
+        for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
+            local button = _G["BrowseButton" .. i .. "Item"]
+            button.tag = BS.tags.AuctionBrowse
+            BS:StyleItemButton(button)
+        end
+    end
 end
 
 function BS:PLAYER_EQUIPMENT_CHANGED(event)

@@ -121,7 +121,22 @@ function S:StylePaperDollFrame()
             CharacterGuildText:SetFormattedText(GUILD_TITLE_TEMPLATE, title, R:Hex(S.config.colors.guild) .. guildName .. "|r")
         end
     end)
+
+    _G.CharacterFrame:HookScript("OnShow", S.CharacterFrame_OnShow)
+    _G.CharacterFrame:HookScript("OnHide", S.CharacterFrame_OnHide)
 end
+
+function S:CharacterFrame_OnShow()
+    CS.alwaysUpdate = true
+    S:RegisterMessage(CS.STATS_UPDATED, S.UpdatePaperDollFrame)
+    S:UpdatePaperDollFrame()
+end
+
+function S:CharacterFrame_OnHide()
+    CS.alwaysUpdate = false
+    S:UnregisterMessage(CS.STATS_UPDATED)
+end
+
 
 function S:CreateCharacterStatsPane()
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPane", PaperDollFrame)

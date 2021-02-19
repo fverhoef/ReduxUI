@@ -71,7 +71,11 @@ function BS:StyleAuraButton(button)
 end
 
 function BS:UpdateAuraButton(button)
-    if not button or not button.__styled then
+    if not button then
+        return
+    end
+    if not button.__styled then
+        BS:StyleAuraButton(button)
         return
     end
 
