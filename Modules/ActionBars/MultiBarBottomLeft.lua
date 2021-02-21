@@ -10,10 +10,10 @@ function AB:CreateMultiBarBottomLeft()
     local framesToDisable = {_G.MultiBarBottomLeft}
     AB:HideBlizzardBar(framesToHide, framesToDisable)
 
-    local frame = CreateFrame("Frame", addonName .. "MultiBarBottomLeft", AB.bars.MainMenuBar, "SecureHandlerStateTemplate")
+    local frame = CreateFrame("Frame", addonName .. "MultiBarBottomLeft", UIParent, "SecureHandlerStateTemplate")
     frame.config = config
     frame:SetSize(506, 36)
-    frame:Point("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 0, -5)
+    frame:Point(unpack(config.point))
     frame.buttons = {}
 
     for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
@@ -49,8 +49,12 @@ function AB:UpdateMultiBarBottomLeft()
 
         frame:ClearAllPoints()
         if config.detached then
+            frame:UnlinkFader(mainMenuBar)
+            frame:SetParent(UIParent)
             frame:Point(config.point)
         else
+            frame:LinkFader(mainMenuBar)
+            frame:SetParent(mainMenuBar)
             frame:Point("BOTTOMLEFT", mainMenuBar, "TOPLEFT", 0, 8)
 
             config.columnDirection = AB.COLUMN_DIRECTIONS.Right

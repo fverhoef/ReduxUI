@@ -61,8 +61,8 @@ function AB:UpdateArtwork()
         artwork.Texture:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 0, offset)
         artwork.Texture:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", 0, offset)
 
-        artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, 0)
-        artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, 0)
+        artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, -1)
+        artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, -1)
 
         local endCapWidth = 128
         local endCapHeight = 76

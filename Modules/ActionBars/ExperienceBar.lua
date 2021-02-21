@@ -13,6 +13,8 @@ function AB:CreateExperienceBar()
 
     _G.MainMenuExpBar:SetParent(frame)
     _G.MainMenuExpBar:SetAllPoints()
+    _G.MainMenuBarExpText:SetParent(_G.MainMenuExpBar)
+    _G.MainMenuBarExpText:SetAllPoints()
 
     AB:UpdateExperienceBarTextures()
 
@@ -28,6 +30,7 @@ function AB:UpdateExperienceBar()
     local artwork = AB.bars.Artwork
 
     if config.enabled then
+        frame:Show()
         frame:LinkFader(artwork)
 
         -- TODO: support detaching

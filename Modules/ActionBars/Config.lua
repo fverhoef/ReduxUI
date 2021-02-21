@@ -184,8 +184,8 @@ R:RegisterModuleConfig(AB, {
         detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 10},
         fader = R.config.faders.onShow,
-        -- frameVisibility = "show",
-        frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide",
+        frameVisibility = "show",
+        --frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide",
         page = {enabled = true},
         experience = {enabled = true},
         reputation = {enabled = true},
@@ -306,8 +306,11 @@ R:RegisterModuleConfig(AB, {
         detached = false,
         attachedPoint = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow,
+        frameVisibility = "show",
         buttonSize = 36,
-        buttonSpacing = 6
+        buttonSpacing = 6,
+        columnSpacing = 6,
+        rowSpacing = 6
     },
     shamanBar = {
         enabled = true,
@@ -315,8 +318,11 @@ R:RegisterModuleConfig(AB, {
         detached = false,
         attachedPoint = AB.CLASS_BAR_DOCKS.Left,
         fader = R.config.faders.OnShow,
+        frameVisibility = "show",
         buttonSize = 36,
-        buttonSpacing = 6
+        buttonSpacing = 6,
+        columnSpacing = 6,
+        rowSpacing = 6
     }
 })
 

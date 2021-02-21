@@ -223,6 +223,7 @@ function AB:UpdateClassBars()
 end
 
 function AB:UpdateClassBar(bar)
+    local mainMenuBar = AB.bars.MainMenuBar
     if bar.config.enabled then
         local visibleIndex = 0
         local lastVisibleButton
@@ -254,12 +255,15 @@ function AB:UpdateClassBar(bar)
         end
 
         bar:CreateFader(bar.faderConfig, buttonList)
+        bar:Show()
+
         if not bar.detached then
-            bar:LinkFader(AB.bars.MainMenuBar)
+            bar:LinkFader(mainMenuBar)
+            bar:SetParent(mainMenuBar)
         else
-            bar:UnlinkFader(AB.bars.MainMenuBar)
+            bar:UnlinkFader(mainMenuBar)
+            bar:SetParent(UIParent)
         end
-        bar:SetShown(bar.detached or not AB.bars.MainMenuBar.faded)
 
         bar:ClearAllPoints()
         if not bar.detached and bar.config.attachedPoint == AB.CLASS_BAR_DOCKS.Left then
@@ -272,14 +276,15 @@ function AB:UpdateClassBar(bar)
             elseif leftEnabledAndAttached then
                 bar:SetPoint("BOTTOMLEFT", AB.bars.MultiBarBottomLeft, "TOPLEFT", 18, 4)
             else
-                bar:SetPoint("BOTTOMLEFT", AB.bars.MainMenuBar, "TOPLEFT", 18, 8)
+                bar:SetPoint("BOTTOMLEFT", mainMenuBar, "TOPLEFT", 18, 8)
             end
         else
             bar:Point(unpack(bar.config.point))
         end
 
     else
-        bar:UnlinkFader(AB.bars.MainMenuBar)
+        bar:UnlinkFader(mainMenuBar)
+        bar:SetParent(UIParent)
         bar:Hide()
     end
 end

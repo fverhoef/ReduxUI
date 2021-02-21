@@ -29,6 +29,7 @@ function AB:UpdateMaxLevelBar()
     local artworkConfig = AB.config.artwork
 
     if config.enabled and artworkConfig.enabled then
+        frame:Show()
         frame:LinkFader(artwork)
 
         AB:UpdateMaxLevelBarTextures()

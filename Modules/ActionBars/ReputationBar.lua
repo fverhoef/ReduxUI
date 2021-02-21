@@ -34,6 +34,7 @@ function AB:UpdateReputationBar()
     local artwork = AB.bars.Artwork
 
     if config.enabled then
+        frame:Show()
         frame:LinkFader(artwork)
 
         -- TODO: support detaching

@@ -81,8 +81,6 @@ function AB:CreateMicroButtonAndBagsBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    frame:CreateFader(config.fader, buttonList)
-
     if R.isClassic then
         _G.MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, _G.MainMenuMicroButton)
         _G.MainMenuMicroButton.PerformanceBar:SetSize(28, 58)
@@ -96,6 +94,7 @@ function AB:CreateMicroButtonAndBagsBar()
     AB:SecureHook("MicroButton_OnEnter", AB.MicroButton_OnEnter)
     AB:MainMenuMicroButton_Update()
 
+    frame:CreateFader(config.fader, buttonList)
     R:CreateDragFrame(frame, "Micro Buttons & Bags Bar", default.point)
 
     return frame
@@ -134,9 +133,10 @@ end
 
 function AB:UpdateMicroButtonAndBagsBar()
     local config = AB.config.microButtonAndBags
+    local frame = AB.bars.MicroButtonAndBagsBar
 
     if config.enabled then
-        AB.bars.MicroButtonAndBagsBar:Show()
+        frame:Show()
 
         if _G.TalentMicroButton and _G.QuestLogMicroButton then
             local widthOffset = 0
@@ -151,15 +151,15 @@ function AB:UpdateMicroButtonAndBagsBar()
                 widthOffset = 38 -- 37
             end
 
-            AB.bars.MicroButtonAndBagsBar:SetSize(298 - widthOffset, 88)
-            AB.bars.MicroButtonAndBagsBar.Texture:SetTexCoord((257 + widthOffset) / 1024, (257 + 286) / 1024, 168 / 255, 255 / 255)
-            AB.bars.MicroButtonAndBagsBar.Texture:SetSize(286 - widthOffset, 88)
+            frame:SetSize(298 - widthOffset, 88)
+            frame.Texture:SetTexCoord((257 + widthOffset) / 1024, (257 + 286) / 1024, 168 / 255, 255 / 255)
+            frame.Texture:SetSize(286 - widthOffset, 88)
         end
 
         if _G.KeyRingButton and not _G.KeyRingButton:IsShown() then
             _G.KeyRingButton:Show()
         end
     else
-        AB.bars.MicroButtonAndBagsBar:Hide()
+        frame:Hide()
     end
 end

@@ -403,12 +403,7 @@ function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1,
         timeToFade = timeToFade or 0.3,
         startAlpha = startAlpha or self:GetAlpha(),
         endAlpha = endAlpha or 0,
-        finishedFunc = function(finishedArg1, finishedArg2, finishedArg3, finishedArg4)
-            self:Hide()
-            if finishedFunc then
-                finishedFunc(finishedArg1, finishedArg2, finishedArg3, finishedArg4)
-            end
-        end,
+        finishedFunc = finishedFunc,
         finishedArg1 = finishedArg1,
         finishedArg2 = finishedArg2,
         finishedArg3 = finishedArg3,
@@ -473,7 +468,7 @@ end
 function R:Fader_OnShow()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.onShow then
-        frame:FadeIn()
+        frame:FadeIn(0.3, 0)
     end
 end
 
