@@ -373,9 +373,20 @@ function R:GetShadowColor()
     return color
 end
 
-function R:FadeIn(timeToFade, startAlpha, endAlpha)
+function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = false
-    UIFrameFadeIn(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 1)
+
+    UIFrameFade(self, {
+        mode = "IN",
+        timeToFade = timeToFade or 0.3,
+        startAlpha = startAlpha or self:GetAlpha(),
+        endAlpha = endAlpha or 1,
+        finishedFunc = finishedFunc,
+        finishedArg1 = finishedArg1,
+        finishedArg2 = finishedArg2,
+        finishedArg3 = finishedArg3,
+        finishedArg4 = finishedArg4
+    })
 
     for child, enabled in pairs(self.linkedFaders or {}) do
         if enabled then
@@ -384,9 +395,25 @@ function R:FadeIn(timeToFade, startAlpha, endAlpha)
     end
 end
 
-function R:FadeOut(timeToFade, startAlpha, endAlpha)
+function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = true
-    UIFrameFadeOut(self, timeToFade or 0.3, startAlpha or self:GetAlpha(), endAlpha or 0)
+
+    UIFrameFade(self, {
+        mode = "OUT",
+        timeToFade = timeToFade or 0.3,
+        startAlpha = startAlpha or self:GetAlpha(),
+        endAlpha = endAlpha or 0,
+        finishedFunc = function(finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+            self:Hide()
+            if finishedFunc then
+                finishedFunc(finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+            end
+        end,
+        finishedArg1 = finishedArg1,
+        finishedArg2 = finishedArg2,
+        finishedArg3 = finishedArg3,
+        finishedArg4 = finishedArg4
+    })
 
     for child, enabled in pairs(self.linkedFaders or {}) do
         if enabled then
@@ -454,7 +481,9 @@ function R:Fader_OnHide()
     local frame = self.faderParent or self
 
     for child, enabled in pairs(self.linkedFaders or {}) do
-        child:FadeOut(0)
+        if enabled then
+            child:FadeOut(0)
+        end
     end
 end
 

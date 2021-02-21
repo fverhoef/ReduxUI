@@ -23,6 +23,7 @@ function AB:CreateReputationBar()
     AB:UpdateReputationBarTextures()
 
     frame:CreateFader(R.config.faders.onShow)
+    frame:Hide()
 
     return frame
 end
@@ -33,14 +34,13 @@ function AB:UpdateReputationBar()
     local artwork = AB.bars.Artwork
 
     if config.enabled then
-        frame:SetShown(not artwork.faded and _G.ReputationWatchBar:IsShown())
         frame:LinkFader(artwork)
 
         -- TODO: support detaching
         -- Blizz's MainMenuTrackingBar_Configure resets the point the bar is attached to; fix that
         _G.ReputationWatchBar:SetParent(frame)
         _G.ReputationWatchBar:SetAllPoints()
-        
+
         _G.ReputationWatchBar.OverlayFrame.Text:Show()
 
         AB:UpdateReputationBarTextures()

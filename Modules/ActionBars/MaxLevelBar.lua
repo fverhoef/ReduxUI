@@ -17,6 +17,7 @@ function AB:CreateMaxLevelBar()
     AB:UpdateMaxLevelBarTextures()
 
     frame:CreateFader(R.config.faders.onShow)
+    frame:Hide()
 
     return frame
 end
@@ -28,7 +29,6 @@ function AB:UpdateMaxLevelBar()
     local artworkConfig = AB.config.artwork
 
     if config.enabled and artworkConfig.enabled then
-        frame:SetShown(not artwork.faded and _G.MainMenuBarMaxLevelBar:IsShown())
         frame:LinkFader(artwork)
 
         AB:UpdateMaxLevelBarTextures()

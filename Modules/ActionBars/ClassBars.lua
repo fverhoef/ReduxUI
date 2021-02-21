@@ -104,7 +104,7 @@ function AB:CreateMageBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    frame:CreateFader(config.fader)
+    frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Mage Bar")
 
     return frame
@@ -207,7 +207,7 @@ function AB:CreateShamanBar()
         RegisterStateDriver(frame, "visibility", config.frameVisibility)
     end
 
-    frame:CreateFader(config.fader)
+    frame:CreateFader(config.fader, frame.buttons)
     R:CreateDragFrame(frame, "Shaman Bar")
 
     return frame
@@ -228,6 +228,7 @@ function AB:UpdateClassBar(bar)
         local lastVisibleButton
         local buttonList = {}
         for i, button in next, bar.buttons do
+            button.config.size = bar.config.buttonSize
             AB:UpdateSpellFlyout(button)
 
             if button:IsVisible() then

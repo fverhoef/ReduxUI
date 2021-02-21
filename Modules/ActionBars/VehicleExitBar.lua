@@ -10,16 +10,16 @@ function AB:CreateVehicleExitBar()
     local frame = CreateFrame("Frame", addonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
     frame.config = config
     frame:SetSize(36, 36)
-    frame:SetPoint("BOTTOMRIGHT", addonName .. "MainMenuBar", "TOPRIGHT", -24, 40)
+    frame:SetPoint("BOTTOM", "UIParent", "BOTTOM", 0, 200)
 
     MainMenuBarVehicleLeaveButton:ClearAllPoints()
     MainMenuBarVehicleLeaveButton:SetParent(frame)
-    MainMenuBarVehicleLeaveButton:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
+    MainMenuBarVehicleLeaveButton:SetInside()
 
     AB:SecureHook(MainMenuBarVehicleLeaveButton, "SetPoint", function(_, _, parent)
         if parent ~= frame then
             MainMenuBarVehicleLeaveButton:ClearAllPoints()
-            MainMenuBarVehicleLeaveButton:SetParent(UIParent)
+            MainMenuBarVehicleLeaveButton:SetParent(frame)
             MainMenuBarVehicleLeaveButton:SetPoint("CENTER", frame, "CENTER")
         end
     end)
@@ -47,8 +47,19 @@ function AB:CreateVehicleExitBar()
     frame:HookScript("OnEvent", HandleEvent)
 
     frame:CreateFader(config.fader, {MainMenuBarVehicleLeaveButton})
-
     R:CreateDragFrame(frame, "Vehicle Exit Bar", default.point)
 
     return frame
+end
+
+function AB:UpdateVehicleExitBar()
+    local config = AB.config.vehicleExitBar
+    local frame = AB.bars.VehicleExitBar
+
+    if config.enabled then
+        frame:Show()
+        frame:Point(unpack(config.point))
+    else
+        frame:Hide()
+    end
 end

@@ -17,6 +17,7 @@ function AB:CreateExperienceBar()
     AB:UpdateExperienceBarTextures()
 
     frame:CreateFader(R.config.faders.onShow)
+    frame:Hide()
 
     return frame
 end
@@ -27,7 +28,6 @@ function AB:UpdateExperienceBar()
     local artwork = AB.bars.Artwork
 
     if config.enabled then
-        frame:SetShown(not artwork.faded and _G.MainMenuExpBar:IsShown())
         frame:LinkFader(artwork)
 
         -- TODO: support detaching
@@ -40,8 +40,6 @@ function AB:UpdateExperienceBar()
         end
 
         _G.MainMenuExpBar:SetAllPoints()
-        
-        _G.MainMenuExpBar.OverlayFrame.Text:Show()
 
         AB:UpdateExperienceBarTextures()
     else

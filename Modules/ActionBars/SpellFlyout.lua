@@ -22,12 +22,10 @@ function AB:CreateSpellFlyout(name, parent, config)
     button.actions = config.actions
     button.defaultAction = defaultAction
     button.showOnlyMaxRank = config.showOnlyMaxRank or false
-    button.size = config.size
-    button.childSize = button.size - 8
+    button.childSize = button.config.size - 8
     button.direction = config.direction
     button.childButtons = {}
-    button:EnableMouse(true)
-    button:SetSize(button.size, button.size)
+    button:SetSize(button.config.size, button.config.size)
     button:SetFrameStrata("MEDIUM")
     button:SetFrameLevel(1)
 
@@ -60,7 +58,7 @@ function AB:CreateSpellFlyout(name, parent, config)
                                        "SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate, SecureActionButtonTemplate, ActionButtonTemplate")
     button.CurrentAction:EnableMouse(true)
     button.CurrentAction:SetPoint("BOTTOM", button, "BOTTOM", 0, 0)
-    button.CurrentAction:SetSize(button.size, button.size)
+    button.CurrentAction:SetSize(button.config.size, button.config.size)
     button.CurrentAction:SetFrameLevel(10)
     button.CurrentAction:SetAttribute("index", 0)
     button.CurrentAction:SetAttribute("type", "spell")
@@ -114,21 +112,21 @@ function AB:CreateSpellFlyout(name, parent, config)
     button.FlyoutBackground.End:SetTexture([[Interface\Buttons\ActionBarFlyoutButton]])
     button.FlyoutBackground.End:SetTexCoord(0.01562500, 0.59375000, 0.74218750, 0.91406250)
     button.FlyoutBackground.End:SetVertexColor(0.5, 0.5, 0.5, 1)
-    button.FlyoutBackground.End:SetSize(button.size, 22)
+    button.FlyoutBackground.End:SetSize(button.config.size, 22)
     button.FlyoutBackground.End:Hide()
 
     button.FlyoutBackground.Vertical = button.FlyoutBackground:CreateTexture(nil, "BACKGROUND")
     button.FlyoutBackground.Vertical:SetTexture([[Interface\Buttons\ActionBarFlyoutButton-FlyoutMid]])
     button.FlyoutBackground.Vertical:SetTexCoord(0, 0.578125, 0, 1)
     button.FlyoutBackground.Vertical:SetVertexColor(0.5, 0.5, 0.5, 1)
-    button.FlyoutBackground.Vertical:SetSize(button.size, button.size)
+    button.FlyoutBackground.Vertical:SetSize(button.config.size, button.config.size)
     button.FlyoutBackground.Vertical:Hide()
 
     button.FlyoutBackground.Horizontal = button.FlyoutBackground:CreateTexture(nil, "BACKGROUND")
     button.FlyoutBackground.Horizontal:SetTexture([[Interface\Buttons\ActionBarFlyoutButton-FlyoutMidLeft]])
     button.FlyoutBackground.Horizontal:SetTexCoord(0, 1, 0, 0.578125)
     button.FlyoutBackground.Horizontal:SetVertexColor(0.5, 0.5, 0.5, 1)
-    button.FlyoutBackground.Horizontal:SetSize(button.size, button.size)
+    button.FlyoutBackground.Horizontal:SetSize(button.config.size, button.config.size)
     button.FlyoutBackground.Horizontal:Hide()
 
     AB:UpdateSpellFlyout(button)
@@ -148,9 +146,6 @@ function AB:CreateSpellFlyout(name, parent, config)
 
     button:SetScript("OnEvent", function(self, event)
         AB:UpdateSpellFlyout(button)
-        for i, child in next, button.childButtons do
-            AB:UpdateSpellFlyoutChild(button, child)
-        end
     end)
 
     return button
@@ -160,6 +155,9 @@ function AB:UpdateSpellFlyout(button)
     local actions = button.actions
     local defaultAction = button.defaultAction
 
+    -- update size
+    button.childSize = button.config.size - 8
+    button:SetSize(button.config.size, button.config.size)
     button.isOpen = button.CurrentAction:GetAttribute("open") == 1
 
     if not InCombatLockdown() then
@@ -226,6 +224,10 @@ function AB:UpdateSpellFlyout(button)
         button:Show()
     else
         button:Hide()
+    end
+
+    for i, child in next, button.childButtons do
+        AB:UpdateSpellFlyoutChild(button, child)
     end
 end
 
@@ -303,9 +305,9 @@ function AB:UpdateSpellFlyoutBackground(button)
         button.FlyoutBackground:SetHeight((button.childSize + SPELLFLYOUT_DEFAULT_SPACING) * button.count -
                                               SPELLFLYOUT_DEFAULT_SPACING + SPELLFLYOUT_INITIAL_SPACING +
                                               SPELLFLYOUT_FINAL_SPACING)
-        button.FlyoutBackground:SetWidth(button.size - 3)
+        button.FlyoutBackground:SetWidth(button.config.size - 3)
     else
-        button.FlyoutBackground:SetHeight(button.size - 3)
+        button.FlyoutBackground:SetHeight(button.config.size - 3)
         button.FlyoutBackground:SetWidth((button.childSize + SPELLFLYOUT_DEFAULT_SPACING) * button.count -
                                              SPELLFLYOUT_DEFAULT_SPACING + SPELLFLYOUT_INITIAL_SPACING + SPELLFLYOUT_FINAL_SPACING)
     end
@@ -392,6 +394,12 @@ function AB:CreateSpellFlyoutChild(button, action, index, previousButton)
 end
 
 function AB:UpdateSpellFlyoutChild(button, child)
+    if child == button.CurrentAction then
+        child:SetSize(button.config.size, button.config.size)
+    else
+        child:SetSize(button.childSize, button.childSize)
+    end
+
     if child.spellID then
         child.isUsable, child.notEnoughMana = IsUsableSpell(child.spellID)
         if child.isUsable and UnitOnTaxi("player") then

@@ -48,7 +48,7 @@ function AB:CreateBarButtonCountOption(name, bar, order)
     }
 end
 
-function AB:CreateBarButtonSizeOption(name, bar, order)
+function AB:CreateBarButtonSizeOption(name, bar, order, alwaysEnabled)
     return {
         type = "range",
         name = name or "Button Size",
@@ -58,7 +58,7 @@ function AB:CreateBarButtonSizeOption(name, bar, order)
         max = 50,
         step = 1,
         disabled = function()
-            return not AB.config[bar].detached
+            return not AB.config[bar].detached and not alwaysEnabled
         end,
         get = function()
             return AB.config[bar].buttonSize
@@ -184,7 +184,7 @@ R:RegisterModuleConfig(AB, {
         detached = false,
         point = {"BOTTOM", "BOTTOM", 0, 10},
         fader = R.config.faders.onShow,
-        --frameVisibility = "show",
+        -- frameVisibility = "show",
         frameVisibility = "[combat][mod:shift][@target,exists,nodead][@vehicle,exists][overridebar][shapeshift][vehicleui][possessbar] show; hide",
         page = {enabled = true},
         experience = {enabled = true},
@@ -280,7 +280,7 @@ R:RegisterModuleConfig(AB, {
         columnSpacing = 6,
         rowSpacing = 6
     },
-    vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 130}, fader = R.config.faders.onShow},
+    vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 200}, fader = R.config.faders.onShow},
     experienceBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},
     reputationBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 20}, fader = R.config.faders.onShow},
     maxLevelBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow},
@@ -303,20 +303,20 @@ R:RegisterModuleConfig(AB, {
     mageBar = {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
-        buttonSize = 36,
-        buttonSpacing = 6,
         detached = false,
         attachedPoint = AB.CLASS_BAR_DOCKS.Left,
-        fader = R.config.faders.OnShow
+        fader = R.config.faders.OnShow,
+        buttonSize = 36,
+        buttonSpacing = 6
     },
     shamanBar = {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
-        buttonSize = 36,
-        buttonSpacing = 6,
         detached = false,
         attachedPoint = AB.CLASS_BAR_DOCKS.Left,
-        fader = R.config.faders.OnShow
+        fader = R.config.faders.OnShow,
+        buttonSize = 36,
+        buttonSpacing = 6
     }
 })
 
@@ -796,7 +796,43 @@ R:RegisterModuleOptions(AB, {
                         AB.config.mageBar.enabled = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    desc = "Whether to detach this action bar from the action bar artwork.",
+                    order = 3,
+                    get = function()
+                        return AB.config.mageBar.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.mageBar.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                attachedPoint = {
+                    type = "select",
+                    name = "Attach To",
+                    order = 4,
+                    values = AB.CLASS_BAR_DOCKS,
+                    disabled = function()
+                        return AB.config.mageBar.detached
+                    end,
+                    get = function()
+                        for key, val in pairs(AB.CLASS_BAR_DOCKS) do
+                            if AB.config.mageBar.attachedPoint == val then
+                                return val
+                            end
+                        end
+                    end,
+                    set = function(_, key)
+                        AB.config.mageBar.attachedPoint = AB.CLASS_BAR_DOCKS[key]
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "mageBar", 12, true)
             }
         },
         shamanBar = {
@@ -816,7 +852,43 @@ R:RegisterModuleOptions(AB, {
                         AB.config.shamanBar.enabled = val
                         AB:UpdateAll()
                     end
-                }
+                },
+                linebreak = {type = "description", name = "", order = 2},
+                detached = {
+                    type = "toggle",
+                    name = "Detached",
+                    desc = "Whether to detach this action bar from the action bar artwork.",
+                    order = 3,
+                    get = function()
+                        return AB.config.shamanBar.detached
+                    end,
+                    set = function(_, val)
+                        AB.config.shamanBar.detached = val
+                        AB:UpdateAll()
+                    end
+                },
+                attachedPoint = {
+                    type = "select",
+                    name = "Attach To",
+                    order = 4,
+                    values = AB.CLASS_BAR_DOCKS,
+                    disabled = function()
+                        return AB.config.shamanBar.detached
+                    end,
+                    get = function()
+                        for key, val in pairs(AB.CLASS_BAR_DOCKS) do
+                            if AB.config.shamanBar.attachedPoint == val then
+                                return val
+                            end
+                        end
+                    end,
+                    set = function(_, key)
+                        AB.config.shamanBar.attachedPoint = AB.CLASS_BAR_DOCKS[key]
+                        AB:UpdateAll()
+                    end
+                },
+                linebreak1 = {type = "description", name = "", order = 10},
+                buttonSize = AB:CreateBarButtonSizeOption(nil, "shamanBar", 12, true)
             }
         }
     }
