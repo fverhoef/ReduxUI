@@ -27,33 +27,61 @@ function BS:StyleItemButton(button)
     end
 
     button:CreateShadow()
-    button:CreateBackdrop(R.media.textures.backdrops.button)
-    button.Backdrop:SetOutside(3, 3)
-
-    if string.match(buttonName, "SendMailAttachment") then
-        button.tag = BS.tags.SendMail
-        button:CreateBorder()
-    else
-        button:SetNormalTexture(BS.config.borders.texture)
-        local normalTexture = button:GetNormalTexture()
-        normalTexture:SetPoint("TOPLEFT", 0, 0)
-        normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-        normalTexture:SetVertexColor(unpack(BS.config.borders.color))
-
-        button:SetPushedTexture(BS.config.borders.texture)
-        local pushedTexture = button:GetPushedTexture()
-        pushedTexture:SetPoint("TOPLEFT", 0, 0)
-        pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-        pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
-    end
 
     local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
-    if icon then
-        icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        icon:SetInside(button, 3, 3)
+    local iconBorder = _G[buttonName .. "IconBorder"] or button.IconBorder
+    local nameFrame = _G[buttonName .. "NameFrame"] or button.NameFrame
+    local count = _G[buttonName .. "Count"]
+    local stock = _G[buttonName .. "Stock"]
+
+    local isLargeItemButton = nameFrame ~= nil
+    if isLargeItemButton then
+        button:CreateBorder(4, BS.config.borders.texture)
+        button:CreateBackdrop()
+        button.Backdrop:SetInside(5, 5)
+        nameFrame:SetTexture(nil)
+    else
+        button:CreateBackdrop(R.media.textures.backdrops.button)
+        button.Backdrop:SetOutside(3, 3)
+
+        if string.match(buttonName, "SendMailAttachment") then
+            button.tag = BS.tags.SendMail
+            button:CreateBorder()
+        else
+            button:SetNormalTexture(BS.config.borders.texture)
+            local normalTexture = button:GetNormalTexture()
+            normalTexture:SetPoint("TOPLEFT", 0, 0)
+            normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+            normalTexture:SetVertexColor(unpack(BS.config.borders.color))
+
+            button:SetPushedTexture(BS.config.borders.texture)
+            local pushedTexture = button:GetPushedTexture()
+            pushedTexture:SetPoint("TOPLEFT", 0, 0)
+            pushedTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+            pushedTexture:SetVertexColor(unpack(BS.config.borders.pushedColor))
+        end
     end
 
-    local iconBorder = _G[buttonName .. "IconBorder"] or button.IconBorder
+    if icon then
+        icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+
+        if isLargeItemButton then
+            icon:SetPoint("TOPLEFT", 3, -3)
+            icon:SetSize(icon:GetWidth() - 3, icon:GetHeight() - 3)
+
+            -- TODO: support only having a border around the icon of large item buttons
+            if TODO then
+                icon.Container = CreateFrame("Frame", nil, button)
+                icon.Container:SetAllPoints(icon)
+                icon.Container:CreateBorder()
+                icon.Container:SetBorderPadding(1)
+                button.Border = icon.Container.Border
+            end
+        else
+            icon:SetInside(button, 3, 3)
+        end
+    end
+
     if iconBorder then
         iconBorder:Hide()
     end
@@ -62,13 +90,11 @@ function BS:StyleItemButton(button)
     overlay:SetAllPoints()
     overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
-    local count = _G[buttonName .. "Count"]
     if count then
         count:SetParent(overlay)
         count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    local stock = _G[buttonName .. "Stock"]
     if stock then
         stock:SetParent(overlay)
         stock:SetFont(config.font, config.fontSize, config.fontOutline)
