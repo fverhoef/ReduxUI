@@ -61,13 +61,14 @@ function AB:UpdateArtwork()
         artwork.Texture:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 0, offset)
         artwork.Texture:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", 0, offset)
 
-        artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, -1)
-        artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, -1)
+        artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 34, -1)
+        artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -34, -1)
 
-        local endCapWidth, endCapHeight
+        local endCapWidth, endCapHeight, endCapScale
         if config.theme == AB.ARTWORK_THEMES.Default then
             endCapWidth = 128
             endCapHeight = 76
+            endCapScale = 1
 
             artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
             if rightBarConfig.enabled and not rightBarConfig.detached then
@@ -80,15 +81,15 @@ function AB:UpdateArtwork()
 
             artwork.LeftEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
             artwork.LeftEndCap:SetTexCoord(115 / 1024, (115 + endCapWidth) / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.LeftEndCap:SetSize(endCapWidth, endCapHeight)
+            artwork.LeftEndCap:SetSize(endCapScale * endCapWidth, endCapScale * endCapHeight)
 
             artwork.RightEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
             artwork.RightEndCap:SetTexCoord((115 + endCapWidth) / 1024, 115 / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.RightEndCap:SetSize(endCapWidth, endCapHeight)
+            artwork.RightEndCap:SetSize(endCapScale * endCapWidth, endCapScale * endCapHeight)
         else
             endCapWidth = 128
             endCapHeight = 105
-            local endCapScale = 0.85
+            endCapScale = 0.85
 
             local texture = R.media.textures.actionBars["mainMenuBar_" .. config.theme]
             if config.theme == AB.ARTWORK_THEMES.Faction then

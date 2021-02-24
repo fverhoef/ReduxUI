@@ -12,21 +12,16 @@ function AB:CreateVehicleExitBar()
     frame:SetSize(36, 36)
     frame:SetPoint("BOTTOM", "UIParent", "BOTTOM", 0, 200)
 
-    MainMenuBarVehicleLeaveButton:ClearAllPoints()
-    MainMenuBarVehicleLeaveButton:SetParent(frame)
-    MainMenuBarVehicleLeaveButton:SetInside()
+    _G.MainMenuBarVehicleLeaveButton:ClearAllPoints()
+    _G.MainMenuBarVehicleLeaveButton:SetParent(frame)
+    _G.MainMenuBarVehicleLeaveButton:SetInside()
 
-    AB:SecureHook(MainMenuBarVehicleLeaveButton, "SetPoint", function(_, _, parent)
+    AB:SecureHook(_G.MainMenuBarVehicleLeaveButton, "SetPoint", function(_, _, parent)
         if parent ~= frame then
-            MainMenuBarVehicleLeaveButton:ClearAllPoints()
-            MainMenuBarVehicleLeaveButton:SetParent(frame)
-            MainMenuBarVehicleLeaveButton:SetPoint("CENTER", frame, "CENTER")
-        end
-    end)
-
-    AB:SecureHook(MainMenuBarVehicleLeaveButton, "SetHighlightTexture", function(btn, tex)
-        if tex ~= btn.hover then
-            MainMenuBarVehicleLeaveButton:SetHighlightTexture(btn.hover)
+            _G.MainMenuBarVehicleLeaveButton:ClearAllPoints()
+            _G.MainMenuBarVehicleLeaveButton:SetParent(frame)
+            _G.MainMenuBarVehicleLeaveButton:SetInside()
+            _G.MainMenuBarVehicleLeaveButton:SetScale(1)
         end
     end)
 
@@ -38,15 +33,15 @@ function AB:CreateVehicleExitBar()
         end
         if UnitOnTaxi("player") then
             frame:Show()
-            MainMenuBarVehicleLeaveButton:Show()
+            _G.MainMenuBarVehicleLeaveButton:Show()
         else
             frame:Hide()
-            MainMenuBarVehicleLeaveButton:Hide()
+            _G.MainMenuBarVehicleLeaveButton:Hide()
         end
     end
     frame:HookScript("OnEvent", HandleEvent)
 
-    frame:CreateFader(config.fader, {MainMenuBarVehicleLeaveButton})
+    frame:CreateFader(config.fader, {_G.MainMenuBarVehicleLeaveButton})
     R:CreateDragFrame(frame, "Vehicle Exit Bar", default.point)
 
     return frame

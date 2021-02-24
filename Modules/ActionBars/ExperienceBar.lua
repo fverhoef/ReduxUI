@@ -36,8 +36,8 @@ function AB:UpdateExperienceBar()
 
         -- TODO: support detaching
         if _G.ReputationWatchBar:IsShown() then
-            frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 3, 0)
-            frame:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", -3, 0)
+            frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 3, 11)
+            frame:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", -3, 11)
         else
             frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 3, 0)
             frame:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", -3, 0)

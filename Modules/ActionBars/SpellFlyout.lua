@@ -407,6 +407,10 @@ function AB:UpdateSpellFlyoutChild(button, child)
         end
         child.reagentCount = R.Libs.ClassicSpellActionCount:GetSpellReagentCount(child.spellID)
 
+        if child.reagentCount ~= nil then
+            child.Count:SetText(child.reagentCount)
+        end
+
         R.Modules.ButtonStyles:UpdateActionButton(child)
 
         -- update cooldown
