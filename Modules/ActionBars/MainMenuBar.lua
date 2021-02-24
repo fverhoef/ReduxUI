@@ -27,7 +27,7 @@ function AB:CreateMainMenuBar()
     if _G.ActionBarUpButton then
         _G.ActionBarUpButton:SetParent(frame)
         _G.ActionBarUpButton:ClearAllPoints()
-        _G.ActionBarUpButton:SetPoint("LEFT", "ActionButton12", "RIGHT", 0, 9)
+        _G.ActionBarUpButton:SetPoint("LEFT", "ActionButton12", "RIGHT", 0, 7)
     end
 
     if _G.ActionBarDownButton then
@@ -41,7 +41,7 @@ function AB:CreateMainMenuBar()
     frame.PageNumber:SetJustifyH("CENTER")
     frame.PageNumber:SetText(GetActionBarPage())
     frame.PageNumber:SetSize(20, 20)
-    frame.PageNumber:SetPoint("LEFT", "ActionButton12", "RIGHT", 25, 0)
+    frame.PageNumber:SetPoint("LEFT", "ActionButton12", "RIGHT", 25, -2)
 
     -- fix the button grid for actionbar1
     local function UpdateGridVisibility()

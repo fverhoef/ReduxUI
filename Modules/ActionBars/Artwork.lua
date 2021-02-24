@@ -11,7 +11,7 @@ function AB:CreateArtwork()
     artwork.config = config
 
     artwork.Texture = artwork:CreateTexture("ARTWORK", 0)
-    artwork.Texture:SetSize(552, 51)
+    artwork.Texture:SetSize(552, 45)
     artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
     artwork.Texture:SetAllPoints()
 
@@ -35,7 +35,7 @@ function AB:UpdateArtwork()
 
     if config.enabled then
         artwork:LinkFader(AB.bars.MainMenuBar)
-        
+
         if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
             artwork:SetWidth(806)
         else
@@ -64,9 +64,11 @@ function AB:UpdateArtwork()
         artwork.LeftEndCap:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMLEFT", 32, -1)
         artwork.RightEndCap:SetPoint("BOTTOMLEFT", artwork, "BOTTOMRIGHT", -32, -1)
 
-        local endCapWidth = 128
-        local endCapHeight = 76
+        local endCapWidth, endCapHeight
         if config.theme == AB.ARTWORK_THEMES.Default then
+            endCapWidth = 128
+            endCapHeight = 76
+
             artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
             if rightBarConfig.enabled and not rightBarConfig.detached then
                 artwork.Texture:SetTexCoord(113 / 1024, (113 + 806) / 1024, 115 / 255, 165 / 255)
@@ -78,12 +80,16 @@ function AB:UpdateArtwork()
 
             artwork.LeftEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
             artwork.LeftEndCap:SetTexCoord(115 / 1024, (115 + endCapWidth) / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.LeftEndCap:SetSize(endCapWidth, 76)
+            artwork.LeftEndCap:SetSize(endCapWidth, endCapHeight)
 
             artwork.RightEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
             artwork.RightEndCap:SetTexCoord((115 + endCapWidth) / 1024, 115 / 1024, 168 / 255, (168 + endCapHeight) / 255)
-            artwork.RightEndCap:SetSize(endCapWidth, 76)
+            artwork.RightEndCap:SetSize(endCapWidth, endCapHeight)
         else
+            endCapWidth = 128
+            endCapHeight = 105
+            local endCapScale = 0.85
+
             local texture = R.media.textures.actionBars["mainMenuBar_" .. config.theme]
             if config.theme == AB.ARTWORK_THEMES.Faction then
                 if UnitFactionGroup("player") == "Horde" then
@@ -103,19 +109,19 @@ function AB:UpdateArtwork()
             artwork.TopEndCap:SetHeight(16)
             artwork.TopEndCap:SetWidth(artwork:GetWidth())
             artwork.TopEndCap:SetPoint("TOPLEFT", artwork.LeftEndCap, "TOPRIGHT", -30,
-                                       (isExpBarShown and isRepBarShown and -25) or -38)
+                                       endCapScale * ((isExpBarShown and isRepBarShown and -15) or -28))
             artwork.TopEndCap:SetPoint("TOPRIGHT", artwork.RightEndCap, "TOPLEFT", 30,
-                                       (isExpBarShown and isRepBarShown and -25) or -38)
+                                       endCapScale * ((isExpBarShown and isRepBarShown and -15) or -28))
             artwork.TopEndCap:SetDrawLayer("ARTWORK", 1)
 
             artwork.LeftEndCap:SetTexture(texture)
             artwork.LeftEndCap:SetTexCoord(0 / 512, 176 / 512, 365 / 512, 510 / 512)
-            artwork.LeftEndCap:SetSize(endCapWidth, 105)
+            artwork.LeftEndCap:SetSize(endCapScale * endCapWidth, endCapScale * endCapHeight)
             artwork.LeftEndCap:SetDrawLayer("ARTWORK", 2)
 
             artwork.RightEndCap:SetTexture(texture)
             artwork.RightEndCap:SetTexCoord(176 / 512, 0 / 512, 365 / 512, 510 / 512)
-            artwork.RightEndCap:SetSize(endCapWidth, 105)
+            artwork.RightEndCap:SetSize(endCapScale * endCapWidth, endCapScale * endCapHeight)
             artwork.RightEndCap:SetDrawLayer("ARTWORK", 2)
         end
     else

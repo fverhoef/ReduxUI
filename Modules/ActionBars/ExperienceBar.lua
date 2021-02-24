@@ -15,6 +15,7 @@ function AB:CreateExperienceBar()
     _G.MainMenuExpBar:SetAllPoints()
     _G.MainMenuBarExpText:SetParent(_G.MainMenuExpBar)
     _G.MainMenuBarExpText:SetAllPoints()
+    _G.MainMenuBarExpText:Show()
 
     AB:UpdateExperienceBarTextures()
 

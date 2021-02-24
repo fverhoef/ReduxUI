@@ -48,7 +48,8 @@ R:RegisterModuleConfig(TT, {
     showItemLevel = true,
     showItemCount = true,
     showVendorPrice = true,
-    modifySpellDamage = true
+    modifySpellDamage = true,
+    showNextRank = true
 })
 
 R:RegisterModuleOptions(TT, {
@@ -176,6 +177,20 @@ R:RegisterModuleOptions(TT, {
             end,
             set = function(_, val)
                 TT.config.modifySpellDamage = val
+            end
+        },
+        showNextRank = {
+            type = "toggle",
+            name = "Show Next Rank",
+            desc = "When enabled, spell tooltips will show at what level the next rank of that spell is available.",
+            order = 18,
+            width = "full",
+            hidden = R.isRetail,
+            get = function()
+                return TT.config.showNextRank
+            end,
+            set = function(_, val)
+                TT.config.showNextRank = val
             end
         },
         lineBreak2 = {type = "header", name = "", order = 20},

@@ -37,12 +37,10 @@ function BS:StyleItemButton(button)
     local isLargeItemButton = nameFrame ~= nil
     if isLargeItemButton then
         button:CreateBorder(4, BS.config.borders.texture)
-        button:CreateBackdrop()
-        button.Backdrop:SetInside(5, 5)
+        button:CreateBackdrop(nil, nil, nil, 3, 3)
         nameFrame:SetTexture(nil)
     else
-        button:CreateBackdrop(R.media.textures.backdrops.button)
-        button.Backdrop:SetOutside(3, 3)
+        button:CreateBackdrop(R.media.textures.backdrops.button, nil, nil, 3, 3)
 
         if string.match(buttonName, "SendMailAttachment") then
             button.tag = BS.tags.SendMail
