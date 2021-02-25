@@ -823,7 +823,6 @@ SD.Spells = {
         ["Arcane Intellect"] = {
             type = SD.Types.Magic,
             school = SD.Schools.Arcane,
-            tag = SD.Tags.Armor,
             coefficient = 0,
             ranks = {
                 {id = 1459, level = 1, castTime = 1.5},
@@ -836,7 +835,6 @@ SD.Spells = {
         ["Arcane Brilliance"] = {
             type = SD.Types.Magic,
             school = SD.Schools.Arcane,
-            tag = SD.Tags.Armor,
             coefficient = 0,
             ranks = {
                 {id = 23028, level = 56, castTime = 1.5}
@@ -845,7 +843,6 @@ SD.Spells = {
         ["Amplify Magic"] = {
             type = SD.Types.Magic,
             school = SD.Schools.Arcane,
-            tag = SD.Tags.Armor,
             coefficient = 0,
             ranks = {
                 {id = 1008, level = 18, castTime = 1.5},
@@ -857,7 +854,6 @@ SD.Spells = {
         ["Dampen Magic"] = {
             type = SD.Types.Magic,
             school = SD.Schools.Arcane,
-            tag = SD.Tags.Armor,
             coefficient = 0,
             ranks = {
                 {id = 604, level = 12, castTime = 1.5},

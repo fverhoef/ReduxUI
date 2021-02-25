@@ -2181,7 +2181,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {95, 30},
         scale = 1,
-        point = {"TOPRIGHT", addonName .. "Target", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPLEFT", "UIParent", "BOTTOM", 280, 240},
         frameLevel = 20,
         health = {
             enabled = true,
@@ -3471,7 +3471,7 @@ R:RegisterModuleConfig(UF, {
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 25,
+            iconSize = 32,
             spacing = 2,
             numColumns = 5,
             showDuration = true,
@@ -3602,7 +3602,33 @@ R:RegisterModuleOptions(UF, {
             }
         },
         lineBreak2 = {type = "header", name = "", order = 4},
-        fonts = {type = "group", name = "Fonts", order = 6, inline = true, args = {}},
+        fonts = {
+            type = "group",
+            name = "Fonts",
+            order = 5,
+            inline = true,
+            args = {
+                font = {
+                    name = "Default Font Family",
+                    type = "select",
+                    desc = "The default font family for unit frame texts.",
+                    order = 1,
+                    dialogControl = "LSM30_Font",
+                    values = R.Libs.SharedMedia:HashTable("font"),
+                    get = function()
+                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
+                            if UF.config.font == font then
+                                return key
+                            end
+                        end
+                    end,
+                    set = function(_, key)
+                        UF.config.font = R.Libs.SharedMedia:Fetch("font", key)
+                        UF:UpdateAll()
+                    end
+                }
+            }
+        },
         statusbarTextures = {
             type = "group",
             name = "Status Bar Textures",

@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local BS = R.Modules.ButtonStyles
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
@@ -95,7 +96,8 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
             button.cd:Hide()
         end
         if self.__owner and self.__owner.config then
-            button.cd:SetHideCountdownNumbers(not self.__owner.config.auras.showDuration)
+            local hideDuration = not self.__owner.config.auras.showDuration or (button:GetWidth() < (BS.config.auras.minSizeToShowDuration or 32))
+            button.cd:SetHideCountdownNumbers(hideDuration)
         end
     end
 
