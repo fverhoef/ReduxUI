@@ -1871,6 +1871,165 @@ function UF:CreateUnitIndicatorsOption(unit, order, inline, name)
     return indicators
 end
 
+function UF:CreateUnitAurasOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Auras",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].auras.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "description", name = "", order = 2},
+            iconSize = {
+                type = "range",
+                name = "Icon Size",
+                desc = "The size of the aura icons.",
+                order = 10,
+                min = 10,
+                softMax = 50,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras.iconSize
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.iconSize = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            spacing = {
+                type = "range",
+                name = "Spacing",
+                desc = "The spacing between auras.",
+                order = 11,
+                min = 0,
+                softMax = 30,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras.spacing
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.spacing = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            numColumns = {
+                type = "range",
+                name = "Number of Columns",
+                desc = "The number of columns.",
+                order = 12,
+                min = 1,
+                softMax = 32,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras.numColumns
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.numColumns = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak2 = {type = "description", name = "", order = 20},
+            showDuration = {
+                type = "toggle",
+                name = "Show Duration",
+                desc = "Whether to show duration numbers on auras.",
+                order = 21,
+                get = function()
+                    return UF.config[unit].auras.showDuration
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.showDuration = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            onlyShowPlayer = {
+                type = "toggle",
+                name = "Only Show Player",
+                desc = "Whether to only show auras cast by the player.",
+                order = 22,
+                get = function()
+                    return UF.config[unit].auras.onlyShowPlayer
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.onlyShowPlayer = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak3 = {type = "header", name = "Buffs", order = 30},
+            numBuffs = {
+                type = "range",
+                name = "Number of Buffs",
+                desc = "The number of buffs to show.",
+                order = 31,
+                min = 0,
+                softMax = R.isRetail and 40 or 32,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras.numBuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.numBuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            onlyShowPlayerBuffs = {
+                type = "toggle",
+                name = "Only Show Player Buffs",
+                desc = "Whether to only show buffs cast by the player.",
+                order = 32,
+                get = function()
+                    return UF.config[unit].auras.onlyShowPlayerBuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.onlyShowPlayerBuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak4 = {type = "header", name = "Debuffs", order = 40},
+            numDebuffs = {
+                type = "range",
+                name = "Number of Debuffs",
+                desc = "The number of debuffs to show.",
+                order = 41,
+                min = 0,
+                softMax = R.isRetail and 40 or 16,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras.numDebuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.numDebuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            onlyShowPlayerDebuffs = {
+                type = "toggle",
+                name = "Only Show Player Debuffs",
+                desc = "Whether to only show debuffs cast by the player.",
+                order = 42,
+                get = function()
+                    return UF.config[unit].auras.onlyShowPlayerDebuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras.onlyShowPlayerDebuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+        }
+    }
+end
+
 R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -2010,7 +2169,7 @@ R:RegisterModuleConfig(UF, {
             numColumns = 5,
             showDuration = true,
             onlyShowPlayer = false,
-            numBuffs = 16,
+            numBuffs = 32,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
             onlyShowPlayerDebuffs = false,
@@ -2137,7 +2296,7 @@ R:RegisterModuleConfig(UF, {
             numColumns = 5,
             showDuration = true,
             onlyShowPlayer = false,
-            numBuffs = 16,
+            numBuffs = 32,
             onlyShowPlayerBuffs = false,
             numDebuffs = 16,
             onlyShowPlayerDebuffs = false,
@@ -3791,7 +3950,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("player", 14, false, true),
-                indicators = UF:CreateUnitIndicatorsOption("player", 15)
+                indicators = UF:CreateUnitIndicatorsOption("player", 15),
+                auras = UF:CreateUnitAurasOption("player", 16)
             }
         },
         target = {
@@ -3825,7 +3985,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("target", 14),
-                indicators = UF:CreateUnitIndicatorsOption("target", 15)
+                indicators = UF:CreateUnitIndicatorsOption("target", 15),
+                auras = UF:CreateUnitAurasOption("target", 16)
             }
         },
         targettarget = {
@@ -3859,7 +4020,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("targettarget", 14),
-                indicators = UF:CreateUnitIndicatorsOption("targettarget", 15)
+                indicators = UF:CreateUnitIndicatorsOption("targettarget", 15),
+                auras = UF:CreateUnitAurasOption("targettarget", 16)
             }
         },
         pet = {
@@ -3893,7 +4055,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("pet", 14),
-                indicators = UF:CreateUnitIndicatorsOption("pet", 15)
+                indicators = UF:CreateUnitIndicatorsOption("pet", 15),
+                auras = UF:CreateUnitAurasOption("pet", 16)
             }
         },
         focus = {
@@ -3928,7 +4091,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("focus", 14),
-                indicators = UF:CreateUnitIndicatorsOption("focus", 15)
+                indicators = UF:CreateUnitIndicatorsOption("focus", 15),
+                auras = UF:CreateUnitAurasOption("focus", 16)
             }
         },
         focustarget = {
@@ -3963,7 +4127,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("focustarget", 14),
-                indicators = UF:CreateUnitIndicatorsOption("focustarget", 15)
+                indicators = UF:CreateUnitIndicatorsOption("focustarget", 15),
+                auras = UF:CreateUnitAurasOption("focustarget", 16)
             }
         },
         party = {
@@ -4087,7 +4252,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("party", 14),
-                indicators = UF:CreateUnitIndicatorsOption("party", 15)
+                indicators = UF:CreateUnitIndicatorsOption("party", 15),
+                auras = UF:CreateUnitAurasOption("party", 16)
             }
         },
         raid = {
@@ -4208,7 +4374,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("raid", 14),
-                indicators = UF:CreateUnitIndicatorsOption("raid", 15)
+                indicators = UF:CreateUnitIndicatorsOption("raid", 15),
+                auras = UF:CreateUnitAurasOption("raid", 16)
             }
         },
         tank = {
@@ -4296,7 +4463,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("tank", 14),
-                indicators = UF:CreateUnitIndicatorsOption("tank", 15)
+                indicators = UF:CreateUnitIndicatorsOption("tank", 15),
+                auras = UF:CreateUnitAurasOption("tank", 16)
             }
         },
         assist = {
@@ -4384,7 +4552,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("assist", 14),
-                indicators = UF:CreateUnitIndicatorsOption("assist", 15)
+                indicators = UF:CreateUnitIndicatorsOption("assist", 15),
+                auras = UF:CreateUnitAurasOption("assist", 16)
             }
         },
         boss = {
@@ -4473,7 +4642,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("boss", 14),
-                indicators = UF:CreateUnitIndicatorsOption("boss", 15)
+                indicators = UF:CreateUnitIndicatorsOption("boss", 15),
+                auras = UF:CreateUnitAurasOption("boss", 16)
             }
         },
         arena = {
@@ -4562,7 +4732,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("arena", 14),
-                indicators = UF:CreateUnitIndicatorsOption("arena", 15)
+                indicators = UF:CreateUnitIndicatorsOption("arena", 15),
+                auras = UF:CreateUnitAurasOption("arena", 16)
             }
         },
         nameplates = {
@@ -4595,7 +4766,8 @@ R:RegisterModuleOptions(UF, {
                     }
                 },
                 castbar = UF:CreateUnitCastbarOption("nameplates", 14),
-                indicators = UF:CreateUnitIndicatorsOption("nameplates", 15)
+                indicators = UF:CreateUnitIndicatorsOption("nameplates", 15),
+                auras = UF:CreateUnitAurasOption("nameplates", 16)
             }
         }
     }

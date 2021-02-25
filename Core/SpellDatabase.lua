@@ -720,9 +720,7 @@ SD.Spells = {
                 {id = 118, level = 8, castTime = 1.5},
                 {id = 12824, level = 20, castTime = 1.5},
                 {id = 12825, level = 40, castTime = 1.5},
-                {id = 12826, level = 60, castTime = 1.5},
-                {id = 28271, level = 60, castTime = 1.5},
-                {id = 28272, level = 60, castTime = 1.5}
+                {id = 12826, level = 60, castTime = 1.5}
             }
         },
         ["Polymorph: Pig"] = {

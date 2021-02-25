@@ -6,59 +6,61 @@ local oUF = ns.oUF or oUF
 
 UF.CreateAuras = function(self)
     local config = self.config.auras
-    if config.showDebuffsOnTop then
-        self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
-        self.Debuffs.size = config.iconSize or 25
-        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.numDebuffs / (config.numColumns or 5))))
-        self.Debuffs:SetWidth(self.Debuffs.size * (config.numColumns or 5))
-        self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5)
-        self.Debuffs.initialAnchor = "BOTTOMLEFT"
-        self.Debuffs["growth-x"] = "RIGHT"
-        self.Debuffs["growth-y"] = "UP"
-        self.Debuffs.num = config.numDebuffs
-        self.Debuffs.onlyShowPlayer = config.onlyShowPlayerDebuffs
-        self.Debuffs.spacing = config.spacing
-        self.Debuffs.showDebuffType = false
-        self.Debuffs.PostCreateIcon = UF.PostCreateAura
-        self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
 
-        self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
-        self.Buffs.size = config.iconSize or 25
-        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.numBuffs / (config.numColumns or 5))))
-        self.Buffs:SetWidth(self.Buffs.size * (config.numColumns or 5))
-        self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
-        self.Buffs.initialAnchor = "TOPLEFT"
-        self.Buffs["growth-x"] = "RIGHT"
-        self.Buffs["growth-y"] = "DOWN"
-        self.Buffs.num = config.numBuffs
-        self.Buffs.onlyShowPlayer = config.onlyShowPlayerBuffs
-        self.Buffs.spacing = config.spacing
-        self.Buffs.showStealableBuffs = true
-        self.Buffs.showBuffType = false
-        self.Buffs.PostCreateIcon = UF.PostCreateAura
-        self.Buffs.PostUpdateIcon = UF.PostUpdateAura
-    else
-        self.Auras = CreateFrame("Frame", "$parentAuras", self)
-        self.Auras.gap = true
-        self.Auras.size = config.iconSize or 25
-        self.Auras:SetHeight(self.Auras.size * (math.ceil((config.numBuffs + config.numDebuffs) / (config.numColumns or 5))))
-        self.Auras:SetWidth(self.Auras.size * (config.numColumns or 5))
-        self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
-        self.Auras.initialAnchor = "TOPLEFT"
-        self.Auras["growth-x"] = "RIGHT"
-        self.Auras["growth-y"] = "DOWN"
-        self.Auras.numBuffs = config.numBuffs
-        self.Auras.numDebuffs = config.numDebuffs
-        self.Auras.onlyShowPlayer = config.onlyShowPlayer
-        self.Auras.spacing = config.spacing
-        self.Auras.showStealableBuffs = true
-        self.Auras.showBuffType = false
-        self.Auras.showDebuffType = false
-        self.Auras.buffFilter = "HELPFUL"
-        self.Auras.debuffFilter = "HARMFUL|INCLUDE_NAME_PLATE_ONLY"
-        self.Auras.PostCreateIcon = UF.PostCreateAura
-        self.Auras.PostUpdateIcon = UF.PostUpdateAura
-    end
+    self.Auras = CreateFrame("Frame", "$parentAuras", self)
+    self.Auras.gap = true
+    self.Auras.size = config.iconSize or 25
+    self.Auras:SetHeight(self.Auras.size * (math.ceil((config.numBuffs + config.numDebuffs) / (config.numColumns or 5))))
+    self.Auras:SetWidth(self.Auras.size * (config.numColumns or 5))
+    self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
+    self.Auras.initialAnchor = "TOPLEFT"
+    self.Auras["growth-x"] = "RIGHT"
+    self.Auras["growth-y"] = "DOWN"
+    self.Auras.numBuffs = config.numBuffs
+    self.Auras.numDebuffs = config.numDebuffs
+    self.Auras.onlyShowPlayer = config.onlyShowPlayer
+    self.Auras.spacing = config.spacing
+    self.Auras.showStealableBuffs = true
+    self.Auras.showBuffType = false
+    self.Auras.showDebuffType = false
+    self.Auras.buffFilter = "HELPFUL"
+    self.Auras.debuffFilter = "HARMFUL|INCLUDE_NAME_PLATE_ONLY"
+    self.Auras.PostCreateIcon = UF.PostCreateAura
+    self.Auras.PostUpdateIcon = UF.PostUpdateAura
+    self.Auras:SetShown(not config.showDebuffsOnTop)
+
+    self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
+    self.Buffs.size = config.iconSize or 25
+    self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.numBuffs / (config.numColumns or 5))))
+    self.Buffs:SetWidth(self.Buffs.size * (config.numColumns or 5))
+    self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
+    self.Buffs.initialAnchor = "TOPLEFT"
+    self.Buffs["growth-x"] = "RIGHT"
+    self.Buffs["growth-y"] = "DOWN"
+    self.Buffs.num = config.numBuffs
+    self.Buffs.onlyShowPlayer = config.onlyShowPlayerBuffs
+    self.Buffs.spacing = config.spacing
+    self.Buffs.showStealableBuffs = true
+    self.Buffs.showBuffType = false
+    self.Buffs.PostCreateIcon = UF.PostCreateAura
+    self.Buffs.PostUpdateIcon = UF.PostUpdateAura
+    self.Buffs:SetShown(not config.showDebuffsOnTop)
+
+    self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
+    self.Debuffs.size = config.iconSize or 25
+    self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.numDebuffs / (config.numColumns or 5))))
+    self.Debuffs:SetWidth(self.Debuffs.size * (config.numColumns or 5))
+    self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5)
+    self.Debuffs.initialAnchor = "BOTTOMLEFT"
+    self.Debuffs["growth-x"] = "RIGHT"
+    self.Debuffs["growth-y"] = "UP"
+    self.Debuffs.num = config.numDebuffs
+    self.Debuffs.onlyShowPlayer = config.onlyShowPlayerDebuffs
+    self.Debuffs.spacing = config.spacing
+    self.Debuffs.showDebuffType = false
+    self.Debuffs.PostCreateIcon = UF.PostCreateAura
+    self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
+    self.Debuffs:SetShown(not config.showDebuffsOnTop)
 end
 
 oUF:RegisterMetaFunction("CreateAuras", UF.CreateAuras)
@@ -96,7 +98,8 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
             button.cd:Hide()
         end
         if self.__owner and self.__owner.config then
-            local hideDuration = not self.__owner.config.auras.showDuration or (button:GetWidth() < (BS.config.auras.minSizeToShowDuration or 32))
+            local hideDuration = not self.__owner.config.auras.showDuration or
+                                     (button:GetWidth() < (BS.config.auras.minSizeToShowDuration or 32))
             button.cd:SetHideCountdownNumbers(hideDuration)
         end
     end
@@ -105,8 +108,38 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
 end
 
 UF.UpdateAuras = function(self)
-    if self.config.auras.enabled then
+    local config = self.config.auras
+
+    if config.enabled then
         self:EnableElement("Auras")
+
+        self.Auras.size = config.iconSize or 25
+        self.Auras:SetHeight(self.Auras.size * (math.ceil((config.numBuffs + config.numDebuffs) / (config.numColumns or 5))))
+        self.Auras:SetWidth(self.Auras.size * (config.numColumns or 5))
+        self.Auras.numBuffs = config.numBuffs
+        self.Auras.numDebuffs = config.numDebuffs
+        self.Auras.onlyShowPlayer = config.onlyShowPlayer
+        self.Auras.spacing = config.spacing
+        self.Auras:SetShown(not config.showDebuffsOnTop)
+        self.Auras:ForceUpdate()
+
+        self.Buffs.size = config.iconSize or 25
+        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.numBuffs / (config.numColumns or 5))))
+        self.Buffs:SetWidth(self.Buffs.size * (config.numColumns or 5))
+        self.Buffs.num = config.numBuffs
+        self.Buffs.onlyShowPlayer = config.onlyShowPlayerBuffs
+        self.Buffs.spacing = config.spacing
+        self.Buffs:SetShown(config.showDebuffsOnTop)
+        self.Buffs:ForceUpdate()
+
+        self.Debuffs.size = config.iconSize or 25
+        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.numDebuffs / (config.numColumns or 5))))
+        self.Debuffs:SetWidth(self.Debuffs.size * (config.numColumns or 5))
+        self.Debuffs.num = config.numDebuffs
+        self.Debuffs.onlyShowPlayer = config.onlyShowPlayerDebuffs
+        self.Debuffs.spacing = config.spacing
+        self.Debuffs:SetShown(config.showDebuffsOnTop)
+        self.Debuffs:ForceUpdate()
     else
         self:DisableElement("Auras")
     end

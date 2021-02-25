@@ -104,7 +104,7 @@ R:RegisterModuleConfig(BS, {
         hideKeybindText = false,
         hideMacroText = true
     },
-    auras = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", borderSize = 4, minSizeToShowDuration = 32},
+    auras = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", borderSize = 4, minSizeToShowDuration = 30},
     items = {font = R.config.defaults.profile.fonts.normal, fontSize = 12, fontOutline = "OUTLINE", borderSize = 4},
     microMenu = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", borderSize = 4}
 })
