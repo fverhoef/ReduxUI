@@ -211,20 +211,9 @@ function SD:UpdateDescription(rank)
 end
 
 function SD:UpdateValues(rank)
-    local power = (rank.spell.isHeal and CS.healingPower) or
-                      (rank.spell.isDamage and (rank.spell.school == SD.Schools.Arcane and CS.spellPower.arcane) or
-                          (rank.spell.school == SD.Schools.Fire and CS.spellPower.fire) or
-                          (rank.spell.school == SD.Schools.Frost and CS.spellPower.frost) or
-                          (rank.spell.school == SD.Schools.Holy and CS.spellPower.holy) or
-                          (rank.spell.school == SD.Schools.Shadow and CS.spellPower.shadow) or
-                          (rank.spell.school == SD.Schools.Nature and CS.spellPower.nature)) or 0
-    local multiplier = (rank.spell.isHeal and CS.healingDone) or
-                           (rank.spell.isDamage and (rank.spell.school == SD.Schools.Arcane and CS.spellDamage.arcane) or
-                               (rank.spell.school == SD.Schools.Fire and CS.spellDamage.fire) or
-                               (rank.spell.school == SD.Schools.Frost and CS.spellDamage.frost) or
-                               (rank.spell.school == SD.Schools.Holy and CS.spellDamage.holy) or
-                               (rank.spell.school == SD.Schools.Shadow and CS.spellDamage.shadow) or
-                               (rank.spell.school == SD.Schools.Nature and CS.spellDamage.nature)) or 1
+    local schoolKey = SD.SchoolKeys[rank.spell.school]
+    local power = (rank.spell.isHeal and CS.healingPower) or (rank.spell.isDamage and CS.spellPower[schoolKey]) or 0
+    local multiplier = (rank.spell.isHeal and CS.healingDone) or (rank.spell.isDamage and CS.spellDamage[schoolKey]) or 1
 
     -- spell/type specific modifiers
     if rank.spell.isLightning then
@@ -279,8 +268,9 @@ function SD:GetSpellCoefficient(castTime, level, modifier, aoe)
 end
 
 SD.Types = {None = 0, Magic = 1, MagicDamage = 2, PhysicalDamage = 3, Heal = 4, Absorb = 5}
-SD.Schools = {Physical = 0, Arcane = 1, Fire = 2, Frost = 3, Holy = 4, Shadow = 5, Nature = 6}
-SD.AbsorbTypes = {Physical = 0, Arcane = 1, Fire = 2, Frost = 3, Holy = 4, Shadow = 5, Nature = 6, All = 7, Magic = 8}
+SD.Schools = {Physical = 1, Arcane = 2, Fire = 3, Frost = 4, Holy = 5, Shadow = 6, Nature = 7}
+SD.SchoolKeys = {"arcane", "fire", "frost", "holy", "shadow", "nature"}
+SD.AbsorbTypes = {Physical = 1, Arcane = 2, Fire = 3, Frost = 4, Holy = 5, Shadow = 6, Nature = 7, Magic = 8, All = 9}
 SD.TotemElements = {Fire = 1, Earth = 2, Water = 3, Air = 4}
 SD.Tags = {
     None = 0,
@@ -806,15 +796,15 @@ SD.Spells = {
             coefficient = 0,
             ranks = {
                 -- Frost Armor
-                {id = 168, level = 8, castTime = 1.5},
-                {id = 7300, level = 8, castTime = 1.5},
-                {id = 7301, level = 8, castTime = 1.5},
+                {id = 168, level = 1, castTime = 1.5},
+                {id = 7300, level = 10, castTime = 1.5},
+                {id = 7301, level = 20, castTime = 1.5},
 
                 -- Ice Armor
-                {id = 7302, level = 8, castTime = 1.5},
-                {id = 7320, level = 8, castTime = 1.5},
-                {id = 10219, level = 8, castTime = 1.5},
-                {id = 10220, level = 8, castTime = 1.5}
+                {id = 7302, level = 30, castTime = 1.5},
+                {id = 7320, level = 40, castTime = 1.5},
+                {id = 10219, level = 50, castTime = 1.5},
+                {id = 10220, level = 60, castTime = 1.5}
             }
         },
         ["Mage Armor"] = {
@@ -823,11 +813,60 @@ SD.Spells = {
             tag = SD.Tags.Armor,
             coefficient = 0,
             ranks = {
-                {id = 6117, level = 8, castTime = 1.5},
-                {id = 22782, level = 8, castTime = 1.5},
-                {id = 22783, level = 8, castTime = 1.5}
+                {id = 6117, level = 34, castTime = 1.5},
+                {id = 22782, level = 46, castTime = 1.5},
+                {id = 22783, level = 58, castTime = 1.5}
             }
-        }
+        },
+
+        -- Buffs
+        ["Arcane Intellect"] = {
+            type = SD.Types.Magic,
+            school = SD.Schools.Arcane,
+            tag = SD.Tags.Armor,
+            coefficient = 0,
+            ranks = {
+                {id = 1459, level = 1, castTime = 1.5},
+                {id = 1460, level = 14, castTime = 1.5},
+                {id = 1461, level = 28, castTime = 1.5},
+                {id = 10156, level = 42, castTime = 1.5},
+                {id = 10157, level = 56, castTime = 1.5}
+            }
+        },
+        ["Arcane Brilliance"] = {
+            type = SD.Types.Magic,
+            school = SD.Schools.Arcane,
+            tag = SD.Tags.Armor,
+            coefficient = 0,
+            ranks = {
+                {id = 23028, level = 56, castTime = 1.5}
+            }
+        },
+        ["Amplify Magic"] = {
+            type = SD.Types.Magic,
+            school = SD.Schools.Arcane,
+            tag = SD.Tags.Armor,
+            coefficient = 0,
+            ranks = {
+                {id = 1008, level = 18, castTime = 1.5},
+                {id = 8455, level = 30, castTime = 1.5},
+                {id = 10169, level = 42, castTime = 1.5},
+                {id = 10170, level = 54, castTime = 1.5}
+            }
+        },
+        ["Dampen Magic"] = {
+            type = SD.Types.Magic,
+            school = SD.Schools.Arcane,
+            tag = SD.Tags.Armor,
+            coefficient = 0,
+            ranks = {
+                {id = 604, level = 12, castTime = 1.5},
+                {id = 8450, level = 24, castTime = 1.5},
+                {id = 8451, level = 36, castTime = 1.5},
+                {id = 10173, level = 48, castTime = 1.5},
+                {id = 10174, level = 60, castTime = 1.5}
+            }
+        },
     },
     ["PRIEST"] = {
         -- Shields

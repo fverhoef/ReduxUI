@@ -9,7 +9,7 @@ function AB:CreateVehicleExitBar()
     -- create new parent frame for buttons
     local frame = CreateFrame("Frame", addonName .. "VehicleExitBar", UIParent, "SecureHandlerStateTemplate")
     frame.config = config
-    frame:SetSize(36, 36)
+    frame:SetSize(45, 45)
     frame:SetPoint("BOTTOM", "UIParent", "BOTTOM", 0, 200)
 
     _G.MainMenuBarVehicleLeaveButton:ClearAllPoints()
@@ -21,7 +21,6 @@ function AB:CreateVehicleExitBar()
             _G.MainMenuBarVehicleLeaveButton:ClearAllPoints()
             _G.MainMenuBarVehicleLeaveButton:SetParent(frame)
             _G.MainMenuBarVehicleLeaveButton:SetInside()
-            _G.MainMenuBarVehicleLeaveButton:SetScale(1)
         end
     end)
 
