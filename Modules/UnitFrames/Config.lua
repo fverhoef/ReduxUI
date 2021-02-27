@@ -2937,7 +2937,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {90, 36},
         scale = 1,
-        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 20,
         health = {
             enabled = true,
@@ -3156,7 +3156,7 @@ R:RegisterModuleConfig(UF, {
             spacing = 2,
             numColumns = 5,
             showDuration = true,
-            onlyShowPlayer = false,
+            onlyShowPlayer = true,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -3201,7 +3201,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 10,
         health = {
             enabled = true,
@@ -3280,7 +3280,7 @@ R:RegisterModuleConfig(UF, {
             spacing = 2,
             numColumns = 5,
             showDuration = true,
-            onlyShowPlayer = false,
+            onlyShowPlayer = true,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -3325,7 +3325,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {175, 42},
         scale = 1,
-        point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
+        point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 10,
         health = {
             enabled = true,
@@ -3404,7 +3404,7 @@ R:RegisterModuleConfig(UF, {
             spacing = 2,
             numColumns = 5,
             showDuration = true,
-            onlyShowPlayer = false,
+            onlyShowPlayer = true,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -3529,7 +3529,7 @@ R:RegisterModuleConfig(UF, {
             spacing = 2,
             numColumns = 5,
             showDuration = true,
-            onlyShowPlayer = false,
+            onlyShowPlayer = true,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -3634,7 +3634,7 @@ R:RegisterModuleConfig(UF, {
             spacing = 2,
             numColumns = 5,
             showDuration = true,
-            onlyShowPlayer = false,
+            onlyShowPlayer = true,
             numBuffs = 0,
             onlyShowPlayerBuffs = true,
             numDebuffs = 16,
@@ -3934,7 +3934,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("player", 1, true),
                         position = UF:CreateUnitPositionOption("player", 2, true),
-                        border = UF:CreateUnitBorderOption("player", 3, true)
+                        border = UF:CreateUnitBorderOption("player", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.player.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.player.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("player")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("player", 11),
@@ -3969,7 +3994,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("target", 1, true),
                         position = UF:CreateUnitPositionOption("target", 2, true),
-                        border = UF:CreateUnitBorderOption("target", 3, true)
+                        border = UF:CreateUnitBorderOption("target", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.target.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.target.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("target")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("target", 11),
@@ -4004,7 +4054,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("targettarget", 1, true),
                         position = UF:CreateUnitPositionOption("targettarget", 2, true),
-                        border = UF:CreateUnitBorderOption("targettarget", 3, true)
+                        border = UF:CreateUnitBorderOption("targettarget", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.targettarget.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.targettarget.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("targettarget")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("targettarget", 11),
@@ -4039,7 +4114,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("pet", 1, true),
                         position = UF:CreateUnitPositionOption("pet", 2, true),
-                        border = UF:CreateUnitBorderOption("pet", 3, true)
+                        border = UF:CreateUnitBorderOption("pet", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.pet.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.pet.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("pet")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("pet", 11),
@@ -4075,7 +4175,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("focus", 1, true),
                         position = UF:CreateUnitPositionOption("focus", 2, true),
-                        border = UF:CreateUnitBorderOption("focus", 3, true)
+                        border = UF:CreateUnitBorderOption("focus", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.focus.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.focus.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("focus")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("focus", 11),
@@ -4111,7 +4236,32 @@ R:RegisterModuleOptions(UF, {
                     args = {
                         size = UF:CreateUnitSizeOption("focustarget", 1, true),
                         position = UF:CreateUnitPositionOption("focustarget", 2, true),
-                        border = UF:CreateUnitBorderOption("focustarget", 3, true)
+                        border = UF:CreateUnitBorderOption("focustarget", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.focustarget.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.focustarget.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("focustarget")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("focustarget", 11),
@@ -4236,7 +4386,32 @@ R:RegisterModuleOptions(UF, {
                                 UF:UpdateUnit("party")
                             end
                         },
-                        border = UF:CreateUnitBorderOption("party", 6, true)
+                        border = UF:CreateUnitBorderOption("party", 6, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 7,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.party.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.party.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("party")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("party", 11),
@@ -4626,7 +4801,32 @@ R:RegisterModuleOptions(UF, {
                                 }
                             }
                         },
-                        border = UF:CreateUnitBorderOption("boss", 3, true)
+                        border = UF:CreateUnitBorderOption("boss", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.boss.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.boss.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("boss")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("boss", 11),
@@ -4716,7 +4916,32 @@ R:RegisterModuleOptions(UF, {
                                 }
                             }
                         },
-                        border = UF:CreateUnitBorderOption("arena", 3, true)
+                        border = UF:CreateUnitBorderOption("arena", 3, true),
+                        textures = {
+                            type = "group",
+                            name = "Textures",
+                            order = 4,
+                            inline = true,
+                            args = {
+                                textureColor = {
+                                    type = "color",
+                                    name = "Texture Color",
+                                    order = 10,
+                                    hasAlpha = false,
+                                    get = function()
+                                        local color = UF.config.arena.textureColor
+                                        return color[1], color[2], color[3], 1
+                                    end,
+                                    set = function(_, r, g, b, a)
+                                        local color = UF.config.arena.textureColor
+                                        color[1] = r
+                                        color[2] = g
+                                        color[3] = b
+                                        UF:UpdateUnit("arena")
+                                    end
+                                }
+                            }
+                        }
                     }
                 },
                 health = UF:CreateUnitHealthOption("arena", 11),

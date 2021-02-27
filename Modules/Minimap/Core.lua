@@ -43,7 +43,7 @@ MM.PartialIgnore = {"Node", "Note", "Pin", "POI"}
 MM.UnrulyButtons = {"WIM3MinimapButton", "RecipeRadar_MinimapButton"}
 MM.ButtonFunctions = {"SetParent", "ClearAllPoints", "SetPoint", "SetSize", "SetScale", "SetFrameStrata", "SetFrameLevel"}
 
-function MM:Initialize()    
+function MM:Initialize()
     if not MM.config.enabled then
         return
     end
@@ -53,10 +53,6 @@ function MM:Initialize()
     -- TODO: check if it's possible to use events rather than a timed update
     MM:ScheduleTimer("GrabMinimapButtons", 1)
     MM:ScheduleRepeatingTimer("GrabMinimapButtons", 5)
-
-    MiniMapTrackingFrame:HookScript("OnShow", function()
-        MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 32, 2)
-    end)
 end
 
 function MM:LockButton(Button)
@@ -73,7 +69,7 @@ function MM:UnlockButton(Button)
 end
 
 function MM:GrabMinimapButton(button)
-    if (not button) or button.isSkinned then
+    if not button or button.isSkinned then
         return
     end
 
@@ -185,9 +181,11 @@ function MM:GrabMinimapButtons()
 end
 
 function MM:StyleMinimap()
+    local width, height = unpack(MM.config.size)
+
     -- MinimapCluster
     MinimapCluster.config = MM.config
-    MinimapCluster:SetSize(190, 240)
+    MinimapCluster:SetSize(width, height + 30)
     MinimapCluster:ClearAllPoints()
     MinimapCluster:SetPoint(unpack(MM.config.point))
 
@@ -197,18 +195,21 @@ function MM:StyleMinimap()
     end
 
     MinimapCluster:CreateFader(MM.config.fader)
-
     R:CreateDragFrame(MinimapCluster, "Minimap", MM.config.point)
 
     -- Minimap
-    Minimap:SetMaskTexture(R.media.textures.minimap.minimapMask1)
+    Minimap:SetMaskTexture(MM.config.mask)
     Minimap:ClearAllPoints()
     Minimap:SetPoint("TOP", 0, -30)
-    Minimap:SetSize(190, 190) -- correct the cluster offset
+    Minimap:SetSize(width, height) -- correct the cluster offset
+    if MM.config.border.enabled then
+        Minimap:CreateBorder()
+        Minimap:CreateShadow()
+    end
 
     -- MinimapZoneText
     MinimapZoneText:SetSize(190, 10)
-    MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -10)
+    MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -8)
     MinimapZoneText:SetFont(STANDARD_TEXT_FONT, 14, "OUTLINE")
     MinimapZoneText:SetJustifyH("CENTER")
     MinimapZoneText:SetShadowColor(0, 0, 0, 0.25)
@@ -217,10 +218,10 @@ function MM:StyleMinimap()
     -- ZoneBackground
     MinimapCluster.ZoneBackground = MinimapCluster:CreateTexture("BACKGROUND")
     MinimapCluster.ZoneBackground:SetTexture(R.media.textures.bonusObjectives)
-    MinimapCluster.ZoneBackground:SetTexCoord(30 / 512, (30 + 364) / 512, 183 / 512, (183 + 78) / 512)
-    MinimapCluster.ZoneBackground:SetSize(370, 70)
-    MinimapCluster.ZoneBackground:SetScale(0.5)
-    MinimapCluster.ZoneBackground:SetPoint("TOP", MinimapCluster, "TOP", 0, -1)
+    MinimapCluster.ZoneBackground:SetTexCoord(30 / 512, 394 / 512, 183 / 512, 261 / 512)
+    MinimapCluster.ZoneBackground:SetHeight(30)
+    MinimapCluster.ZoneBackground:SetPoint("TOPLEFT", MinimapCluster, "TOPLEFT")
+    MinimapCluster.ZoneBackground:SetPoint("TOPRIGHT", MinimapCluster, "TOPRIGHT")
 
     -- MiniMapNorthTag
     MinimapNorthTag:ClearAllPoints()
@@ -250,14 +251,16 @@ function MM:StyleMinimap()
 
     -- InformationFrame
     Minimap.InformationFrame = CreateFrame("FRAME", addonName .. "MinimapInformationFrame", Minimap)
-    Minimap.InformationFrame:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
-    Minimap.InformationFrame:SetSize(192, 40)
+    Minimap.InformationFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+    Minimap.InformationFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+    Minimap.InformationFrame:SetHeight(25)
 
     Minimap.InformationFrame.Background = Minimap.InformationFrame:CreateTexture("BACKGROUND")
     Minimap.InformationFrame.Background:SetTexture(R.media.textures.autoQuestParts)
     Minimap.InformationFrame.Background:SetTexCoord(224 / 512, (224 + 245) / 512, 0 / 64, 64 / 64)
-    Minimap.InformationFrame.Background:SetSize(192, 50)
-    Minimap.InformationFrame.Background:SetPoint("TOP", Minimap.InformationFrame, "TOP", 0, 0)
+    Minimap.InformationFrame.Background:SetHeight(50)
+    Minimap.InformationFrame.Background:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 0, 0)
+    Minimap.InformationFrame.Background:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", 0, 0)
 
     -- mail
     MiniMapMailFrame:SetParent(Minimap.InformationFrame)
@@ -265,14 +268,15 @@ function MM:StyleMinimap()
     MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -25, 3)
     MiniMapMailIcon:SetTexture(R.media.textures.mailIcon)
     MiniMapMailIcon:SetTexCoord(0, 0.95, 0, 0.95)
-    if MM.config.enableMailGlow then
-        MiniMapMailBorder:SetTexture("Interface\\Calendar\\EventNotificationGlow")
-        MiniMapMailBorder:SetBlendMode("ADD")
-        MiniMapMailBorder:ClearAllPoints()
-        MiniMapMailBorder:SetPoint("CENTER", MiniMapMailFrame, -0.5, 1.5)
-        MiniMapMailBorder:SetSize(25, 25)
-        MiniMapMailBorder:SetAlpha(0.4)
-    else
+
+    MiniMapMailBorder:SetTexture("Interface\\Calendar\\EventNotificationGlow")
+    MiniMapMailBorder:SetBlendMode("ADD")
+    MiniMapMailBorder:ClearAllPoints()
+    MiniMapMailBorder:SetPoint("CENTER", MiniMapMailFrame, -0.5, 1.5)
+    MiniMapMailBorder:SetSize(25, 25)
+    MiniMapMailBorder:SetAlpha(0.4)
+
+    if not MM.config.enableMailGlow then
         MiniMapMailBorder:Hide()
     end
 
@@ -302,11 +306,8 @@ function MM:StyleMinimap()
     end
 
     -- MiniMapTracking
-    MiniMapTrackingFrame:SetParent(Minimap.InformationFrame)
     MiniMapTrackingFrame:SetScale(0.8)
     MiniMapTrackingFrame:SetSize(33, 33)
-    MiniMapTrackingFrame:ClearAllPoints()
-    MiniMapTrackingFrame:SetPoint("TOPLEFT", 11, -2)
     MiniMapTrackingBorder:ClearAllPoints()
     MiniMapTrackingBorder:SetPoint("CENTER", 0, 0)
     MiniMapTrackingBorder:SetSize(41, 41)
@@ -318,8 +319,13 @@ function MM:StyleMinimap()
     MiniMapTrackingIcon:SetSize(20, 20)
     MiniMapTrackingIcon:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
 
+    MiniMapTrackingFrame:HookScript("OnShow", function()
+        MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 32, 2)
+    end)
+
     -- button frame toggle
-    Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", addonName .. "MinimapButtonFrameToggle", Minimap.InformationFrame)
+    Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", addonName .. "MinimapButtonFrameToggle",
+                                                             Minimap.InformationFrame)
     Minimap.InformationFrame.ButtonFrameToggle:SetSize(16, 16)
     Minimap.InformationFrame.ButtonFrameToggle:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -5, 4)
     Minimap.InformationFrame.ButtonFrameToggle:SetChecked(not MM.config.buttonFrame.collapsed)
@@ -330,7 +336,6 @@ function MM:StyleMinimap()
     -- button frame
     Minimap.ButtonFrame = CreateFrame("Frame", "MinimapButtonFrame", UIParent)
     Minimap.ButtonFrame:Hide()
-    Minimap.ButtonFrame:SetPoint("TOP", Minimap.InformationFrame, "BOTTOM", 0, 15)
     Minimap.ButtonFrame:SetFrameStrata("MEDIUM")
     Minimap.ButtonFrame:SetFrameLevel(1)
     Minimap.ButtonFrame:EnableMouse(true)
@@ -344,6 +349,93 @@ function MM:StyleMinimap()
     Minimap.ButtonFrame:CreateFader(MM.config.fader)
 
     MM:ToggleButtonFrame()
+    MM:UpdateMinimap()
+end
+
+function MM:UpdateMinimap()
+    local width, height = unpack(MM.config.size)
+    Minimap:SetSize(width, height)
+    Minimap:SetMaskTexture(MM.config.mask)
+
+    if MM.config.frameVisibility then
+        MinimapCluster.frameVisibility = MM.config.frameVisibility
+        RegisterStateDriver(MinimapCluster, "visibility", MM.config.frameVisibility)
+    else
+        UnregisterStateDriver(MinimapCluster, "visibility")
+    end
+
+    if MM.config.border.enabled then
+        Minimap.Border:Show()
+        Minimap.Shadow:Show()
+    else
+        Minimap.Border:Hide()
+        Minimap.Shadow:Hide()
+    end
+
+    if MM.config.zoneText.enabled then
+        MinimapZoneText:Show()
+    else
+        MinimapZoneText:Hide()
+    end
+
+    if MM.config.zoneText.enabled and MM.config.zoneText.showBackground then
+        MinimapCluster.ZoneBackground:Show()
+        MinimapCluster:SetSize(width, height + 30)
+        Minimap:SetPoint("TOP", 0, -30)
+    else
+        MinimapCluster.ZoneBackground:Hide()
+        MinimapCluster:SetSize(width, height)
+        Minimap:SetPoint("TOP", 0, 0)
+    end
+
+    MinimapZoneText:SetFont(MM.config.zoneText.font, MM.config.zoneText.fontSize, MM.config.zoneText.fontOutline)
+    MinimapZoneText:SetJustifyH(MM.config.zoneText.justifyH)
+    MinimapZoneText:SetShadowOffset(MM.config.zoneText.fontShadow and 1 or 0, MM.config.zoneText.fontShadow and -2 or 0)
+
+    if MM.config.infoPanel.enabled then
+        Minimap.InformationFrame:Show()
+    else
+        Minimap.InformationFrame:Hide()
+    end
+
+    if MM.config.infoPanel.enabled and MM.config.infoPanel.showBackground then
+        Minimap.InformationFrame.Background:Show()
+
+        Minimap.InformationFrame:ClearAllPoints()
+        Minimap.InformationFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+        Minimap.InformationFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+
+        TimeManagerClockButton:ClearAllPoints()
+        TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
+
+        MiniMapTrackingFrame:ClearAllPoints()
+        MiniMapTrackingFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 7, -2)
+
+        Minimap.ButtonFrame:ClearAllPoints()
+        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 5)
+        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "BOTTOMRIGHT", 0, 5)
+    else
+        Minimap.InformationFrame.Background:Hide()
+
+        Minimap.InformationFrame:ClearAllPoints()
+        Minimap.InformationFrame:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+        Minimap.InformationFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+
+        TimeManagerClockButton:ClearAllPoints()
+        TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, 0)
+
+        MiniMapTrackingFrame:ClearAllPoints()
+        MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 6, 2)
+
+        Minimap.ButtonFrame:ClearAllPoints()
+        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+    end
+
+    MinimapNorthTag:SetShown(MM.config.showNorthTag)
+    MiniMapMailBorder:SetShown(MM.config.enableMailGlow)
+
+    MM:UpdateButtonFrame()
 end
 
 function MM:Minimap_OnMouseWheel(direction)
@@ -384,28 +476,35 @@ function MM:ButtonFrameToggle_OnClick()
 end
 
 function MM:UpdateButtonFrame()
-    local anchorX, anchorY = 0, 1
-    local buttonsPerRow = MM.config.buttonFrame.buttonsPerRow or 12
     local spacing = MM.config.buttonFrame.buttonSpacing or 2
-    local size = MM.config.buttonFrame.iconSize or 27
-    local actualButtons, maxed = 0
+    local iconSize = MM.config.buttonFrame.iconSize or 27
 
-    local anchor, dirMult = "TOPLEFT", 1
+    local columnCount, rowCount = 1, 1
+    local anchor, relativeColumnAnchor, relativeRowAnchor, dirMult = "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", 1
+    local actualWidth, availableWidth = 0, Minimap.ButtonFrame:GetWidth()
+    local previousButton, previousRowFirstButton
 
     for _, button in pairs(MM.Buttons) do
         if button:IsVisible() then
-            anchorX, actualButtons = anchorX + 1, actualButtons + 1
+            actualWidth = columnCount * iconSize + (columnCount - 1) * spacing
 
-            if (anchorX % (buttonsPerRow + 1)) == 0 then
-                anchorY, anchorX, maxed = anchorY + 1, 1, true
+            if actualWidth > availableWidth then
+                columnCount, rowCount = 1, rowCount + 1
             end
 
             MM:UnlockButton(button)
 
             button:SetParent(Minimap.ButtonFrame)
             button:ClearAllPoints()
-            button:SetPoint(anchor, Minimap.ButtonFrame, anchor, dirMult * (spacing + ((size + spacing) * (anchorX - 1))), (-spacing - ((size + spacing) * (anchorY - 1))))
-            button:SetSize(MM.config.buttonFrame.iconSize, MM.config.buttonFrame.iconSize)
+            if columnCount == 1 and rowCount == 1 then
+                button:SetPoint(anchor, Minimap.ButtonFrame, anchor, spacing, -spacing)
+            elseif columnCount == 1 and rowCount > 1 then
+                button:SetPoint(anchor, previousRowFirstButton or Minimap.ButtonFrame, relativeRowAnchor, 0, -spacing)
+            else
+                button:SetPoint(anchor, previousButton, relativeColumnAnchor, spacing, 0)
+            end
+
+            button:SetSize(iconSize, iconSize)
             button:SetScale(1)
             button:SetFrameStrata("MEDIUM")
             button:SetFrameLevel(Minimap.ButtonFrame:GetFrameLevel() + 1)
@@ -414,16 +513,16 @@ function MM:UpdateButtonFrame()
 
             MM:LockButton(button)
 
-            if maxed then
-                actualButtons = buttonsPerRow
+            previousButton = button
+            if columnCount == 1 then
+                previousRowFirstButton = button
             end
+
+            columnCount = columnCount + 1
         end
     end
 
-    local barWidth = spacing + (size * actualButtons) + (spacing * (actualButtons - 1)) + spacing
-    local barHeight = spacing + (size * anchorY) + (spacing * (anchorY - 1)) + spacing
-
-    Minimap.ButtonFrame:SetSize(barWidth, barHeight)
+    Minimap.ButtonFrame:SetHeight(2 * spacing + (iconSize * rowCount) + (spacing * (rowCount - 1)))
 end
 
 function MM:ToggleButtonFrame()

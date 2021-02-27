@@ -268,7 +268,7 @@ function SD:GetSpellCoefficient(castTime, level, modifier, aoe)
 end
 
 SD.Types = {None = 0, Magic = 1, MagicDamage = 2, PhysicalDamage = 3, Heal = 4, Absorb = 5}
-SD.Schools = {Physical = 1, Arcane = 2, Fire = 3, Frost = 4, Holy = 5, Shadow = 6, Nature = 7}
+SD.Schools = {Physical = 0, Arcane = 1, Fire = 2, Frost = 3, Holy = 4, Shadow = 5, Nature = 6}
 SD.SchoolKeys = {"arcane", "fire", "frost", "holy", "shadow", "nature"}
 SD.AbsorbTypes = {Physical = 1, Arcane = 2, Fire = 3, Frost = 4, Holy = 5, Shadow = 6, Nature = 7, Magic = 8, All = 9}
 SD.TotemElements = {Fire = 1, Earth = 2, Water = 3, Air = 4}
@@ -285,7 +285,9 @@ SD.Tags = {
     Enchant = 11,
     Lightning = 12,
     Shock = 13,
-    Destruction = 20
+    Destruction = 20,
+    Bear = 31,
+    Cat = 32
 }
 SD.SpellsById = {}
 SD.SpellMinMaxPatterns = {
@@ -388,6 +390,65 @@ SD.SpellMinMaxPatterns = {
 }
 SD.TotemIdsByName = {}
 SD.Spells = {
+    ["DRUID"] = {
+        -- Balance
+        ["Entangling Roots"] = {
+            type = SD.Types.MagicDamage,
+            school = SD.Schools.Nature,
+            ranks = {
+                {id = 339, level = 8, castTime = 1.5},
+                {id = 1062, level = 18, castTime = 1.5},
+                {id = 5195, level = 28, castTime = 1.5},
+                {id = 5196, level = 38, castTime = 1.5},
+                {id = 9852, level = 48, castTime = 1.5},
+                {id = 9853, level = 58, castTime = 1.5}
+            }
+        },
+
+        -- Bear
+        ["Bash"] = {
+            type = SD.Types.PhysicalDamage,
+            school = SD.Schools.Physical,
+            tag = SD.Tags.Bear,
+            ranks = {
+                {id = 5211, level = 14, castTime = 1.5},
+                {id = 6798, level = 30, castTime = 1.5},
+                {id = 8983, level = 46, castTime = 1.5}
+            }
+        },
+        ["Demoralizing Roar"] = {
+            type = SD.Types.PhysicalDamage,
+            school = SD.Schools.Physical,
+            tag = SD.Tags.Bear,
+            ranks = {
+                {id = 99, level = 10, castTime = 1.5},
+                {id = 1735, level = 20, castTime = 1.5},
+                {id = 9490, level = 32, castTime = 1.5},
+                {id = 9747, level = 42, castTime = 1.5},
+                {id = 9898, level = 52, castTime = 1.5}
+            }
+        },
+
+        -- Cat
+        ["Claw"] = {
+            type = SD.Types.PhysicalDamage,
+            school = SD.Schools.Physical,
+            tag = SD.Tags.Cat,
+            ranks = {
+                {id = 1082, level = 20, castTime = 1.5},
+                {id = 3029, level = 28, castTime = 1.5},
+                {id = 5201, level = 38, castTime = 1.5},
+                {id = 9849, level = 48, castTime = 1.5},
+                {id = 9850, level = 58, castTime = 1.5}
+            }
+        },
+        ["Dash"] = {
+            type = SD.Types.None,
+            school = SD.Schools.Physical,
+            tag = SD.Tags.Cat,
+            ranks = {{id = 1850, level = 26, castTime = 1.5}, {id = 9821, level = 46, castTime = 1.5}}
+        }
+    },
     ["MAGE"] = {
         ["Fireball"] = {
             type = SD.Types.MagicDamage,
@@ -834,9 +895,7 @@ SD.Spells = {
             type = SD.Types.Magic,
             school = SD.Schools.Arcane,
             coefficient = 0,
-            ranks = {
-                {id = 23028, level = 56, castTime = 1.5}
-            }
+            ranks = {{id = 23028, level = 56, castTime = 1.5}}
         },
         ["Amplify Magic"] = {
             type = SD.Types.Magic,
@@ -860,7 +919,7 @@ SD.Spells = {
                 {id = 10173, level = 48, castTime = 1.5},
                 {id = 10174, level = 60, castTime = 1.5}
             }
-        },
+        }
     },
     ["PRIEST"] = {
         -- Shields

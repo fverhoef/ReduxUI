@@ -268,7 +268,6 @@ function TT:OnShow()
 
     if TT.config.colorBorderByRarity then
         local color = R.config.db.profile.borders.color
-        local texture = R.media.textures.borders.beautycase
         if link then
             local _, _, itemRarity = GetItemInfo(link)
 
