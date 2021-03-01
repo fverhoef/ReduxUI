@@ -10,10 +10,10 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:SetFrameLevel(self.Power:GetFrameLevel())
     self.AdditionalPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
     self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
-    self.AdditionalPower:SetSize(self.Power:GetWidth() - 4, self.Power:GetHeight())
+    self.AdditionalPower:SetHeight(12)
     self.AdditionalPower:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 2, -1)
+    self.AdditionalPower:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", -2, -1)
 
-    self.AdditionalPower.frequentUpdates = true
     self.AdditionalPower.Smooth = true
 
     self.AdditionalPower:CreateBorder(4)

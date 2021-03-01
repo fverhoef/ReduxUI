@@ -23,7 +23,8 @@ if ns.oUF.isClassic then
     if not _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO then
         _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO = {
             DRUID = {
-                [Enum.PowerType.Mana] = true,
+                [Enum.PowerType.Mana] = false,
+                [Enum.PowerType.Energy] = true,
             }
         };
     end

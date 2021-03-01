@@ -10,14 +10,14 @@ R:RegisterModuleConfig(MM, {
     showNorthTag = true,
     zoneText = {
         enabled = true,
-        showBackground = true,
+        showBackground = false,
         font = R.config.defaults.profile.fonts.normal,
         fontSize = 14,
         fontOutline = "OUTLINE",
         fontShadow = true,
         justifyH = "CENTER"
     },
-    infoPanel = {enabled = true, showBackground = true, showTime = true},
+    infoPanel = {enabled = true, showBackground = false, showTime = true},
     mask = R.media.textures.minimap.minimapMask3,
     border = {enabled = true},
     buttonFrame = {enabled = true, iconSize = 22, buttonSpacing = 2, collapsed = true}
