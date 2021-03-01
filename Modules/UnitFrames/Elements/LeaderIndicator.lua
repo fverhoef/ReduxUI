@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateLeaderIndicator = function(self)
+function UF:CreateLeaderIndicator()
     self.LeaderIndicator = self:CreateTexture("$parentLeaderIcon", "OVERLAY")
     self.LeaderIndicator:SetParent(self.Overlay)
     self.LeaderIndicator:SetSize(16, 16)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateLeaderIndicator", UF.CreateLeaderIndicator)
 
-UF.UpdateLeaderIndicator = function(self)
+function UF:UpdateLeaderIndicator()
     if not self.LeaderIndicator then
         return
     end

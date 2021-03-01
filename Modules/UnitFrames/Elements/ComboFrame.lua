@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local CS = R.Modules.CharacterStats
 local oUF = ns.oUF or oUF
 
-UF.CreateComboFrame = function(self)
+function UF:CreateComboFrame()
     if (CS.class ~= "ROGUE" and CS.class ~= "DRUID") then
         return
     end

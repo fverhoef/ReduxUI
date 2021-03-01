@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateCombatIndicator = function(self)
+function UF:CreateCombatIndicator()
     self.CombatIndicator = self:CreateTexture("$parentCombatIcon", "OVERLAY")
     self.CombatIndicator:SetParent(self.Overlay)
     self.CombatIndicator:SetDrawLayer("OVERLAY", 7)
@@ -23,7 +23,7 @@ end
 
 oUF:RegisterMetaFunction("CreateCombatIndicator", UF.CreateCombatIndicator)
 
-UF.UpdateCombatIndicator = function(self)
+function UF:UpdateCombatIndicator()
     if not self.CombatIndicator then
         return
     end

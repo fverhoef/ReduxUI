@@ -2025,7 +2025,7 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
                     UF.config[unit].auras.onlyShowPlayerDebuffs = val
                     UF:UpdateUnit(unit)
                 end
-            },
+            }
         }
     }
 end
@@ -2073,6 +2073,7 @@ R:RegisterModuleConfig(UF, {
             Poison = {0, 0.6, 0, 0.45},
             blendMode = "ADD"
         },
+        targetHighlight = {1, 1, 1, 1},
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,
@@ -2202,8 +2203,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = false},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2328,8 +2328,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = false},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2440,8 +2439,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2553,8 +2551,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2678,8 +2675,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2790,8 +2786,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -2916,8 +2911,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3051,8 +3045,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3189,8 +3182,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3313,8 +3305,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3437,8 +3428,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3562,8 +3552,7 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        auraHighlight = {enabled = true, glow = true, border = true},
-        threat = {enabled = true, glow = true, border = true},
+        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3667,8 +3656,15 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        threat = {enabled = true, glow = true, border = true},
-        target = {enabled = true, glow = true, border = true, arrows = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            threat = true,
+            target = true,
+            targetArrows = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,

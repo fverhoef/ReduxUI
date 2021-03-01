@@ -159,10 +159,16 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
                 self[i]:SetShown(val)
             end
         end
+        self.Border.IsShown = function(self)
+            return self[1]:IsShown()
+        end
         self.Border.SetTexture = function(self, texture)
             for i = 1, 8 do
                 self[i]:SetTexture(texture)
             end
+        end
+        self.Border.GetTexture = function(self)
+            return self[1]:GetTexture()
         end
         self.Border.SetVertexColor = function(self, r, g, b, a)
             for i = 1, 8 do

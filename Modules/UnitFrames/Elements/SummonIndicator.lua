@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateSummonIndicator = function(self)
+function UF:CreateSummonIndicator()
     self.SummonIndicator = self:CreateTexture(nil, "OVERLAY")
     self.SummonIndicator:SetParent(self.Overlay)
     self.SummonIndicator:SetSize(16, 16)
@@ -11,7 +11,7 @@ end
 
 oUF:RegisterMetaFunction("CreateSummonIndicator", UF.CreateSummonIndicator)
 
-UF.UpdateSummonIndicator = function(self)
+function UF:UpdateSummonIndicator()
     if not self.SummonIndicator then
         return
     end

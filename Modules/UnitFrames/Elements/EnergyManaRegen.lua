@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateEnergyManaRegen = function(self)
+function UF:CreateEnergyManaRegen()
     self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
     self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
     self.EnergyManaRegen:SetAllPoints()
@@ -14,7 +14,7 @@ end
 
 oUF:RegisterMetaFunction("CreateEnergyManaRegen", UF.CreateEnergyManaRegen)
 
-UF.UpdateEnergyManaRegen = function(self)
+function UF:UpdateEnergyManaRegen()
     if not self.EnergyManaRegen then
         return
     end

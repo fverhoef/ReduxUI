@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateRaidRoleIndicator = function(self)
+function UF:CreateRaidRoleIndicator()
     self.RaidRoleIndicator = self:CreateTexture(nil, "OVERLAY")
     self.RaidRoleIndicator:SetParent(self.Overlay)
     self.RaidRoleIndicator:SetSize(14, 14)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateRaidRoleIndicator", UF.CreateRaidRoleIndicator)
 
-UF.UpdateRaidRoleIndicator = function(self)
+function UF:UpdateRaidRoleIndicator()
     if not self.RaidRoleIndicator then
         return
     end

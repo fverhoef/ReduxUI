@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreatePhaseIndicator = function(self)
+function UF:CreatePhaseIndicator()
     self.PhaseIndicator = self:CreateTexture("$parentPhaseIcon", "OVERLAY")
     self.PhaseIndicator:SetParent(self.Overlay)
     self.PhaseIndicator:SetSize(18, 18)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreatePhaseIndicator", UF.CreatePhaseIndicator)
 
-UF.UpdatePhaseIndicator = function(self)
+function UF:UpdatePhaseIndicator()
     if not self.PhaseIndicator then
         return
     end

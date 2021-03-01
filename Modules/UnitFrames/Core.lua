@@ -148,6 +148,9 @@ function UF:SetupFrame(self)
     if self.config.castbar then
         self:CreateCastbar()
     end
+    if self.config.auras then
+        self:CreateAuras()
+    end
 
     do -- indicators
         if self.config.combatIndicator then
@@ -200,18 +203,13 @@ function UF:SetupFrame(self)
         end
     end
 
-    if self.config.auras then
-        self:CreateAuras()
-    end
-    if self.config.auraHighlight then
-        self:CreateAuraHighlight()
-    end
-    if self.config.threat then
-        self:CreateThreatIndicator()
-    end
-    if self.config.target then
-        self:CreateTargetIndicator()
-    end
+    -- highlights
+    self:CreateHighlight()
+    self:CreateAuraHighlight()
+    self:CreateThreatIndicator()
+    self:CreateTargetIndicator()
+
+    self:UpdateHighlight()
 end
 
 function UF:UpdateFrame(self)

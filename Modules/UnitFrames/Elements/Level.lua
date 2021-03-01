@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateLevel = function(self)
+function UF:CreateLevel()
     self.Level = self:CreateFontString("$parentLevel", "OVERLAY")
     self.Level:SetParent(self.Overlay)
     self.Level:SetFont(UF.config.font, 12, "THICKOUTLINE")
@@ -15,7 +15,7 @@ end
 
 oUF:RegisterMetaFunction("CreateLevel", UF.CreateLevel)
 
-UF.UpdateLevel = function(self)
+function UF:UpdateLevel()
     if not self.Level then
         return
     end

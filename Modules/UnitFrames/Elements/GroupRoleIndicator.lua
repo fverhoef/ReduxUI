@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateGroupRoleIndicator = function(self)
+function UF:CreateGroupRoleIndicator()
     self.GroupRoleIndicator = self.GroupRoleIndicatorParent:CreateTexture("$parentGroupRoleIcon", "OVERLAY", nil, 7)
     self.GroupRoleIndicator:SetParent(self.Overlay)
     self.GroupRoleIndicator:SetSize(20, 20)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateGroupRoleIndicator", UF.CreateGroupRoleIndicator)
 
-UF.UpdateGroupRoleIndicator = function(self)
+function UF:UpdateGroupRoleIndicator()
     if not self.GroupRoleIndicator then
         return
     end

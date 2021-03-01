@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateResurrectIndicator = function(self)
+function UF:CreateResurrectIndicator()
     self.ResurrectIndicator = self:CreateTexture(nil, "OVERLAY")
     self.ResurrectIndicator:SetParent(self.Overlay)
     self.ResurrectIndicator:SetSize(16, 16)
@@ -11,7 +11,7 @@ end
 
 oUF:RegisterMetaFunction("CreateResurrectIndicator", UF.CreateResurrectIndicator)
 
-UF.UpdateResurrectIndicator = function(self)
+function UF:UpdateResurrectIndicator()
     if not self.ResurrectIndicator then
         return
     end

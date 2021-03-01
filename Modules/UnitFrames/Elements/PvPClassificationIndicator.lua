@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreatePvPClassificationIndicator = function(self)
+function UF:CreatePvPClassificationIndicator()
     self.PvPClassificationIndicator = self:CreateTexture(nil, "OVERLAY")
     self.PvPClassificationIndicator:SetParent(self.Overlay)
     self.PvPClassificationIndicator:SetSize(24, 24)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreatePvPClassificationIndicator", UF.CreatePvPClassificationIndicator)
 
-UF.UpdatePvPClassificationIndicator = function(self)
+function UF:UpdatePvPClassificationIndicator()
     if not self.PvPClassificationIndicator then
         return
     end

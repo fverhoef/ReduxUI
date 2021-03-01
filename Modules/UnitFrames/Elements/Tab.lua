@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateTab = function(self)
+function UF:CreateTab()
     self.Tab = {}
     local tabCoordTable = {[1] = {0.1875, 0.53125, 0, 1}, [2] = {0.53125, 0.71875, 0, 1}, [3] = {0, 0.1875, 0, 1}}
 
@@ -48,7 +48,7 @@ end
 
 oUF:RegisterMetaFunction("CreateTab", UF.CreateTab)
 
-UF.UpdateTab = function(self)
+function UF:UpdateTab()
     if not self.Tab then
         return
     end

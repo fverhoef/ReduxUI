@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreatePowerPrediction = function(self)
+function UF:CreatePowerPrediction()
     local mainBar = CreateFrame("StatusBar", nil, self.Power)
     mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
     mainBar:SetFrameLevel(self:GetFrameLevel() - 1)
@@ -32,7 +32,7 @@ end
 
 oUF:RegisterMetaFunction("CreatePowerPrediction", UF.CreatePowerPrediction)
 
-UF.UpdatePowerPrediction = function(self)
+function UF:UpdatePowerPrediction()
     if not self.PowerPrediction then
         return
     end

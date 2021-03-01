@@ -4,7 +4,7 @@ local BS = R.Modules.ButtonStyles
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateAuras = function(self)
+function UF:CreateAuras()
     local config = self.config.auras
 
     self.Auras = CreateFrame("Frame", "$parentAuras", self)
@@ -65,11 +65,11 @@ end
 
 oUF:RegisterMetaFunction("CreateAuras", UF.CreateAuras)
 
-UF.PostCreateAura = function(self, button)
+function UF:PostCreateAura(button)
     R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
-UF.PostUpdateAura = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
+function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
     local name, duration, expiration, caster, spellID
     if R.isClassic and R.Libs.ClassicDurations and not UnitIsUnit("player", unit) then
         local durationNew, expirationTimeNew
@@ -107,7 +107,7 @@ UF.PostUpdateAura = function(self, unit, button, index, position, duration, expi
     R.Modules.ButtonStyles:UpdateAuraButton(button)
 end
 
-UF.UpdateAuras = function(self)
+function UF:UpdateAuras()
     local config = self.config.auras
 
     if config.enabled then

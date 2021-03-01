@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateRestingIndicator = function(self)
+function UF:CreateRestingIndicator()
     self.RestingIndicator = self:CreateTexture("$parentRestingIcon", "OVERLAY")
     self.RestingIndicator:SetParent(self.Overlay)
     self.RestingIndicator:SetDrawLayer("OVERLAY", 7)
@@ -22,7 +22,7 @@ end
 
 oUF:RegisterMetaFunction("CreateRestingIndicator", UF.CreateRestingIndicator)
 
-UF.UpdateRestingIndicator = function(self)
+function UF:UpdateRestingIndicator()
     if not self.RestingIndicator then
         return
     end

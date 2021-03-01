@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateReadyCheckIndicator = function(self)
+function UF:CreateReadyCheckIndicator()
     self.ReadyCheckIndicator = self:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
     self.ReadyCheckIndicator:SetParent(self.Overlay)
     self.ReadyCheckIndicator.delayTime = 2
@@ -14,7 +14,7 @@ end
 
 oUF:RegisterMetaFunction("CreateReadyCheckIndicator", UF.CreateReadyCheckIndicator)
 
-UF.UpdateReadyCheckIndicator = function(self)
+function UF:UpdateReadyCheckIndicator()
     if not self.ReadyCheckIndicator then
         return
     end

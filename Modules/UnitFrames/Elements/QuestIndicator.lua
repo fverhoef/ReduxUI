@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateQuestIndicator = function(self)
+function UF:CreateQuestIndicator()
     self.QuestIndicator = self:CreateTexture("$parentQuestIcon", "OVERLAY")
     self.QuestIndicator:SetParent(self.Overlay)
     self.QuestIndicator:SetSize(32, 32)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateQuestIndicator", UF.CreateQuestIndicator)
 
-UF.UpdateQuestIndicator = function(self)
+function UF:UpdateQuestIndicator()
     if not self.QuestIndicator then
         return
     end

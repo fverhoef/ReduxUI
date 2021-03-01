@@ -177,11 +177,13 @@ function UF:UpdatePlayer()
         self.CombatIndicator:SetPoint("TOPLEFT", self.RestingIndicator, 1, 1)
         self.CombatIndicator:SetSize(32, 31)
         
-        self.ThreatIndicator:ClearAllPoints()
-        self.ThreatIndicator:SetSize(242, 93)
-        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, 13, 0)
-        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
-        self.ThreatIndicator:SetTexCoord(0.9453125, 0, 0, 0.181640625)
+        self.Highlight:ClearAllPoints()
+        self.Highlight:SetSize(242, 93)
+        self.Highlight:SetPoint("TOPLEFT", self.Texture, 13, 0)
+        self.Highlight:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
+        self.Highlight:SetTexCoord(0.9453125, 0, 0, 0.181640625)
+    else
+        self.Highlight:SetTexture(nil)
     end
 end
 

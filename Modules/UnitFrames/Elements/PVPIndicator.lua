@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreatePvPIndicator = function(self)
+function UF:CreatePvPIndicator()
     self.PvPIndicator = self:CreateTexture("$parentPvPIcon", "OVERLAY", nil, 7)
     self.PvPIndicator:SetParent(self.Overlay)
     self.PvPIndicator:SetSize(40, 42)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreatePvPIndicator", UF.CreatePvPIndicator)
 
-UF.UpdatePvPIndicator = function(self)
+function UF:UpdatePvPIndicator()
     if not self.PvPIndicator then
         return
     end

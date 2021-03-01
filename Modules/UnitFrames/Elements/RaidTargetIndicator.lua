@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateRaidTargetIndicator = function(self)
+function UF:CreateRaidTargetIndicator()
     self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "OVERLAY", nil, 7)
     self.RaidTargetIndicator:SetParent(self.Overlay)
     self.RaidTargetIndicator:SetSize(24, 24)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateRaidTargetIndicator", UF.CreateRaidTargetIndicator)
 
-UF.UpdateRaidTargetIndicator = function(self)
+function UF:UpdateRaidTargetIndicator()
     if not self.RaidTargetIndicator then
         return
     end

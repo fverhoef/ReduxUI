@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateMasterLooterIndicator = function(self)
+function UF:CreateMasterLooterIndicator()
     self.MasterLooterIndicator = self:CreateTexture(nil, "OVERLAY")
     self.MasterLooterIndicator:SetParent(self.Overlay)
     self.MasterLooterIndicator:SetSize(14, 14)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateMasterLooterIndicator", UF.CreateMasterLooterIndicator)
 
-UF.UpdateMasterLooterIndicator = function(self)
+function UF:UpdateMasterLooterIndicator()
     if not self.MasterLooterIndicator then
         return
     end

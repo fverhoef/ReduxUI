@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateStatusFlash = function(self)
+function UF:CreateStatusFlash()
     self.StatusFlashParent = CreateFrame("Frame", nil, self)
     self.StatusFlash = self:CreateTexture("$parentStatusFlash", "ARTWORK")
     self.StatusFlash:SetTexCoord(0, 0.74609375, 0, 0.53125)
@@ -24,7 +24,7 @@ end
 
 oUF:RegisterMetaFunction("CreateStatusFlash", UF.CreateStatusFlash)
 
-UF.UpdateStatusFlashVisibility = function(self)
+function UF:UpdateStatusFlashVisibility()
     if not self.StatusFlash then
         return
     end
@@ -55,7 +55,7 @@ UF.UpdateStatusFlashVisibility = function(self)
     end
 end
 
-UF.UpdateStatusFlash = function(self, elapsed)
+function UF:UpdateStatusFlash(elapsed)
     if not self.StatusFlash then
         return
     end

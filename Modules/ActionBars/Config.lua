@@ -364,10 +364,11 @@ R:RegisterModuleOptions(AB, {
                         AB:UpdateAll()
                     end
                 },
+                linebreak1 = {type = "description", name = "", order = 2},
                 theme = {
                     type = "select",
                     name = "Theme",
-                    order = 2,
+                    order = 10,
                     values = AB.ARTWORK_THEMES,
                     get = function()
                         for key, val in pairs(AB.ARTWORK_THEMES) do

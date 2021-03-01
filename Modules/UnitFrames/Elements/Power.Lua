@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreatePower = function(self)
+function UF:CreatePower()
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
     self.Power:SetFrameLevel(self:GetFrameLevel() - 2)
@@ -34,7 +34,7 @@ end
 
 oUF:RegisterMetaFunction("CreatePower", UF.CreatePower)
 
-UF.UpdatePower = function(self)
+function UF:UpdatePower()
     if not self.Power then
         return
     end

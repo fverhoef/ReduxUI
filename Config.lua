@@ -14,7 +14,7 @@ R.BORDER_STYLES = {
     [R.media.textures.borders.entropy] = "Entropy",
     [R.media.textures.borders.goldpaw] = "Goldpaw",
     [R.media.textures.borders.onyx] = "Onyx",
-    [R.media.textures.borders.retina] = "Retina",
+    [R.media.textures.borders.retina] = "Retina"
 }
 
 R.config = {}
@@ -29,6 +29,7 @@ R.config.defaults = {
             replaceBlizzardFonts = true
         },
         borders = {size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255}},
+        shadows = {color = {0, 0, 0}},
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
             highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight

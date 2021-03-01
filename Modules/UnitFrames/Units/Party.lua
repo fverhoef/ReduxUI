@@ -206,10 +206,12 @@ function UF:UpdateParty()
         self.CastbarParent:SetSize(89, 15)
         self.CastbarParent:SetPoint("TOPLEFT", self, "TOPRIGHT", 15, -13)
         
-        self.ThreatIndicator:ClearAllPoints()
-        self.ThreatIndicator:SetSize(128, 63)
-        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, -3, 4)
-        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
+        self.Highlight:ClearAllPoints()
+        self.Highlight:SetSize(128, 63)
+        self.Highlight:SetPoint("TOPLEFT", self.Texture, -3, 4)
+        self.Highlight:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
+    else
+        self.Highlight:SetTexture(nil)
     end
 end
 

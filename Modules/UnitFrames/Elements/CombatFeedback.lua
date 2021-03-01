@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateCombatFeedback = function(self)
+function UF:CreateCombatFeedback()
     local config = self.config.combatfeedback
     self.CombatFeedbackText = self:CreateFontString(nil, "OVERLAY")
     if self.Portrait then
@@ -23,7 +23,7 @@ end
 
 oUF:RegisterMetaFunction("CreateCombatFeedback", UF.CreateCombatFeedback)
 
-UF.UpdateCombatFeedback = function(self)
+function UF:UpdateCombatFeedback()
     local config = self.config.combatfeedback
     if config.enabled then
         self:EnableElement("CombatFeedbackText")

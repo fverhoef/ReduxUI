@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateAssistantIndicator = function(self)
+function UF:CreateAssistantIndicator()
     self.AssistantIndicator = self:CreateTexture("$parentAssistIcon", "OVERLAY")
     self.AssistantIndicator:SetParent(self.Overlay)
     self.AssistantIndicator:SetSize(16, 16)
@@ -13,7 +13,7 @@ end
 
 oUF:RegisterMetaFunction("CreateAssistantIndicator", UF.CreateAssistantIndicator)
 
-UF.UpdateAssistantIndicator = function(self)
+function UF:UpdateAssistantIndicator()
     if not self.AssistantIndicator then
         return
     end

@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateName = function(self)
+function UF:CreateName()
     self.Name = self:CreateFontString("$parentName", "OVERLAY")
     self.Name:SetParent(self.Overlay)
     self.Name:SetFont(UF.config.font, 13, "OUTLINE")
@@ -15,7 +15,7 @@ end
 
 oUF:RegisterMetaFunction("CreateName", UF.CreateName)
 
-UF.UpdateName = function(self)
+function UF:UpdateName()
     if not self.Name then
         return
     end

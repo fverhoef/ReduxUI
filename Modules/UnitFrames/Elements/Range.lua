@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateRange = function(self)
+function UF:CreateRange()
     self.Range = {
         insideAlpha = 1,
         outsideAlpha = 0.5
@@ -14,7 +14,7 @@ end
 
 oUF:RegisterMetaFunction("CreateRange", UF.CreateRange)
 
-UF.UpdateRange = function(self)
+function UF:UpdateRange()
     if not self.Range then
         return
     end

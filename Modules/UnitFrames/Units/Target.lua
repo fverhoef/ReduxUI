@@ -161,11 +161,13 @@ function UF:UpdateTarget()
             self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5 + self.CastbarParent:GetHeight() + 5)
         end
         
-        self.ThreatIndicator:ClearAllPoints()
-        self.ThreatIndicator:SetSize(239, 92)
-        self.ThreatIndicator:SetPoint("TOPLEFT", self.Texture, -23, 0)
-        self.ThreatIndicator:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
-        self.ThreatIndicator:SetTexCoord(0, 0.9453125, 0, 0.182)
+        self.Highlight:ClearAllPoints()
+        self.Highlight:SetSize(239, 92)
+        self.Highlight:SetPoint("TOPLEFT", self.Texture, -23, 0)
+        self.Highlight:SetTexture(R.media.textures.unitFrames.targetFrame_Flash)
+        self.Highlight:SetTexCoord(0, 0.9453125, 0, 0.182)
+    else
+        self.Highlight:SetTexture(nil)
     end
 
     UF.UpdateTargetFrameTexture(self)

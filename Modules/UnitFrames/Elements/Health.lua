@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateHealth = function(self)
+function UF:CreateHealth()
     self.Health = CreateFrame("StatusBar", nil, self)
     self.Health:SetStatusBarTexture(UF.config.statusbars.health)
     self.Health:SetFrameLevel(self:GetFrameLevel() - 1)
@@ -76,7 +76,7 @@ end
 
 oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)
 
-UF.UpdateHealth = function(self)
+function UF:UpdateHealth()
     if not self.Health then
         return
     end

@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateAuraHighlight = function(self)
+function UF:CreateAuraHighlight()
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
     self.AuraHighlight:SetParent(self.Overlay)
     self.AuraHighlight:SetInside(self)
@@ -12,9 +12,7 @@ UF.CreateAuraHighlight = function(self)
     self.AuraHighlight:SetBlendMode("ADD")
     self.AuraHighlight.PostUpdate = UF.AuraHighlight_PostUpdate
 
-    self.AuraHightlightGlow = self:CreateShadow(nil, nil, true)
-    self.AuraHightlightGlow:Hide()
-
+    self.AuraHighlightBackdrop = false
     self.AuraHighlightFilter = false
     self.AuraHighlightFilterTable = {}
 
@@ -23,33 +21,26 @@ end
 
 oUF:RegisterMetaFunction("CreateAuraHighlight", UF.CreateAuraHighlight)
 
-UF.UpdateAuraHighlight = function(self)
+function UF:UpdateAuraHighlight()
     if not self.AuraHighlight then
         return
     end
 
-    local config = self.config.auraHighlight
-    if config.enabled then
+    local config = self.config.highlight
+    if config.debuffs then
         self:EnableElement("AuraHighlight")
 
         self.AuraHighlight:SetBlendMode(UF.config.colors.auraHighlight.blendMode)
-        self.AuraHighlight:SetAllPoints(self.Health:GetStatusBarTexture())
-
-        self.AuraHighlightBackdrop = config.glow
-        self.AuraHighlightBorder = config.border
     else
-        self:EnableElement("AuraHighlight")
+        self:DisableElement("AuraHighlight")
+
+        self.debuffColor = nil
     end
 end
 
 oUF:RegisterMetaFunction("UpdateAuraHighlight", UF.UpdateAuraHighlight)
 
 function UF:AuraHighlight_PostUpdate(self, debuffType, texture, wasFiltered, style, color)
-    if self.AuraHighlightBorder then
-        if debuffType and not wasFiltered and color then
-            self:SetBorderColor(color.r, color.g, color.b, color.a)
-        else
-            self:SetBorderColor(unpack(R.config.db.profile.borders.color))
-        end
-    end
+    self.debuffColor = not wasFiltered and debuffType and color and {color.r, color.g, color.b, color.a} or nil
+    self:UpdateHighlight()
 end

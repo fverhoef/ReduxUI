@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.CreateCastbar = function(self)
+function UF:CreateCastbar()
     local config = self.config.castbar
 
     self.CastbarParent = CreateFrame("Frame", self:GetName() .. "CastbarParent", self)
@@ -76,7 +76,7 @@ end
 
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
 
-UF.UpdateCastbar = function(self)
+function UF:UpdateCastbar()
     if not self.CastbarParent then
         return
     end

@@ -10,6 +10,7 @@
     <Script file="EnergyManaRegen.lua"/>
     <Script file="GroupRoleIndicator.lua"/>
     <Script file="Health.lua"/>
+    <Script file="Highlight.lua"/>
     <Script file="LeaderIndicator.lua"/>
     <Script file="Level.lua"/>
     <Script file="MasterLooterIndicator.lua"/>
