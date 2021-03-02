@@ -122,6 +122,11 @@ function UF:UpdateHealth()
         elseif self.config.portrait.attachedPoint == "RIGHT" then
             rightOffset = rightOffset - (self.config.portrait.size[1] or 0)
         end
+    elseif config.padding then
+        leftOffset = leftOffset + (config.padding[1] or config.padding)
+        rightOffset = rightOffset + (config.padding[2] or config.padding)
+        topOffset = topOffset + (config.padding[3] or config.padding)
+        bottomOffset = bottomOffset + (config.padding[4] or config.padding)
     end
 
     self.Health:ClearAllPoints()

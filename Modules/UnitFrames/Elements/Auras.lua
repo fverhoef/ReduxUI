@@ -12,7 +12,7 @@ function UF:CreateAuras()
     self.Auras.size = config.iconSize or 25
     self.Auras:SetHeight(self.Auras.size * (math.ceil((config.numBuffs + config.numDebuffs) / (config.numColumns or 5))))
     self.Auras:SetWidth(self.Auras.size * (config.numColumns or 5))
-    self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
+    self.Auras:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
     self.Auras.initialAnchor = "TOPLEFT"
     self.Auras["growth-x"] = "RIGHT"
     self.Auras["growth-y"] = "DOWN"
@@ -33,7 +33,7 @@ function UF:CreateAuras()
     self.Buffs.size = config.iconSize or 25
     self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.numBuffs / (config.numColumns or 5))))
     self.Buffs:SetWidth(self.Buffs.size * (config.numColumns or 5))
-    self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -2, -5)
+    self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
     self.Buffs.initialAnchor = "TOPLEFT"
     self.Buffs["growth-x"] = "RIGHT"
     self.Buffs["growth-y"] = "DOWN"
@@ -50,7 +50,7 @@ function UF:CreateAuras()
     self.Debuffs.size = config.iconSize or 25
     self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.numDebuffs / (config.numColumns or 5))))
     self.Debuffs:SetWidth(self.Debuffs.size * (config.numColumns or 5))
-    self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 2, 5)
+    self.Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
     self.Debuffs.initialAnchor = "BOTTOMLEFT"
     self.Debuffs["growth-x"] = "RIGHT"
     self.Debuffs["growth-y"] = "UP"
@@ -140,6 +140,13 @@ function UF:UpdateAuras()
         self.Debuffs.spacing = config.spacing
         self.Debuffs:SetShown(config.showDebuffsOnTop)
         self.Debuffs:ForceUpdate()
+
+        self.Auras:ClearAllPoints()
+        self.Auras:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
+        self.Buffs:ClearAllPoints()
+        self.Buffs:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
+        self.Debuffs:ClearAllPoints()
+        self.Debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
     else
         self:DisableElement("Auras")
     end

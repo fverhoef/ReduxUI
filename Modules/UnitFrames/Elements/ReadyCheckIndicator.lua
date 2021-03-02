@@ -9,6 +9,8 @@ function UF:CreateReadyCheckIndicator()
     self.ReadyCheckIndicator.delayTime = 2
     self.ReadyCheckIndicator.fadeTime = 0.5
 
+    -- TODO: oUF's ready check element only works on party/unit
+
     return self.ReadyCheckIndicator
 end
 

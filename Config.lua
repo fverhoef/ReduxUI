@@ -204,8 +204,8 @@ R.config.options = {
                             name = "Default Size",
                             desc = "The default size of borders.",
                             order = 2,
-                            min = 0,
-                            softMax = 100,
+                            min = 1,
+                            softMax = 10,
                             step = 1,
                             get = function()
                                 return R.config.db.profile.borders.size

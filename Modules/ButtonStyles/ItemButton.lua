@@ -36,7 +36,7 @@ function BS:StyleItemButton(button)
 
     local isLargeItemButton = nameFrame ~= nil
     if isLargeItemButton then
-        button:CreateBorder(4, BS.config.borders.texture)
+        button:CreateBorder(nil, BS.config.borders.texture)
         button:CreateBackdrop(nil, nil, nil, 3, 3)
         nameFrame:SetTexture(nil)
     else

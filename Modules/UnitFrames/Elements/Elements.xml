@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="AdditionalPower.lua"/>
     <Script file="AssistantIndicator.lua"/>
+    <Script file="Artwork.lua"/>
     <Script file="AuraHighlight.lua"/>
     <Script file="Auras.lua"/>
     <Script file="Castbar.lua"/>
@@ -29,7 +30,6 @@
     <Script file="ReadyCheckIndicator.lua"/>
     <Script file="ResurrectIndicator.lua"/>
     <Script file="RestingIndicator.lua"/>
-    <Script file="StatusFlash.lua"/>
     <Script file="SummonIndicator.lua"/>
     <Script file="Tab.lua"/>
     <Script file="TargetIndicator.lua"/>

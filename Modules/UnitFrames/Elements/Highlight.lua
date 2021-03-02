@@ -4,7 +4,6 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateHighlight()
-    self.Highlight = self:CreateTexture("$parentHighlight", "BACKGROUND")
 end
 
 oUF:RegisterMetaFunction("CreateHighlight", UF.CreateHighlight)
@@ -27,11 +26,12 @@ function UF:UpdateHighlight()
 
     local borderColor = config.colorBorder and color or R.config.db.profile.borders.color
     self:SetBorderColor(unpack(borderColor))
-    self.Highlight:SetVertexColor(unpack(borderColor))
-    self.Highlight:SetShown(config.colorBorder and color and true or false)
     
     local shadowColor = config.colorShadow and color or R.config.db.profile.shadows.color
     self:SetShadowColor(unpack(shadowColor))
+    
+    self.Artwork.Highlight:SetVertexColor(unpack(borderColor))
+    --self.Artwork.Highlight:SetShown(config.colorBorder and color and true or false)
 end
 
 oUF:RegisterMetaFunction("UpdateHighlight", UF.UpdateHighlight)

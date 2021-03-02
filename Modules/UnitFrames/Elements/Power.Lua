@@ -6,7 +6,7 @@ local oUF = ns.oUF or oUF
 function UF:CreatePower()
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
-    self.Power:SetFrameLevel(self:GetFrameLevel() - 2)
+    self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
     self.Power.config = self.config.power
@@ -70,28 +70,24 @@ function UF:UpdatePower()
             self.Power.Value:Hide()
         end
 
+        local leftOffset = config.padding and config.padding[1] or 0
+        local rightOffset = config.padding and config.padding[2] or 0
+        local topOffset = config.padding and config.padding[3] or 0
+        local bottomOffset = config.padding and config.padding[4] or 0
+
         self.Power:SetSize(unpack(config.size))
         self.Power:ClearAllPoints()
         if config.detached then
             self.Power:Point(unpack(config.point))
         else
-            if self.config.portrait and self.config.portrait.enabled and not self.config.portrait.detached and
-                self.config.portrait.attachedPoint == "RIGHT" then
-                self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT")
-                self.Power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT",
-                                    self.config.border.enabled and self.config.border.size / 2 or 0, 0)
-            else
-                self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT")
-                self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT",
-                                    self.config.border.enabled and -self.config.border.size / 2 or 0, 0)
-            end
+            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", leftOffset, topOffset)
+            self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", rightOffset, topOffset)
+            self.Power:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
         end
 
         self.Power.Border:SetShown(config.detached and config.border.enabled)
-        self.Power:SetBorderPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
-
         self.Power.Shadow:SetShown(config.detached and config.shadow.enabled)
-        self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 1, 0, 0)
+        self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
     else
         self:DisableElement("Power")
     end

@@ -18,26 +18,6 @@ function UF:CreatePet()
 
     UF:SetupFrame(self)
 
-    self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
-    self.Texture:SetSize(128, 64)
-    self.Texture:SetPoint("TOPLEFT", self, 0, -2)
-    self.Texture:SetTexture(R.media.textures.unitFrames.smallTargetingFrame)
-
-    if self.config.auras.enabled then
-        if self.Auras then
-            self.Auras:ClearAllPoints()
-            self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
-        else
-            self.Buffs:ClearAllPoints()
-            self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 46, -2)
-            self.Buffs.initialAnchor = "TOPLEFT"
-
-            self.Debuffs:ClearAllPoints()
-            self.Debuffs:SetPoint("TOPLEFT", self, "TOPRIGHT", 16, 7)
-            self.Debuffs.initialAnchor = "TOPLEFT"
-        end
-    end
-
     self:CreateRange()
     self:CreateAuraHighlight()
 
@@ -49,9 +29,10 @@ function UF:UpdatePet()
         return
     end
     
+    UF:Pet_ApplyTheme(UF.config.theme)
     UF:UpdateFrame(self)
 
-    if UF:IsBlizzardTheme() then
+    if false then
         self.Border:Hide()
         self.Shadow:Hide()
 
@@ -100,7 +81,16 @@ function UF:UpdatePet()
         self.Highlight:SetPoint("TOPLEFT", self.Texture, -5, 13)
         self.Highlight:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
         self.Highlight:SetTexCoord(0, 1, 1, 0)
-    else
-        self.Highlight:SetTexture(nil)
+
+        self.Auras:ClearAllPoints()
+        self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
+        
+        self.Buffs:ClearAllPoints()
+        self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 46, -2)
+        self.Buffs.initialAnchor = "TOPLEFT"
+
+        self.Debuffs:ClearAllPoints()
+        self.Debuffs:SetPoint("TOPLEFT", self, "TOPRIGHT", 16, 7)
+        self.Debuffs.initialAnchor = "TOPLEFT"
     end
 end

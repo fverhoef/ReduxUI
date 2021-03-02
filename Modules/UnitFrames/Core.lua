@@ -128,6 +128,7 @@ function UF:SetupFrame(self)
     self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
     self.Overlay:SetAllPoints()
 
+    self:CreateArtwork()
     self:CreateBorder(self.config.border.size)
     self:CreateShadow()
 
@@ -224,6 +225,7 @@ function UF:UpdateFrame(self)
     self:SetScale(self.config.scale or 1)
     self:SetFrameLevel(self.config.frameLevel or 10)
 
+    self:UpdateArtwork()
     self:UpdateHealth()
     self:UpdatePower()
     self:UpdatePowerPrediction()
@@ -255,11 +257,6 @@ function UF:UpdateFrame(self)
     self:UpdateResurrectIndicator()
     self:UpdateSummonIndicator()
     self:UpdateOfflineIcon()
-
-    if self.Texture then
-        self.Texture:SetTexture(self.config.texture)
-        self.Texture:SetVertexColor(unpack(self.config.textureColor))
-    end
 
     self.Border:SetShown(self.config.border.enabled)
     self.Shadow:SetShown(self.config.shadow.enabled)

@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    self.Portrait = self.Health:CreateTexture("$parentPortrait", "BACKGROUND")
+    self.Portrait = self:CreateTexture("$parentPortrait", "BACKGROUND")
     self.Portrait.PostUpdate = function()
         self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
     end
@@ -43,7 +43,11 @@ function UF:UpdatePortrait()
             self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
         end
 
-        self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+        if config.round then
+            self.Portrait:SetTexCoord(0, 1, 0, 1)
+        else
+            self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+        end
 
         self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
         self.PortraitHolder:SetBorderSize(config.border.size)

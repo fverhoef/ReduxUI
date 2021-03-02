@@ -297,7 +297,7 @@ function TT:SetBackdropStyle()
     })
     self:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
-    self:CreateBorder(4)
+    self:CreateBorder()
     self:CreateShadow()
 end
 

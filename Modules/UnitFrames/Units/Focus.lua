@@ -27,7 +27,4 @@ function UF:UpdateFocus()
     end
 
     UF:UpdateFrame(self)
-
-    if UF:IsBlizzardTheme() then
-    end
 end

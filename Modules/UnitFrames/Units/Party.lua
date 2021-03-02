@@ -95,25 +95,8 @@ function UF:CreateParty()
 
     UF:SetupFrame(self)
 
-    self.Texture = self:CreateTexture("$parentFrameTexture", "BORDER")
-
     self:CreateRange()
     self:CreateAuraHighlight()
-
-    if self.config.auras.enabled then
-        if self.Auras then
-            self.Auras:ClearAllPoints()
-            self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)
-        else
-            self.Buffs:ClearAllPoints()
-            self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 46, -2)
-            self.Buffs.initialAnchor = "TOPLEFT"
-
-            self.Debuffs:ClearAllPoints()
-            self.Debuffs:SetPoint("TOPLEFT", self, "TOPRIGHT", 16, 7)
-            self.Debuffs.initialAnchor = "TOPLEFT"
-        end
-    end
 
     self.Update = UF.UpdateParty
 end
@@ -123,9 +106,10 @@ function UF:UpdateParty()
         return
     end
 
+    UF:Party_ApplyTheme(UF.config.theme)
     UF:UpdateFrame(self)
 
-    if UF:IsBlizzardTheme() then
+    if false then
         self.Border:Hide()
         self.Shadow:Hide()
 
@@ -210,8 +194,15 @@ function UF:UpdateParty()
         self.Highlight:SetSize(128, 63)
         self.Highlight:SetPoint("TOPLEFT", self.Texture, -3, 4)
         self.Highlight:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
-    else
-        self.Highlight:SetTexture(nil)
+
+        self.Auras:ClearAllPoints()
+        self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 30, 15)        
+        self.Buffs:ClearAllPoints()
+        self.Buffs:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 46, -2)
+        self.Buffs.initialAnchor = "TOPLEFT"
+        self.Debuffs:ClearAllPoints()
+        self.Debuffs:SetPoint("TOPLEFT", self, "TOPRIGHT", 16, 7)
+        self.Debuffs.initialAnchor = "TOPLEFT"
     end
 end
 

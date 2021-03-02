@@ -31,6 +31,7 @@ function UF:UpdateAuraHighlight()
         self:EnableElement("AuraHighlight")
 
         self.AuraHighlight:SetBlendMode(UF.config.colors.auraHighlight.blendMode)
+        self.AuraHighlightFilter = config.onlyDispellableDebuffs
     else
         self:DisableElement("AuraHighlight")
 

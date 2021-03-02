@@ -3,25 +3,11 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth", Custom = "Custom"}
-UF.themedUnits = {
-    ["player"] = true,
-    ["target"] = true,
-    ["targettarget"] = true,
-    ["pet"] = true,
-    ["focus"] = true,
-    ["focustarget"] = true,
-    ["party"] = true,
-    ["boss"] = true
-}
+UF.themes = {None = "None", Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth"}
 UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
 UF.anchors = {"UIParent", "Player", "Target", "Pet"}
 UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 UF.groupAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
-
-function UF:IsBlizzardTheme()
-    return UF.config.theme == UF.themes.Blizzard or UF.config.theme == UF.themes.Blizzard_LargeHealth
-end
 
 function UF:CreateStatusBarTextureOption(name, desc, option, order)
     return {
@@ -215,9 +201,6 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].size[1]
                 end,
@@ -233,9 +216,6 @@ function UF:CreateUnitSizeOption(unit, order, inline, name)
                 min = 10,
                 softMax = 400,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].size[2]
                 end,
@@ -274,9 +254,6 @@ function UF:CreateUnitBorderOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Enabled",
                 order = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].border.enabled
                 end,
@@ -328,9 +305,6 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                         desc = "The anchor point on the text to attach.",
                         order = 11,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             for key, value in ipairs(UF.anchorPoints) do
                                 if value == UF.config[unit].health.value.point[1] then
@@ -349,9 +323,6 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                         desc = "The point on the health bar to attach value text to.",
                         order = 12,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             for key, value in ipairs(UF.anchorPoints) do
                                 if value == UF.config[unit].health.value.point[2] then
@@ -372,9 +343,6 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].health.value.point[3]
                         end,
@@ -391,9 +359,6 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].health.value.point[4]
                         end,
@@ -510,9 +475,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 name = "Detached",
                 desc = "Whether the power bar is detached from the health bar.",
                 order = 10,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].power.detached
                 end,
@@ -530,7 +492,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 softMax = 500,
                 step = 1,
                 disabled = function()
-                    return not UF.config[unit].power.detached or UF.themedUnits[unit] and UF:IsBlizzardTheme()
+                    return not UF.config[unit].power.detached
                 end,
                 get = function()
                     return UF.config[unit].power.size[1]
@@ -548,9 +510,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 min = 0,
                 softMax = 100,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].power.size[2]
                 end,
@@ -612,9 +571,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         desc = "The anchor point on the text string.",
                         order = 11,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             for key, value in ipairs(UF.anchorPoints) do
                                 if value == UF.config[unit].power.value.point[1] then
@@ -633,9 +589,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         desc = "The point on the power bar to attach to.",
                         order = 12,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             for key, value in ipairs(UF.anchorPoints) do
                                 if value == UF.config[unit].power.value.point[2] then
@@ -656,9 +609,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].power.value.point[3]
                         end,
@@ -675,9 +625,6 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         min = -50,
                         softMax = 50,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].power.value.point[4]
                         end,
@@ -784,9 +731,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = 0,
                 softMax = 400,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].name.size[1]
                 end,
@@ -803,9 +747,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].name.size[2]
                 end,
@@ -821,9 +762,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 desc = "The anchor point on the name text.",
                 order = 16,
                 values = UF.anchorPoints,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].name.point[1] then
@@ -842,9 +780,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 desc = "The point on the unit frame to attach to.",
                 order = 17,
                 values = UF.anchorPoints,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].name.point[2] then
@@ -865,9 +800,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].name.point[3]
                 end,
@@ -884,9 +816,6 @@ function UF:CreateUnitNameOption(unit, order, inline, name)
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].name.point[4]
                 end,
@@ -1004,9 +933,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].level.size[1]
                 end,
@@ -1023,9 +949,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = 0,
                 softMax = 50,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].level.size[2]
                 end,
@@ -1041,9 +964,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 desc = "The anchor point on the level text.",
                 order = 16,
                 values = UF.anchorPoints,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].level.point[1] then
@@ -1062,9 +982,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 desc = "The point on the unit frame to attach to.",
                 order = 17,
                 values = UF.anchorPoints,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     for key, value in ipairs(UF.anchorPoints) do
                         if value == UF.config[unit].level.point[2] then
@@ -1085,9 +1002,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].level.point[3]
                 end,
@@ -1104,9 +1018,6 @@ function UF:CreateUnitLevelOption(unit, order, inline, name)
                 min = -500,
                 softMax = 500,
                 step = 1,
-                disabled = function()
-                    return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                end,
                 get = function()
                     return UF.config[unit].level.point[4]
                 end,
@@ -1433,9 +1344,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = 10,
                         softMax = 400,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].castbar.size[1]
                         end,
@@ -1451,9 +1359,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = 8,
                         softMax = 400,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         get = function()
                             return UF.config[unit].castbar.size[2]
                         end,
@@ -1484,9 +1389,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         desc = "The anchor point on the castbar.",
                         order = 21,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -1508,9 +1410,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         desc = "The point on the unit frame to attach to.",
                         order = 22,
                         values = UF.anchorPoints,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -1534,9 +1433,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = -500,
                         softMax = 500,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -1556,9 +1452,6 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         min = -500,
                         softMax = 500,
                         step = 1,
-                        disabled = function()
-                            return UF.themedUnits[unit] and UF:IsBlizzardTheme() or nil
-                        end,
                         hidden = function()
                             return UF.config[unit].castbar.detached
                         end,
@@ -2030,6 +1923,128 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
     }
 end
 
+function UF:CreateUnitHighlightOption(unit, order, inline, name)
+    local highlight = {
+        type = "group",
+        name = name or "Highlighting",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].highlight.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "description", name = "", order = 2},
+            colorBorder = {
+                type = "toggle",
+                name = "Color Border",
+                desc = "Whether to color unit frame borders when highlighting.",
+                order = 10,
+                get = function()
+                    return UF.config[unit].highlight.colorBorder
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.colorBorder = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            colorShadow = {
+                type = "toggle",
+                name = "Color Shadows",
+                desc = "Whether to color unit frame shadows when highlighting.",
+                order = 11,
+                get = function()
+                    return UF.config[unit].highlight.colorShadow
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.colorShadow = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak2 = {type = "description", name = "", order = 20},
+            debuffs = {
+                type = "toggle",
+                name = "Highlight Based On Debuff",
+                desc = "Whether to color unit frames based on debuff type.",
+                order = 21,
+                get = function()
+                    return UF.config[unit].highlight.debuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.debuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            onlyDispellableDebuffs = {
+                type = "toggle",
+                name = "Only Highlight Dispellable Debuffs",
+                desc = "Whether only highlight unit frames when player can dispel the debuff.",
+                order = 22,
+                get = function()
+                    return UF.config[unit].highlight.onlyDispellableDebuffs
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.onlyDispellableDebuffs = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak3 = {type = "description", name = "", order = 30},
+            threat = {
+                type = "toggle",
+                name = "Highlight Based On Threat",
+                desc = "Whether to color unit frames based on debuff type.",
+                order = 31,
+                get = function()
+                    return UF.config[unit].highlight.threat
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.threat = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            target = {
+                type = "toggle",
+                name = "Highlight Target",
+                desc = "Whether to color unit frames when targeted.",
+                order = 32,
+                get = function()
+                    return UF.config[unit].highlight.target
+                end,
+                set = function(_, val)
+                    UF.config[unit].highlight.target = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+
+    if UF.defaults[unit].highlight.targetArrows ~= nil then
+        highlight.args.targetArrows = {
+            type = "toggle",
+            name = "Show Target Arrows",
+            desc = "Whether to show arrows next to the frame when targeted.",
+            order = 33,
+            get = function()
+                return UF.config[unit].highlight.targetArrows
+            end,
+            set = function(_, val)
+                UF.config[unit].highlight.targetArrows = val
+                UF:UpdateUnit(unit)
+            end
+        }
+    end
+
+    return highlight
+end
+
 R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -2042,7 +2057,7 @@ R:RegisterModuleConfig(UF, {
         additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         castbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux")
     },
-    theme = UF.themes.Blizzard_LargeHealth,
+    theme = UF.themes.None,
     colors = {
         health = {49 / 255, 207 / 255, 37 / 255},
         mana = {0 / 255, 140 / 255, 255 / 255},
@@ -2088,8 +2103,25 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 300},
         frameLevel = 10,
+        artwork = {
+            enabled = false,
+            background = {
+                texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
+                coords = {1, 0.09375, 0, 0.78125},
+                point = {"TOPLEFT", -47, 22},
+                size = {232, 100},
+                color = {0.5, 0.5, 0.5, 1}
+            },
+            highlight = {
+                texture = R.media.textures.unitFrames.targetFrame_Flash,
+                coords = {0.9453125, 0, 0, 0.181640625},
+                point = {"TOPLEFT", -33, 22},
+                size = {242, 93}
+            }
+        },
         health = {
             enabled = true,
+            padding = {0, 0, 0, 0},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -2102,9 +2134,9 @@ R:RegisterModuleConfig(UF, {
         },
         power = {
             enabled = true,
-            detached = false,
-            size = {150, 12},
-            point = {"CENTER", "UIParent", "BOTTOM", 0, 360},
+            detached = true,
+            size = {180, 25},
+            point = {"TOP", "UIParent", "BOTTOM", 0, 300},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
             value = {
@@ -2145,12 +2177,14 @@ R:RegisterModuleConfig(UF, {
         portrait = {
             enabled = true,
             detached = false,
+            point = {"LEFT"},
             attachedPoint = "LEFT",
             size = {38, 38},
-            border = {enabled = true, size = 4}
+            border = {enabled = false, size = 4},
+            round = false
         },
         combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
-        restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+        restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
         masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
@@ -2203,12 +2237,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = false},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = false
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     target = {
         enabled = true,
@@ -2216,6 +2256,40 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 300},
         frameLevel = 10,
+        artwork = {
+            enabled = false,
+            background = {
+                texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
+                coords = {0.09375, 1, 0, 0.78125},
+                point = {"TOPRIGHT", 47, 22},
+                size = {232, 100},
+                color = {0.5, 0.5, 0.5, 1}
+            },
+            highlight = {
+                texture = R.media.textures.unitFrames.targetFrame_Flash,
+                coords = {0, 0.9453125, 0, 0.182},
+                point = {"TOPRIGHT", 33, 22},
+                size = {242, 93}
+            },
+            elite = {
+                texture = R.media.textures.unitFrames.targetFrame_Elite,
+                coords = {0.09375, 1, 0, 0.78125},
+                point = {"CENTER", 20, -7},
+                size = {232, 100}
+            },
+            rare = {
+                texture = R.media.textures.unitFrames.targetFrame_Rare,
+                coords = {0.09375, 1, 0, 0.78125},
+                point = {"CENTER", 20, -7},
+                size = {232, 100}
+            },
+            rareElite = {
+                texture = R.media.textures.unitFrames.targetFrame_RareElite,
+                coords = {0.09375, 1, 0, 0.78125},
+                point = {"CENTER", 20, -7},
+                size = {232, 100}
+            }
+        },
         health = {
             enabled = true,
             value = {
@@ -2270,9 +2344,11 @@ R:RegisterModuleConfig(UF, {
         portrait = {
             enabled = true,
             detached = false,
+            point = {"RIGHT"},
             attachedPoint = "RIGHT",
             size = {38, 38},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -2328,19 +2404,35 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = false},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = false
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     targettarget = {
         enabled = true,
         size = {95, 30},
         scale = 1,
-        point = {"TOPLEFT", "UIParent", "BOTTOM", 280, 240},
+        point = {"TOPLEFT", "UIParent", "BOTTOM", 340, 300},
         frameLevel = 20,
+        artwork = {
+            enabled = false,
+            background = {
+                texture = R.media.textures.unitFrames.targetTargetFrame,
+                coords = {0.015625, 0.7265625, 0, 0.703125},
+                point = {"CENTER"},
+                size = {95, 45},
+                color = {0.5, 0.5, 0.5, 1}
+            }
+        },
         health = {
             enabled = true,
             value = {
@@ -2439,12 +2531,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     pet = {
         enabled = true,
@@ -2452,6 +2550,16 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
         frameLevel = 20,
+        artwork = {
+            enabled = false,
+            background = {
+                texture = R.media.textures.unitFrames.smallTargetingFrame,
+                coords = {0, 1, 0, 1},
+                point = {"TOPLEFT", 0, -2},
+                size = {128, 64},
+                color = {0.5, 0.5, 0.5, 1}
+            }
+        },
         health = {
             enabled = true,
             value = {
@@ -2551,12 +2659,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     focus = {
         enabled = R.isRetail,
@@ -2564,6 +2678,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
         frameLevel = 10,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -2675,12 +2790,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     focustarget = {
         enabled = R.isRetail,
@@ -2688,6 +2809,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         frameLevel = 20,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -2786,12 +2908,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     mouseover = {enabled = false},
     party = {
@@ -2800,6 +2928,22 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"RIGHT", "UIParent", "BOTTOM", -160, 240},
         frameLevel = 11,
+        artwork = {
+            enabled = false,
+            background = {
+                texture = R.media.textures.unitFrames.partyFrame,
+                coords = {0, 1, 0, 1},
+                point = {"TOPLEFT", 0, -2},
+                size = {128, 64},
+                color = {0.5, 0.5, 0.5, 1}
+            },
+            highlight = {
+                texture = R.media.textures.unitFrames.partyFrame_Flash,
+                coords = {0, 1, 0, 1},
+                point = {"TOPLEFT", 0, -2},
+                size = {128, 64}
+            }
+        },
         health = {
             enabled = true,
             value = {
@@ -2911,12 +3055,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1},
 
         unitAnchorPoint = "BOTTOM",
         unitSpacing = 50,
@@ -2933,6 +3083,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 20,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -3045,7 +3196,15 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
         fader = R.config.faders.onShow,
@@ -3072,6 +3231,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -3182,12 +3342,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     tank = {
         enabled = true,
@@ -3195,6 +3361,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 10,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -3305,12 +3472,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     assist = {
         enabled = true,
@@ -3318,6 +3491,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 10,
+        artwork = {enabled = false, texture = nil, textureColor = {0.5, 0.5, 0.5, 1}},
         health = {
             enabled = true,
             value = {
@@ -3428,12 +3602,18 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     arena = {
         enabled = true,
@@ -3441,6 +3621,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -3552,18 +3733,25 @@ R:RegisterModuleConfig(UF, {
             ignoreEnergize = false,
             ignoreOther = false
         },
-        highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, threat = true, target = true},
+        highlight = {
+            enabled = true,
+            colorShadow = true,
+            colorBorder = true,
+            debuffs = true,
+            onlyDispellableDebuffs = false,
+            threat = true,
+            target = true
+        },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
-        fader = R.config.faders.onShow,
-        texture = nil,
-        textureColor = {0.5, 0.5, 0.5, 1}
+        fader = R.config.faders.onShow
     },
     nameplates = {
         enabled = true,
         size = {150, 16},
         scale = 1,
         frameLevel = 10,
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {
@@ -3661,6 +3849,7 @@ R:RegisterModuleConfig(UF, {
             colorShadow = true,
             colorBorder = true,
             debuffs = true,
+            onlyDispellableDebuffs = false,
             threat = true,
             target = true,
             targetArrows = true
@@ -3931,31 +4120,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("player", 1, true),
                         position = UF:CreateUnitPositionOption("player", 2, true),
                         border = UF:CreateUnitBorderOption("player", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.player.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.player.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("player")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("player", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("player", 11),
@@ -3991,31 +4156,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("target", 1, true),
                         position = UF:CreateUnitPositionOption("target", 2, true),
                         border = UF:CreateUnitBorderOption("target", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.target.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.target.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("target")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("target", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("target", 11),
@@ -4051,31 +4192,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("targettarget", 1, true),
                         position = UF:CreateUnitPositionOption("targettarget", 2, true),
                         border = UF:CreateUnitBorderOption("targettarget", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.targettarget.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.targettarget.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("targettarget")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("targettarget", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("targettarget", 11),
@@ -4111,31 +4228,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("pet", 1, true),
                         position = UF:CreateUnitPositionOption("pet", 2, true),
                         border = UF:CreateUnitBorderOption("pet", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.pet.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.pet.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("pet")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("pet", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("pet", 11),
@@ -4172,31 +4265,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("focus", 1, true),
                         position = UF:CreateUnitPositionOption("focus", 2, true),
                         border = UF:CreateUnitBorderOption("focus", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.focus.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.focus.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("focus")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("focus", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("focus", 11),
@@ -4233,31 +4302,7 @@ R:RegisterModuleOptions(UF, {
                         size = UF:CreateUnitSizeOption("focustarget", 1, true),
                         position = UF:CreateUnitPositionOption("focustarget", 2, true),
                         border = UF:CreateUnitBorderOption("focustarget", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.focustarget.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.focustarget.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("focustarget")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("focustarget", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("focustarget", 11),
@@ -4383,31 +4428,7 @@ R:RegisterModuleOptions(UF, {
                             end
                         },
                         border = UF:CreateUnitBorderOption("party", 6, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 7,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.party.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.party.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("party")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("party", 8, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("party", 11),
@@ -4529,7 +4550,8 @@ R:RegisterModuleOptions(UF, {
                                 }
                             }
                         },
-                        border = UF:CreateUnitBorderOption("raid", 3, true)
+                        border = UF:CreateUnitBorderOption("raid", 3, true),
+                        highlight = UF:CreateUnitHighlightOption("raid", 4, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("raid", 11),
@@ -4618,7 +4640,8 @@ R:RegisterModuleOptions(UF, {
                                 }
                             }
                         },
-                        border = UF:CreateUnitBorderOption("tank", 3, true)
+                        border = UF:CreateUnitBorderOption("tank", 3, true),
+                        highlight = UF:CreateUnitHighlightOption("tank", 4, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("tank", 11),
@@ -4707,7 +4730,8 @@ R:RegisterModuleOptions(UF, {
                                 }
                             }
                         },
-                        border = UF:CreateUnitBorderOption("assist", 3, true)
+                        border = UF:CreateUnitBorderOption("assist", 3, true),
+                        highlight = UF:CreateUnitHighlightOption("assist", 4, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("assist", 11),
@@ -4798,31 +4822,7 @@ R:RegisterModuleOptions(UF, {
                             }
                         },
                         border = UF:CreateUnitBorderOption("boss", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.boss.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.boss.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("boss")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("boss", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("boss", 11),
@@ -4913,31 +4913,7 @@ R:RegisterModuleOptions(UF, {
                             }
                         },
                         border = UF:CreateUnitBorderOption("arena", 3, true),
-                        textures = {
-                            type = "group",
-                            name = "Textures",
-                            order = 4,
-                            inline = true,
-                            args = {
-                                textureColor = {
-                                    type = "color",
-                                    name = "Texture Color",
-                                    order = 10,
-                                    hasAlpha = false,
-                                    get = function()
-                                        local color = UF.config.arena.textureColor
-                                        return color[1], color[2], color[3], 1
-                                    end,
-                                    set = function(_, r, g, b, a)
-                                        local color = UF.config.arena.textureColor
-                                        color[1] = r
-                                        color[2] = g
-                                        color[3] = b
-                                        UF:UpdateUnit("arena")
-                                    end
-                                }
-                            }
-                        }
+                        highlight = UF:CreateUnitHighlightOption("arena", 5, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("arena", 11),
@@ -4971,7 +4947,8 @@ R:RegisterModuleOptions(UF, {
                     order = 10,
                     args = {
                         size = UF:CreateUnitSizeOption("nameplates", 1, true),
-                        border = UF:CreateUnitBorderOption("nameplates", 2, true)
+                        border = UF:CreateUnitBorderOption("nameplates", 2, true),
+                        highlight = UF:CreateUnitHighlightOption("nameplates", 3, true)
                     }
                 },
                 health = UF:CreateUnitHealthOption("nameplates", 11),
