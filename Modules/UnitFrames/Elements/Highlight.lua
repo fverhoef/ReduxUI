@@ -31,7 +31,7 @@ function UF:UpdateHighlight()
     self:SetShadowColor(unpack(shadowColor))
     
     self.Artwork.Highlight:SetVertexColor(unpack(borderColor))
-    --self.Artwork.Highlight:SetShown(config.colorBorder and color and true or false)
+    self.Artwork.Highlight:SetShown(config.colorBorder and color and true or false)
 end
 
 oUF:RegisterMetaFunction("UpdateHighlight", UF.UpdateHighlight)

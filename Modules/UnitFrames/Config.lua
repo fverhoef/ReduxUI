@@ -2108,14 +2108,14 @@ R:RegisterModuleConfig(UF, {
             background = {
                 texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
                 coords = {1, 0.09375, 0, 0.78125},
-                point = {"TOPLEFT", -47, 22},
+                point = {"TOPLEFT", "TOPLEFT", -47, 22},
                 size = {232, 100},
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
                 texture = R.media.textures.unitFrames.targetFrame_Flash,
                 coords = {0.9453125, 0, 0, 0.181640625},
-                point = {"TOPLEFT", -33, 22},
+                point = {"TOPLEFT", "TOPLEFT", -33, 22},
                 size = {242, 93}
             }
         },
@@ -2261,32 +2261,32 @@ R:RegisterModuleConfig(UF, {
             background = {
                 texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
                 coords = {0.09375, 1, 0, 0.78125},
-                point = {"TOPRIGHT", 47, 22},
+                point = {"TOPRIGHT", "TOPRIGHT", 47, 22},
                 size = {232, 100},
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
                 texture = R.media.textures.unitFrames.targetFrame_Flash,
                 coords = {0, 0.9453125, 0, 0.182},
-                point = {"TOPRIGHT", 33, 22},
+                point = {"TOPRIGHT", "TOPRIGHT", 33, 22},
                 size = {242, 93}
             },
             elite = {
                 texture = R.media.textures.unitFrames.targetFrame_Elite,
                 coords = {0.09375, 1, 0, 0.78125},
-                point = {"CENTER", 20, -7},
+                point = {"CENTER", "CENTER", 20, -7},
                 size = {232, 100}
             },
             rare = {
                 texture = R.media.textures.unitFrames.targetFrame_Rare,
                 coords = {0.09375, 1, 0, 0.78125},
-                point = {"CENTER", 20, -7},
+                point = {"CENTER", "CENTER", 20, -7},
                 size = {232, 100}
             },
             rareElite = {
                 texture = R.media.textures.unitFrames.targetFrame_RareElite,
                 coords = {0.09375, 1, 0, 0.78125},
-                point = {"CENTER", 20, -7},
+                point = {"CENTER", "CENTER", 20, -7},
                 size = {232, 100}
             }
         },
@@ -2428,7 +2428,7 @@ R:RegisterModuleConfig(UF, {
             background = {
                 texture = R.media.textures.unitFrames.targetTargetFrame,
                 coords = {0.015625, 0.7265625, 0, 0.703125},
-                point = {"CENTER"},
+                point = {"CENTER", "CENTER", 0, 0},
                 size = {95, 45},
                 color = {0.5, 0.5, 0.5, 1}
             }
@@ -2555,9 +2555,15 @@ R:RegisterModuleConfig(UF, {
             background = {
                 texture = R.media.textures.unitFrames.smallTargetingFrame,
                 coords = {0, 1, 0, 1},
-                point = {"TOPLEFT", 0, -2},
+                point = {"TOPLEFT", "TOPLEFT", 0, -2},
                 size = {128, 64},
                 color = {0.5, 0.5, 0.5, 1}
+            },
+            highlight = {
+                texture = R.media.textures.unitFrames.partyFrame_Flash,
+                coords = {0, 1, 0, 1},
+                point = {"TOPLEFT", "TOPLEFT", 0, -2},
+                size = {128, 64}
             }
         },
         health = {
@@ -2933,14 +2939,14 @@ R:RegisterModuleConfig(UF, {
             background = {
                 texture = R.media.textures.unitFrames.partyFrame,
                 coords = {0, 1, 0, 1},
-                point = {"TOPLEFT", 0, -2},
+                point = {"TOPLEFT", "TOPLEFT", 0, -2},
                 size = {128, 64},
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
                 texture = R.media.textures.unitFrames.partyFrame_Flash,
                 coords = {0, 1, 0, 1},
-                point = {"TOPLEFT", 0, -2},
+                point = {"TOPLEFT", "TOPLEFT", 0, -2},
                 size = {128, 64}
             }
         },
@@ -3491,7 +3497,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "TOPLEFT", 20, -20},
         frameLevel = 10,
-        artwork = {enabled = false, texture = nil, textureColor = {0.5, 0.5, 0.5, 1}},
+        artwork = {enabled = false},
         health = {
             enabled = true,
             value = {

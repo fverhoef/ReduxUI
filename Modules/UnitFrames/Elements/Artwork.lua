@@ -7,11 +7,11 @@ function UF:CreateArtwork()
     self.Artwork = CreateFrame("Frame", "$parentArtwork", self)
     self.Artwork:SetAllPoints(self)
 
-    self.Artwork.Background = self.Artwork:CreateTexture("$parentBackground", "BORDER")
-    self.Artwork.Highlight = self.Artwork:CreateTexture("$parentHighlight", "BORDER")
-    self.Artwork.Elite = self.Artwork:CreateTexture("$parentElite", "BORDER")
-    self.Artwork.Rare = self.Artwork:CreateTexture("$parentRare", "BORDER")
-    self.Artwork.RareElite = self.Artwork:CreateTexture("$parentRareElite", "BORDER")
+    self.Artwork.Background = self.Artwork:CreateTexture("$parentBackground", "BACKGROUND", nil, 2)
+    self.Artwork.Highlight = self.Artwork:CreateTexture("$parentHighlight", "BACKGROUND", nil, 1)
+    self.Artwork.Elite = self.Artwork:CreateTexture("$parentElite", "ARTWORK")
+    self.Artwork.Rare = self.Artwork:CreateTexture("$parentRare", "ARTWORK")
+    self.Artwork.RareElite = self.Artwork:CreateTexture("$parentRareElite", "ARTWORK")
 end
 
 oUF:RegisterMetaFunction("CreateArtwork", UF.CreateArtwork)
