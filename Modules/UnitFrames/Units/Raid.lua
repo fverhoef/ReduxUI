@@ -19,7 +19,7 @@ function UF:SpawnRaidHeader()
         oUF:RegisterStyle(addonName .. "Raid", UF.CreateRaid)
         oUF:SetActiveStyle(addonName .. "Raid")
         for i = 1, NUM_RAID_GROUPS do
-            local group = UF:SpawnHeader("Raid", UF.CreateRaid, config, default, false, i)
+            local group = UF:SpawnHeader("Raid", nil, config, default, false, i)
             parent.groups[i] = group
         end
 
@@ -44,6 +44,8 @@ function UF:UpdateRaidHeader()
     end
 
     local config = self.config
+    self:ClearAllPoints()
+    self:Point(unpack(config.point))
 
     for i, group in ipairs(self.groups) do
         group:ClearAllPoints()

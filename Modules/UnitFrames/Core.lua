@@ -229,7 +229,8 @@ function UF:UpdateFrame(self)
 
     self:SetSize(unpack(self.config.size))
     if self.config.point and not self.isGroupUnit then
-        self:SetPoint(unpack(self.config.point))
+        self:ClearAllPoints()
+        self:Point(unpack(self.config.point))
     end
     self:SetScale(self.config.scale or 1)
     self:SetFrameLevel(self.config.frameLevel or 10)

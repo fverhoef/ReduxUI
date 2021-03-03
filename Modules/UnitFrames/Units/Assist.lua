@@ -15,7 +15,7 @@ function UF:SpawnAssistHeader()
         parent.config = config
         parent.defaults = default
 
-        local group = UF:SpawnHeader("Assist", UF.CreateAssist, config, default, true)
+        local group = UF:SpawnHeader("Assist", UF.CreateAssist, config, default, true, "MAINASSIST")
         parent.group = group
 
         R:CreateDragFrame(parent, "Assist", default.point, 200, 40)
@@ -29,6 +29,65 @@ function UF:SpawnAssistHeader()
 end
 
 function UF:UpdateAssistHeader()
+    local group = self.group
+    if not group then
+        return
+    end
+
+    local config = self.config
+    self:ClearAllPoints()
+    self:Point(unpack(config.point))
+
+    for i = 1, group:GetNumChildren() do
+        local child = group:GetAttribute("child" .. i)
+        child:ClearAllPoints()
+        if child.Update then
+            child:Update()
+        end
+    end
+
+    group:SetAttribute("point", config.unitAnchorPoint)
+    group:SetAttribute("columnAnchorPoint", config.unitAnchorPoint)
+    if config.unitAnchorPoint == "LEFT" or config.unitAnchorPoint == "RIGHT" then
+        group:SetAttribute("xOffset", config.unitSpacing * (config.unitAnchorPoint == "RIGHT" and -1 or 1))
+        group:SetAttribute("yOffset", 0)
+        group:SetAttribute("columnSpacing", config.unitSpacing)
+    else
+        group:SetAttribute("xOffset", 0)
+        group:SetAttribute("yOffset", config.unitSpacing * (config.unitAnchorPoint == "TOP" and -1 or 1))
+        group:SetAttribute("columnSpacing", config.unitSpacing)
+    end
+
+    group:SetAttribute("maxColumns", 1)
+    group:SetAttribute("unitsPerColumn", 5)
+    group:SetAttribute("sortMethod", config.sortMethod)
+    group:SetAttribute("sortDir", config.sortDir)
+
+    if not group.isForced then
+        if not group.initialized then
+            group:SetAttribute("startingIndex", -4)
+            group:Show()
+            group.initialized = true
+        end
+        group:SetAttribute("startingIndex", 1)
+    end
+    UF:UpdateHeaderVisibility(group, (group.isForced and "show") or (config.showRaid and "party,raid") or "party")
+
+    group:ClearAllPoints()
+    if config.unitAnchorPoint == "LEFT" then
+        group:SetPoint("TOPLEFT", self, "TOPLEFT")
+    elseif config.unitAnchorPoint == "RIGHT" then
+        group:SetPoint("TOPRIGHT", self, "TOPRIGHT")
+    elseif config.unitAnchorPoint == "BOTTOM" then
+        group:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
+    elseif config.unitAnchorPoint == "TOP" then
+        group:SetPoint("TOPLEFT", self, "TOPLEFT")
+    end
+
+    group:SetAttribute("showPlayer", config.showPlayer)
+    group:SetAttribute("showSolo", config.showSolo)
+    group:SetAttribute("showParty", config.showParty)
+    group:SetAttribute("showRaid", config.showRaid)
 end
 
 function UF:CreateAssist()

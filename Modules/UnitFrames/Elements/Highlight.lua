@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local CS = R.Modules.CharacterStats
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
@@ -21,7 +22,11 @@ function UF:UpdateHighlight()
     elseif config.threat and self.threatStatus and self.threatStatus > 0 then
         color = self.threatColor
     elseif config.target and self.isTarget then
-        color = UF.config.colors.targetHighlight
+        if config.targetClassColor then
+            local class = select(2, UnitClass(self.unit))
+            color = UF.config.colors.class[class]
+        end
+        color = color or UF.config.colors.targetHighlight
     end
 
     local borderColor = config.colorBorder and color or R.config.db.profile.borders.color

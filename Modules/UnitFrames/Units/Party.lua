@@ -36,6 +36,8 @@ function UF:UpdatePartyHeader()
     end
 
     local config = self.config
+    self:ClearAllPoints()
+    self:Point(unpack(config.point))
 
     for i = 1, group:GetNumChildren() do
         local child = group:GetAttribute("child" .. i)
