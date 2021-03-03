@@ -34,8 +34,13 @@ function UF:Initialize()
     UF:UpdateAll()
 
     _G.BuffFrame.config = UF.config.buffFrame
+    _G.BuffFrame:ClearAllPoints()
+    _G.BuffFrame:Point(unpack(UF.config.buffFrame.point))
     R:CreateDragFrame(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200,
                       {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
+    UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
+
+    UF:RegisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function UF:UpdateUnit(unit)
@@ -216,6 +221,10 @@ end
 function UF:UpdateFrame(self)
     if not self then
         return
+    end
+
+    if UF.config.lockTheme and self.ApplyTheme then
+        self:ApplyTheme()
     end
 
     self:SetSize(unpack(self.config.size))
@@ -422,6 +431,26 @@ function UF:UnforceShowHeader(header)
     end
 end
 
+function UF:ApplyTheme()
+    for _, frame in pairs(UF.frames) do
+        if frame and frame.ApplyTheme then
+            frame:ApplyTheme()
+            if frame.Update then
+                frame:Update()
+            end
+        end
+    end
+
+    for _, header in pairs(UF.headers) do
+        if header and header.ApplyTheme then
+            header:ApplyTheme()
+            if header.Update then
+                header:Update()
+            end
+        end
+    end
+end
+
 function UF:PLAYER_REGEN_DISABLED()
     for _, header in pairs(UF.headers) do
         if header and header.UnforceShow then
@@ -430,4 +459,7 @@ function UF:PLAYER_REGEN_DISABLED()
     end
 end
 
-UF:RegisterEvent("PLAYER_REGEN_DISABLED")
+function UF:UIParent_UpdateTopFramePositions()
+    _G.BuffFrame:ClearAllPoints()
+    _G.BuffFrame:Point(unpack(UF.config.buffFrame.point))
+end

@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.themes = {None = "None", Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth"}
+UF.themes = {Blizzard = "Blizzard", Blizzard_LargeHealth = "Blizzard_LargeHealth"}
 UF.anchorPoints = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
 UF.anchors = {"UIParent", "Player", "Target", "Pet"}
 UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
@@ -2057,7 +2057,8 @@ R:RegisterModuleConfig(UF, {
         additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         castbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux")
     },
-    theme = UF.themes.None,
+    theme = nil,
+    lockTheme = false,
     colors = {
         health = {49 / 255, 207 / 255, 37 / 255},
         mana = {0 / 255, 140 / 255, 255 / 255},
@@ -2096,7 +2097,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerSmooth = false,
         colorPowerDisconnected = true
     },
-    buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -205, -13}},
+    buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
     player = {
         enabled = true,
         size = {180, 42},
@@ -3933,7 +3934,7 @@ R:RegisterModuleOptions(UF, {
                 desc = {
                     order = 1,
                     type = "description",
-                    name = "The theme determines the general look and feel of the unit frames. Setting the theme to 'Custom' will allow you to customize every element of every frame, while using a non-custom theme will lock certain most elements in place."
+                    name = "Themes are presets for the look and feel of unit frames. Select a theme and hit 'Apply' to apply the theme to all frames styled by that theme.",
                 },
                 theme = {
                     type = "select",
@@ -3948,7 +3949,29 @@ R:RegisterModuleOptions(UF, {
                         UF.config.theme = UF.themes[key]
                         UF:UpdateAll()
                     end
-                }
+                },
+                applyTheme = {
+                    order = 3,
+                    type = "execute",
+                    name = "Apply Theme",
+                    desc = "Apply the selected theme.",
+                    func = function()
+                        UF:ApplyTheme()
+                    end
+                },
+                lockTheme = {
+                    type = "toggle",
+                    name = "Lock Theme",
+                    desc = "When checked, locks the theme in place, which means the settings for the theme cannot be overridden.",
+                    order = 4,
+                    get = function()
+                        return UF.config.lockTheme
+                    end,
+                    set = function(_, val)
+                        UF.config.lockTheme = val
+                        UF:UpdateAll()
+                    end
+                },
             }
         },
         lineBreak2 = {type = "header", name = "", order = 4},

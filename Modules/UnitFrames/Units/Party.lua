@@ -23,6 +23,7 @@ function UF:SpawnPartyHeader()
         parent.Update = UF.UpdatePartyHeader
         parent.ForceShow = UF.ForceShowParty
         parent.UnforceShow = UF.UnforceShowParty
+        parent.ApplyTheme = UF.Party_ApplyTheme
 
         return parent
     end
@@ -106,7 +107,6 @@ function UF:UpdateParty()
         return
     end
 
-    UF:Party_ApplyTheme(UF.config.theme)
     UF:UpdateFrame(self)
 end
 
@@ -121,3 +121,95 @@ function UF:UnforceShowParty()
     UF:UpdatePartyHeader()
     self.forceShow = false
 end
+
+function UF:Party_ApplyTheme()
+    local theme = UF.config.theme
+    local config = UF.config.party
+    if theme == UF.themes.Blizzard or theme == UF.themes.Blizzard_LargeHealth then
+        config.size = {110, 40}
+        config.border.enabled = false
+        config.shadow.enabled = false
+
+        config.artwork.enabled = true
+        config.artwork.background = config.artwork.background or {}
+        config.artwork.background.texture = R.media.textures.unitFrames.partyFrame
+        config.artwork.background.coords = {0, 1, 0, 1}
+        config.artwork.background.point = {"TOPLEFT", "TOPLEFT", -8, 0}
+        config.artwork.background.size = {128, 64}
+        config.artwork.background.color = {1, 1, 1, 1}
+
+        config.artwork.highlight = config.artwork.highlight or {}
+        config.artwork.highlight.texture = R.media.textures.unitFrames.partyFrame_Flash
+        config.artwork.highlight.coords = {0, 1, 0, 1}
+        config.artwork.highlight.point = {"TOPLEFT", "TOPLEFT", -11, 4}
+        config.artwork.highlight.size = {128, 64}
+
+        config.health.enabled = true
+        config.health.padding = {40, 0, -10, 14}
+        config.health.value.enabled = false
+
+        config.power.enabled = true
+        config.power.padding = {0, 0, 0, 15}
+        config.power.detached = false
+        config.power.size = {150, 7}
+        config.power.value.enabled = false
+        config.power.border.enabled = false
+        config.power.shadow.enabled = false
+
+        config.portrait.enabled = true
+        config.portrait.round = true
+        config.portrait.detached = true
+        config.portrait.point = {"LEFT", "LEFT", 0, -2}
+        config.portrait.size = {37, 37}
+        config.portrait.border.enabled = false
+
+        config.name.enabled = true
+        config.name.size = {120, 10}
+        config.name.point = {"TOPLEFT", 40, 0}
+        config.name.justifyH = "LEFT"
+
+        config.level.enabled = false
+
+        config.pvpIndicator.enabled = true
+        config.pvpIndicator.size = {25, 25}
+        config.pvpIndicator.point = {"CENTER", "LEFT", -4, -4}
+
+        config.leaderIndicator.enabled = true
+        config.leaderIndicator.size = {14, 14}
+        config.leaderIndicator.point = {"CENTER", "TOPLEFT", 0, -6}
+
+        config.assistantIndicator.enabled = true
+        config.assistantIndicator.size = {14, 14}
+        config.assistantIndicator.point = {"CENTER", "TOPLEFT", 0, -6}
+
+        config.masterLooterIndicator.enabled = true
+        config.masterLooterIndicator.size = {12, 12}
+        config.masterLooterIndicator.point = {"CENTER", "TOPLEFT", 30, -6}
+
+        config.raidRoleIndicator.enabled = true
+        config.raidRoleIndicator.size = {14, 14}
+        config.raidRoleIndicator.point = {"CENTER", "BOTTOMLEFT", 32, 6}
+
+        config.groupRoleIndicator.enabled = true
+        config.groupRoleIndicator.size = {14, 14}
+        config.groupRoleIndicator.point = {"CENTER", "BOTTOMLEFT", 32, 6}
+
+        config.raidTargetIndicator.enabled = true
+        config.raidTargetIndicator.size = {24, 24}
+        config.raidTargetIndicator.point = {"CENTER", "TOPLEFT", 15, 0}
+
+        config.offlineIcon.enabled = true
+        config.offlineIcon.size = {48, 48}
+        config.offlineIcon.point = {"LEFT", "LEFT", -6, -6}
+
+        config.readyCheckIndicator.enabled = true
+        config.readyCheckIndicator.size = {48, 48}
+        config.readyCheckIndicator.point = {"LEFT", "LEFT", 0, 0}
+
+        config.castbar.enabled = true
+        config.castbar.detached = false
+        config.castbar.size = {100, 16}
+        config.castbar.attachedPoint = {"LEFT", "RIGHT", 2, 2}
+    end
+end
+

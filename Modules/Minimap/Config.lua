@@ -4,7 +4,7 @@ local MM = R.Modules.Minimap
 
 R:RegisterModuleConfig(MM, {
     enabled = true,
-    point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -5, -13},
+    point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -13},
     size = {190, 190},
     enableMailGlow = false,
     showNorthTag = true,
