@@ -29,6 +29,7 @@ R.config.defaults = {
             replaceBlizzardFonts = true
         },
         borders = {size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255}},
+        gloss = {size = 3, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         shadows = {color = {0, 0, 0}},
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal

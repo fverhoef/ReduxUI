@@ -55,7 +55,9 @@ R.media = {
             entropy = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Entropy",
             goldpaw = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Goldpaw",
             onyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Onyx",
-            retina = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Retina"
+            retina = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Retina",
+            gloss1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss1",
+            gloss2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss2"
         },
 
         buttons = {

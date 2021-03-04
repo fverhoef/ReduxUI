@@ -115,6 +115,118 @@ function R:SetBackdropColor(r, g, b, a)
     self.Backdrop:SetBackdropColor(r or 0.1, g or 0.1, b or 0.1, a or 0.8)
 end
 
+function R:CreateGloss(size, texture, color, left, right, top, bottom)
+    if self.Gloss then
+        return
+    end
+
+    left = left or 0
+    if right == nil then
+        right = left
+    end
+    if top == nil then
+        top = left
+    end
+    if bottom == nil then
+        bottom = top or left
+    end
+
+    if not self.Gloss then
+        size = size or R.config.db.profile.gloss.size
+        texture = texture or R.config.db.profile.gloss.texture
+        color = color or R.config.db.profile.gloss.color
+
+        self.Gloss = {}
+        self.Gloss.size = size
+        self.Gloss.color = color
+        self.Gloss.texture = texture
+        self.Gloss.padding = {left, right, top, bottom}
+        self.Gloss.parent = self
+        self.Gloss.Show = function(self)
+            for i = 1, 9 do
+                self[i]:Show()
+            end
+        end
+        self.Gloss.Hide = function(self)
+            for i = 1, 9 do
+                self[i]:Hide()
+            end
+        end
+        self.Gloss.SetShown = function(self, val)
+            for i = 1, 9 do
+                self[i]:SetShown(val)
+            end
+        end
+        self.Gloss.IsShown = function(self)
+            return self[1]:IsShown()
+        end
+        self.Gloss.SetTexture = function(self, texture)
+            for i = 1, 9 do
+                self[i]:SetTexture(texture)
+            end
+        end
+        self.Gloss.GetTexture = function(self)
+            return self[1]:GetTexture()
+        end
+        self.Gloss.SetVertexColor = function(self, r, g, b, a)
+            for i = 1, 9 do
+                self[i]:SetVertexColor(r, g, b, a)
+            end
+        end
+
+        for i = 1, 9 do
+            self.Gloss[i] = self:CreateTexture(nil, "OVERLAY", nil, 7)
+            self.Gloss[i]:SetParent(self)
+            self.Gloss[i]:SetSize(size, size)
+            self.Gloss[i]:SetTexture(texture)
+            self.Gloss[i]:SetVertexColor(unpack(color))
+        end
+
+        -- Top Left Corner
+        self.Gloss[1]:SetTexCoord(0, 8 / 64, 0, 8 / 64)
+        self.Gloss[1]:SetPoint("TOPLEFT", self, -left, top)
+
+        -- Top Right Corner
+        self.Gloss[2]:SetTexCoord(56 / 64, 1, 0, 8 / 64)
+        self.Gloss[2]:SetPoint("TOPRIGHT", self, right, top)
+
+        -- Bottom Left Corner
+        self.Gloss[3]:SetTexCoord(0, 8 / 64, 56 / 64, 1)
+        self.Gloss[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
+
+        -- Bottom Right Corner
+        self.Gloss[4]:SetTexCoord(56 / 64, 1, 56 / 64, 1)
+        self.Gloss[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
+
+        -- Top
+        self.Gloss[5]:SetTexCoord(8 / 64, 56 / 64, 0, 8 / 64)
+        self.Gloss[5]:SetPoint("TOPLEFT", self.Gloss[1], "TOPRIGHT")
+        self.Gloss[5]:SetPoint("TOPRIGHT", self.Gloss[2], "TOPLEFT")
+
+        -- Bottom
+        self.Gloss[6]:SetTexCoord(8 / 64, 56 / 64, 56 / 64, 1)
+        self.Gloss[6]:SetPoint("BOTTOMLEFT", self.Gloss[3], "BOTTOMRIGHT")
+        self.Gloss[6]:SetPoint("BOTTOMRIGHT", self.Gloss[4], "BOTTOMLEFT")
+
+        -- Left
+        self.Gloss[7]:SetTexCoord(0, 8 / 64, 8 / 64, 56 / 64)
+        self.Gloss[7]:SetPoint("TOPLEFT", self.Gloss[1], "BOTTOMLEFT")
+        self.Gloss[7]:SetPoint("BOTTOMLEFT", self.Gloss[3], "TOPLEFT")
+
+        -- Right
+        self.Gloss[8]:SetTexCoord(56 / 64, 1, 8 / 64, 56 / 64)
+        self.Gloss[8]:SetPoint("TOPRIGHT", self.Gloss[2], "BOTTOMRIGHT")
+        self.Gloss[8]:SetPoint("BOTTOMRIGHT", self.Gloss[4], "TOPRIGHT")
+
+        -- Center
+        self.Gloss[9]:SetTexCoord(8 / 64, 56 / 64, 8 / 64, 56 / 64)
+        self.Gloss[9]:SetPoint("TOPLEFT", self, -left + size, top - size)
+        self.Gloss[9]:SetPoint("TOPRIGHT", self, right - size, top - size)
+        self.Gloss[9]:SetPoint("BOTTOMLEFT", self, -left + size, -bottom + size)
+        self.Gloss[9]:SetPoint("BOTTOMRIGHT", self, right - size, -bottom + size)
+    end
+end
+
 local borders = {}
 
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
@@ -521,6 +633,9 @@ local function AddApi(object)
     end
     if not object.SetBackdropColor then
         mt.SetBackdropColor = R.SetBackdropColor
+    end
+    if not object.CreateGloss then
+        mt.CreateGloss = R.CreateGloss
     end
     if not object.CreateBorder then
         mt.CreateBorder = R.CreateBorder

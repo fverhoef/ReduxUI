@@ -27,6 +27,7 @@ function BS:StyleActionButton(button)
 
     button:CreateShadow()
     button:CreateBackdrop(R.media.textures.backdrops.button, nil, nil, 2, 2)
+    button:CreateGloss(nil,nil,nil,0,0,-1,0)
 
     button:SetNormalTexture(BS.config.borders.texture)
     local normalTexture = button:GetNormalTexture()
