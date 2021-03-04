@@ -49,6 +49,7 @@ function UF:UpdatePower()
     if config.enabled then
         self:EnableElement("Power")
 
+        self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
         self.Power:SetStatusBarTexture(UF.config.statusbars.power)
         self.Power:SetFrequentUpdates(self.config.power.frequentUpdates)
         self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -78,15 +79,19 @@ function UF:UpdatePower()
         self.Power:SetSize(unpack(config.size))
         self.Power:ClearAllPoints()
         if config.detached then
+            config.inset = false
             self.Power:Point(unpack(config.point))
+        elseif config.inset then
+            self.Power:Point(unpack(config.insetPoint))
+            self.Power:SetFrameLevel(self:GetFrameLevel() + 1)
         else
             self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", leftOffset, topOffset)
             self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", rightOffset, topOffset)
             self.Power:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
         end
 
-        self.Power.Border:SetShown(config.detached and config.border.enabled)
-        self.Power.Shadow:SetShown(config.detached and config.shadow.enabled)
+        self.Power.Border:SetShown((config.detached or config.inset) and config.border.enabled)
+        self.Power.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
         self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
     else
         self:DisableElement("Power")

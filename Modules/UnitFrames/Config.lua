@@ -822,30 +822,47 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak0 = { type = "description", name = "", order = 2 },
+            lineBreakDetached = { type = "description", name = "", order = 2 },
             detached = {
                 type = "toggle",
                 name = "Detached",
                 desc = "Whether the power bar is detached from the health bar.",
                 order = 10,
+                disabled = unit ~= "player",
                 get = function()
                     return UF.config[unit].power.detached
                 end,
                 set = function(_, val)
+                    UF.config[unit].power.inset = false
                     UF.config[unit].power.detached = val
                     UF:UpdateUnit(unit)
                 end
             },
+            inset = {
+                type = "toggle",
+                name = "Inset",
+                desc = "Whether the power bar is displayed as an inset.",
+                order = 11,
+                get = function()
+                    return UF.config[unit].power.inset
+                end,
+                set = function(_, val)
+                    UF.config[unit].power.detached = false
+                    UF.config[unit].power.inset = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreakSize = { type = "description", name = "", order = 12 },
             width = {
                 type = "range",
-                name = "Detached Width",
-                desc = "The width of the power bar when detached.",
-                order = 11,
+                name = "Width",
+                desc = "The width of the power bar. Only applicable when the power bar is detached or inset.",
+                order = 13,
                 min = 0,
                 softMax = 500,
                 step = 1,
                 disabled = function()
-                    return not UF.config[unit].power.detached
+                    return not UF.config[unit].power.detached and not UF.config[unit].power.inset
                 end,
                 get = function()
                     return UF.config[unit].power.size[1]
@@ -859,7 +876,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 type = "range",
                 name = "Height",
                 desc = "The height of the power bar.",
-                order = 12,
+                order = 14,
                 min = 0,
                 softMax = 100,
                 step = 1,
@@ -871,76 +888,161 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak1 = { type = "description", name = "", order = 15 },
-            paddingLeft = {
-                type = "range",
-                name = "Padding (Left)",
-                order = 16,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[1]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[1] = val
-                    UF:UpdateUnit(unit)
-                end
+            insetPoint = {
+                type = "group",
+                name = "Inset Point",
+                order = 15,
+                inline = true,
+                hidden = function() return not UF.config[unit].power.inset end,
+                args = {
+                    point = {
+                        type = "select",
+                        name = "Point",
+                        desc = "The anchor point on the power bar to attach.",
+                        order = 1,
+                        values = UF.anchorPoints,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].power.insetPoint[1] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.insetPoint[1] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    relativePoint = {
+                        type = "select",
+                        name = "Relative Point",
+                        desc = "The point on the frame to attach value text to.",
+                        order = 2,
+                        values = UF.anchorPoints,
+                        get = function()
+                            for key, value in ipairs(UF.anchorPoints) do
+                                if value == UF.config[unit].power.insetPoint[2] then
+                                    return key
+                                end
+                            end
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.insetPoint[2] = UF.anchorPoints[key]
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetX = {
+                        type = "range",
+                        name = "Offset (X)",
+                        desc = "The horizontal offset from the anchor point.",
+                        order = 3,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].power.insetPoint[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.insetPoint[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    offsetY = {
+                        type = "range",
+                        name = "Offset (Y)",
+                        desc = "The vertical offset from the anchor point.",
+                        order = 4,
+                        min = -50,
+                        softMax = 50,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].power.insetPoint[4]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.insetPoint[4] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                }
             },
-            paddingRight = {
-                type = "range",
-                name = "Padding (Right)",
+            lineBreakPadding = { type = "description", name = "", order = 16 },
+            padding = {
+                type = "group",
+                name = "Padding",
                 order = 17,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[2]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[2] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            paddingTop = {
-                type = "range",
-                name = "Padding (Top)",
-                order = 18,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[3]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[3] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            paddingBottom = {
-                type = "range",
-                name = "Padding (Bottom)",
-                order = 19,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[4]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[4] = val
-                    UF:UpdateUnit(unit)
-                end
+                inline = true,
+                args = {
+                    paddingLeft = {
+                        type = "range",
+                        name = "Left",
+                        order = 1,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[1]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[1] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingRight = {
+                        type = "range",
+                        name = "Right",
+                        order = 2,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[2]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[2] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingTop = {
+                        type = "range",
+                        name = "Top",
+                        order = 3,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingBottom = {
+                        type = "range",
+                        name = "Bottom",
+                        order = 4,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[4]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[4] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                }
             },
             lineBreak2 = { type = "description", name = "", order = 20 },
             powerPrediction = {
                 type = "toggle",
                 name = "Power Prediction",
-                desc = "Whether the power prediction is enabled for the player's power bar.",
+                desc = "Whether power prediction is enabled for the player's power bar.",
                 order = 21,
                 hidden = unit ~= "player",
                 get = function()
@@ -951,7 +1053,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            powerPrediction = {
+            energyManaRegen = {
                 type = "toggle",
                 name = "Energy/Mana Regen Tick",
                 desc = "Whether the energy/mana regen tick is enabled for the player's power bar.",
@@ -2738,6 +2840,8 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = true,
+            inset = false,
+            insetPoint = {"CENTER", "BOTTOM", 0, 0},
             size = {180, 25},
             padding = {0, 0, 0, 0},
             point = {"TOP", "UIParent", "BOTTOM", 0, 300},
@@ -2911,7 +3015,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"LEFT", "BOTTOMLEFT", 10, 0},
+            size = {122, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3039,7 +3145,8 @@ R:RegisterModuleConfig(UF, {
                 point = {"CENTER", "CENTER", 0, 0},
                 size = {95, 45},
                 color = {0.5, 0.5, 0.5, 1}
-            }
+            },
+            highlight = {}
         },
         health = {
             enabled = true,
@@ -3057,7 +3164,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = false,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"CENTER", "BOTTOM", 0, 0},
+            size = {60, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3149,7 +3258,8 @@ R:RegisterModuleConfig(UF, {
             debuffs = true,
             onlyDispellableDebuffs = false,
             threat = true,
-            target = true
+            target = true,
+            targetClassColor = true
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
@@ -3193,7 +3303,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3299,7 +3411,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3316,7 +3428,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {60, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3434,7 +3548,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         frameLevel = 20,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3451,7 +3565,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = false,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {60, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3589,7 +3705,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 6},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3716,7 +3834,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         frameLevel = 20,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3733,7 +3851,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 8},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {70, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3868,7 +3988,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3885,7 +4005,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -4002,7 +4124,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -200},
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4019,7 +4141,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -4152,7 +4276,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -400},
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4169,7 +4293,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -4302,7 +4428,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4319,7 +4445,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = true,
             detached = false,
-            size = {150, 12},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -4436,7 +4564,7 @@ R:RegisterModuleConfig(UF, {
         size = {150, 16},
         scale = 1,
         frameLevel = 10,
-        artwork = {enabled = false},
+        artwork = {enabled = false, background = {}, highlight = {}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4453,7 +4581,9 @@ R:RegisterModuleConfig(UF, {
         power = {
             enabled = false,
             detached = false,
-            size = {150, 4},
+            inset = true,
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            size = {80, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},

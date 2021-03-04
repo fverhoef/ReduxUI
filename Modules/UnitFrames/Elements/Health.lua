@@ -112,7 +112,7 @@ function UF:UpdateHealth()
     local topOffset = self.config.border.enabled and -self.config.border.size / 2 or 0
     local bottomOffset = self.config.border.enabled and self.config.border.size / 2 or 0
 
-    if self.config.power.enabled and not self.config.power.detached then
+    if self.config.power.enabled and not self.config.power.detached and not self.config.power.inset then
         bottomOffset = bottomOffset + (self.config.power.size[2] or 0)
     end
 
