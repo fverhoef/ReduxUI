@@ -1859,6 +1859,33 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                 end
             },
             lineBreak0 = {type = "description", name = "", order = 2},
+            round = {
+                type = "toggle",
+                name = "Use Round Portrait",
+                desc = "Whether the portrait texture is round or square.",
+                order = 3,
+                get = function()
+                    return UF.config[unit].portrait.round
+                end,
+                set = function(_, val)
+                    UF.config[unit].portrait.round = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            class = {
+                type = "toggle",
+                name = "Use Class Icons",
+                desc = "Whether to use class icons for the portrait texture.",
+                order = 4,
+                get = function()
+                    return UF.config[unit].portrait.class
+                end,
+                set = function(_, val)
+                    UF.config[unit].portrait.class = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "description", name = "", order = 2},
             detached = {
                 type = "toggle",
                 name = "Detached",
@@ -1872,11 +1899,12 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
+            lineBreak2 = {type = "description", name = "", order = 11},
             width = {
                 type = "range",
-                name = "Detached Width",
+                name = "Width",
                 desc = "The width of the portrait.",
-                order = 11,
+                order = 12,
                 min = 0,
                 softMax = 500,
                 step = 1,
@@ -1892,7 +1920,7 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                 type = "range",
                 name = "Height",
                 desc = "The height of the portrait when detached. Portrait height will match frame height when not detached.",
-                order = 12,
+                order = 13,
                 min = 0,
                 softMax = 100,
                 step = 1,
@@ -1907,7 +1935,7 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak1 = {type = "description", name = "", order = 15},
+            lineBreak3 = {type = "description", name = "", order = 20},
             point = {
                 type = "select",
                 name = "Point",
@@ -2960,7 +2988,9 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {38, 38},
             border = {enabled = true, size = 4},
-            round = false
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
         restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
@@ -3148,7 +3178,9 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "RIGHT",
             size = {38, 38},
             border = {enabled = true, size = 4},
-            round = false
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -3312,7 +3344,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
@@ -3467,7 +3502,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "RIGHT", 0, 0}},
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
@@ -3608,7 +3646,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -3761,7 +3802,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
@@ -3917,7 +3961,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {26, 26},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -4079,7 +4126,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {36, 36},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -4248,7 +4298,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -4400,7 +4453,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -4568,7 +4624,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
         assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -4736,7 +4795,10 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4}
+            border = {enabled = true, size = 4},
+            round = false,
+            class = false,
+            model = false
         },
         combatIndicator = {enabled = false, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
         leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},

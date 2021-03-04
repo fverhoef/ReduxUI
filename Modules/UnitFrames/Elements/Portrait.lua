@@ -7,6 +7,7 @@ function UF:CreatePortrait()
     self.Portrait = self:CreateTexture("$parentPortrait", "BACKGROUND")
     self.Portrait.PostUpdate = function()
         self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
+        self:UpdatePortrait()
     end
 
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
@@ -44,9 +45,27 @@ function UF:UpdatePortrait()
             self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
         end
 
-        if config.round then
+        if config.class and UnitIsPlayer(self.unit) then
+            local coords = _G.CLASS_ICON_TCOORDS[select(2, UnitClass(self.unit))]
+            if coords then
+                self.Portrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
+                local l, r, t, b = unpack(coords)
+                if not config.round then
+                    local width = r - l
+                    local height = b - t
+
+                    l = l + 0.15 * width
+                    r = r - 0.15 * width
+                    t = t + 0.15 * height
+                    b = b - 0.15 * height
+                end
+                self.Portrait:SetTexCoord(l, r, t, b)
+            end
+        elseif config.round then
+            SetPortraitTexture(self.Portrait, self.unit)
             self.Portrait:SetTexCoord(0, 1, 0, 1)
         else
+            SetPortraitTexture(self.Portrait, self.unit)
             self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
         end
 
