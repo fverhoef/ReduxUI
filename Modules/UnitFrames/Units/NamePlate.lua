@@ -25,16 +25,6 @@ function UF:CreateNamePlate()
     UF:SetupFrame(self)
     self:SetPoint("CENTER")
 
-    if self.config.auras.enabled then
-        if not self.config.auras.showDebuffsOnTop then
-            self.Auras:ClearAllPoints()
-            self.Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 15)
-            self.Auras.initialAnchor = "BOTTOMLEFT"
-            self.Auras["growth-x"] = "RIGHT"
-            self.Auras["growth-y"] = "UP"
-        end
-    end
-
     if self.config.showComboPoints then
         self:CreateComboFrame()
     end

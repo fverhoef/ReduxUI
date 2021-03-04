@@ -13,6 +13,8 @@ UF.anchors = {
 }
 UF.unitAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 UF.groupAnchors = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
+UF.horizontalGrowthDirections = {"LEFT", "RIGHT"}
+UF.verticalGrowthDirections = {"UP", "DOWN"}
 UF.groupUnits = {["party"] = true, ["raid"] = true, ["assist"] = true, ["tank"] = true}
 
 function UF:CreateStatusBarTextureOption(name, desc, option, order)
@@ -108,7 +110,7 @@ function UF:CreateUnitOptions(unit, order, inline, name, hidden)
                 args = {
                     health = UF:CreateUnitHealthOption(unit, 1),
                     power = UF:CreateUnitPowerOption(unit, 2),
-                    castbar = UF:CreateUnitCastbarOption(unit, 3, false, unit == "player"),
+                    castbar = UF:CreateUnitCastbarOption(unit, 3, false, unit == "player")
                 }
             },
             texts = {
@@ -124,7 +126,7 @@ function UF:CreateUnitOptions(unit, order, inline, name, hidden)
                 }
             },
             indicators = UF:CreateUnitIndicatorsOption(unit, 16),
-            auras = UF:CreateUnitAurasOption(unit, 17)
+            auras = UF:CreateUnitAurasOptions(unit, 17)
         }
     }
 
@@ -522,6 +524,7 @@ function UF:CreateUnitArtworkOption(unit, order, inline, name)
                         type = "input",
                         desc = "The path to the texture to use.",
                         order = 1,
+                        width = "full",
                         get = function()
                             return UF.config[unit].artwork.background.texture
                         end,
@@ -566,70 +569,78 @@ function UF:CreateUnitHealthOption(unit, order, inline, name)
                 type = "description",
                 name = "NOTE: The size of the health bar for a unit always matches the frame size; to resize it, adjust the size of the frame (or add padding below)."
             },
-            paddingLeft = {
-                type = "range",
-                name = "Padding (Left)",
-                order = 11,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[1]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[1] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            paddingRight = {
-                type = "range",
-                name = "Padding (Right)",
-                order = 12,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[2]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[2] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            paddingTop = {
-                type = "range",
-                name = "Padding (Top)",
-                order = 13,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[3]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[3] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            paddingBottom = {
-                type = "range",
-                name = "Padding (Bottom)",
-                order = 14,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                width = 2 / 3,
-                get = function()
-                    return UF.config[unit].power.padding[4]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.padding[4] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
+            padding = {
+                type = "group",
+                name = "Padding",
+                order = 2,
+                inline = true,
+                args = {
+                    paddingLeft = {
+                        type = "range",
+                        name = "Left",
+                        order = 1,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[1]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[1] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingRight = {
+                        type = "range",
+                        name = "Right",
+                        order = 2,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[2]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[2] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingTop = {
+                        type = "range",
+                        name = "Top",
+                        order = 3,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[3]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[3] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    paddingBottom = {
+                        type = "range",
+                        name = "Bottom",
+                        order = 4,
+                        min = 0,
+                        softMax = 100,
+                        step = 1,
+                        width = 2 / 3,
+                        get = function()
+                            return UF.config[unit].power.padding[4]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.padding[4] = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            }
         }
     }
 end
@@ -822,154 +833,164 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreakDetached = { type = "description", name = "", order = 2 },
-            detached = {
-                type = "toggle",
-                name = "Detached",
-                desc = "Whether the power bar is detached from the health bar.",
-                order = 10,
-                disabled = unit ~= "player",
-                get = function()
-                    return UF.config[unit].power.detached
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.inset = false
-                    UF.config[unit].power.detached = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            inset = {
-                type = "toggle",
-                name = "Inset",
-                desc = "Whether the power bar is displayed as an inset.",
-                order = 11,
-                get = function()
-                    return UF.config[unit].power.inset
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.detached = false
-                    UF.config[unit].power.inset = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            lineBreakSize = { type = "description", name = "", order = 12 },
-            width = {
-                type = "range",
-                name = "Width",
-                desc = "The width of the power bar. Only applicable when the power bar is detached or inset.",
-                order = 13,
-                min = 0,
-                softMax = 500,
-                step = 1,
-                disabled = function()
-                    return not UF.config[unit].power.detached and not UF.config[unit].power.inset
-                end,
-                get = function()
-                    return UF.config[unit].power.size[1]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.size[1] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            height = {
-                type = "range",
-                name = "Height",
-                desc = "The height of the power bar.",
-                order = 14,
-                min = 0,
-                softMax = 100,
-                step = 1,
-                get = function()
-                    return UF.config[unit].power.size[2]
-                end,
-                set = function(_, val)
-                    UF.config[unit].power.size[2] = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            insetPoint = {
+            lineBreakDetached = {type = "description", name = "", order = 2},
+            layout = {
                 type = "group",
-                name = "Inset Point",
-                order = 15,
+                name = "Layout",
+                order = 3,
                 inline = true,
-                hidden = function() return not UF.config[unit].power.inset end,
                 args = {
-                    point = {
-                        type = "select",
-                        name = "Point",
-                        desc = "The anchor point on the power bar to attach.",
+                    width = {
+                        type = "range",
+                        name = "Width",
+                        desc = "The width of the power bar. Only applicable when the power bar is detached or inset.",
                         order = 1,
-                        values = UF.anchorPoints,
-                        get = function()
-                            for key, value in ipairs(UF.anchorPoints) do
-                                if value == UF.config[unit].power.insetPoint[1] then
-                                    return key
-                                end
-                            end
+                        min = 0,
+                        softMax = 500,
+                        step = 1,
+                        disabled = function()
+                            return not UF.config[unit].power.detached and not UF.config[unit].power.inset
                         end,
-                        set = function(_, key)
-                            UF.config[unit].power.insetPoint[1] = UF.anchorPoints[key]
+                        get = function()
+                            return UF.config[unit].power.size[1]
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.size[1] = val
                             UF:UpdateUnit(unit)
                         end
                     },
-                    relativePoint = {
-                        type = "select",
-                        name = "Relative Point",
-                        desc = "The point on the frame to attach value text to.",
+                    height = {
+                        type = "range",
+                        name = "Height",
+                        desc = "The height of the power bar.",
                         order = 2,
-                        values = UF.anchorPoints,
-                        get = function()
-                            for key, value in ipairs(UF.anchorPoints) do
-                                if value == UF.config[unit].power.insetPoint[2] then
-                                    return key
-                                end
-                            end
-                        end,
-                        set = function(_, key)
-                            UF.config[unit].power.insetPoint[2] = UF.anchorPoints[key]
-                            UF:UpdateUnit(unit)
-                        end
-                    },
-                    offsetX = {
-                        type = "range",
-                        name = "Offset (X)",
-                        desc = "The horizontal offset from the anchor point.",
-                        order = 3,
-                        min = -50,
-                        softMax = 50,
+                        min = 0,
+                        softMax = 100,
                         step = 1,
                         get = function()
-                            return UF.config[unit].power.insetPoint[3]
+                            return UF.config[unit].power.size[2]
                         end,
                         set = function(_, val)
-                            UF.config[unit].power.insetPoint[3] = val
+                            UF.config[unit].power.size[2] = val
                             UF:UpdateUnit(unit)
                         end
                     },
-                    offsetY = {
-                        type = "range",
-                        name = "Offset (Y)",
-                        desc = "The vertical offset from the anchor point.",
+                    lineBreakSize = {type = "description", name = "", order = 3},
+                    detached = {
+                        type = "toggle",
+                        name = "Detached",
+                        desc = "Whether the power bar is detached from the health bar.",
+                        order = 10,
+                        disabled = unit ~= "player",
+                        get = function()
+                            return UF.config[unit].power.detached
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.inset = false
+                            UF.config[unit].power.detached = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    inset = {
+                        type = "toggle",
+                        name = "Inset",
+                        desc = "Whether the power bar is displayed as an inset.",
                         order = 4,
-                        min = -50,
-                        softMax = 50,
-                        step = 1,
                         get = function()
-                            return UF.config[unit].power.insetPoint[4]
+                            return UF.config[unit].power.inset
                         end,
                         set = function(_, val)
-                            UF.config[unit].power.insetPoint[4] = val
+                            UF.config[unit].power.detached = false
+                            UF.config[unit].power.inset = val
                             UF:UpdateUnit(unit)
                         end
                     },
+                    insetPoint = {
+                        type = "group",
+                        name = "Inset Point",
+                        order = 5,
+                        inline = true,
+                        hidden = function()
+                            return not UF.config[unit].power.inset
+                        end,
+                        args = {
+                            point = {
+                                type = "select",
+                                name = "Point",
+                                desc = "The anchor point on the power bar to attach.",
+                                order = 1,
+                                values = UF.anchorPoints,
+                                get = function()
+                                    for key, value in ipairs(UF.anchorPoints) do
+                                        if value == UF.config[unit].power.insetPoint[1] then
+                                            return key
+                                        end
+                                    end
+                                end,
+                                set = function(_, key)
+                                    UF.config[unit].power.insetPoint[1] = UF.anchorPoints[key]
+                                    UF:UpdateUnit(unit)
+                                end
+                            },
+                            relativePoint = {
+                                type = "select",
+                                name = "Relative Point",
+                                desc = "The point on the frame to attach value text to.",
+                                order = 2,
+                                values = UF.anchorPoints,
+                                get = function()
+                                    for key, value in ipairs(UF.anchorPoints) do
+                                        if value == UF.config[unit].power.insetPoint[2] then
+                                            return key
+                                        end
+                                    end
+                                end,
+                                set = function(_, key)
+                                    UF.config[unit].power.insetPoint[2] = UF.anchorPoints[key]
+                                    UF:UpdateUnit(unit)
+                                end
+                            },
+                            offsetX = {
+                                type = "range",
+                                name = "Offset (X)",
+                                desc = "The horizontal offset from the anchor point.",
+                                order = 3,
+                                min = -50,
+                                softMax = 50,
+                                step = 1,
+                                get = function()
+                                    return UF.config[unit].power.insetPoint[3]
+                                end,
+                                set = function(_, val)
+                                    UF.config[unit].power.insetPoint[3] = val
+                                    UF:UpdateUnit(unit)
+                                end
+                            },
+                            offsetY = {
+                                type = "range",
+                                name = "Offset (Y)",
+                                desc = "The vertical offset from the anchor point.",
+                                order = 4,
+                                min = -50,
+                                softMax = 50,
+                                step = 1,
+                                get = function()
+                                    return UF.config[unit].power.insetPoint[4]
+                                end,
+                                set = function(_, val)
+                                    UF.config[unit].power.insetPoint[4] = val
+                                    UF:UpdateUnit(unit)
+                                end
+                            }
+                        }
+                    }
                 }
             },
-            lineBreakPadding = { type = "description", name = "", order = 16 },
+            lineBreakPadding = {type = "description", name = "", order = 4},
             padding = {
                 type = "group",
                 name = "Padding",
-                order = 17,
+                order = 5,
                 inline = true,
                 args = {
                     paddingLeft = {
@@ -1035,15 +1056,15 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF.config[unit].power.padding[4] = val
                             UF:UpdateUnit(unit)
                         end
-                    },
+                    }
                 }
             },
-            lineBreak2 = { type = "description", name = "", order = 20 },
+            lineBreak2 = {type = "description", name = "", order = 6},
             powerPrediction = {
                 type = "toggle",
                 name = "Power Prediction",
                 desc = "Whether power prediction is enabled for the player's power bar.",
-                order = 21,
+                order = 7,
                 hidden = unit ~= "player",
                 get = function()
                     return UF.config[unit].power.powerPrediction
@@ -1057,7 +1078,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Energy/Mana Regen Tick",
                 desc = "Whether the energy/mana regen tick is enabled for the player's power bar.",
-                order = 22,
+                order = 8,
                 hidden = unit ~= "player",
                 get = function()
                     return UF.config[unit].power.energyManaRegen
@@ -1837,7 +1858,7 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak0 = { type = "description", name = "", order = 2 },
+            lineBreak0 = {type = "description", name = "", order = 2},
             detached = {
                 type = "toggle",
                 name = "Detached",
@@ -1886,7 +1907,7 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak1 = { type = "description", name = "", order = 15 },
+            lineBreak1 = {type = "description", name = "", order = 15},
             point = {
                 type = "select",
                 name = "Point",
@@ -2468,7 +2489,7 @@ function UF:CreateUnitIndicatorsOption(unit, order, inline, name)
     return indicators
 end
 
-function UF:CreateUnitAurasOption(unit, order, inline, name)
+function UF:CreateUnitAurasOptions(unit, order, inline, name)
     return {
         type = "group",
         name = name or "Auras",
@@ -2487,20 +2508,45 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak1 = {type = "description", name = "", order = 2},
+            buffs = UF:CreateUnitAurasOption(unit, 2, true, "Buffs", "buffs"),
+            debuffs = UF:CreateUnitAurasOption(unit, 3, true, "Debuffs", "debuffs")
+        }
+    }
+end
+
+function UF:CreateUnitAurasOption(unit, order, inline, name, setting)
+    return {
+        type = "group",
+        name = name,
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].auras[setting].enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras[setting].enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak = {type = "description", name = "", order = 2},
             iconSize = {
                 type = "range",
                 name = "Icon Size",
                 desc = "The size of the aura icons.",
-                order = 10,
+                order = 3,
                 min = 10,
                 softMax = 50,
                 step = 1,
                 get = function()
-                    return UF.config[unit].auras.iconSize
+                    return UF.config[unit].auras[setting].iconSize
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.iconSize = val
+                    UF.config[unit].auras[setting].iconSize = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -2508,15 +2554,15 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
                 type = "range",
                 name = "Spacing",
                 desc = "The spacing between auras.",
-                order = 11,
+                order = 4,
                 min = 0,
                 softMax = 30,
                 step = 1,
                 get = function()
-                    return UF.config[unit].auras.spacing
+                    return UF.config[unit].auras[setting].spacing
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.spacing = val
+                    UF.config[unit].auras[setting].spacing = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -2524,29 +2570,45 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
                 type = "range",
                 name = "Number of Columns",
                 desc = "The number of columns.",
-                order = 12,
+                order = 5,
                 min = 1,
                 softMax = 32,
                 step = 1,
                 get = function()
-                    return UF.config[unit].auras.numColumns
+                    return UF.config[unit].auras[setting].numColumns
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.numColumns = val
+                    UF.config[unit].auras[setting].numColumns = val
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak2 = {type = "description", name = "", order = 20},
+            num = {
+                type = "range",
+                name = "Number of " .. name,
+                desc = "The number of auras to show.",
+                order = 6,
+                min = 1,
+                softMax = R.isRetail and 32 or 16,
+                step = 1,
+                get = function()
+                    return UF.config[unit].auras[setting].num
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras[setting].num = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak1 = {type = "description", name = "", order = 10},
             showDuration = {
                 type = "toggle",
                 name = "Show Duration",
                 desc = "Whether to show duration numbers on auras.",
-                order = 21,
+                order = 11,
                 get = function()
-                    return UF.config[unit].auras.showDuration
+                    return UF.config[unit].auras[setting].showDuration
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.showDuration = val
+                    UF.config[unit].auras[setting].showDuration = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -2554,72 +2616,81 @@ function UF:CreateUnitAurasOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Only Show Player",
                 desc = "Whether to only show auras cast by the player.",
+                order = 12,
+                get = function()
+                    return UF.config[unit].auras[setting].onlyShowPlayer
+                end,
+                set = function(_, val)
+                    UF.config[unit].auras[setting].onlyShowPlayer = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            lineBreak2 = {type = "header", name = "Position", order = 20},
+            point = {
+                type = "select",
+                name = "Point",
+                desc = "The anchor point on the " .. setting .. " frame.",
+                order = 21,
+                values = UF.anchorPoints,
+                get = function()
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].auras[setting].point[1] then
+                            return key
+                        end
+                    end
+                end,
+                set = function(_, key)
+                    UF.config[unit].auras[setting].point[1] = UF.anchorPoints[key]
+                    UF:UpdateUnit(unit)
+                end
+            },
+            relativePoint = {
+                type = "select",
+                name = "Relative Point",
+                desc = "The point on the unit frame to attach to.",
                 order = 22,
+                values = UF.anchorPoints,
                 get = function()
-                    return UF.config[unit].auras.onlyShowPlayer
+                    for key, value in ipairs(UF.anchorPoints) do
+                        if value == UF.config[unit].auras[setting].point[2] then
+                            return key
+                        end
+                    end
                 end,
-                set = function(_, val)
-                    UF.config[unit].auras.onlyShowPlayer = val
+                set = function(_, key)
+                    UF.config[unit].auras[setting].point[2] = UF.anchorPoints[key]
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreak3 = {type = "header", name = "Buffs", order = 30},
-            numBuffs = {
+            offsetX = {
                 type = "range",
-                name = "Number of Buffs",
-                desc = "The number of buffs to show.",
-                order = 31,
-                min = 0,
-                softMax = R.isRetail and 40 or 32,
+                name = "Offset (X)",
+                desc = "The horizontal offset from the anchor point.",
+                order = 23,
+                min = -500,
+                softMax = 500,
                 step = 1,
                 get = function()
-                    return UF.config[unit].auras.numBuffs
+                    return UF.config[unit].auras[setting].point[3]
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.numBuffs = val
+                    UF.config[unit].auras[setting].point[3] = val
                     UF:UpdateUnit(unit)
                 end
             },
-            onlyShowPlayerBuffs = {
-                type = "toggle",
-                name = "Only Show Player Buffs",
-                desc = "Whether to only show buffs cast by the player.",
-                order = 32,
-                get = function()
-                    return UF.config[unit].auras.onlyShowPlayerBuffs
-                end,
-                set = function(_, val)
-                    UF.config[unit].auras.onlyShowPlayerBuffs = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            lineBreak4 = {type = "header", name = "Debuffs", order = 40},
-            numDebuffs = {
+            offsetY = {
                 type = "range",
-                name = "Number of Debuffs",
-                desc = "The number of debuffs to show.",
-                order = 41,
-                min = 0,
-                softMax = R.isRetail and 40 or 16,
+                name = "Offset (Y)",
+                desc = "The vertical offset from the anchor point.",
+                order = 24,
+                min = -500,
+                softMax = 500,
                 step = 1,
                 get = function()
-                    return UF.config[unit].auras.numDebuffs
+                    return UF.config[unit].auras[setting].point[4]
                 end,
                 set = function(_, val)
-                    UF.config[unit].auras.numDebuffs = val
-                    UF:UpdateUnit(unit)
-                end
-            },
-            onlyShowPlayerDebuffs = {
-                type = "toggle",
-                name = "Only Show Player Debuffs",
-                desc = "Whether to only show debuffs cast by the player.",
-                order = 42,
-                get = function()
-                    return UF.config[unit].auras.onlyShowPlayerDebuffs
-                end,
-                set = function(_, val)
-                    UF.config[unit].auras.onlyShowPlayerDebuffs = val
+                    UF.config[unit].auras[setting].point[4] = val
                     UF:UpdateUnit(unit)
                 end
             }
@@ -2907,16 +2978,32 @@ R:RegisterModuleConfig(UF, {
         summonIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "LEFT", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 32,
-            onlyShowPlayerBuffs = false,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
@@ -3080,16 +3167,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 32,
-            onlyShowPlayerBuffs = false,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
@@ -3214,16 +3317,32 @@ R:RegisterModuleConfig(UF, {
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -3354,16 +3473,32 @@ R:RegisterModuleConfig(UF, {
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = false,
-            onlyShowPlayer = false,
-            numBuffs = 16,
-            onlyShowPlayerBuffs = false,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
@@ -3491,16 +3626,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 16,
-            onlyShowPlayerBuffs = false,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
@@ -3615,16 +3766,32 @@ R:RegisterModuleConfig(UF, {
         raidTargetIndicator = {enabled = false, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -3706,8 +3873,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             inset = true,
-            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
-            size = {80, 12},
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
+            size = {84, 10},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3768,16 +3935,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 16,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 16,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 20,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 20,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
@@ -3914,17 +4097,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 16,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = false,
-            numBuffs = 16,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = false,
-            showDebuffsOnTop = true,
-            iconSize = 16
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -4067,16 +4265,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = true,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -4203,16 +4417,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = true,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -4355,16 +4585,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = true,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -4508,16 +4754,32 @@ R:RegisterModuleConfig(UF, {
         offlineIcon = {enabled = true, size = {40, 40}, point = {"CENTER", "CENTER", 0, 0}},
         auras = {
             enabled = false,
-            iconSize = 25,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = true,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = true,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 25,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = false,
@@ -4624,16 +4886,32 @@ R:RegisterModuleConfig(UF, {
         raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
         auras = {
             enabled = true,
-            iconSize = 32,
-            spacing = 2,
-            numColumns = 5,
-            showDuration = true,
-            onlyShowPlayer = true,
-            numBuffs = 0,
-            onlyShowPlayerBuffs = true,
-            numDebuffs = 16,
-            onlyShowPlayerDebuffs = true,
-            showDebuffsOnTop = false
+            buffs = {
+                enabled = false,
+                point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                iconSize = 32,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 32
+            },
+            debuffs = {
+                enabled = true,
+                point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+                initialAnchor = "BOTTOMLEFT",
+                growthX = "RIGHT",
+                growthY = "UP",
+                iconSize = 32,
+                spacing = 2,
+                numColumns = 5,
+                showDuration = true,
+                onlyShowPlayer = false,
+                num = 16
+            }
         },
         castbar = {
             enabled = true,
