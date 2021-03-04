@@ -1863,6 +1863,7 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Use Round Portrait",
                 desc = "Whether the portrait texture is round or square.",
+                disabled = function() return UF.config[unit].portrait.model end,
                 order = 3,
                 get = function()
                     return UF.config[unit].portrait.round
@@ -1881,7 +1882,22 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     return UF.config[unit].portrait.class
                 end,
                 set = function(_, val)
+                    UF.config[unit].portrait.model = false
                     UF.config[unit].portrait.class = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            model = {
+                type = "toggle",
+                name = "Use 3D Portrait",
+                desc = "Whether to use class 3D portraits.",
+                order = 5,
+                get = function()
+                    return UF.config[unit].portrait.model
+                end,
+                set = function(_, val)
+                    UF.config[unit].portrait.class = false
+                    UF.config[unit].portrait.model = val
                     UF:UpdateUnit(unit)
                 end
             },

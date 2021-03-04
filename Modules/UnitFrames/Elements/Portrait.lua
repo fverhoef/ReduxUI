@@ -4,10 +4,14 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    self.Portrait = self:CreateTexture("$parentPortrait", "BACKGROUND")
-    self.Portrait.PostUpdate = function()
+    self.Portrait2D = self:CreateTexture("$parentPortrait", "BACKGROUND")
+    self.Portrait2D.PostUpdate = function()
         self:UpdatePortraitTexture()
     end
+
+    self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
+
+    self.Portrait = self.Portrait2D
 
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
     self.PortraitHolder:SetAllPoints(self.Portrait)
@@ -24,14 +28,22 @@ function UF:UpdatePortrait()
     end
 
     local config = self.config.portrait
-    if config.enabled then
-        self:EnableElement("Portrait")
 
-        if config.class then
-            config.model = false
-        elseif config.model then
-            config.class = false
+    if config.class then
+        config.model = false
+    elseif config.model then
+        config.class = false
+    end
+
+    if config.enabled then
+        if config.model and self.Portrait == self.Portrait2D then
+            self:DisableElement("Portrait")
+            self.Portrait = self.Portrait3D
+        elseif not config.model and self.Portrait == self.Portrait3D then
+            self:DisableElement("Portrait")
+            self.Portrait = self.Portrait2D
         end
+        self:EnableElement("Portrait")
 
         self.Portrait:SetSize(unpack(config.size))
 
@@ -66,12 +78,12 @@ function UF:UpdatePortraitTexture()
     if not self.Portrait then
         return
     end
-    
+
     local config = self.config.portrait
-    if not config.enabled then
+    if not config.enabled or config.model then
         return
     end
-    
+
     self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
 
     if config.class and UnitIsPlayer(self.unit) then
