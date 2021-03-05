@@ -36,6 +36,7 @@ function BS:StyleAuraButton(button)
     button:SetBorderTexture(BS.config.borders.texture)
     button:SetBorderColor(BS.config.borders.color)
     button:CreateShadow()
+    button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
 
     local icon = _G[buttonName .. "Icon"]
     if icon then
@@ -117,6 +118,8 @@ function BS:UpdateAllAuraButtons()
         if symbol then
             symbol:SetFont(config.font, config.fontSize, config.fontOutline)
         end
+
+        button.Gloss:SetShown(config.glow)
 
         BS:UpdateAuraButton(button)
     end

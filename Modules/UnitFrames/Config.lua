@@ -539,15 +539,16 @@ function UF:CreateUnitArtworkOption(unit, order, inline, name)
                         order = 5,
                         hasAlpha = true,
                         get = function()
-                            local color = UF.config[unit].artwork.background.color
+                            local color = UF.config[unit].artwork.background.color or {1,1,1,1}
                             return color[1], color[2], color[3], color[4] or 1
                         end,
                         set = function(_, r, g, b, a)
-                            local color = UF.config[unit].artwork.background.color
+                            local color = UF.config[unit].artwork.background.color or {1,1,1,1}
                             color[1] = r
                             color[2] = g
                             color[3] = b
                             color[4] = a or 1
+                            UF.config[unit].artwork.background.color = color
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -4086,7 +4087,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             value = {
                 enabled = true,
-                point = {"TOP", 0, -20},
+                point = {"TOP", 0, -15},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -4405,7 +4406,7 @@ R:RegisterModuleConfig(UF, {
         enabled = true,
         size = {90, 36},
         scale = 1,
-        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -200},
+        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -250},
         frameLevel = 10,
         artwork = {enabled = false, background = {}, highlight = {}},
         health = {
@@ -4413,7 +4414,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             value = {
                 enabled = true,
-                point = {"CENTER", "CENTER", 0, 0},
+                point = {"TOP", 0, -15},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -4425,7 +4426,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             inset = true,
-            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {50, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
@@ -4443,13 +4444,13 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            size = {155, 10},
+            size = {70, 10},
             point = {"TOP", "TOP", 0, -8},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "LEFT",
+            justifyH = "CENTER",
             tag = "[name]"
         },
         level = {
@@ -4584,7 +4585,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             value = {
                 enabled = true,
-                point = {"CENTER", "CENTER", 0, 0},
+                point = {"TOP", 0, -15},
                 font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
                 fontSize = 11,
                 fontOutline = "NONE",
@@ -4974,7 +4975,7 @@ R:RegisterModuleConfig(UF, {
                 spacing = 2,
                 numColumns = 5,
                 showDuration = true,
-                onlyShowPlayer = false,
+                onlyShowPlayer = true,
                 num = 32
             },
             debuffs = {
@@ -4987,7 +4988,7 @@ R:RegisterModuleConfig(UF, {
                 spacing = 2,
                 numColumns = 5,
                 showDuration = true,
-                onlyShowPlayer = false,
+                onlyShowPlayer = true,
                 num = 16
             }
         },

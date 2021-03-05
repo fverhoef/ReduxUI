@@ -82,6 +82,21 @@ function BS:CreateFontOutlineOption(name, parent, order)
     }
 end
 
+function BS:CreateGlowOption(name, parent, option, order)
+    return {
+        type = "toggle",
+        name = name or "Glow",
+        order = order,
+        get = function()
+            return BS.config[parent][option]
+        end,
+        set = function(_, val)
+            BS.config[parent][option] = val
+            BS:UpdateAll()
+        end
+    }
+end
+
 R:RegisterModuleConfig(BS, {
     enabled = true,
     borders = {
@@ -102,11 +117,25 @@ R:RegisterModuleConfig(BS, {
         fontOutline = "OUTLINE",
         borderSize = 4,
         hideKeybindText = false,
-        hideMacroText = true
+        hideMacroText = true,
+        glow = true
     },
-    auras = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", borderSize = 4, minSizeToShowDuration = 30},
-    items = {font = R.config.defaults.profile.fonts.normal, fontSize = 12, fontOutline = "OUTLINE", borderSize = 4},
-    microMenu = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", borderSize = 4}
+    auras = {
+        font = R.config.defaults.profile.fonts.normal,
+        fontSize = 10,
+        fontOutline = "OUTLINE",
+        borderSize = 4,
+        minSizeToShowDuration = 30,
+        glow = true
+    },
+    items = {font = R.config.defaults.profile.fonts.normal, fontSize = 12, fontOutline = "OUTLINE", borderSize = 4, glow = true},
+    microMenu = {
+        font = R.config.defaults.profile.fonts.normal,
+        fontSize = 10,
+        fontOutline = "OUTLINE",
+        borderSize = 4,
+        glow = true
+    }
 })
 
 R:RegisterModuleOptions(BS, {
@@ -260,7 +289,8 @@ R:RegisterModuleOptions(BS, {
                         BS.config.actionBars.hideMacroText = val
                         BS:UpdateAll()
                     end
-                }
+                },
+                glow = BS:CreateGlowOption(nil, "actionBars", "glow", 10)
             }
         },
         auras = {
@@ -271,7 +301,8 @@ R:RegisterModuleOptions(BS, {
             args = {
                 fontFamily = BS:CreateFontFamilyOption(nil, "auras", 1),
                 fontSize = BS:CreateFontSizeOption(nil, "auras", 2),
-                fontOutline = BS:CreateFontOutlineOption(nil, "auras", 3)
+                fontOutline = BS:CreateFontOutlineOption(nil, "auras", 3),
+                glow = BS:CreateGlowOption(nil, "auras", "glow", 4)
             }
         },
         items = {
@@ -282,7 +313,8 @@ R:RegisterModuleOptions(BS, {
             args = {
                 fontFamily = BS:CreateFontFamilyOption(nil, "items", 1),
                 fontSize = BS:CreateFontSizeOption(nil, "items", 2),
-                fontOutline = BS:CreateFontOutlineOption(nil, "items", 3)
+                fontOutline = BS:CreateFontOutlineOption(nil, "items", 3),
+                glow = BS:CreateGlowOption(nil, "items", "glow", 4)
             }
         }
     }

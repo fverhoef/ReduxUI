@@ -16,6 +16,9 @@ function BS:StyleMicroButton(button)
     local buttonName = button:GetName()
     local config = BS.config.microMenu
 
+    button:CreateGlossOverlay(nil, nil, nil, 0, 0, -20, 0)
+    button.Gloss:SetShown(config.glow)
+
     BS.microButtons[button] = true
     button.__styled = true
 
@@ -39,7 +42,10 @@ function BS:StyleAllMicroButtons()
 end
 
 function BS:UpdateAllMicroButtons()
+    local config = BS.config.microMenu
     for button in pairs(BS.microButtons) do
+        button.Gloss:SetShown(config.glow)
+
         BS:UpdateMicroButton(button)
     end
 end

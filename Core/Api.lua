@@ -115,7 +115,9 @@ function R:SetBackdropColor(r, g, b, a)
     self.Backdrop:SetBackdropColor(r or 0.1, g or 0.1, b or 0.1, a or 0.8)
 end
 
-function R:CreateGloss(size, texture, color, left, right, top, bottom)
+local glossOverlays = {}
+
+function R:CreateGlossOverlay(size, texture, color, left, right, top, bottom)
     if self.Gloss then
         return
     end
@@ -173,6 +175,11 @@ function R:CreateGloss(size, texture, color, left, right, top, bottom)
                 self[i]:SetVertexColor(r, g, b, a)
             end
         end
+        self.Gloss.SetSize = function(self, size)
+            for i = 1, 9 do
+                self[i]:SetSize(size, size)
+            end
+        end
 
         for i = 1, 9 do
             self.Gloss[i] = self:CreateTexture(nil, "OVERLAY", nil, 7)
@@ -224,6 +231,29 @@ function R:CreateGloss(size, texture, color, left, right, top, bottom)
         self.Gloss[9]:SetPoint("TOPRIGHT", self, right - size, top - size)
         self.Gloss[9]:SetPoint("BOTTOMLEFT", self, -left + size, -bottom + size)
         self.Gloss[9]:SetPoint("BOTTOMRIGHT", self, right - size, -bottom + size)
+
+        glossOverlays[self.Gloss] = true
+    end
+end
+
+function R:UpdateAllGlossOverlays(size, texture, color)
+    local parent
+    for gloss, _ in pairs(glossOverlays) do
+        if size then
+            gloss:SetSize(size)
+    
+            local left, right, top, bottom = unpack(gloss.padding)
+            gloss[9]:SetPoint("TOPLEFT", gloss.parent, -left + size, top - size)
+            gloss[9]:SetPoint("TOPRIGHT", gloss.parent, right - size, top - size)
+            gloss[9]:SetPoint("BOTTOMLEFT", gloss.parent, -left + size, -bottom + size)
+            gloss[9]:SetPoint("BOTTOMRIGHT", gloss.parent, right - size, -bottom + size)
+        end
+        if texture then
+            gloss:SetTexture(texture)
+        end
+        if color then
+            gloss:SetVertexColor(unpack(color))
+        end
     end
 end
 
@@ -285,6 +315,11 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border.SetVertexColor = function(self, r, g, b, a)
             for i = 1, 8 do
                 self[i]:SetVertexColor(r, g, b, a)
+            end
+        end
+        self.Border.SetSize = function(self, size)
+            for i = 1, 8 do
+                self[i]:SetSize(size, size)
             end
         end
 
@@ -403,14 +438,17 @@ function R:SetBorderTexture(texture)
     self.Border:SetTexture(texture)
 end
 
-function R:UpdateAllBorders(size, texture)
+function R:UpdateAllBorders(size, texture, color)
     local parent
     for border, _ in pairs(borders) do
         if size then
-            border.parent:SetBorderSize(size)
+            border:SetSize(size)
         end
         if texture then
-            border.parent:SetBorderTexture(texture)
+            border:SetTexture(texture)
+        end
+        if color then
+            border:SetVertexColor(unpack(color))
         end
     end
 end
@@ -634,8 +672,8 @@ local function AddApi(object)
     if not object.SetBackdropColor then
         mt.SetBackdropColor = R.SetBackdropColor
     end
-    if not object.CreateGloss then
-        mt.CreateGloss = R.CreateGloss
+    if not object.CreateGlossOverlay then
+        mt.CreateGlossOverlay = R.CreateGlossOverlay
     end
     if not object.CreateBorder then
         mt.CreateBorder = R.CreateBorder

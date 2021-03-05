@@ -27,6 +27,8 @@ function BS:StyleItemButton(button)
     end
 
     button:CreateShadow()
+    button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
+    button.Gloss:SetShown(button.isBagSlot or button.isCharacterSlot)
 
     local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
     local iconBorder = _G[buttonName .. "IconBorder"] or button.IconBorder
@@ -143,12 +145,17 @@ function BS:StyleAllItemButtons()
         "CharacterBag3Slot"
     }
     for _, buttonName in next, itemButtons do
-        BS:StyleItemButton(_G[buttonName])
+        local button = _G[buttonName]
+        if button then
+            button.isBagSlot = true
+            BS:StyleItemButton(button)
+        end
     end
 
     for i, slot in next, R.EquipmentSlots do
         local button = _G["Character" .. slot]
         if button then
+            button.isCharacterSlot = true
             button.itemIDOrLink = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
             BS:StyleItemButton(button)
         end
@@ -177,6 +184,8 @@ function BS:UpdateAllItemButtons()
         if stock then
             stock:SetFont(config.font, config.fontSize, config.fontOutline)
         end
+
+        button.Gloss:SetShown(config.glow and (button.isBagSlot or button.isCharacterSlot))
 
         BS:UpdateItemButton(button)
     end

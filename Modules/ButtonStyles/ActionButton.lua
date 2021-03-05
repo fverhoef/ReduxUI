@@ -27,7 +27,7 @@ function BS:StyleActionButton(button)
 
     button:CreateShadow()
     button:CreateBackdrop(R.media.textures.backdrops.button, nil, nil, 2, 2)
-    button:CreateGloss(nil,nil,nil,0,0,-1,0)
+    button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
 
     button:SetNormalTexture(BS.config.borders.texture)
     local normalTexture = button:GetNormalTexture()
@@ -160,18 +160,20 @@ function BS:UpdateAllActionButtons()
         if count then
             count:SetFont(config.font, config.fontSize, config.fontOutline)
         end
-    
+
         local hotkey = _G[buttonName .. "HotKey"]
         if hotkey then
             hotkey:SetFont(config.font, config.fontSize, config.fontOutline)
             hotkey:SetAlpha(not config.hideKeybindText and 1 or 0)
         end
-    
+
         local name = _G[buttonName .. "Name"]
         if name then
             name:SetFont(config.font, config.fontSize, config.fontOutline)
             name:SetAlpha(not config.hideMacroText and 1 or 0)
         end
+
+        button.Gloss:SetShown(config.glow)
 
         BS:UpdateActionButton(button)
     end

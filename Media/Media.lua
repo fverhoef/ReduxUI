@@ -57,7 +57,8 @@ R.media = {
             onyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Onyx",
             retina = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Retina",
             gloss1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss1",
-            gloss2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss2"
+            gloss2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss2",
+            gloss3 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss3"
         },
 
         buttons = {

@@ -48,6 +48,21 @@ function ID:GetCharacterDatabase()
     return db
 end
 
+function ID:GetCharacterKeys()
+    local keys = {}
+    for key, _ in pairs(R.config.db.realm.inventory) do
+        keys[key] = key
+    end
+
+    return keys
+end
+
+function ID:ClearCharacterDatabase(name)
+    if name and R.config.db.realm.inventory[name] then
+        R.config.db.realm.inventory[name] = nil
+    end
+end
+
 function ID:UpdateItemCount(itemId, db)
     if not itemId then
         return
