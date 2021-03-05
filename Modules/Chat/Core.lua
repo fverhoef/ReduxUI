@@ -71,10 +71,6 @@ function C:Initialize()
     BNToastFrame:SetClampedToScreen(true)
     BNToastFrame:SetClampRectInsets(-15, 15, 15, -15)
 
-    -- parse links for alt-click invite and url copy
-    local SetItemRef_Base = SetItemRef
-    SetItemRef = C.SetItemRef
-
     for i = 1, NUM_CHAT_WINDOWS do
         local chatframe = _G["ChatFrame" .. i]
 
@@ -96,27 +92,6 @@ function C:Initialize()
     FloatingChatFrame_OnMouseScroll = C.FloatingChatFrame_OnMouseScroll
 
     C:UpdateChatFrames()
-end
-
-local SetItemRef_Base = SetItemRef
-function C:SetItemRef(...)
-    local type, value = self:match("(%a+):(.+)")
-    if IsAltKeyDown() and type == "player" then
-        InviteUnit(value:match("([^:]+)"))
-    elseif (type == "url") then
-        local editBox = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
-        if not editBox then
-            return
-        end
-        editBox:SetText(value)
-        editBox:SetFocus()
-        editBox:HighlightText()
-        if not editBox:IsShown() then
-            editBox:Show()
-        end
-    else
-        return SetItemRef_Base(self, ...)
-    end
 end
 
 function C:ChatFrame_AddMessage(text, ...)
@@ -154,6 +129,16 @@ function C:ChatFrame_AddMessage(text, ...)
     -- TODO: support [inv] links
 
     return self.AddMessage_Base(self, text, ...)
+end
+
+local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
+function _G.ItemRefTooltip:SetHyperlink(data, ...)
+    local type, value = data:match("(%a+):(.+)")
+    if type == "url" then
+        C:SetEditBoxMessage(value)
+    else
+        SetHyperlink(self, data, ...)
+    end
 end
 
 function C:FloatingChatFrame_OpenTemporaryWindow()
@@ -398,5 +383,18 @@ function C:OnMouseWheel(self, delta)
                 self:ScrollUp()
             end
         end
+    end
+end
+
+function C:SetEditBoxMessage(message)
+    local editBox = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
+    if not editBox then
+        return
+    end
+    editBox:SetText(message)
+    editBox:SetFocus()
+    editBox:HighlightText()
+    if not editBox:IsShown() then
+        editBox:Show()
     end
 end
