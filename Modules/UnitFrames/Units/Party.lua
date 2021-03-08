@@ -153,6 +153,7 @@ function UF:Party_ApplyTheme()
         config.power.enabled = true
         config.power.padding = {0, 0, 0, 15}
         config.power.detached = false
+        config.power.inset = false
         config.power.size = {150, 7}
         config.power.value.enabled = false
         config.power.border.enabled = false

@@ -268,6 +268,7 @@ function UF:UpdateFrame(self)
     self:UpdateSummonIndicator()
     self:UpdateOfflineIcon()
 
+    self:SetBorderSize(self.config.border.size)
     self.Border:SetShown(self.config.border.enabled)
     self.Shadow:SetShown(self.config.shadow.enabled)
 

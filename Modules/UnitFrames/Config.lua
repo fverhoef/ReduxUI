@@ -99,8 +99,9 @@ function UF:CreateUnitOptions(unit, order, inline, name, hidden)
                 args = {
                     size = UF:CreateUnitSizeOption(unit, 1, true),
                     border = UF:CreateUnitBorderOption(unit, 10, true),
-                    artwork = UF:CreateUnitArtworkOption(unit, 11, true),
-                    highlight = UF:CreateUnitHighlightOption(unit, 14, true)
+                    shadow = UF:CreateUnitShadowOption(unit, 11, true),
+                    highlight = UF:CreateUnitHighlightOption(unit, 12, true),
+                    artwork = UF:CreateUnitArtworkOption(unit, 13, true)
                 }
             },
             elements = {
@@ -493,6 +494,29 @@ function UF:CreateUnitBorderOption(unit, order, inline, name)
     }
 end
 
+function UF:CreateUnitShadowOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Shadow",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].shadow.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].shadow.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
 function UF:CreateUnitArtworkOption(unit, order, inline, name)
     return {
         type = "group",
@@ -518,6 +542,9 @@ function UF:CreateUnitArtworkOption(unit, order, inline, name)
                 name = "Background",
                 order = 11,
                 inline = true,
+                hidden = function()
+                    return not UF.config[unit].artwork.enabled
+                end,
                 args = {
                     texture = {
                         name = "Texture",
@@ -539,16 +566,60 @@ function UF:CreateUnitArtworkOption(unit, order, inline, name)
                         order = 5,
                         hasAlpha = true,
                         get = function()
-                            local color = UF.config[unit].artwork.background.color or {1,1,1,1}
+                            local color = UF.config[unit].artwork.background.color or {1, 1, 1, 1}
                             return color[1], color[2], color[3], color[4] or 1
                         end,
                         set = function(_, r, g, b, a)
-                            local color = UF.config[unit].artwork.background.color or {1,1,1,1}
+                            local color = UF.config[unit].artwork.background.color or {1, 1, 1, 1}
                             color[1] = r
                             color[2] = g
                             color[3] = b
                             color[4] = a or 1
                             UF.config[unit].artwork.background.color = color
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            highlight = {
+                type = "group",
+                name = "Background",
+                order = 12,
+                inline = true,
+                hidden = function()
+                    return not UF.config[unit].artwork.enabled
+                end,
+                args = {
+                    texture = {
+                        name = "Texture",
+                        type = "input",
+                        desc = "The path to the texture to use.",
+                        order = 1,
+                        width = "full",
+                        get = function()
+                            return UF.config[unit].artwork.highlight.texture
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].artwork.highlight.texture = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        order = 5,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].artwork.highlight.color or {1, 1, 1, 1}
+                            return color[1], color[2], color[3], color[4] or 1
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].artwork.highlight.color or {1, 1, 1, 1}
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a or 1
+                            UF.config[unit].artwork.highlight.color = color
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -1864,7 +1935,9 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                 type = "toggle",
                 name = "Use Round Portrait",
                 desc = "Whether the portrait texture is round or square.",
-                disabled = function() return UF.config[unit].portrait.model end,
+                disabled = function()
+                    return UF.config[unit].portrait.model
+                end,
                 order = 3,
                 get = function()
                     return UF.config[unit].portrait.round
@@ -2927,6 +3000,7 @@ R:RegisterModuleConfig(UF, {
         artwork = {
             enabled = false,
             background = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
                 coords = {1, 0.09375, 0, 0.78125},
                 point = {"TOPLEFT", "TOPLEFT", -47, 22},
@@ -2934,6 +3008,7 @@ R:RegisterModuleConfig(UF, {
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_Flash,
                 coords = {0.9453125, 0, 0, 0.181640625},
                 point = {"TOPLEFT", "TOPLEFT", -33, 22},
@@ -3005,6 +3080,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {38, 38},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3102,6 +3178,7 @@ R:RegisterModuleConfig(UF, {
         artwork = {
             enabled = false,
             background = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_LargerHealth,
                 coords = {0.09375, 1, 0, 0.78125},
                 point = {"TOPRIGHT", "TOPRIGHT", 47, 22},
@@ -3109,24 +3186,28 @@ R:RegisterModuleConfig(UF, {
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_Flash,
                 coords = {0, 0.9453125, 0, 0.182},
                 point = {"TOPRIGHT", "TOPRIGHT", 33, 22},
                 size = {242, 93}
             },
             elite = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_Elite,
                 coords = {0.09375, 1, 0, 0.78125},
                 point = {"CENTER", "CENTER", 20, -7},
                 size = {232, 100}
             },
             rare = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_Rare,
                 coords = {0.09375, 1, 0, 0.78125},
                 point = {"CENTER", "CENTER", 20, -7},
                 size = {232, 100}
             },
             rareElite = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetFrame_RareElite,
                 coords = {0.09375, 1, 0, 0.78125},
                 point = {"CENTER", "CENTER", 20, -7},
@@ -3195,6 +3276,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "RIGHT",
             size = {38, 38},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3292,13 +3374,14 @@ R:RegisterModuleConfig(UF, {
         artwork = {
             enabled = false,
             background = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.targetTargetFrame,
                 coords = {0.015625, 0.7265625, 0, 0.703125},
                 point = {"CENTER", "CENTER", 0, 0},
                 size = {95, 45},
                 color = {0.5, 0.5, 0.5, 1}
             },
-            highlight = {}
+            highlight = {enabled = false}
         },
         health = {
             enabled = true,
@@ -3362,6 +3445,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3445,6 +3529,7 @@ R:RegisterModuleConfig(UF, {
         artwork = {
             enabled = false,
             background = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.smallTargetingFrame,
                 coords = {0, 1, 0, 1},
                 point = {"TOPLEFT", "TOPLEFT", 0, -2},
@@ -3452,6 +3537,7 @@ R:RegisterModuleConfig(UF, {
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.partyFrame_Flash,
                 coords = {0, 1, 0, 1},
                 point = {"TOPLEFT", "TOPLEFT", 0, -2},
@@ -3520,6 +3606,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3601,7 +3688,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOP", "UIParent", "TOP", 0, 300},
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3664,6 +3751,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3757,7 +3845,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", addonName .. "Focus", "BOTTOMRIGHT", 15, 0},
         frameLevel = 20,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -3820,6 +3908,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3904,6 +3993,7 @@ R:RegisterModuleConfig(UF, {
         artwork = {
             enabled = false,
             background = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.partyFrame,
                 coords = {0, 1, 0, 1},
                 point = {"TOPLEFT", "TOPLEFT", 0, -2},
@@ -3911,6 +4001,7 @@ R:RegisterModuleConfig(UF, {
                 color = {0.5, 0.5, 0.5, 1}
             },
             highlight = {
+                enabled = true,
                 texture = R.media.textures.unitFrames.partyFrame_Flash,
                 coords = {0, 1, 0, 1},
                 point = {"TOPLEFT", "TOPLEFT", 0, -2},
@@ -3979,6 +4070,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {26, 26},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4081,7 +4173,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
         frameLevel = 20,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4144,6 +4236,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {36, 36},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4253,7 +4346,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4316,6 +4409,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4408,7 +4502,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -250},
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4445,7 +4539,7 @@ R:RegisterModuleConfig(UF, {
         name = {
             enabled = true,
             size = {70, 10},
-            point = {"TOP", "TOP", 0, -8},
+            point = {"TOP", "TOP", 0, -6},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
@@ -4471,6 +4565,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4579,7 +4674,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -400},
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4597,7 +4692,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             inset = true,
-            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {50, 12},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
@@ -4615,13 +4710,13 @@ R:RegisterModuleConfig(UF, {
         },
         name = {
             enabled = true,
-            size = {155, 10},
-            point = {"TOP", "TOP", 0, -8},
+            size = {70, 10},
+            point = {"TOP", "TOP", 0, -6},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
-            justifyH = "LEFT",
+            justifyH = "CENTER",
             tag = "[name]"
         },
         level = {
@@ -4642,6 +4737,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4750,7 +4846,7 @@ R:RegisterModuleConfig(UF, {
         scale = 1,
         point = {"TOPRIGHT", "UIParent", "BOTTOMRIGHT", 15, 0},
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},
@@ -4813,6 +4909,7 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = "LEFT",
             size = {42, 42},
             border = {enabled = true, size = 4},
+            shadow = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4905,7 +5002,7 @@ R:RegisterModuleConfig(UF, {
         size = {150, 16},
         scale = 1,
         frameLevel = 10,
-        artwork = {enabled = false, background = {}, highlight = {}},
+        artwork = {enabled = false, background = {enabled = false}, highlight = {enabled = false}},
         health = {
             enabled = true,
             padding = {0, 0, 0, 0},

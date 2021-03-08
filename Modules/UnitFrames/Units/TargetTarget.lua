@@ -44,7 +44,7 @@ function UF:TargetTarget_ApplyTheme()
         config.artwork.background = config.artwork.background or {}
         config.artwork.background.texture = R.media.textures.unitFrames.targetTargetFrame
         config.artwork.background.coords = {0.015625, 0.7265625, 0, 0.703125}
-        config.artwork.background.point = {"CENTER", "CENTER", 0, 0}
+        config.artwork.background.point = {"CENTER", "CENTER", 1, 0}
         config.artwork.background.size = {95, 45}
         config.artwork.background.color = {1, 1, 1, 1}
 
@@ -55,13 +55,14 @@ function UF:TargetTarget_ApplyTheme()
         config.power.enabled = true
         config.power.padding = {0, 0, 0, 15}
         config.power.detached = false
+        config.power.inset = false
         config.power.size = {95, 7}
         config.power.value.enabled = false
 
         config.portrait.enabled = true
         config.portrait.round = true
         config.portrait.detached = true
-        config.portrait.point = {"LEFT", "LEFT", 6, 0}
+        config.portrait.point = {"LEFT", "LEFT", 7, 0}
         config.portrait.size = {35, 35}
         config.portrait.border.enabled = false
 

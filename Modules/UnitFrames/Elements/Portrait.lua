@@ -4,18 +4,22 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
+    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
+    self.PortraitHolder:SetFrameLevel(self:GetFrameLevel() - 1)
+    self.PortraitHolder:CreateBackdrop()
+    self.PortraitHolder:CreateBorder()
+    self.PortraitHolder:CreateShadow()
+
     self.Portrait2D = self:CreateTexture("$parentPortrait", "BACKGROUND")
     self.Portrait2D.PostUpdate = function()
         self:UpdatePortraitTexture()
     end
+    self.Portrait2D:SetParent(self.PortraitHolder)
 
     self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
+    self.Portrait3D:SetParent(self.PortraitHolder)
 
     self.Portrait = self.Portrait2D
-
-    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
-    self.PortraitHolder:SetAllPoints(self.Portrait)
-    self.PortraitHolder:CreateBorder()
 
     return self.Portrait
 end
@@ -45,30 +49,38 @@ function UF:UpdatePortrait()
         end
         self:EnableElement("Portrait")
 
-        self.Portrait:SetSize(unpack(config.size))
+        self.PortraitHolder:SetSize(unpack(config.size))
 
         local xOffset = self.config.border.enabled and self.config.border.size / 2 or 0
         local yOffset = self.config.border.enabled and self.config.border.size / 2 or 0
 
-        self.Portrait:ClearAllPoints()
+        self.PortraitHolder:ClearAllPoints()
         if config.detached then
-            self.Portrait:SetParent(self)
-            self.Portrait:Point(unpack(config.point))
+            self.PortraitHolder:SetParent(self)
+            self.PortraitHolder:Point(unpack(config.point))
         elseif config.attachedPoint == "LEFT" then
-            self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, -yOffset)
-            self.Portrait:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, yOffset)
+            self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", xOffset, -yOffset)
+            self.PortraitHolder:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", xOffset, yOffset)
         elseif config.attachedPoint == "RIGHT" then
-            self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -xOffset, -yOffset)
-            self.Portrait:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
+            self.PortraitHolder:SetPoint("TOPRIGHT", self, "TOPRIGHT", -xOffset, -yOffset)
+            self.PortraitHolder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
         end
+        
+        self.PortraitHolder:SetBorderSize(config.border.size)
+        self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
+        self.PortraitHolder.Shadow:SetShown(not config.round and config.detached and config.shadow.enabled)
+        self.PortraitHolder.Backdrop:SetShown(not config.round)
+
+        xOffset = config.detached and config.border.enabled and config.border.size / 2 or 0
+        yOffset = config.detached and config.border.enabled and config.border.size / 2 or 0
+        self.Portrait:SetInside(self.PortraitHolder, xOffset, yOffset)
+        self.PortraitHolder.Backdrop:SetInside(self.PortraitHolder, xOffset, yOffset)
 
         self:UpdatePortraitTexture()
-
-        self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
-        self.PortraitHolder:SetBorderSize(config.border.size)
     else
         self:DisableElement("Portrait")
         self.PortraitHolder.Border:Hide()
+        self.PortraitHolder.Shadow:Hide()
     end
 end
 

@@ -61,6 +61,7 @@ function UF:Pet_ApplyTheme()
 
         config.power.enabled = true
         config.power.detached = false
+        config.power.inset = false
         config.power.size = {150, 12}
         config.power.value.enabled = true
         config.power.value.point = {"CENTER", "CENTER", 0, 0}
