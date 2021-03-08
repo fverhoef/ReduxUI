@@ -4,9 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePower()
+    self.PowerHolder = CreateFrame("Frame", "$parentPowerHolder", self)
+    self.PowerHolder:CreateBorder()
+    self.PowerHolder:CreateShadow()
+
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
-    self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
     self.Power.config = self.config.power
@@ -17,15 +20,9 @@ function UF:CreatePower()
     self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
     self.Power.Smooth = true
 
-    self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, 0)
-    self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
-
     self.Power.Value = self:CreateFontString("$parentPowerText", "OVERLAY")
     self.Power.Value:SetParent(self.Power)
     self.Power.Value:SetFont(UF.config.font, 10)
-
-    self.Power:CreateBorder(self.config.power.border.size)
-    self.Power:CreateShadow()
 
     self:Tag(self.Power.Value, "[curpp]")
 
@@ -49,7 +46,6 @@ function UF:UpdatePower()
     if config.enabled then
         self:EnableElement("Power")
 
-        self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
         self.Power:SetStatusBarTexture(UF.config.statusbars.power)
         self.Power:SetFrequentUpdates(self.config.power.frequentUpdates)
         self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -76,23 +72,29 @@ function UF:UpdatePower()
         local topOffset = config.padding and config.padding[3] or 0
         local bottomOffset = config.padding and config.padding[4] or 0
 
-        self.Power:SetSize(unpack(config.size))
-        self.Power:ClearAllPoints()
+        self.PowerHolder:SetSize(unpack(config.size))
+        self.PowerHolder:ClearAllPoints()
         if config.detached then
             config.inset = false
-            self.Power:Point(unpack(config.point))
+            self.PowerHolder:Point(unpack(config.point))
         elseif config.inset then
-            self.Power:Point(unpack(config.insetPoint))
-            self.Power:SetFrameLevel(self:GetFrameLevel() + 1)
+            self.PowerHolder:Point(unpack(config.insetPoint))
+            self.PowerHolder:SetFrameLevel(self:GetFrameLevel() + 1)
         else
-            self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", leftOffset, topOffset)
-            self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", rightOffset, topOffset)
-            self.Power:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
+            bottomOffset = bottomOffset + (self.config.border.enabled and self.config.border.size / 2 or 0)
+            self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
+            self.PowerHolder:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", leftOffset, topOffset)
+            self.PowerHolder:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", rightOffset, topOffset)
+            self.PowerHolder:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
         end
 
-        self.Power.Border:SetShown((config.detached or config.inset) and config.border.enabled)
-        self.Power.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
-        self.Power:SetShadowPadding(config.border.enabled and 1 or 0, config.border.enabled and 1 or 0, 0, 0)
+        self.PowerHolder:SetBorderSize(config.border.size)
+        self.PowerHolder.Border:SetShown((config.detached or config.inset) and config.border.enabled)
+        self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
+
+        xOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
+        yOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
+        self.Power:SetInside(self.PowerHolder, xOffset, yOffset)
     else
         self:DisableElement("Power")
     end
