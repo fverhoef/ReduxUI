@@ -182,7 +182,7 @@ function R:CreateGlossOverlay(size, texture, color, left, right, top, bottom)
         end
 
         for i = 1, 9 do
-            self.Gloss[i] = self:CreateTexture(nil, "OVERLAY", nil, 7)
+            self.Gloss[i] = self:CreateTexture(nil, "OVERLAY", nil, 6)
             self.Gloss[i]:SetParent(self)
             self.Gloss[i]:SetSize(size, size)
             self.Gloss[i]:SetTexture(texture)
@@ -324,7 +324,7 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         end
 
         for i = 1, 8 do
-            self.Border[i] = self:CreateTexture(nil, "OVERLAY")
+            self.Border[i] = self:CreateTexture(nil, "OVERLAY", nil, 7)
             self.Border[i]:SetParent(self)
             self.Border[i]:SetSize(size, size)
             self.Border[i]:SetTexture(texture)

@@ -136,6 +136,7 @@ function UF:SetupFrame(self)
     self:CreateArtwork()
     self:CreateBorder(self.config.border.size)
     self:CreateShadow()
+    self:CreateGlossOverlay()
 
     self:CreateHealth()
     self:CreatePower()
@@ -271,6 +272,7 @@ function UF:UpdateFrame(self)
     self:SetBorderSize(self.config.border.size)
     self.Border:SetShown(self.config.border.enabled)
     self.Shadow:SetShown(self.config.shadow.enabled)
+    self.Gloss:SetShown(self.config.gloss.enabled)
 
     self:UpdateAllElements("OnUpdate")
 end

@@ -7,6 +7,7 @@ function UF:CreatePower()
     self.PowerHolder = CreateFrame("Frame", "$parentPowerHolder", self)
     self.PowerHolder:CreateBorder()
     self.PowerHolder:CreateShadow()
+    self.PowerHolder:CreateGlossOverlay()
 
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
@@ -91,6 +92,7 @@ function UF:UpdatePower()
         self.PowerHolder:SetBorderSize(config.border.size)
         self.PowerHolder.Border:SetShown((config.detached or config.inset) and config.border.enabled)
         self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
+        self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss and config.gloss.enabled)
 
         xOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
         yOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0

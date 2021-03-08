@@ -9,6 +9,7 @@ function UF:CreatePortrait()
     self.PortraitHolder:CreateBackdrop()
     self.PortraitHolder:CreateBorder()
     self.PortraitHolder:CreateShadow()
+    self.PortraitHolder:CreateGlossOverlay()
 
     self.Portrait2D = self:CreateTexture("$parentPortrait", "BACKGROUND")
     self.Portrait2D.PostUpdate = function()
@@ -69,6 +70,7 @@ function UF:UpdatePortrait()
         self.PortraitHolder:SetBorderSize(config.border.size)
         self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
         self.PortraitHolder.Shadow:SetShown(not config.round and config.detached and config.shadow.enabled)
+        self.PortraitHolder.Gloss:SetShown(not config.round and config.detached and config.gloss.enabled)
         self.PortraitHolder.Backdrop:SetShown(not config.round)
 
         xOffset = config.detached and config.border.enabled and config.border.size / 2 or 0

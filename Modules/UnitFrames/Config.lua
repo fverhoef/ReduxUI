@@ -3038,6 +3038,7 @@ R:RegisterModuleConfig(UF, {
             point = {"TOP", "UIParent", "BOTTOM", 0, 300},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3081,6 +3082,7 @@ R:RegisterModuleConfig(UF, {
             size = {38, 38},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3167,6 +3169,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     target = {
@@ -3236,6 +3239,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3277,6 +3281,7 @@ R:RegisterModuleConfig(UF, {
             size = {38, 38},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3363,6 +3368,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     targettarget = {
@@ -3405,6 +3411,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3518,6 +3525,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     pet = {
@@ -3566,6 +3574,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3607,6 +3616,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3680,6 +3690,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     focus = {
@@ -3711,6 +3722,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3752,6 +3764,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3837,6 +3850,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     focustarget = {
@@ -3868,6 +3882,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3909,6 +3924,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -3981,6 +3997,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     mouseover = {enabled = false},
@@ -4030,6 +4047,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4071,6 +4089,7 @@ R:RegisterModuleConfig(UF, {
             size = {26, 26},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4156,6 +4175,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow,
 
         unitAnchorPoint = "BOTTOM",
@@ -4196,6 +4216,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4237,6 +4258,7 @@ R:RegisterModuleConfig(UF, {
             size = {36, 36},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4322,6 +4344,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -4369,6 +4392,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4410,6 +4434,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4494,6 +4519,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow
     },
     tank = {
@@ -4525,6 +4551,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4566,6 +4593,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4650,6 +4678,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -4697,6 +4726,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4738,6 +4768,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -4822,6 +4853,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -4869,6 +4901,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4910,6 +4943,7 @@ R:RegisterModuleConfig(UF, {
             size = {42, 42},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             round = false,
             class = false,
             model = false
@@ -5025,6 +5059,7 @@ R:RegisterModuleConfig(UF, {
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
+            gloss = {enabled = true},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -5128,6 +5163,7 @@ R:RegisterModuleConfig(UF, {
         },
         border = {enabled = true, size = 4},
         shadow = {enabled = true},
+        gloss = {enabled = true},
         fader = R.config.faders.onShow,
 
         showComboPoints = false,
