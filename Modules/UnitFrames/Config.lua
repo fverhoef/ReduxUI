@@ -3052,6 +3052,25 @@ R:RegisterModuleConfig(UF, {
             powerPrediction = true,
             energyManaRegen = true
         },
+        additionalPower = {
+            enabled = true,
+            detached = false,
+            attachedPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
+            size = {122, 12},
+            point = {"TOP", "UIParent", "BOTTOM", 0, 280},
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
+            value = {
+                enabled = true,
+                point = {"CENTER", "CENTER", 0, 0},
+                font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+                fontSize = 11,
+                fontOutline = "NONE",
+                fontShadow = true,
+                tag = "[curmana]"
+            }
+        },
         name = {
             enabled = true,
             size = {155, 10},

@@ -25,6 +25,7 @@ if ns.oUF.isClassic then
             DRUID = {
                 [Enum.PowerType.Mana] = false,
                 [Enum.PowerType.Energy] = true,
+                [Enum.PowerType.Rage] = true
             }
         };
     end

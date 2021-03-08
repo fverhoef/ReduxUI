@@ -21,7 +21,7 @@ function UF:CreatePower()
     self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
     self.Power.Smooth = true
 
-    self.Power.Value = self:CreateFontString("$parentPowerText", "OVERLAY")
+    self.Power.Value = self:CreateFontString("$parentPowerText", "OVERLAY", nil, 7)
     self.Power.Value:SetParent(self.Power)
     self.Power.Value:SetFont(UF.config.font, 10)
 
@@ -92,7 +92,7 @@ function UF:UpdatePower()
         self.PowerHolder:SetBorderSize(config.border.size)
         self.PowerHolder.Border:SetShown((config.detached or config.inset) and config.border.enabled)
         self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
-        self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss and config.gloss.enabled)
+        self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss.enabled)
 
         xOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
         yOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
