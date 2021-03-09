@@ -175,7 +175,7 @@ function UF:UpdateCastbar()
         self.CastbarHolder.Border:SetVertexColor(unpack(config.border.color))
 
         self.CastbarHolder.Shadow:SetShown(self.Castbar:IsShown() and config.shadow.enabled)
-        self.CastbarHolder:SetShadowColor(unpack(config.shadow.color))
+        self.CastbarHolder.Shadow:SetBackdropBorderColor(unpack(config.shadow.color))
 
         self.CastbarHolder.Gloss:SetShown(self.Castbar:IsShown() and config.gloss.enabled)
         self.CastbarHolder.Gloss:SetTexture(config.gloss.texture)

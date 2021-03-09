@@ -51,8 +51,8 @@ R:RegisterModuleConfig(TT, {
     modifySpellDamage = true,
     showNextRank = true,    
     border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
-    shadow = {enabled = true},
-    gloss = {enabled = false, texture = R.media.textures.borders.gloss3},
+    shadow = {enabled = true, color = {0,0,0,0.7}},
+    gloss = {enabled = true, texture = R.media.textures.borders.gloss3, color = {1,1,1,0.2}},
 })
 
 R:RegisterModuleOptions(TT, {
@@ -366,6 +366,54 @@ R:RegisterModuleOptions(TT, {
                         TT.config.border.enabled = val
                         TT:UpdateAll()
                     end
+                },
+                size = {
+                    type = "range",
+                    name = "Size",
+                    order = 2,
+                    min = 1,
+                    softMax = 20,
+                    step = 1,
+                    get = function()
+                        return TT.config.border.size
+                    end,
+                    set = function(_, val)
+                        TT.config.border.size = val
+                        TT:UpdateAll()
+                    end
+                },
+                texture = {
+                    type = "select",
+                    name = "Style",
+                    desc = "The style of the tooltip border.",
+                    order = 3,
+                    values = R.BORDER_STYLES,
+                    get = function()
+                        return TT.config.border.texture
+                    end,
+                    set = function(_, key)
+                        TT.config.border.texture = key
+                        TT:UpdateAll()
+                    end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the tooltip border.",
+                    order = 4,
+                    hasAlpha = true,
+                    get = function()
+                        local color = TT.config.border.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = TT.config.border.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
+                        TT:UpdateAll()
+                    end
                 }
             }
         },
@@ -386,6 +434,25 @@ R:RegisterModuleOptions(TT, {
                         TT.config.shadow.enabled = val
                         TT:UpdateAll()
                     end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the tooltip shadow.",
+                    order = 2,
+                    hasAlpha = true,
+                    get = function()
+                        local color = TT.config.shadow.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = TT.config.shadow.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
+                        TT:UpdateAll()
+                    end
                 }
             }
         },
@@ -404,6 +471,39 @@ R:RegisterModuleOptions(TT, {
                     end,
                     set = function(_, val)
                         TT.config.gloss.enabled = val
+                        TT:UpdateAll()
+                    end
+                },
+                texture = {
+                    type = "select",
+                    name = "Style",
+                    desc = "The style of the tooltip gloss overlay.",
+                    order = 2,
+                    values = R.GLOW_STYLES,
+                    get = function()
+                        return TT.config.gloss.texture
+                    end,
+                    set = function(_, key)
+                        TT.config.gloss.texture = key
+                        TT:UpdateAll()
+                    end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the tooltip gloss overlay.",
+                    order = 3,
+                    hasAlpha = true,
+                    get = function()
+                        local color = TT.config.gloss.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = TT.config.gloss.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
                         TT:UpdateAll()
                     end
                 }

@@ -37,9 +37,9 @@ function AB:UpdateArtwork()
         artwork:LinkFader(AB.bars.MainMenuBar)
 
         if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
-            artwork:SetWidth(806)
+            artwork:SetWidth(806 + (config.theme ~= AB.ARTWORK_THEMES.Default and 15 or 0))
         else
-            artwork:SetWidth(552)
+            artwork:SetWidth(552 + (config.theme ~= AB.ARTWORK_THEMES.Default and 15 or 0))
         end
 
         artwork.Texture:Show()
@@ -50,13 +50,7 @@ function AB:UpdateArtwork()
         local isExpBarShown = _G.MainMenuExpBar:IsShown()
         local isRepBarShown = _G.ReputationWatchBar:IsShown()
 
-        local offset = 0
-        if isExpBarShown and isRepBarShown then
-            offset = 22
-        else
-            offset = 10
-        end
-
+        local offset = isExpBarShown and isRepBarShown and 22 or 10
         artwork.Texture:ClearAllPoints()
         artwork.Texture:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 0, offset)
         artwork.Texture:SetPoint("BOTTOMRIGHT", artwork, "BOTTOMRIGHT", 0, offset)
@@ -71,7 +65,7 @@ function AB:UpdateArtwork()
             endCapScale = 1
 
             artwork.Texture:SetTexture(R.media.textures.actionBars.mainMenuBar)
-            if rightBarConfig.enabled and not rightBarConfig.detached then
+            if rightBarConfig.enabled and not rightBarConfig.detached and rightBarConfig.attachedPoint == AB.ATTACHMENT_POINTS.Right then
                 artwork.Texture:SetTexCoord(113 / 1024, (113 + 806) / 1024, 115 / 255, 165 / 255)
             else
                 artwork.Texture:SetTexCoord(113 / 1024, (113 + 552) / 1024, 64 / 255, 114 / 255)
@@ -110,9 +104,9 @@ function AB:UpdateArtwork()
             artwork.TopEndCap:SetHeight(16)
             artwork.TopEndCap:SetWidth(artwork:GetWidth())
             artwork.TopEndCap:SetPoint("TOPLEFT", artwork.LeftEndCap, "TOPRIGHT", -30,
-                                       endCapScale * ((isExpBarShown and isRepBarShown and -15) or -28))
+                                       endCapScale * ((isExpBarShown and isRepBarShown and -12) or -25))
             artwork.TopEndCap:SetPoint("TOPRIGHT", artwork.RightEndCap, "TOPLEFT", 30,
-                                       endCapScale * ((isExpBarShown and isRepBarShown and -15) or -28))
+                                       endCapScale * ((isExpBarShown and isRepBarShown and -12) or -25))
             artwork.TopEndCap:SetDrawLayer("ARTWORK", 1)
 
             artwork.LeftEndCap:SetTexture(texture)

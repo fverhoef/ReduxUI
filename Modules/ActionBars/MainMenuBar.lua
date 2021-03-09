@@ -98,6 +98,7 @@ function AB:UpdateMainMenuBar()
     local rightBarConfig = AB.config.multiBarBottomRight
     local frame = AB.bars.MainMenuBar
     local artwork = AB.bars.Artwork
+    local artworkConfig = AB.config.artwork
 
     if config.enabled then
         frame:Show()
@@ -124,7 +125,7 @@ function AB:UpdateMainMenuBar()
             config.columnSpacing = 6
             config.rowSpacing = 6
 
-            frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", 8, offset + 4)
+            frame:SetPoint("BOTTOMLEFT", artwork, "BOTTOMLEFT", artworkConfig.theme == AB.ARTWORK_THEMES.Default and 8 or 16, offset + 4)
         end
         frame.PageNumber:SetText(GetActionBarPage())
 

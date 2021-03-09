@@ -123,6 +123,7 @@ function TT:Update(tooltip)
     if tooltip.Shadow then
         if TT.config.shadow.enabled then
             tooltip.Shadow:Show()
+            tooltip.Shadow:SetBackdropBorderColor(unpack(TT.config.shadow.color))
         else
             tooltip.Shadow:Hide()
         end
@@ -132,6 +133,7 @@ function TT:Update(tooltip)
         if TT.config.gloss.enabled then
             tooltip.Gloss:Show()
             tooltip.Gloss:SetTexture(TT.config.gloss.texture)
+            tooltip.Gloss:SetVertexColor(unpack(TT.config.gloss.color))
         else
             tooltip.Gloss:Hide()
         end

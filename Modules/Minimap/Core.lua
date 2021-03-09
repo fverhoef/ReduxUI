@@ -202,11 +202,9 @@ function MM:StyleMinimap()
     Minimap:ClearAllPoints()
     Minimap:SetPoint("TOP", 0, -30)
     Minimap:SetSize(width, height) -- correct the cluster offset
-    if MM.config.border.enabled then
-        Minimap:CreateBorder(MM.config.border.size, MM.config.border.texture, MM.config.border.color)
-        Minimap:CreateShadow()
-        Minimap:CreateGlossOverlay()
-    end
+    Minimap:CreateBorder(MM.config.border.size, MM.config.border.texture, MM.config.border.color)
+    Minimap:CreateShadow()
+    Minimap:CreateGlossOverlay(nil, MM.config.gloss.texture)
 
     -- MinimapZoneText
     MinimapZoneText:SetSize(190, 10)
@@ -376,6 +374,7 @@ function MM:UpdateMinimap()
 
     if MM.config.shadow.enabled then
         Minimap.Shadow:Show()
+        Minimap.Shadow:SetBackdropBorderColor(unpack(MM.config.shadow.color))
     else
         Minimap.Shadow:Hide()
     end
@@ -383,6 +382,7 @@ function MM:UpdateMinimap()
     if MM.config.gloss.enabled then
         Minimap.Gloss:Show()
         Minimap.Gloss:SetTexture(MM.config.gloss.texture)
+        Minimap.Gloss:SetVertexColor(unpack(MM.config.gloss.color))
     else
         Minimap.Gloss:Hide()
     end

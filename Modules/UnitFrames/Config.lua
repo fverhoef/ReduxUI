@@ -3798,7 +3798,7 @@ R:RegisterModuleConfig(UF, {
         castbar = {
             enabled = true,
             size = {250, 25},
-            point = {"CENTER", "UIParent", "BOTTOM", 0, 160},
+            point = {"CENTER", "UIParent", "BOTTOM", 0, 200},
             attachedPoint = {"TOP", "BOTTOM", 0, -2},
             detached = true,
             showIcon = true,

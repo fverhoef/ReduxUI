@@ -115,8 +115,6 @@ function R:SetBackdropColor(r, g, b, a)
     self.Backdrop:SetBackdropColor(r or 0.1, g or 0.1, b or 0.1, a or 0.8)
 end
 
-local glossOverlays = {}
-
 function R:CreateGlossOverlay(size, texture, color, left, right, top, bottom)
     if self.Gloss then
         return
@@ -231,33 +229,8 @@ function R:CreateGlossOverlay(size, texture, color, left, right, top, bottom)
         self.Gloss[9]:SetPoint("TOPRIGHT", self, right - size, top - size)
         self.Gloss[9]:SetPoint("BOTTOMLEFT", self, -left + size, -bottom + size)
         self.Gloss[9]:SetPoint("BOTTOMRIGHT", self, right - size, -bottom + size)
-
-        glossOverlays[self.Gloss] = true
     end
 end
-
-function R:UpdateAllGlossOverlays(size, texture, color)
-    local parent
-    for gloss, _ in pairs(glossOverlays) do
-        if size then
-            gloss:SetSize(size)
-
-            local left, right, top, bottom = unpack(gloss.padding)
-            gloss[9]:SetPoint("TOPLEFT", gloss.parent, -left + size, top - size)
-            gloss[9]:SetPoint("TOPRIGHT", gloss.parent, right - size, top - size)
-            gloss[9]:SetPoint("BOTTOMLEFT", gloss.parent, -left + size, -bottom + size)
-            gloss[9]:SetPoint("BOTTOMRIGHT", gloss.parent, right - size, -bottom + size)
-        end
-        if texture then
-            gloss:SetTexture(texture)
-        end
-        if color then
-            gloss:SetVertexColor(unpack(color))
-        end
-    end
-end
-
-local borders = {}
 
 function R:CreateBorder(size, texture, color, left, right, top, bottom)
     if self.Border then
@@ -366,8 +339,6 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         self.Border[8]:SetTexCoord(56 / 64, 1, 8 / 64, 56 / 64)
         self.Border[8]:SetPoint("TOPRIGHT", self.Border[2], "BOTTOMRIGHT")
         self.Border[8]:SetPoint("BOTTOMRIGHT", self.Border[4], "TOPRIGHT")
-
-        borders[self.Border] = true
     end
 end
 
@@ -395,21 +366,6 @@ function R:SetBorderPadding(left, right, top, bottom)
         self.Border[2]:SetPoint("TOPRIGHT", self, right, top)
         self.Border[3]:SetPoint("BOTTOMLEFT", self, -left, -bottom)
         self.Border[4]:SetPoint("BOTTOMRIGHT", self, right, -bottom)
-    end
-end
-
-function R:UpdateAllBorders(size, texture, color)
-    local parent
-    for border, _ in pairs(borders) do
-        if size then
-            border:SetSize(size)
-        end
-        if texture then
-            border:SetTexture(texture)
-        end
-        if color then
-            border:SetVertexColor(unpack(color))
-        end
     end
 end
 
@@ -461,14 +417,6 @@ function R:SetShadowPadding(left, right, top, bottom)
 
     self.Shadow:SetPoint("TOPLEFT", self, "TOPLEFT", -self.Shadow.size - left, self.Shadow.size + top)
     self.Shadow:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", self.Shadow.size + right, -self.Shadow.size - bottom)
-end
-
-function R:SetShadowColor(r, g, b, a)
-    if not self.Shadow then
-        return
-    end
-
-    self.Shadow:SetBackdropBorderColor(r or 0, g or 0, b or 0, a or 0.7)
 end
 
 function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
@@ -628,9 +576,6 @@ local function AddApi(object)
     end
     if not object.SetShadowPadding then
         mt.SetShadowPadding = R.SetShadowPadding
-    end
-    if not object.SetShadowColor then
-        mt.SetShadowColor = R.SetShadowColor
     end
     if not object.FadeIn then
         mt.FadeIn = R.FadeIn

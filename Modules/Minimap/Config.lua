@@ -20,8 +20,8 @@ R:RegisterModuleConfig(MM, {
     infoPanel = {enabled = true, showBackground = false, showTime = true},
     mask = R.media.textures.minimap.minimapMask3,
     border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
-    shadow = {enabled = true},
-    gloss = {enabled = true, texture = R.media.textures.borders.gloss1},
+    shadow = {enabled = true, color = {0,0,0,0.7}},
+    gloss = {enabled = false, texture = R.media.textures.borders.gloss1, color = {1,1,1,0.4}},
     buttonFrame = {enabled = true, iconSize = 22, buttonSpacing = 2, collapsed = true}
 })
 
@@ -288,6 +288,54 @@ R:RegisterModuleOptions(MM, {
                         MM.config.border.enabled = val
                         MM:UpdateMinimap()
                     end
+                },
+                size = {
+                    type = "range",
+                    name = "Size",
+                    order = 2,
+                    min = 1,
+                    softMax = 20,
+                    step = 1,
+                    get = function()
+                        return MM.config.border.size
+                    end,
+                    set = function(_, val)
+                        MM.config.border.size = val
+                        MM:UpdateMinimap()
+                    end
+                },
+                texture = {
+                    type = "select",
+                    name = "Style",
+                    desc = "The style of the minimap border.",
+                    order = 3,
+                    values = R.BORDER_STYLES,
+                    get = function()
+                        return MM.config.border.texture
+                    end,
+                    set = function(_, key)
+                        MM.config.border.texture = key
+                        MM:UpdateMinimap()
+                    end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the minimap border.",
+                    order = 4,
+                    hasAlpha = true,
+                    get = function()
+                        local color = MM.config.border.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = MM.config.border.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
+                        MM:UpdateMinimap()
+                    end
                 }
             }
         },
@@ -308,6 +356,25 @@ R:RegisterModuleOptions(MM, {
                         MM.config.shadow.enabled = val
                         MM:UpdateMinimap()
                     end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the minimap shadow.",
+                    order = 2,
+                    hasAlpha = true,
+                    get = function()
+                        local color = MM.config.shadow.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = MM.config.shadow.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
+                        MM:UpdateMinimap()
+                    end
                 }
             }
         },
@@ -326,6 +393,39 @@ R:RegisterModuleOptions(MM, {
                     end,
                     set = function(_, val)
                         MM.config.gloss.enabled = val
+                        MM:UpdateMinimap()
+                    end
+                },
+                texture = {
+                    type = "select",
+                    name = "Style",
+                    desc = "The style of the minimap gloss overlay.",
+                    order = 2,
+                    values = R.GLOW_STYLES,
+                    get = function()
+                        return MM.config.gloss.texture
+                    end,
+                    set = function(_, key)
+                        MM.config.gloss.texture = key
+                        MM:UpdateMinimap()
+                    end
+                },
+                color = {
+                    type = "color",
+                    name = "Color",
+                    desc = "The color of the minimap gloss overlay.",
+                    order = 3,
+                    hasAlpha = true,
+                    get = function()
+                        local color = MM.config.gloss.color
+                        return color[1], color[2], color[3], color[4]
+                    end,
+                    set = function(_, r, g, b, a)
+                        local color = MM.config.gloss.color
+                        color[1] = r
+                        color[2] = g
+                        color[3] = b
+                        color[4] = a
                         MM:UpdateMinimap()
                     end
                 }

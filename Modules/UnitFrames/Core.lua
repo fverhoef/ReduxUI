@@ -275,7 +275,7 @@ function UF:UpdateFrame(self)
     self.Border:SetVertexColor(unpack(self.config.border.color))
 
     self.Shadow:SetShown(self.config.shadow.enabled)
-    self:SetShadowColor(unpack(self.config.shadow.color))
+    self.Shadow:SetBackdropBorderColor(unpack(self.config.shadow.color))
 
     self.Gloss:SetShown(self.config.gloss.enabled)
     self.Gloss:SetTexture(self.config.gloss.texture)

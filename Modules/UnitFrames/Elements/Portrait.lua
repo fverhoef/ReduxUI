@@ -73,7 +73,7 @@ function UF:UpdatePortrait()
         self.PortraitHolder.Border:SetVertexColor(unpack(config.border.color))
 
         self.PortraitHolder.Shadow:SetShown(not config.round and config.detached and config.shadow.enabled)
-        self.PortraitHolder:SetShadowColor(unpack(config.shadow.color))
+        self.PortraitHolder.Shadow:SetBackdropBorderColor(unpack(config.shadow.color))
 
         self.PortraitHolder.Gloss:SetShown(not config.round and config.detached and config.gloss.enabled)
         self.PortraitHolder.Gloss:SetTexture(config.gloss.texture)

@@ -82,7 +82,7 @@ function UF:UpdateAdditionalPower()
         self.AdditionalPowerHolder.Border:SetVertexColor(unpack(config.border.color))
 
         self.AdditionalPowerHolder.Shadow:SetShown(self.AdditionalPower:IsShown() and config.shadow.enabled)
-        self.AdditionalPowerHolder:SetShadowColor(unpack(config.shadow.color))
+        self.AdditionalPowerHolder.Shadow:SetBackdropBorderColor(unpack(config.shadow.color))
         
         self.AdditionalPowerHolder.Gloss:SetShown(self.AdditionalPower:IsShown() and config.gloss.enabled)
         self.AdditionalPowerHolder.Gloss:SetTexture(config.gloss.texture)

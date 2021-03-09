@@ -33,7 +33,7 @@ function UF:UpdateHighlight()
     self.Border:SetVertexColor(unpack(borderColor))
     
     local shadowColor = config.colorShadow and color or self.config.shadow.color
-    self:SetShadowColor(unpack(shadowColor))
+    self.Shadow:SetBackdropBorderColor(unpack(shadowColor))
     
     self.Artwork.Highlight:SetVertexColor(unpack(borderColor))
     self.Artwork.Highlight:SetShown(config.colorBorder and color and true or false)

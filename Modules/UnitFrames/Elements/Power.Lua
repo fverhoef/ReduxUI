@@ -98,7 +98,7 @@ function UF:UpdatePower()
         self.PowerHolder.Border:SetVertexColor(unpack(config.border.color))
 
         self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
-        self.PowerHolder:SetShadowColor(unpack(config.shadow.color))
+        self.PowerHolder.Shadow:SetBackdropBorderColor(unpack(config.shadow.color))
 
         self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss.enabled)
         self.PowerHolder.Gloss:SetTexture(config.gloss.texture)
