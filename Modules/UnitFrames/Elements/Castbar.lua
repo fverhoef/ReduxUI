@@ -169,7 +169,7 @@ function UF:UpdateCastbar()
             self.CastbarHolder:Point(unpack(config.attachedPoint))
         end
 
-        self.CastbarHolder:SetBorderSize(config.border.size)
+        self.CastbarHolder.Border:SetSize(config.border.size)
         self.CastbarHolder.Border:SetShown(self.Castbar:IsShown() and config.border.enabled)
         self.CastbarHolder.Shadow:SetShown(self.Castbar:IsShown() and config.shadow.enabled)
         self.CastbarHolder.Gloss:SetShown(self.Castbar:IsShown() and config.gloss.enabled)

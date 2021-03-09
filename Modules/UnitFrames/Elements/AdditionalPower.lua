@@ -76,7 +76,7 @@ function UF:UpdateAdditionalPower()
             self.AdditionalPowerHolder:SetFrameLevel(self:GetFrameLevel() + 2)
         end
 
-        self.AdditionalPowerHolder:SetBorderSize(config.border.size)
+        self.AdditionalPowerHolder.Border:SetSize(config.border.size)
         self.AdditionalPowerHolder.Border:SetShown(self.AdditionalPower:IsShown() and config.border.enabled)
         self.AdditionalPowerHolder.Shadow:SetShown(self.AdditionalPower:IsShown() and config.shadow.enabled)
         self.AdditionalPowerHolder.Gloss:SetShown(self.AdditionalPower:IsShown() and config.gloss.enabled)

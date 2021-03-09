@@ -44,9 +44,6 @@ function TT:Initialize()
     TT:SecureHook("GameTooltip_SetBackdropStyle", TT.SetBackdropStyle)
     GameTooltip:HookScript("OnTooltipSetUnit", TT.OnTooltipSetUnit)
 
-    TT:UpdateFonts()
-    TT:UpdateScale()
-
     local tooltips = {
         GameTooltip,
         ShoppingTooltip1,
@@ -80,6 +77,64 @@ function TT:Initialize()
 
     TT.SetBackdropStyle(GameTooltip)
     TT.SetBackdropStyle(ItemRefTooltip)
+
+    TT:UpdateAll()
+end
+
+function TT:UpdateAll()
+    TT:UpdateFonts()
+
+    local tooltips = {
+        GameTooltip,
+        ShoppingTooltip1,
+        ShoppingTooltip2,
+        ItemRefTooltip,
+        ItemRefShoppingTooltip1,
+        ItemRefShoppingTooltip2,
+        WorldMapTooltip,
+        WorldMapCompareTooltip1,
+        WorldMapCompareTooltip2,
+        SmallTextTooltip
+    }
+    for _, tooltip in next, tooltips do
+        TT:Update(tooltip)
+    end
+
+    local menus = {DropDownList1MenuBackdrop, DropDownList2MenuBackdrop}
+    for _, menu in next, menus do
+        menu:SetScale(TT.config.scale)
+    end
+end
+
+function TT:Update(tooltip)
+    tooltip:SetScale(TT.config.scale)
+
+    if tooltip.Border then
+        if TT.config.border.enabled then
+            tooltip.Border:Show()
+            tooltip.Border:SetSize(TT.config.border.size)
+            tooltip.Border:SetTexture(TT.config.border.texture)
+        else
+            tooltip.Border:Hide()
+        end
+    end
+
+    if tooltip.Shadow then
+        if TT.config.shadow.enabled then
+            tooltip.Shadow:Show()
+        else
+            tooltip.Shadow:Hide()
+        end
+    end
+
+    if tooltip.Gloss then
+        if TT.config.gloss.enabled then
+            tooltip.Gloss:Show()
+            tooltip.Gloss:SetTexture(TT.config.gloss.texture)
+        else
+            tooltip.Gloss:Hide()
+        end
+    end
 end
 
 function TT:GetTarget(unit)
@@ -275,8 +330,10 @@ function TT:OnShow()
                 color = {GetItemQualityColor(itemRarity)}
             end
         end
-        self:SetBorderColor(unpack(color))
+        self.Border:SetVertexColor(unpack(color))
     end
+
+    TT:Update(self)
 end
 
 function TT:SetBackdropStyle()
@@ -297,8 +354,11 @@ function TT:SetBackdropStyle()
     })
     self:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
-    self:CreateBorder()
+    self:CreateBorder(TT.config.border.size, TT.config.border.texture)
     self:CreateShadow()
+    self:CreateGlossOverlay(nil, TT.config.gloss.texture)
+
+    TT:Update(self)
 end
 
 function TT:SetStatusBarColor(r, g, b)
@@ -520,29 +580,6 @@ function TT:ShowNextRank(tooltip, spellId)
                 tooltip:AddLine("|cffa0bed2Next rank available at level " .. nextRank.level .. ".|r") -- TODO: Localize
             end
         end
-    end
-end
-
-function TT:UpdateScale()
-    local tooltips = {
-        GameTooltip,
-        ShoppingTooltip1,
-        ShoppingTooltip2,
-        ItemRefTooltip,
-        ItemRefShoppingTooltip1,
-        ItemRefShoppingTooltip2,
-        WorldMapTooltip,
-        WorldMapCompareTooltip1,
-        WorldMapCompareTooltip2,
-        SmallTextTooltip
-    }
-    for _, tooltip in next, tooltips do
-        tooltip:SetScale(TT.config.scale)
-    end
-
-    local menus = {DropDownList1MenuBackdrop, DropDownList2MenuBackdrop}
-    for _, menu in next, menus do
-        menu:SetScale(TT.config.scale)
     end
 end
 

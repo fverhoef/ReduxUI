@@ -314,7 +314,7 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
         end
         self.Border.SetVertexColor = function(self, r, g, b, a)
             for i = 1, 8 do
-                self[i]:SetVertexColor(r, g, b, a)
+                self[i]:SetVertexColor(r, g, b, a or 1)
             end
         end
         self.Border.SetSize = function(self, size)
@@ -398,46 +398,6 @@ function R:SetBorderPadding(left, right, top, bottom)
     end
 end
 
-function R:SetBorderColor(r, g, b, a)
-    if not self.Border then
-        return
-    end
-
-    self.Border:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
-end
-
-function R:GetBorderColor()
-    if not self.Border then
-        return
-    end
-
-    local color = {self.Border[1]:GetVertexColor()}
-
-    if not color[4] then
-        color[4] = 1
-    end
-
-    return color
-end
-
-function R:SetBorderSize(size)
-    if not self.Border then
-        return
-    end
-
-    for i = 1, 8 do
-        self.Border[i]:SetSize(size, size)
-    end
-end
-
-function R:SetBorderTexture(texture)
-    if not self.Border then
-        return
-    end
-
-    self.Border:SetTexture(texture)
-end
-
 function R:UpdateAllBorders(size, texture, color)
     local parent
     for border, _ in pairs(borders) do
@@ -513,20 +473,6 @@ function R:SetShadowColor(r, g, b, a)
     end
 
     self.Shadow:SetBackdropBorderColor(r, g, b, a)
-end
-
-function R:GetShadowColor()
-    if not self.Shadow then
-        return
-    end
-
-    local color = {self.Shadow:GetBackdropBorderColor()}
-
-    if not color[4] then
-        color[4] = 0.7
-    end
-
-    return color
 end
 
 function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
@@ -681,18 +627,6 @@ local function AddApi(object)
     if not object.SetBorderPadding then
         mt.SetBorderPadding = R.SetBorderPadding
     end
-    if not object.SetBorderColor then
-        mt.SetBorderColor = R.SetBorderColor
-    end
-    if not object.GetBorderColor then
-        mt.GetBorderColor = R.GetBorderColor
-    end
-    if not object.SetBorderSize then
-        mt.SetBorderSize = R.SetBorderSize
-    end
-    if not object.SetBorderTexture then
-        mt.SetBorderTexture = R.SetBorderTexture
-    end
     if not object.CreateShadow then
         mt.CreateShadow = R.CreateShadow
     end
@@ -701,9 +635,6 @@ local function AddApi(object)
     end
     if not object.SetShadowColor then
         mt.SetShadowColor = R.SetShadowColor
-    end
-    if not object.GetShadowColor then
-        mt.GetShadowColor = R.GetShadowColor
     end
     if not object.FadeIn then
         mt.FadeIn = R.FadeIn

@@ -49,7 +49,10 @@ R:RegisterModuleConfig(TT, {
     showItemCount = true,
     showVendorPrice = true,
     modifySpellDamage = true,
-    showNextRank = true
+    showNextRank = true,    
+    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase},
+    shadow = {enabled = true},
+    gloss = {enabled = false, texture = R.media.textures.borders.gloss3},
 })
 
 R:RegisterModuleOptions(TT, {
@@ -85,7 +88,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Health Values",
             order = 10,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showHealthValues
             end,
@@ -97,7 +100,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Vendor Price",
             order = 11,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showVendorPrice
             end,
@@ -109,7 +112,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Item Level",
             order = 12,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showItemLevel
             end,
@@ -121,7 +124,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Item Count",
             order = 13,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showItemCount
             end,
@@ -133,7 +136,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Icons",
             order = 14,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showIcons
             end,
@@ -145,7 +148,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Spell IDs",
             order = 15,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showSpellId
             end,
@@ -157,7 +160,7 @@ R:RegisterModuleOptions(TT, {
             type = "toggle",
             name = "Show Item IDs",
             order = 16,
-            width = "full",
+            width = "double",
             get = function()
                 return TT.config.showItemId
             end,
@@ -170,7 +173,7 @@ R:RegisterModuleOptions(TT, {
             name = "Modify Spell Damage",
             desc = "When enabled, spell damage values will be updated to reflect the player's spellpower etc.",
             order = 17,
-            width = "full",
+            width = "double",
             hidden = R.isRetail,
             get = function()
                 return TT.config.modifySpellDamage
@@ -184,7 +187,7 @@ R:RegisterModuleOptions(TT, {
             name = "Show Next Rank",
             desc = "When enabled, spell tooltips will show at what level the next rank of that spell is available.",
             order = 18,
-            width = "full",
+            width = "double",
             hidden = R.isRetail,
             get = function()
                 return TT.config.showNextRank
@@ -193,7 +196,6 @@ R:RegisterModuleOptions(TT, {
                 TT.config.showNextRank = val
             end
         },
-        lineBreak2 = {type = "header", name = "", order = 20},
         font = {
             type = "group",
             name = "Font",
@@ -280,60 +282,132 @@ R:RegisterModuleOptions(TT, {
                 }
             }
         },
-        scale = {
-            type = "range",
-            name = "Scale",
+        layout = {
+            type = "group",
+            name = "Layout",
             order = 22,
-            min = 0.1,
-            softMax = 3,
-            step = 0.1,
-            get = function()
-                return TT.config.scale
-            end,
-            set = function(_, val)
-                TT.config.scale = val
-                TT:UpdateScale()
-            end
+            inline = true,
+            args = {
+                scale = {
+                    type = "range",
+                    name = "Scale",
+                    order = 1,
+                    min = 0.1,
+                    softMax = 3,
+                    step = 0.1,
+                    get = function()
+                        return TT.config.scale
+                    end,
+                    set = function(_, val)
+                        TT.config.scale = val
+                        TT:UpdateAll()
+                    end
+                },
+                lineBreak3 = {type = "header", name = "", order = 10},
+                anchor = {
+                    type = "select",
+                    name = "Anchor",
+                    order = 11,
+                    values = TOOLTIP_ANCHORS,
+                    get = function()
+                        return TT.config.anchor
+                    end,
+                    set = function(_, key)
+                        TT.config.anchor = key
+                        TT:UpdateAll()
+                    end
+                },
+                offsetX = {
+                    type = "range",
+                    name = "Offset X",
+                    order = 12,
+                    min = -100,
+                    softMax = 100,
+                    step = 1,
+                    get = function()
+                        return TT.config.offsetX
+                    end,
+                    set = function(_, val)
+                        TT.config.offsetX = val
+                        TT:UpdateAll()
+                    end
+                },
+                offsetY = {
+                    type = "range",
+                    name = "Offset Y",
+                    order = 13,
+                    min = -100,
+                    softMax = 100,
+                    step = 1,
+                    get = function()
+                        return TT.config.offsetY
+                    end,
+                    set = function(_, val)
+                        TT.config.offsetY = val
+                        TT:UpdateAll()
+                    end
+                },
+            }
         },
-        anchor = {
-            type = "select",
-            name = "Anchor",
-            order = 31,
-            values = TOOLTIP_ANCHORS,
-            get = function()
-                return TT.config.anchor
-            end,
-            set = function(_, key)
-                TT.config.anchor = key
-            end
+        border = {
+            type = "group",
+            name = "Border",
+            order = 41,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return TT.config.border.enabled
+                    end,
+                    set = function(_, val)
+                        TT.config.border.enabled = val
+                        TT:UpdateAll()
+                    end
+                }
+            }
         },
-        offsetX = {
-            type = "range",
-            name = "Offset X",
-            order = 32,
-            min = -100,
-            softMax = 100,
-            step = 1,
-            get = function()
-                return TT.config.offsetX
-            end,
-            set = function(_, val)
-                TT.config.offsetX = val
-            end
+        shadow = {
+            type = "group",
+            name = "Shadow",
+            order = 42,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return TT.config.shadow.enabled
+                    end,
+                    set = function(_, val)
+                        TT.config.shadow.enabled = val
+                        TT:UpdateAll()
+                    end
+                }
+            }
         },
-        offsetY = {
-            type = "range",
-            name = "Offset Y",
-            order = 32,
-            min = -100,
-            softMax = 100,
-            step = 1,
-            get = function()
-                return TT.config.offsetY
-            end,
-            set = function(_, val)
-                TT.config.offsetY = val
-            end
+        gloss = {
+            type = "group",
+            name = "Gloss",
+            order = 43,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return TT.config.gloss.enabled
+                    end,
+                    set = function(_, val)
+                        TT.config.gloss.enabled = val
+                        TT:UpdateAll()
+                    end
+                }
+            }
         }
     }
 })

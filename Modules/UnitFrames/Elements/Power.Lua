@@ -4,16 +4,19 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePower()
+    local config = self.config.power    
+
     self.PowerHolder = CreateFrame("Frame", "$parentPowerHolder", self)
     self.PowerHolder:CreateBorder()
     self.PowerHolder:CreateShadow()
     self.PowerHolder:CreateGlossOverlay()
+    self.PowerHolder.config = config
 
     self.Power = CreateFrame("StatusBar", "$parentPower", self)
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
     self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
-    self.Power.config = self.config.power
+    self.Power.config = config
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -33,11 +36,11 @@ end
 oUF:RegisterMetaFunction("CreatePower", UF.CreatePower)
 
 function UF:UpdatePower()
+    local config = self.config.power    
     if not self.Power then
         return
     end
 
-    local config = self.config.power
     if config.detached then
         R:UnlockDragFrame(self.Power)
     else
@@ -89,7 +92,7 @@ function UF:UpdatePower()
             self.PowerHolder:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
         end
 
-        self.PowerHolder:SetBorderSize(config.border.size)
+        self.PowerHolder.Border:SetSize(config.border.size)
         self.PowerHolder.Border:SetShown((config.detached or config.inset) and config.border.enabled)
         self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
         self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss.enabled)

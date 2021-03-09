@@ -30,7 +30,7 @@ function UF:UpdateHighlight()
     end
 
     local borderColor = config.colorBorder and color or R.config.db.profile.borders.color
-    self:SetBorderColor(unpack(borderColor))
+    self.Border:SetVertexColor(unpack(borderColor))
     
     local shadowColor = config.colorShadow and color or R.config.db.profile.shadows.color
     self:SetShadowColor(unpack(shadowColor))

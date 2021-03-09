@@ -33,8 +33,8 @@ function BS:StyleAuraButton(button)
     end
 
     button:CreateBorder(config.borderSize)
-    button:SetBorderTexture(BS.config.borders.texture)
-    button:SetBorderColor(BS.config.borders.color)
+    button.Border:SetTexture(BS.config.borders.texture)
+    button.Border:SetVertexColor(BS.config.borders.color)
     button:CreateShadow()
     button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
 
@@ -93,7 +93,7 @@ function BS:UpdateAuraButton(button)
             borderColor = {GetItemQualityColor(quality)}
         end
     end
-    button:SetBorderColor(unpack(borderColor))
+    button.Border:SetVertexColor(unpack(borderColor))
 end
 
 function BS:UpdateAllAuraButtons()
@@ -101,8 +101,8 @@ function BS:UpdateAllAuraButtons()
     for button in pairs(BS.auraButtons) do
         local buttonName = button:GetName()
 
-        button:SetBorderTexture(BS.config.borders.texture)
-        button:SetBorderColor(BS.config.borders.color)
+        button.Border:SetTexture(BS.config.borders.texture)
+        button.Border:SetVertexColor(BS.config.borders.color)
 
         local count = _G[buttonName .. "Count"]
         if count then

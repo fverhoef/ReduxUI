@@ -203,8 +203,9 @@ function MM:StyleMinimap()
     Minimap:SetPoint("TOP", 0, -30)
     Minimap:SetSize(width, height) -- correct the cluster offset
     if MM.config.border.enabled then
-        Minimap:CreateBorder()
+        Minimap:CreateBorder(MM.config.border.size, MM.config.border.texture)
         Minimap:CreateShadow()
+        Minimap:CreateGlossOverlay()
     end
 
     -- MinimapZoneText
@@ -366,10 +367,23 @@ function MM:UpdateMinimap()
 
     if MM.config.border.enabled then
         Minimap.Border:Show()
-        Minimap.Shadow:Show()
+        Minimap.Border:SetSize(MM.config.border.size)
+        Minimap.Border:SetTexture(MM.config.border.texture)
     else
         Minimap.Border:Hide()
+    end
+
+    if MM.config.shadow.enabled then
+        Minimap.Shadow:Show()
+    else
         Minimap.Shadow:Hide()
+    end
+
+    if MM.config.gloss.enabled then
+        Minimap.Gloss:Show()
+        Minimap.Gloss:SetTexture(MM.config.gloss.texture)
+    else
+        Minimap.Gloss:Hide()
     end
 
     if MM.config.zoneText.enabled then

@@ -19,7 +19,9 @@ R:RegisterModuleConfig(MM, {
     },
     infoPanel = {enabled = true, showBackground = false, showTime = true},
     mask = R.media.textures.minimap.minimapMask3,
-    border = {enabled = true},
+    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase},
+    shadow = {enabled = true},
+    gloss = {enabled = true, texture = R.media.textures.borders.gloss1},
     buttonFrame = {enabled = true, iconSize = 22, buttonSpacing = 2, collapsed = true}
 })
 
@@ -267,6 +269,66 @@ R:RegisterModuleOptions(MM, {
                         MM:UpdateMinimap()
                     end
                 },
+            }
+        },
+        border = {
+            type = "group",
+            name = "Border",
+            order = 21,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return MM.config.border.enabled
+                    end,
+                    set = function(_, val)
+                        MM.config.border.enabled = val
+                        MM:UpdateMinimap()
+                    end
+                }
+            }
+        },
+        shadow = {
+            type = "group",
+            name = "Shadow",
+            order = 22,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return MM.config.shadow.enabled
+                    end,
+                    set = function(_, val)
+                        MM.config.shadow.enabled = val
+                        MM:UpdateMinimap()
+                    end
+                }
+            }
+        },
+        gloss = {
+            type = "group",
+            name = "Gloss",
+            order = 23,
+            inline = true,
+            args = {
+                enabled = {
+                    type = "toggle",
+                    name = "Enabled",
+                    order = 1,
+                    get = function()
+                        return MM.config.gloss.enabled
+                    end,
+                    set = function(_, val)
+                        MM.config.gloss.enabled = val
+                        MM:UpdateMinimap()
+                    end
+                }
             }
         }
     }
