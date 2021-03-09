@@ -115,7 +115,7 @@ function BS:UpdateItemButton(button)
         return
     end
 
-    local color = R.config.db.profile.borders.color
+    local color = BS.config.borders.color
 
     if button.itemIDOrLink then
         local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)

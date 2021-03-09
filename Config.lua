@@ -33,9 +33,6 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
-        borders = {size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
-        gloss = {size = 3, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
-        shadows = {color = {0, 0, 0}},
         colors = {
             normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
             highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight
@@ -181,120 +178,6 @@ R.config.options = {
                             set = function(_, key)
                                 R.config.db.profile.fonts.chatBubble = R.Libs.SharedMedia:Fetch("font", key)
                                 R:UpdateBlizzardFonts()
-                            end
-                        }
-                    }
-                },
-                borders = {
-                    type = "group",
-                    name = "Border Defaults",
-                    order = 20,
-                    inline = true,
-                    args = {
-                        point = {
-                            type = "select",
-                            name = "Style",
-                            desc = "The default style of borders.",
-                            order = 1,
-                            values = R.BORDER_STYLES,
-                            get = function()
-                                return R.config.db.profile.borders.texture
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.borders.texture = key
-                                R:UpdateAllBorders(nil, R.config.db.profile.borders.texture)
-                            end
-                        },
-                        size = {
-                            type = "range",
-                            name = "Size",
-                            desc = "The default size of borders.",
-                            order = 2,
-                            min = 1,
-                            softMax = 10,
-                            step = 1,
-                            get = function()
-                                return R.config.db.profile.borders.size
-                            end,
-                            set = function(_, val)
-                                R.config.db.profile.borders.size = val
-                                R:UpdateAllBorders(R.config.db.profile.borders.size)
-                            end
-                        },
-                        color = {
-                            type = "color",
-                            name = "Color",
-                            desc = "The default color of borders.",
-                            order = 3,
-                            hasAlpha = true,
-                            get = function()
-                                local color = R.config.db.profile.borders.color
-                                return color[1], color[2], color[3], color[4]
-                            end,
-                            set = function(_, r, g, b, a)
-                                local color = R.config.db.profile.borders.color
-                                color[1] = r
-                                color[2] = g
-                                color[3] = b
-                                color[4] = a
-                                R:UpdateAllGlossOverlays(nil, nil, R.config.db.profile.borders.color)
-                            end
-                        }
-                    }
-                },
-                gloss = {
-                    type = "group",
-                    name = "Gloss Overlay Defaults",
-                    order = 30,
-                    inline = true,
-                    args = {
-                        point = {
-                            type = "select",
-                            name = "Style",
-                            desc = "The default style of gloss overlays.",
-                            order = 1,
-                            values = R.GLOW_STYLES,
-                            get = function()
-                                return R.config.db.profile.gloss.texture
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.gloss.texture = key
-                                R:UpdateAllGlossOverlays(nil, R.config.db.profile.gloss.texture)
-                            end
-                        },
-                        size = {
-                            type = "range",
-                            name = "Size",
-                            desc = "The default size of gloss borders.",
-                            order = 2,
-                            min = 1,
-                            softMax = 10,
-                            step = 1,
-                            get = function()
-                                return R.config.db.profile.gloss.size
-                            end,
-                            set = function(_, val)
-                                R.config.db.profile.gloss.size = val
-                                R:UpdateAllGlossOverlays(R.config.db.profile.gloss.size)
-                            end
-                        },
-                        color = {
-                            type = "color",
-                            name = "Color",
-                            desc = "The default color of gloss overlays.",
-                            order = 3,
-                            hasAlpha = true,
-                            get = function()
-                                local color = R.config.db.profile.gloss.color
-                                return color[1], color[2], color[3], color[4]
-                            end,
-                            set = function(_, r, g, b, a)
-                                local color = R.config.db.profile.gloss.color
-                                color[1] = r
-                                color[2] = g
-                                color[3] = b
-                                color[4] = a
-                                R:UpdateAllGlossOverlays(nil, nil, R.config.db.profile.gloss.color)
                             end
                         }
                     }

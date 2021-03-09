@@ -203,7 +203,7 @@ function MM:StyleMinimap()
     Minimap:SetPoint("TOP", 0, -30)
     Minimap:SetSize(width, height) -- correct the cluster offset
     if MM.config.border.enabled then
-        Minimap:CreateBorder(MM.config.border.size, MM.config.border.texture)
+        Minimap:CreateBorder(MM.config.border.size, MM.config.border.texture, MM.config.border.color)
         Minimap:CreateShadow()
         Minimap:CreateGlossOverlay()
     end
@@ -369,6 +369,7 @@ function MM:UpdateMinimap()
         Minimap.Border:Show()
         Minimap.Border:SetSize(MM.config.border.size)
         Minimap.Border:SetTexture(MM.config.border.texture)
+        Minimap.Border:SetVertexColor(unpack(MM.config.border.color))
     else
         Minimap.Border:Hide()
     end

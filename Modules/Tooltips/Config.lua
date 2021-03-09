@@ -50,7 +50,7 @@ R:RegisterModuleConfig(TT, {
     showVendorPrice = true,
     modifySpellDamage = true,
     showNextRank = true,    
-    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase},
+    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
     shadow = {enabled = true},
     gloss = {enabled = false, texture = R.media.textures.borders.gloss3},
 })

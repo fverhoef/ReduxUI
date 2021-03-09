@@ -134,9 +134,9 @@ function R:CreateGlossOverlay(size, texture, color, left, right, top, bottom)
     end
 
     if not self.Gloss then
-        size = size or R.config.db.profile.gloss.size
-        texture = texture or R.config.db.profile.gloss.texture
-        color = color or R.config.db.profile.gloss.color
+        size = size or 3
+        texture = texture or R.media.textures.borders.gloss2
+        color = color or {1, 1, 1, 0.4}
 
         self.Gloss = {}
         self.Gloss.size = size
@@ -241,7 +241,7 @@ function R:UpdateAllGlossOverlays(size, texture, color)
     for gloss, _ in pairs(glossOverlays) do
         if size then
             gloss:SetSize(size)
-    
+
             local left, right, top, bottom = unpack(gloss.padding)
             gloss[9]:SetPoint("TOPLEFT", gloss.parent, -left + size, top - size)
             gloss[9]:SetPoint("TOPRIGHT", gloss.parent, right - size, top - size)
@@ -276,9 +276,9 @@ function R:CreateBorder(size, texture, color, left, right, top, bottom)
     end
 
     if not self.Border then
-        size = size or R.config.db.profile.borders.size
-        texture = texture or R.config.db.profile.borders.texture
-        color = color or R.config.db.profile.borders.color
+        size = size or 4
+        texture = texture or R.media.textures.borders.beautycase
+        color = color or {1, 1, 1, 1}
 
         self.Border = {}
         self.Border.size = size
@@ -468,11 +468,7 @@ function R:SetShadowColor(r, g, b, a)
         return
     end
 
-    if not a then
-        a = 0.7
-    end
-
-    self.Shadow:SetBackdropBorderColor(r, g, b, a)
+    self.Shadow:SetBackdropBorderColor(r or 0, g or 0, b or 0, a or 0.7)
 end
 
 function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)

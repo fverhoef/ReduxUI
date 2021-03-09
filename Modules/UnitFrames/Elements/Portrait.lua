@@ -67,10 +67,18 @@ function UF:UpdatePortrait()
             self.PortraitHolder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -xOffset, yOffset)
         end
         
-        self.PortraitHolder.Border:SetSize(config.border.size)
         self.PortraitHolder.Border:SetShown(config.detached and config.border.enabled)
+        self.PortraitHolder.Border:SetSize(config.border.size)
+        self.PortraitHolder.Border:SetTexture(config.border.texture)
+        self.PortraitHolder.Border:SetVertexColor(unpack(config.border.color))
+
         self.PortraitHolder.Shadow:SetShown(not config.round and config.detached and config.shadow.enabled)
+        self.PortraitHolder:SetShadowColor(unpack(config.shadow.color))
+
         self.PortraitHolder.Gloss:SetShown(not config.round and config.detached and config.gloss.enabled)
+        self.PortraitHolder.Gloss:SetTexture(config.gloss.texture)
+        self.PortraitHolder.Gloss:SetVertexColor(unpack(config.gloss.color))
+
         self.PortraitHolder.Backdrop:SetShown(not config.round)
 
         xOffset = config.detached and config.border.enabled and config.border.size / 2 or 0

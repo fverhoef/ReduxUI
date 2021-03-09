@@ -92,10 +92,17 @@ function UF:UpdatePower()
             self.PowerHolder:SetPoint("BOTTOM", self, "BOTTOM", 0, bottomOffset)
         end
 
-        self.PowerHolder.Border:SetSize(config.border.size)
         self.PowerHolder.Border:SetShown((config.detached or config.inset) and config.border.enabled)
+        self.PowerHolder.Border:SetSize(config.border.size)
+        self.PowerHolder.Border:SetTexture(config.border.texture)
+        self.PowerHolder.Border:SetVertexColor(unpack(config.border.color))
+
         self.PowerHolder.Shadow:SetShown((config.detached or config.inset) and config.shadow.enabled)
+        self.PowerHolder:SetShadowColor(unpack(config.shadow.color))
+
         self.PowerHolder.Gloss:SetShown((config.detached or config.inset) and config.gloss.enabled)
+        self.PowerHolder.Gloss:SetTexture(config.gloss.texture)
+        self.PowerHolder.Gloss:SetVertexColor(unpack(config.gloss.color))
 
         xOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0
         yOffset = (config.detached or config.inset) and config.border.enabled and config.border.size / 2 or 0

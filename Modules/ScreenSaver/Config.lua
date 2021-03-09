@@ -5,6 +5,7 @@ local SS = R.Modules.ScreenSaver
 R:RegisterModuleConfig(SS, {
     enabled = true,
     font = {R.config.defaults.profile.fonts.normal, 20, "OUTLINE"},
+    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
     fader = R.config.faders.onShow
 })
 

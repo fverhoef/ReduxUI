@@ -169,10 +169,17 @@ function UF:UpdateCastbar()
             self.CastbarHolder:Point(unpack(config.attachedPoint))
         end
 
-        self.CastbarHolder.Border:SetSize(config.border.size)
         self.CastbarHolder.Border:SetShown(self.Castbar:IsShown() and config.border.enabled)
+        self.CastbarHolder.Border:SetSize(config.border.size)
+        self.CastbarHolder.Border:SetTexture(config.border.texture)
+        self.CastbarHolder.Border:SetVertexColor(unpack(config.border.color))
+
         self.CastbarHolder.Shadow:SetShown(self.Castbar:IsShown() and config.shadow.enabled)
+        self.CastbarHolder:SetShadowColor(unpack(config.shadow.color))
+
         self.CastbarHolder.Gloss:SetShown(self.Castbar:IsShown() and config.gloss.enabled)
+        self.CastbarHolder.Gloss:SetTexture(config.gloss.texture)
+        self.CastbarHolder.Gloss:SetVertexColor(unpack(config.gloss.color))
     else
         self:DisableElement("Castbar")
     end

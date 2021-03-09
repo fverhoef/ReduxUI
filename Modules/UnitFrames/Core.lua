@@ -269,10 +269,17 @@ function UF:UpdateFrame(self)
     self:UpdateSummonIndicator()
     self:UpdateOfflineIcon()
 
-    self.Border:SetSize(self.config.border.size)
     self.Border:SetShown(self.config.border.enabled)
+    self.Border:SetSize(self.config.border.size)
+    self.Border:SetTexture(self.config.border.texture)
+    self.Border:SetVertexColor(unpack(self.config.border.color))
+
     self.Shadow:SetShown(self.config.shadow.enabled)
+    self:SetShadowColor(unpack(self.config.shadow.color))
+
     self.Gloss:SetShown(self.config.gloss.enabled)
+    self.Gloss:SetTexture(self.config.gloss.texture)
+    self.Gloss:SetVertexColor(unpack(self.config.gloss.color))
 
     self:UpdateAllElements("OnUpdate")
 end

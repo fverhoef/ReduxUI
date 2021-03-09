@@ -19,7 +19,7 @@ R:RegisterModuleConfig(MM, {
     },
     infoPanel = {enabled = true, showBackground = false, showTime = true},
     mask = R.media.textures.minimap.minimapMask3,
-    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase},
+    border = {enabled = true, size = 4, texture = R.media.textures.borders.beautycase, color = {89 / 255, 89 / 255, 89 / 255, 1}},
     shadow = {enabled = true},
     gloss = {enabled = true, texture = R.media.textures.borders.gloss1},
     buttonFrame = {enabled = true, iconSize = 22, buttonSpacing = 2, collapsed = true}

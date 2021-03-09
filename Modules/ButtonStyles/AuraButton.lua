@@ -80,7 +80,7 @@ function BS:UpdateAuraButton(button)
         return
     end
 
-    local borderColor = R.config.db.profile.borders.color
+    local borderColor = BS.config.borders.color
     if button.isDebuff then
         local debuffColor = _G.DebuffTypeColor[(button.debuffType or "none")]
         if debuffColor then

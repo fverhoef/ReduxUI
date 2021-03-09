@@ -29,10 +29,10 @@ function UF:UpdateHighlight()
         color = color or UF.config.colors.targetHighlight
     end
 
-    local borderColor = config.colorBorder and color or R.config.db.profile.borders.color
+    local borderColor = config.colorBorder and color or self.config.border.color
     self.Border:SetVertexColor(unpack(borderColor))
     
-    local shadowColor = config.colorShadow and color or R.config.db.profile.shadows.color
+    local shadowColor = config.colorShadow and color or self.config.shadow.color
     self:SetShadowColor(unpack(shadowColor))
     
     self.Artwork.Highlight:SetVertexColor(unpack(borderColor))

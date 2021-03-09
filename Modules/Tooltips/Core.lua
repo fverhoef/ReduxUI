@@ -114,6 +114,7 @@ function TT:Update(tooltip)
             tooltip.Border:Show()
             tooltip.Border:SetSize(TT.config.border.size)
             tooltip.Border:SetTexture(TT.config.border.texture)
+            tooltip.Border:SetVertexColor(unpack(TT.config.border.color))
         else
             tooltip.Border:Hide()
         end
@@ -321,8 +322,10 @@ function TT:OnShow()
         end
     end
 
+    TT:Update(self)
+
     if TT.config.colorBorderByRarity then
-        local color = R.config.db.profile.borders.color
+        local color = TT.config.border.color
         if link then
             local _, _, itemRarity = GetItemInfo(link)
 
@@ -332,8 +335,6 @@ function TT:OnShow()
         end
         self.Border:SetVertexColor(unpack(color))
     end
-
-    TT:Update(self)
 end
 
 function TT:SetBackdropStyle()
@@ -354,7 +355,7 @@ function TT:SetBackdropStyle()
     })
     self:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
-    self:CreateBorder(TT.config.border.size, TT.config.border.texture)
+    self:CreateBorder(TT.config.border.size, TT.config.border.texture, TT.config.border.color)
     self:CreateShadow()
     self:CreateGlossOverlay(nil, TT.config.gloss.texture)
 

@@ -76,10 +76,17 @@ function UF:UpdateAdditionalPower()
             self.AdditionalPowerHolder:SetFrameLevel(self:GetFrameLevel() + 2)
         end
 
-        self.AdditionalPowerHolder.Border:SetSize(config.border.size)
         self.AdditionalPowerHolder.Border:SetShown(self.AdditionalPower:IsShown() and config.border.enabled)
+        self.AdditionalPowerHolder.Border:SetSize(config.border.size)
+        self.AdditionalPowerHolder.Border:SetTexture(config.border.texture)
+        self.AdditionalPowerHolder.Border:SetVertexColor(unpack(config.border.color))
+
         self.AdditionalPowerHolder.Shadow:SetShown(self.AdditionalPower:IsShown() and config.shadow.enabled)
+        self.AdditionalPowerHolder:SetShadowColor(unpack(config.shadow.color))
+        
         self.AdditionalPowerHolder.Gloss:SetShown(self.AdditionalPower:IsShown() and config.gloss.enabled)
+        self.AdditionalPowerHolder.Gloss:SetTexture(config.gloss.texture)
+        self.AdditionalPowerHolder.Gloss:SetVertexColor(unpack(config.gloss.color))
 
         local xOffset = config.border.enabled and config.border.size / 2 or 0
         local yOffset = config.border.enabled and config.border.size / 2 or 0

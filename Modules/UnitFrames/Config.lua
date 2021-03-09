@@ -490,6 +490,39 @@ function UF:CreateUnitBorderOption(unit, order, inline, name)
                     UF.config[unit].border.size = val
                     UF:UpdateUnit(unit)
                 end
+            },
+            texture = {
+                type = "select",
+                name = "Style",
+                desc = "The style of the unit frame border.",
+                order = 3,
+                values = R.BORDER_STYLES,
+                get = function()
+                    return UF.config[unit].border.texture
+                end,
+                set = function(_, key)
+                    UF.config[unit].border.texture = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            color = {
+                type = "color",
+                name = "Color",
+                desc = "The color of the unit frame border.",
+                order = 4,
+                hasAlpha = true,
+                get = function()
+                    local color = UF.config[unit].border.color
+                    return color[1], color[2], color[3], color[4]
+                end,
+                set = function(_, r, g, b, a)
+                    local color = UF.config[unit].border.color
+                    color[1] = r
+                    color[2] = g
+                    color[3] = b
+                    color[4] = a
+                    UF:UpdateUnit(unit)
+                end
             }
         }
     }
@@ -513,6 +546,25 @@ function UF:CreateUnitShadowOption(unit, order, inline, name)
                     UF.config[unit].shadow.enabled = val
                     UF:UpdateUnit(unit)
                 end
+            },
+            color = {
+                type = "color",
+                name = "Color",
+                desc = "The color of the unit frame shadow.",
+                order = 2,
+                hasAlpha = true,
+                get = function()
+                    local color = UF.config[unit].shadow.color
+                    return color[1], color[2], color[3], color[4]
+                end,
+                set = function(_, r, g, b, a)
+                    local color = UF.config[unit].shadow.color
+                    color[1] = r
+                    color[2] = g
+                    color[3] = b
+                    color[4] = a
+                    UF:UpdateUnit(unit)
+                end
             }
         }
     }
@@ -521,7 +573,7 @@ end
 function UF:CreateUnitGlossOption(unit, order, inline, name)
     return {
         type = "group",
-        name = name or "Gloss",
+        name = name or "Gloss Overlay",
         order = order,
         inline = inline,
         args = {
@@ -534,6 +586,39 @@ function UF:CreateUnitGlossOption(unit, order, inline, name)
                 end,
                 set = function(_, val)
                     UF.config[unit].gloss.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            texture = {
+                type = "select",
+                name = "Style",
+                desc = "The style of the unit frame gloss overlay.",
+                order = 2,
+                values = R.GLOW_STYLES,
+                get = function()
+                    return UF.config[unit].gloss.texture
+                end,
+                set = function(_, key)
+                    UF.config[unit].gloss.texture = key
+                    UF:UpdateUnit(unit)
+                end
+            },
+            color = {
+                type = "color",
+                name = "Color",
+                desc = "The color of the unit frame gloss overlay.",
+                order = 3,
+                hasAlpha = true,
+                get = function()
+                    local color = UF.config[unit].gloss.color
+                    return color[1], color[2], color[3], color[4]
+                end,
+                set = function(_, r, g, b, a)
+                    local color = UF.config[unit].gloss.color
+                    color[1] = r
+                    color[2] = g
+                    color[3] = b
+                    color[4] = a
                     UF:UpdateUnit(unit)
                 end
             }
@@ -1205,6 +1290,54 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF.config[unit].power.border.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    size = {
+                        type = "range",
+                        name = "Size",
+                        order = 2,
+                        min = 1,
+                        softMax = 20,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].power.border.size
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.border.size = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the power bar border.",
+                        order = 3,
+                        values = R.BORDER_STYLES,
+                        get = function()
+                            return UF.config[unit].power.border.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.border.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the power bar border.",
+                        order = 4,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].power.border.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].power.border.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -1228,6 +1361,25 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                             UF.config[unit].power.shadow.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the power bar shadow.",
+                        order = 2,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].power.shadow.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].power.shadow.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -1249,6 +1401,39 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                         end,
                         set = function(_, val)
                             UF.config[unit].power.gloss.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the power bar gloss overlay.",
+                        order = 2,
+                        values = R.GLOW_STYLES,
+                        get = function()
+                            return UF.config[unit].power.gloss.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].power.gloss.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the power bar gloss overlay.",
+                        order = 3,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].power.gloss.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].power.gloss.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -2220,6 +2405,54 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                             UF.config[unit].portrait.border.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    size = {
+                        type = "range",
+                        name = "Size",
+                        order = 2,
+                        min = 1,
+                        softMax = 20,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].portrait.border.size
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].portrait.border.size = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the portrait border.",
+                        order = 3,
+                        values = R.BORDER_STYLES,
+                        get = function()
+                            return UF.config[unit].portrait.border.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].portrait.border.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the portrait border.",
+                        order = 4,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].portrait.border.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].portrait.border.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -2243,6 +2476,25 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                             UF.config[unit].portrait.shadow.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the portrait shadow.",
+                        order = 2,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].portrait.shadow.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].portrait.shadow.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -2264,6 +2516,39 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                         end,
                         set = function(_, val)
                             UF.config[unit].portrait.gloss.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the portrait gloss overlay.",
+                        order = 2,
+                        values = R.GLOW_STYLES,
+                        get = function()
+                            return UF.config[unit].portrait.gloss.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].portrait.gloss.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the portrait gloss overlay.",
+                        order = 3,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].portrait.gloss.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].portrait.gloss.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -2588,6 +2873,54 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                             UF.config[unit].castbar.border.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    size = {
+                        type = "range",
+                        name = "Size",
+                        order = 2,
+                        min = 1,
+                        softMax = 20,
+                        step = 1,
+                        get = function()
+                            return UF.config[unit].castbar.border.size
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.border.size = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the castbar border.",
+                        order = 3,
+                        values = R.BORDER_STYLES,
+                        get = function()
+                            return UF.config[unit].castbar.border.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.border.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the castbar border.",
+                        order = 4,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].castbar.border.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].castbar.border.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -2611,6 +2944,25 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                             UF.config[unit].castbar.shadow.enabled = val
                             UF:UpdateUnit(unit)
                         end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the castbar shadow.",
+                        order = 2,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].castbar.shadow.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].castbar.shadow.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
+                            UF:UpdateUnit(unit)
+                        end
                     }
                 }
             },
@@ -2632,6 +2984,39 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         end,
                         set = function(_, val)
                             UF.config[unit].castbar.gloss.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    texture = {
+                        type = "select",
+                        name = "Style",
+                        desc = "The style of the castbar gloss overlay.",
+                        order = 2,
+                        values = R.GLOW_STYLES,
+                        get = function()
+                            return UF.config[unit].castbar.gloss.texture
+                        end,
+                        set = function(_, key)
+                            UF.config[unit].castbar.gloss.texture = key
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    color = {
+                        type = "color",
+                        name = "Color",
+                        desc = "The color of the castbar gloss overlay.",
+                        order = 3,
+                        hasAlpha = true,
+                        get = function()
+                            local color = UF.config[unit].castbar.gloss.color
+                            return color[1], color[2], color[3], color[4]
+                        end,
+                        set = function(_, r, g, b, a)
+                            local color = UF.config[unit].castbar.gloss.color
+                            color[1] = r
+                            color[2] = g
+                            color[3] = b
+                            color[4] = a
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -3282,9 +3667,14 @@ R:RegisterModuleConfig(UF, {
             size = {180, 25},
             padding = {0, 0, 0, 0},
             point = {"TOP", "UIParent", "BOTTOM", 0, 300},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3304,9 +3694,14 @@ R:RegisterModuleConfig(UF, {
             attachedPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {122, 12},
             point = {"TOP", "UIParent", "BOTTOM", 0, 280},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3345,9 +3740,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {38, 38},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -3409,9 +3809,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 12,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = true,
@@ -3435,9 +3840,14 @@ R:RegisterModuleConfig(UF, {
             target = false,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     target = {
@@ -3505,9 +3915,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"LEFT", "BOTTOMLEFT", 10, 0},
             size = {122, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = true,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3547,9 +3962,14 @@ R:RegisterModuleConfig(UF, {
             point = {"LEFT", "RIGHT", -10, 0},
             attachedPoint = "RIGHT",
             size = {38, 38},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -3611,9 +4031,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = true,
@@ -3637,9 +4062,14 @@ R:RegisterModuleConfig(UF, {
             target = false,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     targettarget = {
@@ -3680,9 +4110,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"CENTER", "BOTTOM", 0, 0},
             size = {60, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3722,8 +4157,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -3771,9 +4212,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -3797,9 +4243,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     pet = {
@@ -3846,9 +4297,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {80, 10},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -3888,9 +4344,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {24, 24},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -3939,9 +4400,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = true,
@@ -3965,9 +4431,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     focus = {
@@ -3997,9 +4468,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {60, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4039,9 +4515,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4102,9 +4583,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -4128,9 +4614,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     focustarget = {
@@ -4160,9 +4651,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {60, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4202,9 +4698,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4252,9 +4753,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -4278,9 +4784,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     mouseover = {enabled = false},
@@ -4328,9 +4839,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {84, 10},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4370,9 +4886,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {26, 26},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4433,9 +4954,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = true,
@@ -4459,9 +4985,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow,
 
         unitAnchorPoint = "BOTTOM",
@@ -4500,9 +5031,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {70, 8},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4542,9 +5078,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {36, 36},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4605,9 +5146,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -4631,9 +5177,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -4679,9 +5230,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {80, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4721,9 +5277,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4783,9 +5344,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -4809,9 +5375,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     tank = {
@@ -4841,9 +5412,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {50, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -4883,9 +5459,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -4945,9 +5526,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -4971,9 +5557,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -5019,9 +5610,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
             size = {50, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -5061,9 +5657,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -5123,9 +5724,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -5149,9 +5755,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow,
 
         raidWideSorting = false,
@@ -5197,9 +5808,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {80, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -5239,9 +5855,14 @@ R:RegisterModuleConfig(UF, {
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
             size = {42, 42},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             round = false,
             class = false,
             model = false
@@ -5302,9 +5923,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -5328,8 +5954,14 @@ R:RegisterModuleConfig(UF, {
             target = true,
             targetClassColor = true
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow
     },
     nameplates = {
@@ -5358,9 +5990,14 @@ R:RegisterModuleConfig(UF, {
             insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
             size = {80, 12},
             padding = {0, 0, 0, 0},
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
             value = {
                 enabled = false,
                 point = {"CENTER", "CENTER", 0, 0},
@@ -5438,9 +6075,14 @@ R:RegisterModuleConfig(UF, {
             fontSize = 10,
             fontOutline = "NONE",
             fontShadow = true,
-            border = {enabled = true, size = 4},
-            shadow = {enabled = true},
-            gloss = {enabled = true},
+            border = {
+                enabled = true,
+                size = 4,
+                texture = R.media.textures.borders.beautycase,
+                color = {89 / 255, 89 / 255, 89 / 255, 1}
+            },
+            shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+            gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         },
         combatfeedback = {
             enabled = false,
@@ -5465,9 +6107,14 @@ R:RegisterModuleConfig(UF, {
             targetArrows = true,
             targetClassColor = false
         },
-        border = {enabled = true, size = 4},
-        shadow = {enabled = true},
-        gloss = {enabled = true},
+        border = {
+            enabled = true,
+            size = 4,
+            texture = R.media.textures.borders.beautycase,
+            color = {89 / 255, 89 / 255, 89 / 255, 1}
+        },
+        shadow = {enabled = true, color = {0, 0, 0, 0.7}},
+        gloss = {enabled = true, texture = R.media.textures.borders.gloss2, color = {1, 1, 1, 0.4}},
         fader = R.config.faders.onShow,
 
         showComboPoints = false,
