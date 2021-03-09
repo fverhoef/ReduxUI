@@ -27,6 +27,7 @@ R:AddLib("AceConfig", "AceConfig-3.0")
 R:AddLib("AceConfigDialog", "AceConfigDialog-3.0")
 R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
+R:AddLib("ItemSearch", "LibItemSearch-1.2")
 
 if R.isClassic then
     R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0")

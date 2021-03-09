@@ -387,6 +387,35 @@ function B:HighlightBagButtons(frame, highlightID)
     end
 end
 
+function B:SetItemSearch(frame, query)
+    local empty = #(query:gsub(" ", "")) == 0
+    local method = R.Libs.ItemSearch.Matches
+    if R.Libs.ItemSearch.Filters.tipPhrases.keywords[query] then
+        method = R.Libs.ItemSearch.TooltipPhrase
+        query = R.Libs.ItemSearch.Filters.tipPhrases.keywords[query]
+    end
+    
+    for _, bag in ipairs(frame.Bags) do
+        local bagID = bag:GetID()
+        local slots = GetContainerNumSlots(bagID)
+        for slot, button in ipairs(bag.Buttons) do
+            if slot <= slots then
+                local link = select(7, GetContainerItemInfo(bagID, slot))
+                local success, result = pcall(method, R.Libs.ItemSearch, link, query)
+                if empty or (success and result) then
+                    SetItemButtonDesaturated(button, button.locked)
+                    button.searchOverlay:Hide()
+                    button:SetAlpha(1)
+                else
+                    SetItemButtonDesaturated(button, 1)
+                    button.searchOverlay:Show()
+                    button:SetAlpha(0.5)
+                end
+            end
+        end
+    end
+end
+
 function B:UnhighlightBagButtons(frame)
     B:HighlightBagButtons(frame, nil)
 end
@@ -419,7 +448,7 @@ function B:CreateInventoryFrame()
         end
     end
 
-    frame.Money = CreateFrame("Frame", addonName .. "InventoryCurrency", frame, "MoneyFrameTemplate")
+    frame.Money = CreateFrame("Frame", "$parentCurrency", frame, "MoneyFrameTemplate")
     frame.Money:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 5)
     frame.Money:SetScale(0.8)
     _G[frame.Money:GetName() .. "CopperButton"].Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
@@ -427,6 +456,12 @@ function B:CreateInventoryFrame()
     _G[frame.Money:GetName() .. "GoldButton"].Text:SetFont(STANDARD_TEXT_FONT, 16, "OUTLINE")
 
     frame.Money:SetScript("OnEnter", B.InventoryMoney_OnEnter)
+
+    frame.SearchBox = CreateFrame("EditBox", "$parentSearchBox", frame, "SearchBoxTemplate")
+    frame.SearchBox:SetPoint("LEFT", frame, "TOPLEFT", 70, -42)
+    -- frame.SearchBox:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 10, 5)
+    frame.SearchBox:SetSize(178, 18)
+    frame.SearchBox:SetScript("OnTextChanged", B.InventorySearch_OnTextChanged)
 
     SetPortraitToTexture(frame.portrait, "Interface\\ICONS\\INV_Misc_Bag_08")
 
@@ -546,6 +581,11 @@ function B:ToggleBag(id)
     B:ToggleInventory()
 end
 
+function B:InventorySearch_OnTextChanged(userChanged)
+    SearchBoxTemplate_OnTextChanged(self)
+    B:SetItemSearch(B.Inventory, self:GetText())
+end
+
 function B:CreateBankFrame()
     local frame = CreateFrame("Frame", addonName .. "Bank", UIParent, "ButtonFrameTemplate")
     frame:EnableMouse(true)
@@ -573,6 +613,13 @@ function B:CreateBankFrame()
             frame.BagSlots[i]:SetPoint("RIGHT", frame.BagSlots[i - 1], "LEFT", 0, 0)
         end
     end
+
+    frame.SearchBox = CreateFrame("EditBox", "$parentSearchBox", frame, "SearchBoxTemplate")
+    frame.SearchBox:SetPoint("LEFT", frame, "TOPLEFT", 70, -42)
+    -- frame.SearchBox:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 10, 5)
+    frame.SearchBox:SetSize(158, 18)
+    frame.SearchBox:SetScript("OnTextChanged", B.BankSearch_OnTextChanged)
+
     SetPortraitToTexture(frame.portrait, "Interface\\ICONS\\INV_Misc_EngGizmos_17")
     frame.Inset.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
 
@@ -615,5 +662,10 @@ function B:ToggleBank()
     else
         B:HideBank()
     end
+end
+
+function B:BankSearch_OnTextChanged(userChanged)
+    SearchBoxTemplate_OnTextChanged(self)
+    B:SetItemSearch(B.Bank, self:GetText())
 end
 
