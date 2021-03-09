@@ -6,39 +6,45 @@ local oUF = ns.oUF or oUF
 function UF:CreateCastbar()
     local config = self.config.castbar
 
-    self.CastbarParent = CreateFrame("Frame", self:GetName() .. "CastbarParent", self)
-    self.CastbarParent:SetFrameStrata("MEDIUM")
-    self.CastbarParent.config = config
+    self.CastbarHolder = CreateFrame("Frame", self:GetName() .. "CastbarHolder", self)
+    self.CastbarHolder:SetFrameStrata("MEDIUM")
+    self.CastbarHolder.config = config
 
     -- statusbar
-    self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self.CastbarParent)
+    self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self.CastbarHolder)
     self.Castbar.config = config
     self.Castbar:SetFrameStrata("MEDIUM")
-    self.Castbar:SetFrameLevel(self.CastbarParent:GetFrameLevel() - 1)
+    self.Castbar:SetFrameLevel(self.CastbarHolder:GetFrameLevel() - 1)
     self.Castbar:SetOrientation("HORIZONTAL")
     self.Castbar:SetScript("OnShow", function()
-        self.CastbarParent.Border:Show()
-        self.CastbarParent.Shadow:Show()
+        local config = self.config.castbar
+        self.CastbarHolder.Border:SetShown(config.border.enabled)
+        self.CastbarHolder.Shadow:SetShown(config.shadow.enabled)
+        self.CastbarHolder.Gloss:SetShown(config.gloss.enabled)
     end)
     self.Castbar:SetScript("OnHide", function()
-        self.CastbarParent.Border:Hide()
-        self.CastbarParent.Shadow:Hide()
+        self.CastbarHolder.Border:SetShown(false)
+        self.CastbarHolder.Shadow:SetShown(false)
+        self.CastbarHolder.Gloss:SetShown(false)
     end)
 
     -- border
-    self.CastbarParent:CreateBorder(config.borderSize)
-    self.CastbarParent.Border:Hide()
-    self.CastbarParent:CreateShadow()
-    self.CastbarParent.Shadow:Hide()
+    self.CastbarHolder:CreateBorder()
+    self.CastbarHolder:CreateShadow()
+    self.CastbarHolder:CreateGlossOverlay()
 
     -- background
     self.Castbar.bg = self.Castbar:CreateTexture(nil, "BACKGROUND")
     self.Castbar.bg:SetAllPoints()
 
     -- spark
-    self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
-    self.Castbar.Spark:SetBlendMode("ADD")
-    self.Castbar.Spark:SetPoint("CENTER", self.Castbar:GetStatusBarTexture(), "RIGHT", 0, 0)
+    self.Castbar.SparkTexture = self.Castbar:CreateTexture(nil, "OVERLAY", nil, 7)
+	self.Castbar.SparkTexture:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
+	self.Castbar.SparkTexture:SetTexCoord(9 / 32, 23 / 32, 5 / 32, 27 / 32)
+    self.Castbar.SparkTexture:SetBlendMode("ADD")
+	self.Castbar.SparkTexture:SetVertexColor(1, 1, 1)
+    self.Castbar.SparkTexture:SetWidth(10)
+    self.Castbar.Spark = self.Castbar.SparkTexture
 
     -- text
     self.Castbar.Text = self.Castbar:CreateFontString(nil, "OVERLAY")
@@ -58,8 +64,11 @@ function UF:CreateCastbar()
     self.Castbar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     self.Castbar.IconOverlay = CreateFrame("Frame", "$parentIconOverlay", self.Castbar)
     self.Castbar.IconOverlay:SetAllPoints(self.Castbar.Icon)
-    self.Castbar.IconOverlay:CreateBorder(config.borderSize)
+    self.Castbar.IconOverlay:CreateBorder()
     self.Castbar.IconOverlay:SetBorderPadding(2)
+    self.Castbar.IconOverlay:CreateShadow()
+    self.Castbar.IconOverlay:SetShadowPadding(2)
+    self.Castbar.IconOverlay:CreateGlossOverlay()
 
     -- safezone/latency
     self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "OVERLAY")
@@ -77,15 +86,15 @@ end
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
 
 function UF:UpdateCastbar()
-    if not self.CastbarParent then
+    if not self.CastbarHolder then
         return
     end
 
     local config = self.config.castbar
     if config.detached then
-        R:UnlockDragFrame(self.CastbarParent)
+        R:UnlockDragFrame(self.CastbarHolder)
     else
-        R:LockDragFrame(self.CastbarParent, true)
+        R:LockDragFrame(self.CastbarHolder, true)
     end
 
     if config.enabled then
@@ -98,30 +107,40 @@ function UF:UpdateCastbar()
         self.Castbar.bg:SetTexture(UF.config.statusbars.castbar)
         self.Castbar.bg:SetVertexColor(0.3 * UF.config.colors.castbar[1], 0.3 * UF.config.colors.castbar[2],
                                        0.3 * UF.config.colors.castbar[3])
-
-        self.Castbar.Spark:SetSize(height - config.borderSize, height - config.borderSize)
-
+        
         self.Castbar.Text:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
         self.Castbar.Text:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
         self.Castbar.Time:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
         self.Castbar.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
-        local leftOffset = config.borderSize / 2
-        local bottomOffset = config.borderSize / 2
-        local rightOffset = -config.borderSize / 2
-        local topOffset = -config.borderSize / 2
+        if config.showSpark then
+            self.Castbar.Spark = self.Castbar.SparkTexture
+            self.Castbar.Spark:SetPoint("TOP", self.Castbar:GetStatusBarTexture(), "TOPRIGHT")
+            self.Castbar.Spark:SetPoint("BOTTOM", self.Castbar:GetStatusBarTexture(), "BOTTOMRIGHT")
+        else
+            self.Castbar.Spark:Hide()
+            self.Castbar.Spark = nil
+        end
+
+        local leftOffset = config.border.enabled and config.border.size / 2 or 0
+        local bottomOffset = config.border.enabled and config.border.size / 2 or 0
+        local rightOffset = config.border.enabled and -config.border.size / 2 or 0
+        local topOffset = config.border.enabled and -config.border.size / 2 or 0
 
         if config.showIcon then
             self.Castbar.Icon:Show()
 
-            local iconSize = height - (not config.showIconOutside and (config.borderSize / 2 + 1) or 0)
+            local iconSize = height - (not config.showIconOutside and (config.border.size / 2 + 1) or 0)
             self.Castbar.Icon:SetSize(iconSize, iconSize)
             self.Castbar.IconOverlay:SetSize(iconSize, iconSize)
 
             if config.showIconOutside then
                 self.Castbar.Icon:SetPoint("RIGHT", self.Castbar, "LEFT", -8, 0)
                 self.Castbar.IconOverlay:Show()
+                self.Castbar.IconOverlay.Border:SetShown(config.border.enabled)
+                self.Castbar.IconOverlay.Shadow:SetShown(config.shadow.enabled)
+                self.Castbar.IconOverlay.Gloss:SetShown(config.gloss.enabled)
             else
                 leftOffset = leftOffset + iconSize
                 self.Castbar.Icon:SetPoint("RIGHT", self.Castbar, "LEFT", 0, 0)
@@ -133,8 +152,8 @@ function UF:UpdateCastbar()
         end
 
         self.Castbar:ClearAllPoints()
-        self.Castbar:SetPoint("BOTTOMLEFT", self.CastbarParent, "BOTTOMLEFT", leftOffset, bottomOffset)
-        self.Castbar:SetPoint("TOPRIGHT", self.CastbarParent, "TOPRIGHT", rightOffset, topOffset)
+        self.Castbar:SetPoint("BOTTOMLEFT", self.CastbarHolder, "BOTTOMLEFT", leftOffset, bottomOffset)
+        self.Castbar:SetPoint("TOPRIGHT", self.CastbarHolder, "TOPRIGHT", rightOffset, topOffset)
 
         if config.showSafeZone then
             self.Castbar.SafeZone:Show()
@@ -142,14 +161,18 @@ function UF:UpdateCastbar()
             self.Castbar.SafeZone:Hide()
         end
 
-        self.CastbarParent:SetSize(width, height)
-        self.CastbarParent:ClearAllPoints()
+        self.CastbarHolder:SetSize(width, height)
+        self.CastbarHolder:ClearAllPoints()
         if config.detached then
-            self.CastbarParent:Point(unpack(config.point))
+            self.CastbarHolder:Point(unpack(config.point))
         else
-            self.CastbarParent:Point(unpack(config.attachedPoint))
+            self.CastbarHolder:Point(unpack(config.attachedPoint))
         end
-        self.CastbarParent:SetBorderSize(config.borderSize)
+
+        self.CastbarHolder:SetBorderSize(config.border.size)
+        self.CastbarHolder.Border:SetShown(self.Castbar:IsShown() and config.border.enabled)
+        self.CastbarHolder.Shadow:SetShown(self.Castbar:IsShown() and config.shadow.enabled)
+        self.CastbarHolder.Gloss:SetShown(self.Castbar:IsShown() and config.gloss.enabled)
     else
         self:DisableElement("Castbar")
     end

@@ -100,8 +100,9 @@ function UF:CreateUnitOptions(unit, order, inline, name, hidden)
                     size = UF:CreateUnitSizeOption(unit, 1, true),
                     border = UF:CreateUnitBorderOption(unit, 10, true),
                     shadow = UF:CreateUnitShadowOption(unit, 11, true),
-                    highlight = UF:CreateUnitHighlightOption(unit, 12, true),
-                    artwork = UF:CreateUnitArtworkOption(unit, 13, true)
+                    gloss = UF:CreateUnitGlossOption(unit, 12, true),
+                    highlight = UF:CreateUnitHighlightOption(unit, 13, true),
+                    artwork = UF:CreateUnitArtworkOption(unit, 14, true)
                 }
             },
             elements = {
@@ -517,6 +518,29 @@ function UF:CreateUnitShadowOption(unit, order, inline, name)
     }
 end
 
+function UF:CreateUnitGlossOption(unit, order, inline, name)
+    return {
+        type = "group",
+        name = name or "Gloss",
+        order = order,
+        inline = inline,
+        args = {
+            enabled = {
+                type = "toggle",
+                name = "Enabled",
+                order = 1,
+                get = function()
+                    return UF.config[unit].gloss.enabled
+                end,
+                set = function(_, val)
+                    UF.config[unit].gloss.enabled = val
+                    UF:UpdateUnit(unit)
+                end
+            }
+        }
+    }
+end
+
 function UF:CreateUnitArtworkOption(unit, order, inline, name)
     return {
         type = "group",
@@ -583,7 +607,7 @@ function UF:CreateUnitArtworkOption(unit, order, inline, name)
             },
             highlight = {
                 type = "group",
-                name = "Background",
+                name = "Highlight / Glow",
                 order = 12,
                 inline = true,
                 hidden = function()
@@ -905,7 +929,7 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF:UpdateUnit(unit)
                 end
             },
-            lineBreakDetached = {type = "description", name = "", order = 2},
+            lineBreakLayout = {type = "description", name = "", order = 2},
             layout = {
                 type = "group",
                 name = "Layout",
@@ -1159,6 +1183,76 @@ function UF:CreateUnitPowerOption(unit, order, inline, name)
                     UF.config[unit].power.energyManaRegen = val
                     UF:UpdateUnit(unit)
                 end
+            },
+            lineBreak3 = {type = "description", name = "", order = 9},
+            border = {
+                type = "group",
+                name = "Border",
+                order = 10,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].power.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].power.border.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.border.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            shadow = {
+                type = "group",
+                name = "Shadow",
+                order = 11,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].power.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].power.shadow.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.shadow.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            gloss = {
+                type = "group",
+                name = "Gloss",
+                order = 12,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].power.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].power.gloss.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].power.gloss.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
             }
         }
     }
@@ -2105,6 +2199,75 @@ function UF:CreateUnitPortraitOption(unit, order, inline, name)
                     UF.config[unit].portrait.point[4] = val
                     UF:UpdateUnit(unit)
                 end
+            },
+            border = {
+                type = "group",
+                name = "Border",
+                order = 30,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].portrait.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].portrait.border.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].portrait.border.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            shadow = {
+                type = "group",
+                name = "Shadow",
+                order = 31,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].portrait.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].portrait.shadow.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].portrait.shadow.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            gloss = {
+                type = "group",
+                name = "Gloss",
+                order = 32,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].portrait.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].portrait.gloss.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].portrait.gloss.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
             }
         }
     }
@@ -2171,6 +2334,19 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                 end,
                 set = function(_, val)
                     UF.config[unit].castbar.showSafeZone = val
+                    UF:UpdateUnit(unit)
+                end
+            },
+            showSpark = {
+                type = "toggle",
+                name = "Show Spark",
+                desc = "Whether to show the spark at the end of the castbar.",
+                order = 6,
+                get = function()
+                    return UF.config[unit].castbar.showSpark
+                end,
+                set = function(_, val)
+                    UF.config[unit].castbar.showSpark = val
                     UF:UpdateUnit(unit)
                 end
             },
@@ -2386,6 +2562,76 @@ function UF:CreateUnitCastbarOption(unit, order, inline, canDetach, name)
                         end,
                         set = function(_, val)
                             UF.config[unit].castbar.fontShadow = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            lineBreak3 = {type = "description", name = "", order = 20},
+            border = {
+                type = "group",
+                name = "Border",
+                order = 21,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].castbar.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].castbar.border.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.border.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            shadow = {
+                type = "group",
+                name = "Shadow",
+                order = 22,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].castbar.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].castbar.shadow.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.shadow.enabled = val
+                            UF:UpdateUnit(unit)
+                        end
+                    }
+                }
+            },
+            gloss = {
+                type = "group",
+                name = "Gloss",
+                order = 23,
+                inline = true,
+                disabled = function()
+                    return not UF.config[unit].castbar.detached
+                end,
+                args = {
+                    enabled = {
+                        type = "toggle",
+                        name = "Enabled",
+                        order = 1,
+                        get = function()
+                            return UF.config[unit].castbar.gloss.enabled
+                        end,
+                        set = function(_, val)
+                            UF.config[unit].castbar.gloss.enabled = val
                             UF:UpdateUnit(unit)
                         end
                     }
@@ -3158,11 +3404,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = true,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 12,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = true,
@@ -3357,11 +3606,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = true,
@@ -3514,11 +3766,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -3549,9 +3804,9 @@ R:RegisterModuleConfig(UF, {
     },
     pet = {
         enabled = true,
-        size = {175, 42},
+        size = {120, 28},
         scale = 1,
-        point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 34, 5},
+        point = {"TOPRIGHT", addonName .. "Player", "BOTTOMRIGHT", 0, -5},
         frameLevel = 20,
         artwork = {
             enabled = false,
@@ -3588,8 +3843,8 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             detached = false,
             inset = true,
-            insetPoint = {"RIGHT", "BOTTOMRIGHT", 10, 0},
-            size = {80, 12},
+            insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0},
+            size = {80, 10},
             padding = {0, 0, 0, 0},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
@@ -3611,13 +3866,13 @@ R:RegisterModuleConfig(UF, {
             point = {"BOTTOMLEFT", "TOPLEFT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 11,
-            fontOutline = "NONE",
+            fontOutline = "OUTLINE",
             fontShadow = true,
             justifyH = "LEFT",
             tag = "[name]"
         },
         level = {
-            enabled = true,
+            enabled = false,
             size = {20, 10},
             point = {"BOTTOMRIGHT", "TOPRIGHT", 0, 2},
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -3632,7 +3887,7 @@ R:RegisterModuleConfig(UF, {
             detached = false,
             point = {"RIGHT", "LEFT", 10, 0},
             attachedPoint = "LEFT",
-            size = {42, 42},
+            size = {24, 24},
             border = {enabled = true, size = 4},
             shadow = {enabled = true},
             gloss = {enabled = true},
@@ -3679,11 +3934,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = true,
@@ -3839,11 +4097,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -3986,11 +4247,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -4164,11 +4428,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = true,
@@ -4333,11 +4600,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = true,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -4508,11 +4778,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -4667,11 +4940,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -4842,11 +5118,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -5018,11 +5297,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
@@ -5151,11 +5433,14 @@ R:RegisterModuleConfig(UF, {
             showIcon = false,
             showIconOutside = false,
             showSafeZone = false,
-            borderSize = 4,
+            showSpark = true,
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "NONE",
-            fontShadow = true
+            fontShadow = true,
+            border = {enabled = true, size = 4},
+            shadow = {enabled = true},
+            gloss = {enabled = true},
         },
         combatfeedback = {
             enabled = false,
