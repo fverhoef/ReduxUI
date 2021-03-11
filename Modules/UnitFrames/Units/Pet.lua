@@ -67,6 +67,7 @@ function UF:Pet_ApplyTheme()
         config.power.value.point = {"CENTER", "CENTER", 0, 0}
         config.power.border.enabled = false
         config.power.shadow.enabled = false
+        config.power.gloss.enabled = false
 
         config.portrait.enabled = true
         config.portrait.round = true
@@ -74,6 +75,8 @@ function UF:Pet_ApplyTheme()
         config.portrait.point = {"RIGHT", "RIGHT", 6, 0}
         config.portrait.size = {64, 64}
         config.portrait.border.enabled = false
+        config.portrait.shadow.enabled = false
+        config.portrait.gloss.enabled = false
 
         config.name.enabled = true
         config.name.size = {120, 10}

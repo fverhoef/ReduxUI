@@ -131,7 +131,7 @@ function BS:StyleAllActionButtons()
         BS:StyleActionButton(_G["StanceButton" .. i])
     end
 
-    _G.MainMenuBarVehicleLeaveButton:CreateBorder(BS.config.borderSize)
+    _G.MainMenuBarVehicleLeaveButton:CreateBorder(BS.config.borderSize, BS.config.borders.texture, BS.config.borders.color)
     _G.MainMenuBarVehicleLeaveButton:CreateShadow()
 
     BS:SecureHook("ActionButton_UpdateUsable", BS.ActionButton_UpdateUsable)
@@ -177,6 +177,10 @@ function BS:UpdateAllActionButtons()
 
         BS:UpdateActionButton(button)
     end
+
+    _G.MainMenuBarVehicleLeaveButton.Border:SetSize(config.borderSize)
+    _G.MainMenuBarVehicleLeaveButton.Border:SetTexture(BS.config.borders.texture)
+    _G.MainMenuBarVehicleLeaveButton.Border:SetVertexColor(unpack(BS.config.borders.color))
 end
 
 function BS:ActionButton_UpdateUsable()

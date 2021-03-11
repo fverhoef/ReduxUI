@@ -158,6 +158,7 @@ function UF:Party_ApplyTheme()
         config.power.value.enabled = false
         config.power.border.enabled = false
         config.power.shadow.enabled = false
+        config.power.gloss.enabled = false
 
         config.portrait.enabled = true
         config.portrait.round = true
@@ -165,6 +166,8 @@ function UF:Party_ApplyTheme()
         config.portrait.point = {"LEFT", "LEFT", 0, -2}
         config.portrait.size = {37, 37}
         config.portrait.border.enabled = false
+        config.portrait.shadow.enabled = false
+        config.portrait.gloss.enabled = false
 
         config.name.enabled = true
         config.name.size = {120, 10}

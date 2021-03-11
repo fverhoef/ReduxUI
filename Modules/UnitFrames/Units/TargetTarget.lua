@@ -58,6 +58,9 @@ function UF:TargetTarget_ApplyTheme()
         config.power.inset = false
         config.power.size = {95, 7}
         config.power.value.enabled = false
+        config.power.border.enabled = false
+        config.power.shadow.enabled = false
+        config.power.gloss.enabled = false
 
         config.portrait.enabled = true
         config.portrait.round = true
@@ -65,6 +68,8 @@ function UF:TargetTarget_ApplyTheme()
         config.portrait.point = {"LEFT", "LEFT", 7, 0}
         config.portrait.size = {35, 35}
         config.portrait.border.enabled = false
+        config.portrait.shadow.enabled = false
+        config.portrait.gloss.enabled = false
 
         config.name.enabled = true
         config.name.size = {120, 10}

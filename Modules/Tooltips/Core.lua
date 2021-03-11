@@ -114,7 +114,18 @@ function TT:Update(tooltip)
             tooltip.Border:Show()
             tooltip.Border:SetSize(TT.config.border.size)
             tooltip.Border:SetTexture(TT.config.border.texture)
-            tooltip.Border:SetVertexColor(unpack(TT.config.border.color))
+
+            local color = TT.config.border.color
+            if TT.config.colorBorderByRarity then        
+                local _, link = tooltip:GetItem()
+                if link then
+                    local _, _, itemRarity = GetItemInfo(link)        
+                    if itemRarity and itemRarity > 1 then
+                        color = {GetItemQualityColor(itemRarity)}
+                    end
+                end
+            end
+            tooltip.Border:SetVertexColor(unpack(color))
         else
             tooltip.Border:Hide()
         end
@@ -311,32 +322,7 @@ function TT:OnTooltipSetSpell()
 end
 
 function TT:OnShow()
-    local itemName, link = self:GetItem()
-    local spellName, spellId = self:GetSpell()
-    if not link and not spellId then
-        local text = _G[self:GetName() .. "TextLeft1"]:GetText()
-        if text then
-            -- TODO: this only works if the player had the item in their inventory at some point; consider creating a database with icons?
-            local itemName, _, _, _, _, itemType, itemSubType, _, _, itemIcon = GetItemInfo(text)
-            if itemIcon then
-                -- TT:AddIcon(self, itemIcon)
-            end
-        end
-    end
-
     TT:Update(self)
-
-    if TT.config.colorBorderByRarity then
-        local color = TT.config.border.color
-        if link then
-            local _, _, itemRarity = GetItemInfo(link)
-
-            if itemRarity and itemRarity > 1 then
-                color = {GetItemQualityColor(itemRarity)}
-            end
-        end
-        self.Border:SetVertexColor(unpack(color))
-    end
 end
 
 function TT:SetBackdropStyle()
