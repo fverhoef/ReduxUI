@@ -280,13 +280,8 @@ function MM:StyleMinimap()
     end
 
     if MiniMapBattlefieldFrame then
-        MiniMapBattlefieldFrame:SetParent(Minimap.InformationFrame)
         MiniMapBattlefieldFrame:SetSize(33, 33)
-        MiniMapBattlefieldFrame:ClearAllPoints()
-        MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 5, 2)
-
         MiniMapBattlefieldBorder:Hide()
-
         MiniMapBattlefieldIcon:SetSize(MiniMapBattlefieldFrame:GetSize())
     end
 
@@ -429,6 +424,12 @@ function MM:UpdateMinimap()
         Minimap.ButtonFrame:ClearAllPoints()
         Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 5)
         Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "BOTTOMRIGHT", 0, 5)
+
+        if MiniMapBattlefieldFrame then
+            MiniMapBattlefieldFrame:ClearAllPoints()
+            MiniMapBattlefieldFrame:SetParent(Minimap.InformationFrame)
+            MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 5, 2)
+        end
     else
         Minimap.InformationFrame.Background:Hide()
 
@@ -445,6 +446,12 @@ function MM:UpdateMinimap()
         Minimap.ButtonFrame:ClearAllPoints()
         Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
         Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+
+        if MiniMapBattlefieldFrame then
+            MiniMapBattlefieldFrame:ClearAllPoints()
+            MiniMapBattlefieldFrame:SetParent(Minimap)
+            MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", 2, -2)
+        end
     end
 
     MinimapNorthTag:SetShown(MM.config.showNorthTag)
