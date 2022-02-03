@@ -1,0 +1,125 @@
+local addonName, ns = ...
+
+local R = _G.LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+ns[1] = R
+_G[addonName] = R
+
+R.name = R.name or addonName
+R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
+R.shortcut = "rui"
+
+local build = select(4, GetBuildInfo())
+R.isClassic = build < 20000
+R.isTbc = build < 30000
+R.isRetail = build > 40000
+
+R.Libs = {}
+function R:AddLib(name, major, minor)
+    if not name then
+        return
+    end
+
+    R.Libs[name] = _G.LibStub(major, minor)
+end
+
+R:AddLib("AceConsole", "AceConsole-3.0")
+R:AddLib("AceDB", "AceDB-3.0")
+R:AddLib("AceDBOptions", "AceDBOptions-3.0")
+R:AddLib("AceConfig", "AceConfig-3.0")
+R:AddLib("AceConfigDialog", "AceConfigDialog-3.0")
+R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
+
+R:AddLib("SharedMedia", "LibSharedMedia-3.0")
+
+R:AddLib("ActionButton", "LibActionButton-1.0")
+R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
+R:AddLib("ItemSearch", "LibItemSearch-1.2")
+R:AddLib("KeyBound", "LibKeyBound-1.0")
+R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
+
+if R.isClassic then
+    R:AddLib("ClassicDurations", "LibClassicDurations")
+    R.Libs.ClassicDurations:Register(addonName)
+end
+
+if R.isClassic or R.isTbc then
+    R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0")
+end
+
+R.Modules = {}
+function R:AddModule(name)
+    if not name then
+        return
+    end
+
+    local module = R.Modules[name]
+    if not module then
+        module = R:NewModule(name, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+        module.name = name
+        module.initialized = false
+        R.Modules[name] = module
+    end
+
+    return module
+end
+
+R.ChatCommands = {
+    ["unlock"] = {
+        func = function()
+            R:ShowDragFrames()
+        end,
+        description = "unlock all frames"
+    },
+    ["lock"] = {
+        func = function()
+            R:HideDragFrames()
+        end,
+        description = "lock all frames"
+    },
+    ["reset"] = {
+        func = function()
+            R:ResetFrames()
+        end,
+        description = "reset all frames"
+    }
+}
+
+function R:OnInitialize()
+    R:SetupConfig()
+    R:UpdateBlizzardFonts()
+
+    R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
+        local arg1, funcArgs = strsplit(" ", args, 2)
+        local command = R.ChatCommands[arg1]
+        if command then
+            command.func(funcArgs and strsplit(" ", funcArgs))
+        else
+            R:Print("Command list:")
+            for key, value in pairs(R.ChatCommands) do
+                R:Print("/" .. R.shortcut .. " " .. key .. "|r: " .. value.description)
+            end
+        end
+    end)
+
+    R.framesLocked = true
+end
+
+function R:OnEnable()
+    R:SetupConfig()
+    R:SetupOptions()
+
+    for name, module in pairs(R.Modules) do
+        module.config = R.config.db.profile.modules[name]
+        module.charConfig = R.config.db.char.modules[name]
+        module.realmConfig = R.config.db.realm.modules[name]
+    end
+
+    for name, module in pairs(R.Modules) do
+        if module.Initialize and not module.initialized then
+            module.Initialize()
+            module.initialized = true
+        end
+    end
+
+    R:Print("Loaded. Use /" .. R.shortcut .. " to display the command list.")
+end

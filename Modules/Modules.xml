@@ -1,0 +1,4 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="Bags\Bags.xml"/>
+    <Include file="Tooltips\Tooltips.xml"/>
+</Ui>

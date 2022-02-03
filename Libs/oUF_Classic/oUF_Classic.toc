@@ -1,0 +1,11 @@
+## Interface: 11306
+## Title: oUF Classic Elements
+## Notes: oUF elements for classic WoW
+## Author: Neya
+## Version: 0.1
+## X-Category: UnitFrame
+## RequiredDeps: oUF
+## DefaultState: enabled
+## X-oUF: oUF
+
+oUF_Classic.xml
