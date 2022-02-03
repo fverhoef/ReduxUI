@@ -2,19 +2,14 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R:AddModule("Bags", "AceEvent-3.0", "AceHook-3.0")
 
-local BACKPACK_CONTAINER = _G.BACKPACK_CONTAINER
 local BANK_CONTAINER = _G.BANK_CONTAINER
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
-local KEYRING_CONTAINER = _G.KEYRING_CONTAINER or -2
-local MAX_CONTAINER_ITEMS = _G.MAX_CONTAINER_ITEMS or 36
-local REAGENTBANK_SIZE = 98
 
 function B:Initialize()
     if not B.config.enabled then
         return
     end
 
-    B:DisableBlizzardFrames()
     B.Inventory = ReduxUI_InventoryFrame
     B.Bank = ReduxUI_BankFrame
     B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
@@ -88,13 +83,12 @@ function B:BANKFRAME_CLOSED(event)
 end
 
 function B:BANK_BAG_SLOT_FLAGS_UPDATED(event, slot)
-    -- TODO: only update one slot
     B.Bank:Update()
 end
 
 function B:PLAYERBANKSLOTS_CHANGED(event, slot)
-    -- TODO: only update one slot
-    B.Bank:Update()
+    B:FindBag(BANK_CONTAINER):Update()
+    B:FindBagSlot(BANK_CONTAINER):Update()
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED(event)
@@ -102,15 +96,8 @@ function B:PLAYERBANKBAGSLOTS_CHANGED(event)
 end
 
 function B:PLAYERREAGENTBANKSLOTS_CHANGED(event)
-    B.Bank:Update()
-end
-
-function B:DisableBlizzardFrames()
-    for i = 1, NUM_CONTAINER_FRAMES do
-        local frame = _G["ContainerFrame" .. i]
-        frame:SetParent(R.HiddenFrame)
-    end
-    BankFrame:SetParent(R.HiddenFrame)
+    B:FindBag(REAGENTBANK_CONTAINER):Update()
+    B:FindBagSlot(REAGENTBANK_CONTAINER):Update()
 end
 
 function B:FindBag(bagID)

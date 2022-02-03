@@ -4,7 +4,7 @@ local B = R.Modules.Bags
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
-function ReduxUI_InventoryFrame_OnLoad(self)
+function ReduxUI_InventoryFrame_OnLoad(self)    
     self.BagIDs = {0, 1, 2, 3, 4}
     if not R.isRetail then
         table.insert(self.BagIDs, KEYRING_CONTAINER)
@@ -18,6 +18,9 @@ function ReduxUI_InventoryFrame_OnLoad(self)
     SetPortraitToTexture(self.portrait, "Interface\\ICONS\\INV_Misc_Bag_08")
 
     table.insert(_G.UISpecialFrames, self:GetName())
+    for i = 1, NUM_CONTAINER_FRAMES do
+        _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame)
+    end
 
     R:CreateDragFrame(self, "Inventory", {"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -100, 100})
 

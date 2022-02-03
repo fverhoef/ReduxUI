@@ -5,7 +5,7 @@ local B = R.Modules.Bags
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local REAGENTBANK_SIZE = 98
 
-function ReduxUI_BankFrame_OnLoad(self)
+function ReduxUI_BankFrame_OnLoad(self)    
     self.isBank = true
     self.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
     if R.isRetail then
@@ -31,10 +31,11 @@ function ReduxUI_BankFrame_OnLoad(self)
         self.ReagentsTab:Hide()
     end
 
-    SetPortraitToTexture(self.portrait, "Interface\\ICONS\\INV_Misc_EngGizmos_17")
-    self.Inset.Bg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+    SetPortraitToTexture(self.portrait, [[Interface\ICONS\INV_Misc_EngGizmos_17]])
+    self.Inset.Bg:SetTexture([[Interface\FrameGeneral\UI-Background-Rock]])
 
     table.insert(_G.UISpecialFrames, self:GetName())
+    BankFrame:SetParent(R.HiddenFrame)
 
     R:CreateDragFrame(self, "Bank", {"BOTTOMLEFT", UIParent, "BOTTOMLEFT", 100, 100})
 end
@@ -65,7 +66,6 @@ function B:ShowBank()
         B.Bank:Update()
         B.Bank:Show()
         BankFrame:Show()
-        ReduxUI_BankFrame:Show()
     end
     B:ShowInventory()
 end
