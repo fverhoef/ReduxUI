@@ -1,0 +1,9 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="Bag.lua" />
+
+    <Frame name="BagTemplate" mixin="BagMixin" virtual="true">
+        <Scripts>
+            <OnLoad function="Bag_OnLoad" />
+        </Scripts>
+    </Frame>
+</Ui>

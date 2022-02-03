@@ -49,7 +49,7 @@ R:RegisterModuleOptions(B, {
                     end,
                     set = function(_, val)
                         B.config.inventory.slotSize = val
-                        B:UpdateInventory()
+                        B.Inventory:Update()
                     end
                 },
                 columns = {
@@ -64,7 +64,7 @@ R:RegisterModuleOptions(B, {
                     end,
                     set = function(_, val)
                         B.config.inventory.columns = val
-                        B:UpdateInventory()
+                        B.Inventory:Update()
                     end
                 }
             }
@@ -87,7 +87,7 @@ R:RegisterModuleOptions(B, {
                     end,
                     set = function(_, val)
                         B.config.bank.slotSize = val
-                        B:UpdateBank()
+                        B.Bank:Update()
                     end
                 },
                 columns = {
@@ -102,7 +102,7 @@ R:RegisterModuleOptions(B, {
                     end,
                     set = function(_, val)
                         B.config.bank.columns = val
-                        B:UpdateBank()
+                        B.Bank:Update()
                     end
                 }
             }
