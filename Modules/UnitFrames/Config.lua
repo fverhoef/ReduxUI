@@ -9,6 +9,7 @@ local DEFAULT_UNIT_CONFIG = {
     scale = 1,
     point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 350},
     fader = R.config.faders.onShow,
+    inlay = { enabled = true },
     health = {
         enabled = true,
         size = {150, 12},
@@ -85,13 +86,14 @@ local DEFAULT_UNIT_CONFIG = {
         tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"
     },
     level = {
-        enabled = true,
-        point = {"BOTTOMLEFT", "TOPLEFT", 0, 0},
+        enabled = false,
+        size = {30, 10},
+        point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 0},
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 13,
         fontOutline = "OUTLINE",
         fontShadow = true,
-        justifyH = "LEFT",
+        justifyH = "RIGHT",
         tag = "[difficultycolor][level][shortclassification]|r"
     },
     portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false},
@@ -136,7 +138,7 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetClassColor = true},
+    highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetArrows = false, targetClassColor = false},
     assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
     combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
     groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
@@ -153,23 +155,6 @@ local DEFAULT_UNIT_CONFIG = {
     resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "TOP", 0, 0}},
     summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}}
 }
-
-local player = R:CopyTable(DEFAULT_UNIT_CONFIG)
-player.power.energyManaRegen = true
-player.castbar.size = {250, 24}
-player.castbar.point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}
-
-local target = R:CopyTable(DEFAULT_UNIT_CONFIG)
-target.point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350}
-target.health.value.point = {"LEFT", "LEFT", 5, 0}
-target.health.percent.point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}
-target.name.point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}
-target.name.justifyH = "RIGHT"
-target.portrait.point = "RIGHT"
-target.pvpIndicator.point = {"CENTER", "RIGHT", 0, 0}
-target.restingIndicator.enabled = false
-
-local targetTarget = R:CopyTable(DEFAULT_UNIT_CONFIG)
 
 R:RegisterModuleConfig(UF, {
     enabled = true,
@@ -217,7 +202,38 @@ R:RegisterModuleConfig(UF, {
         colorPowerDisconnected = true
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
-    player = player,
-    target = target,
-    targettarget = targetTarget
+    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}}}),
+    target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
+        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT"},
+        portrait = {point = "RIGHT"},
+        pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
+        restingIndicator = {enabled = false}
+    }),
+    nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        size = {150, 16},
+        point = {"CENTER"},
+        --inlay = {enabled = false},
+        health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+        power = {enabled = false},
+        name = {size = {130, 10}, tag = "[name]"},
+        level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 0}},
+        portrait = {enabled = false},
+        highlight = { targetArrows = true },
+        assistantIndicator = {enabled = false},
+        combatIndicator = {enabled = false},
+        groupRoleIndicator = {enabled = false},
+        masterLooterIndicator = {enabled = false},
+        leaderIndicator = {enabled = false},
+        phaseIndicator = {enabled = false},
+        pvpIndicator = {enabled = false},
+        pvpClassificationIndicator = {enabled = false},
+        questIndicator = {enabled = false},
+        raidRoleIndicator = {enabled = false},
+        readyCheckIndicator = {enabled = false},
+        restingIndicator = {enabled = false},
+        resurrectIndicator = {enabled = false},
+        summonIndicator = {enabled = false}
+    })
 })

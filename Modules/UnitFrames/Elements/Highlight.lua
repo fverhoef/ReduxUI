@@ -26,15 +26,9 @@ function UF:UpdateHighlight()
         color = color or UF.config.colors.targetHighlight
     end
 
-    if self.Backdrop and config.colorBorder then
-        local borderColor = config.colorBorder and color or R.DEFAULT_BORDER_COLOR
-        self.Backdrop:SetBackdropBorderColor(unpack(borderColor))
-    end
+    if self.Backdrop then self.Backdrop:SetBackdropBorderColor(unpack(config.colorBorder and color or R.DEFAULT_BORDER_COLOR)) end
 
-    if self.Shadow and config.colorShadow then
-        local shadowColor = config.colorShadow and color or R.DEFAULT_SHADOW_COLOR
-        self.Shadow:SetBackdropBorderColor(unpack(color))
-    end
+    if self.Shadow then self.Shadow:SetBackdropBorderColor(unpack(config.colorShadow and color or R.DEFAULT_SHADOW_COLOR)) end
 end
 
 oUF:RegisterMetaFunction("UpdateHighlight", UF.UpdateHighlight)

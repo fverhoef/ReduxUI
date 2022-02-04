@@ -19,8 +19,10 @@ oUF:RegisterMetaFunction("CreateName", UF.CreateName)
 function UF:ConfigureName()
     local config = self.config.name
     if not config.enabled then
-        self.Name:Hide()
-        self:Untag(self.Name)
+        if self.Name then
+            self.Name:Hide()
+            self:Untag(self.Name)
+        end
         return
     elseif not self.Name then
         self:CreateName()

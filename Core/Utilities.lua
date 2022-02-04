@@ -313,8 +313,9 @@ function R:FixNormalTextureSize(button)
     end
 end
 
-function R:CopyTable(table)
+function R:CopyTable(table, overwrites)
     local copy = {}
+
     for k, v in pairs(table) do
         if type(v) == "table" then
             copy[k] = R:CopyTable(v)
@@ -322,5 +323,19 @@ function R:CopyTable(table)
             copy[k] = v
         end
     end
+
+    if overwrites then R:OverwriteTableValues(copy, overwrites) end
+
     return copy
+end
+
+function R:OverwriteTableValues(target, overwrites)
+    for k, v in pairs(overwrites) do
+        if type(v) == "table" and target[k] then
+            target[k] = R:OverwriteTableValues(target[k], v)
+        else
+            target[k] = v
+        end
+    end
+    return target
 end

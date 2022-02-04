@@ -28,18 +28,21 @@ function UF:InitializeFrame()
     self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
     self.Overlay:SetAllPoints()
 
-    self:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 16})
+    self:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
     self.Backdrop:SetOutside(self, 3, 3)
     self.Backdrop:SetFrameLevel(self:GetFrameLevel())
 
     self:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
     self.Inlay:SetOutside(self, 6, 6)
 
+    self:CreateShadow()
+
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
     self:CreateHealth()
     self:CreatePower()
     self:CreateName()
+    self:CreateLevel()
     self:CreatePortrait()
     self:CreateCastbar()
     self:CreateAuras()
@@ -79,9 +82,12 @@ function UF:ConfigureFrame()
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
+    self.Inlay:SetShown(self.config.inlay.enabled or false)
+
     self:ConfigureHealth()
     self:ConfigurePower()
     self:ConfigureName()
+    self:ConfigureLevel()
     self:ConfigurePortrait()
     self:ConfigureCastbar()
     self:ConfigureAuras()

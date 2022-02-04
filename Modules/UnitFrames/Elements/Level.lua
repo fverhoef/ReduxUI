@@ -18,8 +18,10 @@ oUF:RegisterMetaFunction("CreateLevel", UF.CreateLevel)
 function UF:ConfigureLevel()
     local config = self.config.level
     if not config.enabled then
-        self.Level:Hide()
-        self:Untag(self.Level)
+        if self.Level then
+            self.Level:Hide()
+            self:Untag(self.Level)
+        end
         return
     elseif not self.Level then
         self:CreateLevel()

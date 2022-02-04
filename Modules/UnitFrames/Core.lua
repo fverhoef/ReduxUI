@@ -3,8 +3,9 @@ local R = _G.ReduxUI
 local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 local oUF = ns.oUF or oUF
 
-UF.Frames = {}
-UF.Headers = {}
+UF.frames = {}
+UF.headers = {}
+UF.nameplates = {}
 
 function UF:Initialize()
     if not UF.config.enabled then return end
@@ -12,8 +13,10 @@ function UF:Initialize()
     UF:UpdateColors()
     UF:StyleBuffFrame()
 
-    UF.Frames.Player = UF:SpawnPlayer()
-    UF.Frames.Target = UF:SpawnTarget()
+    UF.frames.player = UF:SpawnPlayer()
+    UF.frames.target = UF:SpawnTarget()
+   
+    UF:SpawnNamePlates()
 
     UF:RegisterEvent("PLAYER_REGEN_DISABLED")
 end

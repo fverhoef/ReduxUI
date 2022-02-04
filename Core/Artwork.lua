@@ -4,14 +4,15 @@ local R = _G.ReduxUI
 R.DEFAULT_BACKDROP_COLOR = {0.1, 0.1, 0.1, 0.8}
 R.DEFAULT_BORDER_COLOR = {1, 1, 1, 1}
 R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.7}
+R.DEFAULT_INLAY_COLOR = {1, 1, 1, 0.7}
 
 function R:CreateBackdrop(backdropInfo, color, borderColor)
-    if self.Backdrop then return end
+    local backdrop = self.Backdrop
+    if not backdrop then backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
     color = color or R.DEFAULT_BACKDROP_COLOR
     borderColor = borderColor or R.DEFAULT_BORDER_COLOR
 
-    local backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
     backdrop:SetOutside(self, 0, 0)
     backdrop:SetFrameLevel(math.max(0, self:GetFrameLevel() - 1))
     backdrop:SetBackdrop(backdropInfo)
@@ -22,20 +23,17 @@ function R:CreateBackdrop(backdropInfo, color, borderColor)
 end
 
 function R:CreateShadow(size, color)
-    if self.Shadow then return end
+    local shadow = self.Shadow
+    if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
-    size = size or 5
+    size = size or 7
     color = color or R.DEFAULT_SHADOW_COLOR
     if not color[4] then color[4] = 0.7 end
 
-    local offset = size + 1
-    local shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
-    shadow.size = size
-
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
-    shadow:SetOutside(self, offset, offset)
-    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size})
+    shadow:SetOutside(self, size, size)
+    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size + 3})
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(unpack(color))
 
@@ -43,11 +41,11 @@ function R:CreateShadow(size, color)
 end
 
 function R:CreateInlay(backdropInfo, color)
-    if self.Inlay then return end
+    local inlay = self.Inlay
+    if not inlay then inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
-    color = color or {1, 1, 1, 0.7}
+    color = color or R.DEFAULT_INLAY_COLOR
 
-    local inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
     inlay:SetInside(self, 0, 0)
     inlay:SetFrameLevel(self:GetFrameLevel())
     inlay:SetBackdrop(backdropInfo)
