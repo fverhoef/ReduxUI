@@ -384,3 +384,15 @@ function R:FixNormalTextureSize(button)
         end
     end
 end
+
+function R:CopyTable(table)
+    local copy = {}
+    for k, v in pairs(table) do
+        if type(v) == "table" then
+            copy[k] = R:CopyTable(v)
+        else
+            copy[k] = v
+        end
+    end
+    return copy
+end

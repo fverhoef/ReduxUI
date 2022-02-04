@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Include file="Bags\Bags.xml"/>
     <Include file="Tooltips\Tooltips.xml"/>
+    <Include file="UnitFrames\UnitFrames.xml"/>
 </Ui>

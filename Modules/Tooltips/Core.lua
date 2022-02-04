@@ -134,91 +134,16 @@ function TT:OnTooltipSetUnit()
         return
     end
 
-    -- color tooltips
-    for i = 2, 8 do
-        local text = _G["GameTooltipTextLeft" .. i]
-        if text then
-            text:SetTextColor(unpack(TT.config.colors.text))
-        end
-    end
-
-    -- position raid icon
     local raidIconIndex = GetRaidTargetIndex(unit)
     if raidIconIndex then
         _G.GameTooltipTextLeft1:SetText(("%s %s"):format(ICON_LIST[raidIconIndex] .. "14|t", unitName))
     end
 
-    if not UnitIsPlayer(unit) then
-        -- unit is not a player
-        -- color textleft1 and statusbar by faction color
-        local reaction = UnitReaction(unit, "player")
-        if reaction then
-            local color = FACTION_BAR_COLORS[reaction]
-            if color then
-                _G.GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
-                _G.GameTooltipTextLeft1:SetTextColor(color.r, color.g, color.b)
-            end
-        end
-
-        -- color textleft2 by classificationcolor
-        local unitClassification = UnitClassification(unit)
-        local levelLine
-        if string.find(_G.GameTooltipTextLeft2:GetText() or "empty", "%a%s%d") then
-            levelLine = _G.GameTooltipTextLeft2
-        elseif string.find(_G.GameTooltipTextLeft3:GetText() or "empty", "%a%s%d") then
-            _G.GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.guild))
-            levelLine = _G.GameTooltipTextLeft3
-        end
-        if levelLine then
-            local l = UnitLevel(unit)
-            local color = GetCreatureDifficultyColor((l > 0) and l or 999)
-            levelLine:SetTextColor(color.r, color.g, color.b)
-        end
-        if unitClassification == "worldboss" or UnitLevel(unit) == -1 then
-            _G.GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.boss))
-        end
-    else
-        -- unit is any player
-        local _, unitClass = UnitClass(unit)
-
-        -- color textleft1 and statusbar by class color
-        local color = RAID_CLASS_COLORS[unitClass]
-        _G.GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
-        _G.GameTooltipTextLeft1:SetTextColor(color.r, color.g, color.b)
-
-        -- color textleft2 by guildcolor
-        local unitGuild, guildRankName = GetGuildInfo(unit)
-        local l = UnitLevel(unit)
-        local color = GetCreatureDifficultyColor((l > 0) and l or 999)
-        if R.isClassic then
-            if unitGuild then
-                -- move level line to a new one
-                _G.GameTooltip:AddLine(_G.GameTooltipTextLeft2:GetText(), color.r, color.g, color.b)
-                -- add guild info
-                _G.GameTooltipTextLeft2:SetText("<" .. unitGuild .. "> [" .. guildRankName .. "]")
-                _G.GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.guild))
-            else
-                _G.GameTooltipTextLeft2:SetTextColor(color.r, color.g, color.b)
-            end
-        else
-            local levelLine = _G.GameTooltipTextLeft2
-            if unitGuild and _G.GameTooltipTextLeft2:GetText() == unitGuild then
-                -- add guild info
-                _G.GameTooltipTextLeft2:SetText("<" .. unitGuild .. "> [" .. guildRankName .. "]")
-                _G.GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.guild))
-
-                levelLine = _G.GameTooltipTextLeft3
-            end
-            
-            levelLine:SetTextColor(color.r, color.g, color.b)
-        end
-
-        -- afk?
+    if UnitIsPlayer(unit) then
         if UnitIsAFK(unit) then
             self:AppendText((" %s<AFK>|r"):format(R:Hex(TT.config.colors.afk)))
         end
 
-        -- pvp rank
         local rank = UnitPVPRank and UnitPVPRank(unit)
         if rank and rank > 0 then
             -- rank starts at 5 for some reason
@@ -227,23 +152,17 @@ function TT:OnTooltipSetUnit()
         end
     end
 
-    -- pvp
-    if string.find(_G.GameTooltipTextLeft2:GetText() or "empty", "PvP") then
-        _G.GameTooltipTextLeft2:SetTextColor(unpack(TT.config.colors.pvp))
-    elseif string.find(_G.GameTooltipTextLeft3:GetText() or "empty", "PvP") then
-        _G.GameTooltipTextLeft3:SetTextColor(unpack(TT.config.colors.pvp))
-    elseif string.find(_G.GameTooltipTextLeft4:GetText() or "empty", "PvP") then
-        _G.GameTooltipTextLeft4:SetTextColor(unpack(TT.config.colors.pvp))
-    elseif string.find(_G.GameTooltipTextLeft5:GetText() or "empty", "PvP") then
-        _G.GameTooltipTextLeft5:SetTextColor(unpack(TT.config.colors.pvp))
+    for i = 2, 5 do
+        local text = _G["GameTooltipTextLeft" .. i]
+        if text and string.find(text:GetText() or "empty", "PvP") then
+            text:SetTextColor(unpack(TT.config.colors.pvp))
+        end
     end
 
-    -- dead?
     if UnitIsDeadOrGhost(unit) then
         _G.GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead))
     end
 
-    -- target line
     if (UnitExists(unit .. "target")) then
         _G.GameTooltip:AddDoubleLine(("%s%s|r"):format(R:Hex(TT.config.colors.target), "Target"), TT:GetTarget(unit .. "target") or "Unknown")
     end

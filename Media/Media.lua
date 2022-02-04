@@ -51,23 +51,14 @@ R.media = {
             button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"
         },
 
-        borders = {
-            beautycase = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Beautycase",
-            cainyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Cainyx",
-            caith = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Caith",
-            diablo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Diablo",
-            entropy = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Entropy",
-            goldpaw = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Goldpaw",
-            onyx = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Onyx",
-            redux = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Redux",
-            retina = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Retina",
-            gloss1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss1",
-            gloss2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss2",
-            gloss3 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Borders\\Gloss3"
-        },
-
         edgeFiles = {
-            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow"
+            borderThick = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThick",
+            borderThickTooltip = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThickTooltip",
+            borderThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThin",
+            borderThinTooltip = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThinTooltip",
+            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow",
+            inlay = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Inlay",
+            separator = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Separator"
         },
 
         minimap = {

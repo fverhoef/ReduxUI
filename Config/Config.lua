@@ -4,7 +4,6 @@ local R = _G.ReduxUI
 R.config = {}
 R.config.defaults = {
     profile = {
-        borders = {size = 5, texture = R.media.textures.borders.redux, color = {89 / 255, 89 / 255, 89 / 255, 1}},
         fonts = {
             damage = R.Libs.SharedMedia:Fetch("font", "Adventure"),
             normal = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),

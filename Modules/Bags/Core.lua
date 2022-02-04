@@ -97,7 +97,6 @@ end
 
 function B:PLAYERREAGENTBANKSLOTS_CHANGED(event)
     B:FindBag(REAGENTBANK_CONTAINER):Update()
-    B:FindBagSlot(REAGENTBANK_CONTAINER):Update()
 end
 
 function B:FindBag(bagID)

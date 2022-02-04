@@ -23,17 +23,11 @@ local function AddApi(object)
     if not object.CreateBackdrop then
         mt.CreateBackdrop = R.CreateBackdrop
     end
-    if not object.SetBackdropColor then
-        mt.SetBackdropColor = R.SetBackdropColor
-    end
-    if not object.SetBackdropBorderColor then
-        mt.SetBackdropBorderColor = R.SetBackdropBorderColor
-    end
     if not object.CreateShadow then
         mt.CreateShadow = R.CreateShadow
     end
-    if not object.SetShadowColor then
-        mt.SetShadowColor = R.SetShadowColor
+    if not object.CreateInlay then
+        mt.CreateInlay = R.CreateInlay
     end
     -- Fader
     if not object.FadeIn then

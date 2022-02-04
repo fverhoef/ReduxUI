@@ -1,17 +1,21 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+R.DEFAULT_BACKDROP_COLOR = {0.1, 0.1, 0.1, 0.8}
+R.DEFAULT_BORDER_COLOR = {1, 1, 1, 1}
+R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.7}
+
 function R:CreateBackdrop(backdropInfo, color, borderColor)
     if self.Backdrop then
         return
     end
 
-    color = color or {0.1, 0.1, 0.1, 0.8}
-    borderColor = color or {1, 1, 1, 1}
+    color = color or R.DEFAULT_BACKDROP_COLOR
+    borderColor = borderColor or R.DEFAULT_BORDER_COLOR
 
     local backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
-    backdrop:SetOutside(0, 0)
-    backdrop:SetFrameLevel(self:GetFrameLevel() - 1)
+    backdrop:SetOutside(self, 0, 0)
+    backdrop:SetFrameLevel(math.max(0, self:GetFrameLevel() - 1))
     backdrop:SetBackdrop(backdropInfo)
     backdrop:SetBackdropColor(unpack(color))
     backdrop:SetBackdropBorderColor(unpack(borderColor))
@@ -19,27 +23,13 @@ function R:CreateBackdrop(backdropInfo, color, borderColor)
     self.Backdrop = backdrop
 end
 
-function R:SetBackdropColor(r, g, b, a)
-    if not self.Backdrop then
-        return
-    end
-    self.Backdrop:SetBackdropColor(r or 0.1, g or 0.1, b or 0.1, a or 0.8)
-end
-
-function R:SetBackdropBorderColor(r, g, b, a)
-    if not self.Backdrop then
-        return
-    end
-    self.Backdrop:SetBackdropBorderColor(r or 1, g or 1, b or 1, a or 1)
-end
-
-function R:CreateShadow(size, pass, color)
-    if not pass and self.Shadow then
+function R:CreateShadow(size, color)
+    if self.Shadow then
         return
     end
 
     size = size or 5
-    color = color or {0, 0, 0, 0.7}
+    color = color or R.DEFAULT_SHADOW_COLOR
     if not color[4] then
         color[4] = 0.7
     end
@@ -55,16 +45,21 @@ function R:CreateShadow(size, pass, color)
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(unpack(color))
 
-    if not pass then
-        self.Shadow = shadow
-    end
-
-    return shadow
+    self.Shadow = shadow
 end
 
-function R:SetShadowColor(r, g, b, a)
-    if not self.Shadow then
+function R:CreateInlay(backdropInfo, color)
+    if self.Inlay then
         return
     end
-    self.Shadow:SetBackdropBorderColor(r or 0, g or 0, b or 0, a or 0.7)
+
+    color = color or {1, 1, 1, 0.7}
+
+    local inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
+    inlay:SetInside(self, 0, 0)
+    inlay:SetFrameLevel(self:GetFrameLevel())
+    inlay:SetBackdrop(backdropInfo)
+    inlay:SetBackdropBorderColor(unpack(color))
+
+    self.Inlay = inlay
 end
