@@ -23,7 +23,9 @@ function B:Initialize()
     B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
     B:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
     B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-    B:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+    if R.isRetail then
+        B:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+    end
 end
 
 function B:BAG_SLOT_FLAGS_UPDATED(event, slot)

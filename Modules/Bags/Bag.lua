@@ -10,7 +10,9 @@ local REAGENTBANK_SIZE = 98
 
 local BUTTON_TEMPLATES = {}
 BUTTON_TEMPLATES[BANK_CONTAINER] = "BankBagButtonTemplate"
-BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate"
+if R.isRetail then
+    BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate"
+end
 
 function Bag_OnLoad()
 end
