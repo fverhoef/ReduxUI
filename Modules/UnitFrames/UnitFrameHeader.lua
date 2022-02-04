@@ -40,7 +40,7 @@ function UnitFrameHeaderMixin:ForceShow()
     if self.Update then self:Update() end
 end
 
-function UnitFrameHeaderMixin:UnforceShowHeader()
+function UnitFrameHeaderMixin:UnforceShow()
     if not self or not self.isForced then return end
 
     self.isForced = nil

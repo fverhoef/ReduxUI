@@ -173,6 +173,17 @@ local DEFAULT_UNIT_CONFIG_NO_INDICATORS = R:CopyTable(DEFAULT_UNIT_CONFIG, {
     summonIndicator = {enabled = false}
 })
 
+local DEFAULT_GROUP_UNIT_CONFIG = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+    unitAnchorPoint = "TOP",
+    unitSpacing = 50,
+    sortMethod = "INDEX", -- NAME, INDEX
+    sortDir = "ASC", -- ASC, DESC
+    showPlayer = false,
+    showSolo = false,
+    showParty = true,
+    showRaid = false
+})
+
 R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -226,7 +237,6 @@ R:RegisterModuleConfig(UF, {
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
-        restingIndicator = {enabled = false},
         highlight = {target = false}
     }),
     targettarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
@@ -245,6 +255,32 @@ R:RegisterModuleConfig(UF, {
         power = {enabled = false},
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false}
+    }),
+    party = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
+        size = {180, 30},
+        point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450},
+        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
+        portrait = {point = "RIGHT"},
+        pvpIndicator = {enabled = false},
+        unitAnchorPoint = "BOTTOM"
+    }),
+    arena = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
+        size = {180, 30},
+        point = {"BOTTOMLEFT", "UIParent", "BOTTOM", 350, 450},
+        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
+        portrait = {point = "RIGHT"},
+        pvpIndicator = {enabled = false},
+        unitAnchorPoint = "BOTTOM"
+    }),
+    boss = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
+        size = {180, 30},
+        point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -100, -300},
+        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
+        portrait = {point = "RIGHT"},
+        pvpIndicator = {enabled = false}
     }),
     nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
         size = {150, 16},

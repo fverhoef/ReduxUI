@@ -77,8 +77,11 @@ oUF:RegisterMetaFunction("InitializeFrame", UF.InitializeFrame)
 function UF:ConfigureFrame()
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
-    self:ClearAllPoints()
-    self:Point(unpack(self.config.point))
+
+    if not self.isGroupUnit then
+        self:ClearAllPoints()
+        self:Point(unpack(self.config.point))
+    end
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 

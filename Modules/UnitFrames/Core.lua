@@ -17,7 +17,12 @@ function UF:Initialize()
     UF.frames.target = UF:SpawnTarget()
     UF.frames.targettarget = UF:SpawnTargetTarget()
     UF.frames.pet = UF:SpawnPet()
-   
+
+    UF.headers.party = UF:SpawnPartyHeader()
+    UF.headers.party:ForceShow()
+    UF.headers.arena = UF:SpawnArenaHeader()
+    if R.isRetail then UF.headers.boss = UF:SpawnBossHeader() end
+
     UF:SpawnNamePlates()
 
     UF:RegisterEvent("PLAYER_REGEN_DISABLED")

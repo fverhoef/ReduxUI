@@ -5,6 +5,7 @@
     <Script file="Tags.lua"/>
     <Script file="BuffFrame.lua"/>
     <Script file="UnitFrame.lua"/>
+    <Script file="UnitFrameGroup.lua"/>
     <Script file="UnitFrameHeader.lua"/>
     <Include file="Elements\Elements.xml"/>
     <Include file="Units\Units.xml"/>

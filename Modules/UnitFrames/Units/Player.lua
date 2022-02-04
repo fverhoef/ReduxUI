@@ -5,9 +5,9 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnPlayer()
     local config = UF.config.player
-    local default = UF.defaults.player
+    if not config.enabled then return end
 
-    if config.enabled then return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, default) end
+    return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, UF.defaults.player)
 end
 
 function UF:CreatePlayer()

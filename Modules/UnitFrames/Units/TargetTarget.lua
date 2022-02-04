@@ -5,9 +5,9 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnTargetTarget()
     local config = UF.config.targettarget
-    local default = UF.defaults.targettarget
+    if not config.enabled then return end
 
-    if config.enabled then return UF:SpawnFrame("TargetTarget", "targettarget", UF.CreateTargetTarget, config, default) end
+    return UF:SpawnFrame("TargetTarget", "targettarget", UF.CreateTargetTarget, config, UF.defaults.targettarget)
 end
 
 function UF:CreateTargetTarget()
