@@ -9,7 +9,7 @@ local DEFAULT_UNIT_CONFIG = {
     scale = 1,
     point = {"TOPRIGHT", "UIParent", "BOTTOM", -150, 350},
     fader = R.config.faders.onShow,
-    inlay = { enabled = true },
+    inlay = {enabled = true},
     health = {
         enabled = true,
         size = {150, 12},
@@ -83,7 +83,7 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "OUTLINE",
         fontShadow = true,
         justifyH = "LEFT",
-        tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"
+        tag = "[difficultycolor][level][shortclassification]|r [name:sub(20)]"
     },
     level = {
         enabled = false,
@@ -156,6 +156,23 @@ local DEFAULT_UNIT_CONFIG = {
     summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}}
 }
 
+local DEFAULT_UNIT_CONFIG_NO_INDICATORS = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+    assistantIndicator = {enabled = false},
+    combatIndicator = {enabled = false},
+    groupRoleIndicator = {enabled = false},
+    masterLooterIndicator = {enabled = false},
+    leaderIndicator = {enabled = false},
+    phaseIndicator = {enabled = false},
+    pvpIndicator = {enabled = false},
+    pvpClassificationIndicator = {enabled = false},
+    questIndicator = {enabled = false},
+    raidRoleIndicator = {enabled = false},
+    readyCheckIndicator = {enabled = false},
+    restingIndicator = {enabled = false},
+    resurrectIndicator = {enabled = false},
+    summonIndicator = {enabled = false}
+})
+
 R:RegisterModuleConfig(UF, {
     enabled = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
@@ -206,34 +223,37 @@ R:RegisterModuleConfig(UF, {
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
-        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT"},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
-        restingIndicator = {enabled = false}
+        restingIndicator = {enabled = false},
+        highlight = {target = false}
     }),
-    nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        size = {150, 16},
-        point = {"CENTER"},
-        --inlay = {enabled = false},
+    targettarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        size = {95, 24},
+        point = {"TOPLEFT", addonName .. "Target", "TOPRIGHT", 10, 0},
+        health = {value = {enabled = false}, percent = {enabled = false}},
+        power = {enabled = false},
+        name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false},
+        castbar = {enabled = false}
+    }),
+    pet = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        size = {120, 28},
+        point = {"TOPLEFT", addonName .. "Player", "BOTTOMLEFT", 5, 0},
         health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
         power = {enabled = false},
-        name = {size = {130, 10}, tag = "[name]"},
-        level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 0}},
+        name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false}
+    }),
+    nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        size = {150, 16},
+        point = {"CENTER"},
+        health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+        power = {enabled = false},
+        name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
+        level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
-        highlight = { targetArrows = true },
-        assistantIndicator = {enabled = false},
-        combatIndicator = {enabled = false},
-        groupRoleIndicator = {enabled = false},
-        masterLooterIndicator = {enabled = false},
-        leaderIndicator = {enabled = false},
-        phaseIndicator = {enabled = false},
-        pvpIndicator = {enabled = false},
-        pvpClassificationIndicator = {enabled = false},
-        questIndicator = {enabled = false},
-        raidRoleIndicator = {enabled = false},
-        readyCheckIndicator = {enabled = false},
-        restingIndicator = {enabled = false},
-        resurrectIndicator = {enabled = false},
-        summonIndicator = {enabled = false}
+        highlight = {targetArrows = true}
     })
 })

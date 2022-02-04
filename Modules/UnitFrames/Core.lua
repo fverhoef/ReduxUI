@@ -15,6 +15,8 @@ function UF:Initialize()
 
     UF.frames.player = UF:SpawnPlayer()
     UF.frames.target = UF:SpawnTarget()
+    UF.frames.targettarget = UF:SpawnTargetTarget()
+    UF.frames.pet = UF:SpawnPet()
    
     UF:SpawnNamePlates()
 
