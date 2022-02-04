@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAuraHighlight()
-    if not self.config.highlight.debuffs then
-        return
-    end
+    if not self.config.highlight.debuffs then return end
 
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
     self.AuraHighlight:SetParent(self.Overlay)
@@ -34,7 +32,7 @@ function UF:ConfigureAuraHighlight()
     elseif not self.AuraHighlight then
         self:CreateAuraHighlight()
     end
-    
+
     self:EnableElement("AuraHighlight")
 
     self.AuraHighlight:SetBlendMode(UF.config.colors.auraHighlight.blendMode)

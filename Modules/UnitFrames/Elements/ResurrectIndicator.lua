@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateResurrectIndicator()
-    if not self.config.resurrectIndicator.enabled then
-        return
-    end
-    
+    if not self.config.resurrectIndicator.enabled then return end
+
     self.ResurrectIndicator = self:CreateTexture(nil, "OVERLAY")
     self.ResurrectIndicator:SetParent(self.Overlay)
     self.ResurrectIndicator:SetSize(16, 16)

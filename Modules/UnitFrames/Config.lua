@@ -72,12 +72,7 @@ local DEFAULT_UNIT_CONFIG = {
         },
         smooth = true
     },
-    classPower = {
-        enabled = true,
-        size = {226, 12},
-        point = {"BOTTOM", "TOP", 0, 5},
-        smooth = true
-    },
+    classPower = {enabled = true, size = {226, 12}, point = {"BOTTOM", "TOP", 0, 5}, smooth = true},
     name = {
         enabled = true,
         size = {170, 10},
@@ -99,13 +94,7 @@ local DEFAULT_UNIT_CONFIG = {
         justifyH = "LEFT",
         tag = "[difficultycolor][level][shortclassification]|r"
     },
-    portrait = {
-        enabled = true,
-        point = "LEFT",
-        size = {32, 32},
-        class = true,
-        model = false
-    },
+    portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false},
     auras = {
         enabled = true,
         buffs = {
@@ -147,91 +136,22 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = {
-        enabled = true,
-        colorShadow = true,
-        colorBorder = true,
-        debuffs = true,
-        onlyDispellableDebuffs = false,
-        threat = true,
-        target = true,
-        targetClassColor = true
-    },
-    assistantIndicator = {
-        enabled = true,
-        size = {16, 16},
-        point = {"CENTER", "TOPLEFT", 0, 0}
-    },
-    combatIndicator = {
-        enabled = true,
-        size = {24, 24},
-        point = {"CENTER", "LEFT", 0, 0}
-    },
-    groupRoleIndicator = {
-        enabled = true,
-        size = {20, 20},
-        point = {"CENTER", "TOPRIGHT", 0, 0}
-    },
-    masterLooterIndicator = {
-        enabled = true,
-        size = {14, 14},
-        point = {"CENTER", "TOPLEFT", 16, 0}
-    },
-    leaderIndicator = {
-        enabled = true,
-        size = {14, 14},
-        point = {"CENTER", "TOPLEFT", 0, 0}
-    },
-    phaseIndicator = {
-        enabled = true,
-        size = {16, 16},
-        point = {"CENTER", "TOP", 0, 0}
-    },
-    pvpIndicator = {
-        enabled = false,
-        size = {24, 24},
-        point = {"CENTER", "LEFT", 0, 0}
-    },
-    pvpClassificationIndicator = {
-        enabled = true,
-        size = {24, 24},
-        point = {"CENTER", "LEFT", 0, 0}
-    },
-    questIndicator = {
-        enabled = true,
-        size = {32, 32},
-        point = {"CENTER", "LEFT", 0, 0}
-    },
-    raidRoleIndicator = {
-        enabled = true,
-        size = {14, 14},
-        point = {"CENTER", "TOPRIGHT", 0, 0}
-    },
-    readyCheckIndicator = {
-        enabled = true,
-        size = {24, 24},
-        point = {"CENTER", "RIGHT", 0, 0}
-    },
-    raidTargetIndicator = {
-        enabled = true,
-        size = {20, 20},
-        point = {"CENTER", "TOP", 0, 0}
-    },
-    restingIndicator = {
-        enabled = true,
-        size = {24, 24},
-        point = {"CENTER", "RIGHT", 0, 0}
-    },
-    resurrectIndicator = {
-        enabled = true,
-        size = {32, 32},
-        point = {"CENTER", "TOP", 0, 0}
-    },
-    summonIndicator = {
-        enabled = true,
-        size = {32, 32},
-        point = {"CENTER", "CENTER", 0, 0}
-    }
+    highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetClassColor = true},
+    assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
+    combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+    groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+    masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
+    leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
+    phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
+    pvpIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+    pvpClassificationIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+    questIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "LEFT", 0, 0}},
+    raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
+    readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+    raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
+    restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
+    resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "TOP", 0, 0}},
+    summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}}
 }
 
 local player = R:CopyTable(DEFAULT_UNIT_CONFIG)
@@ -260,8 +180,7 @@ R:RegisterModuleConfig(UF, {
         power = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         powerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         additionalPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar",
-                                                             "Redux"),
+        additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         classPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         castbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux")
     },
@@ -288,13 +207,7 @@ R:RegisterModuleConfig(UF, {
             ["WARLOCK"] = oUF.colors.class["WARLOCK"],
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
         },
-        auraHighlight = {
-            Magic = {0.2, 0.6, 1, 0.45},
-            Curse = {0.6, 0, 1, 0.45},
-            Disease = {0.6, 0.4, 0, 0.45},
-            Poison = {0, 0.6, 0, 0.45},
-            blendMode = "ADD"
-        },
+        auraHighlight = {Magic = {0.2, 0.6, 1, 0.45}, Curse = {0.6, 0, 1, 0.45}, Disease = {0.6, 0.4, 0, 0.45}, Poison = {0, 0.6, 0, 0.45}, blendMode = "ADD"},
         targetHighlight = {1, 1, 1, 1},
         colorHealthClass = true,
         colorHealthSmooth = false,

@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateQuestIndicator()
-    if not self.config.questIndicator.enabled then
-        return
-    end
+    if not self.config.questIndicator.enabled then return end
 
     self.QuestIndicator = self:CreateTexture("$parentQuestIcon", "OVERLAY")
     self.QuestIndicator:SetParent(self.Overlay)

@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePowerPrediction()
-    if not self.config.power.powerPrediction then
-        return
-    end
+    if not self.config.power.powerPrediction then return end
 
     local mainBar = CreateFrame("StatusBar", nil, self.Power)
     mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)

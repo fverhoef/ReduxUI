@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAdditionalPower()
-    if not self.config.additionalPower.enabled then
-        return
-    end
+    if not self.config.additionalPower.enabled then return end
 
     self.AdditionalPower = CreateFrame("StatusBar", "$parentPower", self, BackdropTemplateMixin and "BackdropTemplate")
     self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
@@ -15,10 +13,7 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
     self.AdditionalPower:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 10, -1)
     self.AdditionalPower:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -10, -1)
-    self.AdditionalPower:CreateBackdrop({
-        edgeFile = R.media.textures.edgeFiles.borderThickTooltip,
-        edgeSize = 8
-    })
+    self.AdditionalPower:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 8})
     self.AdditionalPower.Backdrop:SetOutside(self.AdditionalPower, 2, 2)
     self.AdditionalPower.Backdrop:SetFrameLevel(self.AdditionalPower:GetFrameLevel() + 1)
 
@@ -52,13 +47,10 @@ function UF:ConfigureAdditionalPower()
 
     if config.value.enabled then
         self.AdditionalPower.Value:Show()
-        self.AdditionalPower.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10,
-                                           config.value.fontOutline)
+        self.AdditionalPower.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, config.value.fontOutline)
         self.AdditionalPower.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
-        if config.value.tag then
-            self:Tag(self.AdditionalPower.Value, config.value.tag)
-        end
+        if config.value.tag then self:Tag(self.AdditionalPower.Value, config.value.tag) end
 
         self.AdditionalPower.Value:ClearAllPoints()
         self.AdditionalPower.Value:Point(unpack(config.value.point))

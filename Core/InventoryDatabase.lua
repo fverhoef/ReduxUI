@@ -21,9 +21,7 @@ function ID:Initialize()
     ID:RegisterEvent("BANKFRAME_OPENED", ID.Update)
     ID:RegisterEvent("BANKFRAME_CLOSED", ID.Update)
     ID:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", ID.Update)
-    if R.isRetail then
-        ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update)
-    end
+    if R.isRetail then ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update) end
     ID:Update()
 end
 
@@ -58,42 +56,29 @@ end
 
 function ID:GetCharacterKeys()
     local keys = {}
-    for key, _ in pairs(R.config.db.realm.inventory) do
-        keys[key] = key
-    end
+    for key, _ in pairs(R.config.db.realm.inventory) do keys[key] = key end
 
     return keys
 end
 
 function ID:ClearCharacterDatabase(name)
-    if name and R.config.db.realm.inventory[name] then
-        R.config.db.realm.inventory[name] = nil
-    end
+    if name and R.config.db.realm.inventory[name] then R.config.db.realm.inventory[name] = nil end
 end
 
 function ID:GetItemCount(itemId)
-    local chars = {}    
+    local chars = {}
     for i, char in next, R.config.db.realm.inventory do
         local bagCount = char.bags and char.bags[itemId] or 0
         local bankCount = char.bank and char.bank[itemId] or 0
         local equippedCount = char.equipped and char.equipped[itemId] or 0
-        if bagCount > 0 or bankCount > 0 or equippedCount > 0 then
-            chars[i] = {
-                class = char.class,
-                bag = bagCount,
-                bank = bankCount,
-                equipped = equippedCount
-            }
-        end
+        if bagCount > 0 or bankCount > 0 or equippedCount > 0 then chars[i] = {class = char.class, bag = bagCount, bank = bankCount, equipped = equippedCount} end
     end
 
     return chars
 end
 
 function ID:UpdateItemCount(itemId, db)
-    if not itemId then
-        return
-    end
+    if not itemId then return end
     db = db or ID:GetCharacterDatabase()
 
     local equippedCount = db.equipped["" .. itemId] or 0
@@ -110,9 +95,7 @@ function ID:StoreEquippedItems(db)
         local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
         if link then
             local itemId = R:GetItemIdFromLink(link)
-            if itemId then
-                db.equipped["" .. itemId] = 1
-            end
+            if itemId then db.equipped["" .. itemId] = 1 end
         end
     end
 end

@@ -156,11 +156,7 @@ R:RegisterModuleOptions(TT, {
                     dialogControl = "LSM30_Font",
                     values = R.Libs.SharedMedia:HashTable("font"),
                     get = function()
-                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                            if TT.config.fontFamily == font then
-                                return key
-                            end
-                        end
+                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if TT.config.fontFamily == font then return key end end
                     end,
                     set = function(_, key)
                         TT.config.fontFamily = R.Libs.SharedMedia:Fetch("font", key)
@@ -293,7 +289,7 @@ R:RegisterModuleOptions(TT, {
                         TT.config.offsetY = val
                         TT:UpdateAll()
                     end
-                },
+                }
             }
         }
     }

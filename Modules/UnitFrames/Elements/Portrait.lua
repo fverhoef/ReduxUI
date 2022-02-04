@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    if not self.config.portrait.enabled then
-        return
-    end
+    if not self.config.portrait.enabled then return end
 
     self.Portrait2D = self:CreateTexture("$parentPortrait", "BACKGROUND")
     self.Portrait2D.PostUpdate = function()
@@ -60,14 +58,10 @@ end
 oUF:RegisterMetaFunction("ConfigurePortrait", UF.ConfigurePortrait)
 
 function UF:UpdatePortraitTexture()
-    if not self.Portrait then
-        return
-    end
+    if not self.Portrait then return end
 
     local config = self.config.portrait
-    if not config.enabled or config.model then
-        return
-    end
+    if not config.enabled or config.model then return end
 
     self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
 

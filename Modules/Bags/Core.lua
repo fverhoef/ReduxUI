@@ -6,9 +6,7 @@ local BANK_CONTAINER = _G.BANK_CONTAINER
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 
 function B:Initialize()
-    if not B.config.enabled then
-        return
-    end
+    if not B.config.enabled then return end
 
     B.Inventory = ReduxUI_InventoryFrame
     B.Bank = ReduxUI_BankFrame
@@ -23,17 +21,13 @@ function B:Initialize()
     B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
     B:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
     B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-    if R.isRetail then
-        B:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
-    end
+    if R.isRetail then B:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED") end
 end
 
 function B:BAG_SLOT_FLAGS_UPDATED(event, slot)
     -- TODO: only update one slot
     B.Inventory:Update()
-    if B.Bank:IsShown() then
-        B.Bank:Update()
-    end
+    if B.Bank:IsShown() then B.Bank:Update() end
 end
 
 function B:BAG_UPDATE(event, bagID)
@@ -43,37 +37,27 @@ end
 
 function B:BAG_UPDATE_COOLDOWN(event)
     B.Inventory:Update()
-    if B.Bank:IsShown() then
-        B.Bank:Update()
-    end
+    if B.Bank:IsShown() then B.Bank:Update() end
 end
 
 function B:BAG_NEW_ITEMS_UPDATED(event)
     B.Inventory:Update()
-    if B.Bank:IsShown() then
-        B.Bank:Update()
-    end
+    if B.Bank:IsShown() then B.Bank:Update() end
 end
 
 function B:ITEM_LOCK_CHANGED(event, bagID, slotIndex)
     local button = B:FindBagButton(bagID, slotIndex)
-    if button then
-        button:UpdateContainerButtonLockedState(bagID, slotIndex)        
-    end
+    if button then button:UpdateContainerButtonLockedState(bagID, slotIndex) end
 end
 
 function B:QUEST_ACCEPTED(event)
     B.Inventory:Update()
-    if B.Bank:IsShown() then
-        B.Bank:Update()
-    end
+    if B.Bank:IsShown() then B.Bank:Update() end
 end
 
 function B:QUEST_REMOVED(event)
     B.Inventory:Update()
-    if B.Bank:IsShown() then
-        B.Bank:Update()
-    end
+    if B.Bank:IsShown() then B.Bank:Update() end
 end
 
 function B:BANKFRAME_OPENED(event)
@@ -111,7 +95,5 @@ end
 
 function B:FindBagButton(bagID, slotIndex)
     local bag = B:FindBag(bagID)
-    if bag then
-        return bag.Buttons[slotIndex]
-    end
+    if bag then return bag.Buttons[slotIndex] end
 end

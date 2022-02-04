@@ -5,9 +5,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAuras()
-    if not self.config.auras.enabled then
-        return
-    end
+    if not self.config.auras.enabled then return end
 
     self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
     self.Buffs.config = self.config.auras.buffs
@@ -68,9 +66,7 @@ end
 oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:StyleAuraButton(button)
-    end
+    if R.Modules.ButtonStyles then R.Modules.ButtonStyles:StyleAuraButton(button) end
 end
 
 function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
@@ -79,20 +75,14 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
         local durationNew, expirationTimeNew
         name, _, _, _, duration, expiration, caster, _, _, spellID = R.Libs.ClassicDurations:UnitAura(unit, index, button.filter)
 
-        if spellID then
-            durationNew, expirationTimeNew = R.Libs.ClassicDurations:GetAuraDurationByUnit(unit, spellID, caster, name)
-        end
+        if spellID then durationNew, expirationTimeNew = R.Libs.ClassicDurations:GetAuraDurationByUnit(unit, spellID, caster, name) end
 
-        if durationNew and durationNew > 0 then
-            duration, expiration = durationNew, expirationTimeNew
-        end
+        if durationNew and durationNew > 0 then duration, expiration = durationNew, expirationTimeNew end
     else
         name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
     end
 
-    if button and button.debuffType ~= debuffType then
-        button.debuffType = debuffType
-    end
+    if button and button.debuffType ~= debuffType then button.debuffType = debuffType end
 
     if button and button.cd then
         if (duration and duration > 0) then
@@ -106,7 +96,5 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
         button.cd:SetHideCountdownNumbers(hideDuration)
     end
 
-    if R.Modules.ButtonStyles then
-        R.Modules.ButtonStyles:UpdateAuraButton(button)
-    end
+    if R.Modules.ButtonStyles then R.Modules.ButtonStyles:UpdateAuraButton(button) end
 end

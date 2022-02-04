@@ -2,10 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.media = {
-    fonts = {
-        adventure = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\Adventure.ttf",
-        expresswayFree = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"
-    },
+    fonts = {adventure = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\Adventure.ttf", expresswayFree = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"},
     textures = {
         blank = [[Interface\Buttons\WHITE8X8]],
 
@@ -46,10 +43,7 @@ R.media = {
             performanceBar = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\PerformanceBar"
         },
 
-        backdrops = {
-            blank = [[Interface\Buttons\WHITE8X8]],
-            button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"
-        },
+        backdrops = {blank = [[Interface\Buttons\WHITE8X8]], button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"},
 
         edgeFiles = {
             borderThick = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThick",

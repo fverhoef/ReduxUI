@@ -5,9 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:CreateName()
     local config = self.config.name
-    if not config or not config.enabled then
-        return
-    end
+    if not config or not config.enabled then return end
 
     self.Name = self:CreateFontString("$parentName", "OVERLAY")
     self.Name:SetParent(self.Overlay)

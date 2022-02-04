@@ -9,10 +9,8 @@ function UF:SpawnHeader(name, func, config, defaultConfig, registerStyle, index,
         oUF:SetActiveStyle(addonName .. name)
     end
 
-    local header = oUF:SpawnHeader(addonName .. name .. "Header" .. (index or ""), nil, config.visibility, "showPlayer",
-                                   config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty, "showRaid",
-                                   config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index and tostring(index),
-                                   "oUF-initialConfigFunction", ([[
+    local header = oUF:SpawnHeader(addonName .. name .. "Header" .. (index or ""), nil, config.visibility, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty", config.showParty,
+                                   "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index and tostring(index), "oUF-initialConfigFunction", ([[
             self:SetWidth(%d)
             self:SetHeight(%d)
             self:GetParent():SetScale(%f)
@@ -28,9 +26,7 @@ end
 UnitFrameHeaderMixin = {}
 
 function UnitFrameHeaderMixin:ForceShow()
-    if not self or self.isForced then
-        return
-    end
+    if not self or self.isForced then return end
 
     self.isForced = true
     self.forceShow = true
@@ -41,15 +37,11 @@ function UnitFrameHeaderMixin:ForceShow()
         self:ForceShow(child)
     end
 
-    if self.Update then
-        self:Update()
-    end
+    if self.Update then self:Update() end
 end
 
 function UnitFrameHeaderMixin:UnforceShowHeader()
-    if not self or not self.isForced then
-        return
-    end
+    if not self or not self.isForced then return end
 
     self.isForced = nil
     self.forceShow = nil
@@ -60,7 +52,5 @@ function UnitFrameHeaderMixin:UnforceShowHeader()
         child:UnforceShow()
     end
 
-    if self.Update then
-        self:Update()
-    end
+    if self.Update then self:Update() end
 end

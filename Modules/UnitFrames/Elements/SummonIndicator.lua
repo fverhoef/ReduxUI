@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateSummonIndicator()
-    if not self.config.summonIndicator.enabled then
-        return
-    end
-    
+    if not self.config.summonIndicator.enabled then return end
+
     self.SummonIndicator = self:CreateTexture(nil, "OVERLAY")
     self.SummonIndicator:SetParent(self.Overlay)
     self.SummonIndicator:SetSize(16, 16)

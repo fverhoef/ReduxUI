@@ -31,9 +31,7 @@ function R:SetupOptions()
     R.config.dialog = R.Libs.AceConfigDialog:AddToBlizOptions(R.name, R.title)
     R.config.dialog:HookScript("OnShow", function()
         local p = FindPanel(R.name)
-        if p and p.element.collapsed then
-            OptionsListButtonToggle_OnClick(p.toggle)
-        end
+        if p and p.element.collapsed then OptionsListButtonToggle_OnClick(p.toggle) end
     end)
 
     AddLogo(R.config.dialog)
@@ -94,11 +92,7 @@ R.config.options = {
                             dialogControl = "LSM30_Font",
                             values = R.Libs.SharedMedia:HashTable("font"),
                             get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                                    if R.config.db.profile.fonts.normal == font then
-                                        return key
-                                    end
-                                end
+                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.normal == font then return key end end
                             end,
                             set = function(_, key)
                                 R.config.db.profile.fonts.normal = R.Libs.SharedMedia:Fetch("font", key)
@@ -112,11 +106,7 @@ R.config.options = {
                             dialogControl = "LSM30_Font",
                             values = R.Libs.SharedMedia:HashTable("font"),
                             get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                                    if R.config.db.profile.fonts.number == font then
-                                        return key
-                                    end
-                                end
+                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.number == font then return key end end
                             end,
                             set = function(_, key)
                                 R.config.db.profile.fonts.number = R.Libs.SharedMedia:Fetch("font", key)
@@ -131,11 +121,7 @@ R.config.options = {
                             dialogControl = "LSM30_Font",
                             values = R.Libs.SharedMedia:HashTable("font"),
                             get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                                    if R.config.db.profile.fonts.damage == font then
-                                        return key
-                                    end
-                                end
+                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.damage == font then return key end end
                             end,
                             set = function(_, key)
                                 R.config.db.profile.fonts.damage = R.Libs.SharedMedia:Fetch("font", key)
@@ -150,11 +136,7 @@ R.config.options = {
                             dialogControl = "LSM30_Font",
                             values = R.Libs.SharedMedia:HashTable("font"),
                             get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                                    if R.config.db.profile.fonts.unitName == font then
-                                        return key
-                                    end
-                                end
+                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.unitName == font then return key end end
                             end,
                             set = function(_, key)
                                 R.config.db.profile.fonts.unitName = R.Libs.SharedMedia:Fetch("font", key)
@@ -168,11 +150,7 @@ R.config.options = {
                             dialogControl = "LSM30_Font",
                             values = R.Libs.SharedMedia:HashTable("font"),
                             get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                                    if R.config.db.profile.fonts.chatBubble == font then
-                                        return key
-                                    end
-                                end
+                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.chatBubble == font then return key end end
                             end,
                             set = function(_, key)
                                 R.config.db.profile.fonts.chatBubble = R.Libs.SharedMedia:Fetch("font", key)

@@ -7,9 +7,7 @@ UF.Frames = {}
 UF.Headers = {}
 
 function UF:Initialize()
-    if not UF.config.enabled then
-        return
-    end
+    if not UF.config.enabled then return end
 
     UF:UpdateColors()
     UF:StyleBuffFrame()
@@ -21,9 +19,7 @@ function UF:Initialize()
 end
 
 oUF:RegisterInitCallback(function(object)
-    if object.Update then
-        object:Update()
-    end
+    if object.Update then object:Update() end
 end)
 
 function UF:UpdateColors()
@@ -45,9 +41,5 @@ function UF:UpdateColors()
 end
 
 function UF:PLAYER_REGEN_DISABLED()
-    for _, header in pairs(UF.Headers) do
-        if header and header.UnforceShow then
-            header:UnforceShow()
-        end
-    end
+    for _, header in pairs(UF.Headers) do if header and header.UnforceShow then header:UnforceShow() end end
 end

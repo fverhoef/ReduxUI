@@ -15,9 +15,7 @@ R.isRetail = build > 40000
 
 R.Libs = {}
 function R:AddLib(name, major, minor)
-    if not name then
-        return
-    end
+    if not name then return end
 
     R.Libs[name] = _G.LibStub(major, minor)
 end
@@ -42,15 +40,11 @@ if R.isClassic then
     R.Libs.ClassicDurations:Register(addonName)
 end
 
-if R.isClassic or R.isTbc then
-    R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0")
-end
+if R.isClassic or R.isTbc then R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0") end
 
 R.Modules = {}
 function R:AddModule(name)
-    if not name then
-        return
-    end
+    if not name then return end
 
     local module = R.Modules[name]
     if not module then
@@ -95,9 +89,7 @@ function R:OnInitialize()
             command.func(funcArgs and strsplit(" ", funcArgs))
         else
             R:Print("Command list:")
-            for key, value in pairs(R.ChatCommands) do
-                R:Print("/" .. R.shortcut .. " " .. key .. "|r: " .. value.description)
-            end
+            for key, value in pairs(R.ChatCommands) do R:Print("/" .. R.shortcut .. " " .. key .. "|r: " .. value.description) end
         end
     end)
 

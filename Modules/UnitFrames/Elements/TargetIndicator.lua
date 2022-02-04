@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateTargetIndicator()
-    if not self.config.highlight.target and not self.config.highlight.targetArrows then
-        return
-    end
+    if not self.config.highlight.target and not self.config.highlight.targetArrows then return end
 
     self.TargetIndicator = CreateFrame("Frame", self:GetName() .. "TargetIndicator", self)
     self.TargetIndicator:SetFrameLevel(self:GetFrameLevel() - 1)

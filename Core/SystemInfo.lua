@@ -19,9 +19,7 @@ R.SystemInfo = SI
 
 function SI:RebuildAddonList()
     local addOnCount = GetNumAddOns()
-    if (addOnCount == #SI.memoryTable) then
-        return
-    end
+    if (addOnCount == #SI.memoryTable) then return end
 
     -- Number of loaded addons changed, create new memoryTable for all addons
     wipe(SI.memoryTable)
@@ -33,9 +31,7 @@ function SI:RebuildAddonList()
 end
 
 SI.SortByMemoryOrCPU = function(a, b)
-    if a and b then
-        return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
-    end
+    if a and b then return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3] end
 end
 
 function SI:UpdateMemory()
@@ -78,11 +74,9 @@ function SI:Update(fullUpdate)
     SI.homePing = homePing
     SI.worldPing = worldPing
 
-    if not fullUpdate then
-        return
-    end
+    if not fullUpdate then return end
 
-    SI.time = GetTime() 
+    SI.time = GetTime()
     SI.elapsed = SI.time - SI.lastUpdate
     SI.lastUpdate = SI.time
 
@@ -90,9 +84,7 @@ function SI:Update(fullUpdate)
 
     local cpuProfiling = GetCVar("scriptProfile") == "1"
     local totalCPU = 0
-    if cpuProfiling then
-        totalCPU = SI:UpdateCPU()
-    end
+    if cpuProfiling then totalCPU = SI:UpdateCPU() end
     local totalMemory = SI:UpdateMemory()
     local bandwidth = GetAvailableBandwidth()
     local framerate = floor(GetFramerate())
@@ -122,22 +114,14 @@ end
 function SI:CurrentCPUUsage(addon)
     for i = 1, #SI.cpuTable do
         local ele = SI.cpuTable[i]
-        if ele and IsAddOnLoaded(ele[1]) then
-            if ele[2] == addon then
-                return ele[3]
-            end
-        end
+        if ele and IsAddOnLoaded(ele[1]) then if ele[2] == addon then return ele[3] end end
     end
 end
 
 function SI:CurrentMemoryUsage(addon)
     for i = 1, #SI.memoryTable do
         local ele = SI.memoryTable[i]
-        if ele and IsAddOnLoaded(ele[1]) then
-            if ele[2] == addon then
-                return ele[3]
-            end
-        end
+        if ele and IsAddOnLoaded(ele[1]) then if ele[2] == addon then return ele[3] end end
     end
 end
 

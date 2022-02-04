@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRestingIndicator()
-    if not self.config.restingIndicator.enabled then
-        return
-    end
+    if not self.config.restingIndicator.enabled then return end
 
     self.RestingIndicator = self:CreateTexture("$parentRestingIcon", "OVERLAY")
     self.RestingIndicator:SetParent(self.Overlay)

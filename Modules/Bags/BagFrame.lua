@@ -45,12 +45,8 @@ function BagFrameMixin:Update()
     local config = self.isBank and B.config.bank or B.config.inventory
     local column = 1
     local row = 1
-    for _, bag in ipairs(self.Bags) do
-        row, column = bag:Layout(config, row, column)
-    end
-    for _, bagSlot in ipairs(self.BagSlots) do
-        bagSlot:Update()
-    end
+    for _, bag in ipairs(self.Bags) do row, column = bag:Layout(config, row, column) end
+    for _, bagSlot in ipairs(self.BagSlots) do bagSlot:Update() end
 
     local width = math.max(0, config.columns * config.slotSize + 20)
     local height = math.max(self.isBank and 500 or 300, config.slotSize * row + 94)
@@ -84,7 +80,7 @@ function BagFrameMixin:SetItemSearch(query)
         method = R.Libs.ItemSearch.TooltipPhrase
         query = R.Libs.ItemSearch.Filters.tipPhrases.keywords[query]
     end
-    
+
     for _, bag in ipairs(self.Bags) do
         local bagID = bag:GetID()
         local slots = GetContainerNumSlots(bagID)

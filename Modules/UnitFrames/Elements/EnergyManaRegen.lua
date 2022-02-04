@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateEnergyManaRegen()
-    if not self.config.power.energyManaRegen then
-        return
-    end
+    if not self.config.power.energyManaRegen then return end
 
     self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
     self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
@@ -26,7 +24,7 @@ function UF:ConfigureEnergyManaRegen()
     elseif not self.EnergyManaRegen then
         self:CreateEnergyManaRegen()
     end
-    
+
     self:EnableElement("EnergyManaRegen")
 end
 

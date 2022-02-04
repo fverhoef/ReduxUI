@@ -10,14 +10,11 @@ function BagSlot_OnLoad(self)
     self:RegisterForDrag("LeftButton")
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
-    if not R.isRetail then
-    end
+    if not R.isRetail then end
 end
 
 function BagSlot_OnDragStart(self)
-    if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then
-        PickupBagFromSlot(self.slotID)
-    end
+    if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then PickupBagFromSlot(self.slotID) end
 end
 
 function BagSlot_OnReceiveDrag(self)
@@ -108,7 +105,7 @@ function BagSlotMixin:Initialize(frame, bagID)
     elseif self.isBank then
         self:SetID(bagID)
         self.slotID = ContainerIDToInventoryID(bagID)
-    else    
+    else
         self:SetID(GetInventorySlotInfo(string.format("BAG%dSLOT", bagID - 1)))
         self.slotID = ContainerIDToInventoryID(bagID)
     end
@@ -117,14 +114,10 @@ end
 function BagSlotMixin:Update()
     if self.bagID ~= KEYRING_CONTAINER then
         self.freeSlots = GetContainerNumFreeSlots(self.bagID)
-        if self.SlotCount and self.freeSlots ~= nil then
-            self.SlotCount:SetText(format("(%d)", self.freeSlots))
-        end
+        if self.SlotCount and self.freeSlots ~= nil then self.SlotCount:SetText(format("(%d)", self.freeSlots)) end
     end
 
-    if self.bagID == BACKPACK_CONTAINER or self.bagID == BANK_CONTAINER or self.bagID == KEYRING_CONTAINER then
-        return
-    end
+    if self.bagID == BACKPACK_CONTAINER or self.bagID == BANK_CONTAINER or self.bagID == KEYRING_CONTAINER then return end
 
     local numBankSlots, bankFull = GetNumBankSlots()
     local buyBankSlot = numBankSlots + ITEM_INVENTORY_BANK_BAG_OFFSET + 1

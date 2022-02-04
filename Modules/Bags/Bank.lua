@@ -5,17 +5,15 @@ local B = R.Modules.Bags
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local REAGENTBANK_SIZE = 98
 
-function ReduxUI_BankFrame_OnLoad(self)    
+function ReduxUI_BankFrame_OnLoad(self)
     self.isBank = true
     self.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
-    if R.isRetail then
-        table.insert(self.BagIDs, 11)
-    end
+    if R.isRetail then table.insert(self.BagIDs, 11) end
 
     BagFrame_OnLoad(self)
 
     self.Title:SetText(BANK)
-    
+
     if R.isRetail then
         local bag = CreateFrame("Frame", addonName .. "ReagentBag", self, "BagTemplate")
         bag:Initialize(REAGENTBANK_CONTAINER)
@@ -23,7 +21,7 @@ function ReduxUI_BankFrame_OnLoad(self)
         self.Bags[#self.Bags] = bag
         self.BagsById[REAGENTBANK_CONTAINER] = bag
 
-        self.Tabs = { self.BankTab, self.ReagentsTab }
+        self.Tabs = {self.BankTab, self.ReagentsTab}
         PanelTemplates_SetNumTabs(self, #self.Tabs)
         PanelTemplates_SetTab(self, 1)
     else
@@ -48,12 +46,8 @@ function ReduxUI_BankFrame_TabOnClick(tab)
     local frame = tab:GetParent()
     local tabID = tab:GetID()
     PanelTemplates_SetTab(frame, tabID)
-    for _, bag in ipairs(frame.Bags) do
-        bag.Hidden = (tabID == 1 and bag:GetID() == REAGENTBANK_CONTAINER) or (tabID == 2 and bag:GetID() ~= REAGENTBANK_CONTAINER)
-    end
-    for _, bagSlot in ipairs(frame.BagSlots) do
-        bagSlot:SetShown(tabID == 1)
-    end
+    for _, bag in ipairs(frame.Bags) do bag.Hidden = (tabID == 1 and bag:GetID() == REAGENTBANK_CONTAINER) or (tabID == 2 and bag:GetID() ~= REAGENTBANK_CONTAINER) end
+    for _, bagSlot in ipairs(frame.BagSlots) do bagSlot:SetShown(tabID == 1) end
     frame.Title:SetText(tabID == 1 and BANK or REAGENT_BANK)
     frame.DespositButton:SetShown(tabID == 2)
     frame:Update()

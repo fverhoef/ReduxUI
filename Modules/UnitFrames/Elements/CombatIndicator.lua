@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateCombatIndicator()
-    if not self.config.combatIndicator.enabled then
-        return
-    end
+    if not self.config.combatIndicator.enabled then return end
 
     self.CombatIndicator = self:CreateTexture("$parentCombatIcon", "OVERLAY")
     self.CombatIndicator:SetParent(self.Overlay)

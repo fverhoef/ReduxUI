@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRaidTargetIndicator()
-    if not self.config.raidTargetIndicator.enabled then
-        return
-    end
+    if not self.config.raidTargetIndicator.enabled then return end
 
     self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "OVERLAY", nil, 7)
     self.RaidTargetIndicator:SetParent(self.Overlay)

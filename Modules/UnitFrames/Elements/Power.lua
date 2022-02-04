@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePower()
-    if not self.config.power.enabled then
-        return
-    end
+    if not self.config.power.enabled then return end
 
     self.Power = CreateFrame("StatusBar", "$parentPower", self, BackdropTemplateMixin and "BackdropTemplate")
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
@@ -23,7 +21,7 @@ function UF:CreatePower()
 
     self.Power.Overlay = CreateFrame("Frame", "$parentOverlay", self.Power)
     self.Power.Overlay:SetAllPoints(self.Power)
-    
+
     self.Power.Value = self.Power.Overlay:CreateFontString("$parentPowerText", "OVERLAY", nil, 7)
     self.Power.Value:SetParent(self.Power.Overlay)
     self.Power.Value:SetFont(UF.config.font, 10)
@@ -45,8 +43,8 @@ function UF:ConfigurePower()
     self:EnableElement("Power")
 
     self.Power:SetSize(unpack(config.size))
-    local bottomLeftOffset = { 0, 0 }
-    local bottomRightOffset = { 0, 0 }
+    local bottomLeftOffset = {0, 0}
+    local bottomRightOffset = {0, 0}
     if self.config.portrait.enabled then
         if self.config.portrait.point == "LEFT" then
             bottomLeftOffset[1] = self.config.portrait.size[1]

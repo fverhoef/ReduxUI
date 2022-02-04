@@ -10,9 +10,7 @@ local REAGENTBANK_SIZE = 98
 
 local BUTTON_TEMPLATES = {}
 BUTTON_TEMPLATES[BANK_CONTAINER] = "BankBagButtonTemplate"
-if R.isRetail then
-    BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate"
-end
+if R.isRetail then BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate" end
 
 function Bag_OnLoad()
 end
@@ -20,7 +18,7 @@ end
 BagMixin = {}
 
 function BagMixin:Initialize(bagID)
-    self:SetID(bagID)    
+    self:SetID(bagID)
     self.Buttons = {}
     self.Hidden = bagID == KEYRING_CONTAINER
 
@@ -33,9 +31,7 @@ function BagMixin:Initialize(bagID)
 end
 
 function BagMixin:Update()
-    for _, button in ipairs(self.Buttons) do
-        button:Update()
-    end
+    for _, button in ipairs(self.Buttons) do button:Update() end
 end
 
 function BagMixin:Layout(config, row, column)

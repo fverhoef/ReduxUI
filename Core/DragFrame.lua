@@ -3,9 +3,7 @@ local R = _G.ReduxUI
 R.dragFrames = {}
 
 function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, point)
-    if not frame then
-        return
-    end
+    if not frame then return end
 
     table.insert(R.dragFrames, frame)
 
@@ -65,17 +63,11 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, poin
 end
 
 function R:DragFrame_OnDragStart(button)
-    if self.isLocked then
-        return
-    end
+    if self.isLocked then return end
 
     if IsShiftKeyDown() then
-        if button == "LeftButton" then
-            self.frame:StartMoving()
-        end
-        if button == "RightButton" then
-            self.frame:StartSizing()
-        end
+        if button == "LeftButton" then self.frame:StartMoving() end
+        if button == "RightButton" then self.frame:StartSizing() end
     end
 end
 
@@ -95,9 +87,7 @@ function R:DragFrame_OnEnter()
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
     GameTooltip:AddLine(self.displayName, 0, 1, 0.5, 1, 1, 1)
     GameTooltip:AddLine("Hold SHIFT+LeftButton to drag!", 1, 1, 1, 1, 1, 1)
-    if self.frame.__resizable then
-        GameTooltip:AddLine("Hold SHIFT+RightButton to resize!", 1, 1, 1, 1, 1, 1)
-    end
+    if self.frame.__resizable then GameTooltip:AddLine("Hold SHIFT+RightButton to resize!", 1, 1, 1, 1, 1, 1) end
     GameTooltip:Show()
 end
 
@@ -106,9 +96,7 @@ function R:DragFrame_OnLeave()
 end
 
 function R:DragFrame_OnShow()
-    if self.frame.faderConfig then
-        self.frame:FadeIn()
-    end
+    if self.frame.faderConfig then self.frame:FadeIn() end
 end
 
 function R:DragFrame_OnHide()
@@ -118,68 +106,48 @@ function R:DragFrame_OnHide()
 end
 
 function R:HideDragFrame(frame)
-    if not frame or not frame.DragFrame then
-        return
-    end
+    if not frame or not frame.DragFrame then return end
 
-    if frame.frameVisibility then
-        RegisterStateDriver(frame, "visibility", frame.frameVisibility)
-    end
+    if frame.frameVisibility then RegisterStateDriver(frame, "visibility", frame.frameVisibility) end
     frame.DragFrame:Hide()
 end
 
 function R:ShowDragFrame(frame)
-    if not frame or not frame.DragFrame or frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked then
-        return
-    end
+    if not frame or not frame.DragFrame or frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked then return end
 
-    if frame.frameVisibility then
-        RegisterStateDriver(frame, "visibility", "show")
-    end
+    if frame.frameVisibility then RegisterStateDriver(frame, "visibility", "show") end
     frame.DragFrame:Show()
 end
 
 function R:HideDragFrames()
-    for idx, frame in next, R.dragFrames do
-        R:HideDragFrame(frame)
-    end
+    for idx, frame in next, R.dragFrames do R:HideDragFrame(frame) end
     R:Print("Frames locked.")
     R.framesLocked = true
 end
 
 function R:ShowDragFrames()
-    for idx, frame in next, R.dragFrames do
-        R:ShowDragFrame(frame)
-    end
+    for idx, frame in next, R.dragFrames do R:ShowDragFrame(frame) end
     R:Print("Frames unlocked.")
     R.framesLocked = false
 end
 
 function R:LockDragFrame(frame, hideWhenLocked)
-    if not frame or not frame.DragFrame then
-        return
-    end
+    if not frame or not frame.DragFrame then return end
 
     frame.DragFrame.isLocked = true
     frame.DragFrame.hideWhenLocked = hideWhenLocked
     frame.DragFrame.texture:SetVertexColor(1, 0, 0)
 
-    if not R.framesLocked then
-        R:HideDragFrame(frame)
-    end
+    if not R.framesLocked then R:HideDragFrame(frame) end
 end
 
 function R:UnlockDragFrame(frame)
-    if not frame or not frame.DragFrame then
-        return
-    end
+    if not frame or not frame.DragFrame then return end
 
     frame.DragFrame.isLocked = false
     frame.DragFrame.texture:SetVertexColor(0, 1, 0)
 
-    if not R.framesLocked then
-        R:ShowDragFrame(frame)
-    end
+    if not R.framesLocked then R:ShowDragFrame(frame) end
 end
 
 function R:ResetFrames()
@@ -191,30 +159,20 @@ function R:ResetFrames()
         R:ResetPoint(frame)
         R:ResetSize(frame)
 
-        if frame.Update then
-            frame:Update()
-        end
+        if frame.Update then frame:Update() end
     end
     R:Print("Frame positions and sizes have been reset.")
 end
 
 function R:ResetSize(frame)
-    if not frame or not frame.defaultSize or InCombatLockdown() then
-        return
-    end
+    if not frame or not frame.defaultSize or InCombatLockdown() then return end
     frame:SetSize(unpack(frame.defaultSize))
-    if frame.config then
-        frame.config.size = frame.defaultSize
-    end
+    if frame.config then frame.config.size = frame.defaultSize end
 end
 
 function R:ResetPoint(frame)
-    if not frame or not frame.defaultPoint or InCombatLockdown() then
-        return
-    end
+    if not frame or not frame.defaultPoint or InCombatLockdown() then return end
     frame:ClearAllPoints()
     frame:SetPoint(unpack(frame.defaultPoint))
-    if frame.config then
-        frame.config.point = frame.defaultPoint
-    end
+    if frame.config then frame.config.point = frame.defaultPoint end
 end

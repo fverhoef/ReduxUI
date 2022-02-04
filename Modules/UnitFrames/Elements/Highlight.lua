@@ -9,9 +9,7 @@ end
 oUF:RegisterMetaFunction("CreateHighlight", UF.CreateHighlight)
 
 function UF:UpdateHighlight()
-    if not self or (not self.Backdrop and not self.Shadow) then
-        return
-    end
+    if not self or (not self.Backdrop and not self.Shadow) then return end
 
     local config = self.config.highlight
 

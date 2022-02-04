@@ -4,23 +4,19 @@ local B = R.Modules.Bags
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
-function ReduxUI_InventoryFrame_OnLoad(self)    
+function ReduxUI_InventoryFrame_OnLoad(self)
     self.BagIDs = {0, 1, 2, 3, 4}
-    if not R.isRetail then
-        table.insert(self.BagIDs, KEYRING_CONTAINER)
-    end
+    if not R.isRetail then table.insert(self.BagIDs, KEYRING_CONTAINER) end
 
     BagFrame_OnLoad(self)
-    
+
     self.Title:SetText(BACKPACK_TOOLTIP)
     self.Money:SetScale(0.8)
 
     SetPortraitToTexture(self.portrait, "Interface\\ICONS\\INV_Misc_Bag_08")
 
     table.insert(_G.UISpecialFrames, self:GetName())
-    for i = 1, NUM_CONTAINER_FRAMES do
-        _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame)
-    end
+    for i = 1, NUM_CONTAINER_FRAMES do _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame) end
 
     R:CreateDragFrame(self, "Inventory", {"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -100, 100})
 
@@ -33,9 +29,7 @@ end
 
 function ReduxUI_InventoryFrame_OnHide(self)
     CloseBackpack()
-    for i = 1, NUM_BAG_FRAMES do
-        CloseBag(i)
-    end
+    for i = 1, NUM_BAG_FRAMES do CloseBag(i) end
     B:UpdateBagBarCheckedState()
 end
 
@@ -69,9 +63,7 @@ function B:UpdateBagBarCheckedState()
         _G.CharacterBag1Slot:SetChecked(state)
         _G.CharacterBag2Slot:SetChecked(state)
         _G.CharacterBag3Slot:SetChecked(state)
-        if _G.KeyRingButton then
-            _G.KeyRingButton:SetChecked(state)
-        end
+        if _G.KeyRingButton then _G.KeyRingButton:SetChecked(state) end
     end
 end
 
@@ -105,9 +97,7 @@ function B:ToggleInventory()
 end
 
 function B:ToggleBackpack()
-    if IsOptionFrameOpen() then
-        return
-    end
+    if IsOptionFrameOpen() then return end
 
     if IsBagOpen(0) then
         B:ShowInventory()
@@ -117,9 +107,7 @@ function B:ToggleBackpack()
 end
 
 function B:ToggleBag(id)
-    if (id and (GetContainerNumSlots(id) == 0)) or id == 0 then
-        return
-    end
+    if (id and (GetContainerNumSlots(id) == 0)) or id == 0 then return end
 
     B:ToggleInventory()
 end

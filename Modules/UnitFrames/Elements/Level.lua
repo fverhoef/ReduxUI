@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateLevel()
-    if not self.config.level.enabled then
-        return
-    end
+    if not self.config.level.enabled then return end
 
     self.Level = self:CreateFontString("$parentLevel", "OVERLAY")
     self.Level:SetParent(self.Overlay)

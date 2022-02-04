@@ -4,16 +4,11 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateCastbar()
-    if not self.config.castbar.enabled then
-        return
-    end
+    if not self.config.castbar.enabled then return end
 
     self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self)
     self.Castbar:SetOrientation("HORIZONTAL")
-    self.Castbar:CreateBackdrop({
-        edgeFile = R.media.textures.edgeFiles.borderThickTooltip,
-        edgeSize = 12
-    })
+    self.Castbar:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
     self.Castbar.Backdrop:SetOutside(self.Castbar, 3, 3)
     self.Castbar.Backdrop:SetFrameLevel(self.Castbar:GetFrameLevel() + 1)
 
@@ -21,10 +16,10 @@ function UF:CreateCastbar()
     self.Castbar.bg:SetAllPoints()
 
     self.Castbar.SparkTexture = self.Castbar:CreateTexture("$parentSpark", "OVERLAY", nil, 7)
-	self.Castbar.SparkTexture:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
-	self.Castbar.SparkTexture:SetTexCoord(9 / 32, 23 / 32, 5 / 32, 27 / 32)
+    self.Castbar.SparkTexture:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
+    self.Castbar.SparkTexture:SetTexCoord(9 / 32, 23 / 32, 5 / 32, 27 / 32)
     self.Castbar.SparkTexture:SetBlendMode("ADD")
-	self.Castbar.SparkTexture:SetVertexColor(1, 1, 1)
+    self.Castbar.SparkTexture:SetVertexColor(1, 1, 1)
     self.Castbar.SparkTexture:SetWidth(10)
     self.Castbar.Spark = self.Castbar.SparkTexture
 
@@ -40,10 +35,7 @@ function UF:CreateCastbar()
     self.Castbar.Time:SetPoint("RIGHT", self.Castbar, -2, 0)
 
     self.Castbar.IconHolder = CreateFrame("Frame", "$parentIconHolder", self.Castbar)
-    self.Castbar.IconHolder:CreateBackdrop({
-        edgeFile = R.media.textures.edgeFiles.borderThickTooltip,
-        edgeSize = 12
-    })
+    self.Castbar.IconHolder:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
     self.Castbar.IconHolder.Backdrop:SetOutside(self.Castbar.IconHolder, 3, 3)
     self.Castbar.IconHolder.Backdrop:SetFrameLevel(self.Castbar.IconHolder:GetFrameLevel() + 1)
     self.Castbar.Icon = self.Castbar:CreateTexture("$parentIcon", "BACKGROUND", nil, -8)
@@ -86,7 +78,7 @@ function UF:ConfigureCastbar()
 
     self.Castbar.bg:SetTexture(UF.config.statusbars.castbar)
     self.Castbar.bg:SetVertexColor(0.3 * UF.config.colors.castbar[1], 0.3 * UF.config.colors.castbar[2], 0.3 * UF.config.colors.castbar[3])
-    
+
     self.Castbar.Text:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
     self.Castbar.Text:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 

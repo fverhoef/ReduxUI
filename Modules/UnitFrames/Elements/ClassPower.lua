@@ -4,10 +4,8 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateClassPower()
-    if not self.config.classPower.enabled then
-        return
-    end
-    
+    if not self.config.classPower.enabled then return end
+
     self.ClassPowerHolder = CreateFrame("Frame", "$parentClassPowerHolder", self)
     self.ClassPowerHolder:SetFrameLevel(self.Power:GetFrameLevel())
     self.ClassPowerHolder:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)

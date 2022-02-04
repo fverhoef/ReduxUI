@@ -1,68 +1,25 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-R.PlayerInfo = {
-    name = UnitName("player"),
-    guid = UnitGUID("player"),
-    class = select(2, UnitClass("player")),
-    faction = UnitFactionGroup("player"),
-    realm = GetRealmName()
-}
+R.PlayerInfo = {name = UnitName("player"), guid = UnitGUID("player"), class = select(2, UnitClass("player")), faction = UnitFactionGroup("player"), realm = GetRealmName()}
 
 R.HiddenFrame = CreateFrame("Frame")
 R.HiddenFrame:Hide()
 
 R.UnlocalizedClasses = {}
-for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do
-    R.UnlocalizedClasses[v] = k
-end
-for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do
-    R.UnlocalizedClasses[v] = k
-end
+for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do R.UnlocalizedClasses[v] = k end
+for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do R.UnlocalizedClasses[v] = k end
 
 R.EquipmentSlots = {
-    "HeadSlot",
-    "NeckSlot",
-    "ShoulderSlot",
-    "BackSlot",
-    "ChestSlot",
-    "ShirtSlot",
-    "TabardSlot",
-    "WristSlot",
-    "HandsSlot",
-    "WaistSlot",
-    "LegsSlot",
-    "FeetSlot",
-    "Finger0Slot",
-    "Finger1Slot",
-    "Trinket0Slot",
-    "Trinket1Slot",
-    "MainHandSlot",
-    "SecondaryHandSlot"
+    "HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "ShirtSlot", "TabardSlot", "WristSlot", "HandsSlot", "WaistSlot", "LegsSlot", "FeetSlot", "Finger0Slot", "Finger1Slot",
+    "Trinket0Slot", "Trinket1Slot", "MainHandSlot", "SecondaryHandSlot"
 }
 
-if not R.isRetail then
-    table.insert(R.EquipmentSlots, "RangedSlot")
-end
+if not R.isRetail then table.insert(R.EquipmentSlots, "RangedSlot") end
 function R:DisableScripts()
-    local scripts = {
-        "OnShow",
-        "OnHide",
-        "OnEvent",
-        "OnEnter",
-        "OnLeave",
-        "OnUpdate",
-        "OnValueChanged",
-        "OnClick",
-        "OnMouseDown",
-        "OnMouseUp"
-    }
+    local scripts = {"OnShow", "OnHide", "OnEvent", "OnEnter", "OnLeave", "OnUpdate", "OnValueChanged", "OnClick", "OnMouseDown", "OnMouseUp"}
 
-    for _, script in next, scripts do
-        if self:HasScript(script) then
-            self:SetScript(script, nil)
-        end
-    end
+    for _, script in next, scripts do if self:HasScript(script) then self:SetScript(script, nil) end end
 end
 
 function R:UnlocalizedClassName(className)
@@ -70,9 +27,8 @@ function R:UnlocalizedClassName(className)
 end
 
 function R:LocalizedClassName(className)
-    return (className and className ~= "") and
-               (UnitSex("player") == 2 and _G.LOCALIZED_CLASS_NAMES_MALE[className] or UnitSex("player") == 3 and
-                   _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or className
+    return (className and className ~= "") and (UnitSex("player") == 2 and _G.LOCALIZED_CLASS_NAMES_MALE[className] or UnitSex("player") == 3 and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or
+               className
 end
 
 function R:Print(value, ...)
@@ -114,15 +70,9 @@ function R:FormatMoney(amount, style, textonly)
 
     if not style or style == "SMART" then
         local str = ""
-        if gold > 0 then
-            str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
-        end
-        if silver > 0 then
-            str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
-        end
-        if copper > 0 or value == 0 then
-            str = format("%s%d%s", str, copper, coppername)
-        end
+        if gold > 0 then str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "") end
+        if silver > 0 then str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "") end
+        if copper > 0 or value == 0 then str = format("%s%d%s", str, copper, coppername) end
         return str
     end
 
@@ -249,9 +199,7 @@ function R:SetInside(anchor, xOffset, yOffset, anchor2)
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
 
-    if self:GetPoint() then
-        self:ClearAllPoints()
-    end
+    if self:GetPoint() then self:ClearAllPoints() end
 
     self:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
@@ -262,9 +210,7 @@ function R:SetOutside(anchor, xOffset, yOffset, anchor2)
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
 
-    if self:GetPoint() then
-        self:ClearAllPoints()
-    end
+    if self:GetPoint() then self:ClearAllPoints() end
 
     self:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
@@ -273,22 +219,15 @@ end
 function R:Offset(offsetX, offsetY)
     if self then
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint()
-        if not self.originalPoint then
-            self.originalPoint = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, xOfs = xOfs, yOfs = yOfs}
-        end
-        self:SetPoint(self.originalPoint.point, self.originalPoint.relativeTo, self.originalPoint.relativePoint,
-                      self.originalPoint.xOfs + offsetX, self.originalPoint.yOfs + offsetY)
+        if not self.originalPoint then self.originalPoint = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, xOfs = xOfs, yOfs = yOfs} end
+        self:SetPoint(self.originalPoint.point, self.originalPoint.relativeTo, self.originalPoint.relativePoint, self.originalPoint.xOfs + offsetX, self.originalPoint.yOfs + offsetY)
     end
 end
 
 function R:SetPoint(arg1, arg2, arg3, arg4, arg5)
-    if not self or not arg1 or not self.SetPoint then
-        return
-    end
+    if not self or not arg1 or not self.SetPoint then return end
 
-    if type(arg1) == "table" then
-        arg1, arg2, arg3, arg4, arg5 = unpack(arg1)
-    end
+    if type(arg1) == "table" then arg1, arg2, arg3, arg4, arg5 = unpack(arg1) end
 
     local point, anchor, relativePoint, offsetX, offsetY
     if arg5 then
@@ -305,30 +244,21 @@ function R:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
 function R:GetPoint(frame)
-    if not frame then
-        return
-    end
+    if not frame then return end
     local a1, af, a2, x, y = frame:GetPoint()
-    if af and af:GetName() then
-        af = af:GetName()
-    end
+    if af and af:GetName() then af = af:GetName() end
     return {a1, af, a2, x, y}
 end
 
 function R:GetSize(frame)
-    if not frame then
-        return
-    end
+    if not frame then return end
     return {frame:GetWidth(), frame:GetHeight()}
 end
 
 function R:ParseItemLink(itemLink)
-    if not itemLink then
-        return {}
-    end
-    local _, _, color, Ltype, itemId, Enchant, Gem1, Gem2, Gem3, Gem4, Suffix, Unique, LinkLvl, Name =
-        string.find(itemLink,
-                    "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+    if not itemLink then return {} end
+    local _, _, color, Ltype, itemId, Enchant, Gem1, Gem2, Gem3, Gem4, Suffix, Unique, LinkLvl, Name = string.find(itemLink,
+                                                                                                                   "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
 
     return {itemId = itemId, color = color}
 end
@@ -349,9 +279,7 @@ function R:PlayerHasAura(auraId)
     local i = 1
     local spellId = select(10, UnitAura("player", i))
     while spellId do
-        if spellId == auraId then
-            return true
-        end
+        if spellId == auraId then return true end
 
         i = i + 1
         spellId = select(10, UnitAura("player", i))

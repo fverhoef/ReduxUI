@@ -91,17 +91,13 @@ end
 oUF.Tags.Events["threat:percent"] = "UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE"
 oUF.Tags.Methods["threat:percent"] = function(unit)
     local _, _, percent = UnitDetailedThreatSituation("player", unit)
-    if percent and percent > 0 and (IsInGroup() or UnitExists("pet")) then
-        return string.format("%.0f%%", percent)
-    end
+    if percent and percent > 0 and (IsInGroup() or UnitExists("pet")) then return string.format("%.0f%%", percent) end
 end
 
 oUF.Tags.Events["threat:current"] = "UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE"
 oUF.Tags.Methods["threat:current"] = function(unit)
     local _, _, percent, _, threatvalue = UnitDetailedThreatSituation("player", unit)
-    if percent and percent > 0 and (IsInGroup() or UnitExists("pet")) then
-        return R:ShortValue(threatvalue)
-    end
+    if percent and percent > 0 and (IsInGroup() or UnitExists("pet")) then return R:ShortValue(threatvalue) end
 end
 
 oUF.Tags.Events["name:sub"] = "UNIT_NAME_UPDATE"

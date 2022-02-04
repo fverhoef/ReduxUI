@@ -4,9 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateReadyCheckIndicator()
-    if not self.config.readyCheckIndicator.enabled then
-        return
-    end
+    if not self.config.readyCheckIndicator.enabled then return end
 
     self.ReadyCheckIndicator = self:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
     self.ReadyCheckIndicator:SetParent(self.Overlay)

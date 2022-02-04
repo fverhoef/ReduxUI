@@ -12,11 +12,7 @@ function UF:CreateStatusBarTextureOption(name, desc, option, order)
         dialogControl = "LSM30_Statusbar",
         values = R.Libs.SharedMedia:HashTable("statusbar"),
         get = function()
-            for key, texture in pairs(R.Libs.SharedMedia:HashTable("statusbar")) do
-                if UF.config.statusbars[option] == texture then
-                    return key
-                end
-            end
+            for key, texture in pairs(R.Libs.SharedMedia:HashTable("statusbar")) do if UF.config.statusbars[option] == texture then return key end end
         end,
         set = function(_, key)
             UF.config.statusbars[option] = R.Libs.SharedMedia:Fetch("statusbar", key)
@@ -109,11 +105,7 @@ R:RegisterModuleOptions(UF, {
                     dialogControl = "LSM30_Font",
                     values = R.Libs.SharedMedia:HashTable("font"),
                     get = function()
-                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                            if UF.config.font == font then
-                                return key
-                            end
-                        end
+                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if UF.config.font == font then return key end end
                     end,
                     set = function(_, key)
                         UF.config.font = R.Libs.SharedMedia:Fetch("font", key)
@@ -133,7 +125,8 @@ R:RegisterModuleOptions(UF, {
                 power = UF:CreateStatusBarTextureOption("Power", "Set the texture to use for power bars.", "power", 11),
                 powerPrediction = UF:CreateStatusBarTextureOption("Power Prediction (Power Cost)", "Set the texture to use for power prediction bars.", "powerPrediction", 12),
                 additionalPower = UF:CreateStatusBarTextureOption("Additional Power", "Set the texture to use for power bars.", "additionalPower", 21),
-                additionalPowerPrediction = UF:CreateStatusBarTextureOption("Additional Power Prediction (Power Cost)", "Set the texture to use for additional power prediction bars.", "additionalPowerPrediction", 22),
+                additionalPowerPrediction = UF:CreateStatusBarTextureOption("Additional Power Prediction (Power Cost)", "Set the texture to use for additional power prediction bars.",
+                                                                            "additionalPowerPrediction", 22),
                 classPower = UF:CreateStatusBarTextureOption("Class Power", "Set the texture to use for class power bars (combo points etc).", "classPower", 25),
                 castbar = UF:CreateStatusBarTextureOption("Cast Bars", "Set the texture to use for cast bars.", "castbar", 31)
             }

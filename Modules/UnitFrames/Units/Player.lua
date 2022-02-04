@@ -7,15 +7,13 @@ function UF:SpawnPlayer()
     local config = UF.config.player
     local default = UF.defaults.player
 
-    if config.enabled then
-        return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, default)
-    end
+    if config.enabled then return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, default) end
 end
 
 function UF:CreatePlayer()
     self.config = UF.config.player
     self.defaults = UF.defaults.player
-    
+
     self:InitializeFrame()
     self:CreateAdditionalPower()
     self:CreateClassPower()
@@ -28,9 +26,7 @@ function UF:CreatePlayer()
 end
 
 function UF:UpdatePlayer()
-    if not self then
-        return
-    end
+    if not self then return end
 
     self:ConfigureFrame()
     self:ConfigureAdditionalPower()

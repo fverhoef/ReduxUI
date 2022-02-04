@@ -27,32 +27,23 @@ function UF:InitializeFrame()
     self.Overlay = CreateFrame("Frame", "$parentOverlay", self)
     self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
     self.Overlay:SetAllPoints()
-    
-    self:CreateBackdrop({
-        edgeFile = R.media.textures.edgeFiles.borderThickTooltip,
-        edgeSize = 16
-    })
+
+    self:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 16})
     self.Backdrop:SetOutside(self, 3, 3)
     self.Backdrop:SetFrameLevel(self:GetFrameLevel())
-    
-    self:CreateInlay({
-        edgeFile = R.media.textures.edgeFiles.inlay,
-        edgeSize = 12
-    })
+
+    self:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
     self.Inlay:SetOutside(self, 6, 6)
-    
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
-    
+
+    self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
+
     self:CreateHealth()
     self:CreatePower()
     self:CreateName()
     self:CreatePortrait()
     self:CreateCastbar()
     self:CreateAuras()
-    
+
     self:CreateHighlight()
     self:CreateAuraHighlight()
     self:CreateThreatIndicator()
@@ -85,11 +76,8 @@ function UF:ConfigureFrame()
     self:SetScale(self.config.scale)
     self:ClearAllPoints()
     self:Point(unpack(self.config.point))
-    
-    self.Range = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
+
+    self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
     self:ConfigureHealth()
     self:ConfigurePower()
@@ -97,7 +85,7 @@ function UF:ConfigureFrame()
     self:ConfigurePortrait()
     self:ConfigureCastbar()
     self:ConfigureAuras()
-    
+
     self:ConfigureAuraHighlight()
     self:ConfigureThreatIndicator()
     self:ConfigureTargetIndicator()
@@ -125,9 +113,7 @@ end
 oUF:RegisterMetaFunction("ConfigureFrame", UF.ConfigureFrame)
 
 function UF:ForceShow()
-    if not self or InCombatLockdown() then
-        return
-    end
+    if not self or InCombatLockdown() then return end
     if not self.isForced then
         self.oldUnit = self.unit
         self.unit = "player"
@@ -144,27 +130,19 @@ function UF:ForceShow()
     self:EnableMouse(false)
 
     self:Show()
-    if self:IsVisible() and self.Update then
-        self:Update()
-    end
+    if self:IsVisible() and self.Update then self:Update() end
 
     local target = _G[self:GetName() .. "Target"]
-    if target then
-        target:ForceShow()
-    end
+    if target then target:ForceShow() end
 
     local pet = _G[self:GetName() .. "Pet"]
-    if pet then
-        pet:ForceShow()
-    end
+    if pet then pet:ForceShow() end
 end
 
 oUF:RegisterMetaFunction("ForceShow", UF.ForceShow)
 
 function UF:UnforceShow()
-    if not self or not self.isForced or InCombatLockdown() then
-        return
-    end
+    if not self or not self.isForced or InCombatLockdown() then return end
 
     self.forceShowAuras = nil
     self.isForced = nil
@@ -180,19 +158,13 @@ function UF:UnforceShow()
     end
 
     self.unit = self.oldUnit or self.unit
-    if self:IsVisible() and self.Update then
-        self:Update()
-    end
+    if self:IsVisible() and self.Update then self:Update() end
 
     local target = _G[self:GetName() .. "Target"]
-    if target then
-        target:UnforceShow()
-    end
+    if target then target:UnforceShow() end
 
     local pet = _G[self:GetName() .. "Pet"]
-    if pet then
-        pet:UnforceShow()
-    end
+    if pet then pet:UnforceShow() end
 end
 
 oUF:RegisterMetaFunction("UnforceShow", UF.UnforceShow)

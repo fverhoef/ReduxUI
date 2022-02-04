@@ -6,9 +6,7 @@ R.DEFAULT_BORDER_COLOR = {1, 1, 1, 1}
 R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.7}
 
 function R:CreateBackdrop(backdropInfo, color, borderColor)
-    if self.Backdrop then
-        return
-    end
+    if self.Backdrop then return end
 
     color = color or R.DEFAULT_BACKDROP_COLOR
     borderColor = borderColor or R.DEFAULT_BORDER_COLOR
@@ -24,17 +22,13 @@ function R:CreateBackdrop(backdropInfo, color, borderColor)
 end
 
 function R:CreateShadow(size, color)
-    if self.Shadow then
-        return
-    end
+    if self.Shadow then return end
 
     size = size or 5
     color = color or R.DEFAULT_SHADOW_COLOR
-    if not color[4] then
-        color[4] = 0.7
-    end
+    if not color[4] then color[4] = 0.7 end
 
-	local offset = size + 1
+    local offset = size + 1
     local shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
     shadow.size = size
 
@@ -49,9 +43,7 @@ function R:CreateShadow(size, color)
 end
 
 function R:CreateInlay(backdropInfo, color)
-    if self.Inlay then
-        return
-    end
+    if self.Inlay then return end
 
     color = color or {1, 1, 1, 0.7}
 

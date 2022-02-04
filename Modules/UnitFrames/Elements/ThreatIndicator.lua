@@ -4,15 +4,11 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateThreatIndicator()
-    if not self.config.highlight.threat then
-        return
-    end
+    if not self.config.highlight.threat then return end
 
     self.ThreatIndicator = self:CreateTexture("$parentThreat", "BACKGROUND")
 
-    if self.unit == "target" or self.unit == "focus" or string.match(self.unit, "nameplate") then
-        self.ThreatIndicator.feedbackUnit = "player"
-    end
+    if self.unit == "target" or self.unit == "focus" or string.match(self.unit, "nameplate") then self.ThreatIndicator.feedbackUnit = "player" end
 
     self.ThreatIndicator.PostUpdate = UF.ThreatIndicator_PostUpdate
 
