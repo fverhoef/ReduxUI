@@ -21,7 +21,9 @@ function ID:Initialize()
     ID:RegisterEvent("BANKFRAME_OPENED", ID.Update)
     ID:RegisterEvent("BANKFRAME_CLOSED", ID.Update)
     ID:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", ID.Update)
-    ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update)
+    if R.isRetail then
+        ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update)
+    end
     ID:Update()
 end
 

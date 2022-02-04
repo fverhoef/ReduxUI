@@ -81,7 +81,7 @@ end
 function TT:Update(tooltip)
     tooltip:SetScale(TT.config.scale)
 
-    if TT.config.colorBorderByRarity and tooltip.NineSlice then
+    if TT.config.colorBorderByRarity and tooltip.NineSlice and tooltip.GetItem then
         tooltip.defaultBorderColor = tooltip.defaultBorderColor or {tooltip.NineSlice:GetBorderColor()}
         local color = tooltip.defaultBorderColor
         local _, link = tooltip:GetItem()
@@ -401,7 +401,7 @@ function TT:AddItemLevel(tooltip, itemLevel)
         local title = _G[tooltip:GetName() .. "TextLeft1"]
         if title and not title:GetText():find("Item Level") then
             title:SetFormattedText([[%s
-%s]], title:GetText(), Addon:Hex(E.db[addonName].layout.tooltips.colors.itemLevel) .. L["Item Level "] .. itemLevel .. "|r")
+%s]], title:GetText(), R:Hex(TT.config.colors.itemLevel) .. "Item Level " .. itemLevel .. "|r")
         end
     end
 end

@@ -20,7 +20,7 @@ function BagFrame_OnLoad(self)
         self.Bags[i] = bag
         self.BagsById[bagID] = bag
 
-        local bagSlot = CreateFrame(R.isRetail and "ItemButton" or "CheckButton", addonName .. "BagSlot" .. bagID, self, "BagSlotTemplate")
+        local bagSlot = CreateFrame(R.isRetail and "ItemButton" or "Button", addonName .. "BagSlot" .. bagID, self, (R.isRetail and "" or "ItemButtonTemplate,") .. "BagSlotTemplate")
         bagSlot:Initialize(self, bagID)
         bagSlot:Update()
         if i == 1 then

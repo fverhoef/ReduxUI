@@ -9,6 +9,9 @@ local KEYRING_CONTAINER = _G.KEYRING_CONTAINER or -2
 function BagSlot_OnLoad(self)
     self:RegisterForDrag("LeftButton")
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+
+    if not R.isRetail then
+    end
 end
 
 function BagSlot_OnDragStart(self)
@@ -36,11 +39,7 @@ function BagSlot_OnClick(self)
     else
         local bag = B:FindBag(self.bagID)
         bag.Hidden = not bag.Hidden
-        if not R.isRetail then
-            self:SetChecked(not bag.Hidden)
-        else
-            self.SlotHighlightTexture:SetShown(not bag.Hidden)
-        end
+        self.SlotHighlightTexture:SetShown(not bag.Hidden)
     end
     self:Update()
     self.frame:Update()
