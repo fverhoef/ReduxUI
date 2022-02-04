@@ -254,6 +254,34 @@ R:RegisterModuleConfig(UF, {
         name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
-        highlight = {targetArrows = true}
+        highlight = {targetArrows = true},
+        cvars = {
+            nameplateMaxDistance = 41,
+            nameplateMinScale = 1,
+            nameplateMaxScale = 1,
+            nameplateMinScaleDistance = 0,
+            nameplateMaxScaleDistance = 80,
+            nameplateGlobalScale = 1,
+            NamePlateHorizontalScale = 1,
+            NamePlateVerticalScale = 1,
+            nameplateSelfScale = 1,
+            nameplateSelectedScale = 1.2,
+            nameplateLargerScale = 1.2,
+            nameplateMinAlpha = 0.5,
+            nameplateMaxAlpha = 0.8,
+            nameplateMinAlphaDistance = 0,
+            nameplateMaxAlphaDistance = 80,
+            nameplateSelectedAlpha = 1,
+            nameplateShowAll = 1,
+            nameplateShowEnemyMinions = 0,
+            nameplateShowEnemyGuardians = 0,
+            nameplateShowEnemyMinus = 0,
+            nameplateShowEnemyPets = 0,
+            nameplateShowFriendlyMinions = 0,
+            nameplateShowFriendlyGuardians = 0,
+            nameplateShowFriendlyNPCs = 1,
+            nameplateShowFriendlyPets = 0,
+            nameplateShowFriendlyTotems = 0
+        }
     })
 })

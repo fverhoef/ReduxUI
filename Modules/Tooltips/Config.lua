@@ -27,6 +27,7 @@ R:RegisterModuleConfig(TT, {
     anchor = "ANCHOR_CURSOR",
     offsetX = 20,
     offsetY = 20,
+    statusbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
     colorBorderByRarity = true,
     showHealthValues = true,
     showPvPRank = true,

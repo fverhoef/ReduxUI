@@ -46,5 +46,5 @@ function UF:UpdateColors()
 end
 
 function UF:PLAYER_REGEN_DISABLED()
-    for _, header in pairs(UF.Headers) do if header and header.UnforceShow then header:UnforceShow() end end
+    for _, header in pairs(UF.headers) do if header and header.UnforceShow then header:UnforceShow() end end
 end

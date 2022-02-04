@@ -18,6 +18,8 @@ function TT:Initialize()
     _G.GameTooltipStatusBar:SetPoint("TOP", 0, -2.5)
     _G.GameTooltipStatusBar:SetHeight(4)
 
+    _G.GameTooltipStatusBar:SetStatusBarTexture(TT.config.statusbar)
+
     _G.GameTooltipStatusBar.bg = _G.GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND", nil, -8)
     _G.GameTooltipStatusBar.bg:SetAllPoints()
     _G.GameTooltipStatusBar.bg:SetColorTexture(1, 1, 1)
