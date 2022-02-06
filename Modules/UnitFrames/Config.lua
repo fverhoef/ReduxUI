@@ -196,11 +196,11 @@ R:RegisterModuleConfig(UF, {
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     statusbars = {
         health = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        healthPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
+        healthPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         power = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        powerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
+        powerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         additionalPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
+        additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         classPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         castbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux")
     },

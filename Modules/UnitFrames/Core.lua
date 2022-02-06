@@ -36,6 +36,12 @@ oUF:RegisterInitCallback(function(object)
     if object.Update then object:Update() end
 end)
 
+function UF:UpdateAll()
+    for _, frame in pairs(UF.frames) do frame:Update() end
+    for _, header in pairs(UF.headers) do header:Update() end
+    for _, nameplate in pairs(UF.nameplates) do nameplate:Update() end
+end
+
 function UF:UpdateColors()
     oUF.colors.health = UF.config.health
     oUF.colors.power["MANA"] = UF.config.colors.mana

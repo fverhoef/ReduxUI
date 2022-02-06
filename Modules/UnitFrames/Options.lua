@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local L = R.L
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
@@ -64,16 +65,16 @@ end
 
 R:RegisterModuleOptions(UF, {
     type = "group",
-    name = "Unit Frames",
+    name = L["Unit Frames"],
     args = {
         header = {type = "header", name = R.title .. " > Unit Frames", order = 0},
         enabled = {
             type = "toggle",
-            name = "Enabled",
+            name = L["Enabled"],
             order = 1,
             confirm = function()
                 if UF.config.enabled then
-                    return "Disabling this module requires a UI reload. Proceed?"
+                    return L["Disabling this module requires a UI reload. Proceed?"]
                 else
                     return false
                 end
@@ -93,14 +94,14 @@ R:RegisterModuleOptions(UF, {
         lineBreak1 = {type = "header", name = "", order = 2},
         fonts = {
             type = "group",
-            name = "Fonts",
+            name = L["Fonts"],
             order = 5,
             inline = true,
             args = {
                 font = {
-                    name = "Default Font Family",
+                    name = L["Default Font Family"],
+                    desc = L["The default font family for unit frame texts."],
                     type = "select",
-                    desc = "The default font family for unit frame texts.",
                     order = 1,
                     dialogControl = "LSM30_Font",
                     values = R.Libs.SharedMedia:HashTable("font"),
@@ -116,7 +117,7 @@ R:RegisterModuleOptions(UF, {
         },
         statusbarTextures = {
             type = "group",
-            name = "Status Bar Textures",
+            name = L["Status Bar Textures"],
             order = 6,
             inline = true,
             args = {
@@ -133,7 +134,7 @@ R:RegisterModuleOptions(UF, {
         },
         statusBarColors = {
             type = "group",
-            name = "Status Bar Colors",
+            name = L["Status Bar Colors"],
             order = 7,
             inline = true,
             args = {

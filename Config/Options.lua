@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local L = R.L
 
 local function FindPanel(name, parent)
     for i, button in next, InterfaceOptionsFrameAddOns.buttons do
@@ -54,14 +55,14 @@ R.config.options = {
             order = 1,
             args = {
                 header = {type = "header", name = R.title .. " > General", order = 0},
-                desc = {order = 1, type = "description", name = "These are features that apply to every module."},
+                desc = {order = 1, type = "description", name = L["These are features that apply to every module."]},
                 toggleFrameLock = {
                     order = 2,
                     type = "execute",
                     name = function()
-                        return R.framesLocked and "Unlock Frames" or "Lock Frames"
+                        return R.framesLocked and L["Unlock Frames"] or L["Lock Frames"]
                     end,
-                    desc = "Lock/unlock all movable frames.",
+                    desc = L["Lock/unlock all movable frames."],
                     func = function()
                         if R.framesLocked then
                             R:ShowDragFrames()
@@ -73,20 +74,20 @@ R.config.options = {
                 resetFrames = {
                     order = 3,
                     type = "execute",
-                    name = "Reset Frames",
-                    desc = "Reset the position of all movable frames.",
+                    name = L["Reset Frames"],
+                    desc = L["Reset the position of all movable frames."],
                     func = function()
                         R:ResetFrames()
                     end
                 },
                 fonts = {
                     type = "group",
-                    name = "Fonts",
+                    name = L["Fonts"],
                     order = 10,
                     inline = true,
                     args = {
                         normal = {
-                            name = "Standard Text",
+                            name = L["Standard Text"],
                             type = "select",
                             order = 1,
                             dialogControl = "LSM30_Font",
@@ -100,7 +101,7 @@ R.config.options = {
                             end
                         },
                         number = {
-                            name = "Numbers",
+                            name = L["Numbers"],
                             type = "select",
                             order = 2,
                             dialogControl = "LSM30_Font",
@@ -115,7 +116,7 @@ R.config.options = {
                         },
                         -- TODO: warn that changing this option requires a relog
                         damage = {
-                            name = "Damage",
+                            name = L["Damage"],
                             type = "select",
                             order = 3,
                             dialogControl = "LSM30_Font",
@@ -130,7 +131,7 @@ R.config.options = {
                         },
                         -- TODO: warn that changing this option requires a relog
                         unitName = {
-                            name = "Unit Names",
+                            name = L["Unit Names"],
                             type = "select",
                             order = 4,
                             dialogControl = "LSM30_Font",
@@ -144,7 +145,7 @@ R.config.options = {
                             end
                         },
                         chatBubble = {
-                            name = "Chat Bubbles",
+                            name = L["Chat Bubbles"],
                             type = "select",
                             order = 5,
                             dialogControl = "LSM30_Font",
@@ -161,14 +162,14 @@ R.config.options = {
                 },
                 inventoryDatabase = {
                     type = "group",
-                    name = "Inventory Database",
+                    name = L["Inventory Database"],
                     order = 40,
                     inline = true,
                     args = {
                         character = {
                             type = "select",
-                            name = "Characters",
-                            desc = "Characters in the inventory database.",
+                            name = L["Characters"],
+                            desc = L["Characters in the inventory database."],
                             order = 1,
                             values = R.Modules.InventoryDatabase.GetCharacterKeys,
                             get = function()
@@ -181,7 +182,7 @@ R.config.options = {
                         clear = {
                             order = 2,
                             type = "execute",
-                            name = "Clear Character Database",
+                            name = L["Clear Character Database"],
                             disabled = function()
                                 return R.Modules.InventoryDatabase.selectedCharacter == nil
                             end,
