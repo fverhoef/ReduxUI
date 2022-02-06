@@ -70,20 +70,15 @@ function UF:UpdatePortraitTexture()
         if coords then
             self.Portrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
             local l, r, t, b = unpack(coords)
-            if not config.round then
-                local width = r - l
-                local height = b - t
+            local width = r - l
+            local height = b - t
 
-                l = l + 0.15 * width
-                r = r - 0.15 * width
-                t = t + 0.15 * height
-                b = b - 0.15 * height
-            end
+            l = l + 0.15 * width
+            r = r - 0.15 * width
+            t = t + 0.15 * height
+            b = b - 0.15 * height
             self.Portrait:SetTexCoord(l, r, t, b)
         end
-    elseif config.round then
-        SetPortraitTexture(self.Portrait, self.unit)
-        self.Portrait:SetTexCoord(0, 1, 0, 1)
     else
         SetPortraitTexture(self.Portrait, self.unit)
         self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)

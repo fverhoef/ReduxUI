@@ -70,12 +70,18 @@ function UnitFrameGroupMixin:Update()
 end
 
 function UnitFrameGroupMixin:ForceShow()
+    if self.isForced then return end
+    self.isForced = true
+
     for i, frame in ipairs(self.frames) do
         frame:ForceShow()
     end
 end
 
 function UnitFrameGroupMixin:UnforceShow()
+    if not self.isForced then return end
+    self.isForced = nil
+
     for i, frame in ipairs(self.frames) do
         frame:UnforceShow()
     end

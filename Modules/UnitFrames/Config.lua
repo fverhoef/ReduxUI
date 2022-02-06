@@ -129,16 +129,16 @@ local DEFAULT_UNIT_CONFIG = {
     castbar = {
         enabled = true,
         size = {200, 16},
+        point = {"TOPLEFT", "BOTTOMLEFT", 0, -5},
         showIcon = true,
         showIconOutside = false,
-        showSafeZone = false,
         showSpark = true,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetArrows = false, targetClassColor = false},
+    highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetClassColor = false},
     assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
     combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
     groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
@@ -237,7 +237,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerDisconnected = true
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
-    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}}, highlight = {target = false}}),
+    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, showSafeZone = true}, highlight = {target = false}}),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},

@@ -42,6 +42,16 @@ function UF:UpdateAll()
     for _, nameplate in pairs(UF.nameplates) do nameplate:Update() end
 end
 
+function UF:UpdateUnit(unit)
+    if UF.frames[unit] then
+        UF.frames[unit]:Update()
+    elseif UF.headers[unit] then
+        UF.headers[unit]:Update()
+    elseif unit == "nameplates" then
+        for _, nameplate in pairs(UF.nameplates) do nameplate:Update() end
+    end
+end
+
 function UF:UpdateColors()
     oUF.colors.health = UF.config.health
     oUF.colors.power["MANA"] = UF.config.colors.mana
