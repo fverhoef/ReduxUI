@@ -19,7 +19,7 @@ function UF:Initialize()
     UF.frames.pet = UF:SpawnPet()
 
     UF.headers.party = UF:SpawnPartyHeader()
-    UF.headers.party:ForceShow()
+    UF.headers.raid = UF:SpawnRaidHeader()
     UF.headers.arena = UF:SpawnArenaHeader()
     if R.isRetail then UF.headers.boss = UF:SpawnBossHeader() end
 

@@ -3,14 +3,12 @@ local R = _G.ReduxUI
 R.dragFrames = {}
 
 function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, point)
-    if not frame then return end
+    if not frame or frame.DragFrame then return end
 
     table.insert(R.dragFrames, frame)
 
-    -- save the default position so we can reset to it
     frame.defaultPoint = defaultPoint or R:GetPoint(frame)
 
-    -- anchor a dragable frame on frame
     local dragFrame = CreateFrame("Frame", nil)
     dragFrame.frame = frame
     dragFrame.displayName = displayName or frame:GetName()
@@ -37,7 +35,6 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, poin
     dragFrame:SetScript("OnHide", R.DragFrame_OnHide)
     dragFrame:Hide()
 
-    -- overlay texture
     local overlay = dragFrame:CreateTexture(nil, "OVERLAY", nil, 6)
     overlay:SetAllPoints(dragFrame)
     overlay:SetColorTexture(1, 1, 1)
@@ -50,7 +47,6 @@ function R:CreateDragFrame(frame, displayName, defaultPoint, width, height, poin
     name:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     name:SetText(dragFrame.displayName)
 
-    -- frame stuff
     frame.DragFrame = dragFrame
     frame:SetMovable(true)
 

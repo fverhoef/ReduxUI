@@ -23,15 +23,15 @@ function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleF
 
     R:CreateDragFrame(parent, name, defaultConfig.point)
 
-    parent.Update = UF.UpdateUnitFrameGroup
-    parent:Update()
-
     _G.Mixin(parent, UnitFrameGroupMixin)
+    parent:Update()
 
     return parent
 end
 
-function UF:UpdateUnitFrameGroup()
+UnitFrameGroupMixin = {}
+
+function UnitFrameGroupMixin:Update()
     local count = #self.frames
     local width, height = 0, 0
     if self.config.unitAnchorPoint == "TOP" or self.config.unitAnchorPoint == "BOTTOM" then
@@ -68,8 +68,6 @@ function UF:UpdateUnitFrameGroup()
         frame:Update()
     end
 end
-
-UnitFrameGroupMixin = {}
 
 function UnitFrameGroupMixin:ForceShow()
     for i, frame in ipairs(self.frames) do

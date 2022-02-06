@@ -173,9 +173,16 @@ local DEFAULT_UNIT_CONFIG_NO_INDICATORS = R:CopyTable(DEFAULT_UNIT_CONFIG, {
     summonIndicator = {enabled = false}
 })
 
-local DEFAULT_GROUP_UNIT_CONFIG = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+local DEFAULT_GROUP_UNIT_CONFIG = R:CopyTable(DEFAULT_UNIT_CONFIG, {unitAnchorPoint = "TOP", unitSpacing = 50})
+
+local DEFAULT_HEADER_UNIT_CONFIG = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+    raidWideSorting = false,
     unitAnchorPoint = "TOP",
     unitSpacing = 50,
+    groupAnchorPoint = "TOP",
+    groupSpacing = 10,
+    groupBy = "GROUP", -- GROUP, CLASS, ROLE
+    groupingOrder = "1,2,3,4,5,6,7,8",
     sortMethod = "INDEX", -- NAME, INDEX
     sortDir = "ASC", -- ASC, DESC
     showPlayer = false,
@@ -230,7 +237,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerDisconnected = true
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
-    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}}}),
+    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}}, highlight = {target = false}}),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
@@ -256,14 +263,20 @@ R:RegisterModuleConfig(UF, {
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false}
     }),
-    party = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
-        size = {180, 30},
-        point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450},
-        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
-        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
-        portrait = {point = "RIGHT"},
+    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
+    raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
+        size = {90, 36},
+        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        health = {value = {enabled = false}, percent = {enabled = false}},
+        power = {size = {70, 8}, value = {enabled = false}},
+        name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false},
+        castbar = {enabled = false},
         pvpIndicator = {enabled = false},
-        unitAnchorPoint = "BOTTOM"
+        unitAnchorPoint = "LEFT",
+        unitSpacing = 10,
+        showParty = false,
+        showRaid = true
     }),
     arena = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
         size = {180, 30},
