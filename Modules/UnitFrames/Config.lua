@@ -263,6 +263,23 @@ R:RegisterModuleConfig(UF, {
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false}
     }),
+    focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        point = {"TOP", "UIParent", "TOP", 0, -300},
+        health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
+        portrait = {point = "RIGHT"},
+        pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
+        highlight = {target = false}
+    }),
+    focustarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        size = {95, 24},
+        point = {"TOPLEFT", addonName .. "Focus", "TOPRIGHT", 10, 0},
+        health = {value = {enabled = false}, percent = {enabled = false}},
+        power = {enabled = false},
+        name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false},
+        castbar = {enabled = false}
+    }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {90, 36},
@@ -274,6 +291,34 @@ R:RegisterModuleConfig(UF, {
         castbar = {enabled = false},
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "LEFT",
+        unitSpacing = 10,
+        showParty = false,
+        showRaid = true
+    }),
+    assist = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
+        size = {120, 30},
+        point = {"LEFT", "UIParent", "LEFT", 20, -100},
+        health = {value = {enabled = false}, percent = {enabled = false}},
+        power = {size = {70, 8}, value = {enabled = false}},
+        name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false},
+        castbar = {enabled = false},
+        pvpIndicator = {enabled = false},
+        unitAnchorPoint = "TOP",
+        unitSpacing = 10,
+        showParty = false,
+        showRaid = true
+    }),
+    tank = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
+        size = {120, 30},
+        point = {"LEFT", "UIParent", "LEFT", 20, 100},
+        health = {value = {enabled = false}, percent = {enabled = false}},
+        power = {size = {70, 8}, value = {enabled = false}},
+        name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
+        portrait = {enabled = false},
+        castbar = {enabled = false},
+        pvpIndicator = {enabled = false},
+        unitAnchorPoint = "TOP",
         unitSpacing = 10,
         showParty = false,
         showRaid = true

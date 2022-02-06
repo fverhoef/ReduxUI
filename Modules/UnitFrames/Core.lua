@@ -17,9 +17,13 @@ function UF:Initialize()
     UF.frames.target = UF:SpawnTarget()
     UF.frames.targettarget = UF:SpawnTargetTarget()
     UF.frames.pet = UF:SpawnPet()
+    UF.frames.focus = UF:SpawnFocus()
+    UF.frames.focustarget = UF:SpawnFocusTarget()
 
     UF.headers.party = UF:SpawnPartyHeader()
     UF.headers.raid = UF:SpawnRaidHeader()
+    UF.headers.assist = UF:SpawnAssistHeader()
+    UF.headers.tank = UF:SpawnTankHeader()
     UF.headers.arena = UF:SpawnArenaHeader()
     if R.isRetail then UF.headers.boss = UF:SpawnBossHeader() end
 

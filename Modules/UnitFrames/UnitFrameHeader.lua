@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc)
+function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
     local parent = CreateFrame("Frame", addonName .. name, UIParent)
     parent:Point(unpack(config.point))
     parent:SetSize(200, 40)
@@ -16,7 +16,7 @@ function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc)
     oUF:SetActiveStyle(addonName .. name)
     for i = 1, count do
         local group = oUF:SpawnHeader(addonName .. name .. "Header" .. (count > 1 and i or ""), nil, config.visibility, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty",
-                                      config.showParty, "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", count > 1 and tostring(i), "oUF-initialConfigFunction", ([[
+                                      config.showParty, "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index or (count > 1 and tostring(i)) or nil, "oUF-initialConfigFunction", ([[
                 self:SetWidth(%d)
                 self:SetHeight(%d)
                 self:GetParent():SetScale(%f)

@@ -4,7 +4,6 @@
     <Script file="Boss.lua"/>
     <Script file="Focus.lua"/>
     <Script file="FocusTarget.lua"/>
-    <Script file="Mouseover.lua"/>
     <Script file="NamePlate.lua"/>
     <Script file="Party.lua"/>
     <Script file="Pet.lua"/>
