@@ -34,6 +34,8 @@ function UF:UpdatePlayer()
     self:ConfigureEnergyManaRegen()
     self:ConfigureRestingIndicator()
 
-    self.Castbar:ClearAllPoints()
-    self.Castbar:Point(self.config.castbar.point)
+    if self.config.castbar.detached then
+        self.Castbar:ClearAllPoints()
+        self.Castbar:Point(self.config.castbar.point)
+    end
 end
