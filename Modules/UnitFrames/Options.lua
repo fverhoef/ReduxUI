@@ -517,7 +517,7 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 return UF.config[unit].castbar.showSpark
             end, function(value) UF.config[unit].castbar.showSpark = value end),
             lineBreakDetached = {type = "description", name = "", order = 7},
-            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the health bar."], 8, nil, not canDetach,
+            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 8, nil, not canDetach,
                                              function() return UF.config[unit].castbar.detached end, function(value) UF.config[unit].castbar.detached = value end),
             lineBreakSize = {type = "description", name = L["Size"], order = 9},
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 10, not canDetach, 10, nil, 400, 1, function() return UF.config[unit].castbar.size[1] end,

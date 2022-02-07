@@ -75,6 +75,12 @@ R.ChatCommands = {
             R:ResetFrames()
         end,
         description = "reset all frames"
+    },
+    ["options"] = {
+        func = function()
+            R.Libs.AceConfigDialog:Open(addonName)
+        end,
+        description = "open the config dialog"
     }
 }
 
