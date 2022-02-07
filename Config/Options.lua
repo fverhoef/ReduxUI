@@ -59,9 +59,7 @@ R.config.options = {
                 toggleFrameLock = {
                     order = 2,
                     type = "execute",
-                    name = function()
-                        return R.framesLocked and L["Unlock Frames"] or L["Lock Frames"]
-                    end,
+                    name = function() return R.framesLocked and L["Unlock Frames"] or L["Lock Frames"] end,
                     desc = L["Lock/unlock all movable frames."],
                     func = function()
                         if R.framesLocked then
@@ -71,15 +69,7 @@ R.config.options = {
                         end
                     end
                 },
-                resetFrames = {
-                    order = 3,
-                    type = "execute",
-                    name = L["Reset Frames"],
-                    desc = L["Reset the position of all movable frames."],
-                    func = function()
-                        R:ResetFrames()
-                    end
-                },
+                resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function() R:ResetFrames() end},
                 fonts = {
                     type = "group",
                     name = L["Fonts"],
@@ -172,23 +162,15 @@ R.config.options = {
                             desc = L["Characters in the inventory database."],
                             order = 1,
                             values = R.Modules.InventoryDatabase.GetCharacterKeys,
-                            get = function()
-                                return R.Modules.InventoryDatabase.selectedCharacter
-                            end,
-                            set = function(_, key)
-                                R.Modules.InventoryDatabase.selectedCharacter = key
-                            end
+                            get = function() return R.Modules.InventoryDatabase.selectedCharacter end,
+                            set = function(_, key) R.Modules.InventoryDatabase.selectedCharacter = key end
                         },
                         clear = {
                             order = 2,
                             type = "execute",
                             name = L["Clear Character Database"],
-                            disabled = function()
-                                return R.Modules.InventoryDatabase.selectedCharacter == nil
-                            end,
-                            func = function()
-                                R.Modules.InventoryDatabase:ClearCharacterDatabase(R.Modules.InventoryDatabase.selectedCharacter)
-                            end
+                            disabled = function() return R.Modules.InventoryDatabase.selectedCharacter == nil end,
+                            func = function() R.Modules.InventoryDatabase:ClearCharacterDatabase(R.Modules.InventoryDatabase.selectedCharacter) end
                         }
                     }
                 }

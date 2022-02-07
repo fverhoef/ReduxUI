@@ -237,7 +237,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerDisconnected = true
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
-    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, showSafeZone = true}, highlight = {target = false}}),
+    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, detached = true, showSafeZone = true}, highlight = {target = false}}),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
