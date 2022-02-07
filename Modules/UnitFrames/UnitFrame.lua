@@ -35,8 +35,6 @@ function UF:InitializeFrame()
     self:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
     self.Inlay:SetOutside(self, 6, 6)
 
-    self:CreateShadow()
-
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
     self:CreateHealth()

@@ -8,8 +8,8 @@ function UF:CreateClassPower()
 
     self.ClassPowerHolder = CreateFrame("Frame", "$parentClassPowerHolder", self)
     self.ClassPowerHolder:SetFrameLevel(self.Power:GetFrameLevel())
-    self.ClassPowerHolder:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
-    self.ClassPowerHolder:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
+    self.ClassPowerHolder:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 10, 15)
+    self.ClassPowerHolder:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -10, 15)
 
     self.ClassPower = {}
     for i = 1, 10 do
@@ -18,6 +18,15 @@ function UF:CreateClassPower()
         classPower:SetFrameLevel(self.Power:GetFrameLevel())
         classPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
         classPower:SetBackdropColor(0, 0, 0, 0.70)
+
+        classPower:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
+        classPower.Backdrop:SetOutside(classPower, 3, 3)
+        classPower.Backdrop:SetFrameLevel(classPower:GetFrameLevel() + 2)
+
+        classPower:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
+        classPower.Inlay:SetOutside(classPower, 6, 6)
+        classPower.Inlay:SetFrameLevel(classPower:GetFrameLevel() + 1)
+
         self.ClassPower[i] = classPower
     end
     self.ClassPower.PostUpdate = UF.ClassPower_PostUpdate
@@ -43,7 +52,7 @@ function UF:ConfigureClassPower()
 
     local max = self.ClassPower.max or #(self.ClassPower)
     local holderWidth = self.ClassPowerHolder:GetWidth()
-    local classPowerWidth = holderWidth / max - (math.max(0, max - 1)) * config.spacing
+    local classPowerWidth = (holderWidth - (math.max(0, max - 1)) * config.spacing) / max
 
     for i = 1, max do
         local classPower = self.ClassPower[i]

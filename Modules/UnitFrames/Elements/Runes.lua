@@ -20,6 +20,15 @@ function UF:CreateRunes()
         rune:SetFrameLevel(self.Power:GetFrameLevel())
         rune:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
         rune:SetBackdropColor(0, 0, 0, 0.70)
+
+        rune:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
+        rune.Backdrop:SetOutside(rune, 3, 3)
+        rune.Backdrop:SetFrameLevel(rune:GetFrameLevel() + 2)
+
+        rune:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
+        rune.Inlay:SetOutside(rune, 6, 6)
+        rune.Inlay:SetFrameLevel(rune:GetFrameLevel() + 1)
+
         self.Runes[i] = rune
     end
 
@@ -42,7 +51,7 @@ function UF:ConfigureRunes()
     self.RunesHolder:SetSize(unpack(config.size))
 
     local holderWidth = self.RunesHolder:GetWidth()
-    local runeWidth = holderWidth / MAX_RUNES - (math.max(0, MAX_RUNES - 1)) * config.spacing
+    local runeWidth = (holderWidth - (math.max(0, MAX_RUNES - 1)) * config.spacing) / MAX_RUNES
 
     for i, rune in ipairs(self.Runes) do
         rune:SetSize(runeWidth, config.size[2])
