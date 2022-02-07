@@ -2,10 +2,9 @@ local _, ns = ...
 ns.oUF = {}
 ns.oUF.Private = {}
 
-local build = select(4, GetBuildInfo())
-ns.oUF.isClassic = build < 20000
-ns.oUF.isTbc = build < 30000
-ns.oUF.isRetail = build > 40000
+ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+ns.oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+ns.oUF.isTbc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 
 if ns.oUF.isClassic or ns.oUF.isTbc then
     if not Enum.PowerType then
