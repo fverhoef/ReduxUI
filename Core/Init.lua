@@ -9,8 +9,6 @@ R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
 R.shortcut = "rui"
 
 R.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-R.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-R.isTbc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 
 R.Libs = {}
 function R:AddLib(name, major, minor)

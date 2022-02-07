@@ -3,10 +3,8 @@ ns.oUF = {}
 ns.oUF.Private = {}
 
 ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-ns.oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-ns.oUF.isTbc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 
-if ns.oUF.isClassic or ns.oUF.isTbc then
+if not oUF.isRetail then
     if not Enum.PowerType then
         Enum.PowerType = {
             HealthCost = -2,

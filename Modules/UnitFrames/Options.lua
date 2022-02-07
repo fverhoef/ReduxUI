@@ -790,14 +790,14 @@ R:RegisterModuleOptions(UF, {
         target = UF:CreateUnitOptions("target", 12, L["Target"]),
         targettarget = UF:CreateUnitOptions("targettarget", 13, L["Target's Target"]),
         pet = UF:CreateUnitOptions("pet", 14, L["Pet"]),
-        focus = UF:CreateUnitOptions("focus", 15, L["Focus"], R.isClassic),
-        focustarget = UF:CreateUnitOptions("focustarget", 16, L["Focus's Target"], R.isClassic),
+        focus = UF:CreateUnitOptions("focus", 15, L["Focus"]),
+        focustarget = UF:CreateUnitOptions("focustarget", 16, L["Focus's Target"]),
         party = UF:CreateUnitOptions("party", 17, L["Party"]),
         raid = UF:CreateUnitOptions("raid", 18, L["Raid"]),
         tank = UF:CreateUnitOptions("tank", 19, L["Tank"]),
         assist = UF:CreateUnitOptions("assist", 19, L["Assist"]),
         boss = UF:CreateUnitOptions("boss", 20, L["Boss"], not R.isRetail),
-        arena = UF:CreateUnitOptions("arena", 21, L["Arena"], R.isClassic),
+        arena = UF:CreateUnitOptions("arena", 21, L["Arena"]),
         nameplates = UF:CreateUnitOptions("nameplates", 22, L["Nameplates"])
     }
 })
