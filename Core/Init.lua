@@ -34,13 +34,6 @@ R:AddLib("ItemSearch", "LibItemSearch-1.2")
 R:AddLib("KeyBound", "LibKeyBound-1.0")
 R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
 
-if R.isClassic then
-    R:AddLib("ClassicDurations", "LibClassicDurations")
-    R.Libs.ClassicDurations:Register(addonName)
-end
-
-if R.isClassic or R.isTbc then R:AddLib("ClassicSpellActionCount", "LibClassicSpellActionCount-1.0") end
-
 R.Modules = {}
 function R:AddModule(name)
     if not name then return end
