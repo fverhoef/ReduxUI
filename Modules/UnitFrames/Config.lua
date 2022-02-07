@@ -145,7 +145,7 @@ local DEFAULT_UNIT_CONFIG = {
     masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
     leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
     phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
-    pvpIndicator = {enabled = false, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+    pvpIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
     pvpClassificationIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
     questIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "LEFT", 0, 0}},
     raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
@@ -253,7 +253,8 @@ R:RegisterModuleConfig(UF, {
         power = {enabled = false},
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
-        castbar = {enabled = false}
+        castbar = {enabled = false},
+        pvpIndicator = {enabled = false},
     }),
     pet = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
         size = {120, 28},
@@ -261,7 +262,8 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
         power = {enabled = false},
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, justifyH = "CENTER", tag = "[name]"},
-        portrait = {enabled = false}
+        portrait = {enabled = false},
+        pvpIndicator = {enabled = false},
     }),
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOP", "UIParent", "TOP", 0, -300},
@@ -278,7 +280,8 @@ R:RegisterModuleConfig(UF, {
         power = {enabled = false},
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
-        castbar = {enabled = false}
+        castbar = {enabled = false},
+        pvpIndicator = {enabled = false},
     }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
@@ -349,6 +352,7 @@ R:RegisterModuleConfig(UF, {
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
         highlight = {targetArrows = true},
+        pvpIndicator = {enabled = false},
         cvars = {
             nameplateMaxDistance = 41,
             nameplateMinScale = 1,
