@@ -125,10 +125,7 @@ function TT:OnTooltipSetUnit()
         end
     end
 
-    for i = 2, 5 do
-        local text = _G["GameTooltipTextLeft" .. i]
-        if text and string.find(text:GetText() or "empty", "PvP") then text:SetTextColor(unpack(TT.config.colors.pvp)) end
-    end
+    TT:AddPvPColor(self)
 
     if UnitIsDeadOrGhost(unit) then _G.GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead)) end
 
@@ -301,6 +298,12 @@ function TT:AddLevelColor(tooltip, unit)
     end
 end
 
+function TT:AddPvPColor(tooltip)
+    local line = TT:GetPvPLine(tooltip)
+    if not line then return end
+    line:SetTextColor(unpack(TT.config.colors.pvp))
+end
+
 function TT:AddPvPRank(tooltip, rank)
     if not R.isRetail and rank and TT.config.showPvPRank then
         local size = TT.config.rankSize or 12
@@ -316,9 +319,18 @@ function TT:GetLevelLine(tooltip, offset, guildName)
     if guildName and r.isRetail then offset = 3 end
 
     for i = offset, tooltip:NumLines() do
-        local tipLine = _G["GameTooltipTextLeft" .. i]
-        local tipText = tipLine and tipLine:GetText() and string.lower(tipLine:GetText())
-        if tipText and (string.find(tipText, LEVEL1) or string.find(tipText, LEVEL2)) then return tipLine end
+        local line = _G["GameTooltipTextLeft" .. i]
+        local text = line and line:GetText() and string.lower(line:GetText())
+        if text and (string.find(text, LEVEL1) or string.find(text, LEVEL2)) then return line end
+    end
+end
+
+function TT:GetPvPLine(tooltip)
+    if tooltip:IsForbidden() then return end
+
+    for i = 2, 5 do
+        local line = _G["GameTooltipTextLeft" .. i]
+        if line and string.find(line:GetText() or "empty", "PvP") then return line end
     end
 end
 
