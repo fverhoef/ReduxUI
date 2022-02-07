@@ -187,10 +187,6 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	
-	if(oUF.isClassic and unit ~= 'player' and not element:IsShown()) then
-		return
-	end
 	if(not element:IsShown() or element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
