@@ -3,6 +3,9 @@ local R = _G.ReduxUI
 local TT = R:AddModule("Tooltips", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 local ID = R.Modules.InventoryDatabase
 
+local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub("%s?%%s%s?%-?", ""))
+local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub("^%%2$s%s?(.-)%s?%%1$s", "%1"):gsub("^%-?г?о?%s?", ""):gsub("%s?%%s%s?%-?", ""))
+
 TT.classColors = {}
 TT.factionColors = {}
 
@@ -90,17 +93,11 @@ function TT:GetTarget(unit)
     end
 end
 
-function TT:SetUnitBuff(...)
-    TT:AddSpellID(self, select(10, UnitBuff(...)))
-end
+function TT:SetUnitBuff(...) TT:AddSpellID(self, select(10, UnitBuff(...))) end
 
-function TT:SetUnitDebuff(...)
-    TT:AddSpellID(self, select(10, UnitDebuff(...)))
-end
+function TT:SetUnitDebuff(...) TT:AddSpellID(self, select(10, UnitDebuff(...))) end
 
-function TT:SetUnitAura(...)
-    TT:AddSpellID(self, select(10, UnitAura(...)))
-end
+function TT:SetUnitAura(...) TT:AddSpellID(self, select(10, UnitAura(...))) end
 
 function TT:SetItemRef(...)
     local link = self
@@ -117,6 +114,8 @@ function TT:OnTooltipSetUnit()
 
     if UnitIsPlayer(unit) then
         if UnitIsAFK(unit) then self:AppendText((" %s<AFK>|r"):format(R:Hex(TT.config.colors.afk))) end
+
+        TT:AddLevelColor(self, unit)
 
         local rank = UnitPVPRank and UnitPVPRank(unit)
         if rank and rank > 0 then
@@ -166,9 +165,7 @@ function TT:OnTooltipSetSpell()
     end
 end
 
-function TT:OnShow()
-    TT:Update(self)
-end
+function TT:OnShow() TT:Update(self) end
 
 function TT:SetStatusBarColor(r, g, b)
     if not barColor then return end
@@ -229,13 +226,9 @@ function TT:AddIcon(tooltip, icon)
     end
 end
 
-function TT:AddSpellID(tooltip, spellId)
-    if spellId and TT.config.showSpellId then tooltip:AddDoubleLine("|cff0099ffSpell ID|r", spellId) end
-end
+function TT:AddSpellID(tooltip, spellId) if spellId and TT.config.showSpellId then tooltip:AddDoubleLine("|cff0099ffSpell ID|r", spellId) end end
 
-function TT:AddItemID(tooltip, itemId)
-    if itemId and TT.config.showItemId then tooltip:AddDoubleLine("|cff0099ffItem ID|r", itemId) end
-end
+function TT:AddItemID(tooltip, itemId) if itemId and TT.config.showItemId then tooltip:AddDoubleLine("|cff0099ffItem ID|r", itemId) end end
 
 function TT:AddItemCount(tooltip, itemId)
     if itemId and TT.config.showItemCount then
@@ -283,12 +276,49 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
     end
 end
 
+function TT:AddLevelColor(tooltip, unit)
+    local localeClass, class = UnitClass(unit)
+    if not class then return end
+    local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
+    local levelLine = TT:GetLevelLine(tooltip, 2, guildName)
+    if not levelLine then return end
+
+    local level, realLevel = (R.isRetail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
+    local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
+    local difficultyColor = GetCreatureDifficultyColor(level)
+
+    local race = UnitRace(unit)
+    race = (race and race .. " ") or ""
+
+    local sex = UnitSex(unit)
+    local gender = (sex == 1 and UNKNOWN) or (sex == 2 and MALE) or (sex == 3 and FEMALE)
+    gender = (gender and gender .. " ") or ""
+
+    if level < realLevel then
+        levelLine:SetFormattedText("%s%s|r |cffFFFFFF(%s)|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", realLevel, gender, race, R:Hex(classColor), localeClass)
+    else
+        levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", gender, race, R:Hex(classColor), localeClass)
+    end
+end
+
 function TT:AddPvPRank(tooltip, rank)
     if not R.isRetail and rank and TT.config.showPvPRank then
         local size = TT.config.rankSize or 12
         local rank = "Interface\\PvPRankBadges\\PvPRank" .. (rank < 10 and "0" or "") .. rank
         local title = _G[tooltip:GetName() .. "TextLeft1"]
         if title and not title:GetText():find("|T" .. rank) then title:SetFormattedText("|T%s:%d:%d:0:0|t %s", rank, size, size, title:GetText()) end
+    end
+end
+
+function TT:GetLevelLine(tooltip, offset, guildName)
+    if tooltip:IsForbidden() then return end
+
+    if guildName and r.isRetail then offset = 3 end
+
+    for i = offset, tooltip:NumLines() do
+        local tipLine = _G["GameTooltipTextLeft" .. i]
+        local tipText = tipLine and tipLine:GetText() and string.lower(tipLine:GetText())
+        if tipText and (string.find(tipText, LEVEL1) or string.find(tipText, LEVEL2)) then return tipLine end
     end
 end
 
