@@ -316,7 +316,7 @@ end
 function TT:GetLevelLine(tooltip, offset, guildName)
     if tooltip:IsForbidden() then return end
 
-    if guildName and r.isRetail then offset = 3 end
+    if guildName and R.isRetail then offset = 3 end
 
     for i = offset, tooltip:NumLines() do
         local line = _G["GameTooltipTextLeft" .. i]
