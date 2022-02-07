@@ -72,7 +72,7 @@ if ns.oUF.isClassic or ns.oUF.isTbc then
 
     if not _G.UnitEffectiveLevel then
         _G.UnitEffectiveLevel = function(u)
-            return UnitLevel(u) - UnitLevel("player")
+            return UnitLevel(u)
         end
     end
 
