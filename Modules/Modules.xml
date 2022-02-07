@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Include file="Automation\Automation.xml"/>
     <Include file="Bags\Bags.xml"/>
+    <Include file="ScreenSaver\ScreenSaver.xml"/>
     <Include file="Tooltips\Tooltips.xml"/>
     <Include file="UnitFrames\UnitFrames.xml"/>
 </Ui>

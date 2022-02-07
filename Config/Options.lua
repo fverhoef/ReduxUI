@@ -150,6 +150,36 @@ R.config.options = {
                         }
                     }
                 },
+                screenSaver = {
+                    type = "group",
+                    name = L["Screen Saver"],
+                    order = 30,
+                    inline = true,
+                    hidden = function() R.Modules.ScreenSaver and true or false end,
+                    args = {
+                        type = "toggle",
+                        name = L["Enabled"],
+                        order = 1,
+                        confirm = function()
+                            if R.Modules.ScreenSaver.config.enabled then
+                                return L["Disabling the screen saver requires a UI reload. Proceed?"]
+                            else
+                                return false
+                            end
+                        end,
+                        get = function()
+                            return R.Modules.ScreenSaver.config.enabled
+                        end,
+                        set = function(_, val)
+                            R.Modules.ScreenSaver.config.enabled = val
+                            if not val then
+                                ReloadUI()
+                            else
+                                SS:Initialize()
+                            end
+                        end
+                    }
+                },
                 inventoryDatabase = {
                     type = "group",
                     name = L["Inventory Database"],
