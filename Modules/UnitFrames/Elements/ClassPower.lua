@@ -11,20 +11,17 @@ function UF:CreateClassPower()
     self.ClassPowerHolder:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
     self.ClassPowerHolder:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
 
-    -- TODO: have the right amount of bars per class
-    -- TODO: use class-specific textures
-    local max = 5 -- math.max(MAX_COMBO_POINTS)
     self.ClassPower = {}
-    for i = 1, max do
-        self.ClassPower[i] = CreateFrame("StatusBar", nil, self.ClassPowerHolder, BackdropTemplateMixin and "BackdropTemplate")
-        self.ClassPower[i]:SetSize(16, 16)
-        self.ClassPower[i]:SetStatusBarTexture(UF.config.statusbars.classPower)
-        self.ClassPower[i]:SetFrameLevel(self.Power:GetFrameLevel())
-        self.ClassPower[i]:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
-        self.ClassPower[i]:SetBackdropColor(0, 0, 0, 0.70)
-
-        self.ClassPower[i]:SetPoint("TOPLEFT", self.ClassPowerHolder, "TOPLEFT", (i - 1) * 16, 0)
+    for i = 1, 10 do
+        local classPower = CreateFrame("StatusBar", nil, self.ClassPowerHolder, BackdropTemplateMixin and "BackdropTemplate")
+        classPower:SetStatusBarTexture(UF.config.statusbars.classPower)
+        classPower:SetFrameLevel(self.Power:GetFrameLevel())
+        classPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
+        classPower:SetBackdropColor(0, 0, 0, 0.70)
+        self.ClassPower[i] = classPower
     end
+    self.ClassPower.PostUpdate = UF.ClassPower_PostUpdate
+    self.ClassPower.unitFrame = self
 
     return self.ClassPower
 end
@@ -44,21 +41,33 @@ function UF:ConfigureClassPower()
 
     self.ClassPowerHolder:SetSize(unpack(config.size))
 
-    local xOffset = 0
-    local yOffset = 0
+    local max = self.ClassPower.max or #(self.ClassPower)
+    local holderWidth = self.ClassPowerHolder:GetWidth()
+    local classPowerWidth = holderWidth / max - (math.max(0, max - 1)) * config.spacing
 
-    local max = #(self.ClassPower)
     for i = 1, max do
-        self.ClassPower[i]:SetSize(16, 16)
-        self.ClassPower[i]:SetStatusBarTexture(UF.config.statusbars.classPower)
-        self.ClassPower[i]:SetPoint("TOPLEFT", self.ClassPowerHolder, "TOPLEFT", xOffset + (i - 1) * 16, yOffset)
+        local classPower = self.ClassPower[i]
+        classPower:SetSize(classPowerWidth, config.size[2])
+        classPower:SetStatusBarTexture(UF.config.statusbars.classPower)
+        if i == 1 then
+            classPower:SetPoint("BOTTOMLEFT", self.ClassPowerHolder, "BOTTOMLEFT")
+        else
+            classPower:SetPoint("LEFT", self.ClassPower[i - 1], "RIGHT", config.spacing, 0)
+        end
 
         if config.smooth then
-            R.Libs.SmoothStatusBar:SmoothBar(self.ClassPower[i])
+            R.Libs.SmoothStatusBar:SmoothBar(classPower)
         else
-            R.Libs.SmoothStatusBar:ResetBar(self.ClassPower[i])
+            R.Libs.SmoothStatusBar:ResetBar(classPower)
         end
     end
 end
 
 oUF:RegisterMetaFunction("ConfigureClassPower", UF.ConfigureClassPower)
+
+function UF:ClassPower_PostUpdate(cur, max, hasMaxChanged, powerType)
+    self.max = max
+    if hasMaxChanged then
+        self.unitFrame:ConfigureClassPower()
+    end
+end

@@ -73,7 +73,10 @@ local DEFAULT_UNIT_CONFIG = {
         },
         smooth = true
     },
-    classPower = {enabled = true, size = {226, 12}, point = {"BOTTOM", "TOP", 0, 5}, smooth = true},
+    classPower = {enabled = true, size = {226, 12}, point = {"BOTTOM", "TOP", 0, 5}, spacing = 5, smooth = true},
+    runes = {enabled = true, size = {226, 12}, point = {"BOTTOM", "TOP", 0, 5}, spacing = 5, smooth = true},
+    stagger = {enabled = true, size = {226, 12}, point = {"BOTTOM", "TOP", 0, 5}, smooth = true},
+    totems = {enabled = true, size = {226, 32}, point = {"BOTTOM", "TOP", 0, 5}, spacing = 5, smooth = true},
     name = {
         enabled = true,
         size = {170, 10},
