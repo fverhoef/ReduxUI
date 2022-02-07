@@ -70,17 +70,7 @@ function UF:PostCreateAura(button)
 end
 
 function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
-    local name, duration, expiration, caster, spellID
-    if R.isClassic and R.Libs.ClassicDurations and not UnitIsUnit("player", unit) then
-        local durationNew, expirationTimeNew
-        name, _, _, _, duration, expiration, caster, _, _, spellID = R.Libs.ClassicDurations:UnitAura(unit, index, button.filter)
-
-        if spellID then durationNew, expirationTimeNew = R.Libs.ClassicDurations:GetAuraDurationByUnit(unit, spellID, caster, name) end
-
-        if durationNew and durationNew > 0 then duration, expiration = durationNew, expirationTimeNew end
-    else
-        name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
-    end
+    local name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
 
     if button and button.debuffType ~= debuffType then button.debuffType = debuffType end
 
@@ -92,8 +82,8 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
             button.cd:Hide()
         end
 
-        local hideDuration = not self.config.showDuration or (button:GetWidth() < (BS.config.auras.minSizeToShowDuration or 32))
-        button.cd:SetHideCountdownNumbers(hideDuration)
+        --local hideDuration = not self.config.showDuration or (button:GetWidth() < (BS.config.auras.minSizeToShowDuration or 32))
+        --button.cd:SetHideCountdownNumbers(hideDuration)
     end
 
     if R.Modules.ButtonStyles then R.Modules.ButtonStyles:UpdateAuraButton(button) end

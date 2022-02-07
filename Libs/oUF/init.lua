@@ -5,7 +5,7 @@ ns.oUF.Private = {}
 local build = select(4, GetBuildInfo())
 ns.oUF.isClassic = build < 20000
 ns.oUF.isTbc = build < 30000
-ns.oUF.isRetail = build > 30000
+ns.oUF.isRetail = build > 40000
 
 if ns.oUF.isClassic or ns.oUF.isTbc then
     if not Enum.PowerType then
@@ -39,24 +39,14 @@ if ns.oUF.isClassic or ns.oUF.isTbc then
     end
 
     if not _G.UnitCastingInfo then
-        local LibClassicCasterino = LibStub("LibClassicCasterino", true)
         _G.UnitCastingInfo = function(unit)
-            if LibClassicCasterino then
-                return LibClassicCasterino:UnitCastingInfo(unit)
-            else
-                return CastingInfo(unit)
-            end
+            return CastingInfo(unit)
         end
     end
 
     if not _G.UnitChannelInfo then
-        local LibClassicCasterino = LibStub("LibClassicCasterino", true)
         _G.UnitChannelInfo = function(unit)
-            if LibClassicCasterino then
-                return LibClassicCasterino:UnitChannelInfo(unit)
-            else
-                return ChannelInfo(unit)
-            end
+            return ChannelInfo(unit)
         end
     end
 

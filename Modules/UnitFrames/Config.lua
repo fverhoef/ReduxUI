@@ -98,29 +98,29 @@ local DEFAULT_UNIT_CONFIG = {
     },
     portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false},
     auras = {
-        enabled = true,
+        enabled = false,
         buffs = {
             enabled = true,
-            point = {"TOPLEFT", "BOTTOMLEFT", 0, -9},
+            point = {"TOPLEFT", "BOTTOMLEFT", 0, -7},
             initialAnchor = "TOPLEFT",
             growthX = "RIGHT",
             growthY = "DOWN",
             iconSize = 32,
             spacing = 2,
-            numColumns = 5,
+            numColumns = 6,
             showDuration = true,
             onlyShowPlayer = false,
             num = 32
         },
         debuffs = {
             enabled = true,
-            point = {"BOTTOMLEFT", "TOPLEFT", 0, 5},
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 12},
             initialAnchor = "BOTTOMLEFT",
             growthX = "RIGHT",
             growthY = "UP",
             iconSize = 32,
             spacing = 2,
-            numColumns = 5,
+            numColumns = 6,
             showDuration = true,
             onlyShowPlayer = false,
             num = 16
@@ -243,6 +243,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
+        auras = { enabled = true },
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
     }),
@@ -270,6 +271,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
+        auras = { enabled = true },
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
     }),
@@ -332,6 +334,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
+        auras = { enabled = true },
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -341,6 +344,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
+        auras = { enabled = true },
         pvpIndicator = {enabled = false}
     }),
     nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
@@ -351,6 +355,7 @@ R:RegisterModuleConfig(UF, {
         name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
+        auras = { enabled = true },
         highlight = {targetArrows = true},
         pvpIndicator = {enabled = false},
         cvars = {
