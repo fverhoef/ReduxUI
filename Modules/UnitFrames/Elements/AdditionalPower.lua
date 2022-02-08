@@ -13,11 +13,10 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
     self.AdditionalPower:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 10, -1)
     self.AdditionalPower:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -10, -1)
-    self.AdditionalPower:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 8})
-    self.AdditionalPower.Backdrop:SetOutside(self.AdditionalPower, 2, 2)
-    self.AdditionalPower.Backdrop:SetFrameLevel(self.AdditionalPower:GetFrameLevel() + 1)
+    self.AdditionalPower:CreateBorder(nil, 8, 2, self.AdditionalPower:GetFrameLevel() + 1)
 
     self.AdditionalPower.Overlay = CreateFrame("Frame", "$parentOverlay", self.AdditionalPower)
+    self.AdditionalPower.Overlay:SetParent(self.Overlay)
     self.AdditionalPower.Overlay:SetAllPoints(self.AdditionalPower)
 
     self.AdditionalPower.Value = self:CreateFontString("$parentAdditionalPowerText", "OVERLAY", nil, 7)
