@@ -47,12 +47,11 @@ R.media = {
 
         edgeFiles = {
             borderThick = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThick",
-            borderThickTooltip = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThickTooltip",
             borderThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThin",
-            borderThinTooltip = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThinTooltip",
             glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow",
             inlay = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Inlay",
-            separator = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Separator"
+            separatorHorizontal = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\SeparatorHorizontal",
+            separatorVertical = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\SeparatorVertical"
         },
 
         minimap = {

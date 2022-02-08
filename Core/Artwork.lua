@@ -2,8 +2,8 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 
 R.DEFAULT_BACKDROP_COLOR = {0.1, 0.1, 0.1, 0.8}
-R.DEFAULT_BORDER_COLOR = {1, 1, 1, 1}
-R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.7}
+R.DEFAULT_BORDER_COLOR = {0.5, 0.5, 0.5, 1}
+R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.5}
 R.DEFAULT_INLAY_COLOR = {1, 1, 1, 0.7}
 
 function R:CreateBackdrop(backdropInfo, color, borderColor)
@@ -30,7 +30,7 @@ function R:CreateBorder(color, size, offset, frameLevel)
 
     frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 1)
 
-    border:SetBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = size or 12})
+    border:SetBackdrop({edgeFile = R.media.textures.edgeFiles.borderThick, edgeSize = size or 12})
     border:SetBackdropBorderColor(unpack(color))
     border:SetOutside(self, offset or 3, offset or 3)
     border:SetFrameLevel(frameLevel)
@@ -42,16 +42,16 @@ function R:CreateShadow(size, color)
     local shadow = self.Shadow
     if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
-    size = size or 7
+    size = size or 12
     color = color or R.DEFAULT_SHADOW_COLOR
-    if not color[4] then color[4] = 0.7 end
+    if not color[4] then color[4] = R.DEFAULT_SHADOW_COLOR[4] end
 
-    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size + 3})
+    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size, insets = {left = size, right = size, top = size, bottom = size}})
     shadow:SetBackdropColor(0, 0, 0, 0)
     shadow:SetBackdropBorderColor(unpack(color))
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
-    shadow:SetOutside(self, size, size)
+    shadow:SetOutside(self, 5, 5)
 
     self.Shadow = shadow
 end

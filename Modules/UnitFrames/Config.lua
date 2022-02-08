@@ -231,7 +231,7 @@ R:RegisterModuleConfig(UF, {
             ["WARRIOR"] = oUF.colors.class["WARRIOR"]
         },
         auraHighlight = {Magic = {0.2, 0.6, 1, 0.45}, Curse = {0.6, 0, 1, 0.45}, Disease = {0.6, 0.4, 0, 0.45}, Poison = {0, 0.6, 0, 0.45}, blendMode = "ADD"},
-        targetHighlight = {1, 1, 1, 1},
+        targetHighlight = {1, 1, 1},
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,

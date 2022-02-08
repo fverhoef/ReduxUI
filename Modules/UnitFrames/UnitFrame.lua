@@ -30,6 +30,7 @@ function UF:InitializeFrame()
 
     self:CreateBorder()
     self:CreateInlay()
+    self:CreateShadow()
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
