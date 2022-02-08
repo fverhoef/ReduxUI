@@ -226,6 +226,7 @@ function MM:StyleMinimap()
         MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
     end
 
+    MiniMapTrackingBackground:Hide()
     MiniMapTrackingButtonBorder:Hide()
 
     Minimap.InformationFrame.ButtonFrameToggle = CreateFrame("CheckButton", addonName .. "MinimapButtonFrameToggle", Minimap.InformationFrame)
