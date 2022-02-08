@@ -19,13 +19,8 @@ function UF:CreateClassPower()
         classPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
         classPower:SetBackdropColor(0, 0, 0, 0.70)
 
-        classPower:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
-        classPower.Backdrop:SetOutside(classPower, 3, 3)
-        classPower.Backdrop:SetFrameLevel(classPower:GetFrameLevel() + 2)
-
-        classPower:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
-        classPower.Inlay:SetOutside(classPower, 6, 6)
-        classPower.Inlay:SetFrameLevel(classPower:GetFrameLevel() + 1)
+        classPower:CreateBorder(nil, 8, 2, classPower:GetFrameLevel() + 2)
+        classPower:CreateInlay()
 
         self.ClassPower[i] = classPower
     end

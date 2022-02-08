@@ -7,8 +7,7 @@ function UF:CreateName()
     local config = self.config.name
     if not config or not config.enabled then return end
 
-    self.Name = self:CreateFontString("$parentName", "OVERLAY")
-    self.Name:SetParent(self.Overlay)
+    self.Name = self.Overlay:CreateFontString("$parentName", "OVERLAY")
     self.Name:SetFont(UF.config.font, 13, "OUTLINE")
 
     return self.Name

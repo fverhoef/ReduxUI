@@ -9,7 +9,7 @@ end
 oUF:RegisterMetaFunction("CreateHighlight", UF.CreateHighlight)
 
 function UF:UpdateHighlight()
-    if not self or (not self.Backdrop and not self.Shadow) then return end
+    if not self or (not self.Border and not self.Shadow) then return end
 
     local config = self.config.highlight
 
@@ -26,8 +26,7 @@ function UF:UpdateHighlight()
         color = color or UF.config.colors.targetHighlight
     end
 
-    if self.Backdrop then self.Backdrop:SetBackdropBorderColor(unpack(config.colorBorder and color or R.DEFAULT_BORDER_COLOR)) end
-
+    if self.Border then self.Border:SetBackdropBorderColor(unpack(config.colorBorder and color or R.DEFAULT_BORDER_COLOR)) end
     if self.Shadow then self.Shadow:SetBackdropBorderColor(unpack(config.colorShadow and color or R.DEFAULT_SHADOW_COLOR)) end
 end
 

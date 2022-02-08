@@ -11,6 +11,7 @@ local function AddApi(object)
     if not object.DisableScripts then mt.DisableScripts = R.DisableScripts end
     -- Artwork
     if not object.CreateBackdrop then mt.CreateBackdrop = R.CreateBackdrop end
+    if not object.CreateBorder then mt.CreateBorder = R.CreateBorder end
     if not object.CreateShadow then mt.CreateShadow = R.CreateShadow end
     if not object.CreateInlay then mt.CreateInlay = R.CreateInlay end
     -- Fader

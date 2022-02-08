@@ -28,12 +28,8 @@ function UF:InitializeFrame()
     self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
     self.Overlay:SetAllPoints()
 
-    self:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
-    self.Backdrop:SetOutside(self, 3, 3)
-    self.Backdrop:SetFrameLevel(self:GetFrameLevel())
-
-    self:CreateInlay({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = 12})
-    self.Inlay:SetOutside(self, 6, 6)
+    self:CreateBorder()
+    self:CreateInlay()
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 

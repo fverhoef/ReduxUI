@@ -6,8 +6,8 @@
             <Frame name="$parentBottom" parentKey="Bottom" inherits="BackdropTemplate">
                 <Size x="384" y="120" />
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-10" y="0"/>
-                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="10" y="0"/>
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-10" y="-5"/>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="10" y="-5"/>
                 </Anchors>
 
                 <Layers>
@@ -15,7 +15,7 @@
                         <Texture name="$parentFaction" parentKey="Faction" file="Interface\Timer\Horde-Logo">
                             <Size x="140" y="140" />
                             <Anchors>
-                                <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-10" y="-18"/>
+                                <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-10" y="-10"/>
                             </Anchors>
                         </Texture>
                         <FontString name="$parentName" parentKey="Name" inherits="GameFontHighlight" justifyH="MIDDLE">

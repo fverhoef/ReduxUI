@@ -21,6 +21,7 @@ function UF:CreateHealth()
     self.Health.colorHappiness = false
 
     self.Health.Overlay = CreateFrame("Frame", "$parentOverlay", self.Health)
+    self.Health.Overlay:SetParent(self.Overlay)
     self.Health.Overlay:SetAllPoints(self.Health)
 
     self.Health.Value = self.Health.Overlay:CreateFontString("$parentHealthValue", "OVERLAY")

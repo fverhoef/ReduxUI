@@ -20,6 +20,7 @@ function UF:CreatePower()
     self.Power.colorDisconnected = UF.config.colors.colorPowerDisconnected
 
     self.Power.Overlay = CreateFrame("Frame", "$parentOverlay", self.Power)
+    self.Power.Overlay:SetParent(self.Overlay)
     self.Power.Overlay:SetAllPoints(self.Power)
 
     self.Power.Value = self.Power.Overlay:CreateFontString("$parentPowerText", "OVERLAY", nil, 7)

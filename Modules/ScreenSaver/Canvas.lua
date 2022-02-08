@@ -8,8 +8,16 @@ ScreenSaverCanvasMixin = {}
 function ScreenSaverCanvasMixin:Initialize()
     self:SetScale(_G.UIParent:GetScale())
     self:SetAllPoints(_G.UIParent)
-    --self.Bottom:SetHeight(GetScreenHeight() * (1 / 10))
-    self.Bottom:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", tile = false, tileEdge = false, tileSize = 16, edgeSize = 16, insets = {left = 0, right = 0, top = 0, bottom = 0}})
+    -- self.Bottom:SetHeight(GetScreenHeight() * (1 / 10))
+    self.Bottom:SetBackdrop({
+        edgeFile = R.media.textures.edgeFiles.borderThickTooltip,
+        bgFile = "Interface\\Buttons\\WHITE8x8",
+        tile = false,
+        tileEdge = false,
+        tileSize = 16,
+        edgeSize = 16,
+        insets = {left = 0, right = 0, top = 0, bottom = 0}
+    })
     self.Bottom:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
     self.ModelHolder.Model:Initialize()
@@ -33,7 +41,7 @@ function ScreenSaverCanvasMixin:Configure()
 
     self.Bottom.Time:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
     self.Bottom.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
-    self.Bottom.Time:SetText("00:00")
+    self.Bottom.Time:SetText("AFK for 00:00")
     self.Bottom.Time:SetTextColor(0.7, 0.7, 0.7)
 
     self.ModelHolder.Model:Initialize()
@@ -67,7 +75,7 @@ end
 
 function ScreenSaverCanvasMixin:UpdateTimer()
     local time = GetTime() - SS.startTime
-    self.Bottom.Time:SetFormattedText("%02d:%02d", floor(time / 60), time % 60)
+    self.Bottom.Time:SetFormattedText("AFK for %02d:%02d", math.floor(time / 60), time % 60)
 end
 
 local ignoreKeys = {LALT = true, LSHIFT = true, RSHIFT = true}
@@ -105,9 +113,7 @@ function ScreenSaverCanvasPlayerModelMixin:Enable()
     self:SetScript("OnUpdate", ScreenSaverCanvasPlayerModelMixin.OnUpdate)
 end
 
-function ScreenSaverCanvasPlayerModelMixin:Disable()
-    self:SetScript("OnUpdate", nil)
-end
+function ScreenSaverCanvasPlayerModelMixin:Disable() self:SetScript("OnUpdate", nil) end
 
 function ScreenSaverCanvasPlayerModelMixin:OnUpdate()
     if SS.isActive and not self.isIdle then

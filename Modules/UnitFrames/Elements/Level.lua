@@ -6,8 +6,7 @@ local oUF = ns.oUF or oUF
 function UF:CreateLevel()
     if not self.config.level.enabled then return end
 
-    self.Level = self:CreateFontString("$parentLevel", "OVERLAY")
-    self.Level:SetParent(self.Overlay)
+    self.Level = self.Overlay:CreateFontString("$parentLevel", "OVERLAY")
     self.Level:SetFont(UF.config.font, 12, "THICKOUTLINE")
 
     return self.Level

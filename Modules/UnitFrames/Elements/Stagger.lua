@@ -14,9 +14,7 @@ function UF:CreateStagger()
     self.Stagger:SetSize(120, 20)
     self.Stagger:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
     self.Stagger:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
-    self.Stagger:CreateBackdrop({edgeFile = R.media.textures.edgeFiles.borderThickTooltip, edgeSize = 12})
-    self.Stagger.Backdrop:SetOutside(self.Stagger, 3, 3)
-    self.Stagger.Backdrop:SetFrameLevel(self.Stagger:GetFrameLevel() + 1)
+    self.Stagger:CreateBorder(nil, nil, nil, self.Stagger:GetFrameLevel() + 1)
 
     return self.Stagger
 end
