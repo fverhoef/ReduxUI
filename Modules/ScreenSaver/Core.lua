@@ -7,14 +7,10 @@ local CAMERA_SPEED = 0.035
 local ignoreKeys = {LALT = true, LSHIFT = true, RSHIFT = true}
 local printKeys = {PRINTSCREEN = true}
 
-if IsMacClient() then
-    printKeys[_G.KEY_PRINTSCREEN_MAC] = true
-end
+if IsMacClient() then printKeys[_G.KEY_PRINTSCREEN_MAC] = true end
 
-function SS:Initialize()    
-    if not SS.config.enabled then
-        return
-    end
+function SS:Initialize()
+    if not SS.config.enabled then return end
 
     local config = SS.config
 
@@ -30,14 +26,7 @@ function SS:Initialize()
     SS.Canvas.Bottom:SetPoint("BOTTOM", SS.Canvas, "BOTTOM", 0, 0)
     SS.Canvas.Bottom:SetWidth(GetScreenWidth())
     SS.Canvas.Bottom:SetHeight(GetScreenHeight() * (1 / 10))
-    SS.Canvas.Bottom:SetBackdrop({
-        bgFile = "Interface\\Buttons\\WHITE8x8",
-        tile = false,
-        tileEdge = false,
-        tileSize = 16,
-        edgeSize = 16,
-        insets = {left = 0, right = 0, top = 0, bottom = 0}
-    })
+    SS.Canvas.Bottom:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", tile = false, tileEdge = false, tileSize = 16, edgeSize = 16, insets = {left = 0, right = 0, top = 0, bottom = 0}})
     SS.Canvas.Bottom:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
     SS.Canvas.Bottom.Faction = SS.Canvas.Bottom:CreateTexture(nil, "OVERLAY")
@@ -47,19 +36,23 @@ function SS:Initialize()
 
     local classColor = _G.RAID_CLASS_COLORS[R.PlayerInfo.class]
     SS.Canvas.Bottom.Name = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
+    SS.Canvas.Bottom.Name:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    SS.Canvas.Bottom.Name:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     SS.Canvas.Bottom.Name:SetFont(unpack(config.font))
     SS.Canvas.Bottom.Name:SetFormattedText("%s-%s", R.PlayerInfo.name, R.PlayerInfo.realm)
     SS.Canvas.Bottom.Name:SetPoint("TOPLEFT", SS.Canvas.Bottom.Faction, "TOPRIGHT", -10, -28)
     SS.Canvas.Bottom.Name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
     SS.Canvas.Bottom.Guild = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
-    SS.Canvas.Bottom.Guild:SetFont(unpack(config.font))
+    SS.Canvas.Bottom.Guild:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    SS.Canvas.Bottom.Guild:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     SS.Canvas.Bottom.Guild:SetText(L["No Guild"])
     SS.Canvas.Bottom.Guild:SetPoint("TOPLEFT", SS.Canvas.Bottom.Name, "BOTTOMLEFT", 0, -6)
     SS.Canvas.Bottom.Guild:SetTextColor(0.7, 0.7, 0.7)
 
     SS.Canvas.Bottom.Time = SS.Canvas.Bottom:CreateFontString(nil, "OVERLAY")
-    SS.Canvas.Bottom.Time:SetFont(unpack(config.font))
+    SS.Canvas.Bottom.Time:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    SS.Canvas.Bottom.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     SS.Canvas.Bottom.Time:SetText("00:00")
     SS.Canvas.Bottom.Time:SetPoint("TOPLEFT", SS.Canvas.Bottom.Guild, "BOTTOMLEFT", 0, -6)
     SS.Canvas.Bottom.Time:SetTextColor(0.7, 0.7, 0.7)
@@ -84,14 +77,10 @@ function SS:Initialize()
     SS:RegisterEvent("UPDATE_BATTLEFIELD_STATUS", SS.OnEvent)
 end
 
-function SS:OnEvent()
-    SS:Toggle()
-end
+function SS:OnEvent() SS:Toggle() end
 
 function SS:OnKeyDown(key)
-    if ignoreKeys[key] then
-        return
-    end
+    if ignoreKeys[key] then return end
 
     if printKeys[key] then
         Screenshot()
@@ -122,9 +111,7 @@ function SS:Toggle()
 end
 
 function SS:Show()
-    if SS.isActive then
-        return
-    end
+    if SS.isActive then return end
 
     SS.isActive = true
 
@@ -161,12 +148,8 @@ function SS:Show()
 end
 
 function SS:Hide()
-    if not SS.isActive then
-        return
-    end
-    if InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown() then
-        return
-    end
+    if not SS.isActive then return end
+    if InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown() then return end
 
     SS.isActive = false
 

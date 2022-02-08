@@ -76,78 +76,20 @@ R.config.options = {
                     order = 10,
                     inline = true,
                     args = {
-                        normal = {
-                            name = L["Standard Text"],
-                            type = "select",
-                            order = 1,
-                            dialogControl = "LSM30_Font",
-                            values = R.Libs.SharedMedia:HashTable("font"),
-                            get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.normal == font then return key end end
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.fonts.normal = R.Libs.SharedMedia:Fetch("font", key)
-                                R:UpdateBlizzardFonts()
-                            end
-                        },
-                        number = {
-                            name = L["Numbers"],
-                            type = "select",
-                            order = 2,
-                            dialogControl = "LSM30_Font",
-                            values = R.Libs.SharedMedia:HashTable("font"),
-                            get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.number == font then return key end end
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.fonts.number = R.Libs.SharedMedia:Fetch("font", key)
-                                R:UpdateBlizzardFonts()
-                            end
-                        },
+                        normal = R:CreateFontOption(L["Standard Text"], nil, 1, nil, function() return R.config.db.profile.fonts.normal end,
+                                                    function(value) R.config.db.profile.fonts.normal = value end, R.UpdateBlizzardFonts),
+                        number = R:CreateFontOption(L["Numbers"], nil, 2, nil, function() return R.config.db.profile.fonts.number end, function(value)
+                            R.config.db.profile.fonts.number = value
+                        end, R.UpdateBlizzardFonts),
                         -- TODO: warn that changing this option requires a relog
-                        damage = {
-                            name = L["Damage"],
-                            type = "select",
-                            order = 3,
-                            dialogControl = "LSM30_Font",
-                            values = R.Libs.SharedMedia:HashTable("font"),
-                            get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.damage == font then return key end end
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.fonts.damage = R.Libs.SharedMedia:Fetch("font", key)
-                                R:UpdateBlizzardFonts()
-                            end
-                        },
+                        damage = R:CreateFontOption(L["Damage"], nil, 3, nil, function() return R.config.db.profile.fonts.damage end, function(value)
+                            R.config.db.profile.fonts.damage = value
+                        end, R.UpdateBlizzardFonts),
                         -- TODO: warn that changing this option requires a relog
-                        unitName = {
-                            name = L["Unit Names"],
-                            type = "select",
-                            order = 4,
-                            dialogControl = "LSM30_Font",
-                            values = R.Libs.SharedMedia:HashTable("font"),
-                            get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.unitName == font then return key end end
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.fonts.unitName = R.Libs.SharedMedia:Fetch("font", key)
-                                R:UpdateBlizzardFonts()
-                            end
-                        },
-                        chatBubble = {
-                            name = L["Chat Bubbles"],
-                            type = "select",
-                            order = 5,
-                            dialogControl = "LSM30_Font",
-                            values = R.Libs.SharedMedia:HashTable("font"),
-                            get = function()
-                                for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if R.config.db.profile.fonts.chatBubble == font then return key end end
-                            end,
-                            set = function(_, key)
-                                R.config.db.profile.fonts.chatBubble = R.Libs.SharedMedia:Fetch("font", key)
-                                R:UpdateBlizzardFonts()
-                            end
-                        }
+                        unitName = R:CreateFontOption(L["Unit Names"], nil, 4, nil, function() return R.config.db.profile.fonts.unitName end,
+                                                      function(value) R.config.db.profile.fonts.unitName = value end, R.UpdateBlizzardFonts),
+                        chatBubble = R:CreateFontOption(L["Chat Bubbles"], nil, 5, nil, function() return R.config.db.profile.fonts.chatBubble end,
+                                                        function(value) R.config.db.profile.fonts.chatBubble = value end, R.UpdateBlizzardFonts)
                     }
                 },
                 screenSaver = {
@@ -155,29 +97,12 @@ R.config.options = {
                     name = L["Screen Saver"],
                     order = 30,
                     inline = true,
-                    hidden = function() R.Modules.ScreenSaver and true or false end,
+                    hidden = function() return R.Modules.ScreenSaver and true or false end,
                     args = {
-                        type = "toggle",
-                        name = L["Enabled"],
-                        order = 1,
-                        confirm = function()
-                            if R.Modules.ScreenSaver.config.enabled then
-                                return L["Disabling the screen saver requires a UI reload. Proceed?"]
-                            else
-                                return false
-                            end
-                        end,
-                        get = function()
-                            return R.Modules.ScreenSaver.config.enabled
-                        end,
-                        set = function(_, val)
-                            R.Modules.ScreenSaver.config.enabled = val
-                            if not val then
-                                ReloadUI()
-                            else
-                                SS:Initialize()
-                            end
-                        end
+                        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return R.Modules.ScreenSaver.config.enabled end,
+                                                       function(value) R.Modules.ScreenSaver.config.enabled = value end,
+                                                       function() (not R.Modules.ScreenSaver.config.enabled and ReloadUI or R.Modules.ScreenSaver.Initialize)() end,
+                                                       function() return R.Modules.ScreenSaver.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end)
                     }
                 },
                 inventoryDatabase = {
