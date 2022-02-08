@@ -48,35 +48,16 @@ function R:AddModule(name)
 end
 
 R.ChatCommands = {
-    ["unlock"] = {
-        func = function()
-            R:ShowDragFrames()
-        end,
-        description = "unlock all frames"
-    },
-    ["lock"] = {
-        func = function()
-            R:HideDragFrames()
-        end,
-        description = "lock all frames"
-    },
-    ["reset"] = {
-        func = function()
-            R:ResetFrames()
-        end,
-        description = "reset all frames"
-    },
-    ["options"] = {
-        func = function()
-            R.Libs.AceConfigDialog:Open(addonName)
-        end,
-        description = "open the config dialog"
-    }
+    ["unlock"] = {func = function() R:ShowDragFrames() end, description = "unlock all frames"},
+    ["lock"] = {func = function() R:HideDragFrames() end, description = "lock all frames"},
+    ["reset"] = {func = function() R:ResetFrames() end, description = "reset all frames"},
+    ["options"] = {func = function() R.Libs.AceConfigDialog:Open(addonName) end, description = "open the config dialog"}
 }
 
 function R:OnInitialize()
     R:SetupConfig()
     R:UpdateBlizzardFonts()
+    R:CreateBlizzardDragFrames()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
         local arg1, funcArgs = strsplit(" ", args, 2)

@@ -172,3 +172,9 @@ function R:ResetPoint(frame)
     frame:SetPoint(unpack(frame.defaultPoint))
     if frame.config then frame.config.point = frame.defaultPoint end
 end
+
+function R:CreateBlizzardDragFrames()
+    R:CreateDragFrame(ObjectiveTrackerFrame, "Objective Tracker", R.config.db.profile.dragFrames.objectiveTracker.point)
+    ObjectiveTrackerFrame:ClearAllPoints()
+    ObjectiveTrackerFrame:Point(unpack(R.config.db.profile.dragFrames.objectiveTracker.point))
+end

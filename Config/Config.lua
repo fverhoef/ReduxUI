@@ -12,6 +12,7 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
+        dragFrames = {objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}}},
         modules = {}
     },
     char = {modules = {}},
@@ -33,6 +34,4 @@ function R:RegisterModuleConfig(module, profile, char, realm)
     end
 end
 
-function R:SetupConfig()
-    R.config.db = R.Libs.AceDB:New(addonName .. "_DB", R.config.defaults)
-end
+function R:SetupConfig() R.config.db = R.Libs.AceDB:New(addonName .. "_DB", R.config.defaults) end
