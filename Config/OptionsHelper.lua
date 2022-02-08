@@ -2,6 +2,14 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local L = R.L
 
+R.ANCHOR_POINTS = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
+R.ANCHORS = {"UIParent", addonName .. "Player", addonName .. "Target", addonName .. "Pet", addonName .. "Focus"}
+R.JUSTIFY_H = {"LEFT", "CENTER", "RIGHT"}
+R.JUSTIFY_V = {"TOP", "CENTER", "BOTTOM"}
+R.FONT_OUTLINES = {"NONE", "OUTLINE", "THICKOUTLINE"}
+R.FONT_MIN_SIZE = 4
+R.FONT_MAX_SIZE = 30
+
 function R:CreateColorOption(name, desc, order, hidden, hasAlpha, default, get, postSet)
     return {
         type = "color",

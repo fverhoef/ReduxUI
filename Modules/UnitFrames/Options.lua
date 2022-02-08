@@ -4,16 +4,9 @@ local L = R.L
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-R.ANCHOR_POINTS = {"TOPLEFT", "TOP", "TOPRIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", "LEFT", "RIGHT", "CENTER"}
-R.ANCHORS = {["UIParent"] = "UIParent", ["Player"] = addonName .. "Player", ["Target"] = addonName .. "Target", ["Pet"] = addonName .. "Pet", ["Focus"] = addonName .. "Focus"}
 R.UNIT_ANCHORS = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 R.GROUP_ANCHORS = {"TOP", "BOTTOM", "LEFT", "RIGHT"}
 R.GROUP_UNITS = {["party"] = true, ["raid"] = true, ["assist"] = true, ["tank"] = true, ["arena"] = true, ["boss"] = true}
-R.JUSTIFY_H = {["LEFT"] = "LEFT", ["CENTER"] = "CENTER", ["RIGHT"] = "RIGHT"}
-R.JUSTIFY_V = {["TOP"] = "TOP", ["CENTER"] = "CENTER", ["BOTTOM"] = "BOTTOM"}
-R.FONT_OUTLINES = {["NONE"] = "NONE", ["OUTLINE"] = "OUTLINE", ["THICKOUTLINE"] = "THICKOUTLINE"}
-R.FONT_MIN_SIZE = 4
-R.FONT_MAX_SIZE = 30
 
 function UF:CreateStatusBarTextureOption(name, desc, option, order)
     return R:CreateStatusBarOption(name, desc, order, nil, function() return UF.config.statusbars[option] end, function(value) UF.config.statusbars[option] = value end, UF.UpdateAll)

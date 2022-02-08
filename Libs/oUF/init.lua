@@ -4,7 +4,7 @@ ns.oUF.Private = {}
 
 ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
-if not oUF.isRetail then
+if not ns.oUF.isRetail then
     if not Enum.PowerType then
         Enum.PowerType = {
             HealthCost = -2,
