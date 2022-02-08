@@ -150,7 +150,7 @@ local DEFAULT_UNIT_CONFIG = {
     phaseIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOP", 0, 0}},
     pvpIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
     pvpClassificationIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
-    questIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "LEFT", 0, 0}},
+    questIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "RIGHT", 2, 0}},
     raidRoleIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPRIGHT", 0, 0}},
     readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
     raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
@@ -348,7 +348,8 @@ R:RegisterModuleConfig(UF, {
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
         auras = { enabled = true },
-        pvpIndicator = {enabled = false}
+        pvpIndicator = {enabled = false},
+        unitAnchorPoint = "BOTTOM"
     }),
     nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
         size = {150, 16},
