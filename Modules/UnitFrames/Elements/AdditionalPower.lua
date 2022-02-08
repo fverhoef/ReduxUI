@@ -16,7 +16,7 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:CreateBorder(nil, 8, 2, self.AdditionalPower:GetFrameLevel() + 1)
 
     self.AdditionalPower.Overlay = CreateFrame("Frame", "$parentOverlay", self.AdditionalPower)
-    self.AdditionalPower.Overlay:SetParent(self.Overlay)
+    self.AdditionalPower.Overlay:SetFrameLevel(self.Overlay:GetFrameLevel())
     self.AdditionalPower.Overlay:SetAllPoints(self.AdditionalPower)
 
     self.AdditionalPower.Value = self:CreateFontString("$parentAdditionalPowerText", "OVERLAY", nil, 7)

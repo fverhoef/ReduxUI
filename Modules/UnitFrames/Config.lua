@@ -343,7 +343,7 @@ R:RegisterModuleConfig(UF, {
     }),
     boss = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
         size = {180, 30},
-        point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -100, -300},
+        point = {"BOTTOMLEFT", "UIParent", "BOTTOM", 350, 450},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
