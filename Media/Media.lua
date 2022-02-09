@@ -10,7 +10,6 @@ R.media = {
         logo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Logo",
 
         actionBars = {
-            dataBarPanel = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\DataBarPanel",
             mainMenuBar = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\MainMenuBar",
             mainMenuBar_Alliance = "Interface\\PLAYERACTIONBARALT\\ALLIANCE",
             mainMenuBar_Amber = "Interface\\PLAYERACTIONBARALT\\Amber",
@@ -46,8 +45,7 @@ R.media = {
             minimapMask1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask1",
             minimapMask2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask2",
             minimapMask3 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask3",
-            minimapButtonBorder = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapButtonBorder",
-            minimapButtonBorder2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapButtonBorder2"
+            minimapButtonBorder = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapButtonBorder"
         },
 
         statusBars = {
@@ -59,33 +57,6 @@ R.media = {
             kait2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Kait2",
             melli = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Melli",
             melliDark = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\MelliDark"
-        },
-
-        unitFrames = {
-            unitFrame_Large = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\UnitFrame-Large",
-            unitFrame_Large_Gold = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\UnitFrame-Large-Gold",
-            unitFrame_Large_NoPower = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\UnitFrame-Large-NoPower",
-            unitFrame_Large_NoPower_Gold = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\UnitFrame-Large-NoPower-Gold",
-
-            targetFrame = "Interface\\TARGETINGFRAME\\UI-TargetingFrame",
-            targetFrame_Elite = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-Elite",
-            targetFrame_Rare = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-Rare",
-            targetFrame_RareElite = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-RareElite",
-            targetTargetFrame = "Interface\\TARGETINGFRAME\\UI-TargetofTargetFrame",
-            smallTargetingFrame = "Interface\\TARGETINGFRAME\\UI-SmallTargetingFrame",
-            partyFrame = "Interface\\TARGETINGFRAME\\UI-PartyFrame",
-            targetFrame_LargerHealth = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\TargetFrame",
-            targetFrame_Elite = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\TargetFrameElite",
-            targetFrame_Rare = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\TargetFrameRare",
-            targetFrame_RareElite = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\TargetFrameRareElite",
-            targetFrame_Flash = "Interface\\TARGETINGFRAME\\UI-TargetingFrame-Flash",
-            partyFrame_Flash = "Interface\\TARGETINGFRAME\\UI-PartyFrame-Flash",
-            nameplate_Flash = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\NameplateFlash",
-            playerStatus = "Interface\\CharacterFrame\\UI-Player-Status",
-            playerStatus_LargerHealth = "Interface\\Addons\\" .. addonName .. "\\Media\\Textures\\UnitFrames\\TargetFrameStatus",
-            groupIndicator = "Interface\\CharacterFrame\\UI-CHARACTERFRAME-GROUPINDICATOR",
-            comboFrameBackground = "Interface\\COMBOFRAME\\ComboFrameBackground",
-            comboPoint = "Interface\\COMBOFRAME\\COMBOPOINT"
         }
     }
 }
