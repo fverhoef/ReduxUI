@@ -51,7 +51,7 @@ R.ChatCommands = {
     ["unlock"] = {func = function() R:ShowDragFrames() end, description = "unlock all frames"},
     ["lock"] = {func = function() R:HideDragFrames() end, description = "lock all frames"},
     ["reset"] = {func = function() R:ResetFrames() end, description = "reset all frames"},
-    ["options"] = {func = function() R.Libs.AceConfigDialog:Open(addonName) end, description = "open the config dialog"}
+    ["options"] = {func = function() R:ShowOptionsDialog() end, description = "open the config dialog"}
 }
 
 function R:OnInitialize()

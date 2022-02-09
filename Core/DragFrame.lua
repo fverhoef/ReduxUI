@@ -87,13 +87,9 @@ function R:DragFrame_OnEnter()
     GameTooltip:Show()
 end
 
-function R:DragFrame_OnLeave()
-    GameTooltip:Hide()
-end
+function R:DragFrame_OnLeave() GameTooltip:Hide() end
 
-function R:DragFrame_OnShow()
-    if self.frame.faderConfig then self.frame:FadeIn() end
-end
+function R:DragFrame_OnShow() if self.frame.faderConfig then self.frame:FadeIn() end end
 
 function R:DragFrame_OnHide()
     if self.frame.faderConfig then
@@ -125,6 +121,14 @@ function R:ShowDragFrames()
     for idx, frame in next, R.dragFrames do R:ShowDragFrame(frame) end
     R:Print("Frames unlocked.")
     R.framesLocked = false
+end
+
+function R:ToggleDragFrames()
+    if R.framesLocked then
+        R:ShowDragFrames()
+    else
+        R:HideDragFrames()
+    end
 end
 
 function R:LockDragFrame(frame, hideWhenLocked)

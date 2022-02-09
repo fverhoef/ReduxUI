@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="MicroButtonAndBagsBar.lua"/>
+
+    <Frame name="MicroButtonAndBagsBarTemplate" virtual="true">
+        <Size x="298" y="88"/>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="MicroBagBar" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
+                    <Size x="298" y="88" />
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                    </Anchors>
+                    <TexCoords left="0.238281" right="0.529297" top="0.652344" bottom="0.996094"/>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>

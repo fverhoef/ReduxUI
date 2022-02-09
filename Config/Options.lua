@@ -45,6 +45,10 @@ function R:RegisterModuleOptions(module, options)
     module.options = options
 end
 
+function R:ShowOptionsDialog()
+    R.Libs.AceConfigDialog:Open(addonName)
+end
+
 R.config.options = {
     type = "group",
     name = R.title,
