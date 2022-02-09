@@ -9,18 +9,6 @@ R.media = {
         arrow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Arrow",
         logo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Logo",
 
-        -- Blizzard Arrows
-        arrowDown_Down = "Interface\\BUTTONS\\Arrow-Down-Down",
-        arrowDown_Up = "Interface\\BUTTONS\\Arrow-Down-Up",
-        arrowUp_Down = "Interface\\BUTTONS\\Arrow-Up-Down",
-        arrowUp_Up = "Interface\\BUTTONS\\Arrow-Up-Up",
-
-        -- Misc Blizzard Textures
-        autoQuestParts = "Interface\\QUESTFRAME\\AutoQuest-Parts",
-        bonusObjectives = "Interface\\QUESTFRAME\\BonusObjectives",
-        mailIcon = "Interface\\MINIMAP\\TRACKING\\Mailbox",
-        portraitAlphaMask = "Interface\\CharacterFrame\\TempPortraitAlphaMask",
-
         actionBars = {
             dataBarPanel = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\DataBarPanel",
             mainMenuBar = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\MainMenuBar",
