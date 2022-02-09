@@ -12,5 +12,6 @@ R:RegisterModuleConfig(C, {
     maxHistoryCount = 500,
     showClassColors = true,
     hideMenuButton = true,
-    hideChannelButton = true
+    hideChannelButton = true,
+    hideSocialButton = true
 }, {chatMessages = {}})

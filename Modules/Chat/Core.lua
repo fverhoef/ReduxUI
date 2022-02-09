@@ -83,7 +83,7 @@ function C:Initialize()
     C:UpdateChatFrames()
 end
 
-function C:FormatChannelNames(text)
+local function FormatChannelNames(text)
     return text:gsub("(|h%[%d+%. .-%]|h)", function(s)
         local index = s:match("|h%[(%d+)%.")
         local channel = s:match("|h%[%d+%. (.-)%]|h")
@@ -107,13 +107,13 @@ function C:FormatChannelNames(text)
     end)
 end
 
-function C:FormatUrls(text) return text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r") end
+local function FormatUrls(text) return text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r") end
 
 function C:ChatFrame_AddMessage(text, ...)
     C:StoreChatMessage(self, text, ...)
 
-    text = C:FormatChannelNames(text)
-    text = C:FormatUrls(text)
+    text = FormatChannelNames(text)
+    text = FormatUrls(text)
 
     -- TODO: support emojis
     -- TODO: support [inv] links
@@ -172,6 +172,15 @@ function C:UpdateChatFrames()
         ChatFrameChannelButton:Hide()
     else
         ChatFrameChannelButton:Show()
+    end
+
+    if QuickJoinToastButton then
+        QuickJoinToastButton:HookScript("OnShow", function() if C.config.hideSocialButton then QuickJoinToastButton:Hide() end end)
+        if C.config.hideSocialButton then
+            QuickJoinToastButton:Hide()
+        else
+            QuickJoinToastButton:Show()
+        end
     end
 
     if C.config.showClassColors then
