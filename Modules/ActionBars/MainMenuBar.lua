@@ -44,7 +44,7 @@ function AB:SetupMainMenuBar()
 
         AB:UpdateMainMenuBar()
 
-        AB:SecureHook("MainMenuBar_UpdateExperienceBars", AB.UpdateTrackingBarPositions)
+        AB:SecureHook("MainMenuBar_UpdateExperienceBars", AB.UpdateMainMenuBar)
     end
 end
 
@@ -113,12 +113,12 @@ function AB:UpdateMainMenuBarArt()
     end
 
     local isDouble = numBars >= 2
-    MainMenuBar.SingleBarLarge:SetShown(not isDouble and isLarge)
+    MainMenuBar.SingleBarLarge:SetShown(numBars > 0 and not isDouble and isLarge)
     MainMenuBar.SingleBarLarge:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, isDouble and 4 or 0)
-    MainMenuBar.SingleBarLargeUpper:SetShown(isDouble and isLarge)
-    MainMenuBar.SingleBarSmall:SetShown(not isDouble and not isLarge)
+    MainMenuBar.SingleBarLargeUpper:SetShown(numBars > 0 and isDouble and isLarge)
+    MainMenuBar.SingleBarSmall:SetShown(numBars > 0 and not isDouble and not isLarge)
     MainMenuBar.SingleBarSmall:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, isDouble and 4 or 0)
-    MainMenuBar.SingleBarSmallUpper:SetShown(isDouble and not isLarge)
+    MainMenuBar.SingleBarSmallUpper:SetShown(numBars > 0 and isDouble and not isLarge)
 end
 
 function AB:UpdateTrackingBarPositions()
