@@ -2,6 +2,15 @@
     <Script file="Core.lua"/>
     <Script file="Config.lua"/>
     <Script file="Options.lua"/>
+    <Script file="MainMenuBar.lua"/>
+    <Script file="MultiBarBottomLeft.lua"/>
+    <Script file="MultiBarBottomRight.lua"/>
+    <Script file="MultiBarLeft.lua"/>
+    <Script file="MultiBarRight.lua"/>
+    <Script file="StanceBar.lua"/>
+    <Script file="PetActionBar.lua"/>
+    <Script file="PossessBar.lua"/>
+    <Script file="ExtraActionButtons.lua"/>
     <Include file="MicroButtonAndBagsBar.xml"/>
     <Include file="SettingsMicroButton.xml"/>
 </Ui>

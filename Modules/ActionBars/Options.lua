@@ -22,8 +22,8 @@ R:RegisterModuleOptions(AB, {
                 lineBreak = {type = "header", name = "", order = 2},
                 fadeIn = R:CreateToggleOption(L["Mouseover Fade In"], nil, 3, nil, nil, function() return AB.config.mainMenuBar.fader == R.config.faders.mouseOver end,
                                               function(value) AB.config.mainMenuBar.fader = value and R.config.faders.mouseOver or nil end, AB.Update),
-                stackRightBar = R:CreateToggleOption(L["Stack Bottom Right Bar"], nil, 4, nil, nil, function() return AB.config.mainMenuBar.stackRightBar end,
-                                                     function(value) AB.config.mainMenuBar.stackRightBar = value end, AB.Update)
+                stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 4, nil, nil, function() return AB.config.mainMenuBar.stackBottomBars end,
+                                                       function(value) AB.config.mainMenuBar.stackBottomBars = value end, AB.Update)
             }
         },
         multiBarRight = {

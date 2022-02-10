@@ -4,18 +4,24 @@ local AB = R.Modules.ActionBars
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
-    mainMenuBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 0}, fader = R.config.faders.onShow, stackRightBar = true},
-    multiBarBottomLeft = {enabled = true, detached = false, point = {"RIGHT", "RIGHT", -38, 0}, fader = R.config.faders.mouseOver},
-    multiBarBottomRight = {enabled = true, detached = false, point = {"RIGHT", "RIGHT", 0, 0}, fader = R.config.faders.mouseOver},
-    multiBarLeft = {enabled = true, point = {"RIGHT", "RIGHT", -38, 0}, fader = R.config.faders.mouseOver},
-    multiBarRight = {enabled = true, point = {"RIGHT", "RIGHT", 0, 0}, fader = R.config.faders.mouseOver},
-    stanceBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 89}, fader = R.config.faders.onShow},
-    petActionBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 89}, fader = R.config.faders.onShow},
-    vehicleExitBar = {enabled = true, point = {"BOTTOM", "BOTTOM", 0, 200}, fader = R.config.faders.onShow},
+    mainMenuBar = {enabled = true, fader = R.config.faders.onShow, stackBottomBars = false},
+    multiBarBottomLeft = {enabled = true, fader = R.config.faders.onShow},
+    multiBarBottomRight = {enabled = true, fader = R.config.faders.onShow},
+    multiBarLeft = {enabled = true, point = {"RIGHT", "UIParent", "RIGHT", -38, 0}, fader = R.config.faders.mouseOver},
+    multiBarRight = {enabled = true, point = {"RIGHT", "UIParent", "RIGHT", 0, 0}, fader = R.config.faders.mouseOver},
+    stanceBar = {enabled = true, fader = R.config.faders.onShow},
+    petActionBar = {enabled = true, fader = R.config.faders.onShow},
+    possessBar = {enabled = true, fader = R.config.faders.onShow},
     microButtonAndBags = {
         enabled = true,
         point = {"BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0},
-        fader = R.config.faders.mouseOver,
+        fader = R.config.faders.mouseOver
+    },
+    extraActionButton = {
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 300},
+    },
+    systemInfo = {
+        enabled = true,
         lowLatencyTreshold = 70,
         lowLatencyColor = {0 / 255, 175 / 255, 0 / 255},
         mediumLatencyTreshold = 120,
