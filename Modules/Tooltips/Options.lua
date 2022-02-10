@@ -1,295 +1,76 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local TT = R.Modules.Tooltips
+local L = R.L
 
 local TOOLTIP_ANCHORS = {
-    ["ANCHOR_NONE"] = "ANCHOR_NONE",
-    ["ANCHOR_CURSOR"] = "ANCHOR_CURSOR",
-    ["ANCHOR_TOP"] = "ANCHOR_TOP",
-    ["ANCHOR_TOPLEFT"] = "ANCHOR_TOPLEFT",
-    ["ANCHOR_TOPRIGHT"] = "ANCHOR_TOPRIGHT",
-    ["ANCHOR_BOTTOM"] = "ANCHOR_BOTTOM",
-    ["ANCHOR_BOTTOMLEFT"] = "ANCHOR_BOTTOMLEFT",
-    ["ANCHOR_BOTTOMRIGHT"] = "ANCHOR_BOTTOMRIGHT",
-    ["ANCHOR_LEFT"] = "ANCHOR_LEFT",
-    ["ANCHOR_RIGHT"] = "ANCHOR_RIGHT"
+    "ANCHOR_NONE",
+    "ANCHOR_CURSOR",
+    "ANCHOR_TOP",
+    "ANCHOR_TOPLEFT",
+    "ANCHOR_TOPRIGHT",
+    "ANCHOR_BOTTOM",
+    "ANCHOR_BOTTOMLEFT",
+    "ANCHOR_BOTTOMRIGHT",
+    "ANCHOR_LEFT",
+    "ANCHOR_RIGHT"
 }
 
 R:RegisterModuleOptions(TT, {
     type = "group",
-    name = "Tooltips",
+    name = L["Tooltips"],
     args = {
         header = {type = "header", name = R.title .. " > Tooltips", order = 0},
-        enabled = {
-            type = "toggle",
-            name = "Enabled",
-            order = 1,
-            confirm = function()
-                if TT.config.enabled then
-                    return "Disabling this module requires a UI reload. Proceed?"
-                else
-                    return false
-                end
-            end,
-            get = function()
-                return TT.config.enabled
-            end,
-            set = function(_, val)
-                TT.config.enabled = val
-                if not val then
-                    ReloadUI()
-                else
-                    TT:Initialize()
-                end
-            end
-        },
-        lineBreak1 = {type = "header", name = "", order = 2},
-        showHealthValues = {
-            type = "toggle",
-            name = "Show Health Values",
-            order = 10,
-            width = "double",
-            get = function()
-                return TT.config.showHealthValues
-            end,
-            set = function(_, val)
-                TT.config.showHealthValues = val
-            end
-        },
-        showPvPRank = {
-            type = "toggle",
-            name = "Show PvP Rank",
-            order = 11,
-            width = "double",
-            hidden = R.isRetail,
-            get = function()
-                return TT.config.showPvPRank
-            end,
-            set = function(_, val)
-                TT.config.showPvPRank = val
-            end
-        },
-        showVendorPrice = {
-            type = "toggle",
-            name = "Show Vendor Price",
-            order = 12,
-            width = "double",
-            hidden = R.isRetail,
-            get = function()
-                return TT.config.showVendorPrice
-            end,
-            set = function(_, val)
-                TT.config.showVendorPrice = val
-            end
-        },
-        showItemLevel = {
-            type = "toggle",
-            name = "Show Item Level",
-            order = 13,
-            width = "double",
-            hidden = R.isRetail,
-            get = function()
-                return TT.config.showItemLevel
-            end,
-            set = function(_, val)
-                TT.config.showItemLevel = val
-            end
-        },
-        showItemCount = {
-            type = "toggle",
-            name = "Show Item Count",
-            order = 14,
-            width = "double",
-            get = function()
-                return TT.config.showItemCount
-            end,
-            set = function(_, val)
-                TT.config.showItemCount = val
-            end
-        },
-        showIcons = {
-            type = "toggle",
-            name = "Show Item/Spell Icons",
-            order = 15,
-            width = "double",
-            get = function()
-                return TT.config.showIcons
-            end,
-            set = function(_, val)
-                TT.config.showIcons = val
-            end
-        },
-        showItemId = {
-            type = "toggle",
-            name = "Show Item IDs",
-            order = 16,
-            width = "double",
-            get = function()
-                return TT.config.showItemId
-            end,
-            set = function(_, val)
-                TT.config.showItemId = val
-            end
-        },
-        showSpellId = {
-            type = "toggle",
-            name = "Show Spell IDs",
-            order = 17,
-            width = "double",
-            get = function()
-                return TT.config.showSpellId
-            end,
-            set = function(_, val)
-                TT.config.showSpellId = val
-            end
-        },
+        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return TT.config.enabled end, function(value) TT.config.enabled = value end,
+                                       function() (not TT.config.enabled and ReloadUI or C.Initialize)() end,
+                                       function() return TT.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
+        lineBreak = {type = "header", name = "", order = 2},
+        showHealthValues = R:CreateToggleOption(L["Show Health Values"], nil, 10, "double", nil, function() return TT.config.showHealthValues end,
+                                                function(value) TT.config.showHealthValues = value end),
+        showPvPRank = R:CreateToggleOption(L["Show PvP Rank"], nil, 11, "double", R.isRetail, function() return TT.config.showPvPRank end, function(value) TT.config.showPvPRank = value end),
+        showVendorPrice = R:CreateToggleOption(L["Show Vendor Price"], nil, 12, "double", R.isRetail, function() return TT.config.showVendorPrice end,
+                                               function(value) TT.config.showVendorPrice = value end),
+        showItemLevel = R:CreateToggleOption(L["Show Item Level"], nil, 13, "double", R.isRetail, function() return TT.config.showItemLevel end, function(value) TT.config.showItemLevel = value end),
+        showItemCount = R:CreateToggleOption(L["Show Item Count"], nil, 14, "double", nil, function() return TT.config.showItemCount end, function(value) TT.config.showItemCount = value end),
+        showIcons = R:CreateToggleOption(L["Show Item/Spell Icons"], nil, 15, "double", nil, function() return TT.config.showIcons end, function(value) TT.config.showIcons = value end),
+        showItemId = R:CreateToggleOption(L["Show Item IDs"], nil, 16, "double", nil, function() return TT.config.showItemId end, function(value) TT.config.showItemId = value end),
+        showSpellId = R:CreateToggleOption(L["Show Spell IDs"], nil, 17, "double", nil, function() return TT.config.showSpellId end, function(value) TT.config.showSpellId = value end),
         font = {
             type = "group",
-            name = "Font",
+            name = L["Font"],
             inline = true,
-            order = 21,
+            order = 20,
             args = {
-                face = {
-                    type = "select",
-                    name = "Font Face",
-                    order = 1,
-                    dialogControl = "LSM30_Font",
-                    values = R.Libs.SharedMedia:HashTable("font"),
-                    get = function()
-                        for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do if TT.config.fontFamily == font then return key end end
-                    end,
-                    set = function(_, key)
-                        TT.config.fontFamily = R.Libs.SharedMedia:Fetch("font", key)
-                        TT:UpdateFonts()
-                    end
-                },
-                size = {
-                    type = "range",
-                    name = "Font Size (Body)",
-                    order = 2,
-                    min = 8,
-                    softMax = 36,
-                    step = 1,
-                    get = function()
-                        return TT.config.fontSize
-                    end,
-                    set = function(_, val)
-                        TT.config.fontSize = val
-                        TT:UpdateFonts()
-                    end
-                },
-                smallFontSize = {
-                    type = "range",
-                    name = "Font Size (Small)",
-                    order = 3,
-                    min = 8,
-                    softMax = 36,
-                    step = 1,
-                    get = function()
-                        return TT.config.smallFontSize
-                    end,
-                    set = function(_, val)
-                        TT.config.smallFontSize = val
-                        TT:UpdateFonts()
-                    end
-                },
-                headerFontSize = {
-                    type = "range",
-                    name = "Font Size (Header)",
-                    order = 4,
-                    min = 8,
-                    softMax = 36,
-                    step = 1,
-                    get = function()
-                        return TT.config.headerFontSize
-                    end,
-                    set = function(_, val)
-                        TT.config.headerFontSize = val
-                        TT:UpdateFonts()
-                    end
-                },
-                healthFontSize = {
-                    type = "range",
-                    name = "Font Size (Health)",
-                    order = 5,
-                    min = 8,
-                    softMax = 36,
-                    step = 1,
-                    get = function()
-                        return TT.config.healthFontSize
-                    end,
-                    set = function(_, val)
-                        TT.config.healthFontSize = val
-                        TT:UpdateFonts()
-                    end
-                }
+                font = R:CreateFontOption(L["Font"], L["The font to use for tooltip text."], 1, nil, function() return TT.config.fontFamily end, function(value)
+                    TT.config.fontFamily = value
+                end, TT.UpdateFonts),
+                size = R:CreateRangeOption(L["Font Size (Body)"], L["The size of tooltip body text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                    return TT.config.fontSize
+                end, function(value) TT.config.fontSize = value end, TT.UpdateFonts),
+                smallFontSize = R:CreateRangeOption(L["Font Size (Small)"], L["The size of small tooltip text."], 3, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1,
+                                                    function() return TT.config.smallFontSize end, function(value) TT.config.smallFontSize = value end, TT.UpdateFonts),
+                headerFontSize = R:CreateRangeOption(L["Font Size (Header)"], L["The size of tooltip header text."], 4, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1,
+                                                     function() return TT.config.headerFontSize end, function(value) TT.config.headerFontSize = value end, TT.UpdateFonts),
+                healthFontSize = R:CreateRangeOption(L["Font Size (Health)"], L["The size of tooltip health text."], 5, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1,
+                                                     function() return TT.config.healthFontSize end, function(value) TT.config.healthFontSize = value end, TT.UpdateFonts)
             }
         },
         layout = {
             type = "group",
-            name = "Layout",
-            order = 22,
+            name = L["Layout"],
+            order = 21,
             inline = true,
             args = {
-                scale = {
-                    type = "range",
-                    name = "Scale",
-                    order = 1,
-                    min = 0.1,
-                    softMax = 3,
-                    step = 0.1,
-                    get = function()
-                        return TT.config.scale
-                    end,
-                    set = function(_, val)
-                        TT.config.scale = val
-                        TT:UpdateAll()
-                    end
-                },
-                lineBreak3 = {type = "header", name = "", order = 10},
-                anchor = {
-                    type = "select",
-                    name = "Anchor",
-                    order = 11,
-                    values = TOOLTIP_ANCHORS,
-                    get = function()
-                        return TT.config.anchor
-                    end,
-                    set = function(_, key)
-                        TT.config.anchor = key
-                        TT:UpdateAll()
-                    end
-                },
-                offsetX = {
-                    type = "range",
-                    name = "Offset X",
-                    order = 12,
-                    min = -100,
-                    softMax = 100,
-                    step = 1,
-                    get = function()
-                        return TT.config.offsetX
-                    end,
-                    set = function(_, val)
-                        TT.config.offsetX = val
-                        TT:UpdateAll()
-                    end
-                },
-                offsetY = {
-                    type = "range",
-                    name = "Offset Y",
-                    order = 13,
-                    min = -100,
-                    softMax = 100,
-                    step = 1,
-                    get = function()
-                        return TT.config.offsetY
-                    end,
-                    set = function(_, val)
-                        TT.config.offsetY = val
-                        TT:UpdateAll()
-                    end
-                }
+                scale = R:CreateRangeOption(L["Scale"], L["The scale of tooltips."], 1, nil, 0.1, 3, nil, 0.1, function() return TT.config.scale end, function(value)
+                    TT.config.scale = value
+                end, TT.UpdateAll),
+                lineBreak = {type = "header", name = "", order = 2},
+                anchor = R:CreateSelectOption(L["Anchor"], L["The default anchor point for  tooltips."], 3, nil, TOOLTIP_ANCHORS, function() return TT.config.anchor end,
+                                              function(value) TT.config.anchor = value end, TT.UpdateAll),
+                offsetX = R:CreateRangeOption(L["Offset X"], L["The horizontal offset from the anchor."], 4, nil, -100, 100, nil, 1, function() return TT.config.offsetX end,
+                                              function(value) TT.config.offsetX = value end, TT.UpdateAll),
+                offsetY = R:CreateRangeOption(L["Offset Y"], L["The vertical offset from the anchor."], 5, nil, -100, 100, nil, 1, function() return TT.config.offsetY end,
+                                              function(value) TT.config.offsetY = value end, TT.UpdateAll)
             }
         }
     }

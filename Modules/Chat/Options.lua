@@ -26,7 +26,7 @@ R:RegisterModuleOptions(C, {
             inline = true,
             order = 7,
             args = {
-                font = R:CreateFontOption(L["Font"], L["The font to use for chat text."], 1, nil, function() return C.config.font end, function(value) C.config.font = value end, R.UpdateChatFrames),
+                font = R:CreateFontOption(L["Font"], L["The font to use for chat text."], 1, nil, function() return C.config.font end, function(value) C.config.font = value end, C.UpdateChatFrames),
                 size = R:CreateRangeOption(L["Font Size"], L["The size of chat text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function() return C.config.fontSize end,
                                            function(value) C.config.fontSize = value end, C.UpdateChatFrames),
                 outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of this text."], 3, nil, R.FONT_OUTLINES, function() return C.config.fontOutline end,
