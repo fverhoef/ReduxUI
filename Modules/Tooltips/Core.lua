@@ -16,20 +16,22 @@ function TT:Initialize()
     for i = 1, #_G.FACTION_BAR_COLORS do TT.factionColors[i] = R:Hex(_G.FACTION_BAR_COLORS[i]) end
 
     _G.GameTooltipStatusBar:ClearAllPoints()
-    _G.GameTooltipStatusBar:SetPoint("LEFT", 2, 0)
-    _G.GameTooltipStatusBar:SetPoint("RIGHT", -2, 0)
-    _G.GameTooltipStatusBar:SetPoint("TOP", 0, -2.5)
-    _G.GameTooltipStatusBar:SetHeight(4)
+    _G.GameTooltipStatusBar:Point("BOTTOMLEFT", "TOPLEFT", 3, 2)
+    _G.GameTooltipStatusBar:Point("BOTTOMRIGHT", "TOPRIGHT", -3, 2)
+    _G.GameTooltipStatusBar:SetHeight(10)
+    _G.GameTooltipStatusBar:CreateBorder({1, 1, 1}, 8, 2)
 
     _G.GameTooltipStatusBar:SetStatusBarTexture(TT.config.statusbar)
 
-    _G.GameTooltipStatusBar.bg = _G.GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND", nil, -8)
-    _G.GameTooltipStatusBar.bg:SetAllPoints()
-    _G.GameTooltipStatusBar.bg:SetColorTexture(1, 1, 1)
-    _G.GameTooltipStatusBar.bg:SetVertexColor(0, 0, 0, 0.5)
+    _G.GameTooltipStatusBar.Background = _G.GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND", nil, -8)
+    _G.GameTooltipStatusBar.Background:SetAllPoints()
+    _G.GameTooltipStatusBar.Background:SetColorTexture(1, 1, 1)
+    _G.GameTooltipStatusBar.Background:SetVertexColor(0, 0, 0, 0.5)
 
-    _G.GameTooltipStatusBar.text = _G.GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
-    _G.GameTooltipStatusBar.text:SetPoint("CENTER", _G.GameTooltipStatusBar, 0, 0)
+    _G.GameTooltipStatusBar.TextHolder = CreateFrame("Frame", nil, _G.GameTooltipStatusBar)
+    _G.GameTooltipStatusBar.TextHolder:SetFrameLevel(_G.GameTooltipStatusBar.TextHolder:GetFrameLevel() + 2)
+    _G.GameTooltipStatusBar.Text = _G.GameTooltipStatusBar.TextHolder:CreateFontString(nil, "OVERLAY", nil, 7)
+    _G.GameTooltipStatusBar.Text:SetPoint("CENTER", _G.GameTooltipStatusBar, 0, 0)
 
     TT:SecureHook(_G.GameTooltipStatusBar, "SetStatusBarColor", TT.SetStatusBarColor)
     TT:SecureHookScript(_G.GameTooltipStatusBar, "OnValueChanged", TT.OnStatusBarValueChanged)
@@ -181,13 +183,15 @@ function TT:OnStatusBarValueChanged(value)
 
         local _, max = self:GetMinMaxValues()
         if (value > 0 and max == 1) then
-            self.text:SetFormattedText("%d%%", floor(value * 100))
+            self.Text:SetFormattedText("%d%%", floor(value * 100))
             self:SetStatusBarColor(0.6, 0.6, 0.6)
         elseif (value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
-            self.text:SetText(_G.DEAD)
+            self.Text:SetText(_G.DEAD)
         else
-            self.text:SetText(R:FormatValue(value) .. " / " .. R:FormatValue(max))
+            self.Text:SetText(R:FormatValue(value) .. " / " .. R:FormatValue(max))
         end
+    else
+        self.Text:Hide()
     end
 end
 
@@ -347,6 +351,6 @@ function TT:UpdateFonts()
     _G.Tooltip_Small:SetShadowOffset(1, -2)
     _G.Tooltip_Small:SetShadowColor(0, 0, 0, 0.75)
 
-    _G.GameTooltipStatusBar.text:SetFont(TT.config.fontFamily, TT.config.healthFontSize, "OUTLINE")
+    _G.GameTooltipStatusBar.Text:SetFont(TT.config.fontFamily, TT.config.healthFontSize, "OUTLINE")
 end
 

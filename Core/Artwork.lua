@@ -1,6 +1,8 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+R.BACKDROP_PIECES = {"TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center"}
+
 R.DEFAULT_BACKDROP_COLOR = {0.1, 0.1, 0.1, 0.8}
 R.DEFAULT_BORDER_COLOR = {0.5, 0.5, 0.5, 1}
 R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.5}
@@ -22,6 +24,13 @@ function R:CreateBackdrop(backdropInfo, color, borderColor)
     self.Backdrop = backdrop
 end
 
+function R:SetBackdropDrawLayer(layer, skipCenter)
+    for _, pieceName in ipairs(R.BACKDROP_PIECES) do
+        local piece = self[pieceName]
+        if piece and (not skipCenter or pieceName ~= "Center") then piece:SetDrawLayer(layer) end
+    end
+end
+
 function R:CreateBorder(color, size, offset, frameLevel)
     local border = self.Border
     if not border then border = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
@@ -36,6 +45,12 @@ function R:CreateBorder(color, size, offset, frameLevel)
     border:SetFrameLevel(frameLevel)
 
     self.Border = border
+end
+
+function R:SetBorderDrawLayer(layer)
+    if not self.Border then return end
+
+    R.SetBackdropDrawLayer(self.Border, layer, true)
 end
 
 function R:CreateShadow(size, color)
