@@ -2,6 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
+local NUM_TOTEMS = R.isRetail and 5 or 4
 
 function UF:CreateTotems()
     if not self.config.totems.enabled then return end
@@ -12,7 +13,7 @@ function UF:CreateTotems()
     self.TotemsHolder:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
 
     self.Totems = {}
-    for i = 1, 5 do
+    for i = 1, NUM_TOTEMS do
         local totem = CreateFrame("Button", nil, self.TotemsHolder)
         totem.Icon = totem:CreateTexture(nil, "OVERLAY")
         totem.Icon:SetAllPoints()
@@ -39,15 +40,20 @@ function UF:ConfigureTotems()
 
     self.TotemsHolder:SetSize(unpack(config.size))
 
-    self.Totems[3]:SetPoint("CENTER", self.TotemsHolder, "CENTER")
-    self.Totems[2]:SetPoint("RIGHT", self.Totems[3], "LEFT", -config.spacing, 0)
-    self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
-    self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
-    self.Totems[5]:SetPoint("LEFT", self.Totems[4], "RIGHT", config.spacing, 0)
-
-    for i, totem in ipairs(self.Totems) do
-        totem:SetSize(config.size[2], config.size[2])
+    if R.isRetail then
+        self.Totems[3]:SetPoint("CENTER", self.TotemsHolder, "CENTER")
+        self.Totems[2]:SetPoint("RIGHT", self.Totems[3], "LEFT", -config.spacing, 0)
+        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
+        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
+        self.Totems[5]:SetPoint("LEFT", self.Totems[4], "RIGHT", config.spacing, 0)
+    else
+        self.Totems[2]:SetPoint("RIGHT", self.TotemsHolder, "CENTER", -config.spacing / 2, 0)
+        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
+        self.Totems[3]:SetPoint("LEFT", self.Totems[2], "RIGHT", config.spacing, 0)
+        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
     end
+
+    for i, totem in ipairs(self.Totems) do totem:SetSize(config.size[2], config.size[2]) end
 end
 
 oUF:RegisterMetaFunction("ConfigureTotems", UF.ConfigureTotems)
