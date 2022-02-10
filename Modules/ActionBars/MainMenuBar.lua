@@ -40,10 +40,12 @@ function AB:SetupMainMenuBar()
         MultiBarBottomRight:ClearAllPoints()
         MultiBarBottomRight:SetPoint("TOPLEFT", ActionButton12, "TOPRIGHT", 45, 2)
 
+        MainMenuBarExpText:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+        ReputationWatchBar.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+        
         AB:CreateTrackingBarTextures()
 
         AB:UpdateMainMenuBar()
-
         AB:SecureHook("MainMenuBar_UpdateExperienceBars", AB.UpdateMainMenuBar)
     end
 end
@@ -113,12 +115,18 @@ function AB:UpdateMainMenuBarArt()
     end
 
     local isDouble = numBars >= 2
-    MainMenuBar.SingleBarLarge:SetShown(numBars > 0 and not isDouble and isLarge)
-    MainMenuBar.SingleBarLarge:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, isDouble and 4 or 0)
+    MainMenuBar.SingleBarLarge:SetHeight(isDouble and 10 or 14)
+    MainMenuBar.SingleBarLarge:SetShown(numBars > 0 and isLarge)
+    MainMenuBar.SingleBarLarge:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
+    MainMenuBar.SingleBarLargeUpper:SetHeight(isDouble and 10 or 14)
     MainMenuBar.SingleBarLargeUpper:SetShown(numBars > 0 and isDouble and isLarge)
-    MainMenuBar.SingleBarSmall:SetShown(numBars > 0 and not isDouble and not isLarge)
-    MainMenuBar.SingleBarSmall:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, isDouble and 4 or 0)
+    MainMenuBar.SingleBarSmall:SetShown(numBars > 0 and not isLarge)
+    MainMenuBar.SingleBarSmall:SetHeight(isDouble and 10 or 14)
+    MainMenuBar.SingleBarSmall:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
     MainMenuBar.SingleBarSmallUpper:SetShown(numBars > 0 and isDouble and not isLarge)
+    MainMenuBar.SingleBarSmallUpper:SetHeight(isDouble and 10 or 14)
+    
+	ReputationWatchBar.OverlayFrame.Text:SetPoint("CENTER", ReputationWatchBar.OverlayFrame, "CENTER", 0, 0)
 end
 
 function AB:UpdateTrackingBarPositions()
@@ -132,8 +140,8 @@ function AB:UpdateTrackingBarPositions()
     local yOffset = {-13, -13}
     if MainMenuExpBar:IsShown() and ReputationWatchBar:IsShown() then
         height[2] = 9
-        yOffset[1] = -10
-        yOffset[2] = -19
+        yOffset[1] = -19
+        yOffset[2] = -8
     end
 
     MainMenuExpBar:SetHeight(height[1])

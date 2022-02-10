@@ -15,6 +15,7 @@ function AB:SetupMultiBarBottomLeft()
     MultiBarBottomLeft:CreateFader(AB.config.multiBarBottomLeft.fader, buttonList)
     --R:CreateDragFrame(MultiBarBottomLeft, L["Bottom Action Bar 1"], AB.defaults.multiBarBottomLeft.point)
 
+    UIPARENT_MANAGED_FRAME_POSITIONS["MultiBarBottomLeft"]["watchBar"] = 0
     UIPARENT_MANAGED_FRAME_POSITIONS["MultiBarBottomLeft"]["baseY"] = 13
 end
 
