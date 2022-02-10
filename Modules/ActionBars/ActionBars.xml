@@ -11,6 +11,7 @@
     <Script file="PetActionBar.lua"/>
     <Script file="PossessBar.lua"/>
     <Script file="ExtraActionButtons.lua"/>
+    <Script file="FlyoutBars.lua"/>
     <Include file="MainMenuBarArtFrameBackground.xml" />
     <Include file="MicroButtonAndBagsBar.xml"/>
     <Include file="SettingsMicroButton.xml"/>

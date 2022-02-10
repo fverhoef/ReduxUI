@@ -5,6 +5,7 @@
     <Script file="DragFrame.lua"/>
     <Script file="InventoryDatabase.lua"/>
     <Script file="Fonts.lua"/>
+    <Script file="SpellDatabase.lua"/>
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
     <Script file="Api.lua"/>

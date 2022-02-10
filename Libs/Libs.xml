@@ -24,6 +24,7 @@
     <Script file="LibHealComm-4.0\LibHealComm-4.0.lua"/>
     <Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>
     <Script file="LibSmoothStatusBar-1.0\LibSmoothStatusBar-1.0.lua"/>
+    <Script file="LibSpellCache-1.0/LibSpellCache-1.0.lua"/>
 
     <!-- oUF -->
     <Include file="oUF\oUF.xml"/>

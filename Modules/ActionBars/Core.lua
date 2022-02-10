@@ -17,6 +17,8 @@ function AB:Initialize()
     AB:SetupPossessBar()
     AB:SetupExtraActionButtons()
 
+    AB:LoadFlyoutBars()
+    
     AB:Update()
 
     AB:SecureHook("MultiActionBar_Update", AB.Update)
@@ -34,6 +36,8 @@ function AB:Update()
     AB:UpdatePetActionBar()
     AB:UpdatePossessBar()
     AB:UpdateExtraActionButtons()
+    
+    AB:UpdateFlyoutBars()
 end
 
 function AB:UIParent_ManageFramePositions()
