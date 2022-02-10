@@ -38,4 +38,5 @@ end
 
 function AB:UIParent_ManageFramePositions()
     AB:UpdateStanceBarTextures()
+    AB:UpdateTrackingBarPositions()
 end

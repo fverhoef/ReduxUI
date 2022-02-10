@@ -3,9 +3,6 @@
 
     <Button name="SettingsMicroButton" parent="MainMenuBarArtFrame" inherits="MainMenuBarMicroButton" mixin="SettingsMicroButtonMixin">
 		<Size x="27" y="55"/>
-        <Anchors>
-            <Anchor point="BOTTOMLEFT" relativeTo="MainMenuMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
-        </Anchors>
         <Scripts>
             <OnLoad method="OnLoad" />
             <OnClick method="OnClick" />
