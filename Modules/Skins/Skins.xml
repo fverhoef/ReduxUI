@@ -1,0 +1,14 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="Core.lua"/>
+    <Script file="Config.lua"/>
+    <Script file="Options.lua"/>
+    
+    <Script file="CharacterFrame.lua"/>
+    <Script file="ClassTrainerFrame.lua"/>
+    <Script file="FriendsFrame.lua"/>
+    <Script file="GuildFrame.lua"/>
+    <Script file="QuestLogFrame.lua"/>
+    <Script file="TradeSkillFrame.lua"/>
+    <Script file="WhoFrame.lua"/>
+    <Script file="WorldMapFrame.lua"/>
+</Ui>
