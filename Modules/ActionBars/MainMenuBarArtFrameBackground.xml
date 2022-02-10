@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="MainMenuBarArtFrameBackgroundTemplate" parent="MainMenuBarArtFrame" parentKey="Background" frameStrata="LOW" virtual="true">
+        <Anchors>
+            <Anchor point="BOTTOM" relativeTo="MainMenuBar" relativePoint="BOTTOM"/>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="BackgroundLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar" hidden="true">
+                    <Size x="804" y="49"/>
+                    <TexCoords left="0.111328" right="0.896484" top="0.453125" bottom="0.644531"/>
+                </Texture>
+                <Texture parentKey="BackgroundSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar" hidden="true">
+                    <Size x="550" y="49"/>
+                    <TexCoords left="0.111328" right="0.648438" top="0.253906" bottom="0.445312"/>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>

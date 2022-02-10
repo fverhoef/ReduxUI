@@ -305,8 +305,8 @@ end
 function R:FixNormalTextureSize(button)
     local normalTexture = button:GetNormalTexture()
     if normalTexture then
-        local texturePath = normalTexture:GetTexture()
-        if texturePath == "Interface\\Buttons\\UI-Quickslot2" then
+        local texture = normalTexture:GetTexture()
+        if texture == 130841 or texture == [[Interface\Buttons\UI-Quickslot2]] then
             local size = 66 * (button:GetWidth() / 36)
             normalTexture:SetSize(size, size)
         end

@@ -12,6 +12,7 @@ function SettingsMicroButtonMixin:OnLoad()
     self:SetNormalTexture(R.media.textures.actionBars.microButtonSettings_Up)
     self:SetPushedTexture(R.media.textures.actionBars.microButtonSettings_Down)
     self:SetHighlightTexture("Interface\\Buttons\\UI-MicroButton-Hilight")
+    self:SetPoint("BOTTOMLEFT", R.isRetail and MainMenuMicroButton or HelpMicroButton, "BOTTOMRIGHT", -2, 0)
 end
 
 function SettingsMicroButtonMixin:OnClick()

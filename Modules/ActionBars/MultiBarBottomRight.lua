@@ -21,14 +21,12 @@ function AB:UpdateMultiBarBottomRight()
         local rightButton = _G["MultiBarBottomRightButton" .. i]
         rightButton:ClearAllPoints()
         if AB.config.mainMenuBar.stackBottomBars then
-            -- rightButton.noGrid = false
             if MultiBarBottomLeft:IsShown() then
                 rightButton:SetPoint("BOTTOM", _G["MultiBarBottomLeftButton" .. i], "TOP", 0, 5)
             else
                 rightButton:SetPoint("BOTTOM", _G["ActionButton" .. i], "TOP", 0, 12)
             end
         else
-            -- rightButton.noGrid = true
             if i == 1 then
                 rightButton:SetPoint("BOTTOMLEFT")
             elseif i == 7 then
@@ -39,7 +37,8 @@ function AB:UpdateMultiBarBottomRight()
         end
     end
     MultiActionBar_UpdateGridVisibility()
-    MainMenuBar:ChangeMenuBarSizeAndPosition(not AB.config.mainMenuBar.stackBottomBars and SHOW_MULTI_ACTIONBAR_2 and IsNormalActionBarState())
+
+    if R.isRetail then MainMenuBar:ChangeMenuBarSizeAndPosition(not AB.config.mainMenuBar.stackBottomBars and SHOW_MULTI_ACTIONBAR_2 and IsNormalActionBarState()) end
 
     if AB.config.mainMenuBar.stackBottomBars and (MultiBarBottomLeft:IsShown() or MultiBarBottomRight:IsShown()) then
         UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"]["yOffset"] = 41

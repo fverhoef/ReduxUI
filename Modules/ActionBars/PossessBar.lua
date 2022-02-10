@@ -4,7 +4,7 @@ local AB = R.Modules.ActionBars
 local L = R.L
 
 function AB:SetupPossessBar()
-    local config = AB.config.possessBar
+    if not PossessBarFrame then return end
 
     local buttonList = {}
     for i = 1, _G.NUM_POSSESS_SLOTS do

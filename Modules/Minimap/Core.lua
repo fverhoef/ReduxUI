@@ -97,17 +97,18 @@ function MM:StyleMinimap()
         QueueStatusMinimapButton:SetPoint("TOPLEFT", 40, 2)
         QueueStatusMinimapButtonBorder:Hide()
         QueueStatusMinimapButtonIcon:SetSize(QueueStatusMinimapButton:GetSize())
-        
+
         MiniMapInstanceDifficulty:ClearAllPoints()
         MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
         GuildInstanceDifficulty:ClearAllPoints()
         GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
         MiniMapChallengeMode:ClearAllPoints()
         MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
+
+        MiniMapTrackingButtonBorder:Hide()
     end
 
     MiniMapTrackingBackground:Hide()
-    MiniMapTrackingButtonBorder:Hide()
 
     Minimap.ButtonFrame:Toggle()
     MM:UpdateMinimap()
