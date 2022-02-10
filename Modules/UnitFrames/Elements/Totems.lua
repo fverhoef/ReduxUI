@@ -14,9 +14,9 @@ function UF:CreateTotems()
     self.Totems = {}
     for i = 1, 5 do
         local totem = CreateFrame("Button", nil, self.TotemsHolder)
-        totem.Icon = Totem:CreateTexture(nil, "OVERLAY")
+        totem.Icon = totem:CreateTexture(nil, "OVERLAY")
         totem.Icon:SetAllPoints()
-        totem.Cooldown = CreateFrame("Cooldown", nil, Totem, "CooldownFrameTemplate")
+        totem.Cooldown = CreateFrame("Cooldown", nil, totem, "CooldownFrameTemplate")
         totem.Cooldown:SetAllPoints()
         self.Totems[i] = totem
     end
