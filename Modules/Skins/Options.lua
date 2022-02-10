@@ -6,6 +6,7 @@ local L = R.L
 R:RegisterModuleOptions(S, {
     type = "group",
     name = L["Skins"],
+    hidden = R.isRetail,
     args = {
         header = {type = "header", name = R.title .. " > Skins", order = 0},
         enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return S.config.enabled end, function(value) S.config.enabled = value end,

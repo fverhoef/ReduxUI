@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local AM = R:AddModule("Automation", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local AM = R:AddModule("Automation", "AceEvent-3.0", "AceHook-3.0")
 local L = R.L
 
 local fastLootDelay = 0

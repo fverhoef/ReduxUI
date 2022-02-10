@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local TT = R:AddModule("Tooltips", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local TT = R:AddModule("Tooltips", "AceEvent-3.0", "AceHook-3.0")
 local ID = R.Modules.InventoryDatabase
 
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub("%s?%%s%s?%-?", ""))
@@ -16,8 +16,8 @@ function TT:Initialize()
     for i = 1, #_G.FACTION_BAR_COLORS do TT.factionColors[i] = R:Hex(_G.FACTION_BAR_COLORS[i]) end
 
     _G.GameTooltipStatusBar:ClearAllPoints()
-    _G.GameTooltipStatusBar:SetPoint("LEFT", 5, 0)
-    _G.GameTooltipStatusBar:SetPoint("RIGHT", -5, 0)
+    _G.GameTooltipStatusBar:SetPoint("LEFT", 2, 0)
+    _G.GameTooltipStatusBar:SetPoint("RIGHT", -2, 0)
     _G.GameTooltipStatusBar:SetPoint("TOP", 0, -2.5)
     _G.GameTooltipStatusBar:SetHeight(4)
 
@@ -34,20 +34,20 @@ function TT:Initialize()
     TT:SecureHook(_G.GameTooltipStatusBar, "SetStatusBarColor", TT.SetStatusBarColor)
     TT:SecureHookScript(_G.GameTooltipStatusBar, "OnValueChanged", TT.OnStatusBarValueChanged)
     TT:SecureHook("GameTooltip_SetDefaultAnchor", TT.SetDefaultAnchor)
-    _G.GameTooltip:HookScript("OnTooltipSetUnit", TT.OnTooltipSetUnit)
+    TT:SecureHookScript(_G.GameTooltip, "OnTooltipSetUnit", TT.OnTooltipSetUnit)
 
     TT:SecureHook(_G.GameTooltip, "SetUnitBuff", TT.SetUnitBuff)
     TT:SecureHook(_G.GameTooltip, "SetUnitDebuff", TT.SetUnitDebuff)
     TT:SecureHook(_G.GameTooltip, "SetUnitAura", TT.SetUnitAura)
     TT:SecureHook("SetItemRef", TT.SetItemRef)
 
-    _G.GameTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
-    _G.GameTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
+    TT:SecureHookScript(_G.GameTooltip, "OnTooltipSetItem", TT.OnTooltipSetItem)
+    TT:SecureHookScript(_G.GameTooltip, "OnTooltipSetSpell", TT.OnTooltipSetSpell)
 
-    _G.ItemRefTooltip:HookScript("OnTooltipSetItem", TT.OnTooltipSetItem)
-    _G.ItemRefTooltip:HookScript("OnTooltipSetSpell", TT.OnTooltipSetSpell)
+    TT:SecureHookScript(_G.ItemRefTooltip, "OnTooltipSetItem", TT.OnTooltipSetItem)
+    TT:SecureHookScript(_G.ItemRefTooltip, "OnTooltipSetSpell", TT.OnTooltipSetSpell)
 
-    _G.GameTooltip:HookScript("OnShow", TT.OnShow)
+    TT:SecureHookScript(_G.GameTooltip, "OnShow", TT.OnShow)
 
     TT:UpdateAll()
 end

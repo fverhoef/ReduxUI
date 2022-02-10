@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local AB = R:AddModule("ActionBars", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local AB = R:AddModule("ActionBars", "AceEvent-3.0", "AceHook-3.0")
 local L = R.L
 
 function AB:Initialize()
