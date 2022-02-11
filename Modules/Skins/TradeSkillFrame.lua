@@ -12,16 +12,7 @@ function S:StyleTradeSkillFrame()
         return
     end
 
-    UIPanelWindows["TradeSkillFrame"] = {
-        area = "override",
-        pushable = 1,
-        xoffset = -16,
-        yoffset = 12,
-        bottomClampOverride = 140 + 12,
-        width = 714,
-        height = 487,
-        whileDead = 1
-    }
+    UIPanelWindows["TradeSkillFrame"] = {area = "override", pushable = 1, xoffset = -16, yoffset = 12, bottomClampOverride = 140 + 12, width = 714, height = 487, whileDead = 1}
 
     TradeSkillFrame:SetWidth(714)
     TradeSkillFrame:SetHeight(487)
@@ -49,9 +40,7 @@ function S:StyleTradeSkillFrame()
         button:SetPoint("TOPLEFT", _G["TradeSkillSkill" .. (i - 1)], "BOTTOMLEFT", 0, 1)
     end
 
-    S:SecureHook(TradeSkillHighlightFrame, "Show", function()
-        TradeSkillHighlightFrame:SetWidth(290)
-    end)
+    S:SecureHook(TradeSkillHighlightFrame, "Show", function() TradeSkillHighlightFrame:SetWidth(290) end)
 
     TradeSkillDetailScrollFrame:ClearAllPoints()
     TradeSkillDetailScrollFrame:SetPoint("TOPLEFT", TradeSkillFrame, "TOPLEFT", 352, -74)
@@ -69,8 +58,9 @@ function S:StyleTradeSkillFrame()
     detailsInset:SetPoint("TOPLEFT", TradeSkillFrame, "TOPLEFT", 348, -72)
     detailsInset:SetTexture("Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated")
 
-    -- Hide expand tab (left of All button)
-    -- TradeSkillExpandTabLeft:Hide()
+    TradeSkillExpandTabLeft:Hide()
+    TradeSkillHorizontalBarLeft:SetSize(1, 1)
+    TradeSkillHorizontalBarLeft:Hide()
 
     local regions = {TradeSkillFrame:GetRegions()}
 
@@ -84,9 +74,6 @@ function S:StyleTradeSkillFrame()
 
     regions[4]:Hide()
     regions[5]:Hide()
-
-    regions[9]:Hide()
-    regions[10]:Hide()
 
     TradeSkillCreateButton:ClearAllPoints()
     TradeSkillCreateButton:SetPoint("RIGHT", TradeSkillCancelButton, "LEFT", -1, 0)
