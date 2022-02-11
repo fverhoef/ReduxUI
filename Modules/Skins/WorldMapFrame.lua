@@ -10,6 +10,8 @@ function S:StyleWorldMapFrame()
     local stationaryOpacity = S.config.worldMap.stationaryOpacity
 
     WorldMapFrame:SetScale(scale)
+    WorldMapFrame.__setScale = WorldMapFrame.SetScale
+    WorldMapFrame.SetScale = R.EmptyFunction
     WorldMapFrame.ScrollContainer.GetCursorPosition = function(f)
         local x, y = MapCanvasScrollControllerMixin.GetCursorPosition(f)
         local s = WorldMapFrame:GetScale()
@@ -42,12 +44,13 @@ function S:StyleWorldMapFrame()
 
     WorldMapFrame.Coordinates = CreateFrame("Frame", "WorldMapFrameCoordinates", WorldMapFrame)
     WorldMapFrame.Coordinates:SetPoint("BOTTOMLEFT", WorldMapFrame.ScrollContainer, "BOTTOMLEFT", 5, 5)
+    WorldMapFrame.Coordinates:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 2)
     WorldMapFrame.Coordinates.Player = WorldMapFrame.Coordinates:CreateFontString(nil, "OVERLAY")
-    WorldMapFrame.Coordinates.Player:SetPoint("BOTTOMLEFT", WorldMapFrame.ScrollContainer, "BOTTOMLEFT")
+    WorldMapFrame.Coordinates.Player:SetPoint("BOTTOMLEFT", WorldMapFrame.ScrollContainer, "BOTTOMLEFT", 0, -20)
     WorldMapFrame.Coordinates.Player:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     WorldMapFrame.Coordinates.Player:SetText(PLAYER .. ":   0, 0")
     WorldMapFrame.Coordinates.Mouse = WorldMapFrame.Coordinates:CreateFontString(nil, "OVERLAY")
-    WorldMapFrame.Coordinates.Mouse:SetPoint("BOTTOMLEFT", WorldMapFrame.Coordinates.Player, "BOTTOMRIGHT", 5, 0)
+    WorldMapFrame.Coordinates.Mouse:SetPoint("BOTTOMRIGHT", WorldMapFrame.ScrollContainer, "BOTTOMRIGHT", 0, -20)
     WorldMapFrame.Coordinates.Mouse:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     WorldMapFrame.Coordinates.Mouse:SetText(MOUSE_LABEL .. ":   0, 0")
 

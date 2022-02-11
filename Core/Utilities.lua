@@ -16,6 +16,9 @@ R.EquipmentSlots = {
 }
 
 if not R.isRetail then table.insert(R.EquipmentSlots, "RangedSlot") end
+
+R.EmptyFunction = function() end
+
 function R:DisableScripts()
     local scripts = {"OnShow", "OnHide", "OnEvent", "OnEnter", "OnLeave", "OnUpdate", "OnValueChanged", "OnClick", "OnMouseDown", "OnMouseUp"}
 

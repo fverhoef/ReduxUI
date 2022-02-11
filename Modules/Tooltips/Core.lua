@@ -209,23 +209,19 @@ end
 function TT:SetDefaultAnchor(owner)
     if not TT.config.anchor then return end
     local anchor = TT.config.anchor
-    local offsetX = TT.config.offsetX
-    local offsetY = TT.config.offsetY
 
     -- override anchor for action bar buttons
     local parent = owner:GetParent()
     if parent then
-        if parent == _G.MultiBarBottomRight or parent == _G.MultiBarRight or parent == _G.MultiBarLeft or
-            (AB and (parent == AB.Bars.MultiBarBottomRight or parent == AB.Bars.MultiBarRight or parent == AB.Bars.MultiBarLeft or parent == AB.Bars.MicroButtonAndBagsBar)) then
+        if parent == _G.MultiBarBottomRight or parent == _G.MultiBarRight or parent == _G.MultiBarLeft then
             anchor = "ANCHOR_LEFT"
-        elseif parent == _G.MainMenuBar or parent == _G.MultiBarBottomLeft or parent == _G.StanceBarFrame or _G.PetActionBarFrame or
-            (AB and (parent == AB.Bars.MainMenuBar or parent == AB.Bars.MultiBarBottomLeft or parent == AB.Bars.StanceBar or AB.Bars.PetActionBar or AB.Bars.VehicleExitBar)) then
+        elseif parent == _G.MainMenuBar or parent == _G.MultiBarBottomLeft or parent == _G.StanceBarFrame or _G.PetActionBarFrame then
             anchor = "ANCHOR_RIGHT"
         end
     end
 
     if anchor == "ANCHOR_CURSOR" then
-        self:SetOwner(owner, anchor, offsetX, offsetY)
+        self:SetOwner(owner, anchor, TT.config.offsetX, TT.config.offsetY)
     else
         self:SetOwner(owner, anchor)
     end
