@@ -3,6 +3,7 @@ local R = _G.ReduxUI
 local TT = R:AddModule("Tooltips", "AceEvent-3.0", "AceHook-3.0")
 local ID = R.Modules.InventoryDatabase
 local L = R.L
+local oUF = ns.oUF or oUF
 
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub("%s?%%s%s?%-?", ""))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub("^%%2$s%s?(.-)%s?%%1$s", "%1"):gsub("^%-?г?о?%s?", ""):gsub("%s?%%s%s?%-?", ""))
@@ -195,6 +196,9 @@ function TT:OnStatusBarValueChanged(value)
             if class then
                 local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
                 self:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1)
+            elseif UnitReaction(unit, "player") then
+                local reactionColor = oUF.colors.reaction[UnitReaction(unit, "player")]
+                self:SetStatusBarColor(unpack(reactionColor))
             end
         end
     else
@@ -288,8 +292,8 @@ function TT:AddNameColor(tooltip, unit)
     local class = select(2, UnitClass(unit))
     if not class then return end
 
-    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), UnitName(unit) or UNKNOWN,
-                                             UnitIsAFK(unit) and (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
+    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), UnitName(unit) or UNKNOWN, UnitIsAFK(unit) and
+                                                 (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
 end
 
 function TT:AddGuildColor(tooltip, unit)
