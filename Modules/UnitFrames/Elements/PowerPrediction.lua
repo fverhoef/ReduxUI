@@ -10,7 +10,6 @@ function UF:CreatePowerPrediction()
     mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
     mainBar:SetFrameLevel(self.Power:GetFrameLevel() + 1)
     mainBar:SetReverseFill(true)
-    mainBar:SetSize(self.Power:GetWidth(), 0)
 
     local altBar
     if self.AdditionalPower then
@@ -48,7 +47,7 @@ function UF:ConfigurePowerPrediction()
     self.PowerPrediction.mainBar:SetPoint("TOP", self.Power, "TOP")
     self.PowerPrediction.mainBar:SetPoint("BOTTOM", self.Power, "BOTTOM")
     self.PowerPrediction.mainBar:SetPoint("RIGHT", self.Power:GetStatusBarTexture(), "RIGHT")
-    self.PowerPrediction.mainBar:SetSize(self.Power:GetWidth(), 0)
+    self.PowerPrediction.mainBar:SetWidth(self.Power:GetWidth())
 
     if config.smooth then
         R.Libs.SmoothStatusBar:SmoothBar(self.PowerPrediction.mainBar)
@@ -62,7 +61,7 @@ function UF:ConfigurePowerPrediction()
         self.PowerPrediction.altBar:SetPoint("TOP", self.AdditionalPower, "TOP")
         self.PowerPrediction.altBar:SetPoint("BOTTOM", self.AdditionalPower, "BOTTOM")
         self.PowerPrediction.altBar:SetPoint("RIGHT", self.AdditionalPower:GetStatusBarTexture(), "RIGHT")
-        self.PowerPrediction.altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
+        self.PowerPrediction.altBar:SetWidth(self.AdditionalPower:GetWidth())
 
         if config.smooth then
             R.Libs.SmoothStatusBar:SmoothBar(self.PowerPrediction.altBar)

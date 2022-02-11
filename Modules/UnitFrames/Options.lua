@@ -326,7 +326,36 @@ function UF:CreateUnitPowerOption(unit, order)
                         UF.config[unit].power.inset = false;
                         UF.config[unit].power.detached = value
                     end),
-                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 6, nil, nil, function() return UF.config[unit].power.inset end,
+                    detachedPoint = {
+                        type = "group",
+                        name = L["Detached Point"],
+                        order = order,
+                        inline = true,
+                        hidden = function() return unit ~= "player" or not UF.config[unit].power.detached end,
+                        args = {
+                            desc = {
+                                type = "description",
+                                name = L["Detached power bar position can be adjusted either here or by unlocking all frames in the addon's general options and dragging them by hand."],
+                                order = 1
+                            },
+                            point = UF:CreatePointOption(unit, 2, function() return UF.config[unit].power.point[1] end, function(value)
+                                UF.config[unit].power.point[1] = value
+                            end),
+                            anchor = UF:CreateAnchorOption(unit, 3, function() return UF.config[unit].power.point[2] end, function(value)
+                                UF.config[unit].power.point[2] = value
+                            end),
+                            relativePoint = UF:CreateRelativePointOption(unit, 4, function() return UF.config[unit].power.point[3] end, function(value)
+                                UF.config[unit].power.point[3] = value
+                            end),
+                            offsetX = UF:CreateOffsetXOption(unit, 5, function() return UF.config[unit].power.point[4] end, function(value)
+                                UF.config[unit].power.point[4] = value
+                            end),
+                            offsetY = UF:CreateOffsetYOption(unit, 6, function() return UF.config[unit].power.point[5] end, function(value)
+                                UF.config[unit].power.point[5] = value
+                            end)
+                        }
+                    },
+                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 7, nil, nil, function() return UF.config[unit].power.inset end,
                                                   function(value)
                         UF.config[unit].power.detached = false;
                         UF.config[unit].power.inset = value
@@ -334,7 +363,7 @@ function UF:CreateUnitPowerOption(unit, order)
                     insetPoint = {
                         type = "group",
                         name = L["Inset Point"],
-                        order = 7,
+                        order = 8,
                         inline = true,
                         hidden = function() return not UF.config[unit].power.inset end,
                         args = {

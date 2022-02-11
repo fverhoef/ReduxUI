@@ -82,7 +82,7 @@ function R:CreateInlay(color, size, offset, frameLevel)
     if not color[4] then color[4] = R.DEFAULT_INLAY_COLOR[4] end
     size = size or R.DEFAULT_INLAY_SIZE
     offset = offset or R.DEFAULT_INLAY_OFFSET
-    frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 1)
+    frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 2)
 
     inlay:SetBackdrop({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = size})
     inlay:SetBackdropBorderColor(unpack(color))

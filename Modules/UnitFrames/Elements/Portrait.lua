@@ -7,6 +7,7 @@ function UF:CreatePortrait()
     if not self.config.portrait.enabled then return end
 
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
+    self.PortraitHolder:SetFrameLevel(self:GetFrameLevel())
 
     self.Portrait2D = self:CreateTexture("$parentPortrait2D", "BACKGROUND")
     self.Portrait2D.PostUpdate = function() self:UpdatePortraitTexture() end

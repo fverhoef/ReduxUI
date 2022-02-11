@@ -35,7 +35,8 @@ local DEFAULT_UNIT_CONFIG = {
     },
     power = {
         enabled = true,
-        size = {150, 12},
+        size = {150, 10},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 352},
         value = {
             enabled = true,
             point = {"CENTER", "CENTER", 0, 0},
@@ -57,7 +58,10 @@ local DEFAULT_UNIT_CONFIG = {
         },
         smooth = true,
         energyManaRegen = false,
-        showSeparator = false
+        powerPrediction = false,
+        showSeparator = false,
+        inset = false,
+        insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0}
     },
     additionalPower = {
         enabled = true,
@@ -203,7 +207,7 @@ R:RegisterModuleConfig(UF, {
         health = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         healthPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         power = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        powerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
+        powerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         additionalPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         classPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
@@ -243,13 +247,14 @@ R:RegisterModuleConfig(UF, {
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        power = {energyManaRegen = true},
+        power = {energyManaRegen = true, powerPrediction = true, insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0}},
         castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, detached = true, showSafeZone = true},
         highlight = {target = false}
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
+        power = {insetPoint = {"LEFT", "BOTTOMLEFT", 10, 0}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
         auras = {enabled = true},

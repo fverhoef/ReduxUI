@@ -13,6 +13,7 @@ function UF:CreatePower()
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
     self.Power:SetPoint("BOTTOMLEFT")
     self.Power:SetPoint("BOTTOMRIGHT")
+    self.Power:CreateBorder(nil, 10, 2)
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -45,18 +46,30 @@ function UF:ConfigurePower()
 
     self:EnableElement("Power")
 
+    if unit ~= "player" then config.detached = false end
+
     self.Power:SetSize(unpack(config.size))
-    local bottomLeftOffset = {0, 0}
-    local bottomRightOffset = {0, 0}
-    if self.config.portrait.enabled then
-        if self.config.portrait.point == "LEFT" then
-            bottomLeftOffset[1] = self.config.portrait.size[1]
-        else
-            bottomRightOffset[1] = -self.config.portrait.size[1]
+    self.Power:ClearAllPoints()
+    self.Power.Border:SetShown(config.detached or config.inset)
+    if config.inset then
+        self.Power:Point(unpack(config.insetPoint))
+        self.Power.Border:Show()
+        self.Power:SetFrameLevel(self:GetFrameLevel() + 2)
+    else
+        local bottomLeftOffset = {0, 0}
+        local bottomRightOffset = {0, 0}
+        if self.config.portrait.enabled then
+            if self.config.portrait.point == "LEFT" then
+                bottomLeftOffset[1] = self.config.portrait.point == "LEFT" and self.config.portrait.size[1] or 0
+            else
+                bottomRightOffset[1] = -self.config.portrait.size[1]
+            end
         end
+        self.Power:SetPoint("BOTTOMLEFT", self.config.portrait.point == "LEFT" and self.config.portrait.size[1] or 0, 0)
+        self.Power:SetPoint("BOTTOMRIGHT", self.config.portrait.point ~= "LEFT" and -self.config.portrait.size[1] or 0, 0)
+        self.Power.Border:Hide()
+        self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
     end
-    self.Power:SetPoint("BOTTOMLEFT", bottomLeftOffset[1], bottomLeftOffset[2])
-    self.Power:SetPoint("BOTTOMRIGHT", bottomRightOffset[1], bottomRightOffset[2])
 
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
     self.Power:SetFrequentUpdates(config.frequentUpdates)
@@ -87,7 +100,7 @@ function UF:ConfigurePower()
     else
         R.Libs.SmoothStatusBar:ResetBar(self.Power)
     end
-    
+
     self.Power.Separator:SetShown(config.showSeparator)
 end
 

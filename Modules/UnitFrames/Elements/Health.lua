@@ -68,9 +68,7 @@ function UF:CreateHealth()
     return self.Health
 end
 
-function UF:Health_ForceUpdate(event, ...)
-    self.Health:ForceUpdate()
-end
+function UF:Health_ForceUpdate(event, ...) self.Health:ForceUpdate() end
 
 oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)
 
@@ -90,14 +88,14 @@ function UF:ConfigureHealth()
 
     local topLeftOffset = {0, 0}
     local bottomRightOffset = {0, 0}
-    if self.config.portrait.enabled then
+    if self.config.portrait.enabled and not self.config.portrait.detached then
         if self.config.portrait.point == "LEFT" then
             topLeftOffset[1] = self.config.portrait.size[1]
         else
             bottomRightOffset[1] = -self.config.portrait.size[1]
         end
     end
-    if self.config.power.enabled and not self.config.power.detached then bottomRightOffset[2] = self.config.power.size[2] end
+    if self.config.power.enabled and not self.config.power.detached and not self.config.power.inset then bottomRightOffset[2] = self.config.power.size[2] end
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", topLeftOffset[1], topLeftOffset[2])
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", bottomRightOffset[1], bottomRightOffset[2])
 
