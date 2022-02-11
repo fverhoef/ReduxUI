@@ -14,7 +14,8 @@ R:RegisterModuleConfig(TT, {
         dead = {125 / 255, 125 / 255, 125 / 255},
         target = {255 / 255, 125 / 255, 125 / 255},
         guild = {0 / 255, 230 / 255, 0 / 255},
-        afk = {0 / 255, 255 / 255, 255 / 255},
+        afk = {255 / 255, 0 / 255, 0 / 255},
+        dnd = {255 / 255, 255 / 255, 0 / 255},
         pvp = {220 / 255, 120 / 255, 30 / 255},
         itemLevel = {220 / 255, 195 / 255, 30 / 255}
     },
@@ -30,6 +31,7 @@ R:RegisterModuleConfig(TT, {
     statusbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
     colorBorderByRarity = true,
     showHealthValues = true,
+    showGuildRank = true,
     showPvPRank = true,
     showIcons = true,
     showSpellId = false,

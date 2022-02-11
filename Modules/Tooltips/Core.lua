@@ -2,6 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local TT = R:AddModule("Tooltips", "AceEvent-3.0", "AceHook-3.0")
 local ID = R.Modules.InventoryDatabase
+local L = R.L
 
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub("%s?%%s%s?%-?", ""))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub("^%%2$s%s?(.-)%s?%%1$s", "%1"):gsub("^%-?г?о?%s?", ""):gsub("%s?%%s%s?%-?", ""))
@@ -114,9 +115,9 @@ function TT:OnTooltipSetUnit()
     if raidIconIndex then _G.GameTooltipTextLeft1:SetText(("%s %s"):format(ICON_LIST[raidIconIndex] .. "14|t", unitName)) end
 
     if UnitIsPlayer(unit) then
-        if UnitIsAFK(unit) then self:AppendText((" %s<AFK>|r"):format(R:Hex(TT.config.colors.afk))) end
-
-        TT:AddLevelColor(self, unit)
+        TT:AddNameColor(self, unit)
+        TT:AddGuildColor(self, unit)
+        TT:AddPvPColor(self)
 
         local rank = UnitPVPRank and UnitPVPRank(unit)
         if rank and rank > 0 then
@@ -125,8 +126,7 @@ function TT:OnTooltipSetUnit()
             TT:AddPvPRank(self, rank)
         end
     end
-
-    TT:AddPvPColor(self)
+    TT:AddLevelColor(self, unit)
 
     if UnitIsDeadOrGhost(unit) then _G.GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead)) end
 
@@ -284,28 +284,55 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
     end
 end
 
-function TT:AddLevelColor(tooltip, unit)
-    local localeClass, class = UnitClass(unit)
+function TT:AddNameColor(tooltip, unit)
+    local class = select(2, UnitClass(unit))
     if not class then return end
+
+    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), UnitName(unit) or UNKNOWN,
+                                             UnitIsAFK(unit) and (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
+end
+
+function TT:AddGuildColor(tooltip, unit)
+    local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
+    if not guildName then return end
+    local levelLine = TT:GetLevelLine(tooltip, 2, guildName)
+    if not levelLine then return end
+
+    local text = R:Hex(TT.config.colors.guild) .. "<" .. (IsShiftKeyDown() and guildRealm and (guildName .. "-" .. guildRealm) or guildName) .. ">" ..
+                     (TT.config.showGuildRank and (" [" .. guildRankName .. "]") or "") .. "|r"
+    if levelLine == _G.GameTooltipTextLeft2 then
+        tooltip:AddLine(text, 1, 1, 1)
+    else
+        _G.GameTooltipTextLeft2:SetText(text)
+    end
+end
+
+function TT:AddLevelColor(tooltip, unit)
     local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
     local levelLine = TT:GetLevelLine(tooltip, 2, guildName)
     if not levelLine then return end
 
     local level, realLevel = (R.isRetail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
-    local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
     local difficultyColor = GetCreatureDifficultyColor(level)
 
-    local race = UnitRace(unit)
-    race = (race and race .. " ") or ""
+    if UnitIsPlayer(unit) then
+        local localeClass, class = UnitClass(unit)
+        local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
 
-    local sex = UnitSex(unit)
-    local gender = (sex == 1 and UNKNOWN) or (sex == 2 and MALE) or (sex == 3 and FEMALE)
-    gender = (gender and gender .. " ") or ""
+        local race = UnitRace(unit)
+        race = (race and race .. " ") or ""
 
-    if level < realLevel then
-        levelLine:SetFormattedText("%s%s|r |cffFFFFFF(%s)|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", realLevel, gender, race, R:Hex(classColor), localeClass)
+        local sex = UnitSex(unit)
+        local gender = (sex == 2 and MALE) or (sex == 3 and FEMALE)
+        gender = (gender and gender .. " ") or ""
+
+        if level < realLevel then
+            levelLine:SetFormattedText("%s%s|r |cffFFFFFF(%s)|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", realLevel, gender, race, R:Hex(classColor), localeClass or "")
+        else
+            levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", gender, race, R:Hex(classColor), localeClass or "")
+        end
     else
-        levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", gender, race, R:Hex(classColor), localeClass)
+        levelLine:SetFormattedText("%s%s|r %s", R:Hex(difficultyColor), level > 0 and level or "??", UnitCreatureType(unit))
     end
 end
 
