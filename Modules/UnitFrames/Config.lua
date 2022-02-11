@@ -36,6 +36,7 @@ local DEFAULT_UNIT_CONFIG = {
     power = {
         enabled = true,
         size = {150, 10},
+        detached = false,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 352},
         value = {
             enabled = true,

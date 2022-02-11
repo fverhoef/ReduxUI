@@ -46,14 +46,16 @@ function UF:ConfigurePower()
 
     self:EnableElement("Power")
 
-    if unit ~= "player" then config.detached = false end
+    if self.unit ~= "player" then config.detached = false end
 
+    if not config.detached then config.point[5] = nil end
     self.Power:SetSize(unpack(config.size))
     self.Power:ClearAllPoints()
     self.Power.Border:SetShown(config.detached or config.inset)
-    if config.inset then
-        self.Power:Point(unpack(config.insetPoint))
-        self.Power.Border:Show()
+    if config.detached then
+        self.Power:Point(config.point)
+    elseif config.inset then
+        self.Power:Point(config.insetPoint)
         self.Power:SetFrameLevel(self:GetFrameLevel() + 2)
     else
         local bottomLeftOffset = {0, 0}
@@ -67,7 +69,6 @@ function UF:ConfigurePower()
         end
         self.Power:SetPoint("BOTTOMLEFT", self.config.portrait.point == "LEFT" and self.config.portrait.size[1] or 0, 0)
         self.Power:SetPoint("BOTTOMRIGHT", self.config.portrait.point ~= "LEFT" and -self.config.portrait.size[1] or 0, 0)
-        self.Power.Border:Hide()
         self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
     end
 

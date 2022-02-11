@@ -105,7 +105,7 @@ function R:HideDragFrame(frame)
 end
 
 function R:ShowDragFrame(frame)
-    if not frame or not frame.DragFrame or frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked then return end
+    if not frame or not frame.DragFrame or (frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked) then return end
 
     if frame.frameVisibility then RegisterStateDriver(frame, "visibility", "show") end
     frame.DragFrame:Show()
@@ -142,7 +142,7 @@ function R:LockDragFrame(frame, hideWhenLocked)
 end
 
 function R:UnlockDragFrame(frame)
-    if not frame or not frame.DragFrame then return end
+    if not frame or not frame.DragFrame or frame.DragFrame.isDisabled then return end
 
     frame.DragFrame.isLocked = false
     frame.DragFrame.texture:SetVertexColor(0, 1, 0)

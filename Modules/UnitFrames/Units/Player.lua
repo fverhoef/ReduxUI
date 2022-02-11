@@ -46,12 +46,14 @@ function UF:UpdatePlayer()
     if (R.isRetail and select(2, UnitClass("player")) == "MONK") then self:ConfigureStagger() end
 
     if self.config.power.detached then
-        self.Power:ClearAllPoints()
-        self.Power:Point(self.config.power.point)
+        R:UnlockDragFrame(self.Power)
+    else
+        R:LockDragFrame(self.Power, true)
     end
 
     if self.config.castbar.detached then
-        self.Castbar:ClearAllPoints()
-        self.Castbar:Point(self.config.castbar.point)
+        R:UnlockDragFrame(self.Castbar)
+    else
+        R:LockDragFrame(self.Castbar, true)
     end
 end

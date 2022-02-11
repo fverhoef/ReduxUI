@@ -18,7 +18,7 @@ function UF:CreateCastbar()
     self.Castbar.SparkTexture:SetTexCoord(9 / 32, 23 / 32, 5 / 32, 27 / 32)
     self.Castbar.SparkTexture:SetBlendMode("ADD")
     self.Castbar.SparkTexture:SetVertexColor(1, 1, 1)
-    self.Castbar.SparkTexture:SetWidth(10)
+    self.Castbar.SparkTexture:SetWidth(6)
     self.Castbar.Spark = self.Castbar.SparkTexture
 
     self.Castbar.Text = self.Castbar:CreateFontString("$parentText", "OVERLAY")
@@ -63,11 +63,10 @@ function UF:ConfigureCastbar()
 
     self:EnableElement("Castbar")
 
-    self.Castbar:SetSize(unpack(config.size))
-
+    if not config.detached then config.point[5] = nil end
+    self.Castbar:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
     self.Castbar:ClearAllPoints()
-    self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
-    self.Castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -5)
+    self.Castbar:Point(config.point)
 
     self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
     self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
@@ -91,10 +90,12 @@ function UF:ConfigureCastbar()
     end
 
     if config.showIcon then
+        self.Castbar.Icon:Show()
         self.Castbar.IconHolder:Show()
         self.Castbar.IconHolder:SetSize(config.size[2], config.size[2])
         self.Castbar.IconHolder:SetPoint("RIGHT", self.Castbar, "LEFT", -6, 0)
     else
+        self.Castbar.Icon:Hide()
         self.Castbar.IconHolder:Hide()
     end
 

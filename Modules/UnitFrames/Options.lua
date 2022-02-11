@@ -32,7 +32,9 @@ function UF:CreatePointOption(unit, order, get, set)
     return R:CreateSelectOption(L["Point"], L["The anchor point on this element."], order, nil, R.ANCHOR_POINTS, get, set, function() UF:UpdateUnit(unit) end)
 end
 
-function UF:CreateAnchorOption(unit, order, get, set) return R:CreateSelectOption(L["Anchor"], L["The frame to attach to."], order, nil, R.ANCHORS, get, set, function() UF:UpdateUnit(unit) end) end
+function UF:CreateAnchorOption(unit, order, hidden, get, set)
+    return R:CreateSelectOption(L["Anchor"], L["The frame to attach to."], order, hidden, R.ANCHORS, get, set, function() UF:UpdateUnit(unit) end)
+end
 
 function UF:CreateRelativePointOption(unit, order, get, set)
     return R:CreateSelectOption(L["Relative Point"], L["The point on the unit frame to attach to."], order, nil, R.ANCHOR_POINTS, get, set, function() UF:UpdateUnit(unit) end)
@@ -210,7 +212,7 @@ function UF:CreateUnitPositionOption(unit, order)
                 order = 1
             },
             point = UF:CreatePointOption(unit, 2, function() return UF.config[unit].point[1] end, function(value) UF.config[unit].point[1] = value end),
-            anchor = UF:CreateAnchorOption(unit, 3, function() return UF.config[unit].point[2] end, function(value) UF.config[unit].point[2] = value end),
+            anchor = UF:CreateAnchorOption(unit, 3, nil, function() return UF.config[unit].point[2] end, function(value) UF.config[unit].point[2] = value end),
             relativePoint = UF:CreateRelativePointOption(unit, 4, function() return UF.config[unit].point[3] end, function(value) UF.config[unit].point[3] = value end),
             offsetX = UF:CreateOffsetXOption(unit, 5, function() return UF.config[unit].point[4] end, function(value) UF.config[unit].point[4] = value end),
             offsetY = UF:CreateOffsetYOption(unit, 6, function() return UF.config[unit].point[5] end, function(value) UF.config[unit].point[5] = value end)
@@ -326,10 +328,15 @@ function UF:CreateUnitPowerOption(unit, order)
                         UF.config[unit].power.inset = false;
                         UF.config[unit].power.detached = value
                     end),
+                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 6, nil, nil, function() return UF.config[unit].power.inset end,
+                                                  function(value)
+                        UF.config[unit].power.detached = false;
+                        UF.config[unit].power.inset = value
+                    end),
                     detachedPoint = {
                         type = "group",
                         name = L["Detached Point"],
-                        order = order,
+                        order = 7,
                         inline = true,
                         hidden = function() return unit ~= "player" or not UF.config[unit].power.detached end,
                         args = {
@@ -341,7 +348,7 @@ function UF:CreateUnitPowerOption(unit, order)
                             point = UF:CreatePointOption(unit, 2, function() return UF.config[unit].power.point[1] end, function(value)
                                 UF.config[unit].power.point[1] = value
                             end),
-                            anchor = UF:CreateAnchorOption(unit, 3, function() return UF.config[unit].power.point[2] end, function(value)
+                            anchor = UF:CreateAnchorOption(unit, 3, nil, function() return UF.config[unit].power.point[2] end, function(value)
                                 UF.config[unit].power.point[2] = value
                             end),
                             relativePoint = UF:CreateRelativePointOption(unit, 4, function() return UF.config[unit].power.point[3] end, function(value)
@@ -355,11 +362,6 @@ function UF:CreateUnitPowerOption(unit, order)
                             end)
                         }
                     },
-                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 7, nil, nil, function() return UF.config[unit].power.inset end,
-                                                  function(value)
-                        UF.config[unit].power.detached = false;
-                        UF.config[unit].power.inset = value
-                    end),
                     insetPoint = {
                         type = "group",
                         name = L["Inset Point"],
@@ -534,7 +536,7 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end),
             lineBreakOptions = {type = "description", name = "", order = 2},
             showIcon = UF:CreateToggleOption(unit, L["Show Icon"], L["Whether to show an icon in the castbar."], 3, nil, not canDetach, function() return UF.config[unit].castbar.showIcon end,
-                                             function(value) UF.config[unit].portrait.castbar.showIcon = value end),
+                                             function(value) UF.config[unit].castbar.showIcon = value end),
             showIconOutside = UF:CreateToggleOption(unit, L["Show Icon Outside"], L["Whether to show the icon outside the castbar."], 4, nil,
                                                     function() return not canDetach or not UF.config[unit].castbar.showIcon end, function() return UF.config[unit].castbar.showIconOutside end,
                                                     function(value) UF.config[unit].castbar.showIconOutside = value end),
@@ -545,25 +547,30 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end, function(value) UF.config[unit].castbar.showSpark = value end),
             lineBreakDetached = {type = "description", name = "", order = 7},
             detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 8, nil, not canDetach,
-                                             function() return UF.config[unit].castbar.detached end, function(value) UF.config[unit].castbar.detached = value end),
+                                             function() return UF.config[unit].castbar.detached end, function(value)
+                UF.config[unit].castbar.detached = value;
+                UF.config[unit].castbar.point = value and {"CENTER", "UIParent", "BOTTOM", 0, 150} or {"TOPLEFT", "BOTTOMLEFT", 0, -5}
+            end),
             lineBreakSize = {type = "description", name = L["Size"], order = 9},
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 10, not canDetach, 10, nil, 400, 1, function() return UF.config[unit].castbar.size[1] end,
                                          function(value) UF.config[unit].castbar.size[1] = value end),
             height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 11, nil, 4, nil, 400, 1, function() return UF.config[unit].castbar.size[2] end,
                                           function(value) UF.config[unit].castbar.size[2] = value end),
-            detachedPosition = {
+            position = {
                 type = "group",
                 name = L["Position"],
                 inline = true,
                 order = 12,
-                hidden = function() return not UF.config[unit].castbar.detached end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function() return UF.config[unit].castbar.point[1] end, function(value) UF.config[unit].castbar.point[1] = value end),
-                    relativePoint = UF:CreateRelativePointOption(unit, 2, function() return UF.config[unit].castbar.point[2] end, function(value)
-                        UF.config[unit].portrait.point[2] = value
-                    end),
-                    offsetX = UF:CreateOffsetXOption(unit, 3, function() return UF.config[unit].portrait.point[3] end, function(value) UF.config[unit].castbar.point[3] = value end),
-                    offsetY = UF:CreateOffsetYOption(unit, 4, function() return UF.config[unit].castbar.point[4] end, function(value) UF.config[unit].castbar.point[4] = value end)
+                    anchor = UF:CreateAnchorOption(unit, 2, function() return not UF.config[unit].castbar.detached end, function() return UF.config[unit].castbar.point[2] end,
+                                                   function(value) UF.config[unit].castbar.point[2] = value end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 3, function() return UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 2 or 3] end,
+                                                                 function(value) UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 2 or 3] = value end),
+                    offsetX = UF:CreateOffsetXOption(unit, 4, function() return UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 3 or 4] end,
+                                                     function(value) UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 3 or 4] = value end),
+                    offsetY = UF:CreateOffsetYOption(unit, 5, function() return UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 4 or 5] end,
+                                                     function(value) UF.config[unit].castbar.point[(not UF.config[unit].castbar.detached) and 4 or 5] = value end)
                 }
             },
             font = {
