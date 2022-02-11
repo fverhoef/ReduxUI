@@ -32,8 +32,10 @@ end
 
 function B:BAG_UPDATE(event, bagID)
     if B.Inventory:IsShown() then
-        B:FindBag(bagID):Update()
-        B:FindBagSlot(bagID):Update()
+        local bag = B:FindBag(bagID)
+        if bag then bag:Update() end
+        local bagSlot = B:FindBagSlot(bagID)
+        if bagSlot then bagSlot:Update() end
     end
 end
 
