@@ -226,6 +226,5 @@ function MM:CreateButtonFrame()
 
     -- TODO: check if it's possible to use events rather than a timed update
     GrabMinimapButtons()
-    MM:ScheduleTimer(GrabMinimapButtons, 1)
-    MM:ScheduleRepeatingTimer(GrabMinimapButtons, 5)
+    MM:ScheduleRepeatingTimer(GrabMinimapButtons, 1)
 end
