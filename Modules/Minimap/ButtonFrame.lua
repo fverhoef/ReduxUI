@@ -16,10 +16,7 @@ local PartialIgnore = {"Node", "Note", "Pin", "POI"}
 local UnrulyButtons = {"WIM3MinimapButton", "RecipeRadar_MinimapButton"}
 local ButtonFunctions = {"SetParent", "ClearAllPoints", "SetPoint", "SetSize", "SetScale", "SetFrameStrata", "SetFrameLevel"}
 local RemoveTextureID = {[136467] = true, [136468] = true, [130924] = true}
-local RemoveTextureFile = {
-    ["interface\\minimap\\ui-minimap-border"] = true,
-    ["interface\\minimap\\ui-minimap-background"] = true
-}
+local RemoveTextureFile = {["interface\\minimap\\ui-minimap-border"] = true, ["interface\\minimap\\ui-minimap-background"] = true}
 
 local function LockButton(button) for _, func in pairs(ButtonFunctions) do button[func] = function() end end end
 
@@ -28,9 +25,7 @@ local function UnlockButton(button) for _, func in pairs(ButtonFunctions) do but
 local function SkipButton(button)
     local name = button.GetName and button:GetName()
     if not name or tContains(IgnoreButton, name) then return true end
-
     for i = 1, #GenericIgnore do if string.sub(name, 1, string.len(GenericIgnore[i])) == GenericIgnore[i] then return true end end
-
     for i = 1, #PartialIgnore do if string.find(name, PartialIgnore[i]) ~= nil then return true end end
 
     return false
@@ -61,8 +56,8 @@ end
 local function SkinMinimapButton(button)
     if (not button) or button.isSkinned or SkipButton(button) then return end
 
-    for i = 1, button:GetNumRegions() do
-        local region = select(i, button:GetRegions())
+    local regions = {button:GetRegions()}
+    for i, region in ipairs(regions) do
         if region.IsObjectType and region:IsObjectType("Texture") then
             local textureID = region.GetTextureFileID and region:GetTextureFileID()
             local texture = string.lower(tostring(region:GetTexture()))
@@ -85,7 +80,7 @@ local function SkinMinimapButton(button)
             region:SetPoint(unpack(region.__point))
             region.SetTexCoord = region.__setTexCoord
             region:SetTexCoord(unpack(region.__texCoords))
-            
+
             if textureID == 136430 or texture == [[interface\minimap\minimap-trackingBorder]] then
                 region:ClearAllPoints()
                 region:SetAllPoints()
@@ -129,19 +124,12 @@ local function GrabMinimapButton(button)
 end
 
 local function GrabChildren(frame)
-    local numChildren = frame:GetNumChildren()
-    if numChildren < (frame.numChildren or 0) then return end
-
-    for i = 1, numChildren do
-        local object = select(i, frame:GetChildren())
-        if object and not object.isSkinned then
-            local name = object:GetName()
-            local width = object:GetWidth()
-            if name and width > 15 and width < 60 and (object:IsObjectType("Button") or object:IsObjectType("Frame")) then if GrabMinimapButton(object) then grabbedAnyButtons = true end end
-        end
+    local children = {frame:GetChildren()}
+    for i, object in ipairs(children) do
+        local name = object:GetName()
+        local width = object:GetWidth()
+        if name and width > 15 and width < 60 and (object:IsObjectType("Button") or object:IsObjectType("Frame")) then if GrabMinimapButton(object) then grabbedAnyButtons = true end end
     end
-
-    frame.numChildren = numChildren
 
     return grabbedAnyButtons
 end

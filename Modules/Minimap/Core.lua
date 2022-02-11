@@ -106,6 +106,8 @@ function MM:StyleMinimap()
         MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
 
         MiniMapTrackingButtonBorder:Hide()
+    else
+        MiniMapTrackingBorder:Hide()
     end
 
     MiniMapTrackingBackground:Hide()
@@ -153,8 +155,8 @@ function MM:UpdateMinimap()
         MiniMapTracking:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 7, 2)
 
         Minimap.ButtonFrame:ClearAllPoints()
-        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 5)
-        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "BOTTOMRIGHT", 0, 5)
+        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 0)
+        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "BOTTOMRIGHT", 0, 0)
 
         if MiniMapBattlefieldFrame then
             MiniMapBattlefieldFrame:ClearAllPoints()
