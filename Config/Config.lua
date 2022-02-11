@@ -21,6 +21,7 @@ R.config.defaults = {
             darkGrayFont = {89 / 255, 89 / 255, 89 / 255} -- GameFontDarkGray
         },
         dragFrames = {objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}}},
+        borders = { texture = R.media.textures.edgeFiles.borderThick },
         modules = {}
     },
     char = {modules = {}},

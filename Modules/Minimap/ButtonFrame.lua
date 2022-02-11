@@ -218,7 +218,6 @@ function MM:CreateButtonFrame()
     Minimap.ButtonFrame:SetFrameStrata("MEDIUM")
     Minimap.ButtonFrame:SetFrameLevel(1)
     Minimap.ButtonFrame:EnableMouse(true)
-    -- Minimap.ButtonFrame:CreateBorder()
 
     _G.Mixin(Minimap.ButtonFrame, ButtonFrameMixin)
 

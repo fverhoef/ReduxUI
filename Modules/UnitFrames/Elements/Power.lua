@@ -27,6 +27,8 @@ function UF:CreatePower()
     self.Power.Value:SetParent(self.Power.Overlay)
     self.Power.Value:SetFont(UF.config.font, 10)
 
+    self.Power:CreateSeparator()
+
     return self.Power
 end
 

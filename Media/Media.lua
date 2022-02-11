@@ -33,6 +33,7 @@ R.media = {
         backdrops = {blank = [[Interface\Buttons\WHITE8X8]], button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"},
 
         edgeFiles = {
+            borderMetal = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderMetal",
             borderThick = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThick",
             borderThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThin",
             glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow",

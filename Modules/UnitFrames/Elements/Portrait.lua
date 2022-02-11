@@ -6,12 +6,14 @@ local oUF = ns.oUF or oUF
 function UF:CreatePortrait()
     if not self.config.portrait.enabled then return end
 
-    self.Portrait2D = self:CreateTexture("$parentPortrait", "BACKGROUND")
-    self.Portrait2D.PostUpdate = function()
-        self:UpdatePortraitTexture()
-    end
+    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
+
+    self.Portrait2D = self:CreateTexture("$parentPortrait2D", "BACKGROUND")
+    self.Portrait2D.PostUpdate = function() self:UpdatePortraitTexture() end
+    self.Portrait2D:SetAllPoints(self.PortraitHolder)
 
     self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
+    self.Portrait3D:SetAllPoints(self.PortraitHolder)
 
     self.Portrait = self.Portrait2D
 end
@@ -21,6 +23,7 @@ oUF:RegisterMetaFunction("CreatePortrait", UF.CreatePortrait)
 function UF:ConfigurePortrait()
     local config = self.config.portrait
     if not config.enabled then
+        if self.PortraitHolder then self.PortraitHolder:Hide() end
         self:DisableElement("Portrait")
         return
     elseif not self.Portrait then
@@ -42,14 +45,17 @@ function UF:ConfigurePortrait()
     end
     self:EnableElement("Portrait")
 
-    self.Portrait:SetSize(unpack(config.size))
-    self.Portrait:ClearAllPoints()
+    self.PortraitHolder:Show()
+    self.PortraitHolder:SetSize(unpack(config.size))
+    self.PortraitHolder:ClearAllPoints()
     if config.point == "LEFT" then
-        self.Portrait:Point("TOPLEFT")
-        self.Portrait:Point("BOTTOMLEFT")
+        self.PortraitHolder:Point("TOPLEFT")
+        self.PortraitHolder:Point("BOTTOMLEFT")
+        self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "RIGHT")
     else
-        self.Portrait:Point("TOPRIGHT")
-        self.Portrait:Point("BOTTOMRIGHT")
+        self.PortraitHolder:Point("TOPRIGHT")
+        self.PortraitHolder:Point("BOTTOMRIGHT")
+        self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "LEFT")
     end
 
     self:UpdatePortraitTexture()
