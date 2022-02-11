@@ -56,7 +56,8 @@ local DEFAULT_UNIT_CONFIG = {
             tag = "[perhp]%"
         },
         smooth = true,
-        energyManaRegen = false
+        energyManaRegen = false,
+        showSeparator = false
     },
     additionalPower = {
         enabled = true,
@@ -99,7 +100,7 @@ local DEFAULT_UNIT_CONFIG = {
         justifyH = "RIGHT",
         tag = "[difficultycolor][level][shortclassification]|r"
     },
-    portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false},
+    portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false, showSeparator = true},
     auras = {
         enabled = false,
         buffs = {

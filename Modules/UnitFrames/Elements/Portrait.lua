@@ -57,6 +57,8 @@ function UF:ConfigurePortrait()
         self.PortraitHolder:Point("BOTTOMRIGHT")
         self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "LEFT")
     end
+    
+    self.PortraitHolder.Separator:SetShown(config.showSeparator)
 
     self:UpdatePortraitTexture()
 end

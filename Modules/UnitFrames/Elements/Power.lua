@@ -87,6 +87,8 @@ function UF:ConfigurePower()
     else
         R.Libs.SmoothStatusBar:ResetBar(self.Power)
     end
+    
+    self.Power.Separator:SetShown(config.showSeparator)
 end
 
 oUF:RegisterMetaFunction("ConfigurePower", UF.ConfigurePower)

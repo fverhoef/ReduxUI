@@ -24,8 +24,9 @@ function UF:CreateRangeOption(unit, name, desc, order, hidden, min, max, softMax
     return R:CreateRangeOption(name, desc, order, hidden, min, max, softMax, step, get, set, function() UF:UpdateUnit(unit) end)
 end
 
-function UF:CreateToggleOption(unit, name, desc, order, width, hidden, get, set, confirm) return
-    R:CreateToggleOption(name, desc, order, width, hidden, get, set, function() UF:UpdateUnit(unit) end, confirm) end
+function UF:CreateToggleOption(unit, name, desc, order, width, hidden, get, set, confirm)
+    return R:CreateToggleOption(name, desc, order, width, hidden, get, set, function() UF:UpdateUnit(unit) end, confirm)
+end
 
 function UF:CreatePointOption(unit, order, get, set)
     return R:CreateSelectOption(L["Point"], L["The anchor point on this element."], order, nil, R.ANCHOR_POINTS, get, set, function() UF:UpdateUnit(unit) end)
@@ -318,12 +319,14 @@ function UF:CreateUnitPowerOption(unit, order)
                     height = UF:CreateRangeOption(unit, L["Height"], L["The height of the power bar."], 2, nil, 0, nil, 100, 1, function() return UF.config[unit].power.size[2] end,
                                                   function(value) UF.config[unit].power.size[2] = value end),
                     lineBreakSize = {type = "description", name = "", order = 3},
-                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the power bar is detached from the health bar."], 4, nil, unit ~= "player",
+                    showSeparator = UF:CreateToggleOption(unit, L["Show Separator"], L["Whether the power bar has a separator between it and the health bar."], 4, nil, nil,
+                                                          function() return UF.config[unit].power.showSeparator end, function(value) UF.config[unit].power.showSeparator = value end),
+                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the power bar is detached from the health bar."], 5, nil, unit ~= "player",
                                                      function() return UF.config[unit].power.detached end, function(value)
                         UF.config[unit].power.inset = false;
                         UF.config[unit].power.detached = value
                     end),
-                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 5, nil, nil, function() return UF.config[unit].power.inset end,
+                    inset = UF:CreateToggleOption(unit, L["Inset"], L["Whether the power bar is displayed as an inset."], 6, nil, nil, function() return UF.config[unit].power.inset end,
                                                   function(value)
                         UF.config[unit].power.detached = false;
                         UF.config[unit].power.inset = value
@@ -331,7 +334,7 @@ function UF:CreateUnitPowerOption(unit, order)
                     insetPoint = {
                         type = "group",
                         name = L["Inset Point"],
-                        order = 6,
+                        order = 7,
                         inline = true,
                         hidden = function() return not UF.config[unit].power.inset end,
                         args = {
@@ -465,6 +468,8 @@ function UF:CreateUnitPortraitOption(unit, order)
             detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the portrait is detached from the health bar."], 7, nil, nil, function()
                 return UF.config[unit].portrait.detached
             end, function(value) UF.config[unit].portrait.detached = value end),
+            showSeparator = UF:CreateToggleOption(unit, L["Show Separator"], L["Whether the portrait has a separator between it and the health bar."], 8, nil, nil,
+                                                  function() return UF.config[unit].portrait.showSeparator end, function(value) UF.config[unit].portrait.showSeparator = value end),
             lineBreakSize = {type = "description", name = L["Size"], order = 10},
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the portrait."], 11, nil, 0, nil, 500, 1, function() return UF.config[unit].portrait.size[1] end,
                                          function(value) UF.config[unit].portrait.size[1] = value end),
