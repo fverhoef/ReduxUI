@@ -3,6 +3,23 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
+local AURA_FILTER_WHITELIST = {
+    Boss = true,
+    MyPet = true,
+    OtherPet = true,
+    Personal = true,
+    NonPersonal = true,
+    CastByUnit = true,
+    NotCastByUnit = true,
+    Dispellable = true,
+    NotDispellable = true,
+    CastByNPC = true,
+    CastByPlayers = true,
+    Nameplate = true
+}
+
+local AURA_FILTER_BLACKLIST = {BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = true, BlockDispellable = false, BlockNotDispellable = false}
+
 local DEFAULT_UNIT_CONFIG = {
     enabled = true,
     size = {200, 36},
@@ -108,6 +125,24 @@ local DEFAULT_UNIT_CONFIG = {
     portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false, showSeparator = true},
     auras = {
         enabled = false,
+        separateBuffsAndDebuffs = false,
+        buffsAndDebuffs = {
+            enabled = true,
+            point = {"BOTTOMLEFT", "TOPLEFT", 0, 12},
+            initialAnchor = "BOTTOMLEFT",
+            growthX = "RIGHT",
+            growthY = "UP",
+            iconSize = 32,
+            spacing = 2,
+            numColumns = 6,
+            numBuffs = 16,
+            numDebuffs = 16,
+            showDuration = true,
+            desaturate = false,
+            minDuration = 0,
+            maxDuration = 0,
+            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
+        },
         buffs = {
             enabled = true,
             point = {"TOPLEFT", "BOTTOMLEFT", 0, -7},
@@ -117,9 +152,12 @@ local DEFAULT_UNIT_CONFIG = {
             iconSize = 32,
             spacing = 2,
             numColumns = 6,
+            num = 32,
             showDuration = true,
-            onlyShowPlayer = false,
-            num = 32
+            desaturate = false,
+            minDuration = 0,
+            maxDuration = 0,
+            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
         },
         debuffs = {
             enabled = true,
@@ -130,9 +168,12 @@ local DEFAULT_UNIT_CONFIG = {
             iconSize = 32,
             spacing = 2,
             numColumns = 6,
+            num = 16,
             showDuration = true,
-            onlyShowPlayer = false,
-            num = 16
+            desaturate = false,
+            minDuration = 0,
+            maxDuration = 0,
+            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
         }
     },
     auraWatch = {enabled = false},
@@ -374,7 +415,7 @@ R:RegisterModuleConfig(UF, {
         name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
-        auras = {enabled = true, buffs = {enabled = false}, debuffs = {onlyShowPlayer = true}},
+        auras = {enabled = true, buffs = {enabled = false}},
         highlight = {targetArrows = true},
         pvpIndicator = {enabled = false},
         cvars = {
