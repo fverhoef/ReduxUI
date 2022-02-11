@@ -2,6 +2,7 @@
     <Script file="AdditionalPower.lua"/>
     <Script file="AssistantIndicator.lua"/>
     <Script file="AuraHighlight.lua"/>
+    <Script file="AuraWatch.lua"/>
     <Script file="Auras.lua"/>
     <Script file="Castbar.lua"/>
     <Script file="ClassPower.lua"/>

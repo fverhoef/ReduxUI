@@ -19,8 +19,8 @@ end
 
 function S:ADDON_LOADED(event, addonName)
     if addonName == "Blizzard_TrainerUI" then
-        S:ScheduleTimer("StyleClassTrainerFrame", 0.01)
+        S:StyleClassTrainerFrame()
     elseif addonName == "Blizzard_TradeSkillUI" then
-        S:ScheduleTimer("StyleTradeSkillFrame", 0.01)
+        S:StyleTradeSkillFrame()
     end
 end

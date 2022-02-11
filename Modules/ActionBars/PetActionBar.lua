@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
+local L = R.L
 
 function AB:SetupPetActionBar()
     local config = AB.config.petActionBar
@@ -14,7 +15,7 @@ function AB:SetupPetActionBar()
     end
     PetActionBarFrame.config = AB.config.petActionBar
     PetActionBarFrame:CreateFader(AB.config.petActionBar.fader, buttonList)
-    --R:CreateDragFrame(PetActionBarFrame, L["Pet Action Bar"], AB.defaults.petActionBar.point)
+    --R:CreateDragFrame(PetActionBarFrame, L["Pet Action Bar"])
 end
 
 function AB:UpdatePetActionBar()

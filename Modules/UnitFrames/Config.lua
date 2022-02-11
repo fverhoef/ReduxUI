@@ -129,6 +129,7 @@ local DEFAULT_UNIT_CONFIG = {
             num = 16
         }
     },
+    auraWatch = {enabled = false},
     castbar = {
         enabled = true,
         size = {200, 16},
@@ -143,7 +144,7 @@ local DEFAULT_UNIT_CONFIG = {
     },
     highlight = {enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetClassColor = false},
     assistantIndicator = {enabled = true, size = {16, 16}, point = {"CENTER", "TOPLEFT", 0, 0}},
-    combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "LEFT", 0, 0}},
+    combatIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
     groupRoleIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOPRIGHT", 0, 0}},
     masterLooterIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 16, 0}},
     leaderIndicator = {enabled = true, size = {14, 14}, point = {"CENTER", "TOPLEFT", 0, 0}},
@@ -155,7 +156,7 @@ local DEFAULT_UNIT_CONFIG = {
     readyCheckIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
     raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
     restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
-    resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "TOP", 0, 0}},
+    resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
     summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}}
 }
 
@@ -240,13 +241,18 @@ R:RegisterModuleConfig(UF, {
         colorPowerDisconnected = true
     },
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}},
-    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {power = {energyManaRegen = true}, castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, detached = true, showSafeZone = true}, highlight = {target = false}}),
+    player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        power = {energyManaRegen = true},
+        castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, detached = true, showSafeZone = true},
+        highlight = {target = false}
+    }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOPLEFT", "UIParent", "BOTTOM", 150, 350},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = { enabled = true },
+        auras = {enabled = true},
+        combatIndicator = {point = {"CENTER", "LEFT", 0, 0}},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
     }),
@@ -258,24 +264,24 @@ R:RegisterModuleConfig(UF, {
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontSize = 11, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
         castbar = {enabled = false},
-        pvpIndicator = {enabled = false},
+        pvpIndicator = {enabled = false}
     }),
     pet = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
         size = {120, 28},
         point = {"TOPLEFT", addonName .. "Player", "BOTTOMLEFT", 5, -10},
-        health = {value = { enabled = false, point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+        health = {value = {enabled = false, point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
         power = {enabled = false},
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontSize = 11, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
         castbar = {enabled = false},
-        pvpIndicator = {enabled = false},
+        pvpIndicator = {enabled = false}
     }),
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         point = {"TOP", "UIParent", "TOP", 0, -300},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = { enabled = true },
+        auras = {enabled = true},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
     }),
@@ -287,7 +293,7 @@ R:RegisterModuleConfig(UF, {
         name = {size = {95, 10}, point = {"CENTER", "CENTER", 0, 0}, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
         castbar = {enabled = false},
-        pvpIndicator = {enabled = false},
+        pvpIndicator = {enabled = false}
     }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
@@ -297,6 +303,7 @@ R:RegisterModuleConfig(UF, {
         power = {size = {70, 8}, value = {enabled = false}},
         name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
         portrait = {enabled = false},
+        auraWatch = {enabled = true},
         castbar = {enabled = false},
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "LEFT",
@@ -338,7 +345,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = { enabled = true },
+        auras = {enabled = true},
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -348,7 +355,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = { enabled = true },
+        auras = {enabled = true},
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -360,7 +367,7 @@ R:RegisterModuleConfig(UF, {
         name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
-        auras = { enabled = true },
+        auras = {enabled = true, buffs = {enabled = false}, debuffs = {onlyShowPlayer = true}},
         highlight = {targetArrows = true},
         pvpIndicator = {enabled = false},
         cvars = {

@@ -33,7 +33,6 @@ function TT:Initialize()
     _G.GameTooltipStatusBar.Text = _G.GameTooltipStatusBar.TextHolder:CreateFontString(nil, "OVERLAY", nil, 7)
     _G.GameTooltipStatusBar.Text:SetPoint("CENTER", _G.GameTooltipStatusBar, 0, 0)
 
-    TT:SecureHook(_G.GameTooltipStatusBar, "SetStatusBarColor", TT.SetStatusBarColor)
     TT:SecureHookScript(_G.GameTooltipStatusBar, "OnValueChanged", TT.OnStatusBarValueChanged)
     TT:SecureHook("GameTooltip_SetDefaultAnchor", TT.SetDefaultAnchor)
     TT:SecureHookScript(_G.GameTooltip, "OnTooltipSetUnit", TT.OnTooltipSetUnit)
@@ -166,10 +165,13 @@ end
 
 function TT:OnShow() TT:Update(self) end
 
-function TT:SetStatusBarColor(r, g, b)
-    if not barColor then return end
-    if r == barColor.r and g == barColor.g and b == barColor.b then return end
-    self:SetStatusBarColor(barColor.r, barColor.g, barColor.b)
+function TT:OnStatusBarSetColor(r, g, b)
+    local tooltip = self:GetParent()
+    local unit = select(2, tooltip:GetUnit())
+    if (not unit) then
+        local focus = GetMouseFocus()
+        if (focus and focus.GetAttribute and focus:GetAttribute("unit")) then unit = focus:GetAttribute("unit") end
+    end
 end
 
 function TT:OnStatusBarValueChanged(value)
@@ -189,6 +191,11 @@ function TT:OnStatusBarValueChanged(value)
             self.Text:SetText(_G.DEAD)
         else
             self.Text:SetText(R:FormatValue(value) .. " / " .. R:FormatValue(max))
+            local class = UnitIsPlayer(unit) and select(2, UnitClass(unit)) or nil
+            if class then
+                local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
+                self:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1)
+            end
         end
     else
         self.Text:Hide()

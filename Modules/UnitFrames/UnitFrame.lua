@@ -16,9 +16,10 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
 end
 
 function UF:InitializeFrame()
-    self:SetFrameStrata(self.unit == "nameplate" and "BACKGROUND" or "LOW")
+    local isNameplate = string.match(self.unit, "nameplate")
+    self:SetFrameStrata(isNameplate and "BACKGROUND" or "LOW")
 
-    if not string.match(self.unit, "nameplate") then
+    if not isNameplate then
         self:RegisterForClicks("AnyUp")
         self:SetScript("OnEnter", UnitFrame_OnEnter)
         self:SetScript("OnLeave", UnitFrame_OnLeave)
@@ -44,6 +45,7 @@ function UF:InitializeFrame()
 
     self:CreateHighlight()
     self:CreateAuraHighlight()
+    self:CreateAuraWatch()
     self:CreateThreatIndicator()
     self:CreateTargetIndicator()
 
@@ -91,6 +93,7 @@ function UF:ConfigureFrame()
     self:ConfigureAuras()
 
     self:ConfigureAuraHighlight()
+    self:ConfigureAuraWatch()
     self:ConfigureThreatIndicator()
     self:ConfigureTargetIndicator()
 
