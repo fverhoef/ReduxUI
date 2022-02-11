@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local AM = R:AddModule("Automation", "AceEvent-3.0", "AceHook-3.0")
+local AM = R:AddModule("Automation", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = R.L
 
 local fastLootDelay = 0
@@ -196,7 +196,7 @@ end
 
 function AM:ReportVendorResult()
     if totalVendorPrice > 0 then
-        R:Print(L["Sold trash for %s."], GetCoinText(totalVendorPrice)) -- TODO: Localization
+        R:Print(L["Sold trash for %s."], GetCoinText(totalVendorPrice))
     end
 end
 
@@ -204,8 +204,8 @@ function AM:AcceptSummon()
     if not UnitAffectingCombat("player") then
         local summoner = GetSummonConfirmSummoner()
         local summonArea = GetSummonConfirmAreaName()
-        R:Print(L["Accepting summons from %s to %s in 10 seconds."], summoner, summonArea) -- TODO: Localization
-        C_Timer.After(10, function()
+        R:Print(L["Accepting summons from %s to %s in 10 seconds."], summoner, summonArea)
+        AM:ScheduleTimer(function()
             local newSummoner = GetSummonConfirmSummoner()
             local newSummonArea = GetSummonConfirmAreaName()
             if summoner == newSummoner and summonArea == newSummonArea then
@@ -213,7 +213,7 @@ function AM:AcceptSummon()
                 C_SummonInfo.ConfirmSummon()
                 StaticPopup_Hide("CONFIRM_SUMMON")
             end
-        end)
+        end, 10)
     end
 end
 
@@ -224,11 +224,11 @@ function AM:AcceptResurrection(unit)
 
     local delay = GetCorpseRecoveryDelay()
     if delay and delay > 0 then
-        C_Timer.After(delay + 1, function()
+        AM:ScheduleTimer(function()
             if not UnitAffectingCombat(unit) then
                 AcceptResurrect()
             end
-        end)
+        end, delay + 1)
     else
         if not UnitAffectingCombat(unit) then
             AcceptResurrect()
