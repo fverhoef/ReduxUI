@@ -22,5 +22,5 @@ R:RegisterModuleConfig(MM, {
     mask = R.media.textures.minimap.minimapMask1,
     border = {enabled = false},
     shadow = {enabled = false},
-    buttonFrame = {enabled = true, iconSize = 32, buttonSpacing = 2, collapsed = true}
+    buttonFrame = {enabled = true, iconSize = 28, buttonSpacing = 3, collapsed = true}
 })

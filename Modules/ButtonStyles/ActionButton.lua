@@ -15,6 +15,7 @@ function BS:StyleActionButton(button, replace)
         return
     end
 
+    button.LBFSkinned = true
     local buttonName = button:GetName()
     local config = BS.config.actions
 
@@ -73,6 +74,7 @@ function BS:UpdateActionButton(button)
         normalTexture:SetPoint("TOPLEFT", 0, 0)
         normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
         normalTexture:SetVertexColor(unpack(BS.config.colors.border))
+        normalTexture:SetTexCoord(0, 1, 0, 1)
 
         button:SetPushedTexture(BS.config.border)
         local pushedTexture = button:GetPushedTexture()
@@ -117,7 +119,6 @@ function BS:StyleAllActionButtons()
     end
 
     for i = 1, _G.NUM_PET_ACTION_SLOTS do BS:StyleActionButton(_G["PetActionButton" .. i]) end
-
     for i = 1, _G.NUM_STANCE_SLOTS do BS:StyleActionButton(_G["StanceButton" .. i]) end
 
     _G.MainMenuBarVehicleLeaveButton:CreateBorder(nil, nil, 0)
@@ -125,6 +126,15 @@ function BS:StyleAllActionButtons()
 
     BS:SecureHook("ActionButton_UpdateUsable", BS.ActionButton_UpdateUsable)
     BS:SecureHook("ActionButton_UpdateRangeIndicator", BS.ActionButton_UpdateRangeIndicator)
+    -- R.Libs.ActionButton:RegisterCallback("OnUpdateRange", function(event, button) BS.ActionButton_UpdateUsable(button) end)
+    -- R.Libs.ActionButton:RegisterCallback("OnButtonUsable", function(event, button) BS.ActionButton_UpdateUsable(button) end)
+    R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", function(event, button)
+        button:SetNormalTexture(BS.config.border)
+        local normalTexture = button:GetNormalTexture()
+        normalTexture:SetPoint("TOPLEFT", 0, 0)
+        normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+        normalTexture:SetTexCoord(0, 1, 0, 1)
+    end)
 end
 
 function BS:UpdateAllActionButtons()
@@ -163,14 +173,24 @@ function BS:ActionButton_UpdateUsable()
         end
     end
 
-    BS.ActionButton_ShowGrid(self)
+    self:GetNormalTexture():SetVertexColor(unpack(self.action and IsEquippedAction(self.action) and {0, 1.0, 0, 1} or BS.config.colors.border))
 end
 
 function BS:ActionButton_UpdateRangeIndicator(checksRange, inRange)
-    if BS.config.outOfRangeColoring == BS.OUT_OF_RANGE_MODES.Button and (self.action or self.spellID) then
+    if (self.action or self.spellID) then
         self.checksRange = checksRange
         self.inRange = inRange
 
-        BS.ActionButton_UpdateUsable(self)
+        if self.checksRange and not self.inRange then
+            self.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
+        else
+            if self.isUsable then
+                self.icon:SetVertexColor(unpack(BS.config.colors.usable))
+            elseif self.notEnoughMana then
+                self.icon:SetVertexColor(unpack(BS.config.colors.notEnoughMana))
+            else
+                self.icon:SetVertexColor(unpack(BS.config.colors.notUsable))
+            end
+        end
     end
 end
