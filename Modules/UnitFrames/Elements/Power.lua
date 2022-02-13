@@ -67,8 +67,8 @@ function UF:ConfigurePower()
                 bottomRightOffset[1] = -self.config.portrait.size[1]
             end
         end
-        self.Power:SetPoint("BOTTOMLEFT", self.config.portrait.point == "LEFT" and self.config.portrait.size[1] or 0, 0)
-        self.Power:SetPoint("BOTTOMRIGHT", self.config.portrait.point ~= "LEFT" and -self.config.portrait.size[1] or 0, 0)
+        self.Power:SetPoint("BOTTOMLEFT", bottomLeftOffset[1], 0)
+        self.Power:SetPoint("BOTTOMRIGHT", bottomRightOffset[1], 0)
         self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
     end
 
