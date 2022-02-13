@@ -2,6 +2,7 @@
     <Include file="ActionBars\ActionBars.xml"/>
     <Include file="Automation\Automation.xml"/>
     <Include file="Bags\Bags.xml"/>
+    <Include file="ButtonStyles\ButtonStyles.xml"/>
     <Include file="Chat\Chat.xml"/>
     <Include file="Minimap\Minimap.xml"/>
     <Include file="ScreenSaver\ScreenSaver.xml"/>

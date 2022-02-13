@@ -90,7 +90,7 @@ oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
     button.cd:SetInside(nil, 1, 1)
-    if R.Modules.ButtonStyles then R.Modules.ButtonStyles:StyleAuraButton(button) end
+    R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
 function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
@@ -109,7 +109,7 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
         button.cd:SetHideCountdownNumbers(not self.config.showDuration)
     end
 
-    if R.Modules.ButtonStyles then R.Modules.ButtonStyles:UpdateAuraButton(button) end
+    R.Modules.ButtonStyles:UpdateAuraButton(button)
 end
 
 function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll)

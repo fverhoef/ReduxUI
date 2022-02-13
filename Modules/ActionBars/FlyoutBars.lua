@@ -186,6 +186,7 @@ function AB:CreateFlyoutButton(name, bar, config)
     button.CurrentAction:SetFrameLevel(10)
     button.CurrentAction:SetAttribute("index", 0)
     button.CurrentAction:Show()
+    R.Modules.ButtonStyles:StyleActionButton(button.CurrentAction)
 
     SecureHandlerWrapScript(button.CurrentAction, "OnEnter", button, [[
             control:Run(open)
@@ -363,6 +364,8 @@ function AB:CreateFlyoutButtonChild(button, action, index)
             control:Run(close)
         end	    
     ]])
+
+    R.Modules.ButtonStyles:StyleActionButton(child)
 
     return child
 end

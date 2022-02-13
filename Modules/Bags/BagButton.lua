@@ -47,7 +47,7 @@ function BagButtonMixin:Update()
         end
     end
 
-    if R.Modules.ButtonStyles then R.Modules.ButtonStyles:StyleItemButton(self) end
+    R.Modules.ButtonStyles:StyleItemButton(self)
 end
 
 function BagButtonMixin:UpdateContainerButtonLockedState(bagID, slot)

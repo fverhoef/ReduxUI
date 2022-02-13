@@ -1,16 +1,16 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+local MEDIA_PREFIX = "Interface\\AddOns\\" .. addonName .. "\\Media"
+
 R.media = {
-    fonts = {adventure = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\Adventure.ttf", expresswayFree = "Interface\\AddOns\\" .. addonName .. "\\Media\\Fonts\\ExpresswayFree.ttf"},
+    fonts = {adventure = MEDIA_PREFIX .. "\\Fonts\\Adventure.ttf", expresswayFree = MEDIA_PREFIX .. "\\Fonts\\ExpresswayFree.ttf"},
     textures = {
         blank = [[Interface\Buttons\WHITE8X8]],
-
-        arrow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Arrow",
-        logo = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Logo",
-
+        arrow = MEDIA_PREFIX .. "\\Textures\\Arrow",
+        logo = MEDIA_PREFIX .. "\\Textures\\Logo",
         actionBars = {
-            mainMenuBar = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\MainMenuBar",
+            mainMenuBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MainMenuBar",
             mainMenuBar_Alliance = "Interface\\PLAYERACTIONBARALT\\ALLIANCE",
             mainMenuBar_Amber = "Interface\\PLAYERACTIONBARALT\\Amber",
             mainMenuBar_Bamboo = "Interface\\PLAYERACTIONBARALT\\BAMBOO",
@@ -25,39 +25,35 @@ R.media = {
             mainMenuBar_Stone = "Interface\\PLAYERACTIONBARALT\\STONE",
             mainMenuBar_Tree = "Interface\\PLAYERACTIONBARALT\\TREE",
             mainMenuBar_Wood = "Interface\\PLAYERACTIONBARALT\\WOOD",
-            microButtonSettings_Up = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\MicroButtonSettings-Up",
-            microButtonSettings_Down = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\MicroButtonSettings-Down",
-            performanceBar = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\ActionBars\\PerformanceBar"
+            microButtonSettings_Up = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Up",
+            microButtonSettings_Down = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Down",
+            performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\PerformanceBar"
         },
-
-        backdrops = {blank = [[Interface\Buttons\WHITE8X8]], button = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Backdrops\\Button"},
-
+        buttons = {backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop", borderThick = MEDIA_PREFIX .. "\\Textures\\Buttons\\BorderThick"},
         edgeFiles = {
-            borderMetal = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderMetal",
-            borderThick = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThick",
-            borderThin = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\BorderThin",
-            glow = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Glow",
-            inlay = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\Inlay",
-            separatorHorizontal = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\SeparatorHorizontal",
-            separatorVertical = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\EdgeFiles\\SeparatorVertical"
+            borderMetal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderMetal",
+            borderThick = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThick",
+            borderThin = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThin",
+            glow = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Glow",
+            inlay = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Inlay",
+            separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",
+            separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
-
         minimap = {
-            minimapMask1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask1",
-            minimapMask2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask2",
-            minimapMask3 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapMask3",
-            minimapButtonBorder = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\Minimap\\MinimapButtonBorder"
+            minimapMask1 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask1",
+            minimapMask2 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask2",
+            minimapMask3 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask3",
+            minimapButtonBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapButtonBorder"
         },
-
         statusBars = {
-            redux = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Redux",
-            onePixel = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\OnePixel",
-            empty = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Empty",
-            flat = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Flat",
-            kait1 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Kait1",
-            kait2 = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Kait2",
-            melli = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\Melli",
-            melliDark = "Interface\\AddOns\\" .. addonName .. "\\Media\\Textures\\StatusBars\\MelliDark"
+            redux = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Redux",
+            onePixel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\OnePixel",
+            empty = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Empty",
+            flat = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Flat",
+            kait1 = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Kait1",
+            kait2 = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Kait2",
+            melli = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Melli",
+            melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark"
         }
     }
 }
@@ -66,7 +62,7 @@ R.media = {
 R.Libs.SharedMedia:Register("font", "Adventure", R.media.fonts.adventure)
 R.Libs.SharedMedia:Register("font", "Expressway Free", R.media.fonts.expresswayFree)
 R.Libs.SharedMedia:Register("statusbar", "Redux", R.media.textures.statusBars.redux)
-R.Libs.SharedMedia:Register("statusbar", "Redux (One Pixel)", R.media.textures.statusBars.onePixel)
+R.Libs.SharedMedia:Register("statusbar", "One Pixel", R.media.textures.statusBars.onePixel)
 R.Libs.SharedMedia:Register("statusbar", "Empty", R.media.textures.statusBars.empty)
 R.Libs.SharedMedia:Register("statusbar", "Flat", R.media.textures.statusBars.flat)
 R.Libs.SharedMedia:Register("statusbar", "Kait1", R.media.textures.statusBars.kait1)
