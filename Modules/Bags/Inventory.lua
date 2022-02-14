@@ -4,7 +4,9 @@ local B = R.Modules.Bags
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
-function ReduxUI_InventoryFrame_OnLoad(self)
+InventoryMixin = {}
+
+function InventoryMixin:OnLoad()
     self.BagIDs = {0, 1, 2, 3, 4}
     if not R.isRetail then table.insert(self.BagIDs, KEYRING_CONTAINER) end
 
@@ -27,13 +29,15 @@ function ReduxUI_InventoryFrame_OnLoad(self)
     B:SecureHook("ToggleBackpack", B.ToggleBackpack)
 end
 
-function ReduxUI_InventoryFrame_OnHide(self)
+function InventoryMixin:OnHide()
     CloseBackpack()
     for i = 1, NUM_BAG_FRAMES do CloseBag(i) end
     B:UpdateBagBarCheckedState()
 end
 
-function ReduxUI_InventoryFrame_Money_OnEnter(self)
+InventoryMoneyMixin = {}
+
+function InventoryMoneyMixin:Money_OnEnter()
     _G.GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
     _G.GameTooltip:AddLine("Money")
     local total = 0
@@ -46,8 +50,6 @@ function ReduxUI_InventoryFrame_Money_OnEnter(self)
     _G.GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "FULL", false), 1, 1, 1, 1, 1, 1)
     _G.GameTooltip:Show()
 end
-
-InventoryMixin = {}
 
 function B:UpdateBagBarCheckedState()
     local state = B.Inventory:IsShown()

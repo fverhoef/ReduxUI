@@ -8,8 +8,8 @@ local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 function B:Initialize()
     if not B.config.enabled then return end
 
-    B.Inventory = ReduxUI_InventoryFrame
-    B.Bank = ReduxUI_BankFrame
+    B.Inventory = CreateFrame("Frame", addonName .. "InventoryFrame", UIParent, "InventoryFrameTemplate")
+    B.Bank = CreateFrame("Frame", addonName .. "BankFrame", UIParent, "BankFrameTemplate")
     B:RegisterEvent("BANKFRAME_OPENED")
     B:RegisterEvent("BANKFRAME_CLOSED")
 

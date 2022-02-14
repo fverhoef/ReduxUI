@@ -5,7 +5,9 @@ local B = R.Modules.Bags
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local REAGENTBANK_SIZE = 98
 
-function ReduxUI_BankFrame_OnLoad(self)
+BankMixin = {}
+
+function BankMixin:OnLoad()
     self.isBank = true
     self.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
     if R.isRetail then table.insert(self.BagIDs, 11) end
@@ -38,13 +40,15 @@ function ReduxUI_BankFrame_OnLoad(self)
     R:CreateDragFrame(self, "Bank", {"BOTTOMLEFT", UIParent, "BOTTOMLEFT", 100, 100})
 end
 
-function ReduxUI_BankFrame_OnHide(self)
+function BankMixin:OnHide()
     CloseBankFrame()
 end
 
-function ReduxUI_BankFrame_TabOnClick(tab)
-    local frame = tab:GetParent()
-    local tabID = tab:GetID()
+BankTabMixin = {}
+
+function BankTabMixin:OnClick()
+    local frame = self:GetParent()
+    local tabID = self:GetID()
     PanelTemplates_SetTab(frame, tabID)
     for _, bag in ipairs(frame.Bags) do bag.Hidden = (tabID == 1 and bag:GetID() == REAGENTBANK_CONTAINER) or (tabID == 2 and bag:GetID() ~= REAGENTBANK_CONTAINER) end
     for _, bagSlot in ipairs(frame.BagSlots) do bagSlot:SetShown(tabID == 1) end
@@ -52,8 +56,6 @@ function ReduxUI_BankFrame_TabOnClick(tab)
     frame.DespositButton:SetShown(tabID == 2)
     frame:Update()
 end
-
-BankMixin = {}
 
 function B:ShowBank()
     if not B.Bank:IsShown() then

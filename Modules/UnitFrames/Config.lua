@@ -251,6 +251,7 @@ local DEFAULT_HEADER_UNIT_CONFIG = R:CopyTable(DEFAULT_UNIT_CONFIG, {
 
 R:RegisterModuleConfig(UF, {
     enabled = true,
+    middleClickFocus = true,
     font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     statusbars = {
         health = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),

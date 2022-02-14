@@ -71,12 +71,17 @@ end
 oUF:RegisterMetaFunction("InitializeFrame", UF.InitializeFrame)
 
 function UF:ConfigureFrame()
+    local isNameplate = string.match(self.unit, "nameplate")
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
 
     if not self.isGroupUnit then
         self:ClearAllPoints()
         self:Point(unpack(self.config.point))
+    end
+
+    if not isNameplate then
+        self:SetAttribute("type3", UF.config.middleClickFocus and "focus" or nil)
     end
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
