@@ -17,8 +17,7 @@ end
 oUF:RegisterMetaFunction("CreateEnergyManaRegen", UF.CreateEnergyManaRegen)
 
 function UF:ConfigureEnergyManaRegen()
-    local config = self.config.portrait
-    if not config.energyManaRegen then
+    if not self.config.power.energyManaRegen then
         self:DisableElement("EnergyManaRegen")
         return
     elseif not self.EnergyManaRegen then
