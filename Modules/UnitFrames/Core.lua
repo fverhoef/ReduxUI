@@ -61,11 +61,6 @@ function UF:UpdateColors()
     oUF.colors.power["COMBO_POINTS"] = UF.config.colors.comboPoints
 
     for key, value in next, UF.config.colors.class do
-        if RAID_CLASS_COLORS[key] then
-            RAID_CLASS_COLORS[key]["r"] = value[1]
-            RAID_CLASS_COLORS[key]["g"] = value[2]
-            RAID_CLASS_COLORS[key]["b"] = value[3]
-        end
         oUF.colors.class[key] = value
     end
 end
