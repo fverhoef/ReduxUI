@@ -128,6 +128,7 @@ function TT:OnTooltipSetUnit()
         end
     end
     TT:AddLevelColor(self, unit)
+    TT:AddStatusBarColor(self)
 
     if UnitIsDeadOrGhost(unit) then _G.GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead)) end
 
@@ -166,41 +167,28 @@ end
 
 function TT:OnShow() TT:Update(self) end
 
-function TT:OnStatusBarSetColor(r, g, b)
-    local tooltip = self:GetParent()
-    local unit = select(2, tooltip:GetUnit())
-    if (not unit) then
-        local focus = GetMouseFocus()
-        if (focus and focus.GetAttribute and focus:GetAttribute("unit")) then unit = focus:GetAttribute("unit") end
-    end
-end
+function TT:OnStatusBarSetColor(r, g, b) TT:AddStatusBarColor(self:GetParent()) end
 
 function TT:OnStatusBarValueChanged(value)
     if TT.config.showHealthValues then
         local tooltip = self:GetParent()
         local unit = select(2, tooltip:GetUnit())
-        if (not unit) then
+        if not unit then
             local focus = GetMouseFocus()
             if (focus and focus.GetAttribute and focus:GetAttribute("unit")) then unit = focus:GetAttribute("unit") end
         end
+        if not unit then return end
 
         local _, max = self:GetMinMaxValues()
         if (value > 0 and max == 1) then
             self.Text:SetFormattedText("%d%%", floor(value * 100))
-            self:SetStatusBarColor(0.6, 0.6, 0.6)
         elseif (value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
             self.Text:SetText(_G.DEAD)
         else
             self.Text:SetText(R:FormatValue(value) .. " / " .. R:FormatValue(max))
-            local class = UnitIsPlayer(unit) and select(2, UnitClass(unit)) or nil
-            if class then
-                local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
-                self:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1)
-            elseif UnitReaction(unit, "player") then
-                local reactionColor = oUF.colors.reaction[UnitReaction(unit, "player")]
-                self:SetStatusBarColor(unpack(reactionColor))
-            end
         end
+
+        TT:AddStatusBarColor(tooltip)
     else
         self.Text:Hide()
     end
@@ -348,6 +336,27 @@ function TT:AddPvPRank(tooltip, rank)
         local rank = "Interface\\PvPRankBadges\\PvPRank" .. (rank < 10 and "0" or "") .. rank
         local title = _G[tooltip:GetName() .. "TextLeft1"]
         if title and not title:GetText():find("|T" .. rank) then title:SetFormattedText("|T%s:%d:%d:0:0|t %s", rank, size, size, title:GetText()) end
+    end
+end
+
+function TT:AddStatusBarColor(tooltip)
+    local statusBar = tooltip and _G[tooltip:GetName() .. "StatusBar"]
+    if not tooltip or not statusBar then return end
+
+    local unit = select(2, tooltip:GetUnit())
+    if not unit then
+        local focus = GetMouseFocus()
+        if (focus and focus.GetAttribute and focus:GetAttribute("unit")) then unit = focus:GetAttribute("unit") end
+    end
+    if not unit then return end
+
+    local class = UnitIsPlayer(unit) and select(2, UnitClass(unit)) or nil
+    if class then
+        local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
+        statusBar:SetStatusBarColor(classColor.r, classColor.g, classColor.b, 1)
+    elseif UnitReaction(unit, "player") then
+        local reactionColor = oUF.colors.reaction[UnitReaction(unit, "player")]
+        statusBar:SetStatusBarColor(unpack(reactionColor))
     end
 end
 
