@@ -4,6 +4,75 @@ local BS = R.Modules.ButtonStyles
 
 BS.actionButtons = {}
 
+local function ActionButton_ShowGrid(button)
+    button:GetNormalTexture():SetVertexColor(unpack(button.action and IsEquippedAction(button.action) and {0, 1.0, 0, 1} or BS.config.colors.border))
+end
+
+local function ActionButton_UpdateUsable(button)
+    if button.action or button.spellID then
+        if BS.config.actions.outOfRangeColoring == "button" and button.outOfRange then
+            button.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
+        else
+            if button.spellID then
+                button.isUsable, button.notEnoughMana = IsUsableSpell(button.spellID)
+            elseif button.action then
+                button.isUsable, button.notEnoughMana = IsUsableAction(button.action)
+            end
+    
+            button.isUsable = button.isUsable and not UnitOnTaxi("player")
+
+            if button.isUsable then
+                button.icon:SetVertexColor(unpack(BS.config.colors.usable))
+            elseif button.notEnoughMana then
+                button.icon:SetVertexColor(unpack(BS.config.colors.notEnoughMana))
+            else
+                button.icon:SetVertexColor(unpack(BS.config.colors.notUsable))
+            end
+        end
+    end
+
+    ActionButton_ShowGrid(button)
+end
+
+local function ActionButton_UpdateRangeIndicator(button, checksRange, inRange)
+    if button.action or button.spellID then
+        local wasOutOfRange = button.outOfRange
+        button.outOfRange = checksRange and not inRange
+        if button.outOfRange ~= wasOutOfRange then
+            ActionButton_UpdateUsable(button)
+        end
+    end
+end
+
+local function LibActionButton_OnButtonUpdate(event, button)
+    button:SetNormalTexture(BS.config.border)
+    local normalTexture = button:GetNormalTexture()
+    normalTexture:SetPoint("TOPLEFT", 0, 0)
+    normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
+    normalTexture:SetTexCoord(0, 1, 0, 1)
+end
+
+local function LibActionButton_OnCooldownUpdate(event, button)
+	if button.cooldown.currentCooldownType == COOLDOWN_TYPE_NORMAL then
+		button.cooldown:SetSwipeColor(0, 0, 0)
+	end
+end
+
+local function LibActionButton_OnUpdateRange(event, button)
+    ActionButton_UpdateUsable(button)
+
+    local hotkey = button.HotKey
+    if hotkey:GetText() == RANGE_INDICATOR then
+        hotkey:SetShown(button.outOfRange)
+    end
+
+    if button.outOfRange then
+        hotkey:SetVertexColor(unpack(BS.config.colors.outOfRange))
+    else
+        hotkey:SetVertexColor(unpack(BS.config.colors.usable))
+    end
+end
+
 function BS:StyleActionButton(button, replace)
     if not button then return end
     if BS.masque then
@@ -106,7 +175,7 @@ function BS:UpdateActionButton(button)
 
     -- button.Gloss:SetShown(config.gloss)
 
-    BS.ActionButton_UpdateUsable(button)
+    ActionButton_UpdateUsable(button)
 end
 
 function BS:StyleAllActionButtons()
@@ -124,73 +193,16 @@ function BS:StyleAllActionButtons()
     _G.MainMenuBarVehicleLeaveButton:CreateBorder(nil, nil, 0)
     -- _G.MainMenuBarVehicleLeaveButton:CreateShadow()
 
-    BS:SecureHook("ActionButton_UpdateUsable", BS.ActionButton_UpdateUsable)
-    BS:SecureHook("ActionButton_UpdateRangeIndicator", BS.ActionButton_UpdateRangeIndicator)
-    -- R.Libs.ActionButton:RegisterCallback("OnUpdateRange", function(event, button) BS.ActionButton_UpdateUsable(button) end)
-    -- R.Libs.ActionButton:RegisterCallback("OnButtonUsable", function(event, button) BS.ActionButton_UpdateUsable(button) end)
-    R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", function(event, button)
-        button:SetNormalTexture(BS.config.border)
-        local normalTexture = button:GetNormalTexture()
-        normalTexture:SetPoint("TOPLEFT", 0, 0)
-        normalTexture:SetPoint("BOTTOMRIGHT", 0, 0)
-        normalTexture:SetTexCoord(0, 1, 0, 1)
-    end)
+    BS:SecureHook("ActionButton_ShowGrid", ActionButton_ShowGrid)
+    BS:SecureHook("ActionButton_UpdateUsable", ActionButton_UpdateUsable)
+    BS:SecureHook("ActionButton_UpdateRangeIndicator", ActionButton_UpdateRangeIndicator)
+    R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", LibActionButton_OnButtonUpdate)
+    R.Libs.ActionButton:RegisterCallback("OnCooldownUpdate", LibActionButton_OnCooldownUpdate)
+    R.Libs.ActionButton:RegisterCallback("OnUpdateRange", LibActionButton_OnUpdateRange)
 end
 
 function BS:UpdateAllActionButtons()
     for button in pairs(BS.actionButtons) do BS:UpdateActionButton(button) end
 
     _G.MainMenuBarVehicleLeaveButton.Border:SetBackdropBorderColor(unpack(BS.config.colors.border))
-end
-
-function BS:ActionButton_ShowGrid() self:GetNormalTexture():SetVertexColor(unpack(self.action and IsEquippedAction(self.action) and {0, 1.0, 0, 1} or BS.config.colors.border)) end
-
-function BS:ActionButton_UpdateUsable()
-    if not self.__styled then
-        BS:StyleActionButton(self)
-        return
-    end
-
-    if (self.action or self.spellID) and (not self.checksRange or self.inRange) then
-        if self.spellID then
-            self.isUsable, self.notEnoughMana = IsUsableSpell(self.spellID)
-        elseif self.action then
-            self.isUsable, self.notEnoughMana = IsUsableAction(self.action)
-        end
-
-        if self.isUsable and UnitOnTaxi("player") then self.isUsable = false end
-
-        if self.checksRange and not self.inRange then
-            self.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
-        else
-            if self.isUsable then
-                self.icon:SetVertexColor(unpack(BS.config.colors.usable))
-            elseif self.notEnoughMana then
-                self.icon:SetVertexColor(unpack(BS.config.colors.notEnoughMana))
-            else
-                self.icon:SetVertexColor(unpack(BS.config.colors.notUsable))
-            end
-        end
-    end
-
-    self:GetNormalTexture():SetVertexColor(unpack(self.action and IsEquippedAction(self.action) and {0, 1.0, 0, 1} or BS.config.colors.border))
-end
-
-function BS:ActionButton_UpdateRangeIndicator(checksRange, inRange)
-    if (self.action or self.spellID) then
-        self.checksRange = checksRange
-        self.inRange = inRange
-
-        if self.checksRange and not self.inRange then
-            self.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
-        else
-            if self.isUsable then
-                self.icon:SetVertexColor(unpack(BS.config.colors.usable))
-            elseif self.notEnoughMana then
-                self.icon:SetVertexColor(unpack(BS.config.colors.notEnoughMana))
-            else
-                self.icon:SetVertexColor(unpack(BS.config.colors.notUsable))
-            end
-        end
-    end
 end
