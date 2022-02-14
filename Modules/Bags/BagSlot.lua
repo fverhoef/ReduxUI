@@ -13,9 +13,7 @@ function BagSlot_OnLoad(self)
     if not R.isRetail then end
 end
 
-function BagSlot_OnDragStart(self)
-    if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then PickupBagFromSlot(self.slotID) end
-end
+function BagSlot_OnDragStart(self) if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then PickupBagFromSlot(self.slotID) end end
 
 function BagSlot_OnReceiveDrag(self)
     if CursorHasItem() then

@@ -8,6 +8,11 @@ function BagButtonMixin:Initialize(bagID, slot)
     self:SetID(slot)
     self.bagID = bagID
     self.slot = slot
+
+    self.IconQuestTexture = self.IconQuestTexture or _G[self:GetName() .. "IconQuestTexture"]
+    if self.IconQuestTexture then
+        self.IconQuestTexture:SetTexture("Interface\\ContainerFrame\\UI-Icon-QuestBang")
+    end
 end
 
 function BagButtonMixin:Update()
@@ -27,10 +32,9 @@ function BagButtonMixin:Update()
         self.hasItem = nil;
     end
 
-    local questTexture = _G[self:GetName() .. "IconQuestTexture"]
-    if questTexture then
+    if self.IconQuestTexture then
         local itemClassID = itemId and select(12, GetItemInfo(itemId)) or nil
-        questTexture:SetShown(itemClassID == LE_ITEM_CLASS_QUESTITEM)
+        self.IconQuestTexture:SetShown(itemClassID == LE_ITEM_CLASS_QUESTITEM)
     end
     local battlepayItemTexture = self.BattlepayItemTexture
     if battlepayItemTexture then battlepayItemTexture:Hide() end

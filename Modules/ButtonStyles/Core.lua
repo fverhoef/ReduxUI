@@ -30,9 +30,6 @@ function BS:Initialize()
         BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
         BS:SecureHook(nil, "SetItemButtonTexture", BS.SetItemButtonTexture)
         BS:SecureHook(nil, "SetItemButtonNormalTextureVertexColor", BS.SetItemButtonNormalTextureVertexColor)
-        BS:SecureHook(nil, "QuestInfo_ShowRewards", BS.QuestInfo_ShowRewards)
-        BS:SecureHook(nil, "QuestFrameItems_Update", BS.QuestFrameItems_Update)
-        BS:RegisterEvent("ADDON_LOADED")
         BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)
     end
@@ -45,51 +42,10 @@ function BS:UpdateAll()
     BS:UpdateAllMicroButtons()
 end
 
-function BS:ADDON_LOADED(event, addonName)
-    if addonName == "Blizzard_AuctionUI" then
-        for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
-            local button = _G["BrowseButton" .. i .. "Item"]
-            button.tag = BS.tags.AuctionBrowse
-            BS:StyleItemButton(button)
-        end
-    elseif addonName == "Blizzard_TradeSkillUI" then
-        BS:SecureHook(nil, "TradeSkillFrame_SetSelection", BS.TradeSkillFrame_SetSelection)
-    end
-end
-
 function BS:PLAYER_EQUIPMENT_CHANGED(event)
     BS:StyleAllItemButtons()
 end
 
 function BS:CharacterFrame_OnShow()
     BS:StyleCharacterButtons()
-end
-
-function BS:QuestInfo_ShowRewards()
-    for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
-        local button = _G["QuestInfoRewardsFrameQuestInfoItem" .. i]
-        button.itemIDOrLink = button.type and (GetQuestLogItemLink or GetQuestItemLink)(button.type, button:GetID())
-        BS:StyleItemButton(button)
-    end
-end
-
-function BS:QuestFrameItems_Update()
-    for i = 1, _G.MAX_NUM_ITEMS do
-        local button = _G["QuestLogItem" .. i]
-        button.itemIDOrLink = button.type and (GetQuestLogItemLink or GetQuestItemLink)(button.type, button:GetID())
-        BS:StyleItemButton(button)
-    end
-end
-
-function BS:TradeSkillFrame_SetSelection()
-    local id = self
-
-    -- TODO: style trade skill selected skill icon
-    -- local itemLink = GetTradeSkillItemLink(id)
-
-    for i = 1, GetTradeSkillNumReagents(id) do
-        local button = _G["TradeSkillReagent" .. i]
-        button.itemIDOrLink = GetTradeSkillReagentItemLink(id, i)
-        BS:StyleItemButton(button)
-    end
 end

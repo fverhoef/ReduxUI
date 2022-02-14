@@ -19,24 +19,25 @@ function BS:StyleItemButton(button)
     local buttonName = button:GetName()
     local config = BS.config.items
 
-    if button.Border then
-        button.Border:Hide()
-        button.Border = nil
-    end
-
     local nameFrame = _G[buttonName .. "NameFrame"] or button.NameFrame
     button.isLargeItemButton = nameFrame ~= nil
 
-    if button.isLargeItemButton then
-        button:CreateBorder(nil, nil, 0)
-        button:CreateBackdrop({bgFile = R.media.textures.blank, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
-        nameFrame:SetTexture(nil)
-    else
-        --button:CreateBackdrop({bgFile = config.backdrop, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
-
-        if string.match(buttonName, "SendMailAttachment") then
-            button.tag = BS.tags.SendMail
+    if TODO then
+        if button.Border then
+            button.Border:Hide()
+            button.Border = nil
+        end
+        if button.isLargeItemButton then
             button:CreateBorder(nil, nil, 0)
+            button:CreateBackdrop({bgFile = R.media.textures.blank, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
+            nameFrame:SetTexture(nil)
+        else
+            -- button:CreateBackdrop({bgFile = config.backdrop, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
+
+            if string.match(buttonName, "SendMailAttachment") then
+                button.tag = BS.tags.SendMail
+                button:CreateBorder(nil, nil, 0)
+            end
         end
     end
 
@@ -108,9 +109,7 @@ function BS:UpdateItemButton(button)
         local color = BS.config.colors.border
         if button.itemIDOrLink then
             local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
-            if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-                color = R.Modules.Bags.config.colors.questItem
-            elseif itemRarity and itemRarity > 1 then
+            if itemRarity and itemRarity > 1 then
                 color = {GetItemQualityColor(itemRarity)}
             end
         end
@@ -133,7 +132,7 @@ function BS:StyleCharacterButtons()
     end
 end
 
-function BS:StyleBagItemButtons()
+function BS:StyleBagSlots()
     local itemButtons = {"MainMenuBarBackpackButton", "CharacterBag0Slot", "CharacterBag1Slot", "CharacterBag2Slot", "CharacterBag3Slot"}
     for _, buttonName in next, itemButtons do
         local button = _G[buttonName]
@@ -144,7 +143,10 @@ function BS:StyleBagItemButtons()
     end
 end
 
-function BS:StyleAllItemButtons() BS:StyleCharacterButtons() end
+function BS:StyleAllItemButtons()
+    BS:StyleCharacterButtons()
+    BS:StyleBagSlots()
+end
 
 function BS:UpdateAllItemButtons() for button in pairs(BS.itemButtons) do BS:UpdateItemButton(button) end end
 

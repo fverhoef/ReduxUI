@@ -9,24 +9,20 @@ function UF:CreateAuras()
 
     self.Auras = CreateFrame("Frame", "$parentAuras", self)
     self.Auras.config = self.config.auras.buffsAndDebuffs
-    self.Auras.showStealableBuffs = true
-    self.Auras.showBuffType = false
-    self.Auras.showDebuffType = true
+    self.Auras.buffFilterConfig = self.config.auras.buffs.filter
+    self.Auras.debuffFilterConfig = self.config.auras.debuffs.filter
     self.Auras.PostCreateIcon = UF.PostCreateAura
     self.Auras.PostUpdateIcon = UF.PostUpdateAura
     self.Auras.CustomFilter = UF.AuraFilter
 
     self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
     self.Buffs.config = self.config.auras.buffs
-    self.Buffs.showStealableBuffs = true
-    self.Buffs.showBuffType = false
     self.Buffs.PostCreateIcon = UF.PostCreateAura
     self.Buffs.PostUpdateIcon = UF.PostUpdateAura
     self.Buffs.CustomFilter = UF.AuraFilter
 
     self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
     self.Debuffs.config = self.config.auras.debuffs
-    self.Debuffs.showDebuffType = true
     self.Debuffs.PostCreateIcon = UF.PostCreateAura
     self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
     self.Debuffs.CustomFilter = UF.AuraFilter
@@ -56,6 +52,10 @@ function UF:ConfigureAuras()
     self.Auras.numBuffs = config.buffsAndDebuffs.numBuffs
     self.Auras.numDebuffs = config.buffsAndDebuffs.numDebuffs
     self.Auras.spacing = config.buffsAndDebuffs.spacing
+    self.Auras.showStealableBuffs = self.Auras.config.showStealableBuffs
+    self.Auras.showBuffType = self.Auras.config.showBuffType
+    self.Auras.showDebuffType = self.Auras.config.showDebuffType
+    self.Auras.gap = self.Auras.config.gap
     self.Auras:SetShown(not config.separateBuffsAndDebuffs and config.buffsAndDebuffs.enabled)
     self.Auras:ForceUpdate()
 
@@ -69,6 +69,8 @@ function UF:ConfigureAuras()
     self.Buffs["growth-y"] = config.buffs.growthY
     self.Buffs.num = config.buffs.num
     self.Buffs.spacing = config.buffs.spacing
+    self.Buffs.showStealableBuffs = self.Buffs.config.showStealableBuffs
+    self.Buffs.showBuffType = self.Buffs.config.showBuffType
     self.Buffs:SetShown(config.separateBuffsAndDebuffs and config.buffs.enabled)
     self.Buffs:ForceUpdate()
 
@@ -82,6 +84,8 @@ function UF:ConfigureAuras()
     self.Debuffs["growth-y"] = config.debuffs.growthY
     self.Debuffs.num = config.debuffs.num
     self.Debuffs.spacing = config.debuffs.spacing
+    self.Buffs.showStealableBuffs = self.Buffs.config.showStealableBuffs
+    self.Buffs.showDebuffType = self.Buffs.config.showDebuffType
     self.Debuffs:SetShown(config.separateBuffsAndDebuffs and config.debuffs.enabled)
     self.Debuffs:ForceUpdate()
 end
@@ -136,7 +140,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
     local allowDuration = noDuration or
                               (duration and duration > 0 and (not maxDuration or maxDuration == 0 or duration <= maxDuration) and (not minDuration or minDuration == 0 or duration >= minDuration))
 
-    local filter = config.filter or (button.isDebuff and self:GetParent().config.debuffs.filter or self:GetParent().config.buffs.filter)
+    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
     local isWhiteListed =
         (filter.whiteList.Personal and isPlayer) or (filter.whiteList.NonPersonal and not isPlayer) or (filter.whiteList.Boss and isBossDebuff) or (filter.whiteList.MyPet and myPet) or
             (filter.whiteList.OtherPet and otherPet) or (filter.whiteList.CastByUnit and caster and unitIsCaster) or (filter.whiteList.NotCastByUnit and caster and not unitIsCaster) or

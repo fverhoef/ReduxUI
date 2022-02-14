@@ -139,9 +139,12 @@ local DEFAULT_UNIT_CONFIG = {
             numDebuffs = 16,
             showDuration = true,
             desaturate = false,
+            showStealableBuffs = true,
+            showBuffType = false,
+            showDebuffType = true,
+            gap = true,
             minDuration = 0,
-            maxDuration = 0,
-            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
+            maxDuration = 0
         },
         buffs = {
             enabled = true,
@@ -155,6 +158,8 @@ local DEFAULT_UNIT_CONFIG = {
             num = 32,
             showDuration = true,
             desaturate = false,
+            showStealableBuffs = true,
+            showBuffType = false,
             minDuration = 0,
             maxDuration = 0,
             filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
@@ -171,6 +176,8 @@ local DEFAULT_UNIT_CONFIG = {
             num = 16,
             showDuration = true,
             desaturate = false,
+            showStealableBuffs = true,
+            showDebuffType = true,
             minDuration = 0,
             maxDuration = 0,
             filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
