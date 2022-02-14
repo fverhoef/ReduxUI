@@ -4,13 +4,11 @@ local BS = R.Modules.ButtonStyles
 
 BS.actionButtons = {}
 
-local function ActionButton_ShowGrid(button)
-    button:GetNormalTexture():SetVertexColor(unpack(button.action and IsEquippedAction(button.action) and {0, 1.0, 0, 1} or BS.config.colors.border))
-end
+local function ActionButton_ShowGrid(button) button:GetNormalTexture():SetVertexColor(unpack(button.action and IsEquippedAction(button.action) and {0, 1.0, 0, 1} or BS.config.colors.border)) end
 
 local function ActionButton_UpdateUsable(button)
     if button.action or button.spellID then
-        if BS.config.actions.outOfRangeColoring == "button" and button.outOfRange then
+        if BS.config.outOfRangeColoring == "Button" and button.outOfRange then
             button.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
         else
             if button.spellID then
@@ -18,7 +16,7 @@ local function ActionButton_UpdateUsable(button)
             elseif button.action then
                 button.isUsable, button.notEnoughMana = IsUsableAction(button.action)
             end
-    
+
             button.isUsable = button.isUsable and not UnitOnTaxi("player")
 
             if button.isUsable then
@@ -38,9 +36,7 @@ local function ActionButton_UpdateRangeIndicator(button, checksRange, inRange)
     if button.action or button.spellID then
         local wasOutOfRange = button.outOfRange
         button.outOfRange = checksRange and not inRange
-        if button.outOfRange ~= wasOutOfRange then
-            ActionButton_UpdateUsable(button)
-        end
+        if button.outOfRange ~= wasOutOfRange then ActionButton_UpdateUsable(button) end
     end
 end
 
@@ -52,19 +48,13 @@ local function LibActionButton_OnButtonUpdate(event, button)
     normalTexture:SetTexCoord(0, 1, 0, 1)
 end
 
-local function LibActionButton_OnCooldownUpdate(event, button)
-	if button.cooldown.currentCooldownType == COOLDOWN_TYPE_NORMAL then
-		button.cooldown:SetSwipeColor(0, 0, 0)
-	end
-end
+local function LibActionButton_OnCooldownUpdate(event, button) if button.cooldown.currentCooldownType == COOLDOWN_TYPE_NORMAL then button.cooldown:SetSwipeColor(0, 0, 0) end end
 
 local function LibActionButton_OnUpdateRange(event, button)
     ActionButton_UpdateUsable(button)
 
     local hotkey = button.HotKey
-    if hotkey:GetText() == RANGE_INDICATOR then
-        hotkey:SetShown(button.outOfRange)
-    end
+    if hotkey:GetText() == RANGE_INDICATOR then hotkey:SetShown(button.outOfRange) end
 
     if button.outOfRange then
         hotkey:SetVertexColor(unpack(BS.config.colors.outOfRange))
@@ -122,6 +112,9 @@ function BS:StyleActionButton(button, replace)
 
     BS.actionButtons[button] = true
     button.__styled = true
+
+    if button.UpdateUsable then BS:SecureHook(button, "UpdateUsable", ActionButton_UpdateUsable) end
+    if button.ShowGrid then BS:SecureHook(button, "ShowGrid", ActionButton_ShowGrid) end
 
     BS:UpdateActionButton(button)
 end
@@ -193,8 +186,10 @@ function BS:StyleAllActionButtons()
     _G.MainMenuBarVehicleLeaveButton:CreateBorder(nil, nil, 0)
     -- _G.MainMenuBarVehicleLeaveButton:CreateShadow()
 
-    BS:SecureHook("ActionButton_ShowGrid", ActionButton_ShowGrid)
-    BS:SecureHook("ActionButton_UpdateUsable", ActionButton_UpdateUsable)
+    if not R.isRetail then
+        BS:SecureHook("ActionButton_ShowGrid", ActionButton_ShowGrid)
+        BS:SecureHook("ActionButton_UpdateUsable", ActionButton_UpdateUsable)
+    end
     BS:SecureHook("ActionButton_UpdateRangeIndicator", ActionButton_UpdateRangeIndicator)
     R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", LibActionButton_OnButtonUpdate)
     R.Libs.ActionButton:RegisterCallback("OnCooldownUpdate", LibActionButton_OnCooldownUpdate)

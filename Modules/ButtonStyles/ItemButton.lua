@@ -17,6 +17,8 @@ function BS:StyleItemButton(button)
     end
 
     local buttonName = button:GetName()
+    if not buttonName then return end
+    
     local config = BS.config.items
 
     local nameFrame = _G[buttonName .. "NameFrame"] or button.NameFrame
@@ -109,12 +111,10 @@ function BS:UpdateItemButton(button)
         local color = BS.config.colors.border
         if button.itemIDOrLink then
             local _, _, itemRarity, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(button.itemIDOrLink)
-            if itemRarity and itemRarity > 1 then
-                color = {GetItemQualityColor(itemRarity)}
-            end
+            if itemRarity and itemRarity > 1 then color = {GetItemQualityColor(itemRarity)} end
         end
 
-        if button.Border then button.Border:SetBackdropBorderColor(unpack(color)) end
+        if button.Border and button.Border.SetBackdropBorderColor then button.Border:SetBackdropBorderColor(unpack(color)) end
         normalTexture:SetVertexColor(unpack(color))
     end
 
