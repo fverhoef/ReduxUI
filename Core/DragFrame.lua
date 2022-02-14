@@ -89,11 +89,11 @@ end
 
 function R:DragFrame_OnLeave() GameTooltip:Hide() end
 
-function R:DragFrame_OnShow() if self.frame.faderConfig then self.frame:FadeIn() end end
+function R:DragFrame_OnShow() if self.frame.faderConfig then R:FadeIn(self.frame) end end
 
 function R:DragFrame_OnHide()
     if self.frame.faderConfig then
-        -- self.frame:FadeOut()
+        -- R:FadeOut(self.frame)
     end
 end
 
