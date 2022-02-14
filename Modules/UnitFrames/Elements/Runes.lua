@@ -21,8 +21,8 @@ function UF:CreateRunes()
         rune:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
         rune:SetBackdropColor(0, 0, 0, 0.70)
 
-        rune:CreateBorder(nil, 8, 2, rune:GetFrameLevel() + 1)
-        rune:CreateInlay()
+        R:CreateBorder(rune, nil, 8, 2, rune:GetFrameLevel() + 1)
+        R:CreateInlay(rune)
 
         self.Runes[i] = rune
     end

@@ -37,7 +37,7 @@ function UF:ConfigureRestingIndicator()
 
     self.RestingIndicator:SetSize(unpack(config.size))
     self.RestingIndicator:ClearAllPoints()
-    self.RestingIndicator:Point(unpack(config.point))
+    R:SetPoint(self.RestingIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureRestingIndicator", UF.ConfigureRestingIndicator)

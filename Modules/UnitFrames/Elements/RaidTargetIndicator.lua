@@ -28,7 +28,7 @@ function UF:ConfigureRaidTargetIndicator()
 
     self.RaidTargetIndicator:SetSize(unpack(config.size))
     self.RaidTargetIndicator:ClearAllPoints()
-    self.RaidTargetIndicator:Point(unpack(config.point))
+    R:SetPoint(self.RaidTargetIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureRaidTargetIndicator", UF.ConfigureRaidTargetIndicator)

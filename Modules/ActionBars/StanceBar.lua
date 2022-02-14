@@ -12,7 +12,7 @@ function AB:SetupStanceBar()
         table.insert(buttonList, button)
     end
     StanceBarFrame.config = AB.config.stanceBar
-    StanceBarFrame:CreateFader(AB.config.stanceBar.fader, buttonList)
+    R:CreateFader(StanceBarFrame, AB.config.stanceBar.fader, buttonList)
     --R:CreateDragFrame(StanceBarFrame, L["Stance Bar"], AB.defaults.stanceBar.point)
 end
 

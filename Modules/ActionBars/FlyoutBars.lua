@@ -29,8 +29,8 @@ function AB:CreateFlyoutBar(name, config)
     if config.tbc and R.isRetail then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
-    bar:Point(unpack(config.point))
-    bar:CreateBackdrop("Transparent")
+    R:SetPoint(bar, unpack(config.point))
+    R:CreateBackdrop(bar, "Transparent")
     bar.db = config
     bar.buttons = {}
     bar.name = name

@@ -28,7 +28,7 @@ function UF:ConfigurePvPClassificationIndicator()
 
     self.PvPClassificationIndicator:SetSize(unpack(config.size))
     self.PvPClassificationIndicator:ClearAllPoints()
-    self.PvPClassificationIndicator:Point(unpack(config.point))
+    R:SetPoint(self.PvPClassificationIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigurePvPClassificationIndicator", UF.ConfigurePvPClassificationIndicator)

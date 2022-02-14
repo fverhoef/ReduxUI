@@ -26,7 +26,7 @@ function UF:ConfigureSummonIndicator()
 
     self.SummonIndicator:SetSize(unpack(config.size))
     self.SummonIndicator:ClearAllPoints()
-    self.SummonIndicator:Point(unpack(config.point))
+    R:SetPoint(self.SummonIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureSummonIndicator", UF.ConfigureSummonIndicator)

@@ -28,7 +28,7 @@ function UF:ConfigureMasterLooterIndicator()
 
     self.MasterLooterIndicator:SetSize(unpack(config.size))
     self.MasterLooterIndicator:ClearAllPoints()
-    self.MasterLooterIndicator:Point(unpack(config.point))
+    R:SetPoint(self.MasterLooterIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureMasterLooterIndicator", UF.ConfigureMasterLooterIndicator)

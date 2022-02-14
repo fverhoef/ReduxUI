@@ -369,8 +369,8 @@ function S:HandleStat(stat, parent, showBackground, point1, point2)
     stat:SetHeight(STAT_HEIGHT)
     stat:ClearAllPoints()
     stat:SetParent(parent)
-    stat:Point(unpack(point1))
-    if point2 then stat:Point(unpack(point2)) end
+    R:SetPoint(stat, unpack(point1))
+    if point2 then R:SetPoint(stat, unpack(point2)) end
     if showBackground then S:CreateStatBackground(stat) end
 end
 

@@ -50,13 +50,13 @@ function UF:ConfigurePortrait()
     self.PortraitHolder:SetSize(unpack(config.size))
     self.PortraitHolder:ClearAllPoints()
     if config.point == "LEFT" then
-        self.PortraitHolder:Point("TOPLEFT")
-        self.PortraitHolder:Point("BOTTOMLEFT")
-        self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "RIGHT")
+        R:SetPoint(self.PortraitHolder, "TOPLEFT")
+        R:SetPoint(self.PortraitHolder, "BOTTOMLEFT")
+        R:CreateSeparator(self.PortraitHolder, nil, nil, nil, nil, "RIGHT")
     else
-        self.PortraitHolder:Point("TOPRIGHT")
-        self.PortraitHolder:Point("BOTTOMRIGHT")
-        self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "LEFT")
+        R:SetPoint(self.PortraitHolder, "TOPRIGHT")
+        R:SetPoint(self.PortraitHolder, "BOTTOMRIGHT")
+        R:CreateSeparator(self.PortraitHolder, nil, nil, nil, nil, "LEFT")
     end
     
     self.PortraitHolder.Separator:SetShown(config.showSeparator)

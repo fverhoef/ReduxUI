@@ -33,7 +33,7 @@ function UF:ConfigureLevel()
 
     self.Level:ClearAllPoints()
     self.Level:SetSize(unpack(config.size))
-    self.Level:Point(unpack(config.point))
+    R:SetPoint(self.Level, unpack(config.point))
 
     if config.tag then
         self:Tag(self.Level, config.tag)

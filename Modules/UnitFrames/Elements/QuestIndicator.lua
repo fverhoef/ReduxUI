@@ -28,7 +28,7 @@ function UF:ConfigureQuestIndicator()
 
     self.QuestIndicator:SetSize(unpack(config.size))
     self.QuestIndicator:ClearAllPoints()
-    self.QuestIndicator:Point(unpack(config.point))
+    R:SetPoint(self.QuestIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureQuestIndicator", UF.ConfigureQuestIndicator)

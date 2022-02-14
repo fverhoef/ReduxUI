@@ -62,7 +62,7 @@ function ScreenSaverCanvasMixin:Enable()
     end
 
     self.ModelHolder.Model:Enable()
-    self:FadeIn(1, 0, 1)
+    UIFrameFadeIn(self, 1, 0, 1)
 end
 
 function ScreenSaverCanvasMixin:Disable()

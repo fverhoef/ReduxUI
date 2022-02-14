@@ -19,7 +19,7 @@ R.DEFAULT_SEPARATOR_OFFSET = 2
 R.DEFAULT_SEPARATOR_POSITION = "TOP"
 R.VALID_SEPARATOR_POSITIONS = { ["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true}
 
-function R:CreateBackdrop(backdropInfo, color, borderColor)
+function R:CreateBackdrop(self, backdropInfo, color, borderColor)
     local backdrop = self.Backdrop
     if not backdrop then backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -29,14 +29,14 @@ function R:CreateBackdrop(backdropInfo, color, borderColor)
     backdrop:SetBackdrop(backdropInfo)
     backdrop:SetBackdropColor(unpack(color))
     backdrop:SetBackdropBorderColor(unpack(borderColor))
-    backdrop:SetOutside(self, 0, 0)
+    R:SetOutside(backdrop, self, 0, 0)
     backdrop:SetFrameLevel(math.max(0, self:GetFrameLevel() - 1))
     backdrop:SetFrameStrata(self:GetFrameStrata())
 
     self.Backdrop = backdrop
 end
 
-function R:CreateBorder(color, size, offset, frameLevel, texture)
+function R:CreateBorder(self, color, size, offset, frameLevel, texture)
     local border = self.Border
     if not border then border = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -49,14 +49,14 @@ function R:CreateBorder(color, size, offset, frameLevel, texture)
 
     border:SetBackdrop({edgeFile = texture, edgeSize = size})
     border:SetBackdropBorderColor(unpack(color))
-    border:SetOutside(self, offset, offset)
     border:SetFrameLevel(frameLevel)
     border:SetFrameStrata(self:GetFrameStrata())
+    R:SetOutside(border, self, offset, offset)
 
     self.Border = border
 end
 
-function R:CreateShadow(size, color, offset)
+function R:CreateShadow(self, size, color, offset)
     local shadow = self.Shadow
     if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -69,12 +69,12 @@ function R:CreateShadow(size, color, offset)
     shadow:SetBackdropBorderColor(unpack(color))
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
-    shadow:SetOutside(self, offset, offset)
+    R:SetOutside(shadow, self, offset, offset)
 
     self.Shadow = shadow
 end
 
-function R:CreateInlay(color, size, offset, frameLevel)
+function R:CreateInlay(self, color, size, offset, frameLevel)
     local inlay = self.Inlay
     if not inlay then inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -86,13 +86,13 @@ function R:CreateInlay(color, size, offset, frameLevel)
 
     inlay:SetBackdrop({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = size})
     inlay:SetBackdropBorderColor(unpack(color))
-    inlay:SetOutside(self, offset, offset)
     inlay:SetFrameLevel(frameLevel)
+    R:SetOutside(inlay, self, offset, offset)
 
     self.Inlay = inlay
 end
 
-function R:CreateSeparator(color, size, offset, frameLevel, position)
+function R:CreateSeparator(self, color, size, offset, frameLevel, position)
     local separator = self.Separator
     if not separator then separator = CreateFrame("Frame", nil, self) end
     if not separator.Texture then separator.Texture = separator:CreateTexture("BORDER") end

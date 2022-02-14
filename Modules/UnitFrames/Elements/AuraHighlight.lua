@@ -8,11 +8,11 @@ function UF:CreateAuraHighlight()
 
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
     self.AuraHighlight:SetParent(self.Overlay)
-    self.AuraHighlight:SetInside(self)
     self.AuraHighlight:SetTexture(R.media.textures.blank)
     self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
     self.AuraHighlight:SetBlendMode("ADD")
     self.AuraHighlight.PostUpdate = UF.AuraHighlight_PostUpdate
+    R:SetInside(self.AuraHighlight, self)
 
     self.AuraHighlightBackdrop = false
     self.AuraHighlightFilter = false

@@ -39,12 +39,12 @@ function S:StyleWhoFrame()
                 button.icon:Show()
                 button.icon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[info.filename]))
 
-                class:Offset(20, 0)
+                R:Offset(class, 20, 0)
             else
                 classTextColor = HIGHLIGHT_FONT_COLOR
                 button.icon:Hide()
 
-                class:Offset(0, 0)
+                R:Offset(class, 0, 0)
             end
 
             levelTextColor = GetQuestDifficultyColor(info.level)

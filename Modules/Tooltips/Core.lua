@@ -18,10 +18,10 @@ function TT:Initialize()
     for i = 1, #_G.FACTION_BAR_COLORS do TT.factionColors[i] = R:Hex(_G.FACTION_BAR_COLORS[i]) end
 
     _G.GameTooltipStatusBar:ClearAllPoints()
-    _G.GameTooltipStatusBar:Point("BOTTOMLEFT", "TOPLEFT", 3, 2)
-    _G.GameTooltipStatusBar:Point("BOTTOMRIGHT", "TOPRIGHT", -3, 2)
+    R:SetPoint(_G.GameTooltipStatusBar, "BOTTOMLEFT", "TOPLEFT", 3, 2)
+    R:SetPoint(_G.GameTooltipStatusBar, "BOTTOMRIGHT", "TOPRIGHT", -3, 2)
     _G.GameTooltipStatusBar:SetHeight(10)
-    _G.GameTooltipStatusBar:CreateBorder({1, 1, 1}, 8, 2)
+    R:CreateBorder(_G.GameTooltipStatusBar, {1, 1, 1}, 8, 2)
 
     _G.GameTooltipStatusBar:SetStatusBarTexture(TT.config.statusbar)
 

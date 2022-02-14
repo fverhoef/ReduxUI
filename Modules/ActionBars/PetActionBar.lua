@@ -14,7 +14,7 @@ function AB:SetupPetActionBar()
         table.insert(buttonList, button)
     end
     PetActionBarFrame.config = AB.config.petActionBar
-    PetActionBarFrame:CreateFader(AB.config.petActionBar.fader, buttonList)
+    R:CreateFader(PetActionBarFrame, AB.config.petActionBar.fader, buttonList)
     --R:CreateDragFrame(PetActionBarFrame, L["Pet Action Bar"])
 end
 

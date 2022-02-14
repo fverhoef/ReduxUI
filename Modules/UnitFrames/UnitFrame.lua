@@ -8,8 +8,7 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     oUF:SetActiveStyle(addonName .. name)
 
     local frame = oUF:Spawn(unit, addonName .. name)
-    frame:CreateFader(config and config.fader or R.config.faders.onShow)
-
+    R:CreateFader(frame, config and config.fader or R.config.faders.onShow)
     R:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
 
     return frame
@@ -29,9 +28,9 @@ function UF:InitializeFrame()
     self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
     self.Overlay:SetAllPoints()
 
-    self:CreateBorder()
-    self:CreateInlay()
-    self:CreateShadow()
+    R:CreateBorder(self)
+    R:CreateInlay(self)
+    R:CreateShadow(self)
 
     self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
 
@@ -77,7 +76,7 @@ function UF:ConfigureFrame()
 
     if not self.isGroupUnit then
         self:ClearAllPoints()
-        self:Point(unpack(self.config.point))
+        R:SetPoint(self, unpack(self.config.point))
     end
 
     if not isNameplate then

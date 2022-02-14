@@ -30,15 +30,15 @@ function BS:StyleItemButton(button)
             button.Border = nil
         end
         if button.isLargeItemButton then
-            button:CreateBorder(nil, nil, 0)
-            button:CreateBackdrop({bgFile = R.media.textures.blank, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
+            R:CreateBorder(button, nil, nil, 0)
+            R:CreateBackdrop(button, {bgFile = R.media.textures.blank, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
             nameFrame:SetTexture(nil)
         else
-            -- button:CreateBackdrop({bgFile = config.backdrop, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
+            -- R:CreateBackdrop(button, {bgFile = config.backdrop, edgeSize = 3, insets = {left = 3, right = 3, top = 3, bottom = 3}})
 
             if string.match(buttonName, "SendMailAttachment") then
                 button.tag = BS.tags.SendMail
-                button:CreateBorder(nil, nil, 0)
+                R:CreateBorder(button, nil, nil, 0)
             end
         end
     end
@@ -51,7 +51,7 @@ function BS:StyleItemButton(button)
             icon:SetPoint("TOPLEFT", 3, -3)
             icon:SetSize(icon:GetWidth() - 3, icon:GetHeight() - 3)
         else
-            icon:SetInside(button, 3, 3)
+            R:SetInside(icon, button, 3, 3)
         end
     end
 

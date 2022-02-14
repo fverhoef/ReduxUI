@@ -14,7 +14,7 @@ function AB:SetupPossessBar()
         table.insert(buttonList, button)
     end
     PossessBarFrame.config = AB.config.possessBar
-    PossessBarFrame:CreateFader(AB.config.possessBar.fader, buttonList)
+    R:CreateFader(PossessBarFrame, AB.config.possessBar.fader, buttonList)
     --R:CreateDragFrame(PossessBarFrame, L["Possess Bar"], AB.defaults.possessBar.point)
 end
 

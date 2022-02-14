@@ -45,7 +45,7 @@ function UF:ConfigureAuras()
     self.Auras:SetHeight(self.Auras.size * (math.ceil((config.buffsAndDebuffs.numBuffs + config.buffsAndDebuffs.numDebuffs) / (config.buffsAndDebuffs.numColumns or 5))))
     self.Auras:SetWidth(self.Auras.size * (config.buffsAndDebuffs.numColumns or 5))
     self.Auras:ClearAllPoints()
-    self.Auras:Point(unpack(config.buffsAndDebuffs.point))
+    R:SetPoint(self.Auras, unpack(config.buffsAndDebuffs.point))
     self.Auras.initialAnchor = config.buffsAndDebuffs.initialAnchor
     self.Auras["growth-x"] = config.buffsAndDebuffs.growthX
     self.Auras["growth-y"] = config.buffsAndDebuffs.growthY
@@ -63,7 +63,7 @@ function UF:ConfigureAuras()
     self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.buffs.num / (config.buffs.numColumns or 5))))
     self.Buffs:SetWidth(self.Buffs.size * (config.buffs.numColumns or 5))
     self.Buffs:ClearAllPoints()
-    self.Buffs:Point(unpack(config.buffs.point))
+    R:SetPoint(self.Buffs, unpack(config.buffs.point))
     self.Buffs.initialAnchor = config.buffs.initialAnchor
     self.Buffs["growth-x"] = config.buffs.growthX
     self.Buffs["growth-y"] = config.buffs.growthY
@@ -78,7 +78,7 @@ function UF:ConfigureAuras()
     self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.debuffs.num / (config.debuffs.numColumns or 5))))
     self.Debuffs:SetWidth(self.Debuffs.size * (config.debuffs.numColumns or 5))
     self.Debuffs:ClearAllPoints()
-    self.Debuffs:Point(unpack(config.debuffs.point))
+    R:SetPoint(self.Debuffs, unpack(config.debuffs.point))
     self.Debuffs.initialAnchor = config.debuffs.initialAnchor
     self.Debuffs["growth-x"] = config.debuffs.growthX
     self.Debuffs["growth-y"] = config.debuffs.growthY
@@ -93,7 +93,7 @@ end
 oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
-    button.cd:SetInside(nil, 1, 1)
+    R:SetInside(button.cd, nil, 1, 1)
     R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 

@@ -15,7 +15,7 @@ function AB:SetupMicroButtonAndBagsBar()
 
     for i = 1, #MICRO_BUTTONS do table.insert(MicroButtonAndBagsBar.buttonList, _G[MICRO_BUTTONS[i]]) end
     AB.UpdateMicroButtonsParent(MicroButtonAndBagsBar)
-    MicroButtonAndBagsBar:CreateFader(AB.config.microButtonAndBags.fader, MicroButtonAndBagsBar.buttonList)
+    R:CreateFader(MicroButtonAndBagsBar, AB.config.microButtonAndBags.fader, MicroButtonAndBagsBar.buttonList)
 
     if not R.isRetail then
         MainMenuBarBackpackButton:ClearAllPoints()

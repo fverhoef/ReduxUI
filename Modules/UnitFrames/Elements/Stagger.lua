@@ -14,7 +14,7 @@ function UF:CreateStagger()
     self.Stagger:SetSize(120, 20)
     self.Stagger:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
     self.Stagger:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
-    self.Stagger:CreateBorder(nil, nil, nil, self.Stagger:GetFrameLevel() + 1)
+    R:CreateBorder(self.Stagger, nil, nil, nil, self.Stagger:GetFrameLevel() + 1)
 
     return self.Stagger
 end

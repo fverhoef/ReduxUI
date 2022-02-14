@@ -12,7 +12,7 @@ function AB:SetupMultiBarLeft()
         table.insert(buttonList, button)
     end
     MultiBarLeft.config = AB.config.multiBarLeft
-    MultiBarLeft:CreateFader(AB.config.multiBarLeft.fader, buttonList)
+    R:CreateFader(MultiBarLeft, AB.config.multiBarLeft.fader, buttonList)
     R:CreateDragFrame(MultiBarLeft, L["Right Action Bar 2"], AB.defaults.multiBarLeft.point)
 end
 

@@ -181,6 +181,6 @@ function R:CreateBlizzardDragFrames()
     if ObjectiveTrackerFrame then
         R:CreateDragFrame(ObjectiveTrackerFrame, "Objective Tracker", R.config.db.profile.dragFrames.objectiveTracker.point)
         ObjectiveTrackerFrame:ClearAllPoints()
-        ObjectiveTrackerFrame:Point(unpack(R.config.db.profile.dragFrames.objectiveTracker.point))
+        R:SetPoint(ObjectiveTrackerFrame, unpack(R.config.db.profile.dragFrames.objectiveTracker.point))
     end
 end

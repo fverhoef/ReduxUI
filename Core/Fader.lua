@@ -1,7 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+function R:FadeIn(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = false
 
     UIFrameFade(self, {
@@ -16,10 +16,10 @@ function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, 
         finishedArg4 = finishedArg4
     })
 
-    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then child:FadeIn(timeToFade, startAlpha, endAlpha) end end
+    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then R:FadeIn(child, timeToFade, startAlpha, endAlpha) end end
 end
 
-function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+function R:FadeOut(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = true
 
     UIFrameFade(self, {
@@ -34,10 +34,10 @@ function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1,
         finishedArg4 = finishedArg4
     })
 
-    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then child:FadeOut(timeToFade, startAlpha, endAlpha) end end
+    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then R:FadeOut(child, timeToFade, startAlpha, endAlpha) end end
 end
 
-function R:CreateFader(faderConfig, children)
+function R:CreateFader(self, faderConfig, children)
     if not self then return end
 
     if not self.faderConfig then
@@ -65,13 +65,13 @@ function R:CreateFader(faderConfig, children)
     end
 end
 
-function R:LinkFader(parent)
+function R:LinkFader(self, parent)
     if not self or not parent or parent.linkedFaders[self] then return end
 
     parent.linkedFaders[self] = true
 end
 
-function R:UnlinkFader(parent)
+function R:UnlinkFader(self, parent)
     if not self or not parent or not parent.linkedFaders[self] then return end
 
     parent.linkedFaders[self] = false
@@ -79,22 +79,22 @@ end
 
 function R:Fader_OnShow()
     local frame = self.faderParent or self
-    if frame.faderConfig == R.config.faders.onShow then frame:FadeIn(0.3, 0) end
+    if frame.faderConfig == R.config.faders.onShow then R:FadeIn(frame, 0.3, 0) end
 end
 
 function R:Fader_OnHide()
     local frame = self.faderParent or self
 
-    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then child:FadeOut(0) end end
+    for child, enabled in pairs(self.linkedFaders or {}) do if enabled then R:FadeOut(child, 0) end end
 end
 
 function R:Fader_OnEnterOrLeave()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.mouseOver then
         if MouseIsOver(frame) then
-            frame:FadeIn()
+            R:FadeIn(frame)
         else
-            frame:FadeOut()
+            R:FadeOut(frame)
         end
     end
 end

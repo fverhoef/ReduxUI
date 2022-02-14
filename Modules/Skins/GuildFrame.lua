@@ -16,7 +16,7 @@ function S:StyleGuildFrame()
         button.icon:SetSize(15, 15)
         button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-        class:Offset(20, 0)
+        R:Offset(class, 20, 0)
     end
 
     GuildMemberDetailFrame.icon = GuildMemberDetailFrame:CreateTexture("$parentIcon", "ARTWORK")
@@ -24,8 +24,8 @@ function S:StyleGuildFrame()
     GuildMemberDetailFrame.icon:SetSize(25, 25)
     GuildMemberDetailFrame.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-    GuildMemberDetailName:Offset(30, 0)
-    GuildMemberDetailZoneLabel:Offset(-30, 0)
+    R:Offset(GuildMemberDetailName, 30, 0)
+    R:Offset(GuildMemberDetailZoneLabel, -30, 0)
 
     S:SecureHook("GuildStatus_Update", function()
         local _, level, class, zone, online, classFileName

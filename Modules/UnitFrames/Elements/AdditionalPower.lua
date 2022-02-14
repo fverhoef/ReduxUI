@@ -13,7 +13,7 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
     self.AdditionalPower:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 10, -1)
     self.AdditionalPower:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -10, -1)
-    self.AdditionalPower:CreateBorder(nil, 8, 2, self.AdditionalPower:GetFrameLevel() + 1)
+    R:CreateBorder(self.AdditionalPower, nil, 8, 2, self.AdditionalPower:GetFrameLevel() + 1)
 
     self.AdditionalPower.Overlay = CreateFrame("Frame", "$parentOverlay", self.AdditionalPower)
     self.AdditionalPower.Overlay:SetFrameLevel(self.Overlay:GetFrameLevel())
@@ -52,7 +52,7 @@ function UF:ConfigureAdditionalPower()
         if config.value.tag then self:Tag(self.AdditionalPower.Value, config.value.tag) end
 
         self.AdditionalPower.Value:ClearAllPoints()
-        self.AdditionalPower.Value:Point(unpack(config.value.point))
+        R:SetPoint(self.AdditionalPower.Value, unpack(config.value.point))
     else
         self.Power.Value:Hide()
     end

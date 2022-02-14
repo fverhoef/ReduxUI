@@ -38,7 +38,7 @@ function UF:ConfigureCombatIndicator()
 
     self.CombatIndicator:SetSize(unpack(config.size))
     self.CombatIndicator:ClearAllPoints()
-    self.CombatIndicator:Point(unpack(config.point))
+    R:SetPoint(self.CombatIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureCombatIndicator", UF.ConfigureCombatIndicator)

@@ -53,7 +53,7 @@ function UF:ConfigurePvPIndicator()
 
     self.PvPIndicator:SetSize(unpack(config.size))
     self.PvPIndicator:ClearAllPoints()
-    self.PvPIndicator:Point(unpack(config.point))
+    R:SetPoint(self.PvPIndicator, unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigurePvPIndicator", UF.ConfigurePvPIndicator)

@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
     local parent = CreateFrame("Frame", addonName .. name, UIParent)
-    parent:Point(unpack(config.point))
+    R:SetPoint(parent, unpack(config.point))
     parent:SetSize(200, 40)
     parent:Show()
     parent.config = config
@@ -23,7 +23,7 @@ function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
             ]]):format(config.size[1], config.size[2], config.scale))
 
         group:SetFrameStrata("LOW")
-        group:CreateFader(config.fader)
+        R:CreateFader(group, config.fader)
         group.config = config
         _G.Mixin(group, UnitFrameHeaderMixin)
 
@@ -43,7 +43,7 @@ UnitFrameHeaderParentMixin = {}
 function UnitFrameHeaderParentMixin:Update()
     local config = self.config
     self:ClearAllPoints()
-    self:Point(unpack(config.point))
+    R:SetPoint(self, unpack(config.point))
 
     local numGroups = #self.groups
     local groupWidth = (config.unitAnchorPoint == "LEFT" or config.unitAnchorPoint == "RIGHT") and (config.size[1] * 5 + config.unitSpacing * 4) or (config.size[1])

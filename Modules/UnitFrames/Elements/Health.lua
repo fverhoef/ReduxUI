@@ -111,7 +111,7 @@ function UF:ConfigureHealth()
         end
 
         self.Health.Value:ClearAllPoints()
-        self.Health.Value:Point(unpack(config.value.point))
+        R:SetPoint(self.Health.Value, unpack(config.value.point))
     else
         self.Health.Value:Hide()
         self:Untag(self.Health.Value)
@@ -129,7 +129,7 @@ function UF:ConfigureHealth()
         end
 
         self.Health.Percent:ClearAllPoints()
-        self.Health.Percent:Point(unpack(config.percent.point))
+        R:SetPoint(self.Health.Percent, unpack(config.percent.point))
     else
         self.Health.Percent:Hide()
         self:Untag(self.Health.Percent)

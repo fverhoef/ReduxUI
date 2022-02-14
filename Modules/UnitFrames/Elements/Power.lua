@@ -13,7 +13,7 @@ function UF:CreatePower()
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
     self.Power:SetPoint("BOTTOMLEFT")
     self.Power:SetPoint("BOTTOMRIGHT")
-    self.Power:CreateBorder(nil, 10, 2)
+    R:CreateBorder(self.Power, nil, 10, 2)
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -28,7 +28,7 @@ function UF:CreatePower()
     self.Power.Value:SetParent(self.Power.Overlay)
     self.Power.Value:SetFont(UF.config.font, 10)
 
-    self.Power:CreateSeparator()
+    R:CreateSeparator(self.Power)
 
     return self.Power
 end
@@ -53,9 +53,9 @@ function UF:ConfigurePower()
     self.Power:ClearAllPoints()
     self.Power.Border:SetShown(config.detached or config.inset)
     if config.detached then
-        self.Power:Point(config.point)
+        R:SetPoint(self.Power, config.point)
     elseif config.inset then
-        self.Power:Point(config.insetPoint)
+        R:SetPoint(self.Power, config.insetPoint)
         self.Power:SetFrameLevel(self:GetFrameLevel() + 2)
     else
         local bottomLeftOffset = {0, 0}
@@ -90,7 +90,7 @@ function UF:ConfigurePower()
         end
 
         self.Power.Value:ClearAllPoints()
-        self.Power.Value:Point(unpack(config.value.point))
+        R:SetPoint(self.Power.Value, unpack(config.value.point))
     else
         self.Power.Value:Hide()
         self:Untag(self.Power.Value)

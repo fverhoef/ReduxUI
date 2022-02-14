@@ -19,12 +19,6 @@ if not R.isRetail then table.insert(R.EquipmentSlots, "RangedSlot") end
 
 R.EmptyFunction = function() end
 
-function R:DisableScripts()
-    local scripts = {"OnShow", "OnHide", "OnEvent", "OnEnter", "OnLeave", "OnUpdate", "OnValueChanged", "OnClick", "OnMouseDown", "OnMouseUp"}
-
-    for _, script in next, scripts do if self:HasScript(script) then self:SetScript(script, nil) end end
-end
-
 function R:UnlocalizedClassName(className)
     return (className and className ~= "") and R.UnlocalizedClasses[className]
 end
@@ -197,7 +191,7 @@ function R:ShortValue(value, decimalPlaces)
     return string.format("%." .. (decimalPlaces and tonumber(decimalPlaces) or 0) .. "f" .. suffix, value)
 end
 
-function R:SetInside(anchor, xOffset, yOffset, anchor2)
+function R:SetInside(self, anchor, xOffset, yOffset, anchor2)
     xOffset = xOffset or 6
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
@@ -208,7 +202,7 @@ function R:SetInside(anchor, xOffset, yOffset, anchor2)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
 end
 
-function R:SetOutside(anchor, xOffset, yOffset, anchor2)
+function R:SetOutside(self, anchor, xOffset, yOffset, anchor2)
     xOffset = xOffset or 6
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
@@ -219,7 +213,7 @@ function R:SetOutside(anchor, xOffset, yOffset, anchor2)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
 end
 
-function R:Offset(offsetX, offsetY)
+function R:Offset(self, offsetX, offsetY)
     if self then
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint()
         if not self.originalPoint then self.originalPoint = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, xOfs = xOfs, yOfs = yOfs} end
@@ -227,7 +221,7 @@ function R:Offset(offsetX, offsetY)
     end
 end
 
-function R:SetPoint(arg1, arg2, arg3, arg4, arg5)
+function R:SetPoint(self, arg1, arg2, arg3, arg4, arg5)
     if not self or not arg1 or not self.SetPoint then return end
 
     if type(arg1) == "table" then arg1, arg2, arg3, arg4, arg5 = unpack(arg1) end

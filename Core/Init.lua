@@ -71,6 +71,10 @@ function R:OnInitialize()
     end)
 
     R.framesLocked = true
+
+    SetCVar("scriptErrors", true)
+    R:RegisterEvent("ADDON_ACTION_BLOCKED", "TaintError")
+    R:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")
 end
 
 function R:OnEnable()
@@ -91,4 +95,8 @@ function R:OnEnable()
     end
 
     R:Print("Loaded. Use /" .. R.shortcut .. " to display the command list.")
+end
+
+function R:TaintError(event, addonName, addonFunc)
+    _G.ScriptErrorsFrame:OnError(R.L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
 end
