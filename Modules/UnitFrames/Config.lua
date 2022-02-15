@@ -423,7 +423,28 @@ R:RegisterModuleConfig(UF, {
         name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
         level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
         portrait = {enabled = false},
-        auras = {enabled = true, buffs = {enabled = false}},
+        auras = {
+            enabled = true,
+            buffs = {enabled = false},
+            debuffs = {
+                filter = {
+                    whiteList = {
+                        Boss = false,
+                        MyPet = false,
+                        OtherPet = false,
+                        Personal = true,
+                        NonPersonal = false,
+                        CastByUnit = false,
+                        NotCastByUnit = false,
+                        Dispellable = true,
+                        NotDispellable = false,
+                        CastByNPC = false,
+                        CastByPlayers = false,
+                        Nameplate = true
+                    }
+                }
+            }
+        },
         highlight = {targetArrows = true},
         pvpIndicator = {enabled = false},
         cvars = {
