@@ -18,7 +18,7 @@ function BS:StyleItemButton(button)
 
     local buttonName = button:GetName()
     if not buttonName then return end
-    
+
     local config = BS.config.items
 
     local nameFrame = _G[buttonName .. "NameFrame"] or button.NameFrame
@@ -150,28 +150,17 @@ end
 
 function BS:UpdateAllItemButtons() for button in pairs(BS.itemButtons) do BS:UpdateItemButton(button) end end
 
-function BS:SetItemButtonCount(count, itemCount)
-    if not self then return end
-
-    BS:StyleItemButton(self)
-end
-
 function BS:SetItemButtonQuality(quality, itemIDOrLink, suppressOverlays)
-    if not self then return end
-
     self.quality = quality
     self.itemIDOrLink = itemIDOrLink
-    BS:StyleItemButton(self)
+
+    if self.__styled then BS:UpdateItemButton(self) end
 end
 
-function BS:SetItemButtonTexture(texture)
-    if not self then return end
-
-    BS:StyleItemButton(self)
-end
+function BS:SetItemButtonTexture(texture) if self.__styled then BS:UpdateItemButton(self) end end
 
 function BS:SetItemButtonNormalTextureVertexColor(r, g, b)
-    if not self or not self.__styled then return end
+    if not self.__styled then return end
 
     if r == 1 and g == 1 and b == 1 then BS:UpdateItemButton(self) end
 end

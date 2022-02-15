@@ -26,7 +26,6 @@ function BS:Initialize()
 
     if not BS.masque then
         BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
-        BS:SecureHook(nil, "SetItemButtonCount", BS.SetItemButtonCount)
         BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
         BS:SecureHook(nil, "SetItemButtonTexture", BS.SetItemButtonTexture)
         BS:SecureHook(nil, "SetItemButtonNormalTextureVertexColor", BS.SetItemButtonNormalTextureVertexColor)
