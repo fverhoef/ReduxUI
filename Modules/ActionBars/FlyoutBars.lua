@@ -26,7 +26,7 @@ function AB:UpdateFlyoutBars()
 end
 
 function AB:CreateFlyoutBar(name, config)
-    if config.tbc and R.isRetail then return end
+    if config.tbc and R.isRetail or not config.enabled or (config.class ~= select(2, UnitClass("player")) and (config.class or "") ~= "")then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
     R:SetPoint(bar, unpack(config.point))
@@ -37,33 +37,23 @@ function AB:CreateFlyoutBar(name, config)
     for i, button in ipairs(config.buttons) do bar.buttons[i] = AB:CreateFlyoutButton(button.name, bar, button) end
 
     bar:RegisterEvent("LEARNED_SPELL_IN_TAB")
-    bar:RegisterEvent("PLAYER_TOTEM_UPDATE")
     bar:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
     bar:HookScript("OnEvent", function(self, event)
-        if event == "PLAYER_TOTEM_UPDATE" then
-            for index = 1, _G.MAX_TOTEMS do
-                local button = frame.buttons[index]
-
-                local haveTotem, totemName, start, duration, icon = GetTotemInfo(index)
-                if (haveTotem and duration > 0) then
-                    -- TODO: show totem duration in a status bar instead?
-                    -- button.CurrentAction.Duration:SetCooldown(start, duration)
-                    local totemId = R:FindTotem(totemName)
-                    if totemId then
-                        local actionButton = button.childButtons[totemId]
-                        if actionButton then
-                            -- button.defaultAction = totemId
-                        end
-                    end
-                end
-            end
-        elseif event == "ACTIONBAR_UPDATE_USABLE" then
+        if event == "ACTIONBAR_UPDATE_USABLE" then
+            self.needsUpdate = true
+        elseif event == "LEARNED_SPELL_IN_TAB" then
+            self.needsUpdate = true
+        end
+    end)
+    bar:SetScript("OnUpdate", function(self, event)
+        if self.needsUpdate and not InCombatLockdown() then
             for i, button in ipairs(bar.buttons) do
                 button.CurrentAction:UpdateConfig()
                 for j, child in next, button.childButtons do child:UpdateConfig() end
             end
-        elseif event == "LEARNED_SPELL_IN_TAB" then
-            AB:UpdateFlyoutBar(bar)
+
+            AB:UpdateFlyoutBar(self)
+            self.needsUpdate = false
         end
     end)
 
