@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
+function AB:CreateMainMenuBarArtFrame() AB.MainMenuBarArtFrame = CreateFrame("Frame", addonName .. "MainMenuBarArtFrame", UIParent, "MainMenuBarArtFrameTemplate") end
+
 MainMenuBarArtFrameMixin = {}
 
 function MainMenuBarArtFrameMixin:OnLoad()

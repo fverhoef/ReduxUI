@@ -6,4 +6,6 @@
     <Include file="MainMenuBarArtFrame.xml" />
     <Include file="MicroButtonAndBagsBar.xml"/>
     <Include file="SettingsMicroButton.xml"/>
+    <Script file="PetBar.lua"/>
+    <Script file="StanceBar.lua"/>
 </Ui>

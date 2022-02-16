@@ -180,6 +180,7 @@ R:RegisterModuleConfig(AB, {
     },
     stanceBar = {
         enabled = true,
+        keyBoundTarget = "SHAPESHIFTBUTTON",
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 95},
         fader = R.config.faders.onShow,
         columnDirection = "Right",

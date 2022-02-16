@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
+function AB:CreateMicroButtonAndBagsBar() AB.MicroButtonAndBagsBar = CreateFrame("Frame", addonName .. "MicroButtonAndBagsBar", UIParent, "MicroButtonAndBagsBarTemplate") end
+
 MicroButtonAndBagsBarMixin = {}
 
 function MicroButtonAndBagsBarMixin:OnLoad()
