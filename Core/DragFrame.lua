@@ -89,25 +89,25 @@ end
 
 function R:DragFrame_OnLeave() GameTooltip:Hide() end
 
-function R:DragFrame_OnShow() if self.frame.faderConfig then R:FadeIn(self.frame) end end
+function R:DragFrame_OnShow() if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then R:FadeIn(self.frame) end end
 
 function R:DragFrame_OnHide()
-    if self.frame.faderConfig then
-        -- R:FadeOut(self.frame)
+    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then
+        R.Fader_OnEnterOrLeave(self.frame)
     end
 end
 
 function R:HideDragFrame(frame)
     if not frame or not frame.DragFrame then return end
 
-    if frame.frameVisibility then RegisterStateDriver(frame, "visibility", frame.frameVisibility) end
+    if frame.visibility then RegisterStateDriver(frame, "visibility", frame.visibility) end
     frame.DragFrame:Hide()
 end
 
 function R:ShowDragFrame(frame)
     if not frame or not frame.DragFrame or (frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked) then return end
 
-    if frame.frameVisibility then RegisterStateDriver(frame, "visibility", "show") end
+    if frame.visibility and (not frame.config or frame.config.enabled) then RegisterStateDriver(frame, "visibility", "show") end
     frame.DragFrame:Show()
 end
 

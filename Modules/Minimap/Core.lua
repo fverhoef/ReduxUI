@@ -17,9 +17,9 @@ function MM:StyleMinimap()
     MinimapCluster:ClearAllPoints()
     MinimapCluster:SetPoint(unpack(MM.config.point))
 
-    if MM.config.frameVisibility then
-        MinimapCluster.frameVisibility = MM.config.frameVisibility
-        RegisterStateDriver(MinimapCluster, "visibility", MM.config.frameVisibility)
+    if MM.config.visibility then
+        MinimapCluster.visibility = MM.config.visibility
+        RegisterStateDriver(MinimapCluster, "visibility", MM.config.visibility)
     end
 
     R:CreateFader(MinimapCluster, MM.config.fader)

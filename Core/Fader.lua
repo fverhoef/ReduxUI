@@ -99,7 +99,7 @@ function R:Fader_OnHide()
     for child, enabled in pairs(self.linkedFaders or {}) do if enabled then R:FadeOut(child, 0) end end
 end
 
-R.Fader_OnEnterOrLeave = function(self)
+function R:Fader_OnEnterOrLeave()
     local frame = self.faderParent or self
     if frame.faderConfig == R.config.faders.mouseOver then
         if MouseIsOver(frame) or (SpellFlyout and SpellFlyout:IsShown() and MouseIsOver(SpellFlyout) and SpellFlyout:GetParent().faderParent == frame) then
