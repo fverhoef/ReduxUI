@@ -193,15 +193,16 @@ R:RegisterModuleConfig(AB, {
         border = false,
         shadow = false
     },
-    petActionBar = {
+    petBar = {
         enabled = true,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 95},
+        keyBoundTarget = "BONUSACTIONBUTTON",
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 135},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
         buttons = 12,
-        buttonsPerRow = 6,
-        buttonSize = 36,
+        buttonsPerRow = 12,
+        buttonSize = 32,
         columnSpacing = 2,
         rowSpacing = 2,
         backdrop = false,
