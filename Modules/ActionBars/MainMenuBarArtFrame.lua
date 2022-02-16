@@ -24,7 +24,7 @@ function MainMenuBarArtFrameMixin:OnLoad()
     self:RegisterEvent("PLAYER_UPDATE_RESTING")
     self:RegisterEvent("PLAYER_XP_UPDATE")
     self:RegisterEvent("UPDATE_EXHAUSTION")
-    AB:SecureHook("MainMenuBar_UpdateExperienceBars", function() self:Update() end)
+    if not R.isRetail then AB:SecureHook("MainMenuBar_UpdateExperienceBars", function() self:Update() end) end
 
     self:Update()
 end
@@ -35,6 +35,10 @@ function MainMenuBarArtFrameMixin:OnEvent(event, ...)
     else
         self:UpdateRested()
     end
+end
+
+function MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
+    self:Update()
 end
 
 function MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
@@ -74,7 +78,7 @@ function MainMenuBarArtFrameMixin:Update()
     else
         self:Show()
     end
-    
+
     local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
     self:SetSize(isLarge and 804 or 550, 49)
     self.BackgroundLarge:SetShown(isLarge)

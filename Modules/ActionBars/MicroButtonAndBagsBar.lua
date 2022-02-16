@@ -43,10 +43,12 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     CharacterBag3Slot:SetSize(30, 30)
     R:FixNormalTextureSize(CharacterBag3Slot)
 
-    KeyRingButton:ClearAllPoints()
-    KeyRingButton:ClearAllPoints()
-    KeyRingButton:SetPoint("BOTTOMRIGHT", CharacterBag3Slot, "BOTTOMLEFT", -4, -2)
-    KeyRingButton:SetSize(16, 32)
+    if not R.isRetail then
+        KeyRingButton:ClearAllPoints()
+        KeyRingButton:ClearAllPoints()
+        KeyRingButton:SetPoint("BOTTOMRIGHT", CharacterBag3Slot, "BOTTOMLEFT", -4, -2)
+        KeyRingButton:SetSize(16, 32)
+    end
 
     CharacterMicroButton:ClearAllPoints()
     CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", -18, 3)
