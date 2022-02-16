@@ -63,8 +63,11 @@ function AB:CreateFlyoutBar(name, config)
     return bar
 end
 
-function AB:UpdateFlyoutBar(bar)
+function AB:UpdateFlyoutBar(bar)    
     if not bar then return end
+    if InCombatLockdown() then
+        bar.needsUpdate = true
+    end
 
     local class = select(2, UnitClass("player"))
     if not bar.db.enabled or (bar.db.class ~= class and (bar.db.class or "") ~= "") then

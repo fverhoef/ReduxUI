@@ -7,6 +7,7 @@ _G[addonName] = R
 R.name = R.name or addonName
 R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
 R.shortcut = "rui"
+R.debug = true
 
 R.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
@@ -72,9 +73,11 @@ function R:OnInitialize()
 
     R.framesLocked = true
 
-    SetCVar("scriptErrors", true)
-    R:RegisterEvent("ADDON_ACTION_BLOCKED", "TaintError")
-    R:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")
+    SetCVar("scriptErrors", R.debug)
+    if R.debug then
+        R:RegisterEvent("ADDON_ACTION_BLOCKED", R.LogTaintError)
+        R:RegisterEvent("ADDON_ACTION_FORBIDDEN", R.LogTaintError)
+    end
 end
 
 function R:OnEnable()
@@ -97,6 +100,6 @@ function R:OnEnable()
     R:Print("Loaded. Use /" .. R.shortcut .. " to display the command list.")
 end
 
-function R:TaintError(event, addonName, addonFunc)
+function R:LogTaintError(event, addonName, addonFunc)
     _G.ScriptErrorsFrame:OnError(R.L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
 end

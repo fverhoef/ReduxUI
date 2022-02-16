@@ -3,46 +3,53 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-function AB:SetupMicroButtonAndBagsBar()
-    if not MicroButtonAndBagsBar then
-        MicroButtonAndBagsBar = CreateFrame("Frame", "MicroButtonAndBagsBar", MainMenuBar, "MicroButtonAndBagsBarTemplate")
-        MicroButtonAndBagsBar:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
-    end
+MicroButtonAndBagsBarMixin = {}
 
-    MicroButtonAndBagsBar.buttonList = {MainMenuBarBackpackButton, CharacterBag0Slot, CharacterBag1Slot, CharacterBag2Slot, CharacterBag3Slot, SettingsMicroButton}
+function MicroButtonAndBagsBarMixin:OnLoad()
+    self:HideBlizzard()
+    self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
+    self:SetWidth(R.isRetail and 298 or 220)
 
-    if not R.isRetail then table.insert(MicroButtonAndBagsBar.buttonList, KeyRingButton) end
+    self.buttonList = {MainMenuBarBackpackButton, CharacterBag0Slot, CharacterBag1Slot, CharacterBag2Slot, CharacterBag3Slot, SettingsMicroButton}
+    if not R.isRetail then table.insert(self.buttonList, KeyRingButton) end
+    for i = 1, #MICRO_BUTTONS do table.insert(self.buttonList, _G[MICRO_BUTTONS[i]]) end
+    self:UpdateMicroButtonsParent()
+    R:CreateFader(self, AB.config.microButtonAndBags.fader, self.buttonList)
 
-    for i = 1, #MICRO_BUTTONS do table.insert(MicroButtonAndBagsBar.buttonList, _G[MICRO_BUTTONS[i]]) end
-    AB.UpdateMicroButtonsParent(MicroButtonAndBagsBar)
-    R:CreateFader(MicroButtonAndBagsBar, AB.config.microButtonAndBags.fader, MicroButtonAndBagsBar.buttonList)
+    MainMenuBarBackpackButton:ClearAllPoints()
+    MainMenuBarBackpackButton:SetPoint("TOPRIGHT", self, "TOPRIGHT", -4, -4)
+    MainMenuBarBackpackButton:SetSize(40, 40)
+    R:FixNormalTextureSize(MainMenuBarBackpackButton)
+
+    CharacterBag0Slot:ClearAllPoints()
+    CharacterBag0Slot:SetPoint("RIGHT", MainMenuBarBackpackButton, "LEFT", -4, -4)
+    CharacterBag0Slot:SetSize(30, 30)
+    R:FixNormalTextureSize(CharacterBag0Slot)
+
+    CharacterBag1Slot:ClearAllPoints()
+    CharacterBag1Slot:SetPoint("RIGHT", CharacterBag0Slot, "LEFT", -2, 0)
+    CharacterBag1Slot:SetSize(30, 30)
+    R:FixNormalTextureSize(CharacterBag1Slot)
+
+    CharacterBag2Slot:ClearAllPoints()
+    CharacterBag2Slot:SetPoint("RIGHT", CharacterBag1Slot, "LEFT", -2, 0)
+    CharacterBag2Slot:SetSize(30, 30)
+    R:FixNormalTextureSize(CharacterBag2Slot)
+
+    CharacterBag3Slot:ClearAllPoints()
+    CharacterBag3Slot:SetPoint("RIGHT", CharacterBag2Slot, "LEFT", -2, 0)
+    CharacterBag3Slot:SetSize(30, 30)
+    R:FixNormalTextureSize(CharacterBag3Slot)
+
+    KeyRingButton:ClearAllPoints()
+    KeyRingButton:ClearAllPoints()
+    KeyRingButton:SetPoint("BOTTOMRIGHT", CharacterBag3Slot, "BOTTOMLEFT", -4, -2)
+    KeyRingButton:SetSize(16, 32)
+
+    CharacterMicroButton:ClearAllPoints()
+    CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", -18, 3)
 
     if not R.isRetail then
-        MainMenuBarBackpackButton:ClearAllPoints()
-        MainMenuBarBackpackButton:SetPoint("TOPRIGHT", -4, -4)
-        MainMenuBarBackpackButton:SetSize(40, 40)
-        R:FixNormalTextureSize(MainMenuBarBackpackButton)
-
-        CharacterBag0Slot:SetPoint("RIGHT", MainMenuBarBackpackButton, "LEFT", -4, -4)
-        CharacterBag0Slot:SetSize(30, 30)
-        R:FixNormalTextureSize(CharacterBag0Slot)
-
-        CharacterBag1Slot:SetPoint("RIGHT", CharacterBag0Slot, "LEFT", -2, 0)
-        CharacterBag1Slot:SetSize(30, 30)
-        R:FixNormalTextureSize(CharacterBag1Slot)
-
-        CharacterBag2Slot:SetPoint("RIGHT", CharacterBag1Slot, "LEFT", -2, 0)
-        CharacterBag2Slot:SetSize(30, 30)
-        R:FixNormalTextureSize(CharacterBag2Slot)
-
-        CharacterBag3Slot:SetPoint("RIGHT", CharacterBag2Slot, "LEFT", -2, 0)
-        CharacterBag3Slot:SetSize(30, 30)
-        R:FixNormalTextureSize(CharacterBag3Slot)
-
-        KeyRingButton:ClearAllPoints()
-        KeyRingButton:SetPoint("BOTTOMRIGHT", CharacterBag3Slot, "BOTTOMLEFT", -4, -2)
-        KeyRingButton:SetSize(16, 32)
-
         MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, MainMenuMicroButton)
         MainMenuMicroButton.PerformanceBar:SetSize(28, 58)
         MainMenuMicroButton.PerformanceBar:SetPoint("BOTTOM", MainMenuMicroButton, "BOTTOM", 0, 0)
@@ -51,43 +58,26 @@ function AB:SetupMicroButtonAndBagsBar()
         MainMenuMicroButton.PerformanceBar.Texture:SetAllPoints()
         MainMenuMicroButton.PerformanceBar.Texture:SetTexture(R.media.textures.actionBars.performanceBar)
 
-        AB:MainMenuMicroButton_Update()
+        self:UpdateMainMenuButton()
     end
 
-    if not MicroButtonAndBagsBar.MicroBagBarEndCap then
-        MicroButtonAndBagsBar.MicroBagBarEndCap = MicroButtonAndBagsBar:CreateTexture("MicroBagBarEndCap", "BACKGROUND", nil, 7)
-        MicroButtonAndBagsBar.MicroBagBarEndCap:SetSize(96, 88)
-        MicroButtonAndBagsBar.MicroBagBarEndCap:SetPoint("BOTTOMLEFT", MicroButtonAndBagsBar, "BOTTOMLEFT", -24, 0)
-        MicroButtonAndBagsBar.MicroBagBarEndCap:SetTexture(R.media.textures.actionBars.mainMenuBar)
-        MicroButtonAndBagsBar.MicroBagBarEndCap:SetTexCoord(0.238281, 0.332031, 0.652344, 0.996094)
-    end
+    AB:SecureHook("UpdateMicroButtonsParent", function() self:UpdateMicroButtonsParent() end)
 
-    AB:SecureHook("MoveMicroButtons", AB.MoveMicroButtons)
-    AB:SecureHook("UpdateMicroButtonsParent", AB.UpdateMicroButtonsParent)
-
-    AB:MoveCharacterMicroButton()
-end
-
-function AB:UpdateMicroButtonAndBagsBar() end
-
-function AB:MoveCharacterMicroButton()
-    CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint("BOTTOMLEFT", MicroButtonAndBagsBar, "BOTTOMLEFT", -18, 3)
-end
-
-AB.MoveMicroButtons = function(anchor, anchorTo, relAnchor, x, y, isStacked) if (anchorTo == MicroButtonAndBagsBar or anchorTo == MainMenuBarArtFrame) then AB:MoveCharacterMicroButton() end end
-
-AB.UpdateMicroButtonsParent = function(parent)
-    if parent == MainMenuBarArtFrame or parent == MicroButtonAndBagsBar then
-        for i, button in ipairs(MicroButtonAndBagsBar.buttonList) do button:SetParent(MicroButtonAndBagsBar) end
-        SettingsMicroButton:Show()
-    else
-        SettingsMicroButton:Hide()
+    -- prevent other bars from calling MoveMicroButtons without tainting
+    MainMenuBar:SetScript("OnShow", R.EmptyFunction)
+    if OverrideActionBar then
+        OverrideActionBar:SetScript("OnEvent", R.EmptyFunction)
+        OverrideActionBar:SetScript("OnShow", R.EmptyFunction)
     end
 end
 
-function AB:MainMenuMicroButton_Update()
+function MicroButtonAndBagsBarMixin:HideBlizzard() if MicroButtonAndBagsBar then MicroButtonAndBagsBar:SetParent(R.HiddenFrame) end end
+
+function MicroButtonAndBagsBarMixin:UpdateMicroButtonsParent() for i, button in ipairs(self.buttonList) do button:SetParent(self) end end
+
+function MicroButtonAndBagsBarMixin:UpdateMainMenuButton()
     if R.isRetail then return end
+
     R.SystemInfo:Update(false)
 
     local latencyColor
@@ -102,5 +92,5 @@ function AB:MainMenuMicroButton_Update()
 
     MainMenuMicroButton.PerformanceBar.Texture:SetVertexColor(unpack(latencyColor))
 
-    AB:ScheduleTimer(AB.MainMenuMicroButton_Update, PERFORMANCEBAR_UPDATE_INTERVAL)
+    AB:ScheduleTimer(self.UpdateMainMenuButton, PERFORMANCEBAR_UPDATE_INTERVAL, self)
 end
