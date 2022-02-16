@@ -8,4 +8,5 @@
     <Include file="SettingsMicroButton.xml"/>
     <Script file="PetBar.lua"/>
     <Script file="StanceBar.lua"/>
+    <Script file="VehicleExitBar.lua"/>
 </Ui>

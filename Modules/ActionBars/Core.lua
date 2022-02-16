@@ -15,6 +15,7 @@ function AB:Initialize()
 
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
+    AB.vehicleExitBar = AB:CreateVehicleExitBar()
 
     AB:LoadFlyoutBars()
     AB:Update()
@@ -95,6 +96,7 @@ function AB:ConfigureActionBars()
 
     AB:ConfigureActionBar(AB.petBar)
     AB:ConfigureActionBar(AB.stanceBar)
+    AB:ConfigureActionBar(AB.vehicleExitBar)
 
     if AB.config.mainMenuBarArt.enabled then
         local mainMenuBar = AB.bars[1]
@@ -184,6 +186,9 @@ function AB:ConfigureActionBars()
         stanceBar.Border:SetShown(false)
         stanceBar.Shadow:SetShown(false)
         R:LockDragFrame(stanceBar, true)
+
+        AB.vehicleExitBar:ClearAllPoints()
+        AB.vehicleExitBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
     end
 end
 
@@ -269,4 +274,8 @@ function AB:ConfigureActionBar(bar)
     bar.Shadow:SetShown(bar.config.shadow)
 
     R:UnlockDragFrame(bar)
+
+    if bar.Update then
+        bar:Update()
+    end
 end
