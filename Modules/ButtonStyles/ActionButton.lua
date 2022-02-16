@@ -11,7 +11,9 @@ local function ActionButton_UpdateUsable(button)
         if BS.config.outOfRangeColoring == "Button" and button.outOfRange then
             button.icon:SetVertexColor(unpack(BS.config.colors.outOfRange))
         else
-            if button.spellID then
+            if button.IsUsable then
+                button.isUsable, button.notEnoughMana = button:IsUsable()
+            elseif button.spellID then
                 button.isUsable, button.notEnoughMana = IsUsableSpell(button.spellID)
             elseif button.action then
                 button.isUsable, button.notEnoughMana = IsUsableAction(button.action)
@@ -50,7 +52,7 @@ end
 
 local function LibActionButton_OnCooldownUpdate(event, button) if button.cooldown.currentCooldownType == COOLDOWN_TYPE_NORMAL then button.cooldown:SetSwipeColor(0, 0, 0) end end
 
-local function LibActionButton_OnUpdateRange(event, button)
+local function LibActionButton_OnButtonUsable(event, button)
     ActionButton_UpdateUsable(button)
 
     local hotkey = button.HotKey
@@ -193,7 +195,7 @@ function BS:StyleAllActionButtons()
     BS:SecureHook("ActionButton_UpdateRangeIndicator", ActionButton_UpdateRangeIndicator)
     R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", LibActionButton_OnButtonUpdate)
     R.Libs.ActionButton:RegisterCallback("OnCooldownUpdate", LibActionButton_OnCooldownUpdate)
-    R.Libs.ActionButton:RegisterCallback("OnUpdateRange", LibActionButton_OnUpdateRange)
+    R.Libs.ActionButton:RegisterCallback("OnButtonUsable", LibActionButton_OnButtonUsable)
 end
 
 function BS:UpdateAllActionButtons()
