@@ -7,7 +7,7 @@ function AB:Initialize()
     if not AB.config.enabled then return end
 
     AB:DisableBlizzard()
-    AB:CreateMainMenuBarArtFrame()
+    if AB.config.mainMenuBarArt.enabled then AB:CreateMainMenuBarArtFrame() end
     AB:CreateMicroButtonAndBagsBar()
 
     AB.bars = {}
@@ -18,6 +18,7 @@ function AB:Initialize()
 end
 
 function AB:Update()
+    if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then AB:CreateMainMenuBarArtFrame() end
     if AB.MainMenuBarArtFrame then AB.MainMenuBarArtFrame:Update() end
     AB:ConfigureActionBars()
     AB:UpdateFlyoutBars()
@@ -72,8 +73,7 @@ function AB:CreateActionBar(id)
     local page = bar.config.page
     if id == 1 then
         if R.isRetail then
-            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(),
-                                 GetVehicleBarIndex(), GetVehicleBarIndex())
+            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
         else
             page = "[bonusbar:5] 11;"
         end
@@ -91,6 +91,9 @@ function AB:CreateActionBar(id)
 
     RegisterStateDriver(bar, "page", page)
 
+    R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
+    R:CreateBorder(bar)
+    R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
     R:CreateDragFrame(bar, bar:GetName(), AB.defaults["actionBar" .. id])
 
@@ -98,9 +101,7 @@ function AB:CreateActionBar(id)
 end
 
 function AB:ConfigureActionBars()
-    for _, bar in ipairs(AB.bars) do
-        AB:ConfigureActionBar(bar)
-    end
+    for _, bar in ipairs(AB.bars) do AB:ConfigureActionBar(bar) end
 
     if AB.config.mainMenuBarArt.enabled then
         local mainMenuBar = AB.bars[1]
@@ -114,6 +115,9 @@ function AB:ConfigureActionBars()
                 button:SetPoint("LEFT", mainMenuBar.buttons[j - 1], "RIGHT", 6, 0)
             end
         end
+        mainMenuBar.Backdrop:SetShown(false)
+        mainMenuBar.Border:SetShown(false)
+        mainMenuBar.Shadow:SetShown(false)
         R:LockDragFrame(mainMenuBar, true)
 
         local multiBarBottomLeft = AB.bars[2]
@@ -127,6 +131,9 @@ function AB:ConfigureActionBars()
                 button:SetPoint("LEFT", multiBarBottomLeft.buttons[j - 1], "RIGHT", 6, 0)
             end
         end
+        multiBarBottomLeft.Backdrop:SetShown(false)
+        multiBarBottomLeft.Border:SetShown(false)
+        multiBarBottomLeft.Shadow:SetShown(false)
         R:LockDragFrame(multiBarBottomLeft, true)
 
         local multiBarBottomRight = AB.bars[3]
@@ -151,6 +158,9 @@ function AB:ConfigureActionBars()
                 end
             end
         end
+        multiBarBottomRight.Backdrop:SetShown(false)
+        multiBarBottomRight.Border:SetShown(false)
+        multiBarBottomRight.Shadow:SetShown(false)
         R:LockDragFrame(multiBarBottomRight, true)
     end
 end
@@ -223,15 +233,19 @@ function AB:ConfigureActionBar(bar)
         end
 
         columnCount = columnCount + 1
-        if columnCount > buttonsPerRow then
-            columnCount = buttonsPerRow
-        end
+        if columnCount > buttonsPerRow then columnCount = buttonsPerRow end
     end
 
     bar:SetShown(bar.config.enabled)
+    bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
+
     bar:ClearAllPoints()
     R:SetPoint(bar, bar.config.point)
-    bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
+
+    bar.Backdrop:SetShown(bar.config.backdrop)
+    bar.Border:SetShown(bar.config.border)
+    bar.Shadow:SetShown(bar.config.shadow)
+
     R:UnlockDragFrame(bar)
 end
 

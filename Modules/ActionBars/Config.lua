@@ -25,13 +25,16 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 12,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = true,
+        border = true,
+        shadow = true
     },
     actionBar2 = {
         enabled = true,
         keyBoundTarget = "MULTIACTIONBAR1BUTTON",
         page = 6,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 35},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 45},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -39,13 +42,16 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 12,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar3 = {
         enabled = true,
         keyBoundTarget = "MULTIACTIONBAR2BUTTON",
         page = 5,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 65},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 85},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -53,7 +59,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 12,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar4 = {
         enabled = true,
@@ -67,7 +76,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 1,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar5 = {
         enabled = true,
@@ -81,7 +93,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 1,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar6 = {
         enabled = false,
@@ -94,7 +109,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar7 = {
         enabled = false,
@@ -107,7 +125,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar8 = {
         enabled = false,
@@ -120,7 +141,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar9 = {
         enabled = false,
@@ -133,7 +157,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     actionBar10 = {
         enabled = false,
@@ -146,7 +173,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     stanceBar = {
         enabled = true,
@@ -158,7 +188,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     petActionBar = {
         enabled = true,
@@ -170,7 +203,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     possessBar = {
         enabled = true,
@@ -182,7 +218,10 @@ R:RegisterModuleConfig(AB, {
         buttonsPerRow = 6,
         buttonSize = 36,
         columnSpacing = 2,
-        rowSpacing = 2
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     extraActionButton = {point = {"BOTTOM", "UIParent", "BOTTOM", 0, 300}},
     flyoutBars = {

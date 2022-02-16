@@ -36,7 +36,15 @@ function AB:CreateActionBarOptions(id)
                                                 function() AB:Update() end),
             linebreak4 = {type = "description", name = "", order = 12},
             fade = R:CreateToggleOption(L["Mouseover Fade"], nil, 13, nil, nil, function() return AB.config["actionBar" .. id].fader == R.config.faders.mouseOver end,
-                                        function(value) AB.config["actionBar" .. id].fader = value and R.config.faders.mouseOver or R.config.faders.onShow end, function() AB:Update() end)
+                                        function(value) AB.config["actionBar" .. id].fader = value and R.config.faders.mouseOver or R.config.faders.onShow end, function() AB:Update() end),
+            linebreak5 = {type = "description", name = "", order = 14},
+            backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 15, nil, nil, function() return AB.config["actionBar" .. id].backdrop end,
+                                            function(value) AB.config["actionBar" .. id].backdrop = value end, function() AB:Update() end),
+            border = R:CreateToggleOption(L["Show Border"], nil, 16, nil, nil, function() return AB.config["actionBar" .. id].border end,
+                                          function(value) AB.config["actionBar" .. id].border = value end, function() AB:Update() end),
+            shadow = R:CreateToggleOption(L["Shadow"], nil, 17, nil, nil, function() return AB.config["actionBar" .. id].shadow end, function(value)
+                AB.config["actionBar" .. id].shadow = value
+            end, function() AB:Update() end)
         }
     }
 end
@@ -51,11 +59,9 @@ R:RegisterModuleOptions(AB, {
                                        function() return AB.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
         lineBreak = {type = "header", name = "", order = 2},
         enableArt = R:CreateToggleOption(L["Enable Main Menu Bar Art"], nil, 3, "full", nil, function() return AB.config.mainMenuBarArt.enabled end,
-                                         function(value) AB.config.mainMenuBarArt.enabled = value end,
-                                         function() (not AB.config.mainMenuBarArt.enabled and ReloadUI or AB.CreateMainMenuBarArtFrame)() end,
-                                         function() return AB.config.mainMenuBarArt.enabled and L["Disabling this feature requires a UI reload. Proceed?"] end),
-        stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 4, "full", nil, function() return AB.config.mainMenuBarArt.stackBottomBars end,
-                                               function(value) AB.config.mainMenuBarArt.stackBottomBars = value end, AB.Update),
+                                         function(value) AB.config.mainMenuBarArt.enabled = value end, AB.Update),
+        stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 4, "full", function() return not AB.config.mainMenuBarArt.enabled end,
+                                               function() return AB.config.mainMenuBarArt.stackBottomBars end, function(value) AB.config.mainMenuBarArt.stackBottomBars = value end, AB.Update),
         actionBar1 = AB:CreateActionBarOptions(1),
         actionBar2 = AB:CreateActionBarOptions(2),
         actionBar3 = AB:CreateActionBarOptions(3),

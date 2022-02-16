@@ -66,6 +66,13 @@ function MainMenuBarArtFrameMixin:UpdateRested()
 end
 
 function MainMenuBarArtFrameMixin:Update()
+    if not AB.config.mainMenuBarArt.enabled then
+        self:Hide()
+        return
+    else
+        self:Show()
+    end
+    
     local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
     self:SetSize(isLarge and 804 or 550, 49)
     self.BackgroundLarge:SetShown(isLarge)
