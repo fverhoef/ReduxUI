@@ -22,7 +22,8 @@ function AB:CreateStanceBar()
         bar.buttons[i] = button
     end
 
-    RegisterStateDriver(bar, "visibility", "[overridebar][vehicleui][possessbar] hide; show")
+    bar.visibility = "[overridebar][vehicleui][possessbar] hide; show"
+    RegisterStateDriver(bar, "visibility", bar.visibility)
 
     bar:SetScript("OnEvent", function(self, event)
         if event == "UPDATE_SHAPESHIFT_COOLDOWN" then
@@ -56,6 +57,8 @@ function AB:CreateStanceBar()
     bar:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
     bar:RegisterEvent("UPDATE_SHAPESHIFT_USABLE")
 
+    bar.Update = function(self) AB:UpdateStanceButtonVisibility(self) end
+
     R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
     R:CreateBorder(bar)
     R:CreateShadow(bar)
@@ -65,15 +68,11 @@ function AB:CreateStanceBar()
     return bar
 end
 
-function AB:UpdateStanceBar(bar)
-    for _, button in ipairs(bar.buttons) do AB:UpdateStanceButton(button) end
-end
+function AB:UpdateStanceBar(bar) for _, button in ipairs(bar.buttons) do AB:UpdateStanceButton(button) end end
 
 function AB:UpdateStanceButtonVisibility(bar)
     local numForms = GetNumShapeshiftForms()
-    for i, button in ipairs(bar.buttons) do
-        button:SetShown(i <= numForms)
-    end
+    for i, button in ipairs(bar.buttons) do button:SetShown(i <= numForms) end
     AB:UpdateStanceBar(bar)
 end
 

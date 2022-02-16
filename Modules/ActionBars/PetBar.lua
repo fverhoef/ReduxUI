@@ -27,7 +27,8 @@ function AB:CreatePetBar()
     bar.buttons[11] = dismissButton
     R.Modules.ButtonStyles:StyleActionButton(dismissButton)
 
-    RegisterStateDriver(bar, "visibility", "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide")
+    bar.visibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
+    RegisterStateDriver(bar, "visibility", bar.visibility)
 
     bar:SetScript("OnEvent", function(self, event, arg1)
         if event == "PET_BAR_UPDATE" or event == "PET_SPECIALIZATION_CHANGED" or event == "PET_UI_UPDATE" or (event == "UNIT_PET" and arg1 == "player") or

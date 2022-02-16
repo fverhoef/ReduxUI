@@ -13,10 +13,15 @@ function MainMenuBarArtFrameMixin:OnLoad()
     self.PageNumber:SetText(GetActionBarPage())
     ActionBarUpButton:SetParent(self)
     ActionBarUpButton:ClearAllPoints()
-    ActionBarUpButton:SetPoint("BOTTOMRIGHT", self.PageNumber, "TOPLEFT", 8, -14)
     ActionBarDownButton:SetParent(self)
     ActionBarDownButton:ClearAllPoints()
-    ActionBarDownButton:SetPoint("TOPRIGHT", self.PageNumber, "BOTTOMLEFT", 8, 13)
+    if R.isRetail then
+        ActionBarUpButton:SetPoint("BOTTOMRIGHT", self.PageNumber, "TOPLEFT", 2, -7)
+        ActionBarDownButton:SetPoint("TOPRIGHT", self.PageNumber, "BOTTOMLEFT", 2, 7)
+    else
+        ActionBarUpButton:SetPoint("BOTTOMRIGHT", self.PageNumber, "TOPLEFT", 8, -14)
+        ActionBarDownButton:SetPoint("TOPRIGHT", self.PageNumber, "BOTTOMLEFT", 8, 13)
+    end
 
     self:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     self:RegisterEvent("PLAYER_ENTERING_WORLD")

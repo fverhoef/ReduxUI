@@ -263,7 +263,7 @@ function AB:ConfigureActionBar(bar)
         if columnCount > buttonsPerRow then columnCount = buttonsPerRow end
     end
 
-    bar:SetShown(bar.config.enabled)
+    if not bar.visibility then bar:SetShown(bar.config.enabled) end
     bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
 
     bar:ClearAllPoints()
@@ -275,7 +275,5 @@ function AB:ConfigureActionBar(bar)
 
     R:UnlockDragFrame(bar)
 
-    if bar.Update then
-        bar:Update()
-    end
+    if bar.Update then bar:Update() end
 end
