@@ -16,7 +16,7 @@ function UF:CreatePlayer()
 
     self:InitializeFrame()
     self:CreateAdditionalPower()
-    self:CreateEnergyManaRegen()
+    if not R.isRetail then self:CreateEnergyManaRegen() end
     self:CreatePowerPrediction()
     self:CreateCombatIndicator()
     self:CreateRestingIndicator()
@@ -37,7 +37,7 @@ function UF:UpdatePlayer()
 
     self:ConfigureFrame()
     self:ConfigureAdditionalPower()
-    self:ConfigureEnergyManaRegen()
+    if not R.isRetail then self:ConfigureEnergyManaRegen() end
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()
     self:ConfigureRestingIndicator()
