@@ -78,6 +78,8 @@ function R:OnInitialize()
         R:RegisterEvent("ADDON_ACTION_BLOCKED", R.LogTaintError)
         R:RegisterEvent("ADDON_ACTION_FORBIDDEN", R.LogTaintError)
     end
+
+    R:RegisterEvent("PLAYER_REGEN_DISABLED", R.CloseOptionsDialog)
 end
 
 function R:OnEnable()

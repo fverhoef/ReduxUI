@@ -29,11 +29,16 @@ function AB:Update()
 end
 
 function AB:DisableBlizzard()
-    MainMenuBar:SetParent(R.HiddenFrame)
-    MultiBarBottomLeft:SetParent(R.HiddenFrame)
-    MultiBarBottomRight:SetParent(R.HiddenFrame)
-    MultiBarLeft:SetParent(R.HiddenFrame)
-    MultiBarRight:SetParent(R.HiddenFrame)
+    R:ForceHide(MainMenuBarArtFrame, true)
+    MainMenuBar:EnableMouse(false)
+    R:ForceHide(MultiBarBottomLeft)
+    R:ForceHide(MultiBarBottomRight)
+    R:ForceHide(MultiBarLeft)
+    R:ForceHide(MultiBarRight)
+    R:ForceHide(PetActionBarFrame)
+    R:ForceHide(PossessBarFrame)
+    R:ForceHide(StanceBarFrame)
+    R:ForceHide(MainMenuBarVehicleLeaveButton)
 end
 
 function AB:CreateActionBar(id)

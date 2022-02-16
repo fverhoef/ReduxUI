@@ -45,9 +45,9 @@ function R:RegisterModuleOptions(module, options)
     module.options = options
 end
 
-function R:ShowOptionsDialog()
-    R.Libs.AceConfigDialog:Open(addonName)
-end
+function R:ShowOptionsDialog() if not InCombatLockdown() then R.Libs.AceConfigDialog:Open(addonName) end end
+
+function R:CloseOptionsDialog() R.Libs.AceConfigDialog:Close(addonName) end
 
 R.config.options = {
     type = "group",

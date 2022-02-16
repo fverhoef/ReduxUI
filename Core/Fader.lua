@@ -4,7 +4,10 @@ local R = _G.ReduxUI
 function R:FadeIn(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = false
 
-    if InCombatLockdown() then return end
+    if InCombatLockdown() then
+        self:SetAlpha(endAlpha or 1)
+        return
+    end
 
     UIFrameFade(self, {
         mode = "IN",
@@ -24,7 +27,10 @@ end
 function R:FadeOut(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = true
 
-    if InCombatLockdown() then return end
+    if InCombatLockdown() then
+        self:SetAlpha(endAlpha or 0)
+        return
+    end
 
     UIFrameFade(self, {
         mode = "OUT",

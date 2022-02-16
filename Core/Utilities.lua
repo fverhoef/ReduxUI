@@ -19,6 +19,25 @@ if not R.isRetail then table.insert(R.EquipmentSlots, "RangedSlot") end
 
 R.EmptyFunction = function() end
 
+function R:ForceHide(frame, skipEvents)
+	if not frame then return end
+
+	if frame.UnregisterAllEvents then
+		if not skipEvents then
+			frame:UnregisterAllEvents()
+		end
+
+		if frame:GetName() then
+			frame.ignoreFramePositionManager = true
+			frame:SetAttribute("ignoreFramePositionManager", true)
+			UIPARENT_MANAGED_FRAME_POSITIONS[frame:GetName()] = nil
+		end
+	end
+
+	frame:Hide()
+	frame:SetParent(R.HiddenFrame)
+end
+
 function R:UnlocalizedClassName(className)
     return (className and className ~= "") and R.UnlocalizedClasses[className]
 end

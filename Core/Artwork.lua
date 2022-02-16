@@ -17,7 +17,7 @@ R.DEFAULT_SEPARATOR_COLOR = {0.5, 0.5, 0.5, 1}
 R.DEFAULT_SEPARATOR_SIZE = 6
 R.DEFAULT_SEPARATOR_OFFSET = 2
 R.DEFAULT_SEPARATOR_POSITION = "TOP"
-R.VALID_SEPARATOR_POSITIONS = { ["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true}
+R.VALID_SEPARATOR_POSITIONS = {["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true}
 
 function R:CreateBackdrop(self, backdropInfo, color, borderColor)
     local backdrop = self.Backdrop
@@ -52,6 +52,8 @@ function R:CreateBorder(self, color, size, offset, frameLevel, texture)
     border:SetFrameLevel(frameLevel)
     border:SetFrameStrata(self:GetFrameStrata())
     R:SetOutside(border, self, offset, offset)
+
+    border.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
 
     self.Border = border
 end
