@@ -1453,7 +1453,7 @@ function UpdateFlyout(self)
 		if actionType == "flyout" then
 			-- Update border and determine arrow position
 			local arrowDistance
-			if (SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self) or GetMouseFocus() == self then
+			if (SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self) then
 				arrowDistance = 5
 			else
 				arrowDistance = 2

@@ -259,6 +259,16 @@ function AB:ConfigureActionBar(bar)
             button:Show()
         end
 
+        if button.UpdateConfig then
+            button:UpdateConfig({
+                clickOnDown = bar.config.clickOnDown,
+                showGrid = bar.config.showGrid,
+                hideElements = {hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro},
+                flyoutDirection = bar.config.flyoutDirection or "UP",
+                keyBoundTarget = bar.config.keyBoundTarget .. i
+            })
+        end
+
         columnCount = columnCount + 1
         if columnCount > buttonsPerRow then columnCount = buttonsPerRow end
     end

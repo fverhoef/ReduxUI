@@ -28,7 +28,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = true,
         border = true,
-        shadow = true
+        shadow = true,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar2 = {
         enabled = true,
@@ -45,7 +50,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar3 = {
         enabled = true,
@@ -62,7 +72,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar4 = {
         enabled = true,
@@ -79,7 +94,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "LEFT"
     },
     actionBar5 = {
         enabled = true,
@@ -96,7 +116,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "LEFT"
     },
     actionBar6 = {
         enabled = false,
@@ -112,7 +137,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar7 = {
         enabled = false,
@@ -128,7 +158,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar8 = {
         enabled = false,
@@ -144,7 +179,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar9 = {
         enabled = false,
@@ -160,7 +200,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     actionBar10 = {
         enabled = false,
@@ -176,7 +221,12 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
+        hideHotkey = false,
+        hideMacro = true,
+        flyoutDirection = "UP"
     },
     stanceBar = {
         enabled = true,
@@ -192,7 +242,9 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
+        shadow = false,
+        showGrid = true,
+        hideHotkey = false
     },
     petBar = {
         enabled = true,
@@ -208,22 +260,9 @@ R:RegisterModuleConfig(AB, {
         rowSpacing = 2,
         backdrop = false,
         border = false,
-        shadow = false
-    },
-    possessBar = {
-        enabled = true,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 95},
-        fader = R.config.faders.onShow,
-        columnDirection = "Right",
-        rowDirection = "Down",
-        buttons = 12,
-        buttonsPerRow = 6,
-        buttonSize = 36,
-        columnSpacing = 2,
-        rowSpacing = 2,
-        backdrop = false,
-        border = false,
-        shadow = false
+        shadow = false,
+        showGrid = true,
+        hideHotkey = false
     },
     vehicleExitBar = {
         enabled = true,
@@ -240,7 +279,6 @@ R:RegisterModuleConfig(AB, {
         border = false,
         shadow = false
     },
-    extraActionButton = {point = {"BOTTOM", "UIParent", "BOTTOM", 0, 300}},
     flyoutBars = {
         ["Mage Bar"] = {
             enabled = true,
