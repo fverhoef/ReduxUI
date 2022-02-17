@@ -19,6 +19,9 @@ function UF:CreateTotems()
         totem.Icon:SetAllPoints()
         totem.Cooldown = CreateFrame("Cooldown", nil, totem, "CooldownFrameTemplate")
         totem.Cooldown:SetAllPoints()
+
+        R.Modules.ButtonStyles:StyleAuraButton(totem)
+
         self.Totems[i] = totem
     end
 
