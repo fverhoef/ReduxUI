@@ -19,6 +19,10 @@ function AB:CreateStanceBar()
         button.keyBoundTarget = bar.config.keyBoundTarget .. i
         AB:UpdateStanceButton(button)
 
+        button:SetScript("OnEnter", function(self)
+            R.Libs.KeyBound:Set(self)
+        end)
+
         bar.buttons[i] = button
     end
 
