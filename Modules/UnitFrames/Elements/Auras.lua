@@ -13,6 +13,7 @@ function UF:CreateAuras()
     self.Auras.debuffFilterConfig = self.config.auras.debuffs.filter
     self.Auras.PostCreateIcon = UF.PostCreateAura
     self.Auras.PostUpdateIcon = UF.PostUpdateAura
+    self.Auras.PostUpdateGapIcon = UF.PostUpdateGap
     self.Auras.CustomFilter = UF.AuraFilter
 
     self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
@@ -113,7 +114,12 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
         button.cd:SetHideCountdownNumbers(not self.config.showDuration)
     end
 
+    button.Border:Show()
     R.Modules.ButtonStyles:UpdateAuraButton(button)
+end
+
+function UF:PostUpdateGap(unit, gapButton, visibleBuffs)
+    gapButton.Border:Hide()
 end
 
 function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll)
