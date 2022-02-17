@@ -320,7 +320,7 @@ function TT:AddLevelColor(tooltip, unit)
             levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", gender, race, R:Hex(classColor), localeClass or "")
         end
     else
-        levelLine:SetFormattedText("%s%s|r %s", R:Hex(difficultyColor), level > 0 and level or "??", UnitCreatureType(unit))
+        levelLine:SetFormattedText("%s%s|r %s", R:Hex(difficultyColor), level > 0 and level or "??", UnitCreatureType(unit) or UNKNOWN)
     end
 end
 
