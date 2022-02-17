@@ -203,6 +203,7 @@ function AB:ConfigureActionBars()
 
         AB.vehicleExitBar:ClearAllPoints()
         AB.vehicleExitBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
+        R:LockDragFrame(AB.vehicleExitBar, true)
     end
 end
 

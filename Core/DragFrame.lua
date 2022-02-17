@@ -105,7 +105,7 @@ function R:HideDragFrame(frame)
 end
 
 function R:ShowDragFrame(frame)
-    if not frame or not frame.DragFrame or (frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked) then return end
+    if not frame or not frame.DragFrame or (frame.DragFrame.isLocked and frame.DragFrame.hideWhenLocked) or (frame.config and frame.config.enabled == false) then return end
 
     if frame.visibility and (not frame.config or frame.config.enabled) then RegisterStateDriver(frame, "visibility", "show") end
     frame.DragFrame:Show()

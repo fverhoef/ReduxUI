@@ -38,7 +38,7 @@ function AB:CreateVehicleExitBar()
     R:CreateBorder(bar)
     R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.stanceBar)
+    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.vehicleExitBar)
 
     return bar
 end
