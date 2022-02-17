@@ -4,6 +4,8 @@ local C = R.Modules.Chat
 
 R:RegisterModuleConfig(C, {
     enabled = true,
+    size = { 488, 210 },
+    point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 20 },
     font = R.config.defaults.profile.fonts.normal,
     fontSize = 12,
     fontOutline = "OUTLINE",

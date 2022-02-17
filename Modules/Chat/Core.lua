@@ -66,6 +66,8 @@ function C:Initialize()
 
     for i = 1, NUM_CHAT_WINDOWS do
         local chatframe = _G["ChatFrame" .. i]
+        chatframe:SetSize(unpack(C.config.size))
+        chatframe:SetPoint(unpack(C.config.point))
 
         if (i ~= 2) then
             chatframe.AddMessage_Base = chatframe.AddMessage

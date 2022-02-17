@@ -354,7 +354,7 @@ R:RegisterModuleConfig(UF, {
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {90, 36},
-        point = {"TOPLEFT", "UIParent", "TOPLEFT", 20, -20},
+        point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 280},
         health = {value = {enabled = false}, percent = {enabled = false}},
         power = {size = {70, 8}, value = {enabled = false}},
         name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
@@ -364,12 +364,13 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "LEFT",
         unitSpacing = 10,
+        groupAnchorPoint = "BOTTOM",
         showParty = false,
         showRaid = true
     }),
     assist = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {120, 30},
-        point = {"LEFT", "UIParent", "LEFT", 20, -100},
+        point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 850},
         health = {value = {enabled = false}, percent = {enabled = false}},
         power = {size = {70, 8}, value = {enabled = false}},
         name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
@@ -383,7 +384,7 @@ R:RegisterModuleConfig(UF, {
     }),
     tank = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {120, 30},
-        point = {"LEFT", "UIParent", "LEFT", 20, 100},
+        point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 650},
         health = {value = {enabled = false}, percent = {enabled = false}},
         power = {size = {70, 8}, value = {enabled = false}},
         name = {size = {80, 10}, point = {"TOP", "TOP", 0, -8}, fontSize = 12, fontShadow = false, justifyH = "CENTER", tag = "[name]"},
