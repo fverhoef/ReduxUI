@@ -49,6 +49,48 @@ function AB:CreateActionBarOptions(id)
     }
 end
 
+function AB:CreateCooldownBarsOptions(order)
+    local options = {type = "group", name = L["Cooldown Bars"], order = order, childGroups = "tab", args = {}}
+
+    for name, config in pairs(AB.defaults.cooldownBars) do
+        options.args[name] = {
+            type = "group",
+            name = name,
+            hidden = function() return AB.config.cooldownBars[name].tbc and R.isRetail end,
+            args = {
+                enabled = R:CreateToggleOption(L["Enabled"], nil, 1, "full", nil, function() return AB.config.cooldownBars[name].enabled end,
+                                               function(value) AB.config.cooldownBars[name].enabled = value end, function() AB.cooldownBars[name]:Configure() end),
+                lineBreak = {type = "header", name = "", order = 3},
+                showLabels = R:CreateToggleOption(L["Show Labels"], nil, 4, "full", nil, function() return AB.config.cooldownBars[name].showLabels end,
+                                                  function(value) AB.config.cooldownBars[name].showLabels = value end, function() AB.cooldownBars[name]:Configure() end),
+                backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 5, "full", nil, function() return AB.config.cooldownBars[name].backdrop end,
+                                                function(value) AB.config.cooldownBars[name].backdrop = value end, function() AB.cooldownBars[name]:Configure() end),
+                border = R:CreateToggleOption(L["Show Border"], nil, 6, "full", nil, function() return AB.config.cooldownBars[name].border end,
+                                              function(value) AB.config.cooldownBars[name].border = value end, function() AB.cooldownBars[name]:Configure() end),
+                shadow = R:CreateToggleOption(L["Show Shadow"], nil, 7, "full", nil, function() return AB.config.cooldownBars[name].shadow end,
+                                              function(value) AB.config.cooldownBars[name].shadow = value end, function() AB.cooldownBars[name]:Configure() end),
+                lineBreak2 = {type = "description", name = "", order = 8},
+                width = R:CreateRangeOption(L["Width"], nil, 9, nil, 1, nil, 1000, 1, function() return AB.config.cooldownBars[name].size[1] end,
+                                            function(value) AB.config.cooldownBars[name].size[1] = value end, function() AB.cooldownBars[name]:Configure() end),
+                height = R:CreateRangeOption(L["Height"], nil, 10, nil, 1, nil, 200, 1, function() return AB.config.cooldownBars[name].size[2] end,
+                                             function(value) AB.config.cooldownBars[name].size[2] = value end, function() AB.cooldownBars[name]:Configure() end),
+                iconSize = R:CreateRangeOption(L["Icon Size"], nil, 11, nil, 1, nil, 120, 1, function() return AB.config.cooldownBars[name].iconSize end,
+                                               function(value) AB.config.cooldownBars[name].iconSize = value end, function() AB.cooldownBars[name]:Configure() end)
+            }
+        }
+    end
+
+    return options
+end
+
+function AB:CreateFlyoutBarsOptions(order)
+    local options = {type = "group", name = L["Flyout Bars"], order = order, childGroups = "tab", args = {}}
+
+    for name, config in pairs(AB.defaults.flyoutBars) do options.args[name] = {type = "group", name = name, hidden = function() return AB.config.flyoutBars[name].tbc and R.isRetail end, args = {}} end
+
+    return options
+end
+
 R:RegisterModuleOptions(AB, {
     type = "group",
     name = L["Action Bars"],
@@ -72,6 +114,8 @@ R:RegisterModuleOptions(AB, {
         actionBar7 = AB:CreateActionBarOptions(7),
         actionBar8 = AB:CreateActionBarOptions(8),
         actionBar9 = AB:CreateActionBarOptions(9),
-        actionBar10 = AB:CreateActionBarOptions(10)
+        actionBar10 = AB:CreateActionBarOptions(10),
+        cooldownBars = AB:CreateCooldownBarsOptions(30),
+        flyoutBars = AB:CreateFlyoutBarsOptions(31),
     }
 })

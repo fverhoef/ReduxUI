@@ -7,6 +7,10 @@ local UPDATE_DEFAULT_MODE = {[""] = "Never", ANY_CLICK = "Any Click", LEFT_CLICK
 AB.UPDATE_DEFAULT_MODE = UPDATE_DEFAULT_MODE
 AB.COLUMN_DIRECTIONS = {"Right", "Left"}
 AB.ROW_DIRECTIONS = {"Up", "Down"}
+AB.DEFAULT_COOLDOWN_LABELS = {5, 15, 30, 60, 120, 180, 300}
+AB.COOLDOWN_FILTERS = {
+    NONE = "NONE"
+}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
@@ -278,6 +282,21 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false
+    },
+    cooldownBars = {
+        ["Cooldowns"] = {
+            enabled = true,
+            tbc = true,
+            point = {"BOTTOM", "UIParent", "BOTTOM", 0, 185},
+            fader = R.config.faders.onShow,
+            size = { 396, 30 },
+            iconSize = 30,
+            showLabels = true,
+            filter = AB.COOLDOWN_FILTERS.NONE,
+            backdrop = true,
+            border = true,
+            shadow = true
+        }
     },
     flyoutBars = {
         ["Mage Bar"] = {

@@ -17,6 +17,7 @@ function AB:Initialize()
     AB.stanceBar = AB:CreateStanceBar()
     AB.vehicleExitBar = AB:CreateVehicleExitBar()
 
+    AB:LoadCooldownBars()
     AB:LoadFlyoutBars()
     AB:ReassignBindings()
     AB:Update()
@@ -30,6 +31,7 @@ function AB:Update()
     if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then AB:CreateMainMenuBarArtFrame() end
     if AB.MainMenuBarArtFrame then AB.MainMenuBarArtFrame:Update() end
     AB:ConfigureActionBars()
+    AB:UpdateCooldownBars()
     AB:UpdateFlyoutBars()
 end
 
