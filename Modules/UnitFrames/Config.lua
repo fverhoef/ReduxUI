@@ -364,7 +364,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "LEFT",
         unitSpacing = 10,
-        groupAnchorPoint = "BOTTOM",
+        groupAnchorPoint = "TOP",
         showParty = false,
         showRaid = true
     }),
