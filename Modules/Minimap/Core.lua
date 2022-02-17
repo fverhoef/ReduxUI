@@ -107,6 +107,9 @@ function MM:StyleMinimap()
 
         MiniMapTrackingButtonBorder:Hide()
     else
+        MiniMapTracking:SetScript("OnEvent", nil)
+        MiniMapTrackingIcon:SetTexture([[Interface\Minimap\Tracking\None]])
+        MiniMapTrackingIcon:SetSize(20, 20)
         MiniMapTrackingBorder:Hide()
     end
 
@@ -152,7 +155,7 @@ function MM:UpdateMinimap()
         TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
 
         MiniMapTracking:ClearAllPoints()
-        MiniMapTracking:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 7, 2)
+        MiniMapTracking:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 7, R.isRetail and 2 or 4)
 
         Minimap.ButtonFrame:ClearAllPoints()
         Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 0)
@@ -174,7 +177,7 @@ function MM:UpdateMinimap()
         TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, 0)
 
         MiniMapTracking:ClearAllPoints()
-        MiniMapTracking:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 6, 2)
+        MiniMapTracking:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 6, R.isRetail and 2 or 4)
 
         Minimap.ButtonFrame:ClearAllPoints()
         Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
