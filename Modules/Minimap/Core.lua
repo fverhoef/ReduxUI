@@ -49,7 +49,7 @@ function MM:StyleMinimap()
     MinimapBorderTop:Hide()
     MinimapZoomIn:Hide()
     MinimapZoomOut:Hide()
-    MiniMapWorldMapButton:Hide()
+    R:Disable(MiniMapWorldMapButton)
     if not R.isRetail then MinimapToggleButton:Hide() end
     GameTimeFrame:Hide()
 
