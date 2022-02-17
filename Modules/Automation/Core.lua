@@ -28,7 +28,7 @@ function AM:Initialize()
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)
-    if not R.isRetail and AM.config.standDismount then
+    if AM.config.standDismount then
         if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg ==
             ERR_TAXINOTSTANDING then
             DoEmote("stand")

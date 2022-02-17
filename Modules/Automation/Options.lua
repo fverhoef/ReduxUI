@@ -47,7 +47,6 @@ R:RegisterModuleOptions(AM, {
         standDismount = {
             type = "toggle",
             name = "Auto Stand/Dismount",
-            hidden = R.isRetail,
             order = 11,
             width = "full",
             get = function()
