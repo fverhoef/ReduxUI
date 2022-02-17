@@ -19,7 +19,7 @@ function AB:CreatePetBar()
         button.keyBoundTarget = bar.config.keyBoundTarget .. i
         AB:UpdatePetButton(button)
 
-        button:SetScript("OnEnter", function(self)
+        AB:SecureHookScript(button, "OnEnter", function(self)
             R.Libs.KeyBound:Set(self)
         end)
 
