@@ -37,14 +37,17 @@ end
 function MainMenuBarArtFrameMixin:OnEvent(event, ...)
     if event == "ACTIONBAR_PAGE_CHANGED" then
         self.PageNumber:SetText(GetActionBarPage())
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        if self.needsUpdate then
+            self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+            self:Update()
+        end
     else
         self:UpdateRested()
     end
 end
 
-function MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
-    self:Update()
-end
+function MainMenuBarArtFrameMixin:OnStatusBarsUpdated() self:Update() end
 
 function MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
     if R.isRetail then
@@ -77,6 +80,12 @@ function MainMenuBarArtFrameMixin:UpdateRested()
 end
 
 function MainMenuBarArtFrameMixin:Update()
+    if InCombatLockdown() then
+        self.needsUpdate = true
+        self:RegisterEvent("PLAYER_REGEN_ENABLED")
+        return
+    end
+
     if not AB.config.mainMenuBarArt.enabled then
         self:Hide()
         return

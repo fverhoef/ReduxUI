@@ -18,7 +18,12 @@ function AB:Initialize()
     AB.vehicleExitBar = AB:CreateVehicleExitBar()
 
     AB:LoadFlyoutBars()
+    AB:ReassignBindings()
     AB:Update()
+
+    AB:RegisterEvent("PET_BATTLE_CLOSE", AB.ReassignBindings)
+    AB:RegisterEvent("PET_BATTLE_OPENING_DONE", AB.ClearBindings)
+    AB:RegisterEvent("UPDATE_BINDINGS", AB.ReassignBindings)
 end
 
 function AB:Update()
@@ -31,6 +36,7 @@ end
 function AB:DisableBlizzard()
     R:ForceHide(MainMenuBarArtFrame, true)
     MainMenuBar:EnableMouse(false)
+    MainMenuBar.SetPoint = R.EmptyFunction
     R:ForceHide(MultiBarBottomLeft)
     R:ForceHide(MultiBarBottomRight)
     R:ForceHide(MultiBarLeft)
@@ -39,6 +45,8 @@ function AB:DisableBlizzard()
     R:ForceHide(PossessBarFrame)
     R:ForceHide(StanceBarFrame)
     R:ForceHide(MainMenuBarVehicleLeaveButton)
+
+    ActionBarController:UnregisterAllEvents()
 end
 
 function AB:CreateActionBar(id)
@@ -291,4 +299,20 @@ function AB:ConfigureActionBar(bar)
     R:UnlockDragFrame(bar)
 
     if bar.Update then bar:Update() end
+end
+
+function AB:ReassignBindings()
+    if InCombatLockdown() then return end
+    for _, bar in ipairs(AB.bars) do
+        ClearOverrideBindings(bar)
+
+        for i, button in next, bar.buttons do
+            for _, key in next, {GetBindingKey(bar.config.keyBoundTarget .. i)} do if key and key ~= "" then SetOverrideBindingClick(bar, false, key, button:GetName()) end end
+        end
+    end
+end
+
+function AB:ClearBindings()
+    if InCombatLockdown() then return end
+    for _, bar in ipairs(AB.bars) do ClearOverrideBindings(bar) end
 end
