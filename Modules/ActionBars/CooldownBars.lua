@@ -236,16 +236,17 @@ local function CreateCooldownButton(bar, cd)
     button.icon:SetAllPoints()
 
     button.cooldown = CreateFrame("Cooldown", button:GetName() .. "Cooldown", button, "CooldownFrameTemplate")
-    --R:SetInside(button.cooldown)
+    -- R:SetInside(button.cooldown)
 
     button.enabled = false
     button.Enable = function(self)
         if not self.enabled then
             self.enabled = true
             self.offset = 0
-            CooldownFrame_Set(self.cooldown, self.cd.start, self.cd.duration, true)
             self:Show()
         end
+        CooldownFrame_Set(self.cooldown, self.cd.start, self.cd.duration, true)
+        self:Update()
     end
     button.Disable = function(self)
         self.enabled = false
