@@ -223,21 +223,87 @@ local function UpdateCooldownButton(button)
     if math.abs(button.offset - newOffset) <= 0.001 then button.offset = newOffset end
 
     button:SetPoint("LEFT", button.bar, "LEFT", button.offset, 0)
+
+    if button.cd.timeLeft < 5 and not button.flashing then
+        button:StartFlash()
+    elseif button.cd.timeLeft >= 5 and button.flashing then
+        button:StopFlash()
+    end
+end
+
+local function CooldownButton_ShowTooltip(button)
+    local timeLeft = button.cd.start + button.cd.duration - GetTime()
+    local hours = floor(mod(timeLeft, 86400) / 3600)
+    local minutes = floor(mod(timeLeft, 3600) / 60)
+    local seconds = floor(mod(timeLeft, 60))
+
+    local text
+    if hours > 0 then
+        text = string.format("%s: %.0fh %.0fm %.0fs.", button.cd.name, hours, minutes, seconds)
+    elseif minutes > 0 then
+        text = string.format("%s: %.0fm %.0fs.", button.cd.name, minutes, seconds)
+    elseif timeLeft > 2.5 then
+        text = string.format("%s: %.0f second(s).", button.cd.name, seconds)
+    else
+        text = string.format("%s: %.1f second(s).", button.cd.name, timeLeft)
+    end
+    if button.tooltip ~= text then
+        button.tooltip = text
+        _G.GameTooltip:SetOwner(button, "ANCHOR_TOPLEFT")
+        _G.GameTooltip:SetText(string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", button.cd.texture, 40, button.tooltip))
+        _G.GameTooltip:Show()
+    end
+end
+
+local function CooldownButton_StartFlash(button)
+    button.flashing = 1
+    button.flashtime = 0
+end
+
+local function CooldownButton_StopFlash(button)
+    button.flashing = 0
+    button.Flash:Hide()
+end
+
+local function CooldownButton_OnEnter(button) button.mouseOver = true end
+
+local function CooldownButton_OnLeave(button)
+    button.mouseOver = false
+    _G.GameTooltip:Hide()
+end
+
+local function CooldownButton_OnUpdate(button, elapsed)
+    if button.flashing == 1 then
+        local flashtime = button.flashtime
+        flashtime = flashtime - elapsed
+
+        if (flashtime <= 0) then
+            local overtime = -flashtime
+            if (overtime >= ATTACK_BUTTON_FLASH_TIME) then overtime = 0 end
+            flashtime = ATTACK_BUTTON_FLASH_TIME - overtime
+
+            local flashTexture = button.Flash
+            if (flashTexture:IsShown()) then
+                flashTexture:Hide()
+            else
+                flashTexture:Show()
+            end
+        end
+
+        button.flashtime = flashtime
+    end
+
+    if button.mouseOver then button:ShowTooltip() end
 end
 
 local function CreateCooldownButton(bar, cd)
-    local button = CreateFrame("Frame", bar:GetName() .. "_" .. cd.name, bar, BackdropTemplateMixin and "BackdropTemplate")
+    local button = CreateFrame("Button", bar:GetName() .. "_" .. cd.name, bar, "ActionButtonTemplate")
     button.bar = bar
     button.cd = cd
     button.Update = UpdateCooldownButton
 
-    button.icon = button:CreateTexture(button:GetName() .. "Icon", "ARTWORK")
     button.icon:SetTexture(cd.texture)
-    button.icon:SetAllPoints()
-
-    button.cooldown = CreateFrame("Cooldown", button:GetName() .. "Cooldown", button, "CooldownFrameTemplate")
-    -- R:SetInside(button.cooldown)
-
+    button.Flash:SetTexture([[Interface\Buttons\UI-Quickslot-Depress]]) -- Interface\Buttons\UI-QuickslotRed
     button.enabled = false
     button.Enable = function(self)
         if not self.enabled then
@@ -246,6 +312,7 @@ local function CreateCooldownButton(bar, cd)
             self:Show()
         end
         CooldownFrame_Set(self.cooldown, self.cd.start, self.cd.duration, true)
+        self.cooldown:SetSwipeColor(0, 0, 0)
         self:Update()
     end
     button.Disable = function(self)
@@ -253,36 +320,15 @@ local function CreateCooldownButton(bar, cd)
         self:Hide()
     end
 
-    button.ShowTooltip = function(self)
-        local timeLeft = self.cd.start + self.cd.duration - GetTime()
-        local hours = floor(mod(timeLeft, 86400) / 3600)
-        local minutes = floor(mod(timeLeft, 3600) / 60)
-        local seconds = floor(mod(timeLeft, 60))
+    button.ShowTooltip = CooldownButton_ShowTooltip
+    button.StartFlash = CooldownButton_StartFlash
+    button.StopFlash = CooldownButton_StopFlash
 
-        local text
-        if hours > 0 then
-            text = string.format("%s: %.0fh %.0fm %.0fs.", self.cd.name, hours, minutes, seconds)
-        elseif minutes > 0 then
-            text = string.format("%s: %.0fm %.0fs.", self.cd.name, minutes, seconds)
-        elseif timeLeft > 2.5 then
-            text = string.format("%s: %.0f second(s).", self.cd.name, seconds)
-        else
-            text = string.format("%s: %.1f second(s).", self.cd.name, timeLeft)
-        end
-        if self.tooltip ~= text then
-            self.tooltip = text
-            _G.GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
-            _G.GameTooltip:SetText(string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", self.cd.texture, 40, self.tooltip))
-            _G.GameTooltip:Show()
-        end
-    end
+    button:SetScript("OnEnter", CooldownButton_OnEnter)
+    button:SetScript("OnLeave", CooldownButton_OnLeave)
+    button:SetScript("OnUpdate", CooldownButton_OnUpdate)
 
-    button:SetScript("OnEnter", function(self) self.mouseOver = true end)
-    button:SetScript("OnLeave", function(self)
-        self.mouseOver = false
-        _G.GameTooltip:Hide()
-    end)
-    button:SetScript("OnUpdate", function(self, elapsed) if self.mouseOver then self:ShowTooltip() end end)
+    R.Modules.ButtonStyles:StyleActionButton(button)
 
     bar.buttons[cd.name] = button
     return button
