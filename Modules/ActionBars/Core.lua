@@ -34,18 +34,19 @@ function AB:Update()
 end
 
 function AB:DisableBlizzard()
-    R:ForceHide(MainMenuBarArtFrame, true)
-    MainMenuBar:EnableMouse(false)
-    MainMenuBar.SetPoint = R.EmptyFunction
-    R:ForceHide(MultiBarBottomLeft)
-    R:ForceHide(MultiBarBottomRight)
-    R:ForceHide(MultiBarLeft)
-    R:ForceHide(MultiBarRight)
-    R:ForceHide(PetActionBarFrame)
-    R:ForceHide(PossessBarFrame)
-    R:ForceHide(StanceBarFrame)
-    R:ForceHide(MainMenuBarVehicleLeaveButton)
-
+    R:Disable(MainMenuBarArtFrame, true)
+    R:Disable(MainMenuBarArtFrameBackground)
+    R:Disable(MainMenuBar)
+    R:Disable(MultiBarBottomLeft)
+    R:Disable(MultiBarBottomRight)
+    R:Disable(MultiBarLeft)
+    R:Disable(MultiBarRight)
+    R:Disable(PetActionBarFrame)
+    R:Disable(PossessBarFrame)
+    R:Disable(StanceBarFrame)
+    R:Disable(MainMenuBarVehicleLeaveButton)
+    R:Disable(VerticalMultiBarsContainer)
+    
     ActionBarController:UnregisterAllEvents()
 end
 

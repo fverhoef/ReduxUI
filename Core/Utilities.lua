@@ -19,41 +19,44 @@ if not R.isRetail then table.insert(R.EquipmentSlots, "RangedSlot") end
 
 R.EmptyFunction = function() end
 
-function R:ForceHide(frame, skipEvents)
-	if not frame then return end
+function R:Disable(frame, skipEvents, skipSetEmpty)
+    if not frame then return end
 
-	if frame.UnregisterAllEvents then
-		if not skipEvents then
-			frame:UnregisterAllEvents()
-		end
+    if frame.UnregisterAllEvents then
+        if not skipEvents then frame:UnregisterAllEvents() end
 
-		if frame:GetName() then
-			frame.ignoreFramePositionManager = true
-			frame:SetAttribute("ignoreFramePositionManager", true)
-			UIPARENT_MANAGED_FRAME_POSITIONS[frame:GetName()] = nil
-		end
-	end
+        if frame:GetName() then
+            frame.ignoreFramePositionManager = true
+            frame:SetAttribute("ignoreFramePositionManager", true)
+            UIPARENT_MANAGED_FRAME_POSITIONS[frame:GetName()] = nil
+        end
+    end
 
-	frame:Hide()
-	frame:SetParent(R.HiddenFrame)
+    if not skipSetEmpty then
+        if frame.ClearAllPoints then frame.ClearAllPoints = R.EmptyFunction end
+        if frame.SetPoint then frame.SetPoint = R.EmptyFunction end
+        if frame.SetScale then frame.SetScale = R.EmptyFunction end
+        if frame.SetShown then frame.SetShown = R.EmptyFunction end
+        if frame.SetSize then frame.SetSize = R.EmptyFunction end
+        if frame.Show then frame.Show = R.EmptyFunction end
+        if frame.GetTop then frame.GetTop = function() return 0 end end
+        if frame.GetBottom then frame.GetBottom = function() return 0 end end
+    end
+
+    frame:Hide()
+    frame:SetParent(R.HiddenFrame)
 end
 
-function R:UnlocalizedClassName(className)
-    return (className and className ~= "") and R.UnlocalizedClasses[className]
-end
+function R:UnlocalizedClassName(className) return (className and className ~= "") and R.UnlocalizedClasses[className] end
 
 function R:LocalizedClassName(className)
     return (className and className ~= "") and (UnitSex("player") == 2 and _G.LOCALIZED_CLASS_NAMES_MALE[className] or UnitSex("player") == 3 and _G.LOCALIZED_CLASS_NAMES_FEMALE[className]) or
                className
 end
 
-function R:Print(value, ...)
-    print(R.title .. ":", string.format(value, ...))
-end
+function R:Print(value, ...) print(R.title .. ":", string.format(value, ...)) end
 
-function R:PrintError(value, ...)
-    print(R.title .. ": error ", string.format(value, ...))
-end
+function R:PrintError(value, ...) print(R.title .. ": error ", string.format(value, ...)) end
 
 function R:FormatValue(value)
     if value < 1e3 then
@@ -279,17 +282,11 @@ function R:ParseItemLink(itemLink)
     return {itemId = itemId, color = color}
 end
 
-function R:GetItemIdFromLink(itemLink)
-    return R:ParseItemLink(itemLink).itemId
-end
+function R:GetItemIdFromLink(itemLink) return R:ParseItemLink(itemLink).itemId end
 
-function R:FindButtonBorder(button)
-    return _G[button:GetName() .. "IconBorder"] or button.IconBorder
-end
+function R:FindButtonBorder(button) return _G[button:GetName() .. "IconBorder"] or button.IconBorder end
 
-function R:PlayerCanInvite()
-    return not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
-end
+function R:PlayerCanInvite() return not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player") end
 
 function R:PlayerHasAura(auraId)
     local i = 1
