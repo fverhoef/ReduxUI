@@ -3,8 +3,7 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-local UPDATE_DEFAULT_MODE = {[""] = "Never", ANY_CLICK = "Any Click", LEFT_CLICK = "Left Click", RIGHT_CLICK = "Right Click", MIDDLE_CLICK = "Middle Click"}
-AB.UPDATE_DEFAULT_MODE = UPDATE_DEFAULT_MODE
+AB.UPDATE_DEFAULT_MODE = {[""] = "Never", ANY_CLICK = "Any Click", LEFT_CLICK = "Left Click", RIGHT_CLICK = "Right Click", MIDDLE_CLICK = "Middle Click"}
 AB.COLUMN_DIRECTIONS = {"Right", "Left"}
 AB.ROW_DIRECTIONS = {"Up", "Down"}
 AB.DEFAULT_COOLDOWN_LABELS = {5, 15, 30, 60, 120, 180, 300}
@@ -313,12 +312,12 @@ R:RegisterModuleConfig(AB, {
             backdropSpacing = 2,
             direction = "UP",
             buttons = {
-                {enabled = true, showOnlyMaxRank = false, name = L["Teleports"], actions = R.spellDatabase.Mage.Teleports, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = false, name = L["Portals"], actions = R.spellDatabase.Mage.Portals, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Food"], actions = R.spellDatabase.Mage.ConjureFood, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Water"], actions = R.spellDatabase.Mage.ConjureWater, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Gems"], actions = R.spellDatabase.Mage.ConjureGem, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Armors"], actions = R.spellDatabase.Mage.Armors, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK}
+                {enabled = true, showOnlyMaxRank = false, name = L["Teleports"], actions = R.spellDatabase.Mage.Teleports, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = false, name = L["Portals"], actions = R.spellDatabase.Mage.Portals, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Food"], actions = R.spellDatabase.Mage.ConjureFood, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Water"], actions = R.spellDatabase.Mage.ConjureWater, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = false, name = L["Conjure Gems"], actions = R.spellDatabase.Mage.ConjureGem, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = true, name = L["Armors"], actions = R.spellDatabase.Mage.Armors, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK}
             }
         },
         ["Shaman Bar"] = {
@@ -335,11 +334,11 @@ R:RegisterModuleConfig(AB, {
             backdropSpacing = 2,
             direction = "UP",
             buttons = {
-                {enabled = true, showOnlyMaxRank = true, name = L["Fire Totems"], actions = R.spellDatabase.Shaman.FireTotems, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Earth Totems"], actions = R.spellDatabase.Shaman.EarthTotems, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Water Totems"], actions = R.spellDatabase.Shaman.WaterTotems, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Air Totems"], actions = R.spellDatabase.Shaman.AirTotems, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Weapon Enchants"], actions = R.spellDatabase.Shaman.WeaponEnchants, defaultActionUpdateMode = UPDATE_DEFAULT_MODE.ANY_CLICK}
+                {enabled = true, showOnlyMaxRank = true, name = L["Fire Totems"], actions = R.spellDatabase.Shaman.FireTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = true, name = L["Earth Totems"], actions = R.spellDatabase.Shaman.EarthTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = true, name = L["Water Totems"], actions = R.spellDatabase.Shaman.WaterTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = true, name = L["Air Totems"], actions = R.spellDatabase.Shaman.AirTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
+                {enabled = true, showOnlyMaxRank = true, name = L["Weapon Enchants"], actions = R.spellDatabase.Shaman.WeaponEnchants, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK}
             }
         }
 

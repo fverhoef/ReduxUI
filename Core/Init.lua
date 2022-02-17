@@ -32,6 +32,7 @@ R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
 R:AddLib("ItemSearch", "LibItemSearch-1.2")
 R:AddLib("KeyBound", "LibKeyBound-1.0")
 R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
+R:AddLib("SpellCache", "LibSpellCache-1.0")
 
 R.Modules = {}
 function R:AddModule(name)
@@ -85,13 +86,15 @@ end
 
 function R:OnEnable()
     R:SetupConfig()
-    R:SetupOptions()
 
     for name, module in pairs(R.Modules) do
         module.config = R.config.db.profile.modules[name]
         module.charConfig = R.config.db.char.modules[name]
         module.realmConfig = R.config.db.realm.modules[name]
+        if module.CreateOptions then module:CreateOptions() end
     end
+
+    R:SetupOptions()
 
     for name, module in pairs(R.Modules) do
         if module.Initialize and not module.initialized then

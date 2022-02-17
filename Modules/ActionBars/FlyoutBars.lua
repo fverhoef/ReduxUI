@@ -16,8 +16,8 @@ function AB:UpdateFlyoutBars()
         if AB.config.flyoutBars[name] then
             AB:UpdateFlyoutBar(bar)
         else
-            bar:Hide()
-            E:DisableMover(bar.mover:GetName())
+            R:Disable(bar)
+            R:LockDragFrame(bar, true)
             AB.flyoutBars[name] = nil
         end
     end
@@ -26,12 +26,11 @@ function AB:UpdateFlyoutBars()
 end
 
 function AB:CreateFlyoutBar(name, config)
-    if config.tbc and R.isRetail or not config.enabled or (config.class ~= select(2, UnitClass("player")) and (config.class or "") ~= "")then return end
+    if config.tbc and R.isRetail or not config.enabled or (config.class ~= select(2, UnitClass("player")) and (config.class or "") ~= "") then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
-    R:SetPoint(bar, unpack(config.point))
     R:CreateBackdrop(bar, "Transparent")
-    bar.db = config
+    bar.config = config
     bar.buttons = {}
     bar.name = name
     for i, button in ipairs(config.buttons) do bar.buttons[i] = AB:CreateFlyoutButton(button.name, bar, button) end
@@ -57,20 +56,19 @@ function AB:CreateFlyoutBar(name, config)
         end
     end)
 
-    R:CreateDragFrame(bar, name, AB.defaults.flyoutBars[name].point)
+    local default =  AB.defaults.flyoutBars[name] or config
+    R:CreateDragFrame(bar, name, default.point)
     AB:UpdateFlyoutBar(bar)
 
     return bar
 end
 
-function AB:UpdateFlyoutBar(bar)    
+function AB:UpdateFlyoutBar(bar)
     if not bar then return end
-    if InCombatLockdown() then
-        bar.needsUpdate = true
-    end
+    if InCombatLockdown() then bar.needsUpdate = true end
 
     local class = select(2, UnitClass("player"))
-    if not bar.db.enabled or (bar.db.class ~= class and (bar.db.class or "") ~= "") then
+    if not bar.config.enabled or (bar.config.class ~= class and (bar.config.class or "") ~= "") then
         bar:Hide()
         return
     else
@@ -80,7 +78,7 @@ function AB:UpdateFlyoutBar(bar)
     -- remove deleted buttons
     for i, button in ipairs(bar.buttons) do
         local found = false
-        for _, buttonConfig in ipairs(bar.db.buttons) do
+        for _, buttonConfig in ipairs(bar.config.buttons) do
             if button.config == buttonConfig then
                 found = true
                 break
@@ -94,7 +92,7 @@ function AB:UpdateFlyoutBar(bar)
     end
 
     -- create newly added buttons
-    for i, buttonConfig in ipairs(bar.db.buttons) do
+    for i, buttonConfig in ipairs(bar.config.buttons) do
         local found = false
         for _, button in ipairs(bar.buttons) do
             if button.config == buttonConfig then
@@ -107,7 +105,7 @@ function AB:UpdateFlyoutBar(bar)
     end
 
     -- update buttons
-    local spacing = bar.db.backdrop and bar.db.backdropSpacing
+    local spacing = bar.config.backdrop and bar.config.backdropSpacing
     local visibleButtonCount = 0
     local lastVisibleButton
     local buttonList = {}
@@ -121,17 +119,18 @@ function AB:UpdateFlyoutBar(bar)
             if visibleButtonCount == 1 then
                 button:SetPoint("BOTTOMLEFT", spacing or 0, spacing or 0)
             else
-                button:SetPoint("BOTTOMLEFT", lastVisibleButton, "BOTTOMRIGHT", bar.db.buttonSpacing, 0)
+                button:SetPoint("BOTTOMLEFT", lastVisibleButton, "BOTTOMRIGHT", bar.config.buttonSpacing, 0)
             end
 
             lastVisibleButton = button
         end
     end
 
-    local width = (visibleButtonCount) * bar.db.buttonSize + (visibleButtonCount - 1) * bar.db.buttonSpacing
-    local height = bar.db.buttonSize
+    local width = (visibleButtonCount) * bar.config.buttonSize + (visibleButtonCount - 1) * bar.config.buttonSpacing
+    local height = bar.config.buttonSize
 
     bar:SetSize(width, height)
+    R:SetPoint(bar, unpack(bar.config.point))
 end
 
 function AB:CreateFlyoutButton(name, bar, config)
@@ -139,8 +138,8 @@ function AB:CreateFlyoutButton(name, bar, config)
     local button = CreateFrame("Frame", "FlyoutButton_" .. name, bar, "SecureHandlerStateTemplate")
     button.bar = bar
     button.config = config
-    button.size = button.bar.db.buttonSize
-    button.childSize = button.bar.db.buttonSize - 8
+    button.size = button.bar.config.buttonSize
+    button.childSize = button.bar.config.buttonSize - 8
     button.childButtons = {}
     button:EnableMouse(true)
     button:SetSize(button.size, button.size)
@@ -192,12 +191,8 @@ function AB:CreateFlyoutButton(name, bar, config)
             end	    
         ]])
 
-    button.CurrentAction:HookScript("OnEnter", function()
-        AB:UpdateFlyoutButtonBackground(button)
-    end)
-    button.CurrentAction:HookScript("OnLeave", function()
-        AB:UpdateFlyoutButtonBackground(button)
-    end)
+    button.CurrentAction:HookScript("OnEnter", function() AB:UpdateFlyoutButtonBackground(button) end)
+    button.CurrentAction:HookScript("OnLeave", function() AB:UpdateFlyoutButtonBackground(button) end)
     button.CurrentAction:HookScript("OnClick", function() button.CurrentAction:SetChecked(false) end)
 
     AB:CreateFlyoutButtonBackground(button)
@@ -254,10 +249,10 @@ function AB:UpdateFlyoutButton(button)
         AB:SetFlyoutCurrentAction(button, button.config.defaultAction)
     end
 
-    button.size = button.bar.db.buttonSize
-    button.childSize = button.bar.db.buttonSize - 8
-    button:SetSize(button.bar.db.buttonSize, button.bar.db.buttonSize)
-    button.CurrentAction:SetSize(button.bar.db.buttonSize, button.bar.db.buttonSize)
+    button.size = button.bar.config.buttonSize
+    button.childSize = button.bar.config.buttonSize - 8
+    button:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
+    button.CurrentAction:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
     AB:UpdateFlyoutButtonBackground(button)
 
     if button.count > 0 and button.config.enabled then
@@ -284,13 +279,13 @@ function AB:UpdateFlyoutButtonBackground(button)
     local arrowDistance = button.isOpen and 5 or 2
     button.FlyoutArrow:Show()
     button.FlyoutArrow:ClearAllPoints()
-    if button.bar.db.direction == "LEFT" then
+    if button.bar.config.direction == "LEFT" then
         button.FlyoutArrow:SetPoint("LEFT", button.CurrentAction, "LEFT", -arrowDistance, 0)
         SetClampedTextureRotation(button.FlyoutArrow, 270)
-    elseif button.bar.db.direction == "RIGHT" then
+    elseif button.bar.config.direction == "RIGHT" then
         button.FlyoutArrow:SetPoint("RIGHT", button.CurrentAction, "RIGHT", arrowDistance, 0)
         SetClampedTextureRotation(button.FlyoutArrow, 90)
-    elseif button.bar.db.direction == "DOWN" then
+    elseif button.bar.config.direction == "DOWN" then
         button.FlyoutArrow:SetPoint("BOTTOM", button.CurrentAction, "BOTTOM", 0, -arrowDistance)
         SetClampedTextureRotation(button.FlyoutArrow, 180)
     else
@@ -306,17 +301,17 @@ function AB:UpdateFlyoutButtonBackground(button)
 
     button.FlyoutBackground:EnableMouse(button.isOpen)
 
-    if button.bar.db.direction == "UP" then
+    if button.bar.config.direction == "UP" then
         button.FlyoutBackground:SetPoint("BOTTOM", button, "TOP", 0, -4)
-    elseif button.bar.db.direction == "DOWN" then
+    elseif button.bar.config.direction == "DOWN" then
         button.FlyoutBackground:SetPoint("TOP", button, "BOTTOM", 0, 4)
-    elseif button.bar.db.direction == "LEFT" then
+    elseif button.bar.config.direction == "LEFT" then
         button.FlyoutBackground:SetPoint("RIGHT", button, "LEFT", -4, 0)
-    elseif button.bar.db.direction == "RIGHT" then
+    elseif button.bar.config.direction == "RIGHT" then
         button.FlyoutBackground:SetPoint("LEFT", button, "RIGHT", 4, 0)
     end
 
-    if (button.bar.db.direction == "UP" or button.bar.db.direction == "DOWN") then
+    if (button.bar.config.direction == "UP" or button.bar.config.direction == "DOWN") then
         button.FlyoutBackground:SetHeight((button.childSize + SPELLFLYOUT_DEFAULT_SPACING) * button.count - SPELLFLYOUT_DEFAULT_SPACING + SPELLFLYOUT_INITIAL_SPACING + SPELLFLYOUT_FINAL_SPACING + 2)
         button.FlyoutBackground:SetWidth(button.size - 3)
     else
@@ -333,9 +328,7 @@ function AB:CreateFlyoutButtonChild(button, action, index)
     child:DisableDragNDrop()
     child:Hide()
 
-    child:HookScript("OnEnter", function()
-        AB:UpdateFlyoutButtonBackground(button)
-    end)
+    child:HookScript("OnEnter", function() AB:UpdateFlyoutButtonBackground(button) end)
     child:HookScript("OnLeave", function() end)
     child:HookScript("OnHide", function() AB:UpdateFlyoutButtonBackground(button) end)
     child:HookScript("OnClick", function(self, mouseButton)
@@ -368,25 +361,25 @@ end
 function AB:PositionFlyoutButtonChild(button, child, previousButton)
     child:SetSize(button.childSize, button.childSize)
     child:ClearAllPoints()
-    if button.bar.db.direction == "UP" then
+    if button.bar.config.direction == "UP" then
         if previousButton then
             child:SetPoint("BOTTOM", previousButton, "TOP", 0, SPELLFLYOUT_DEFAULT_SPACING)
         else
             child:SetPoint("BOTTOM", button.CurrentAction, "TOP", 0, SPELLFLYOUT_INITIAL_SPACING)
         end
-    elseif button.bar.db.direction == "DOWN" then
+    elseif button.bar.config.direction == "DOWN" then
         if previousButton then
             child:SetPoint("TOP", previousButton, "BOTTOM", 0, -SPELLFLYOUT_DEFAULT_SPACING)
         else
             child:SetPoint("TOP", button.CurrentAction, "BOTTOM", 0, -SPELLFLYOUT_INITIAL_SPACING)
         end
-    elseif button.bar.db.direction == "LEFT" then
+    elseif button.bar.config.direction == "LEFT" then
         if previousButton then
             child:SetPoint("RIGHT", previousButton, "LEFT", -SPELLFLYOUT_DEFAULT_SPACING, 0)
         else
             child:SetPoint("RIGHT", button.CurrentAction, "LEFT", -SPELLFLYOUT_INITIAL_SPACING, 0)
         end
-    elseif button.bar.db.direction == "RIGHT" then
+    elseif button.bar.config.direction == "RIGHT" then
         if previousButton then
             child:SetPoint("LEFT", previousButton, "RIGHT", SPELLFLYOUT_DEFAULT_SPACING, 0)
         else

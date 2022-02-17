@@ -40,9 +40,12 @@ function R:SetupOptions()
 end
 
 function R:RegisterModuleOptions(module, options)
-    options.order = 100 + #R.config.options.args
-    R.config.options.args[module.name] = options
-    module.options = options
+    module.CreateOptions = function()
+        options = type(options) == "function" and options() or options
+        options.order = 100 + #R.config.options.args
+        R.config.options.args[module.name] = options
+        module.options = options
+    end
 end
 
 function R:ShowOptionsDialog() if not InCombatLockdown() then R.Libs.AceConfigDialog:Open(addonName) end end
