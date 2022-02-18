@@ -9,16 +9,12 @@ function AB:CreateZoneBar()
     bar.config = AB.config.zoneBar
 
     bar.Update = function(self)
-        ZoneAbilityFrame:SetParent(bar)
-        ZoneAbilityFrame:ClearAllPoints()
-        ZoneAbilityFrame:SetPoint("TOPLEFT", bar, "TOPLEFT", 2, -2)
-        ZoneAbilityFrame:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -2, 2)
-        local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
-        bar:SetSize(width + 4, height + 4)
-        R:SetPoint(bar, bar.config.point)
+         ZoneAbilityFrame:SetParent(bar)
     end
 
-    ZoneAbilityFrame:SetParent(UIParent)
+    ZoneAbilityFrame:SetParent(bar)
+    ZoneAbilityFrame:ClearAllPoints()
+    ZoneAbilityFrame:SetAllPoints()
     ZoneAbilityFrame.ignoreInLayout = true
 
     bar:SetScript("OnEvent", function(self, event)
@@ -29,13 +25,11 @@ function AB:CreateZoneBar()
         end
     end)
     AB:SecureHook(ZoneAbilityFrame, "SetParent", function(self, parent)
-        if parent == bar then
-            return
-        end
+        if parent == bar then return end
 
         if InCombatLockdown() then
             bar.needsUpdate = true
-            bar:RegisterEvent('PLAYER_REGEN_ENABLED')
+            bar:RegisterEvent("PLAYER_REGEN_ENABLED")
             return
         end
 
@@ -43,20 +37,15 @@ function AB:CreateZoneBar()
     end)
     AB:SecureHook(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(self)
         for button in self.SpellButtonContainer:EnumerateActive() do
-            --R.Modules.ButtonStyles:StyleActionButton(button)
+            -- R.Modules.ButtonStyles:StyleActionButton(button)
         end
     end)
     AB:SecureHook(ZoneAbilityFrame.SpellButtonContainer, "SetSize", function(self)
-        if InCombatLockdown() then
-            bar.needsUpdate = true
-            bar:RegisterEvent('PLAYER_REGEN_ENABLED')
-            return
-        end
-        
-        bar:Update()
+        local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
+        bar:SetSize(width + 4, height + 4)
     end)
 
-    --R:Disable(ZoneAbilityFrame.Style)
+    -- R:Disable(ZoneAbilityFrame.Style)
     R:CreateDragFrame(bar, "ZoneBar", AB.defaults.zoneBar.point)
     R:CreateFader(bar, bar.config.fader)
     R:SetPoint(bar, bar.config.point)

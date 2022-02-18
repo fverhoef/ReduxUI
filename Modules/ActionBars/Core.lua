@@ -16,6 +16,7 @@ function AB:Initialize()
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
     AB.vehicleExitBar = AB:CreateVehicleExitBar()
+    AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
     AB:LoadCooldownBars()
@@ -114,7 +115,6 @@ function AB:ConfigureActionBars()
     AB:ConfigureActionBar(AB.petBar)
     AB:ConfigureActionBar(AB.stanceBar)
     AB:ConfigureActionBar(AB.vehicleExitBar)
-    --AB:ConfigureActionBar(AB.zoneBar)
 
     if AB.config.mainMenuBarArt.enabled then
         local mainMenuBar = AB.bars[1]

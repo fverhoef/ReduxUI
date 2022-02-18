@@ -280,6 +280,11 @@ R:RegisterModuleConfig(AB, {
         border = false,
         shadow = false
     },
+    extraActionBar = {
+        enabled = true,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 235},
+        fader = R.config.faders.onShow
+    },
     zoneBar = {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 235},
