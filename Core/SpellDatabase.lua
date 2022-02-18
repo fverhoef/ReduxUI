@@ -63,6 +63,7 @@ SD.Shaman = {
         8232, 8235, 10486, 16362 -- Windfury Weapon
     }
 }
+
 function SD:Initialize()
     SD:RegisterEvent("LEARNED_SPELL_IN_TAB", SD.ScanSpellBook)
     SD:RegisterEvent("SPELLS_CHANGED", SD.ScanSpellBook)
@@ -99,24 +100,26 @@ function SD:CreateSpell(id)
         spell.subText = spell.subText or spell:GetSpellSubtext()
 
         -- TODO: Localization
-        spell.rank = tonumber(string.find(spell.subText, "Rank ") and string.gsub(spell.subText, "Rank ", "") or "1")
+        spell.rank = tonumber(string.find(spell.subText, "Rank ") and string.gsub(spell.subText, "Rank ", "") or "1") or 1
 
-        SpellDatabaseScanningTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-        SpellDatabaseScanningTooltip:SetSpellByID(spell.id)
-        for i = 1, SpellDatabaseScanningTooltip:NumLines() do
-            local line = _G["SpellDatabaseScanningTooltipTextLeft" .. i]
-            local text = line:GetText()
-            if string.find(text, "Tools: Fire Totem") then
-                table.insert(SD.Shaman.FireTotems, spell.id)
-            elseif string.find(text, "Tools: Earth Totem") then
-                table.insert(SD.Shaman.EarthTotems, spell.id)
-            elseif string.find(text, "Tools: Water Totem") then
-                table.insert(SD.Shaman.WaterTotems, spell.id)
-            elseif string.find(text, "Tools: Air Totem") then
-                table.insert(SD.Shaman.AirTotems, spell.id)
+        if not R.isRetail then
+            SpellDatabaseScanningTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+            SpellDatabaseScanningTooltip:SetSpellByID(spell.id)
+            for i = 1, SpellDatabaseScanningTooltip:NumLines() do
+                local line = _G["SpellDatabaseScanningTooltipTextLeft" .. i]
+                local text = line:GetText()
+                if string.find(text, "Tools: Fire Totem") then
+                    table.insert(SD.Shaman.FireTotems, spell.id)
+                elseif string.find(text, "Tools: Earth Totem") then
+                    table.insert(SD.Shaman.EarthTotems, spell.id)
+                elseif string.find(text, "Tools: Water Totem") then
+                    table.insert(SD.Shaman.WaterTotems, spell.id)
+                elseif string.find(text, "Tools: Air Totem") then
+                    table.insert(SD.Shaman.AirTotems, spell.id)
+                end
             end
+            SpellDatabaseScanningTooltip:Hide()
         end
-        SpellDatabaseScanningTooltip:Hide()
 
         SD:AddSpellRank(spell)
     end)
@@ -169,7 +172,7 @@ end
 
 function R:GetMaxKnownRank(id)
     local ranks = SD:GetRanksById(id)
-    if not ranks then return end
+    if not ranks or #ranks == 0 then return end
 
     return ranks[#ranks].id
 end

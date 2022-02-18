@@ -129,9 +129,8 @@ function S:StyleCharacterFrame()
         CharacterGuildText:SetParent(CharacterNameFrame)
 
         S:SecureHook("PaperDollFrame_SetLevel", function()
-            local class = R:UnlocalizedClassName(UnitClass("player"))
-            local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-            CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), R:Hex(1, 1, 1) .. UnitRace("player") .. "|r", R:Hex(classColor) .. UnitClass("player") .. "|r")
+            local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[R.PlayerInfo.class] or RAID_CLASS_COLORS[R.PlayerInfo.class]
+            CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), R:Hex(1, 1, 1) .. UnitRace("player") .. "|r", R:Hex(classColor) .. R.PlayerInfo.localizedClass .. "|r")
         end)
         S:SecureHook("PaperDollFrame_SetGuild", function()
             local guildName, title, rank = GetGuildInfo("player")

@@ -26,7 +26,7 @@ function AB:UpdateFlyoutBars()
 end
 
 function AB:CreateFlyoutBar(name, config)
-    if config.tbc and R.isRetail or not config.enabled or (config.class ~= select(2, UnitClass("player")) and (config.class or "") ~= "") then return end
+    if config.tbc and R.isRetail or not config.enabled or (config.class ~= R.PlayerInfo.class) and (config.class or "") ~= "") then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
     R:CreateBackdrop(bar, "Transparent")
@@ -67,8 +67,7 @@ function AB:UpdateFlyoutBar(bar)
     if not bar then return end
     if InCombatLockdown() then bar.needsUpdate = true end
 
-    local class = select(2, UnitClass("player"))
-    if not bar.config.enabled or (bar.config.class ~= class and (bar.config.class or "") ~= "") then
+    if not bar.config.enabled or (bar.config.class ~= R.PlayerInfo.class and (bar.config.class or "") ~= "") then
         bar:Hide()
         return
     else
@@ -210,6 +209,11 @@ end
 function AB:UpdateFlyoutButton(button)
     button.isOpen = button:GetAttribute("open") == 1
 
+    button.size = button.bar.config.buttonSize
+    button.childSize = button.bar.config.buttonSize - 8
+    button:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
+    button.CurrentAction:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
+
     if not InCombatLockdown() then
         button.count = 0
 
@@ -237,18 +241,7 @@ function AB:UpdateFlyoutButton(button)
         end
 
         for i, child in next, button.childButtons do
-            -- check if child is still in use
-            local spellID = child:GetAttribute("spell")
-            local found = false
-            for j, action in ipairs(actions) do
-                if action == spellID then
-                    found = true
-                    break
-                end
-            end
-
-            -- hide buttons that are not in use any more; else, update it
-            if not found then
+            if not tContains(actions, child:GetAttribute("spell")) then
                 child:SetAttribute("hidden", 1)
                 child:Hide()
             end
@@ -257,10 +250,6 @@ function AB:UpdateFlyoutButton(button)
         AB:SetFlyoutCurrentAction(button, button.config.defaultAction)
     end
 
-    button.size = button.bar.config.buttonSize
-    button.childSize = button.bar.config.buttonSize - 8
-    button:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
-    button.CurrentAction:SetSize(button.bar.config.buttonSize, button.bar.config.buttonSize)
     AB:UpdateFlyoutButtonBackground(button)
 
     if button.count > 0 and button.config.enabled then

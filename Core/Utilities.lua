@@ -1,7 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-R.PlayerInfo = {name = UnitName("player"), guid = UnitGUID("player"), class = select(2, UnitClass("player")), faction = UnitFactionGroup("player"), realm = GetRealmName()}
+R.PlayerInfo = {name = UnitName("player"), guid = UnitGUID("player"), class = select(2, UnitClass("player")), localizedClass = select(1, UnitClass("player")), faction = UnitFactionGroup("player"), realm = GetRealmName()}
 
 R.HiddenFrame = CreateFrame("Frame")
 R.HiddenFrame:Hide()

@@ -22,9 +22,9 @@ function UF:CreatePlayer()
     self:CreateRestingIndicator()
 
     self:CreateClassPower()
-    if (select(2, UnitClass("player")) == "DEATHKNIGHT") then self:CreateRunes() end
-    if (select(2, UnitClass("player")) == "SHAMAN") then self:CreateTotems() end
-    if (R.isRetail and select(2, UnitClass("player")) == "MONK") then self:CreateStagger() end
+    if (R.PlayerInfo.class == "DEATHKNIGHT") then self:CreateRunes() end
+    if (R.PlayerInfo.class == "SHAMAN") then self:CreateTotems() end
+    if (R.PlayerInfo.class == "MONK") then self:CreateStagger() end
 
     R:CreateDragFrame(self.Power, "PlayerPower", self.defaults.power.point)
     R:CreateDragFrame(self.Castbar, "PlayerCastbar", self.defaults.castbar.point)
@@ -43,9 +43,9 @@ function UF:UpdatePlayer()
     self:ConfigureRestingIndicator()
 
     self:ConfigureClassPower()
-    if (select(2, UnitClass("player")) == "DEATHKNIGHT") then self:ConfigureRunes() end
-    if (select(2, UnitClass("player")) == "SHAMAN") then self:ConfigureTotems() end
-    if (R.isRetail and select(2, UnitClass("player")) == "MONK") then self:ConfigureStagger() end
+    if (R.PlayerInfo.class == "DEATHKNIGHT") then self:ConfigureRunes() end
+    if (R.PlayerInfo.class == "SHAMAN") then self:ConfigureTotems() end
+    if (R.PlayerInfo.class == "MONK") then self:ConfigureStagger() end
 
     if self.config.power.detached then
         R:UnlockDragFrame(self.Power)
