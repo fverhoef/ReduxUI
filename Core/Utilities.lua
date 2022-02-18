@@ -80,8 +80,8 @@ local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
 function R:FormatMoney(amount, style)
     local value = math.abs(amount)
     local gold = math.floor(value / 10000)
-    local silver = math.floor(math.mod(value / 100, 100))
-    local copper = math.floor(math.mod(value, 100))
+    local silver = math.floor(mod(value / 100, 100))
+    local copper = math.floor(mod(value, 100))
 
     if not style or style == "SMART" then
         local str = ""

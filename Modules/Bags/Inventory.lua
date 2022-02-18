@@ -44,10 +44,10 @@ function InventoryMoneyMixin:Money_OnEnter()
     for i, char in next, R.config.db.realm.inventory do
         if char.money then
             total = total + char.money
-            _G.GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "FULL"), 1, 1, 1, 1, 1, 1)
+            _G.GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
         end
     end
-    _G.GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "FULL"), 1, 1, 1, 1, 1, 1)
+    _G.GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
     _G.GameTooltip:Show()
 end
 

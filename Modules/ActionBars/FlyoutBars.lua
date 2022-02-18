@@ -26,7 +26,7 @@ function AB:UpdateFlyoutBars()
 end
 
 function AB:CreateFlyoutBar(name, config)
-    if config.tbc and R.isRetail or not config.enabled or (config.class ~= R.PlayerInfo.class) and (config.class or "") ~= "") then return end
+    if config.tbc and R.isRetail or not config.enabled or (config.class ~= R.PlayerInfo.class and (config.class or "") ~= "") then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
     R:CreateBackdrop(bar, "Transparent")
