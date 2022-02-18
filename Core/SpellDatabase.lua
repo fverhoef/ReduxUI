@@ -1,7 +1,73 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local SD = R:AddModule("SpellDatabase", "AceEvent-3.0")
+SD.Spells = {}
+SD.KnownSpells = {}
 
-R.spellDatabase = {
+function SD:Initialize()
+    SD:RegisterEvent("LEARNED_SPELL_IN_TAB", SD.ScanSpellBook)
+    SD:RegisterEvent("SPELLS_CHANGED", SD.ScanSpellBook)
+
+    SD:Update()
+end
+
+function SD:Update() SD:ScanSpellBook() end
+
+local function CreateSpell(id)
+    local spell = Spell:CreateFromSpellID(id)
+    spell:ContinueOnSpellLoad(function()
+        spell.name = spell:GetSpellName()
+        spell.description = spell:GetSpellDescription()
+        spell.subText = spell:GetSpellSubtext()
+    end)
+
+    return spell
+end
+
+function SD:GetOrCreateSpell(id)
+    local spell = SD.Spells[id]
+    if not spell then
+        spell = CreateSpell(id)
+        SD.Spells[id] = spell
+    end
+    return spell
+end
+
+function SD:GetOrCreateKnownSpell(id)
+    local spell = SD.KnownSpells[id]
+    if not spell and IsSpellKnown(id) then
+        spell = SD:GetOrCreateSpell(id)
+        SD.KnownSpells[id] = spell
+    end
+    return spell
+end
+
+function SD:ScanSpellBook()
+    local offset, numSlots, spell, spellType, id, flyoutSpellID, numFlyoutSlots, isKnown
+    for i = 1, GetNumSpellTabs() do
+        _, _, offset, numSlots = GetSpellTabInfo(i)
+        for j = offset + 1, offset + numSlots do
+            spellType, id = GetSpellBookItemInfo(j, BOOKTYPE_SPELL)
+
+            if spellType == "PETACTION" then
+                id = bit.band(id, 0xFFFFFF)
+                SD:GetOrCreateKnownSpell(id)
+            elseif spellType == "FLYOUT" then
+                _, _, numFlyoutSlots, isKnown = GetFlyoutInfo(id)
+                if isKnown then
+                    for i = 1, numSlots do
+                        flyoutSpellID, _, isKnown = GetFlyoutSlotInfo(id, slot)
+                        if isKnown then SD:GetOrCreateKnownSpell(flyoutSpellID) end
+                    end
+                end
+            else
+                SD:GetOrCreateKnownSpell(id)
+            end
+        end
+    end
+end
+
+R.Modules.SpellDatabase = {
     Mage = {
         Portals = {
             10059, -- Stormwind
@@ -75,6 +141,7 @@ R.spellDatabase = {
         ["Tranquil Air Totem"] = {25908},
         ["Windfury Totem"] = {8512, 10613, 10614},
         ["Windwall Totem"] = {15107, 15111, 15112},
+        ["Wrath of Air Totem"] = {3738},
 
         WeaponEnchants = {},
         ["Rockbiter Weapon"] = {8017, 8018, 8019, 10399, 16314, 16315, 16316},
@@ -86,102 +153,61 @@ R.spellDatabase = {
 
 -- build spell rank tables
 local spellRankTables = {
-    R.spellDatabase.Mage.ConjureFood,
-    R.spellDatabase.Mage.ConjureWater,
-    R.spellDatabase.Mage.ConjureGem,
-    R.spellDatabase.Mage.Polymorph,
-    R.spellDatabase.Mage["Mage Armor"],
-    R.spellDatabase.Mage["Molten Armor"]
+    R.Modules.SpellDatabase.Mage.ConjureFood, R.Modules.SpellDatabase.Mage.ConjureWater, R.Modules.SpellDatabase.Mage.ConjureGem, R.Modules.SpellDatabase.Mage.Polymorph,
+    R.Modules.SpellDatabase.Mage["Mage Armor"], R.Modules.SpellDatabase.Mage["Molten Armor"]
 }
 
 -- frost and ice armor count as the same spell
 local frostAndIceArmor = {}
-for i, id in next, R.spellDatabase.Mage["Frost Armor"] do
-    table.insert(frostAndIceArmor, id)
-end
-for i, id in next, R.spellDatabase.Mage["Ice Armor"] do
-    table.insert(frostAndIceArmor, id)
-end
+for i, id in next, R.Modules.SpellDatabase.Mage["Frost Armor"] do table.insert(frostAndIceArmor, id) end
+for i, id in next, R.Modules.SpellDatabase.Mage["Ice Armor"] do table.insert(frostAndIceArmor, id) end
 table.insert(spellRankTables, frostAndIceArmor)
 
 -- build combined mage armor table
-for _, id in ipairs(R.spellDatabase.Mage["Frost Armor"]) do
-    table.insert(R.spellDatabase.Mage.Armors, id)
-end
-for _, id in ipairs(R.spellDatabase.Mage["Ice Armor"]) do
-    table.insert(R.spellDatabase.Mage.Armors, id)
-end
-for _, id in ipairs(R.spellDatabase.Mage["Mage Armor"]) do
-    table.insert(R.spellDatabase.Mage.Armors, id)
-end
-for _, id in ipairs(R.spellDatabase.Mage["Molten Armor"]) do
-    table.insert(R.spellDatabase.Mage.Armors, id)
-end
+for _, id in ipairs(R.Modules.SpellDatabase.Mage["Frost Armor"]) do table.insert(R.Modules.SpellDatabase.Mage.Armors, id) end
+for _, id in ipairs(R.Modules.SpellDatabase.Mage["Ice Armor"]) do table.insert(R.Modules.SpellDatabase.Mage.Armors, id) end
+for _, id in ipairs(R.Modules.SpellDatabase.Mage["Mage Armor"]) do table.insert(R.Modules.SpellDatabase.Mage.Armors, id) end
+for _, id in ipairs(R.Modules.SpellDatabase.Mage["Molten Armor"]) do table.insert(R.Modules.SpellDatabase.Mage.Armors, id) end
 
 -- build shaman totem/enchant tables
 local fireTotems = {"Fire Nova Totem", "Magma Totem", "Searing Totem", "Flametongue Totem", "Frost Resistance Totem"}
 for _, name in ipairs(fireTotems) do
-    local rankTable = R.spellDatabase.Shaman[name]
+    local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)
 
-    for _, id in ipairs(rankTable) do
-        table.insert(R.spellDatabase.Shaman.FireTotems, id)
-    end
+    for _, id in ipairs(rankTable) do table.insert(R.Modules.SpellDatabase.Shaman.FireTotems, id) end
 end
 
 local earthTotems = {"Earthbind Totem", "Stoneclaw Totem", "Stoneskin Totem", "Strength of Earth Totem", "Tremor Totem"}
 for _, name in ipairs(earthTotems) do
-    local rankTable = R.spellDatabase.Shaman[name]
+    local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)
 
-    for _, id in ipairs(rankTable) do
-        table.insert(R.spellDatabase.Shaman.EarthTotems, id)
-    end
+    for _, id in ipairs(rankTable) do table.insert(R.Modules.SpellDatabase.Shaman.EarthTotems, id) end
 end
 
-local waterTotems = {
-    "Poison Cleansing Totem",
-    "Disease Cleansing Totem",
-    "Fire Resistance Totem",
-    "Healing Stream Totem",
-    "Mana Spring Totem",
-    "Mana Tide Totem"
-}
+local waterTotems = {"Poison Cleansing Totem", "Disease Cleansing Totem", "Fire Resistance Totem", "Healing Stream Totem", "Mana Spring Totem", "Mana Tide Totem"}
 for _, name in ipairs(waterTotems) do
-    local rankTable = R.spellDatabase.Shaman[name]
+    local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)
 
-    for _, id in ipairs(rankTable) do
-        table.insert(R.spellDatabase.Shaman.WaterTotems, id)
-    end
+    for _, id in ipairs(rankTable) do table.insert(R.Modules.SpellDatabase.Shaman.WaterTotems, id) end
 end
 
-local airTotems = {
-    "Grace of Air Totem",
-    "Grounding Totem",
-    "Nature Resistance Totem",
-    "Sentry Totem",
-    "Tranquil Air Totem",
-    "Windfury Totem",
-    "Windwall Totem"
-}
+local airTotems = {"Grace of Air Totem", "Grounding Totem", "Nature Resistance Totem", "Sentry Totem", "Tranquil Air Totem", "Windfury Totem", "Windwall Totem", "Wrath of Air Totem"}
 for _, name in ipairs(airTotems) do
-    local rankTable = R.spellDatabase.Shaman[name]
+    local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)
 
-    for _, id in ipairs(rankTable) do
-        table.insert(R.spellDatabase.Shaman.AirTotems, id)
-    end
+    for _, id in ipairs(rankTable) do table.insert(R.Modules.SpellDatabase.Shaman.AirTotems, id) end
 end
 
 local weaponEnchants = {"Rockbiter Weapon", "Flametongue Weapon", "Frostbrand Weapon", "Windfury Weapon"}
 for _, name in ipairs(weaponEnchants) do
-    local rankTable = R.spellDatabase.Shaman[name]
+    local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)
 
-    for _, id in ipairs(rankTable) do
-        table.insert(R.spellDatabase.Shaman.WeaponEnchants, id)
-    end
+    for _, id in ipairs(rankTable) do table.insert(R.Modules.SpellDatabase.Shaman.WeaponEnchants, id) end
 end
 
 function R:GetMaxKnownRank(spellId)
@@ -197,40 +223,10 @@ function R:GetMaxKnownRank(spellId)
             end
         end
 
-        if matchedSpell then
-            break
-        end
+        if matchedSpell then break end
     end
 
     return maxKnownRank
 end
 
-function R:IsMaxKnownRank(spellId)
-    return R:GetMaxKnownRank(spellId) == spellId
-end
-
-function R:GetKnownActionCount(actions, onlyMaxRank)
-    local known = 0
-    for i, action in ipairs(actions) do
-        if IsSpellKnown(action) and (not onlyMaxRank or R:IsMaxKnownRank(action)) then
-            known = known + 1
-        end
-    end
-
-    return known
-end
-
-function R:FindTotem(totemName)
-    local totemId
-
-    local totem = R.spellDatabase.Shaman[totemName]
-    if totem then
-        for index, id in next, totem do
-            if IsSpellKnown(id) then
-                totemId = id
-            end
-        end
-    end
-
-    return totemId
-end
+function R:IsMaxKnownRank(spellId) return R:GetMaxKnownRank(spellId) == spellId end

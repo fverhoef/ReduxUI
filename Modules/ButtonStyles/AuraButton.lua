@@ -23,7 +23,7 @@ function BS:StyleAuraButton(button)
         return
     end
 
-    local buttonName = button:GetName()
+    local buttonName = button:GetName() or "NIL"
     local config = BS.config.auras
 
     local border = _G[buttonName .. "Border"] or button.Border
