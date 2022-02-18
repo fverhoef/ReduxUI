@@ -7,7 +7,7 @@ _G[addonName] = R
 R.name = R.name or addonName
 R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
 R.shortcut = "rui"
-R.debug = true
+R.debug = false
 
 R.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 

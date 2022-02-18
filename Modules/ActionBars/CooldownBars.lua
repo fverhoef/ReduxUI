@@ -15,7 +15,7 @@ local COOLDOWN_TYPES = {SPELL = "SPELL", PET = "PET", ITEM = "ITEM", RES_TIMER =
 function AB:LoadCooldownBars()
     AB.cooldowns = {}
     AB.cooldownBars = {}
-    for name, config in pairs(AB.config.cooldownBars) do AB.cooldownBars[name] = AB:CreateCooldownBar(name, config) end
+    for name, config in pairs(AB.config.cooldownBars) do if config.enabled then AB.cooldownBars[name] = AB:CreateCooldownBar(name, config) end end
 
     AB:RegisterEvent("BAG_UPDATE_COOLDOWN")
     AB:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")

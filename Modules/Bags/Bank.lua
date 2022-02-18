@@ -32,7 +32,6 @@ function BankMixin:OnLoad()
     end
 
     SetPortraitToTexture(self.portrait, [[Interface\ICONS\INV_Misc_EngGizmos_17]])
-    self.Inset.Bg:SetTexture([[Interface\FrameGeneral\UI-Background-Rock]])
 
     table.insert(_G.UISpecialFrames, self:GetName())
     BankFrame:SetParent(R.HiddenFrame)
