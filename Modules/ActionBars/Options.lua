@@ -91,9 +91,7 @@ function AB:CreateCooldownBarsOptions(order)
     return options
 end
 
-local function GetButtonActions(button)
-    return type(button.actions) == "function" and button.actions() or button.actions
-end
+local function GetButtonActions(button) return type(button.actions) == "function" and button.actions() or button.actions end
 
 local function BarIsForCurrentClass(config) return config.class ~= nil and config.class ~= "" and config.class ~= R.PlayerInfo.class end
 
@@ -497,8 +495,10 @@ function AB:CreateFlyoutBarsOptions(order)
 
     local order = 10
     for name, config in pairs(AB.config.flyoutBars) do
-        options.args[name] = AB:CreateFlyoutBarOptions(config, name, order)
-        order = order + 1
+        if (R.isRetail and not config.tbc) or (not R.isRetail and config.tbc) then
+            options.args[name] = AB:CreateFlyoutBarOptions(config, name, order)
+            order = order + 1
+        end
     end
 
     options.args[NEW_BAR] = AB:CreateFlyoutBarOptions({

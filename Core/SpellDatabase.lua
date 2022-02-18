@@ -158,7 +158,7 @@ function SD:ScanSpellBook()
             elseif spellType == "FLYOUT" then
                 _, _, numFlyoutSlots, isKnown = GetFlyoutInfo(id)
                 if isKnown then
-                    for i = 1, numSlots do
+                    for slot = 1, numFlyoutSlots do
                         flyoutSpellID, _, isKnown = GetFlyoutSlotInfo(id, slot)
                         if isKnown then SD:GetOrCreateKnownSpell(flyoutSpellID) end
                     end
