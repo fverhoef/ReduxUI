@@ -82,9 +82,9 @@ function BS:UpdateAuraButton(button)
     end
     
     local config = BS.config.auras
-    local buttonName = button:GetName()
+    local buttonName = button:GetName() or "NIL"
 
-    local count = _G[buttonName .. "Count"]
+    local count = _G[buttonName .. "Count"] or button.count
     if count then
         count:SetFont(config.font, config.fontSize, config.fontOutline)
     end

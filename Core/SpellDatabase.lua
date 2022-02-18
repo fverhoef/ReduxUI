@@ -117,6 +117,7 @@ R.Modules.SpellDatabase = {
         ["Searing Totem"] = {3599, 6363, 6364, 6365, 10437, 10438},
         ["Flametongue Totem"] = {8227, 8249, 10526, 16387},
         ["Frost Resistance Totem"] = {8181, 10478, 10479},
+        ["Totem of Wrath"] = {30706},
 
         EarthTotems = {},
         ["Earthbind Totem"] = {2484},
@@ -170,7 +171,7 @@ for _, id in ipairs(R.Modules.SpellDatabase.Mage["Mage Armor"]) do table.insert(
 for _, id in ipairs(R.Modules.SpellDatabase.Mage["Molten Armor"]) do table.insert(R.Modules.SpellDatabase.Mage.Armors, id) end
 
 -- build shaman totem/enchant tables
-local fireTotems = {"Fire Nova Totem", "Magma Totem", "Searing Totem", "Flametongue Totem", "Frost Resistance Totem"}
+local fireTotems = {"Fire Nova Totem", "Magma Totem", "Searing Totem", "Flametongue Totem", "Frost Resistance Totem", "Totem of Wrath"}
 for _, name in ipairs(fireTotems) do
     local rankTable = R.Modules.SpellDatabase.Shaman[name]
     table.insert(spellRankTables, rankTable)

@@ -284,8 +284,7 @@ R:RegisterModuleConfig(AB, {
     },
     cooldownBars = {
         ["Cooldowns"] = {
-            enabled = true,
-            tbc = true,
+            enabled = false,
             point = {"BOTTOM", "UIParent", "BOTTOM", 0, 185},
             fader = R.config.faders.onShow,
             size = { 396, 30 },
