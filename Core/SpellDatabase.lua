@@ -137,6 +137,8 @@ function SD:GetOrCreateSpell(id)
 end
 
 function SD:GetOrCreateKnownSpell(id)
+    if not id then return end
+    
     local spell = SD.KnownSpells[id]
     if not spell and IsSpellKnown(id) then
         spell = SD:GetOrCreateSpell(id)

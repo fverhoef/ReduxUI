@@ -10,4 +10,5 @@
     <Script file="PetBar.lua"/>
     <Script file="StanceBar.lua"/>
     <Script file="VehicleExitBar.lua"/>
+    <Script file="ZoneBar.lua"/>
 </Ui>

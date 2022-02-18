@@ -16,6 +16,7 @@ function AB:Initialize()
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
     AB.vehicleExitBar = AB:CreateVehicleExitBar()
+    AB.zoneBar = AB:CreateZoneBar()
 
     AB:LoadCooldownBars()
     AB:LoadFlyoutBars()
@@ -48,7 +49,7 @@ function AB:DisableBlizzard()
     R:Disable(StanceBarFrame)
     R:Disable(MainMenuBarVehicleLeaveButton)
     R:Disable(VerticalMultiBarsContainer)
-    
+
     ActionBarController:UnregisterAllEvents()
 end
 
@@ -102,7 +103,7 @@ function AB:CreateActionBar(id)
     R:CreateBorder(bar)
     R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, bar:GetName(), AB.defaults["actionBar" .. id])
+    R:CreateDragFrame(bar, bar:GetName(), AB.defaults["actionBar" .. id].point)
 
     return bar
 end
@@ -113,6 +114,7 @@ function AB:ConfigureActionBars()
     AB:ConfigureActionBar(AB.petBar)
     AB:ConfigureActionBar(AB.stanceBar)
     AB:ConfigureActionBar(AB.vehicleExitBar)
+    --AB:ConfigureActionBar(AB.zoneBar)
 
     if AB.config.mainMenuBarArt.enabled then
         local mainMenuBar = AB.bars[1]

@@ -280,6 +280,11 @@ R:RegisterModuleConfig(AB, {
         border = false,
         shadow = false
     },
+    zoneBar = {
+        enabled = true,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 235},
+        fader = R.config.faders.onShow
+    },
     cooldownBars = {
         ["Cooldowns"] = {
             enabled = false,

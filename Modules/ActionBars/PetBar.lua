@@ -54,7 +54,7 @@ function AB:CreatePetBar()
     R:CreateBorder(bar)
     R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.petBar)
+    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.petBar.point)
 
     return bar
 end

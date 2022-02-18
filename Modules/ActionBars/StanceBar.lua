@@ -67,7 +67,7 @@ function AB:CreateStanceBar()
     R:CreateBorder(bar)
     R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.stanceBar)
+    R:CreateDragFrame(bar, bar:GetName(), AB.defaults.stanceBar.point)
 
     return bar
 end
