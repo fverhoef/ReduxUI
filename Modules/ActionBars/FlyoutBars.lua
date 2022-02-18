@@ -133,6 +133,10 @@ function AB:UpdateFlyoutBar(bar)
     R:SetPoint(bar, unpack(bar.config.point))
 end
 
+function AB:GetButtonActions()
+    return type(self.config.actions) == "function" and self.config.actions() or self.config.actions
+end
+
 function AB:CreateFlyoutButton(name, bar, config)
     -- create parent frame
     local button = CreateFrame("Frame", "FlyoutButton_" .. name, bar, "SecureHandlerStateTemplate")
@@ -195,6 +199,8 @@ function AB:CreateFlyoutButton(name, bar, config)
     button.CurrentAction:HookScript("OnLeave", function() AB:UpdateFlyoutButtonBackground(button) end)
     button.CurrentAction:HookScript("OnClick", function() button.CurrentAction:SetChecked(false) end)
 
+    button.GetActions =  AB.GetButtonActions
+
     AB:CreateFlyoutButtonBackground(button)
     AB:UpdateFlyoutButton(button)
 
@@ -207,9 +213,11 @@ function AB:UpdateFlyoutButton(button)
     if not InCombatLockdown() then
         button.count = 0
 
+        local actions = button:GetActions()
+
         -- generate/position child buttons
         local previousButton
-        for i, action in ipairs(button.config.actions) do
+        for i, action in ipairs(actions) do
             local child = button.childButtons[action]
             if not child then
                 child = AB:CreateFlyoutButtonChild(button, action, i)
@@ -232,7 +240,7 @@ function AB:UpdateFlyoutButton(button)
             -- check if child is still in use
             local spellID = child:GetAttribute("spell")
             local found = false
-            for j, action in ipairs(button.config.actions) do
+            for j, action in ipairs(actions) do
                 if action == spellID then
                     found = true
                     break
@@ -389,14 +397,15 @@ function AB:PositionFlyoutButtonChild(button, child, previousButton)
 end
 
 function AB:SetFlyoutCurrentAction(button, action)
+    local actions = button:GetActions()
     local actionFound = false
-    for _, id in ipairs(button.config.actions) do if action == id then actionFound = true end end
+    for _, id in ipairs(actions) do if action == id then actionFound = true end end
 
-    if not actionFound then action = button.config.defaultAction or R:GetMaxKnownRank(button.config.actions[1]) or button.config.actions[1] end
+    if not actionFound then action = button.config.defaultAction or R:GetMaxKnownRank(actions[1]) or actions[1] end
 
     if button.config.showOnlyMaxRank then action = R:GetMaxKnownRank(action) or action end
 
-    if action and not IsSpellKnown(action) then for _, id in next, button.config.actions do if IsSpellKnown(id) then action = id end end end
+    if action and not IsSpellKnown(action) then for _, id in next, actions do if IsSpellKnown(id) then action = id end end end
 
     if action and IsSpellKnown(action) then
         local icon = select(3, GetSpellInfo(action))

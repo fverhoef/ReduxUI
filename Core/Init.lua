@@ -35,17 +35,24 @@ R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
 R:AddLib("SpellCache", "LibSpellCache-1.0")
 
 R.Modules = {}
-function R:AddModule(name)
+function R:AddModule(name, ...)
     if not name then return end
 
     local module = R.Modules[name]
     if not module then
-        module = R:NewModule(name, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+        module = R:NewModule(name, ...)
         module.name = name
         module.initialized = false
         R.Modules[name] = module
     end
 
+    return module
+end
+function R:AddEarlyLoadModule(name, ...)
+    local module = R:AddModule(name, ...)
+    if module then
+        module.loadEarly = true
+    end
     return module
 end
 
@@ -95,6 +102,13 @@ function R:OnEnable()
     end
 
     R:SetupOptions()
+
+    for name, module in pairs(R.Modules) do
+        if module.loadEarly and module.Initialize and not module.initialized then
+            module.Initialize()
+            module.initialized = true
+        end
+    end
 
     for name, module in pairs(R.Modules) do
         if module.Initialize and not module.initialized then

@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local SS = R:AddModule("ScreenSaver", "AceEvent-3.0")
+local SS = R:AddModule("ScreenSaver", "AceEvent-3.0", "AceTimer-3.0")
 local L = R.L
 
 local CAMERA_SPEED = 0.035

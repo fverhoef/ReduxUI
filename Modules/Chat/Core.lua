@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local C = R:AddModule("Chat", "AceEvent-3.0", "AceHook-3.0")
+local C = R:AddEarlyLoadModule("Chat", "AceEvent-3.0", "AceHook-3.0")
 
 C.HyperlinkTypes = {
     achievement = true,

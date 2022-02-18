@@ -91,6 +91,10 @@ function AB:CreateCooldownBarsOptions(order)
     return options
 end
 
+local function GetButtonActions(button)
+    return type(button.actions) == "function" and button.actions() or button.actions
+end
+
 local function BarIsForCurrentClass(config) return config.class ~= nil and config.class ~= "" and config.class ~= R.PlayerInfo.class end
 
 local function GetActionName(action)
@@ -102,13 +106,13 @@ end
 
 local function GetKnownActions(button)
     local actions = {}
-    for _, action in ipairs(button.actions) do if IsSpellKnown(action) and (not button.showOnlyMaxRank or R:IsMaxKnownRank(action)) then table.insert(actions, GetActionName(action)) end end
+    for _, action in ipairs(GetButtonActions(button)) do if IsSpellKnown(action) and (not button.showOnlyMaxRank or R:IsMaxKnownRank(action)) then table.insert(actions, GetActionName(action)) end end
     return actions
 end
 
 local function GetDefaultActionIndex(button)
     local currentIndex = 1
-    for _, action in ipairs(button.actions) do
+    for _, action in ipairs(GetButtonActions(button)) do
         if IsSpellKnown(action) and (not button.showOnlyMaxRank or R:IsMaxKnownRank(action)) then
             if action == button.defaultAction then
                 return currentIndex
@@ -121,7 +125,7 @@ end
 
 local function GetKnownAction(button, index)
     local currentIndex = 1
-    for _, action in ipairs(button.actions) do
+    for _, action in ipairs(GetButtonActions(button)) do
         if IsSpellKnown(action) and (not button.showOnlyMaxRank or R:IsMaxKnownRank(action)) then
             if currentIndex == index then
                 return action
@@ -190,12 +194,12 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                     tristate = false,
                     values = function()
                         local actions = {}
-                        for i, action in ipairs(button.actions) do actions[i] = GetActionName(action) end
+                        for i, action in ipairs(GetButtonActions(button)) do actions[i] = GetActionName(action) end
                         return actions
                     end,
-                    get = function(info, key) for i, action in ipairs(button.actions) do if i == key then return selectedSpells[action] end end end,
-                    set = function(info, key) for i, action in ipairs(button.actions) do if i == key then selectedSpells[action] = not selectedSpells[action] end end end,
-                    disabled = function() return BarIsForCurrentClass(barConfig) end
+                    get = function(info, key) for i, action in ipairs(GetButtonActions(button)) do if i == key then return selectedSpells[action] end end end,
+                    set = function(info, key) for i, action in ipairs(GetButtonActions(button)) do if i == key then selectedSpells[action] = not selectedSpells[action] end end end,
+                    disabled = function() return type(button.actions) == "function" or BarIsForCurrentClass(barConfig) end
                 },
                 removeAction = {
                     order = 21,
@@ -203,9 +207,9 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                     name = L["Remove Selected Spell(s)"],
                     func = function()
                         for selectedSpell, _ in pairs(selectedSpells) do
-                            for i, action in ipairs(button.actions) do
+                            for i, action in ipairs(GetButtonActions(button)) do
                                 if selectedSpell == action then
-                                    table.remove(button.actions, i)
+                                    table.remove(GetButtonActions(button), i)
                                     break
                                 end
                             end
@@ -214,7 +218,7 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
 
                         AB:UpdateFlyoutBars()
                     end,
-                    disabled = function() return BarIsForCurrentClass(barConfig) end
+                    disabled = function() return type(button.actions) == "function" or BarIsForCurrentClass(barConfig) end
                 },
                 addSpellBreak = {order = 22, type = "description", name = ""},
                 findSpellName = {
@@ -230,7 +234,7 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                         addSpellFilter = R.Libs.SpellCache:MatchSpellName(value, true)
                         spellToAdd = nil
                     end,
-                    disabled = function() return BarIsForCurrentClass(barConfig) end
+                    disabled = function() return type(button.actions) == "function" or BarIsForCurrentClass(barConfig) end
                 },
                 findSpellResults = {
                     order = 24,
@@ -246,7 +250,7 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                     end,
                     get = function(info, key) return spellToAdd end,
                     set = function(info, key) spellToAdd = key end,
-                    disabled = function() return BarIsForCurrentClass(barConfig) end
+                    disabled = function() return type(button.actions) == "function" or BarIsForCurrentClass(barConfig) end
                 },
                 addSpell = {
                     order = 25,
@@ -256,16 +260,17 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                     func = function()
                         if not spellToAdd then return end
 
-                        for i, action in ipairs(button.actions) do if action == spellToAdd then return end end
+                        for i, action in ipairs(GetButtonActions(button)) do if action == spellToAdd then return end end
 
-                        table.insert(button.actions, spellToAdd)
+                        table.insert(GetButtonActions(button), spellToAdd)
 
                         AB:UpdateFlyoutBars()
                     end,
-                    disabled = function() return BarIsForCurrentClass(barConfig) end
+                    disabled = function() return type(button.actions) == "function" or BarIsForCurrentClass(barConfig) end
                 },
+                defaultActionHeader = {type = "header", order = 26, name = ""},
                 defaultAction = {
-                    order = 26,
+                    order = 27,
                     type = "select",
                     name = L["Default Action"],
                     desc = L["The default action to show when the button is collapsed."],
@@ -278,7 +283,7 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                     disabled = function() return BarIsForCurrentClass(barConfig) end
                 },
                 defaultActionUpdateMode = {
-                    order = 27,
+                    order = 28,
                     type = "select",
                     name = L["Default Action Update Mode"],
                     desc = L["When and how to update the default action for this button."],
@@ -294,7 +299,7 @@ function AB:CreateFlyoutButtonOptions(group, barConfig, barName)
                 },
                 defaultActionMaxRankDescription = {
                     type = "description",
-                    order = 28,
+                    order = 29,
                     name = L["|cffFF0000Warning:|r The 'Show Only Max Rank' option is currently enabled; you can only set the default action to the max rank of each spell."],
                     hidden = function() return not button.showOnlyMaxRank end
                 },

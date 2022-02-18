@@ -7,9 +7,7 @@ AB.UPDATE_DEFAULT_MODE = {[""] = "Never", ANY_CLICK = "Any Click", LEFT_CLICK = 
 AB.COLUMN_DIRECTIONS = {"Right", "Left"}
 AB.ROW_DIRECTIONS = {"Up", "Down"}
 AB.DEFAULT_COOLDOWN_LABELS = {5, 15, 30, 60, 120, 180, 300}
-AB.COOLDOWN_FILTERS = {
-    NONE = "NONE"
-}
+AB.COOLDOWN_FILTERS = {NONE = "NONE"}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
@@ -287,7 +285,7 @@ R:RegisterModuleConfig(AB, {
             enabled = false,
             point = {"BOTTOM", "UIParent", "BOTTOM", 0, 185},
             fader = R.config.faders.onShow,
-            size = { 396, 30 },
+            size = {396, 30},
             iconSize = 30,
             showLabels = true,
             filter = AB.COOLDOWN_FILTERS.NONE,
@@ -333,11 +331,39 @@ R:RegisterModuleConfig(AB, {
             backdropSpacing = 2,
             direction = "UP",
             buttons = {
-                {enabled = true, showOnlyMaxRank = true, name = L["Fire Totems"], actions = R.Modules.SpellDatabase.Shaman.FireTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Earth Totems"], actions = R.Modules.SpellDatabase.Shaman.EarthTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Water Totems"], actions = R.Modules.SpellDatabase.Shaman.WaterTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Air Totems"], actions = R.Modules.SpellDatabase.Shaman.AirTotems, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK},
-                {enabled = true, showOnlyMaxRank = true, name = L["Weapon Enchants"], actions = R.Modules.SpellDatabase.Shaman.WeaponEnchants, defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK}
+                {
+                    enabled = true,
+                    showOnlyMaxRank = true,
+                    name = L["Fire Totems"],
+                    actions = function() return R.Modules.SpellDatabase.Shaman.FireTotems end,
+                    defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK
+                }, {
+                    enabled = true,
+                    showOnlyMaxRank = true,
+                    name = L["Earth Totems"],
+                    actions = function() return R.Modules.SpellDatabase.Shaman.EarthTotems end,
+                    defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK
+                }, {
+                    enabled = true,
+                    showOnlyMaxRank = true,
+                    name = L["Water Totems"],
+                    actions = function() return R.Modules.SpellDatabase.Shaman.WaterTotems end,
+                    defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK
+                },
+                {
+                    enabled = true,
+                    showOnlyMaxRank = true,
+                    name = L["Air Totems"],
+                    actions = function() return R.Modules.SpellDatabase.Shaman.AirTotems end,
+                    defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK
+                },
+                {
+                    enabled = true,
+                    showOnlyMaxRank = true,
+                    name = L["Weapon Enchants"],
+                    actions = R.Modules.SpellDatabase.Shaman.WeaponEnchants,
+                    defaultActionUpdateMode = AB.UPDATE_DEFAULT_MODE.ANY_CLICK
+                }
             }
         }
 
