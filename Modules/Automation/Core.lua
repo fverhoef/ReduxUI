@@ -156,7 +156,7 @@ function AM:Repair()
         if canRepair then
             if GetMoney() >= repairCost and repairCost > 0 then
                 RepairAllItems()
-                R:Print(L["Repaired for %s."], GetCoinText(repairCost)) -- TODO: Localization
+                R:Print(L["Repaired for %s."], R:FormatMoney(repairCost, "FULL")) -- TODO: Localization
             end
         end
     end
@@ -196,7 +196,7 @@ end
 
 function AM:ReportVendorResult()
     if totalVendorPrice > 0 then
-        R:Print(L["Sold trash for %s."], GetCoinText(totalVendorPrice))
+        R:Print(L["Sold trash for %s."], R:FormatMoney(totalVendorPrice, "FULL"))
     end
 end
 

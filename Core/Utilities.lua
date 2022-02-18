@@ -77,47 +77,43 @@ local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
 local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
 local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
 
-function R:FormatMoney(amount, style, textonly)
-    local coppername = textonly and L["copperabbrev"] or ICON_COPPER
-    local silvername = textonly and L["silverabbrev"] or ICON_SILVER
-    local goldname = textonly and L["goldabbrev"] or ICON_GOLD
-
-    local value = abs(amount)
-    local gold = floor(value / 10000)
-    local silver = floor(mod(value / 100, 100))
-    local copper = floor(mod(value, 100))
+function R:FormatMoney(amount, style)
+    local value = math.abs(amount)
+    local gold = math.floor(value / 10000)
+    local silver = math.floor(math.mod(value / 100, 100))
+    local copper = math.floor(math.mod(value, 100))
 
     if not style or style == "SMART" then
         local str = ""
-        if gold > 0 then str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "") end
-        if silver > 0 then str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "") end
-        if copper > 0 or value == 0 then str = format("%s%d%s", str, copper, coppername) end
+        if gold > 0 then str = format("%d%s%s", gold, ICON_GOLD, (silver > 0 or copper > 0) and " " or "") end
+        if silver > 0 then str = format("%s%d%s%s", str, silver, ICON_SILVER, copper > 0 and " " or "") end
+        if copper > 0 or value == 0 then str = format("%s%d%s", str, copper, ICON_COPPER) end
         return str
     end
 
     if style == "FULL" then
         if gold > 0 then
-            return format("%d%s %d%s %d%s", gold, goldname, silver, silvername, copper, coppername)
+            return format("%d%s %d%s %d%s", gold, ICON_GOLD, silver, ICON_SILVER, copper, ICON_COPPER)
         elseif silver > 0 then
-            return format("%d%s %d%s", silver, silvername, copper, coppername)
+            return format("%d%s %d%s", silver, ICON_SILVER, copper, ICON_COPPER)
         else
-            return format("%d%s", copper, coppername)
+            return format("%d%s", copper, ICON_COPPER)
         end
     elseif style == "SHORT" then
         if gold > 0 then
-            return format("%.1f%s", amount / 10000, goldname)
+            return format("%.1f%s", amount / 10000, ICON_GOLD)
         elseif silver > 0 then
-            return format("%.1f%s", amount / 100, silvername)
+            return format("%.1f%s", amount / 100, ICON_SILVER)
         else
-            return format("%d%s", amount, coppername)
+            return format("%d%s", amount, ICON_COPPER)
         end
     elseif style == "SHORTINT" then
         if gold > 0 then
-            return format("%d%s", gold, goldname)
+            return format("%d%s", gold, ICON_GOLD)
         elseif silver > 0 then
-            return format("%d%s", silver, silvername)
+            return format("%d%s", silver, ICON_SILVER)
         else
-            return format("%d%s", copper, coppername)
+            return format("%d%s", copper, ICON_COPPER)
         end
     elseif style == "CONDENSED" then
         if gold > 0 then
@@ -129,19 +125,19 @@ function R:FormatMoney(amount, style, textonly)
         end
     elseif style == "BLIZZARD" then
         if gold > 0 then
-            return format("%s%s %d%s %d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+            return format("%s%s %d%s %d%s", BreakUpLargeNumbers(gold), ICON_GOLD, silver, ICON_SILVER, copper, ICON_COPPER)
         elseif silver > 0 then
-            return format("%d%s %d%s", silver, silvername, copper, coppername)
+            return format("%d%s %d%s", silver, ICON_SILVER, copper, ICON_COPPER)
         else
-            return format("%d%s", copper, coppername)
+            return format("%d%s", copper, ICON_COPPER)
         end
     elseif style == "BLIZZARD2" then
         if gold > 0 then
-            return format("%s%s %02d%s %02d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+            return format("%s%s %02d%s %02d%s", BreakUpLargeNumbers(gold), ICON_GOLD, silver, ICON_SILVER, copper, ICON_COPPER)
         elseif silver > 0 then
-            return format("%d%s %02d%s", silver, silvername, copper, coppername)
+            return format("%d%s %02d%s", silver, ICON_SILVER, copper, ICON_COPPER)
         else
-            return format("%d%s", copper, coppername)
+            return format("%d%s", copper, ICON_COPPER)
         end
     end
 
