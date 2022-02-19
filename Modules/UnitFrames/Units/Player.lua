@@ -26,8 +26,8 @@ function UF:CreatePlayer()
     if (R.PlayerInfo.class == "SHAMAN") then self:CreateTotems() end
     if (R.PlayerInfo.class == "MONK") then self:CreateStagger() end
 
-    R:CreateDragFrame(self.Power, "PlayerPower", self.defaults.power.point)
-    R:CreateDragFrame(self.Castbar, "PlayerCastbar", self.defaults.castbar.point)
+    R:CreateMover(self.Power, "PlayerPower", self.defaults.power.point)
+    R:CreateMover(self.Castbar, "PlayerCastbar", self.defaults.castbar.point)
 
     self.Update = UF.UpdatePlayer
 end
@@ -48,14 +48,14 @@ function UF:UpdatePlayer()
     if (R.PlayerInfo.class == "MONK") then self:ConfigureStagger() end
 
     if self.config.power.detached then
-        R:UnlockDragFrame(self.Power)
+        self.Power.Mover:Unlock()
     else
-        R:LockDragFrame(self.Power, true)
+        self.Power.Mover:Lock(true)
     end
 
     if self.config.castbar.detached then
-        R:UnlockDragFrame(self.Castbar)
+        self.Castbar.Mover:Unlock()
     else
-        R:LockDragFrame(self.Castbar, true)
+        self.Castbar.Mover:Lock(true)
     end
 end

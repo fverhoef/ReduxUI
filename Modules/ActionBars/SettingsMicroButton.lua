@@ -19,7 +19,7 @@ function SettingsMicroButtonMixin:OnClick()
     if IsShiftKeyDown() then
         ReloadUI()
     elseif IsAltKeyDown() then
-        R:ToggleDragFrames()
+        R:ToggleMovers()
     else
         R:ShowOptionsDialog()
     end
@@ -59,8 +59,8 @@ function SettingsMicroButtonMixin:AddSystemInfo(tooltip)
     local cpuString = "%d ms"
     local cpuAndMemoryString = "%d ms / %s"
 
-    local labelColor = R.config.db.profile.colors.highlightFont
-    local valueColor = R.config.db.profile.colors.normalFont
+    local labelColor = R.HIGHLIGHT_FONT_COLOR
+    local valueColor = R.NORMAL_FONT_COLOR
 
     tooltip:AddLine(" ")
 

@@ -45,7 +45,7 @@ function AB:CreateExtraActionBar()
 	local width, height = ExtraActionBarFrame.button:GetSize()
 	bar:SetSize(width + 4, height + 4)
 
-    R:CreateDragFrame(bar, "ExtraActionBar", AB.defaults.extraActionBar.point)
+    R:CreateMover(bar, "ExtraActionBar", AB.defaults.extraActionBar.point)
     R:CreateFader(bar, bar.config.fader)
     R:SetPoint(bar, bar.config.point)
 

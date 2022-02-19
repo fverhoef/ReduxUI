@@ -70,13 +70,13 @@ R.config.options = {
                     desc = L["Lock/unlock all movable frames."],
                     func = function()
                         if R.framesLocked then
-                            R:ShowDragFrames()
+                            R:ShowMovers()
                         else
-                            R:HideDragFrames()
+                            R:HideMovers()
                         end
                     end
                 },
-                resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function() R:ResetFrames() end},
+                resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function() R:ResetMovers() end},
                 fonts = {
                     type = "group",
                     name = L["Fonts"],

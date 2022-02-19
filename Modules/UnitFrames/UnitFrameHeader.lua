@@ -33,7 +33,7 @@ function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
     _G.Mixin(parent, UnitFrameHeaderParentMixin)
     parent:Update()
 
-    R:CreateDragFrame(parent, name, defaultConfig.point)
+    R:CreateMover(parent, name, defaultConfig.point)
 
     return parent
 end
@@ -51,7 +51,7 @@ function UnitFrameHeaderParentMixin:Update()
     local width = (config.groupAnchorPoint == "LEFT" or config.groupAnchorPoint == "RIGHT") and (numGroups * groupWidth + (numGroups - 1) * config.groupSpacing) or groupWidth
     local height = (config.groupAnchorPoint == "TOP" or config.groupAnchorPoint == "BOTTOM") and (numGroups * groupHeight + (numGroups - 1) * config.groupSpacing) or groupHeight
     self:SetSize(width, height)
-    if self.DragFrame then self.DragFrame:SetSize(width, height) end
+    if self.Mover then self.Mover:SetSize(width, height) end
 
     for i, group in ipairs(self.groups) do
         for j = 1, group:GetNumChildren() do

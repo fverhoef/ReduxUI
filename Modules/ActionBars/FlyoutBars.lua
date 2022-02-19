@@ -17,7 +17,7 @@ function AB:UpdateFlyoutBars()
             AB:UpdateFlyoutBar(bar)
         else
             R:Disable(bar)
-            R:LockDragFrame(bar, true)
+            bar.Mover:Lock(true)
             AB.flyoutBars[name] = nil
         end
     end
@@ -57,7 +57,7 @@ function AB:CreateFlyoutBar(name, config)
     end)
 
     local default =  AB.defaults.flyoutBars[name] or config
-    R:CreateDragFrame(bar, name, default.point)
+    R:CreateMover(bar, name, default.point)
     AB:UpdateFlyoutBar(bar)
 
     return bar

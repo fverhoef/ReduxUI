@@ -7,7 +7,7 @@ function UF:StyleBuffFrame()
     _G.BuffFrame.config = UF.config.buffFrame
     _G.BuffFrame:ClearAllPoints()
     R:SetPoint(_G.BuffFrame, unpack(UF.config.buffFrame.point))
-    R:CreateDragFrame(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
+    R:CreateMover(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
     UF:SecureHook("BuffFrame_Update", UF.BuffFrame_Update)
 end

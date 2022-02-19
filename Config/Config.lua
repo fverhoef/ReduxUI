@@ -1,6 +1,13 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+R.NORMAL_FONT_COLOR = {255 / 255, 209 / 255, 0 / 255}
+R.HIGHLIGHT_FONT_COLOR = {255 / 255, 255 / 255, 255 / 255}
+R.GREEN_FONT_COLOR = {25 / 255, 255 / 255, 25 / 255}
+R.RED_FONT_COLOR = {255 / 255, 25 / 255, 25 / 255}
+R.GRAY_FONT_COLOR = {127 / 255, 127 / 255, 127 / 255}
+R.DARK_GRAY_FONT_COLOR = {89 / 255, 89 / 255, 89 / 255}
+
 R.config = {}
 R.config.defaults = {
     profile = {
@@ -12,15 +19,7 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
-        colors = {
-            normalFont = {255 / 255, 209 / 255, 0 / 255}, -- GameFontNormal
-            highlightFont = {255 / 255, 255 / 255, 255 / 255}, -- GameFontHighlight
-            greenFont = {25 / 255, 255 / 255, 25 / 255}, -- GameFontGreen
-            redFont = {255 / 255, 25 / 255, 25 / 255}, -- GameFontRed
-            grayFont = {127 / 255, 127 / 255, 127 / 255}, -- GameFontGray
-            darkGrayFont = {89 / 255, 89 / 255, 89 / 255} -- GameFontDarkGray
-        },
-        dragFrames = {objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}}},
+        movers = {objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}}},
         borders = { texture = R.media.textures.edgeFiles.borderThick },
         modules = {}
     },

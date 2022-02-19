@@ -9,7 +9,7 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
 
     local frame = oUF:Spawn(unit, addonName .. name)
     R:CreateFader(frame, config and config.fader or R.config.faders.onShow)
-    R:CreateDragFrame(frame, name, defaultConfig and defaultConfig.point or nil)
+    R:CreateMover(frame, name, defaultConfig and defaultConfig.point or nil)
 
     return frame
 end

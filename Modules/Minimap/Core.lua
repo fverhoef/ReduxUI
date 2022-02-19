@@ -23,7 +23,7 @@ function MM:StyleMinimap()
     end
 
     R:CreateFader(MinimapCluster, MM.config.fader)
-    R:CreateDragFrame(MinimapCluster, "Minimap", MM.config.point)
+    R:CreateMover(MinimapCluster, "Minimap", MM.config.point)
 
     Minimap:ClearAllPoints()
     Minimap:SetPoint("TOP", 0, -30)

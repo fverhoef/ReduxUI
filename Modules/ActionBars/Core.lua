@@ -104,7 +104,7 @@ function AB:CreateActionBar(id)
     R:CreateBorder(bar)
     R:CreateShadow(bar)
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, bar:GetName(), AB.defaults["actionBar" .. id].point)
+    R:CreateMover(bar, bar:GetName(), AB.defaults["actionBar" .. id].point)
 
     return bar
 end
@@ -130,7 +130,7 @@ function AB:ConfigureActionBars()
         mainMenuBar.Backdrop:SetShown(false)
         mainMenuBar.Border:SetShown(false)
         mainMenuBar.Shadow:SetShown(false)
-        R:LockDragFrame(mainMenuBar, true)
+        mainMenuBar.Mover:Lock(true)
 
         local multiBarBottomLeft = AB.bars[2]
         for j, button in ipairs(multiBarBottomLeft.buttons) do
@@ -145,7 +145,7 @@ function AB:ConfigureActionBars()
         multiBarBottomLeft.Backdrop:SetShown(false)
         multiBarBottomLeft.Border:SetShown(false)
         multiBarBottomLeft.Shadow:SetShown(false)
-        R:LockDragFrame(multiBarBottomLeft, true)
+        multiBarBottomLeft.Mover:Lock(true)
 
         local multiBarBottomRight = AB.bars[3]
         for j, button in ipairs(multiBarBottomRight.buttons) do
@@ -171,7 +171,7 @@ function AB:ConfigureActionBars()
         multiBarBottomRight.Backdrop:SetShown(false)
         multiBarBottomRight.Border:SetShown(false)
         multiBarBottomRight.Shadow:SetShown(false)
-        R:LockDragFrame(multiBarBottomRight, true)
+        multiBarBottomRight.Mover:Lock(true)
 
         local petBar = AB.petBar
         for j, button in ipairs(petBar.buttons) do
@@ -187,7 +187,7 @@ function AB:ConfigureActionBars()
         petBar.Backdrop:SetShown(false)
         petBar.Border:SetShown(false)
         petBar.Shadow:SetShown(false)
-        R:LockDragFrame(petBar, true)
+        petBar.Mover:Lock(true)
 
         local stanceBar = AB.stanceBar
         for j, button in ipairs(stanceBar.buttons) do
@@ -203,11 +203,11 @@ function AB:ConfigureActionBars()
         stanceBar.Backdrop:SetShown(false)
         stanceBar.Border:SetShown(false)
         stanceBar.Shadow:SetShown(false)
-        R:LockDragFrame(stanceBar, true)
+        stanceBar.Mover:Lock(true)
 
         AB.vehicleExitBar:ClearAllPoints()
         AB.vehicleExitBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
-        R:LockDragFrame(AB.vehicleExitBar, true)
+        AB.vehicleExitBar.Mover:Lock(true)
     end
 end
 
@@ -301,8 +301,7 @@ function AB:ConfigureActionBar(bar)
     bar.Backdrop:SetShown(bar.config.backdrop)
     bar.Border:SetShown(bar.config.border)
     bar.Shadow:SetShown(bar.config.shadow)
-
-    R:UnlockDragFrame(bar)
+    bar.Mover:Unlock()
 
     if bar.Update then bar:Update() end
 end

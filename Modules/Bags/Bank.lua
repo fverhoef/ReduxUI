@@ -38,7 +38,7 @@ function BankMixin:OnLoad()
     BankFrame:SetParent(R.HiddenFrame)
 
     R:SetPoint(self, self.config.point)
-    R:CreateDragFrame(self, "Bank", B.defaults.bank.point)
+    R:CreateMover(self, "Bank", B.defaults.bank.point)
 end
 
 function BankMixin:OnHide() CloseBankFrame() end

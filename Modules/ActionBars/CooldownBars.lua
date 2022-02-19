@@ -33,10 +33,10 @@ function AB:UpdateCooldownBars()
     for name, bar in pairs(AB.cooldownBars) do
         if AB.config.cooldownBars[name] then
             bar:Update()
-            R:UnlockDragFrame(bar)
+            bar.Mover:Unlock()
         else
             bar:Hide()
-            R:LockDragFrame(bar, true)
+            bar.Mover:Lock(true)
             AB.cooldownBars[name] = nil
         end
     end
@@ -439,7 +439,7 @@ function AB:CreateCooldownBar(name, config)
     bar.Update = UpdateCooldownBar
 
     R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateDragFrame(bar, addonName .. "_" .. name, AB.defaults.cooldownBars[name].point)
+    R:CreateMover(bar, addonName .. "_" .. name, AB.defaults.cooldownBars[name].point)
     bar:Configure()
     bar:Update()
 

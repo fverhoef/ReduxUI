@@ -21,7 +21,7 @@ function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleF
         parent.frames[i] = frame
     end
 
-    R:CreateDragFrame(parent, name, defaultConfig.point)
+    R:CreateMover(parent, name, defaultConfig.point)
 
     _G.Mixin(parent, UnitFrameGroupMixin)
     parent:Update()

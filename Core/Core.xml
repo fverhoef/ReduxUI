@@ -2,7 +2,7 @@
     <Script file="Init.lua"/>
     <Script file="Artwork.lua"/>
     <Script file="Fader.lua"/>
-    <Script file="DragFrame.lua"/>
+    <Script file="Mover.lua"/>
     <Script file="Grid.lua"/>
     <Script file="InventoryDatabase.lua"/>
     <Script file="Fonts.lua"/>

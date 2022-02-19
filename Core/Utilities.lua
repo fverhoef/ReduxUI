@@ -279,6 +279,10 @@ end
 function R:GetPoint(frame)
     if not frame then return end
     local a1, af, a2, x, y = frame:GetPoint()
+    if not af then af = frame:GetParent() end
+    if not a2 then a2 = a1 end
+    if not x then x = 0 end
+    if not y then y = 0 end
     if af and af.GetName and af:GetName() then af = af:GetName() end
     return {a1, af, a2, R:Round(x), R:Round(y)}
 end

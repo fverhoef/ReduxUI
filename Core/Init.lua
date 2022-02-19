@@ -57,9 +57,9 @@ function R:AddEarlyLoadModule(name, ...)
 end
 
 R.ChatCommands = {
-    ["unlock"] = {func = function() R:ShowDragFrames() end, description = "unlock all frames"},
-    ["lock"] = {func = function() R:HideDragFrames() end, description = "lock all frames"},
-    ["reset"] = {func = function() R:ResetFrames() end, description = "reset all frames"},
+    ["unlock"] = {func = function() R:ShowMovers() end, description = "unlock all frames"},
+    ["lock"] = {func = function() R:HideMovers() end, description = "lock all frames"},
+    ["reset"] = {func = function() R:ResetMovers() end, description = "reset all frames"},
     ["options"] = {func = function() R:ShowOptionsDialog() end, description = "open the config dialog"},
     ["bind"] = {func = function() R.Libs.KeyBound:Toggle() end, description = "toggle keybind mode"}
 }
@@ -67,7 +67,7 @@ R.ChatCommands = {
 function R:OnInitialize()
     R:SetupConfig()
     R:UpdateBlizzardFonts()
-    R:CreateBlizzardDragFrames()
+    R:CreateBlizzardMovers()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
         local arg1, funcArgs = strsplit(" ", args, 2)
