@@ -60,6 +60,7 @@ function MoverMixin:OnShow()
         return
     end
 
+    self.displayNameText:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
     if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then RegisterStateDriver(self.frame, "visibility", "show") end
     if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then R:FadeIn(self.frame) end
 end
@@ -144,18 +145,16 @@ function R:CreateMover(frame, displayName, defaultPoint, width, height, point)
     mover:SetScript("OnMouseDown", mover.OnMouseDown)
     mover:Hide()
 
-    local overlay = mover:CreateTexture(nil, "OVERLAY", nil, 6)
-    overlay:SetAllPoints(mover)
-    overlay:SetColorTexture(1, 1, 1)
-    overlay:SetVertexColor(0, 1, 0)
-    overlay:SetAlpha(0.3)
-    mover.texture = overlay
+    mover.texture = mover:CreateTexture(nil, "OVERLAY", nil, 6)
+    mover.texture:SetAllPoints(mover)
+    mover.texture:SetColorTexture(1, 1, 1)
+    mover.texture:SetVertexColor(0, 1, 0)
+    mover.texture:SetAlpha(0.3)
 
-    local displayNameText = mover:CreateFontString(nil, "OVERLAY")
-    displayNameText:SetAllPoints(mover)
-    displayNameText:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
-    displayNameText:SetText(mover.displayName)
-    mover.displayNameText = displayNameText
+    mover.displayNameText = mover:CreateFontString(nil, "OVERLAY")
+    mover.displayNameText:SetAllPoints(mover)
+    mover.displayNameText:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    mover.displayNameText:SetText(mover.displayName)
 
     table.insert(R.movers, mover)
 
