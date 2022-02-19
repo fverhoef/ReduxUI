@@ -1,12 +1,9 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="Inventory.lua" />
 
     <Frame name="InventoryFrameTemplate" mixin="InventoryMixin" parent="UIParent" inherits="BagFrameTemplate" virtual="true">
         <Size x="384" y="512" />
-        <Anchors>
-            <Anchor point="BOTTOMRIGHT" x="-100" y="100"/>
-        </Anchors>
-
         <Frames>
             <Frame name="$parentCurrency" mixin="InventoryMoneyMixin" parentKey="Money" inherits="MoneyFrameTemplate">
                 <Anchors>

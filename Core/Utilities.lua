@@ -1,7 +1,14 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-R.PlayerInfo = {name = UnitName("player"), guid = UnitGUID("player"), class = select(2, UnitClass("player")), localizedClass = select(1, UnitClass("player")), faction = UnitFactionGroup("player"), realm = GetRealmName()}
+R.PlayerInfo = {
+    name = UnitName("player"),
+    guid = UnitGUID("player"),
+    class = select(2, UnitClass("player")),
+    localizedClass = select(1, UnitClass("player")),
+    faction = UnitFactionGroup("player"),
+    realm = GetRealmName()
+}
 
 R.HiddenFrame = CreateFrame("Frame")
 R.HiddenFrame:Hide()
@@ -157,6 +164,17 @@ function R:Hex(r, g, b)
     return string.format("|cff%02x%02x%02x", r * 255, g * 255, b * 255)
 end
 
+function R:Round(num, idp)
+    if type(num) ~= "number" then return num, idp end
+
+    if idp and idp > 0 then
+        local mult = 10 ^ idp
+        return math.floor(num * mult + 0.5) / mult
+    end
+
+    return math.floor(num + 0.5)
+end
+
 function R:RomanNumeral(number)
     local roman = nil
     if number == 1 then
@@ -261,8 +279,8 @@ end
 function R:GetPoint(frame)
     if not frame then return end
     local a1, af, a2, x, y = frame:GetPoint()
-    if af and af:GetName() then af = af:GetName() end
-    return {a1, af, a2, x, y}
+    if af and af.GetName and af:GetName() then af = af:GetName() end
+    return {a1, af, a2, R:Round(x), R:Round(y)}
 end
 
 function R:GetSize(frame)

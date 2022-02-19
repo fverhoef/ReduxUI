@@ -333,7 +333,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = {enabled = false}
     }),
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        point = {"TOP", "UIParent", "TOP", 0, -300},
+        point = {"TOP", "UIParent", "TOP", 0, -250},
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},

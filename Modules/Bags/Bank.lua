@@ -8,6 +8,7 @@ local REAGENTBANK_SIZE = 98
 BankMixin = {}
 
 function BankMixin:OnLoad()
+    self.config = B.config.bank
     self.isBank = true
     self.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
     if R.isRetail then table.insert(self.BagIDs, 11) end
@@ -36,12 +37,11 @@ function BankMixin:OnLoad()
     table.insert(_G.UISpecialFrames, self:GetName())
     BankFrame:SetParent(R.HiddenFrame)
 
-    R:CreateDragFrame(self, "Bank", {"BOTTOMLEFT", UIParent, "BOTTOMLEFT", 100, 100})
+    R:SetPoint(self, self.config.point)
+    R:CreateDragFrame(self, "Bank", B.defaults.bank.point)
 end
 
-function BankMixin:OnHide()
-    CloseBankFrame()
-end
+function BankMixin:OnHide() CloseBankFrame() end
 
 BankTabMixin = {}
 
