@@ -16,6 +16,8 @@ function AB:LoadCooldownBars()
     AB.cooldowns = {}
     AB.cooldownBars = {}
     for name, config in pairs(AB.config.cooldownBars) do if config.enabled then AB.cooldownBars[name] = AB:CreateCooldownBar(name, config) end end
+    
+    if #AB.cooldownBars <= 0 then return end
 
     AB:RegisterEvent("BAG_UPDATE_COOLDOWN")
     AB:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
@@ -28,6 +30,8 @@ function AB:LoadCooldownBars()
 end
 
 function AB:UpdateCooldownBars()
+    if #AB.cooldownBars <= 0 then return end
+
     for name, cd in pairs(AB.cooldowns) do cd:Update() end
 
     for name, bar in pairs(AB.cooldownBars) do

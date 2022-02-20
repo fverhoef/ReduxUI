@@ -183,7 +183,7 @@ local DEFAULT_UNIT_CONFIG = {
             filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
         }
     },
-    auraWatch = {enabled = false},
+    auraWatch = {enabled = false, iconSize = 12, countFontSize = 9},
     castbar = {
         enabled = true,
         size = {200, 16},
