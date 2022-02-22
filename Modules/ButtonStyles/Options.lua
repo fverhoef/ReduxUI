@@ -101,29 +101,7 @@ R:RegisterModuleOptions(BS, {
     name = L["Button Styles"],
     args = {
         header = {type = "header", name = R.title .. " > Button Styles", order = 0},
-        enabled = {
-            type = "toggle",
-            name = L["Enabled"],
-            order = 1,
-            confirm = function()
-                if BS.config.enabled then
-                    return L["Disabling this module requires a UI reload. Proceed?"]
-                else
-                    return false
-                end
-            end,
-            get = function()
-                return BS.config.enabled
-            end,
-            set = function(_, val)
-                BS.config.enabled = val
-                if not val then
-                    ReloadUI()
-                else
-                    BS:Initialize()
-                end
-            end
-        },
+        enabled = R:CreateModuleEnabledOption(1, nil, "ButtonStyles"),
         lineBreak = {type = "header", name = "", order = 2},
         colors = {
             type = "group",

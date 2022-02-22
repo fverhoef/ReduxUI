@@ -8,9 +8,7 @@ R:RegisterModuleOptions(C, {
     name = L["Chat"],
     args = {
         header = {type = "header", name = R.title .. " > Chat", order = 0},
-        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return C.config.enabled end, function(value) C.config.enabled = value end,
-                                       function() (not C.config.enabled and ReloadUI or C.Initialize)() end,
-                                       function() return C.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
+        enabled = R:CreateModuleEnabledOption(1, nil, "Chat"),
         lineBreak = {type = "header", name = "", order = 2},
         showClassColors = R:CreateToggleOption(L["Show Class Colors"], nil, 3, "full", nil, function() return C.config.showClassColors end, function(value) C.config.showClassColors = value end,
                                                C.UpdateChatFrames),

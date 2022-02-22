@@ -7,29 +7,7 @@ R:RegisterModuleOptions(B, {
     name = "Bags",
     args = {
         header = {type = "header", name = R.title .. " > Bags", order = 0},
-        enabled = {
-            type = "toggle",
-            name = "Enabled",
-            order = 1,
-            confirm = function()
-                if B.config.enabled then
-                    return "Disabling this module requires a UI reload. Proceed?"
-                else
-                    return false
-                end
-            end,
-            get = function()
-                return B.config.enabled
-            end,
-            set = function(_, val)
-                B.config.enabled = val
-                if not val then
-                    ReloadUI()
-                else
-                    B:Initialize()
-                end
-            end
-        },
+        enabled = R:CreateModuleEnabledOption(1, nil, "Bags"),
         lineBreak = {type = "header", name = "", order = 2},
         inventory = {
             type = "group",

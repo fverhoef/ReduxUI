@@ -21,9 +21,7 @@ R:RegisterModuleOptions(TT, {
     name = L["Tooltips"],
     args = {
         header = {type = "header", name = R.title .. " > Tooltips", order = 0},
-        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return TT.config.enabled end, function(value) TT.config.enabled = value end,
-                                       function() (not TT.config.enabled and ReloadUI or C.Initialize)() end,
-                                       function() return TT.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
+        enabled = R:CreateModuleEnabledOption(1, nil, "Tooltips"),
         lineBreak = {type = "header", name = "", order = 2},
         showHealthValues = R:CreateToggleOption(L["Show Health Values"], nil, 10, "double", nil, function() return TT.config.showHealthValues end,
                                                 function(value) TT.config.showHealthValues = value end),

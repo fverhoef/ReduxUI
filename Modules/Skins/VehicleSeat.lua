@@ -2,7 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local S = R.Modules.Skins
 
-function S:StyleTicketStatusFrame()
+function S:StyleVehicleSeatIndicator()
     if not VehicleSeatIndicator or not S.config.vehicleSeat.enabled then return end
 
     VehicleSeatIndicator.config = S.config.vehicleSeat

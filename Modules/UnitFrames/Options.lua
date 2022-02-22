@@ -809,21 +809,7 @@ R:RegisterModuleOptions(UF, {
     childGroups = "tree",
     args = {
         header = {type = "header", name = R.title .. " > Unit Frames", order = 0},
-        enabled = {
-            type = "toggle",
-            name = L["Enabled"],
-            order = 1,
-            confirm = function() return UF.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end,
-            get = function() return UF.config.enabled end,
-            set = function(_, val)
-                UF.config.enabled = val
-                if not val then
-                    ReloadUI()
-                else
-                    UF:Initialize()
-                end
-            end
-        },
+        enabled = R:CreateModuleEnabledOption(1, nil, "UnitFrames"),
         lineBreak1 = {type = "header", name = "", order = 2},
         fonts = {
             type = "group",

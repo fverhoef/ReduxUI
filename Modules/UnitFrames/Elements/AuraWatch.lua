@@ -95,7 +95,7 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit)
 end
 
 if R.isRetail then
-    UF.auraWatch = {}
+    UF.aurawatch = {}
 else
     UF.aurawatch = {
         GLOBAL = {},

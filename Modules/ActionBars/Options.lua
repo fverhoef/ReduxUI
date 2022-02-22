@@ -525,9 +525,7 @@ R:RegisterModuleOptions(AB, function()
         name = L["Action Bars"],
         args = {
             header = {type = "header", name = R.title .. " > Action Bars", order = 0},
-            enabled = R:CreateToggleOption(L["Enabled"], nil, 1, "full", nil, function() return AB.config.enabled end, function(value) AB.config.enabled = value end,
-                                           function() (not AB.config.enabled and ReloadUI or AB.Initialize)() end,
-                                           function() return AB.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
+            enabled = R:CreateModuleEnabledOption(1, nil, "ActionBars"),
             lineBreak = {type = "header", name = "", order = 2},
             toggleKeybindMode = {order = 3, type = "execute", name = L["Toggle Keybind Mode"], desc = L["Enter/leave keybind mode."], func = function() R.Libs.KeyBound:Toggle() end},
             enableArt = R:CreateToggleOption(L["Enable Main Menu Bar Art"], nil, 4, "full", nil, function() return AB.config.mainMenuBarArt.enabled end,

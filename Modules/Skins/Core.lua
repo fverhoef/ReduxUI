@@ -8,7 +8,7 @@ function S:Initialize()
     S:StyleDurabilityFrame()
     S:StyleObjectiveTrackerFrame()
     S:StyleTicketStatusFrame()
-    S:StyleDurabilityFrame()
+    S:StyleVehicleSeatIndicator()
 
     if not R.isRetail then
         S:StyleCharacterFrame()

@@ -8,9 +8,7 @@ R:RegisterModuleOptions(MM, {
     name = "Minimap",
     args = {
         header = {type = "header", name = R.title .. " > Minimap", order = 0},
-        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return MM.config.enabled end, function(value) MM.config.enabled = value end,
-                                       function() (not MM.config.enabled and ReloadUI or MM.Initialize)() end,
-                                       function() return MM.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end),
+        enabled = R:CreateModuleEnabledOption(1, nil, "Minimap"),
         lineBreak1 = {type = "header", name = "", order = 2},
         zoneText = {
             type = "group",
