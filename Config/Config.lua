@@ -19,8 +19,13 @@ R.config.defaults = {
             chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             replaceBlizzardFonts = true
         },
-        movers = {objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}}},
-        borders = { texture = R.media.textures.edgeFiles.borderThick },
+        movers = {
+            durability = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
+            objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}},
+            ticketStatus = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -228, -240}},
+            vehicleSeat = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
+        },
+        borders = {texture = R.media.textures.edgeFiles.borderThick},
         modules = {}
     },
     char = {modules = {}},

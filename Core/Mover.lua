@@ -209,12 +209,43 @@ function R:ResetMovers()
 end
 
 function R:CreateBlizzardMovers()
+    if DurabilityFrame then
+        DurabilityFrame.config = R.config.db.profile.movers.durability
+        DurabilityFrame:SetMovable(true)
+        DurabilityFrame:SetUserPlaced(true)
+        DurabilityFrame:ClearAllPoints()
+        R:SetPoint(DurabilityFrame, unpack(DurabilityFrame.config.point))
+        R:CreateMover(DurabilityFrame, "Durability Frame", DurabilityFrame.config.point)
+        R:SecureHook(DurabilityFrame, "SetPoint", function(self, point, anchor, relativePoint, x, y)
+            if point ~= self.config.point[1] or anchor ~= self.config.point[2] or relativePoint ~= self.config.point[3] then
+                self:ClearAllPoints()
+                R:SetPoint(self, self.config.point)
+            end
+        end)
+    end
     if ObjectiveTrackerFrame then
+        ObjectiveTrackerFrame.config = R.config.db.profile.movers.objectiveTracker
         ObjectiveTrackerFrame:SetMovable(true)
         ObjectiveTrackerFrame:SetUserPlaced(true)
         ObjectiveTrackerFrame:ClearAllPoints()
-        R:SetPoint(ObjectiveTrackerFrame, unpack(R.config.db.profile.movers.objectiveTracker.point))
-        R:CreateMover(ObjectiveTrackerFrame, "Objective Tracker", R.config.defaults.profile.movers.objectiveTracker.point)
+        R:SetPoint(ObjectiveTrackerFrame, unpack(ObjectiveTrackerFrame.config.point))
+        R:CreateMover(ObjectiveTrackerFrame, "Objective Tracker", ObjectiveTrackerFrame.config.point)
+    end
+    if TicketStatusFrame then
+        TicketStatusFrame.config = R.config.db.profile.movers.ticketStatus
+        TicketStatusFrame:SetMovable(true)
+        TicketStatusFrame:SetUserPlaced(true)
+        TicketStatusFrame:ClearAllPoints()
+        R:SetPoint(TicketStatusFrame, unpack(TicketStatusFrame.config.point))
+        R:CreateMover(TicketStatusFrame, "GM Ticket Status", TicketStatusFrame.config.point)
+    end
+    if VehicleSeatIndicator then
+        VehicleSeatIndicator.config = R.config.db.profile.movers.vehicleSeat
+        VehicleSeatIndicator:SetMovable(true)
+        VehicleSeatIndicator:SetUserPlaced(true)
+        VehicleSeatIndicator:ClearAllPoints()
+        R:SetPoint(VehicleSeatIndicator, unpack(VehicleSeatIndicator.config.point))
+        R:CreateMover(VehicleSeatIndicator, "Vehicle Seat", VehicleSeatIndicator.config.point)
     end
 end
 
