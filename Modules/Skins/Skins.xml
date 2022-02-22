@@ -1,8 +1,14 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Core.lua"/>
     <Script file="Config.lua"/>
-    <Script file="Options.lua"/>
+    <Script file="Options.lua"/>    
     
+    <Script file="Durability.lua"/>
+    <Script file="ObjectiveTracker.lua"/>
+    <Script file="TicketStatus.lua"/>
+    <Script file="VehicleSeat.lua"/>
+
+    <!-- TBC -->
     <Script file="CharacterFrame.lua"/>
     <Script file="ClassTrainerFrame.lua"/>
     <Script file="FriendsFrame.lua"/>

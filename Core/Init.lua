@@ -67,7 +67,6 @@ R.ChatCommands = {
 function R:OnInitialize()
     R:SetupConfig()
     R:UpdateBlizzardFonts()
-    R:CreateBlizzardMovers()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
         local arg1, funcArgs = strsplit(" ", args, 2)
