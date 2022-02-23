@@ -37,8 +37,8 @@ function BankMixin:OnLoad()
     table.insert(_G.UISpecialFrames, self:GetName())
     BankFrame:SetParent(R.HiddenFrame)
 
-    R:SetPoint(self, self.config.point)
-    R:CreateMover(self, "Bank", B.defaults.bank.point)
+    self:SetNormalizedPoint(self.config.point)
+    self:CreateMover("Bank", B.defaults.bank.point)
 end
 
 function BankMixin:OnHide() CloseBankFrame() end

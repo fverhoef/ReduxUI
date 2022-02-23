@@ -26,7 +26,7 @@ function UF:ConfigureResurrectIndicator()
 
     self.ResurrectIndicator:SetSize(unpack(config.size))
     self.ResurrectIndicator:ClearAllPoints()
-    R:SetPoint(self.ResurrectIndicator, unpack(config.point))
+    self.ResurrectIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureResurrectIndicator", UF.ConfigureResurrectIndicator)

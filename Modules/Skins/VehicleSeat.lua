@@ -9,6 +9,6 @@ function S:StyleVehicleSeatIndicator()
     VehicleSeatIndicator:SetMovable(true)
     VehicleSeatIndicator:SetUserPlaced(true)
     VehicleSeatIndicator:ClearAllPoints()
-    R:SetPoint(VehicleSeatIndicator, unpack(VehicleSeatIndicator.config.point))
-    R:CreateMover(VehicleSeatIndicator, "Vehicle Seat", VehicleSeatIndicator.config.point)
+    VehicleSeatIndicator:SetNormalizedPoint(unpack(VehicleSeatIndicator.config.point))
+    VehicleSeatIndicator:CreateMover("Vehicle Seat", VehicleSeatIndicator.config.point)
 end

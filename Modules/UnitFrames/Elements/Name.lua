@@ -34,7 +34,7 @@ function UF:ConfigureName()
 
     self.Name:ClearAllPoints()
     self.Name:SetSize(unpack(config.size))
-    R:SetPoint(self.Name, unpack(config.point))
+    self.Name:SetNormalizedPoint(unpack(config.point))
 
     if config.tag then
         self:Tag(self.Name, config.tag)

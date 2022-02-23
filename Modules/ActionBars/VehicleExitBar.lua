@@ -28,17 +28,17 @@ function AB:CreateVehicleExitBar()
     button:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square")
     button:GetHighlightTexture():SetBlendMode("ADD")
 
-    R:CreateBorder(button, {1, 0, 0}, nil, 2)
+    button:CreateBorder({1, 0, 0}, nil, 2)
 
     bar.buttons[1] = button
 
     bar.Update = function(self) AB.VehicleExitButton_OnEvent(button) end
 
-    R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
-    R:CreateBorder(bar)
-    R:CreateShadow(bar)
-    R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateMover(bar, bar:GetName(), AB.defaults.vehicleExitBar.point)
+    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBorder()
+    bar:CreateShadow()
+    bar:CreateFader(bar.config.fader, bar.buttons)
+    bar:CreateMover(bar:GetName(), AB.defaults.vehicleExitBar.point)
 
     return bar
 end

@@ -9,6 +9,6 @@ function S:StyleTicketStatusFrame()
     TicketStatusFrame:SetMovable(true)
     TicketStatusFrame:SetUserPlaced(true)
     TicketStatusFrame:ClearAllPoints()
-    R:SetPoint(TicketStatusFrame, unpack(TicketStatusFrame.config.point))
-    R:CreateMover(TicketStatusFrame, "GM Ticket Status", TicketStatusFrame.config.point)
+    TicketStatusFrame:SetNormalizedPoint(unpack(TicketStatusFrame.config.point))
+    TicketStatusFrame:CreateMover("GM Ticket Status", TicketStatusFrame.config.point)
 end

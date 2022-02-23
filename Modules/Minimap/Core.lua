@@ -22,14 +22,14 @@ function MM:StyleMinimap()
         RegisterStateDriver(MinimapCluster, "visibility", MM.config.visibility)
     end
 
-    R:CreateFader(MinimapCluster, MM.config.fader)
-    R:CreateMover(MinimapCluster, "Minimap", MM.config.point)
+    MinimapCluster:CreateFader(MM.config.fader)
+    MinimapCluster:CreateMover("Minimap", MM.config.point)
 
     Minimap:ClearAllPoints()
     Minimap:SetPoint("TOP", 0, -30)
     Minimap:SetSize(width, height)
-    R:CreateBorder(Minimap)
-    R:CreateShadow(Minimap)
+    Minimap:CreateBorder()
+    Minimap:CreateShadow()
 
     MinimapZoneText:SetSize(190, 10)
     MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -8)

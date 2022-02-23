@@ -46,9 +46,9 @@ function AB:CreateZoneBar()
     end)
 
     -- R:Disable(ZoneAbilityFrame.Style)
-    R:CreateMover(bar, "ZoneBar", AB.defaults.zoneBar.point)
-    R:CreateFader(bar, bar.config.fader)
-    R:SetPoint(bar, bar.config.point)
+    bar:CreateMover("ZoneBar", AB.defaults.zoneBar.point)
+    bar:CreateFader(bar.config.fader)
+    bar:SetNormalizedPoint(bar.config.point)
 
     bar:Update()
 

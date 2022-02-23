@@ -28,7 +28,7 @@ function UF:ConfigureGroupRoleIndicator()
 
     self.GroupRoleIndicator:SetSize(unpack(config.size))
     self.GroupRoleIndicator:ClearAllPoints()
-    R:SetPoint(self.GroupRoleIndicator, unpack(config.point))
+    self.GroupRoleIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureGroupRoleIndicator", UF.ConfigureGroupRoleIndicator)

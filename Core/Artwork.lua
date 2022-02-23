@@ -29,7 +29,7 @@ function R:CreateBackdrop(self, backdropInfo, color, borderColor)
     backdrop:SetBackdrop(backdropInfo)
     backdrop:SetBackdropColor(unpack(color))
     backdrop:SetBackdropBorderColor(unpack(borderColor))
-    R:SetOutside(backdrop, self, 0, 0)
+    backdrop:SetOutside(self, 0, 0)
     backdrop:SetFrameLevel(math.max(0, self:GetFrameLevel() - 1))
     backdrop:SetFrameStrata(self:GetFrameStrata())
 
@@ -51,7 +51,7 @@ function R:CreateBorder(self, color, size, offset, frameLevel, texture)
     border:SetBackdropBorderColor(unpack(color))
     border:SetFrameLevel(frameLevel)
     border:SetFrameStrata(self:GetFrameStrata())
-    R:SetOutside(border, self, offset, offset)
+    border:SetOutside(self, offset, offset)
 
     border.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
 
@@ -71,7 +71,7 @@ function R:CreateShadow(self, size, color, offset)
     shadow:SetBackdropBorderColor(unpack(color))
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
-    R:SetOutside(shadow, self, offset, offset)
+    shadow:SetOutside(self, offset, offset)
 
     self.Shadow = shadow
 end
@@ -89,7 +89,7 @@ function R:CreateInlay(self, color, size, offset, frameLevel)
     inlay:SetBackdrop({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = size})
     inlay:SetBackdropBorderColor(unpack(color))
     inlay:SetFrameLevel(frameLevel)
-    R:SetOutside(inlay, self, offset, offset)
+    inlay:SetOutside(self, offset, offset)
 
     self.Inlay = inlay
 end

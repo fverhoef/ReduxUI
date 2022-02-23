@@ -28,7 +28,7 @@ function UF:ConfigureRaidRoleIndicator()
 
     self.RaidRoleIndicator:SetSize(unpack(config.size))
     self.RaidRoleIndicator:ClearAllPoints()
-    R:SetPoint(self.RaidRoleIndicator, unpack(config.point))
+    self.RaidRoleIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureRaidRoleIndicator", UF.ConfigureRaidRoleIndicator)

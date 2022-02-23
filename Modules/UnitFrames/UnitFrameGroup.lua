@@ -7,7 +7,7 @@ function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleF
     if not config.enabled then return end
 
     local parent = CreateFrame("Frame", addonName .. name, UIParent)
-    R:SetPoint(parent, unpack(config.point))
+    parent:SetNormalizedPoint(unpack(config.point))
     parent:Show()
     parent.config = config
     parent.frames = {}
@@ -21,7 +21,7 @@ function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleF
         parent.frames[i] = frame
     end
 
-    R:CreateMover(parent, name, defaultConfig.point)
+    parent:CreateMover(name, defaultConfig.point)
 
     _G.Mixin(parent, UnitFrameGroupMixin)
     parent:Update()
@@ -45,7 +45,7 @@ function UnitFrameGroupMixin:Update()
 
     for i, frame in ipairs(self.frames) do
         if (i == 1) then
-            R:SetPoint(frame, self.config.unitAnchorPoint)
+            frame:SetNormalizedPoint(self.config.unitAnchorPoint)
         else
             local offsetX, offsetY = 0, 0
             local relativePoint
@@ -62,7 +62,7 @@ function UnitFrameGroupMixin:Update()
                 relativePoint = "LEFT"
                 offsetX = -self.config.unitSpacing
             end
-            R:SetPoint(frame, self.config.unitAnchorPoint, self.frames[i - 1], relativePoint, offsetX, offsetY)
+            frame:SetNormalizedPoint(self.config.unitAnchorPoint, self.frames[i - 1], relativePoint, offsetX, offsetY)
         end
 
         frame:Update()

@@ -29,7 +29,7 @@ function AB:CreateFlyoutBar(name, config)
     if config.tbc and R.isRetail or not config.enabled or (config.class ~= R.PlayerInfo.class and (config.class or "") ~= "") then return end
 
     local bar = CreateFrame("Frame", addonName .. "_" .. name, _G.UIParent)
-    R:CreateBackdrop(bar, "Transparent")
+    bar:CreateBackdrop("Transparent")
     bar.config = config
     bar.buttons = {}
     bar.name = name
@@ -57,7 +57,7 @@ function AB:CreateFlyoutBar(name, config)
     end)
 
     local default =  AB.defaults.flyoutBars[name] or config
-    R:CreateMover(bar, name, default.point)
+    bar:CreateMover(name, default.point)
     AB:UpdateFlyoutBar(bar)
 
     return bar
@@ -129,7 +129,7 @@ function AB:UpdateFlyoutBar(bar)
     local height = bar.config.buttonSize
 
     bar:SetSize(width, height)
-    R:SetPoint(bar, unpack(bar.config.point))
+    bar:SetNormalizedPoint(unpack(bar.config.point))
 end
 
 function AB:GetButtonActions()

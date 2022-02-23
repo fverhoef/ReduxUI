@@ -28,7 +28,7 @@ function UF:ConfigureLeaderIndicator()
 
     self.LeaderIndicator:SetSize(unpack(config.size))
     self.LeaderIndicator:ClearAllPoints()
-    R:SetPoint(self.LeaderIndicator, unpack(config.point))
+    self.LeaderIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureLeaderIndicator", UF.ConfigureLeaderIndicator)

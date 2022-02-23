@@ -9,6 +9,6 @@ function S:StyleObjectiveTrackerFrame()
     ObjectiveTrackerFrame:SetMovable(true)
     ObjectiveTrackerFrame:SetUserPlaced(true)
     ObjectiveTrackerFrame:ClearAllPoints()
-    R:SetPoint(ObjectiveTrackerFrame, unpack(ObjectiveTrackerFrame.config.point))
-    R:CreateMover(ObjectiveTrackerFrame, "Objective Tracker", ObjectiveTrackerFrame.config.point)
+    ObjectiveTrackerFrame:SetNormalizedPoint(unpack(ObjectiveTrackerFrame.config.point))
+    ObjectiveTrackerFrame:CreateMover("Objective Tracker", ObjectiveTrackerFrame.config.point)
 end

@@ -31,7 +31,7 @@ function UF:ConfigureReadyCheckIndicator()
 
     self.ReadyCheckIndicator:SetSize(unpack(config.size))
     self.ReadyCheckIndicator:ClearAllPoints()
-    R:SetPoint(self.ReadyCheckIndicator, unpack(config.point))
+    self.ReadyCheckIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureReadyCheckIndicator", UF.ConfigureReadyCheckIndicator)

@@ -50,11 +50,11 @@ function AB:CreatePetBar()
     bar:RegisterEvent("UNIT_FLAGS")
     bar:RegisterEvent("UNIT_PET")
 
-    R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
-    R:CreateBorder(bar)
-    R:CreateShadow(bar)
-    R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateMover(bar, bar:GetName(), AB.defaults.petBar.point)
+    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBorder()
+    bar:CreateShadow()
+    bar:CreateFader(bar.config.fader, bar.buttons)
+    bar:CreateMover(bar:GetName(), AB.defaults.petBar.point)
 
     return bar
 end

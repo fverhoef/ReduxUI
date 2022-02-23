@@ -9,4 +9,5 @@
     <Script file="SpellDatabase.lua"/>
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
+    <Script file="Api.lua"/>
 </Ui>

@@ -12,7 +12,7 @@ function UF:CreateAuraHighlight()
     self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
     self.AuraHighlight:SetBlendMode("ADD")
     self.AuraHighlight.PostUpdate = UF.AuraHighlight_PostUpdate
-    R:SetInside(self.AuraHighlight, self)
+    self.AuraHighlight:SetInside(self)
 
     self.AuraHighlightBackdrop = false
     self.AuraHighlightFilter = false

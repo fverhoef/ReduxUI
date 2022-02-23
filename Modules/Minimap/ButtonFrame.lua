@@ -93,7 +93,7 @@ local function SkinMinimapButton(button)
                 region:SetAlpha(0)
             else
                 region:ClearAllPoints()
-                R:SetInside(region, nil, 3, 3)
+                region:SetInside(nil, 3, 3)
                 region.SetPoint = function() return end
 
                 -- replace icons that don't display properly

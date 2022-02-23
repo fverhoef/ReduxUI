@@ -15,7 +15,7 @@ function UF:CreateAuraWatch()
     self.AuraWatch.showDebuffType = true
     self.AuraWatch.PostCreateIcon = UF.AuraWatch_PostCreateIcon
     self.AuraWatch.PostUpdateIcon = UF.AuraWatch_PostUpdateIcon
-    R:SetInside(self.AuraWatch, self.Health)
+    self.AuraWatch:SetInside(self.Health)
 
     return self.AuraWatch
 end

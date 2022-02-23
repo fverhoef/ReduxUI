@@ -80,20 +80,20 @@ function BS:StyleActionButton(button, replace)
     local buttonName = button:GetName()
     local config = BS.config.actions
 
-    -- R:CreateShadow(button)
-    R:CreateBackdrop(button, {bgFile = config.backdrop, edgeSize = 2, insets = {left = 2, right = 2, top = 2, bottom = 2}})
+    -- button:CreateShadow()
+    button:CreateBackdrop({bgFile = config.backdrop, edgeSize = 2, insets = {left = 2, right = 2, top = 2, bottom = 2}})
     -- button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
 
     local icon = _G[buttonName .. "Icon"] or button.icon
     if icon then
         icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        R:SetInside(icon, button, 1, 1)
+        icon:SetInside(button, 1, 1)
     end
 
     local cooldown = _G[buttonName .. "Cooldown"]
     if cooldown then
         cooldown:SetFrameLevel(cooldown:GetParent():GetFrameLevel())
-        R:SetInside(cooldown, button, 1, 1)
+        cooldown:SetInside(button, 1, 1)
     end
 
     local overlay = CreateFrame("Frame", nil, button)
@@ -147,10 +147,10 @@ function BS:UpdateActionButton(button)
         pushedTexture:SetVertexColor(unpack(BS.config.colors.pushed))
 
         icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        R:SetInside(icon, button, 2, 2)
+        icon:SetInside(button, 2, 2)
     else
         icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
-        R:SetInside(icon, button, 0, 0)
+        icon:SetInside(button, 0, 0)
     end
 
     local count = _G[buttonName .. "Count"]
@@ -185,8 +185,8 @@ function BS:StyleAllActionButtons()
     for i = 1, _G.NUM_PET_ACTION_SLOTS do BS:StyleActionButton(_G["PetActionButton" .. i]) end
     for i = 1, _G.NUM_STANCE_SLOTS do BS:StyleActionButton(_G["StanceButton" .. i]) end
 
-    R:CreateBorder(_G.MainMenuBarVehicleLeaveButton, nil, nil, 0)
-    -- R:CreateShadow(_G.MainMenuBarVehicleLeaveButton)
+    _G.MainMenuBarVehicleLeaveButton:CreateBorder(nil, nil, 0)
+    -- _G.MainMenuBarVehicleLeaveButton:CreateShadow()
 
     if not R.isRetail then
         BS:SecureHook("ActionButton_ShowGrid", ActionButton_ShowGrid)

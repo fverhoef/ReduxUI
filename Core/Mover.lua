@@ -8,13 +8,13 @@ MoverMixin = {}
 
 function MoverMixin:OnMouseWheel(offset)
     if IsShiftKeyDown() then
-        local point = R:GetPoint(self.frame)
+        local point = self.frame:GetNormalizedPoint()
         point[5] = point[5] + offset
-        R:SetPoint(self.frame, point)
+        self.frame:SetNormalizedPoint(point)
     elseif IsControlKeyDown() then
-        local point = R:GetPoint(self.frame)
+        local point = self.frame:GetNormalizedPoint()
         point[4] = point[4] + offset
-        R:SetPoint(self.frame, point)
+        self.frame:SetNormalizedPoint(point)
     end
 
     if GameTooltip:IsOwned(self) then self:OnEnter() end
@@ -31,11 +31,11 @@ end
 
 function MoverMixin:OnDragStop()
     self.frame:StopMovingOrSizing()
-    if self.frame.config and self.frame.config.point then self.frame.config.point = R:GetPoint(self.frame) end
+    if self.frame.config and self.frame.config.point then self.frame.config.point = self.frame:GetNormalizedPoint() end
 end
 
 function MoverMixin:OnEnter()
-    local point = R:GetPoint(self.frame)
+    local point = self.frame:GetNormalizedPoint()
 
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
     GameTooltip:AddLine(self.displayName, 0, 1, 0.5, 1, 1, 1)
@@ -46,12 +46,12 @@ function MoverMixin:OnEnter()
     GameTooltip:AddLine("|cffffd100X:|r " .. point[4] .. ", |cffffd100Y:|r " .. point[5], 1, 1, 1)
     GameTooltip:Show()
 
-    R:FadeIn(self, 0.3, self:GetAlpha(), 1)
+    self:FadeIn(0.3, self:GetAlpha(), 1)
 end
 
 function MoverMixin:OnLeave()
     GameTooltip:Hide()
-    R:FadeOut(self, 0.3, self:GetAlpha(), FADED_MOVER_ALPHA)
+    self:FadeOut(0.3, self:GetAlpha(), FADED_MOVER_ALPHA)
 end
 
 function MoverMixin:OnShow()
@@ -62,7 +62,7 @@ function MoverMixin:OnShow()
 
     self.displayNameText:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
     if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then RegisterStateDriver(self.frame, "visibility", "show") end
-    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then R:FadeIn(self.frame) end
+    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then self.frame:FadeIn() end
 end
 
 function MoverMixin:OnHide()
@@ -86,7 +86,7 @@ end
 function MoverMixin:ResetPoint()
     if not self.frame or not self.frame.defaultPoint or InCombatLockdown() then return end
     self.frame:ClearAllPoints()
-    R:SetPoint(self.frame, self.frame.defaultPoint)
+    self.frame:SetNormalizedPoint(self.frame.defaultPoint)
     if self.frame.config then self.frame.config.point = self.frame.defaultPoint end
 end
 
@@ -112,7 +112,7 @@ end
 function R:CreateMover(frame, displayName, defaultPoint, width, height, point)
     if not frame or frame.Mover then return end
 
-    frame.defaultPoint = defaultPoint or R:GetPoint(frame)
+    frame.defaultPoint = defaultPoint or frame:GetNormalizedPoint()
 
     local name = frame:GetName()
     local mover = Mixin(CreateFrame("Frame", name and name .. "Mover" or nil), MoverMixin)
@@ -162,7 +162,7 @@ function R:CreateMover(frame, displayName, defaultPoint, width, height, point)
     frame:SetMovable(true)
 
     if frame:IsResizable() then
-        frame.defaultSize = R:GetSize(frame)
+        frame.defaultSize = {frame.GetSize()}
         frame.Mover:RegisterForDrag("LeftButton", "RightButton")
     end
 end
@@ -255,8 +255,8 @@ function R:CreateMoverSettingsFrame()
     settings.resetButton:SetScript("OnClick", R.ResetMovers)
     settings.resetButton.Text:SetText(R.L["Reset All Frames"])
 
-    R:CreateBorder(settings)
-    R:CreateShadow(settings)
+    settings:CreateBorder()
+    settings:CreateShadow()
 
     settings.highlightIndex = 1
     settings.HighlightMovers = function(self)
@@ -282,7 +282,7 @@ function R:CreateMoverSettingsFrame()
 
             self.highlightIndex = self.highlightIndex + 1
         else
-            for _, mover in next, R.movers do R:FadeIn(mover, 0.3, mover:GetAlpha(), 1) end
+            for _, mover in next, R.movers do mover:FadeIn(0.3, mover:GetAlpha(), 1) end
             self.mover = nil
         end
     end

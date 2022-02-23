@@ -100,11 +100,11 @@ function AB:CreateActionBar(id)
 
     RegisterStateDriver(bar, "page", page)
 
-    R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
-    R:CreateBorder(bar)
-    R:CreateShadow(bar)
-    R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateMover(bar, bar:GetName(), AB.defaults["actionBar" .. id].point)
+    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBorder()
+    bar:CreateShadow()
+    bar:CreateFader(bar.config.fader, bar.buttons)
+    bar:CreateMover(bar:GetName(), AB.defaults["actionBar" .. id].point)
 
     return bar
 end
@@ -270,7 +270,7 @@ function AB:ConfigureActionBar(bar)
 
         button:SetSize(width, height)
         button:ClearAllPoints()
-        R:SetPoint(button, point)
+        button:SetNormalizedPoint(point)
 
         if i > buttons then
             button:Hide()
@@ -296,7 +296,7 @@ function AB:ConfigureActionBar(bar)
     bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
 
     bar:ClearAllPoints()
-    R:SetPoint(bar, bar.config.point)
+    bar:SetNormalizedPoint(bar.config.point)
 
     bar.Backdrop:SetShown(bar.config.backdrop)
     bar.Border:SetShown(bar.config.border)

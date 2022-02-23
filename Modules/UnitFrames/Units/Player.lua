@@ -26,8 +26,8 @@ function UF:CreatePlayer()
     if (R.PlayerInfo.class == "SHAMAN") then self:CreateTotems() end
     if (R.PlayerInfo.class == "MONK") then self:CreateStagger() end
 
-    R:CreateMover(self.Power, "PlayerPower", self.defaults.power.point)
-    R:CreateMover(self.Castbar, "PlayerCastbar", self.defaults.castbar.point)
+    self.Power:CreateMover("PlayerPower", self.defaults.power.point)
+    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
 
     self.Update = UF.UpdatePlayer
 end

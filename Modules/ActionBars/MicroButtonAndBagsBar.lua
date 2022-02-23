@@ -16,7 +16,7 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     if not R.isRetail then table.insert(self.buttonList, KeyRingButton) end
     for i = 1, #MICRO_BUTTONS do table.insert(self.buttonList, _G[MICRO_BUTTONS[i]]) end
     self:UpdateMicroButtonsParent()
-    R:CreateFader(self, AB.config.microButtonAndBags.fader, self.buttonList)
+    self:CreateFader(AB.config.microButtonAndBags.fader, self.buttonList)
 
     MainMenuBarBackpackButton:ClearAllPoints()
     MainMenuBarBackpackButton:SetPoint("TOPRIGHT", self, "TOPRIGHT", -4, -4)

@@ -32,14 +32,14 @@ function BS:StyleAuraButton(button)
         button.Border = nil
     end
 
-    R:CreateBorder(button, nil, nil, 0)
-    --R:CreateShadow(button)
+    button:CreateBorder(nil, nil, 0)
+    --button:CreateShadow()
     --button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
 
     local icon = _G[buttonName .. "Icon"] or button.icon
     if icon then
         icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        R:SetInside(icon, button, 3, 3)
+        icon:SetInside(button, 3, 3)
     end
 
     local overlay = CreateFrame("Frame", nil, button)
@@ -63,7 +63,7 @@ function BS:StyleAuraButton(button)
     local cooldown = _G[buttonName .. "Cooldown"] or button.cd
     if cooldown then
         cooldown:SetParent(overlay)
-        R:SetInside(cooldown, button, 1, 1)
+        cooldown:SetInside(button, 1, 1)
     end
 
     BS.auraButtons[button] = true

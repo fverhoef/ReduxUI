@@ -19,8 +19,8 @@ function UF:CreateClassPower()
         classPower:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
         classPower:SetBackdropColor(0, 0, 0, 0.70)
 
-        R:CreateBorder(classPower, nil, 8, 2, classPower:GetFrameLevel() + 2)
-        R:CreateInlay(classPower)
+        classPower:CreateBorder(nil, 8, 2, classPower:GetFrameLevel() + 2)
+        classPower:CreateInlay()
 
         self.ClassPower[i] = classPower
     end

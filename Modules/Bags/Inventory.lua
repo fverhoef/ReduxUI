@@ -21,8 +21,8 @@ function InventoryMixin:OnLoad()
     table.insert(_G.UISpecialFrames, self:GetName())
     for i = 1, NUM_CONTAINER_FRAMES do _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame) end
 
-    R:SetPoint(self, self.config.point)
-    R:CreateMover(self, "Inventory", B.defaults.inventory.point)
+    self:SetNormalizedPoint(self.config.point)
+    self:CreateMover("Inventory", B.defaults.inventory.point)
 
     B:SecureHook("OpenAllBags", B.ShowInventory)
     B:SecureHook("CloseAllBags", B.HideInventory)

@@ -28,7 +28,7 @@ function S:StyleFriendsFrame()
                         button.icon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[classFileName]))
                     end
 
-                    R:Offset(button.name, 30, 0)
+                    button.name:Offset(30, 0)
                 end
             end
         end

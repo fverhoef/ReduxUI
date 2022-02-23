@@ -28,7 +28,7 @@ function UF:ConfigureAssistantIndicator()
 
     self.AssistantIndicator:SetSize(unpack(config.size))
     self.AssistantIndicator:ClearAllPoints()
-    R:SetPoint(self.AssistantIndicator, unpack(config.point))
+    self.AssistantIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigureAssistantIndicator", UF.ConfigureAssistantIndicator)

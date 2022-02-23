@@ -6,15 +6,15 @@ local oUF = ns.oUF or oUF
 function UF:StyleBuffFrame()
     _G.BuffFrame.config = UF.config.buffFrame
     _G.BuffFrame:ClearAllPoints()
-    R:SetPoint(_G.BuffFrame, unpack(UF.config.buffFrame.point))
-    R:CreateMover(_G.BuffFrame, "Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
+    _G.BuffFrame:SetNormalizedPoint(unpack(UF.config.buffFrame.point))
+    _G.BuffFrame:CreateMover("Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
     UF:SecureHook("BuffFrame_Update", UF.BuffFrame_Update)
 end
 
 function UF:UIParent_UpdateTopFramePositions()
     _G.BuffFrame:ClearAllPoints()
-    R:SetPoint(_G.BuffFrame, unpack(UF.config.buffFrame.point))
+    _G.BuffFrame:SetNormalizedPoint(unpack(UF.config.buffFrame.point))
 end
 
 function UF:BuffFrame_Update()

@@ -28,7 +28,7 @@ function UF:ConfigurePhaseIndicator()
 
     self.PhaseIndicator:SetSize(unpack(config.size))
     self.PhaseIndicator:ClearAllPoints()
-    R:SetPoint(self.PhaseIndicator, unpack(config.point))
+    self.PhaseIndicator:SetNormalizedPoint(unpack(config.point))
 end
 
 oUF:RegisterMetaFunction("ConfigurePhaseIndicator", UF.ConfigurePhaseIndicator)

@@ -372,14 +372,14 @@ local function UpdateCooldownBar(bar)
 
     bar:SetShown(count > 0)
 
-    R:CreateFader(bar, bar.config.fader, bar.buttons)
+    bar:CreateFader(bar.config.fader, bar.buttons)
 end
 
 local function ConfigureCooldownBar(bar)
     if not bar then return end
 
     bar:SetSize(unpack(bar.config.size))
-    R:SetPoint(bar, bar.config.point)
+    bar:SetNormalizedPoint(bar.config.point)
     bar.Backdrop:SetShown(bar.config.backdrop)
     bar.Border:SetShown(bar.config.border)
     bar.Shadow:SetShown(bar.config.shadow)
@@ -431,9 +431,9 @@ end
 
 function AB:CreateCooldownBar(name, config)
     local bar = CreateFrame("Frame", addonName .. "_" .. name, UIParent)
-    R:CreateBackdrop(bar, {bgFile = R.media.textures.blank})
-    R:CreateBorder(bar)
-    R:CreateShadow(bar)
+    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBorder()
+    bar:CreateShadow()
 
     bar.config = config
     bar.buttons = {}
@@ -442,8 +442,8 @@ function AB:CreateCooldownBar(name, config)
     bar.Configure = ConfigureCooldownBar
     bar.Update = UpdateCooldownBar
 
-    R:CreateFader(bar, bar.config.fader, bar.buttons)
-    R:CreateMover(bar, addonName .. "_" .. name, AB.defaults.cooldownBars[name].point)
+    bar:CreateFader(bar.config.fader, bar.buttons)
+    bar:CreateMover(addonName .. "_" .. name, AB.defaults.cooldownBars[name].point)
     bar:Configure()
     bar:Update()
 

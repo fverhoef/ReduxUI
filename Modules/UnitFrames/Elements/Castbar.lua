@@ -8,7 +8,7 @@ function UF:CreateCastbar()
 
     self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self)
     self.Castbar:SetOrientation("HORIZONTAL")
-    R:CreateBorder(self.Castbar, nil, nil, nil, self.Castbar:GetFrameLevel() + 1)
+    self.Castbar:CreateBorder(nil, nil, nil, self.Castbar:GetFrameLevel() + 1)
 
     self.Castbar.bg = self.Castbar:CreateTexture("$parentBackground", "BACKGROUND")
     self.Castbar.bg:SetAllPoints()
@@ -33,7 +33,7 @@ function UF:CreateCastbar()
     self.Castbar.Time:SetPoint("RIGHT", self.Castbar, -2, 0)
 
     self.Castbar.IconHolder = CreateFrame("Frame", "$parentIconHolder", self.Castbar)
-    R:CreateBorder(self.Castbar.IconHolder, nil, nil, nil, self.Castbar.IconHolder:GetFrameLevel() + 1)
+    self.Castbar.IconHolder:CreateBorder(nil, nil, nil, self.Castbar.IconHolder:GetFrameLevel() + 1)
     self.Castbar.Icon = self.Castbar:CreateTexture("$parentIcon", "BACKGROUND", nil, -8)
     self.Castbar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     self.Castbar.Icon:SetAllPoints(self.Castbar.IconHolder)
@@ -66,7 +66,7 @@ function UF:ConfigureCastbar()
     if not config.detached then config.point[5] = nil end
     self.Castbar:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
     self.Castbar:ClearAllPoints()
-    R:SetPoint(self.Castbar, config.point)
+    self.Castbar:SetNormalizedPoint(config.point)
 
     self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
     self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
