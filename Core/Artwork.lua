@@ -19,7 +19,7 @@ R.DEFAULT_SEPARATOR_OFFSET = 2
 R.DEFAULT_SEPARATOR_POSITION = "TOP"
 R.VALID_SEPARATOR_POSITIONS = {["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true}
 
-function R:CreateBackdrop(self, backdropInfo, color, borderColor)
+function R:CreateBackdrop(backdropInfo, color, borderColor)
     local backdrop = self.Backdrop
     if not backdrop then backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -36,7 +36,7 @@ function R:CreateBackdrop(self, backdropInfo, color, borderColor)
     self.Backdrop = backdrop
 end
 
-function R:CreateBorder(self, color, size, offset, frameLevel, texture)
+function R:CreateBorder(color, size, offset, frameLevel, texture)
     local border = self.Border
     if not border then border = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -58,7 +58,7 @@ function R:CreateBorder(self, color, size, offset, frameLevel, texture)
     self.Border = border
 end
 
-function R:CreateShadow(self, size, color, offset)
+function R:CreateShadow(size, color, offset)
     local shadow = self.Shadow
     if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -76,7 +76,7 @@ function R:CreateShadow(self, size, color, offset)
     self.Shadow = shadow
 end
 
-function R:CreateInlay(self, color, size, offset, frameLevel)
+function R:CreateInlay(color, size, offset, frameLevel)
     local inlay = self.Inlay
     if not inlay then inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 
@@ -94,7 +94,7 @@ function R:CreateInlay(self, color, size, offset, frameLevel)
     self.Inlay = inlay
 end
 
-function R:CreateSeparator(self, color, size, offset, frameLevel, position)
+function R:CreateSeparator(color, size, offset, frameLevel, position)
     local separator = self.Separator
     if not separator then separator = CreateFrame("Frame", nil, self) end
     if not separator.Texture then separator.Texture = separator:CreateTexture("BORDER") end

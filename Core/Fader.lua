@@ -1,7 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-function R:FadeIn(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+function R:FadeIn(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = false
 
     if InCombatLockdown() then
@@ -22,7 +22,7 @@ function R:FadeIn(self, timeToFade, startAlpha, endAlpha, finishedFunc, finished
     })
 end
 
-function R:FadeOut(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
+function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1, finishedArg2, finishedArg3, finishedArg4)
     self.faded = true
 
     if InCombatLockdown() then
@@ -43,7 +43,7 @@ function R:FadeOut(self, timeToFade, startAlpha, endAlpha, finishedFunc, finishe
     })
 end
 
-function R:CreateFader(self, faderConfig, children)
+function R:CreateFader(faderConfig, children)
     if not self then return end
 
     if not self.faderConfig then

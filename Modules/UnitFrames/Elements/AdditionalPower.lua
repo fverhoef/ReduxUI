@@ -52,7 +52,7 @@ function UF:ConfigureAdditionalPower()
         if config.value.tag then self:Tag(self.AdditionalPower.Value, config.value.tag) end
 
         self.AdditionalPower.Value:ClearAllPoints()
-        R:SetPoint(self.AdditionalPower.Value, unpack(config.value.point))
+        self.AdditionalPower.Value:SetNormalizedPoint(config.value.point)
     else
         self.Power.Value:Hide()
     end

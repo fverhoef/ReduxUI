@@ -11,14 +11,6 @@ R.DARK_GRAY_FONT_COLOR = {89 / 255, 89 / 255, 89 / 255}
 R.config = {}
 R.config.defaults = {
     profile = {
-        fonts = {
-            damage = R.Libs.SharedMedia:Fetch("font", "Adventure"),
-            normal = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            number = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            replaceBlizzardFonts = true
-        },
         borders = {texture = R.media.textures.edgeFiles.borderThick},
         modules = {}
     },

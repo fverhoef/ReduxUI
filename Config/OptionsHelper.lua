@@ -37,7 +37,7 @@ function R:CreateColorOption(name, desc, order, hidden, hasAlpha, default, get, 
     }
 end
 
-function R:CreateFontOption(name, desc, order, hidden, get, set, postSet)
+function R:CreateFontOption(name, desc, order, hidden, get, set, postSet, confirm)
     return {
         type = "select",
         name = name,
@@ -50,7 +50,8 @@ function R:CreateFontOption(name, desc, order, hidden, get, set, postSet)
         set = function(_, key)
             set(R.Libs.SharedMedia:Fetch("font", key))
             if postSet then postSet() end
-        end
+        end,
+        confirm = confirm
     }
 end
 

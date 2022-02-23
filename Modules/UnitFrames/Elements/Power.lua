@@ -14,6 +14,7 @@ function UF:CreatePower()
     self.Power:SetPoint("BOTTOMLEFT")
     self.Power:SetPoint("BOTTOMRIGHT")
     self.Power:CreateBorder(nil, 10, 2)
+    self.Power:CreateSeparator()
 
     self.Power.colorPower = true
     self.Power.colorClass = UF.config.colors.colorPowerClass
@@ -27,8 +28,6 @@ function UF:CreatePower()
     self.Power.Value = self.Power.Overlay:CreateFontString("$parentPowerText", "OVERLAY", nil, 7)
     self.Power.Value:SetParent(self.Power.Overlay)
     self.Power.Value:SetFont(UF.config.font, 10)
-
-    R:CreateSeparator(self.Power)
 
     return self.Power
 end
@@ -90,7 +89,7 @@ function UF:ConfigurePower()
         end
 
         self.Power.Value:ClearAllPoints()
-        R:SetPoint(self.Power.Value, unpack(config.value.point))
+        self.Power.Value:SetNormalizedPoint(config.value.point)
     else
         self.Power.Value:Hide()
         self:Untag(self.Power.Value)

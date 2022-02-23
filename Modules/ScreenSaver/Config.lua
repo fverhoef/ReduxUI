@@ -4,7 +4,7 @@ local SS = R.Modules.ScreenSaver
 
 R:RegisterModuleConfig(SS, {
     enabled = true,
-    font = R.config.defaults.profile.fonts.normal,
+    font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     fontSize = 20,
     fontOutline = "OUTLINE",
     fontShadow = false,

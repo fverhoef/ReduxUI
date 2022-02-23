@@ -25,8 +25,9 @@ local function AddLogo(frame)
 end
 
 function R:SetupOptions()
-    R.config.options.args.profiles = R.Libs.AceDBOptions:GetOptionsTable(R.config.db)
-    R.config.options.args.profiles.order = 99
+    R.config.options.args.general.profiles = R.Libs.AceDBOptions:GetOptionsTable(R.config.db)
+    R.config.options.args.general.profiles.inline = true
+    R.config.options.args.general.profiles.order = 99
 
     R.Libs.AceConfigRegistry:RegisterOptionsTable(R.name, R.config.options)
     R.config.dialog = R.Libs.AceConfigDialog:AddToBlizOptions(R.name, R.title)
@@ -77,45 +78,10 @@ R.config.options = {
                     end
                 },
                 resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function() R:ResetMovers() end},
-                fonts = {
-                    type = "group",
-                    name = L["Fonts"],
-                    order = 10,
-                    inline = true,
-                    args = {
-                        normal = R:CreateFontOption(L["Standard Text"], nil, 1, nil, function() return R.config.db.profile.fonts.normal end,
-                                                    function(value) R.config.db.profile.fonts.normal = value end, R.UpdateBlizzardFonts),
-                        number = R:CreateFontOption(L["Numbers"], nil, 2, nil, function() return R.config.db.profile.fonts.number end, function(value)
-                            R.config.db.profile.fonts.number = value
-                        end, R.UpdateBlizzardFonts),
-                        -- TODO: warn that changing this option requires a relog
-                        damage = R:CreateFontOption(L["Damage"], nil, 3, nil, function() return R.config.db.profile.fonts.damage end, function(value)
-                            R.config.db.profile.fonts.damage = value
-                        end, R.UpdateBlizzardFonts),
-                        -- TODO: warn that changing this option requires a relog
-                        unitName = R:CreateFontOption(L["Unit Names"], nil, 4, nil, function() return R.config.db.profile.fonts.unitName end,
-                                                      function(value) R.config.db.profile.fonts.unitName = value end, R.UpdateBlizzardFonts),
-                        chatBubble = R:CreateFontOption(L["Chat Bubbles"], nil, 5, nil, function() return R.config.db.profile.fonts.chatBubble end,
-                                                        function(value) R.config.db.profile.fonts.chatBubble = value end, R.UpdateBlizzardFonts)
-                    }
-                },
-                screenSaver = {
-                    type = "group",
-                    name = L["Screen Saver"],
-                    order = 30,
-                    inline = true,
-                    hidden = function() return R.Modules.ScreenSaver and true or false end,
-                    args = {
-                        enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return R.Modules.ScreenSaver.config.enabled end,
-                                                       function(value) R.Modules.ScreenSaver.config.enabled = value end,
-                                                       function() (not R.Modules.ScreenSaver.config.enabled and ReloadUI or R.Modules.ScreenSaver.Initialize)() end,
-                                                       function() return R.Modules.ScreenSaver.config.enabled and L["Disabling this module requires a UI reload. Proceed?"] end)
-                    }
-                },
                 inventoryDatabase = {
                     type = "group",
                     name = L["Inventory Database"],
-                    order = 40,
+                    order = 4,
                     inline = true,
                     args = {
                         character = {

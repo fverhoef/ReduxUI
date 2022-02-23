@@ -18,7 +18,7 @@ R:RegisterModuleConfig(BS, {
     },
     actions = {
         backdrop = R.media.textures.buttons.backdrop,
-        font = R.config.defaults.profile.fonts.normal,
+        font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 11,
         fontOutline = "OUTLINE",
         hideKeybindText = false,
@@ -26,7 +26,7 @@ R:RegisterModuleConfig(BS, {
         gloss = true,
         replaceBorders = true
     },
-    auras = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", minSizeToShowDuration = 30, gloss = true},
-    items = {backdrop = R.media.textures.buttons.backdrop, font = R.config.defaults.profile.fonts.normal, fontSize = 12, fontOutline = "OUTLINE", gloss = true, replaceBorders = true},
-    microMenu = {font = R.config.defaults.profile.fonts.normal, fontSize = 10, fontOutline = "OUTLINE", gloss = true}
+    auras = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", minSizeToShowDuration = 30, gloss = true},
+    items = {backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE", gloss = true, replaceBorders = true},
+    microMenu = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", gloss = true}
 })

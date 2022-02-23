@@ -5,6 +5,14 @@ local S = R.Modules.Skins
 R:RegisterModuleConfig(S, {
     enabled = true,
     colors = {guild = {0 / 255, 230 / 255, 0 / 255}},
+    fonts = {
+        enabled = true,
+        damage = R.Libs.SharedMedia:Fetch("font", "Adventure"),
+        normal = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+        number = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+        unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+        chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free")
+    },
     character = {enabled = true},
     classTrainer = {enabled = true},
     durability = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},

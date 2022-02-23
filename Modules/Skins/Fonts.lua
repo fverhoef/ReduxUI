@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local S = R.Modules.Skins
 
 local blizzardFonts = {
     normal = {
@@ -39,32 +40,31 @@ local blizzardFonts = {
     chatBubble = {ChatBubbleFont}
 }
 
-function R:UpdateBlizzardFonts()
-    DAMAGE_TEXT_FONT = R.config.db.profile.fonts.damage
+function S:UpdateBlizzardFonts()
+    if not S.config.fonts.enabled then return end
 
-    if R.config.db.profile.fonts.replaceBlizzardFonts then
-        STANDARD_TEXT_FONT = R.config.db.profile.fonts.normal
-        UNIT_NAME_FONT = R.config.db.profile.fonts.unitName
+    DAMAGE_TEXT_FONT = S.config.fonts.damage
+    STANDARD_TEXT_FONT = S.config.fonts.normal
+    UNIT_NAME_FONT = S.config.fonts.unitName
 
-        for _, font in next, blizzardFonts.normal do
-            if font then
-                local fontFace, height, flags = font:GetFont()
-                font:SetFont(R.config.db.profile.fonts.normal, height, flags)
-            end
+    for _, font in next, blizzardFonts.normal do
+        if font then
+            local fontFace, height, flags = font:GetFont()
+            font:SetFont(S.config.fonts.normal, height, flags)
         end
+    end
 
-        for _, font in next, blizzardFonts.number do
-            if font then
-                local fontFace, height, flags = font:GetFont()
-                font:SetFont(R.config.db.profile.fonts.number, height, flags)
-            end
+    for _, font in next, blizzardFonts.number do
+        if font then
+            local fontFace, height, flags = font:GetFont()
+            font:SetFont(S.config.fonts.number, height, flags)
         end
+    end
 
-        for _, font in next, blizzardFonts.chatBubble do
-            if font then
-                local fontFace, height, flags = font:GetFont()
-                font:SetFont(R.config.db.profile.fonts.chatBubble, height, flags)
-            end
+    for _, font in next, blizzardFonts.chatBubble do
+        if font then
+            local fontFace, height, flags = font:GetFont()
+            font:SetFont(S.config.fonts.chatBubble, height, flags)
         end
     end
 end

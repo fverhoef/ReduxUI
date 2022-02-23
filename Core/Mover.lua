@@ -109,25 +109,25 @@ function MoverMixin:Unlock()
     if not R.framesLocked then self:Show() end
 end
 
-function R:CreateMover(frame, displayName, defaultPoint, width, height, point)
-    if not frame or frame.Mover then return end
+function R:CreateMover(displayName, defaultPoint, width, height, point)
+    if not self or self.Mover then return end
 
-    frame.defaultPoint = defaultPoint or frame:GetNormalizedPoint()
+    self.defaultPoint = defaultPoint or self:GetNormalizedPoint()
 
-    local name = frame:GetName()
+    local name = self:GetName()
     local mover = Mixin(CreateFrame("Frame", name and name .. "Mover" or nil), MoverMixin)
-    mover.frame = frame
+    mover.frame = self
     mover.displayName = displayName or name
 
     if width or height then
         if point then
             mover:SetPoint(unpack(point))
         else
-            mover:SetPoint("CENTER", frame, "CENTER")
+            mover:SetPoint("CENTER", self, "CENTER")
         end
-        mover:SetSize(width or frame:GetWidth(), height or frame:GetHeight())
+        mover:SetSize(width or self:GetWidth(), height or self:GetHeight())
     else
-        mover:SetAllPoints(frame)
+        mover:SetAllPoints(self)
     end
     mover:SetFrameStrata("HIGH")
     mover:SetFrameLevel(1)
@@ -158,12 +158,12 @@ function R:CreateMover(frame, displayName, defaultPoint, width, height, point)
 
     table.insert(R.movers, mover)
 
-    frame.Mover = mover
-    frame:SetMovable(true)
+    self.Mover = mover
+    self:SetMovable(true)
 
-    if frame:IsResizable() then
-        frame.defaultSize = {frame.GetSize()}
-        frame.Mover:RegisterForDrag("LeftButton", "RightButton")
+    if self:IsResizable() then
+        self.defaultSize = {self.GetSize()}
+        self.Mover:RegisterForDrag("LeftButton", "RightButton")
     end
 end
 

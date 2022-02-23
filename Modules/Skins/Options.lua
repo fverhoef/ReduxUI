@@ -16,10 +16,29 @@ R:RegisterModuleOptions(S, {
         header = {type = "header", name = R.title .. " > Skins", order = 0},
         enabled = R:CreateModuleEnabledOption(1, nil, "Skins"),
         lineBreak1 = {type = "header", name = "", order = 2},
+        fonts = {
+            type = "group",
+            name = L["Fonts"],
+            order = 3,
+            inline = true,
+            args = {
+                enabled = S:CreateEnabledOption(L["Replace Blizzard Fonts"], nil, 1, nil, "fonts", true),
+                lineBreak1 = {type = "header", name = "", order = 2},
+                normal = R:CreateFontOption(L["Standard Text"], nil, 3, nil, function() return S.config.fonts.normal end, function(value) S.config.fonts.normal = value end, S.UpdateBlizzardFonts),
+                number = R:CreateFontOption(L["Numbers"], nil, 4, nil, function() return S.config.fonts.number end, function(value) S.config.fonts.number = value end, S.UpdateBlizzardFonts),
+                damage = R:CreateFontOption(L["Damage"], nil, 5, nil, function() return S.config.fonts.damage end, function(value) S.config.fonts.damage = value end, _G.Logout,
+                                            L["Changing the damage font requires you to log out. Proceed?"]),
+                unitName = R:CreateFontOption(L["Unit Names"], nil, 6, nil, function() return S.config.fonts.unitName end, function(value) S.config.fonts.unitName = value end, _G.Logout,
+                                              L["Changing the unit name font requires you to log out. Proceed?"]),
+                chatBubble = R:CreateFontOption(L["Chat Bubbles"], nil, 7, nil, function() return R.config.db.profile.fonts.chatBubble end, function(value)
+                    S.config.fonts.chatBubble = value
+                end, S.UpdateBlizzardFonts)
+            }
+        },
         movers = {
             type = "group",
             name = L["Movers"],
-            order = 3,
+            order = 4,
             inline = true,
             args = {
                 durability = S:CreateEnabledOption(L["Move Durability Frame"], nil, 1, nil, "durability", true),
@@ -31,7 +50,7 @@ R:RegisterModuleOptions(S, {
         frameCustomization = {
             type = "group",
             name = L["Frame Customization"],
-            order = 4,
+            order = 5,
             inline = true,
             hidden = R.isRetail,
             args = {

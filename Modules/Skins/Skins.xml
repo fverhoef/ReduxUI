@@ -3,6 +3,8 @@
     <Script file="Config.lua"/>
     <Script file="Options.lua"/>    
     
+    <Script file="Fonts.lua"/>
+    
     <Script file="Durability.lua"/>
     <Script file="ObjectiveTracker.lua"/>
     <Script file="TicketStatus.lua"/>

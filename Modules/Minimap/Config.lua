@@ -12,7 +12,7 @@ R:RegisterModuleConfig(MM, {
     zoneText = {
         enabled = true,
         showBackground = true,
-        font = R.config.defaults.profile.fonts.normal,
+        font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 14,
         fontOutline = "OUTLINE",
         fontShadow = true,
