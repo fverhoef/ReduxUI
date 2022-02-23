@@ -51,7 +51,12 @@ function AB:DisableBlizzard()
     R:Disable(MainMenuBarVehicleLeaveButton)
     R:Disable(VerticalMultiBarsContainer)
 
+    ActionBarActionEventsFrame:UnregisterAllEvents()
     ActionBarController:UnregisterAllEvents()
+
+    if R.isRetail then
+        ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
+    end
 end
 
 function AB:CreateActionBar(id)

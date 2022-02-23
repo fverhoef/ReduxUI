@@ -9,6 +9,17 @@ function AB:CreateExtraActionBar()
     bar.config = AB.config.extraActionBar
 
     bar.Update = function(self)
+        local width, height = ExtraActionBarFrame.button:GetSize()
+        bar:SetSize(width + 4, height + 4)
+
+        if InCombatLockdown() then
+            bar.needsUpdate = true
+            bar:RegisterEvent("PLAYER_REGEN_ENABLED")
+            return
+        end 
+
+        bar.needsUpdate = true
+        bar:UnregisterEvent("PLAYER_REGEN_ENABLED")
         ExtraActionBarFrame:SetParent(bar)
     end
 
@@ -21,25 +32,16 @@ function AB:CreateExtraActionBar()
     ExtraActionBarFrame.ignoreInLayout = true
 
     bar:SetScript("OnEvent", function(self, event)
-        if event == "PLAYER_REGEN_ENABLED" then
+        if event == "PLAYER_REGEN_ENABLED" and bar.needsUpdate then
             bar:Update()
-            bar.needsUpdate = false
-            bar:UnregisterEvent("PLAYER_REGEN_ENABLED")
         end
     end)
     AB:SecureHook(ExtraActionBarFrame, "SetParent", function(self, parent)
         if parent == bar then return end
-
-        if InCombatLockdown() then
-            bar.needsUpdate = true
-            bar:RegisterEvent("PLAYER_REGEN_ENABLED")
-            return
-        end
-
         bar:Update()
     end)
     AB:SecureHook(ExtraAbilityContainer, "AddFrame", function(self, frame)
-        -- R.Modules.ButtonStyles:StyleActionButton(frame)
+        bar:Update()       
     end)
     
 	local width, height = ExtraActionBarFrame.button:GetSize()
