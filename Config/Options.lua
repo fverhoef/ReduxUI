@@ -59,7 +59,7 @@ R.config.options = {
     args = {
         general = {
             type = "group",
-            name = "General",
+            name = L["General"],
             order = 1,
             args = {
                 header = {type = "header", name = R.title .. " > General", order = 0},

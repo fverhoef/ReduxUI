@@ -97,14 +97,14 @@ function R:OnInitialize()
     end
 
     for name, module in pairs(R.Modules) do
-        if module.loadEarly and module.Initialize and not module.initialized then
+        if module.loadEarly then
             module:Initialize()
             module.initialized = true
         end
     end
 
     for name, module in pairs(R.Modules) do
-        if module.Initialize and not module.initialized then
+        if not module.initialized then
             module:Initialize()
             module.initialized = true
         end
