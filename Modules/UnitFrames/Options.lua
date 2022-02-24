@@ -736,7 +736,17 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting)
                         return UF.config[unit].auras[setting].filter.whitelist.NotDispellable
                     end, function(value) UF.config[unit].auras[setting].filter.whitelist.NotDispellable = value end),
                     nameplate = UF:CreateToggleOption(unit, L["Nameplate"], nil, 12, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.Nameplate end,
-                                                      function(value) UF.config[unit].auras[setting].filter.whitelist.Nameplate = value end)
+                                                      function(value) UF.config[unit].auras[setting].filter.whitelist.Nameplate = value end),
+                    crowdControl = UF:CreateToggleOption(unit, L["Crowd Control"], nil, 15, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.CrowdControl end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.CrowdControl = value end),
+                    playerBuffs = UF:CreateToggleOption(unit, L["Player Buffs"], nil, 16, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.PlayerBuffs end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.PlayerBuffs = value end),
+                    turtleBuffs = UF:CreateToggleOption(unit, L["Turtle Buffs"], nil, 17, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.TurtleBuffs end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.TurtleBuffs = value end),
+                    raidBuffs = UF:CreateToggleOption(unit, L["Raid Buffs"], nil, 18, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.RaidBuffs end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.RaidBuffs = value end),                                                                
+                    raidDebuffs = UF:CreateToggleOption(unit, L["Raid Debuffs"], nil, 19, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.PlayerBuffs end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.PlayerBuffs = value end),
                 }
             },
             blacklist = {
@@ -759,7 +769,7 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting)
                     end, function(value) UF.config[unit].auras[setting].filter.blacklist.BlockDispellable = value end),
                     blockNotDispellable = UF:CreateToggleOption(unit, L["BlockNotDispellable"], nil, 5, nil, nil,
                                                                 function() return UF.config[unit].auras[setting].filter.blacklist.BlockNotDispellable end,
-                                                                function(value) UF.config[unit].auras[setting].filter.blacklist.BlockNotDispellable = value end)
+                                                                function(value) UF.config[unit].auras[setting].filter.blacklist.BlockNotDispellable = value end),
                 }
             }
         }
