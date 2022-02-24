@@ -252,6 +252,41 @@ function R:PlayerHasAura(auraId)
     return false
 end
 
+function R:GetPlayerRole()
+    if not R.isRetail then return "NONE" end
+
+    local role = UnitGroupRolesAssigned("player") or "NONE"
+    return (role == "NONE" and GetSpecializationRole(GetSpecialization())) or role
+end
+
+function R:PlayerCanDispel(debuffType)
+    if R.isRetail and debuffType == "Magic" and R:GetPlayerRole() == "HEALER" then
+        return true
+    end
+
+    if R.PlayerInfo.class == "PALADIN" then
+        return debuffType == "Poison" or debuffType == "Disease" or (not R.isRetail and debuffType == "Magic")
+    elseif R.PlayerInfo.class == "PRIEST" then
+        return debuffType == "Magic" or debuffType == "Disease"
+    elseif R.PlayerInfo.class == "MONK" then
+        return debuffType == "Poison" or debuffType == "Disease"
+    elseif R.PlayerInfo.class == "DRUID" then
+        return debuffType == "Poison" or debuffType == "Curse"
+    elseif R.PlayerInfo.class == "MAGE" then
+        return debuffType == "Curse"
+    elseif R.PlayerInfo.class == "SHAMAN" then
+        return (R.isRetail and debuffType == "Curse") or (not R.isRetail and (debuffType == "Poison" or debuffType == "Disease"))
+    elseif R.PlayerInfo.class == "WARLOCK" then
+        if debuffType == "Magic" then
+            if R.isRetail then
+                return IsSpellKnown(89808, true) -- Singe Magic
+            else
+                return IsSpellKnown(19505, true) or IsSpellKnown(19731, true) or IsSpellKnown(19734, true) or IsSpellKnown(19736, true) or IsSpellKnown(27276, true) or IsSpellKnown(27277, true) -- Devour Magic
+            end
+        end
+    end
+end
+
 function R:GetAuraId(spellName, unit)
     local auraName, spellId
     for i = 1, 255 do
