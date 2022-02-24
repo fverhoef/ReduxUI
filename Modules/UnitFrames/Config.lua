@@ -15,7 +15,12 @@ local AURA_FILTER_WHITELIST = {
     NotDispellable = true,
     CastByNPC = true,
     CastByPlayers = true,
-    Nameplate = true
+    Nameplate = true,
+    CrowdControl = true,
+    PlayerBuffs = true,
+    TurtleBuffs = true,
+    RaidBuffs = true,
+    RaidDebuffs = true
 }
 
 local AURA_FILTER_BLACKLIST = {BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = true, BlockDispellable = false, BlockNotDispellable = false}
@@ -162,7 +167,7 @@ local DEFAULT_UNIT_CONFIG = {
             showBuffType = false,
             minDuration = 0,
             maxDuration = 0,
-            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
+            filter = {whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST}
         },
         debuffs = {
             enabled = true,
@@ -180,7 +185,7 @@ local DEFAULT_UNIT_CONFIG = {
             showDebuffType = true,
             minDuration = 0,
             maxDuration = 0,
-            filter = {whiteList = AURA_FILTER_WHITELIST, blackList = AURA_FILTER_BLACKLIST}
+            filter = {whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST}
         }
     },
     auraWatch = {enabled = false, iconSize = 12, countFontSize = 9},
@@ -429,7 +434,7 @@ R:RegisterModuleConfig(UF, {
             buffs = {enabled = false},
             debuffs = {
                 filter = {
-                    whiteList = {
+                    whitelist = {
                         Boss = false,
                         MyPet = false,
                         OtherPet = false,

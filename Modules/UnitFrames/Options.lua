@@ -706,60 +706,60 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting)
                                                function() return UF.config[unit].auras[setting].minDuration end, function(value) UF.config[unit].auras[setting].minDuration = value end),
             maxDuration = UF:CreateRangeOption(unit, L["Maximum Duration"], L["The maximum duration an aura is allowed to have to be shown. Set to 0 to disable."], 2, nil, 0, nil, 600, 1,
                                                function() return UF.config[unit].auras[setting].maxDuration end, function(value) UF.config[unit].auras[setting].maxDuration = value end),
-            whiteList = {
+            whitelist = {
                 type = "group",
                 name = L["Whitelist"],
                 order = 3,
                 inline = true,
                 args = {
-                    boss = UF:CreateToggleOption(unit, L["Boss"], nil, 1, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.Boss end,
-                                                 function(value) UF.config[unit].auras[setting].filter.whiteList.Boss = value end),
-                    myPet = UF:CreateToggleOption(unit, L["MyPet"], nil, 2, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.MyPet end,
-                                                  function(value) UF.config[unit].auras[setting].filter.whiteList.MyPet = value end),
-                    otherPet = UF:CreateToggleOption(unit, L["OtherPet"], nil, 3, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.OtherPet end,
-                                                     function(value) UF.config[unit].auras[setting].filter.whiteList.OtherPet = value end),
-                    personal = UF:CreateToggleOption(unit, L["Personal"], nil, 4, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.Personal end,
-                                                     function(value) UF.config[unit].auras[setting].filter.whiteList.Personal = value end),
-                    nonPersonal = UF:CreateToggleOption(unit, L["NonPersonal"], nil, 5, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.NonPersonal end,
-                                                        function(value) UF.config[unit].auras[setting].filter.whiteList.NonPersonal = value end),
-                    castByUnit = UF:CreateToggleOption(unit, L["CastByUnit"], nil, 6, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.CastByUnit end,
-                                                       function(value) UF.config[unit].auras[setting].filter.whiteList.CastByUnit = value end),
-                    notCastByUnit = UF:CreateToggleOption(unit, L["NotCastByUnit"], nil, 7, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.NotCastByUnit end,
-                                                          function(value) UF.config[unit].auras[setting].filter.whiteList.NotCastByUnit = value end),
-                    castByNPC = UF:CreateToggleOption(unit, L["CastByNPC"], nil, 8, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.CastByNPC end,
-                                                      function(value) UF.config[unit].auras[setting].filter.whiteList.CastByNPC = value end),
-                    castByPlayers = UF:CreateToggleOption(unit, L["CastByPlayers"], nil, 9, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.CastByPlayers end,
-                                                          function(value) UF.config[unit].auras[setting].filter.whiteList.CastByPlayers = value end),
-                    dispellable = UF:CreateToggleOption(unit, L["Dispellable"], nil, 10, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.Dispellable end,
-                                                        function(value) UF.config[unit].auras[setting].filter.whiteList.Dispellable = value end),
+                    boss = UF:CreateToggleOption(unit, L["Boss"], nil, 1, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.Boss end,
+                                                 function(value) UF.config[unit].auras[setting].filter.whitelist.Boss = value end),
+                    myPet = UF:CreateToggleOption(unit, L["MyPet"], nil, 2, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.MyPet end,
+                                                  function(value) UF.config[unit].auras[setting].filter.whitelist.MyPet = value end),
+                    otherPet = UF:CreateToggleOption(unit, L["OtherPet"], nil, 3, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.OtherPet end,
+                                                     function(value) UF.config[unit].auras[setting].filter.whitelist.OtherPet = value end),
+                    personal = UF:CreateToggleOption(unit, L["Personal"], nil, 4, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.Personal end,
+                                                     function(value) UF.config[unit].auras[setting].filter.whitelist.Personal = value end),
+                    nonPersonal = UF:CreateToggleOption(unit, L["NonPersonal"], nil, 5, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.NonPersonal end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.NonPersonal = value end),
+                    castByUnit = UF:CreateToggleOption(unit, L["CastByUnit"], nil, 6, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.CastByUnit end,
+                                                       function(value) UF.config[unit].auras[setting].filter.whitelist.CastByUnit = value end),
+                    notCastByUnit = UF:CreateToggleOption(unit, L["NotCastByUnit"], nil, 7, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.NotCastByUnit end,
+                                                          function(value) UF.config[unit].auras[setting].filter.whitelist.NotCastByUnit = value end),
+                    castByNPC = UF:CreateToggleOption(unit, L["CastByNPC"], nil, 8, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.CastByNPC end,
+                                                      function(value) UF.config[unit].auras[setting].filter.whitelist.CastByNPC = value end),
+                    castByPlayers = UF:CreateToggleOption(unit, L["CastByPlayers"], nil, 9, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.CastByPlayers end,
+                                                          function(value) UF.config[unit].auras[setting].filter.whitelist.CastByPlayers = value end),
+                    dispellable = UF:CreateToggleOption(unit, L["Dispellable"], nil, 10, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.Dispellable end,
+                                                        function(value) UF.config[unit].auras[setting].filter.whitelist.Dispellable = value end),
                     notDispellable = UF:CreateToggleOption(unit, L["NotDispellable"], nil, 11, nil, nil, function()
-                        return UF.config[unit].auras[setting].filter.whiteList.NotDispellable
-                    end, function(value) UF.config[unit].auras[setting].filter.whiteList.NotDispellable = value end),
-                    nameplate = UF:CreateToggleOption(unit, L["Nameplate"], nil, 12, nil, nil, function() return UF.config[unit].auras[setting].filter.whiteList.Nameplate end,
-                                                      function(value) UF.config[unit].auras[setting].filter.whiteList.Nameplate = value end)
+                        return UF.config[unit].auras[setting].filter.whitelist.NotDispellable
+                    end, function(value) UF.config[unit].auras[setting].filter.whitelist.NotDispellable = value end),
+                    nameplate = UF:CreateToggleOption(unit, L["Nameplate"], nil, 12, nil, nil, function() return UF.config[unit].auras[setting].filter.whitelist.Nameplate end,
+                                                      function(value) UF.config[unit].auras[setting].filter.whitelist.Nameplate = value end)
                 }
             },
-            blackList = {
+            blacklist = {
                 type = "group",
                 name = L["Blacklist"],
                 order = 4,
                 inline = true,
                 args = {
                     blockNonPersonal = UF:CreateToggleOption(unit, L["BlockNonPersonal"], nil, 1, nil, nil, function()
-                        return UF.config[unit].auras[setting].filter.blackList.BlockNonPersonal
-                    end, function(value) UF.config[unit].auras[setting].filter.blackList.BlockNonPersonal = value end),
+                        return UF.config[unit].auras[setting].filter.blacklist.BlockNonPersonal
+                    end, function(value) UF.config[unit].auras[setting].filter.blacklist.BlockNonPersonal = value end),
                     blockCastByPlayers = UF:CreateToggleOption(unit, L["BlockCastByPlayers"], nil, 2, nil, nil,
-                                                               function() return UF.config[unit].auras[setting].filter.blackList.BlockCastByPlayers end,
-                                                               function(value) UF.config[unit].auras[setting].filter.blackList.BlockCastByPlayers = value end),
+                                                               function() return UF.config[unit].auras[setting].filter.blacklist.BlockCastByPlayers end,
+                                                               function(value) UF.config[unit].auras[setting].filter.blacklist.BlockCastByPlayers = value end),
                     blockNoDuration = UF:CreateToggleOption(unit, L["BlockNoDuration"], nil, 3, nil, nil, function()
-                        return UF.config[unit].auras[setting].filter.blackList.BlockNoDuration
-                    end, function(value) UF.config[unit].auras[setting].filter.blackList.BlockNoDuration = value end),
+                        return UF.config[unit].auras[setting].filter.blacklist.BlockNoDuration
+                    end, function(value) UF.config[unit].auras[setting].filter.blacklist.BlockNoDuration = value end),
                     blockDispellable = UF:CreateToggleOption(unit, L["BlockDispellable"], nil, 4, nil, nil, function()
-                        return UF.config[unit].auras[setting].filter.blackList.BlockDispellable
-                    end, function(value) UF.config[unit].auras[setting].filter.blackList.BlockDispellable = value end),
+                        return UF.config[unit].auras[setting].filter.blacklist.BlockDispellable
+                    end, function(value) UF.config[unit].auras[setting].filter.blacklist.BlockDispellable = value end),
                     blockNotDispellable = UF:CreateToggleOption(unit, L["BlockNotDispellable"], nil, 5, nil, nil,
-                                                                function() return UF.config[unit].auras[setting].filter.blackList.BlockNotDispellable end,
-                                                                function(value) UF.config[unit].auras[setting].filter.blackList.BlockNotDispellable = value end)
+                                                                function() return UF.config[unit].auras[setting].filter.blacklist.BlockNotDispellable end,
+                                                                function(value) UF.config[unit].auras[setting].filter.blacklist.BlockNotDispellable = value end)
                 }
             }
         }
