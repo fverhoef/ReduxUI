@@ -12,6 +12,9 @@ TT.classColors = {}
 TT.factionColors = {}
 
 function TT:Initialize()
+end
+
+function TT:Enable()
     if not TT.config.enabled then return end
 
     for class, color in next, _G.RAID_CLASS_COLORS do TT.classColors[class] = R:Hex(color) end

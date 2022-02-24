@@ -4,6 +4,9 @@ local AB = R:AddModule("ActionBars", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.
 local L = R.L
 
 function AB:Initialize()
+end
+
+function AB:Enable()
     if not AB.config.enabled then return end
 
     AB:DisableBlizzard()

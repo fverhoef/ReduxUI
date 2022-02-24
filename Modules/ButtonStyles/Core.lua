@@ -3,6 +3,9 @@ local R = _G.ReduxUI
 local BS = R:AddModule("ButtonStyles", "AceEvent-3.0", "AceHook-3.0")
 
 function BS:Initialize()
+end
+
+function BS:Enable()
     BS.config = BS.config
     BS.masque = LibStub("Masque", true)
     if not BS.masque and (not BS.config.enabled or BS.initalized) then

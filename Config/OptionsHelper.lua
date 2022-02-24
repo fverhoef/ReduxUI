@@ -143,7 +143,7 @@ function R:CreateModuleEnabledOption(order, width, module)
     return R:CreateToggleOption(L["Enabled"], nil, order, width, nil, function() return R.config.db.profile.modules[module].enabled end, function(value) R.config.db.profile.modules[module].enabled = value end,
                                 function()
         if R.config.db.profile.modules[module].enabled then
-            if R.Modules[module] and R.Modules[module].Initialize then R.Modules[module]:Initialize() end
+            if R.Modules[module] and R.Modules[module].Enable then R.Modules[module]:Enable() end
         else
             ReloadUI()
         end

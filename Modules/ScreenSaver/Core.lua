@@ -6,6 +6,9 @@ local L = R.L
 local CAMERA_SPEED = 0.035
 
 function SS:Initialize()
+end
+
+function SS:Enable()
     if not SS.config.enabled then return end
 
     SS.Canvas = _G.ScreenSaverCanvas

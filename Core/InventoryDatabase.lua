@@ -10,6 +10,9 @@ if R.isRetail then
 end
 
 function ID:Initialize()
+end
+
+function ID:Enable()
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
     ID:RegisterEvent("BAG_UPDATE", ID.Update)
     ID:RegisterEvent("BAG_UPDATE_COOLDOWN", ID.Update)

@@ -6,6 +6,9 @@ local BANK_CONTAINER = _G.BANK_CONTAINER
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 
 function B:Initialize()
+end
+
+function B:Enable()
     if not B.config.enabled then return end
 
     B.Inventory = CreateFrame("Frame", addonName .. "InventoryFrame", UIParent, "InventoryFrameTemplate")

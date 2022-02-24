@@ -65,6 +65,9 @@ SD.Shaman = {
 }
 
 function SD:Initialize()
+end
+
+function SD:Enable()
     SD:RegisterEvent("LEARNED_SPELL_IN_TAB", SD.ScanSpellBook)
     SD:RegisterEvent("SPELLS_CHANGED", SD.ScanSpellBook)
 

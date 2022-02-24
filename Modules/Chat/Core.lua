@@ -18,6 +18,9 @@ C.HyperlinkTypes = {
 }
 
 function C:Initialize()
+end
+
+function C:Enable()
     if not C.config.enabled then return end
 
     C.chatMessages = C.charConfig.chatMessages

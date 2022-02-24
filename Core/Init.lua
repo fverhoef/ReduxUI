@@ -66,6 +66,7 @@ R.ChatCommands = {
 
 function R:OnInitialize()
     R:SetupConfig()
+    R:SetupOptions()
 
     R.Libs.AceConsole:RegisterChatCommand(R.shortcut, function(args)
         local arg1, funcArgs = strsplit(" ", args, 2)
@@ -87,11 +88,7 @@ function R:OnInitialize()
     end
 
     R:RegisterEvent("PLAYER_REGEN_DISABLED", R.CloseOptionsDialog)
-end
-
-function R:OnEnable()
-    R:SetupConfig()
-
+    
     for name, module in pairs(R.Modules) do
         module.config = R.config.db.profile.modules[name]
         module.charConfig = R.config.db.char.modules[name]
@@ -99,19 +96,26 @@ function R:OnEnable()
         if module.CreateOptions then module:CreateOptions() end
     end
 
-    R:SetupOptions()
-
     for name, module in pairs(R.Modules) do
         if module.loadEarly and module.Initialize and not module.initialized then
-            module.Initialize()
+            module:Initialize()
             module.initialized = true
         end
     end
 
     for name, module in pairs(R.Modules) do
         if module.Initialize and not module.initialized then
-            module.Initialize()
+            module:Initialize()
             module.initialized = true
+        end
+    end
+end
+
+function R:OnEnable()
+    for name, module in pairs(R.Modules) do
+        if module.Enable and not module.enabled then
+            module:Enable()
+            module.enabled = true
         end
     end
 

@@ -4,8 +4,11 @@ local S = R:AddModule("Skins", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 function S:Initialize()
     if not S.config.enabled then return end
-
     S:UpdateBlizzardFonts()
+end
+
+function S:Enable()
+    if not S.config.enabled then return end
     
     S:StyleDurabilityFrame()
     S:StyleObjectiveTrackerFrame()

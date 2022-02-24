@@ -9,6 +9,9 @@ local vendorList = {}
 local totalVendorPrice = 0
 
 function AM:Initialize()
+end
+
+function AM:Enable()
     if not AM.config.enabled then
         return
     end

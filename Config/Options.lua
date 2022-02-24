@@ -25,9 +25,9 @@ local function AddLogo(frame)
 end
 
 function R:SetupOptions()
-    R.config.options.args.general.profiles = R.Libs.AceDBOptions:GetOptionsTable(R.config.db)
-    R.config.options.args.general.profiles.inline = true
-    R.config.options.args.general.profiles.order = 99
+    R.config.options.args.general.args.profiles = R.Libs.AceDBOptions:GetOptionsTable(R.config.db)
+    R.config.options.args.general.args.profiles.inline = true
+    R.config.options.args.general.args.profiles.order = 99
 
     R.Libs.AceConfigRegistry:RegisterOptionsTable(R.name, R.config.options)
     R.config.dialog = R.Libs.AceConfigDialog:AddToBlizOptions(R.name, R.title)
@@ -64,20 +64,30 @@ R.config.options = {
             args = {
                 header = {type = "header", name = R.title .. " > General", order = 0},
                 desc = {order = 1, type = "description", name = L["These are features that apply to every module."]},
-                toggleFrameLock = {
+                frameMovers = {
+                    type = "group",
+                    name = L["Frame Movers"],
                     order = 2,
-                    type = "execute",
-                    name = function() return R.framesLocked and L["Unlock Frames"] or L["Lock Frames"] end,
-                    desc = L["Lock/unlock all movable frames."],
-                    func = function()
-                        if R.framesLocked then
-                            R:ShowMovers()
-                        else
-                            R:HideMovers()
-                        end
-                    end
+                    inline = true,
+                    args = {
+                        toggleFrameLock = {
+                            order = 2,
+                            type = "execute",
+                            name = function() return R.framesLocked and L["Unlock Frames"] or L["Lock Frames"] end,
+                            desc = L["Lock/unlock all movable frames."],
+                            func = function()
+                                if R.framesLocked then
+                                    R:ShowMovers()
+                                else
+                                    R:HideMovers()
+                                end
+                            end
+                        },
+                        resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function()
+                            R:ResetMovers()
+                        end}
+                    }
                 },
-                resetFrames = {order = 3, type = "execute", name = L["Reset Frames"], desc = L["Reset the position of all movable frames."], func = function() R:ResetMovers() end},
                 inventoryDatabase = {
                     type = "group",
                     name = L["Inventory Database"],

@@ -8,6 +8,9 @@ UF.headers = {}
 UF.nameplates = {}
 
 function UF:Initialize()
+end
+
+function UF:Enable()
     if not UF.config.enabled then return end
 
     UF:UpdateColors()
