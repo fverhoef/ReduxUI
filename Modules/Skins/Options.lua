@@ -27,12 +27,11 @@ R:RegisterModuleOptions(S, {
                 normal = R:CreateFontOption(L["Standard Text"], nil, 3, nil, function() return S.config.fonts.normal end, function(value) S.config.fonts.normal = value end, S.UpdateBlizzardFonts),
                 number = R:CreateFontOption(L["Numbers"], nil, 4, nil, function() return S.config.fonts.number end, function(value) S.config.fonts.number = value end, S.UpdateBlizzardFonts),
                 damage = R:CreateFontOption(L["Damage"], nil, 5, nil, function() return S.config.fonts.damage end, function(value) S.config.fonts.damage = value end, _G.Logout,
-                                            L["Changing the damage font requires you to log out. Proceed?"]),
+                                            function() return L["Changing the damage font requires you to log out. Proceed?"] end),
                 unitName = R:CreateFontOption(L["Unit Names"], nil, 6, nil, function() return S.config.fonts.unitName end, function(value) S.config.fonts.unitName = value end, _G.Logout,
-                                              L["Changing the unit name font requires you to log out. Proceed?"]),
-                chatBubble = R:CreateFontOption(L["Chat Bubbles"], nil, 7, nil, function() return R.config.db.profile.fonts.chatBubble end, function(value)
-                    S.config.fonts.chatBubble = value
-                end, S.UpdateBlizzardFonts)
+                                              function() return L["Changing the unit name font requires you to log out. Proceed?"] end),
+                chatBubble = R:CreateFontOption(L["Chat Bubbles"], nil, 7, nil, function() return S.config.fonts.chatBubble end, function(value) S.config.fonts.chatBubble = value end,
+                                                S.UpdateBlizzardFonts)
             }
         },
         movers = {
