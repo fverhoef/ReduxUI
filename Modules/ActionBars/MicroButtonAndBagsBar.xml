@@ -5,26 +5,24 @@
         <Size x="220" y="88"/>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="MicroBagBar" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
+                <Texture parentKey="MicroBagBar" file="interface/addons/reduxui/media/textures/actionbars/MicroButtonAndBagsBar">
                     <Size x="220" y="88" />
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
                     </Anchors>
-                    <TexCoords left="0.314453" right="0.529297" top="0.652344" bottom="0.996094"/>
+                    <TexCoords left="0.5712890625" right="1" top="0.31640625" bottom="1"/>
                 </Texture>
-                <Texture parentKey="MicroBagBarEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
-                    <Size x="96" y="88" />
+                <Texture parentKey="MicroBagBarEndCap" file="interface/addons/reduxui/media/textures/actionbars/MicroButtonAndBagsBar">
+                    <Size x="102" y="88" />
                     <Anchors>
                         <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-24" y="0"/>
                     </Anchors>
-                    <TexCoords left="0.238281" right="0.332031" top="0.652344" bottom="0.996094"/>
+                    <TexCoords left="0.419921875" right="0.6181640625" top="0.31640625" bottom="1"/>
                 </Texture>
             </Layer>
         </Layers>
         <Scripts>
             <OnLoad method="OnLoad"/>
         </Scripts>
-        <!-- Retail width: 298 -->
-        <!-- TBC width: 220 -->
     </Frame>
 </Ui>

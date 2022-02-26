@@ -528,10 +528,22 @@ R:RegisterModuleOptions(AB, function()
             enabled = R:CreateModuleEnabledOption(1, nil, "ActionBars"),
             lineBreak = {type = "header", name = "", order = 2},
             toggleKeybindMode = {order = 3, type = "execute", name = L["Toggle Keybind Mode"], desc = L["Enter/leave keybind mode."], func = function() R.Libs.KeyBound:Toggle() end},
-            enableArt = R:CreateToggleOption(L["Enable Main Menu Bar Art"], nil, 4, "full", nil, function() return AB.config.mainMenuBarArt.enabled end,
-                                             function(value) AB.config.mainMenuBarArt.enabled = value end, AB.Update),
-            stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 5, "full", function() return not AB.config.mainMenuBarArt.enabled end,
-                                                   function() return AB.config.mainMenuBarArt.stackBottomBars end, function(value) AB.config.mainMenuBarArt.stackBottomBars = value end, AB.Update),
+            mainMenuBarArt = {
+                type = "group",
+                name = L["Main Menu Bar Art"],
+                order = 4,
+                inline = true,
+                args = {
+                    enableArt = R:CreateToggleOption(L["Enabled"], nil, 1, "full", nil, function() return AB.config.mainMenuBarArt.enabled end,
+                                                     function(value) AB.config.mainMenuBarArt.enabled = value end, AB.Update),
+                    style = R:CreateSelectOption(L["Style"], nil, 2, nil, AB.ART_STYLES, function() return AB.config.mainMenuBarArt.style end,
+                                                 function(value) AB.config.mainMenuBarArt.style = value end, AB.Update),
+                    stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 3, nil, function() return not AB.config.mainMenuBarArt.enabled end,
+                                                           function() return AB.config.mainMenuBarArt.stackBottomBars end, function(value)
+                        AB.config.mainMenuBarArt.stackBottomBars = value
+                    end, AB.Update)
+                }
+            },
             actionBar1 = AB:CreateActionBarOptions(1),
             actionBar2 = AB:CreateActionBarOptions(2),
             actionBar3 = AB:CreateActionBarOptions(3),

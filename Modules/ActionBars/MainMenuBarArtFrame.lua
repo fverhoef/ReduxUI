@@ -8,9 +8,17 @@ function AB:CreateMainMenuBarArtFrame() AB.MainMenuBarArtFrame = CreateFrame("Fr
 MainMenuBarArtFrameMixin = {}
 
 function MainMenuBarArtFrameMixin:OnLoad()
-    if R.isRetail then StatusTrackingBarManager:SetParent(self) end
+    if R.isRetail then
+        StatusTrackingBarManager:SetParent(self)
+        StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ReputationStatusBarTemplate");
+        StatusTrackingBarManager:AddBarFromTemplate("FRAME", "HonorStatusBarTemplate");
+        StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ArtifactStatusBarTemplate");
+        StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ExpStatusBarTemplate");
+        StatusTrackingBarManager:AddBarFromTemplate("FRAME", "AzeriteBarTemplate");
+    end
 
     self.PageNumber:SetText(GetActionBarPage())
+    self.PageNumber:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
     ActionBarUpButton:SetParent(self)
     ActionBarUpButton:ClearAllPoints()
     ActionBarDownButton:SetParent(self)
@@ -93,11 +101,6 @@ function MainMenuBarArtFrameMixin:Update()
         self:Show()
     end
 
-    local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
-    self:SetSize(isLarge and 804 or 550, 49)
-    self.BackgroundLarge:SetShown(isLarge)
-    self.BackgroundSmall:SetShown(not isLarge)
-
     if not R.isRetail then
         local watchedFactionName = GetWatchedFactionInfo()
         local showXP = UnitLevel("player") < GetMaxPlayerLevel()
@@ -136,8 +139,22 @@ function MainMenuBarArtFrameMixin:Update()
         self.ReputationBar:SetPoint("BOTTOMRIGHT", 0, showXP and -8 or -13)
     end
 
+    local backgroundTexture = R.media.textures.actionBars["mainMenuBarBackground" .. AB.config.mainMenuBarArt.style] or R.media.textures.actionBars.mainMenuBarBackground
+    self.BackgroundLarge:SetTexture(backgroundTexture)
+    self.BackgroundSmall:SetTexture(backgroundTexture)
+
+    local endCapTexture = R.media.textures.actionBars["mainMenuBarEndCap" .. AB.config.mainMenuBarArt.style] or
+                              (AB.config.mainMenuBarArt.style == "Default - Lion" and R.media.textures.actionBars.mainMenuBarEndCapLion) or R.media.textures.actionBars.mainMenuBarEndCapGryphon
+    self.LeftEndCap:SetTexture(endCapTexture)
+    self.RightEndCap:SetTexture(endCapTexture)
+
+    local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
     local numBars = self:GetNumberOfVisibleTrackingBars()
     local isDouble = numBars >= 2
+
+    self:SetSize(isLarge and 804 or 550, 64)
+    self.BackgroundLarge:SetShown(isLarge)
+    self.BackgroundSmall:SetShown(not isLarge)
 
     if numBars >= 2 then
         self:SetPoint("BOTTOM", 0, 19)
@@ -153,14 +170,34 @@ function MainMenuBarArtFrameMixin:Update()
         self.RightEndCap:SetPoint("BOTTOMRIGHT", 97, 0)
     end
 
-    self.SingleBarLarge:SetHeight(isDouble and 10 or 14)
-    self.SingleBarLarge:SetShown(numBars > 0 and isLarge)
-    self.SingleBarLargeUpper:SetHeight(isDouble and 10 or 14)
-    self.SingleBarLargeUpper:SetShown(numBars > 0 and isDouble and isLarge)
-    self.SingleBarSmall:SetShown(numBars > 0 and not isLarge)
-    self.SingleBarSmall:SetHeight(isDouble and 10 or 14)
-    self.SingleBarSmallUpper:SetShown(numBars > 0 and isDouble and not isLarge)
-    self.SingleBarSmallUpper:SetHeight(isDouble and 10 or 14)
+    self.TrackingBarLarge:SetHeight(isDouble and 10 or 14)
+    self.TrackingBarLargeUpper:SetHeight(isDouble and 10 or 14)
+    self.TrackingBarSmall:SetHeight(isDouble and 10 or 14)
+    self.TrackingBarSmallUpper:SetHeight(isDouble and 10 or 14)
+
+    self.TrackingBarLarge:SetShown(numBars > 0 and isLarge)
+    self.TrackingBarLargeUpper:SetShown(numBars > 0 and isDouble and isLarge)
+    self.TrackingBarSmall:SetShown(numBars > 0 and not isLarge)
+    self.TrackingBarSmallUpper:SetShown(numBars > 0 and isDouble and not isLarge)
+
+    if R.isRetail then
+        local visibleBars = {}
+        for i, bar in ipairs(StatusTrackingBarManager.bars) do if bar:ShouldBeVisible() then table.insert(visibleBars, bar) end end
+        table.sort(visibleBars, function(left, right) return left:GetPriority() < right:GetPriority() end);
+
+        local width = self:GetWidth()
+        if (#visibleBars > 1) then
+            StatusTrackingBarManager:LayoutBar(visibleBars[2], width, false, true)
+            StatusTrackingBarManager:LayoutBar(visibleBars[1], width, true, true)
+        elseif (#visibleBars == 1) then
+            StatusTrackingBarManager:LayoutBar(visibleBars[1], width, true, false)
+        end
+
+        StatusTrackingBarManager.SingleBarSmall:Hide()
+        StatusTrackingBarManager.SingleBarLarge:Hide()
+        StatusTrackingBarManager.SingleBarSmallUpper:Hide()
+        StatusTrackingBarManager.SingleBarLargeUpper:Hide()
+    end
 end
 
 function MainMenuBarArtFrameMixin:ExperienceBar_OnEnter() self.OverlayFrame.Text:Show() end

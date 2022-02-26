@@ -8,12 +8,13 @@ AB.COLUMN_DIRECTIONS = {"Right", "Left"}
 AB.ROW_DIRECTIONS = {"Up", "Down"}
 AB.DEFAULT_COOLDOWN_LABELS = {5, 15, 30, 60, 120, 180, 300}
 AB.COOLDOWN_FILTERS = {NONE = "NONE"}
+AB.ART_STYLES = {"Default - Gryphon", "Default - Lion", "Alliance", "Horde", "Mechanical", "Stone", "Tree", "Wood"}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
     statusbars = {experience = R.Libs.SharedMedia:Fetch("statusbar", "Redux"), reputation = R.Libs.SharedMedia:Fetch("statusbar", "Redux")},
     colors = {},
-    mainMenuBarArt = {enabled = true, fader = R.config.faders.onShow, stackBottomBars = false},
+    mainMenuBarArt = {enabled = true, fader = R.config.faders.onShow, style = "Stone", stackBottomBars = false},
     microButtonAndBags = {enabled = true, point = {"BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0}, fader = R.config.faders.mouseOver},
     actionBar1 = {
         enabled = true,

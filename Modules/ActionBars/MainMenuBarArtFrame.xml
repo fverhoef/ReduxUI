@@ -7,61 +7,62 @@
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="BackgroundLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar" hidden="true">
-                    <Size x="804" y="49"/>
-                    <TexCoords left="0.111328" right="0.896484" top="0.453125" bottom="0.644531"/>
+                <Texture parentKey="BackgroundLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background" hidden="true">
+                    <Size x="804" y="64"/>
+                    <TexCoords left="0" right="0.78515625" top="0" bottom="1"/>
                 </Texture>
-                <Texture parentKey="BackgroundSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar" hidden="true">
-                    <Size x="550" y="49"/>
-                    <TexCoords left="0.111328" right="0.648438" top="0.253906" bottom="0.445312"/>
+                <Texture parentKey="BackgroundSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background" hidden="true">
+                    <Size x="550" y="64"/>
+                    <TexCoords left="0" right="0.537109375" top="0" bottom="1"/>
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="5">
-                <Texture parentKey="LeftEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
+                <Texture parentKey="TrackingBarLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
+                    </Anchors>
+                    <Size x="804" y="14"/>
+                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875"/>
+                </Texture>
+                <Texture parentKey="TrackingBarLargeUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
+                    </Anchors>
+                    <Size x="804" y="14"/>
+                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875"/>
+                </Texture>
+                <Texture parentKey="TrackingBarSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
+                    </Anchors>
+                    <Size x="550" y="14"/>
+                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875"/>
+                </Texture>
+                <Texture parentKey="TrackingBarSmallUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
+                    </Anchors>
+                    <Size x="550" y="14"/>
+                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875"/>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="6">
+                <Texture parentKey="LeftEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap-gryphon">
                     <Anchors>
                         <Anchor point="BOTTOMLEFT" x="-98" y="-10"/>
                     </Anchors>
-                    <Size x="128" y="76"/>
-                    <TexCoords left="0.111328" right="0.236328" top="0.652344" bottom="0.949219"/>
+                    <Size x="128" y="128"/>
                 </Texture>
-                <Texture parentKey="RightEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
+                <Texture parentKey="RightEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap-gryphon">
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" x="98" y="-10"/>
                     </Anchors>
-                    <Size x="128" y="76"/>
-                    <TexCoords left="0.236328" right="0.111328" top="0.652344" bottom="0.949219"/>
-                </Texture>
-                <Texture parentKey="SingleBarLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
-                    <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
-                    </Anchors>
-                    <Size x="804" y="14"/>
-                    <TexCoords left="0.0820312" right="0.867188" top="0.00390625" bottom="0.0585938"/>
-                </Texture>
-                <Texture parentKey="SingleBarLargeUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
-                    <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
-                    </Anchors>
-                    <Size x="804" y="14"/>
-                    <TexCoords left="0.0820312" right="0.867188" top="0.00390625" bottom="0.0585938"/>
-                </Texture>
-                <Texture parentKey="SingleBarSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
-                    <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
-                    </Anchors>
-                    <Size x="550" y="14"/>
-                    <TexCoords left="0.111328" right="0.648438" top="0.191406" bottom="0.246094"/>
-                </Texture>
-                <Texture parentKey="SingleBarSmallUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar">
-                    <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
-                    </Anchors>
-                    <Size x="550" y="14"/>
-                    <TexCoords left="0.111328" right="0.648438" top="0.191406" bottom="0.246094"/>
+                    <Size x="128" y="128"/>
+                    <TexCoords left="1" right="0"/>
                 </Texture>
                 <FontString parentKey="PageNumber" inherits="GameFontNormalSmall">
                     <Anchors>
-                        <Anchor point="LEFT" relativePoint="LEFT" x="529" y="-3"/>
+                        <Anchor point="LEFT" relativePoint="LEFT" x="529" y="-9"/>
                     </Anchors>
                     <Size x="24" y="14"/>
                 </FontString>
@@ -74,6 +75,7 @@
                     <Anchor point="BOTTOMRIGHT"/>
                 </Anchors>
                 <Size x="804" y="14"/>
+				<HitRectInsets left="0" right="0" top="-3" bottom="-3"/>
                 <Layers>
                     <Layer level="BORDER">
                         <Texture parentKey="RestedFillBar">
@@ -126,6 +128,7 @@
                     <Anchor point="BOTTOMRIGHT"/>
                 </Anchors>
                 <Size x="804" y="14"/>
+				<HitRectInsets left="0" right="0" top="-3" bottom="-3"/>
                 <Layers>
                     <Layer level="BACKGROUND" textureSubLevel="-2">
                         <Texture>
