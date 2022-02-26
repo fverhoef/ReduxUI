@@ -9,16 +9,16 @@ function AB:CreateExtraActionBar()
     bar.config = AB.config.extraActionBar
 
     bar.Update = function(self)
-        local width, height = ExtraActionBarFrame.button:GetSize()
-        bar:SetSize(width + 4, height + 4)
-
         if InCombatLockdown() then
             bar.needsUpdate = true
             bar:RegisterEvent("PLAYER_REGEN_ENABLED")
             return
         end 
+        
+        local width, height = ExtraActionBarFrame.button:GetSize()
+        bar:SetSize(width + 4, height + 4)
 
-        bar.needsUpdate = true
+        bar.needsUpdate = false
         bar:UnregisterEvent("PLAYER_REGEN_ENABLED")
         ExtraActionBarFrame:SetParent(bar)
     end
