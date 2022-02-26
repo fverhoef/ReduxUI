@@ -29,6 +29,18 @@ function InventoryMixin:OnLoad()
     B:SecureHook("ToggleBag", "ToggleBag")
     B:SecureHook("ToggleAllBags", B.ToggleBackpack)
     B:SecureHook("ToggleBackpack", B.ToggleBackpack)
+    if BackpackTokenFrame then
+        B:SecureHook("ManageBackpackTokenFrame", function(backpack)
+            if BackpackTokenFrame_IsShown() then
+                BackpackTokenFrame:SetParent(self)
+                BackpackTokenFrame:ClearAllPoints()
+                BackpackTokenFrame:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 9, -28)
+                BackpackTokenFrame:Show()
+            else
+                BackpackTokenFrame:Hide()
+            end
+        end)
+    end
 end
 
 function InventoryMixin:OnHide()
