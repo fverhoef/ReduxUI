@@ -3,8 +3,7 @@ local R = _G.ReduxUI
 local MM = R:AddModule("Minimap", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = R.L
 
-function MM:Initialize()
-end
+function MM:Initialize() end
 
 function MM:Enable()
     if not MM.config.enabled then return end
@@ -109,6 +108,11 @@ function MM:StyleMinimap()
         MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
 
         MiniMapTrackingButtonBorder:Hide()
+        
+		Minimap:SetArchBlobRingAlpha(0)
+		Minimap:SetArchBlobRingScalar(0)
+		Minimap:SetQuestBlobRingAlpha(0)
+		Minimap:SetQuestBlobRingScalar(0)
     else
         MiniMapTracking:SetScript("OnEvent", nil)
         MiniMapTrackingIcon:SetTexture([[Interface\Minimap\Tracking\None]])
