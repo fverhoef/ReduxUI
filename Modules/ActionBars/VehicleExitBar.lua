@@ -59,14 +59,12 @@ function AB:VehicleExitButton_OnEnter()
         GameTooltip:SetText(TAXI_CANCEL, 1, 1, 1)
         GameTooltip:AddLine(TAXI_CANCEL_DESCRIPTION, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
         GameTooltip:Show()
-    else
+    elseif GameTooltip_AddNewbieTip then
         GameTooltip_AddNewbieTip(self, LEAVE_VEHICLE, 1.0, 1.0, 1.0, nil)
     end
 end
 
-function AB:VehicleExitButton_OnLeave()
-    GameTooltip:Hide()
-end
+function AB:VehicleExitButton_OnLeave() GameTooltip:Hide() end
 
 function AB:VehicleExitButton_OnClick()
     if UnitOnTaxi("player") then
