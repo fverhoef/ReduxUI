@@ -35,6 +35,7 @@ R:RegisterModuleOptions(TT, {
         showIcons = R:CreateToggleOption(L["Show Item/Spell Icons"], nil, 16, "double", nil, function() return TT.config.showIcons end, function(value) TT.config.showIcons = value end),
         showItemId = R:CreateToggleOption(L["Show Item IDs"], nil, 17, "double", nil, function() return TT.config.showItemId end, function(value) TT.config.showItemId = value end),
         showSpellId = R:CreateToggleOption(L["Show Spell IDs"], nil, 18, "double", nil, function() return TT.config.showSpellId end, function(value) TT.config.showSpellId = value end),
+        showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", nil, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
         font = {
             type = "group",
             name = L["Font"],
