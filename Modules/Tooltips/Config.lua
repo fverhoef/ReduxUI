@@ -30,6 +30,7 @@ R:RegisterModuleConfig(TT, {
     offsetY = 20,
     statusbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
     colorBorderByRarity = true,
+    showTitle = true,
     showHealthValues = true,
     showGuildRank = true,
     showPvPRank = true,

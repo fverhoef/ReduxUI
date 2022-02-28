@@ -23,6 +23,7 @@ R:RegisterModuleOptions(TT, {
         header = {type = "header", name = R.title .. " > Tooltips", order = 0},
         enabled = R:CreateModuleEnabledOption(1, nil, "Tooltips"),
         lineBreak = {type = "header", name = "", order = 2},
+        showTitle = R:CreateToggleOption(L["Show Title"], nil, 9, "double", nil, function() return TT.config.showTitle end, function(value) TT.config.showTitle = value end),
         showHealthValues = R:CreateToggleOption(L["Show Health Values"], nil, 10, "double", nil, function() return TT.config.showHealthValues end,
                                                 function(value) TT.config.showHealthValues = value end),
         showGuildRank = R:CreateToggleOption(L["Show Guild Rank"], nil, 11, "double", nil, function() return TT.config.showGuildRank end, function(value) TT.config.showGuildRank = value end),

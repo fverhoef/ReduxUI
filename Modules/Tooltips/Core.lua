@@ -279,7 +279,7 @@ function TT:AddNameColor(tooltip, unit)
     local class = select(2, UnitClass(unit))
     if not class then return end
 
-    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), UnitName(unit) or UNKNOWN, UnitIsAFK(unit) and
+    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN, UnitIsAFK(unit) and
                                                  (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
 end
 
