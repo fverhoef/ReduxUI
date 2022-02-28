@@ -39,5 +39,6 @@ R:RegisterModuleConfig(TT, {
     showItemId = false,
     showItemLevel = true,
     showItemCount = true,
-    showVendorPrice = true
+    showVendorPrice = true,
+    showMount = true
 })

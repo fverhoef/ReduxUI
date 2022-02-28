@@ -10,9 +10,9 @@ local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub("^%%2$s%s?(.-)%s?%%1$s"
 
 TT.classColors = {}
 TT.factionColors = {}
+TT.mountIDs = {}
 
-function TT:Initialize()
-end
+function TT:Initialize() end
 
 function TT:Enable()
     if not TT.config.enabled then return end
@@ -119,9 +119,9 @@ function TT:OnTooltipSetUnit()
     if raidIconIndex then _G.GameTooltipTextLeft1:SetText(("%s %s"):format(ICON_LIST[raidIconIndex] .. "14|t", unitName)) end
 
     if UnitIsPlayer(unit) then
-        TT:AddNameColor(self, unit)
-        TT:AddGuildColor(self, unit)
-        TT:AddPvPColor(self)
+        TT:FormatNameText(self, unit)
+        TT:FormatGuildText(self, unit)
+        TT:FormatPvPText(self)
 
         local rank = UnitPVPRank and UnitPVPRank(unit)
         if rank and rank > 0 then
@@ -129,8 +129,10 @@ function TT:OnTooltipSetUnit()
             rank = rank - 4
             TT:AddPvPRank(self, rank)
         end
+
+        TT:AddMountText(self, unit)
     end
-    TT:AddLevelColor(self, unit)
+    TT:FormatLevelText(self, unit)
     TT:AddStatusBarColor(self)
 
     if UnitIsDeadOrGhost(unit) then _G.GameTooltipTextLeft1:SetTextColor(unpack(TT.config.colors.dead)) end
@@ -275,15 +277,34 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
     end
 end
 
-function TT:AddNameColor(tooltip, unit)
+function TT:AddMountText(tooltip, unit)
+    if not TT.config.showMount then return end
+
+    local index = 1
+    local spellID = select(10, UnitAura(unit, index, "HELPFUL"))
+    while spellID do
+        local mountInfo = R:GetMountInfo(spellID)
+        if mountInfo then
+            tooltip:AddDoubleLine(string.format("%s:", MOUNT), mountInfo.name, nil, nil, nil, 1, 1, 1)
+            --tooltip:AddDoubleLine(string.format("%s:", MOUNT), string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", mountInfo.icon, 40, mountInfo.name), nil, nil, nil, 1, 1, 1)
+            break
+        else
+            index = index + 1
+            spellID = select(10, UnitAura(unit, index, "HELPFUL"))
+        end
+    end
+end
+
+function TT:FormatNameText(tooltip, unit)
     local class = select(2, UnitClass(unit))
     if not class then return end
 
-    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN, UnitIsAFK(unit) and
-                                                 (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
+    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN,
+                                             UnitIsAFK(unit) and (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and
+                                                 (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
 end
 
-function TT:AddGuildColor(tooltip, unit)
+function TT:FormatGuildText(tooltip, unit)
     local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
     if not guildName then return end
     local levelLine = TT:GetLevelLine(tooltip, 2, guildName)
@@ -298,7 +319,7 @@ function TT:AddGuildColor(tooltip, unit)
     end
 end
 
-function TT:AddLevelColor(tooltip, unit)
+function TT:FormatLevelText(tooltip, unit)
     local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
     local levelLine = TT:GetLevelLine(tooltip, 2, guildName)
     if not levelLine then return end
@@ -327,7 +348,7 @@ function TT:AddLevelColor(tooltip, unit)
     end
 end
 
-function TT:AddPvPColor(tooltip)
+function TT:FormatPvPText(tooltip)
     local line = TT:GetPvPLine(tooltip)
     if not line then return end
     line:SetTextColor(unpack(TT.config.colors.pvp))
