@@ -17,7 +17,8 @@ R:RegisterModuleConfig(TT, {
         afk = {255 / 255, 0 / 255, 0 / 255},
         dnd = {255 / 255, 255 / 255, 0 / 255},
         pvp = {220 / 255, 120 / 255, 30 / 255},
-        itemLevel = {220 / 255, 195 / 255, 30 / 255}
+        itemLevel = {220 / 255, 195 / 255, 30 / 255},
+        mount = {220 / 255, 195 / 255, 30 / 255},
     },
     scale = 1,
     fontFamily = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),

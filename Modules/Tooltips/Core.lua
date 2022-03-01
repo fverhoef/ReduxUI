@@ -285,8 +285,8 @@ function TT:AddMountText(tooltip, unit)
     while spellID do
         local mountInfo = R:GetMountInfo(spellID)
         if mountInfo then
-            tooltip:AddDoubleLine(string.format("%s:", MOUNT), mountInfo.name, nil, nil, nil, 1, 1, 1)
-            --tooltip:AddDoubleLine(string.format("%s:", MOUNT), string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", mountInfo.icon, 40, mountInfo.name), nil, nil, nil, 1, 1, 1)
+            tooltip:AddDoubleLine(string.format("%s", MOUNT), mountInfo.name, TT.config.colors.mount[1], TT.config.colors.mount[2], TT.config.colors.mount[3], 1, 1, 1)
+            --tooltip:AddDoubleLine(string.format("%s", MOUNT), string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", mountInfo.icon, 40, mountInfo.name), nil, nil, nil, 1, 1, 1)
             break
         else
             index = index + 1
