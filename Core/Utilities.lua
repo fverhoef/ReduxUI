@@ -348,6 +348,17 @@ if R.isRetail then
     end
 end
 
-function R:GetMountInfo(spellID)
-    return R.mountIDs[spellID]
+function R:GetUnitMountInfo(unit)
+    local index = 1
+    local spellID = select(10, UnitAura(unit, index, "HELPFUL"))
+    while spellID do
+        local mountInfo = R.mountIDs[spellID]
+        if mountInfo then
+            return mountInfo
+            break
+        else
+            index = index + 1
+            spellID = select(10, UnitAura(unit, index, "HELPFUL"))
+        end
+    end
 end

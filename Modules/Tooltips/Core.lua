@@ -280,19 +280,8 @@ end
 function TT:AddMountText(tooltip, unit)
     if not TT.config.showMount then return end
 
-    local index = 1
-    local spellID = select(10, UnitAura(unit, index, "HELPFUL"))
-    while spellID do
-        local mountInfo = R:GetMountInfo(spellID)
-        if mountInfo then
-            tooltip:AddDoubleLine(string.format("%s", MOUNT), mountInfo.name, TT.config.colors.mount[1], TT.config.colors.mount[2], TT.config.colors.mount[3], 1, 1, 1)
-            --tooltip:AddDoubleLine(string.format("%s", MOUNT), string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", mountInfo.icon, 40, mountInfo.name), nil, nil, nil, 1, 1, 1)
-            break
-        else
-            index = index + 1
-            spellID = select(10, UnitAura(unit, index, "HELPFUL"))
-        end
-    end
+    local mountInfo = R:GetUnitMountInfo(unit)
+    if mountInfo then tooltip:AddDoubleLine(string.format("%s", MOUNT), mountInfo.name, TT.config.colors.mount[1], TT.config.colors.mount[2], TT.config.colors.mount[3], 1, 1, 1) end
 end
 
 function TT:FormatNameText(tooltip, unit)
