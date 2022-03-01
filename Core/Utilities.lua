@@ -343,8 +343,8 @@ if R.isRetail then
     local mountIDs = C_MountJournal.GetMountIDs()
     for _, mountID in ipairs(mountIDs) do
         local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(mountID)
-        --local creatureDisplayInfoID, description, source, isSelfMount, mountTypeID, uiModelSceneID, animID, spellVisualKitID, disablePlayerMountPreview = C_MountJournal.GetMountInfoExtraByID(mountID)
-        R.mountIDs[spellID] = { name = name, icon = icon }
+        -- local creatureDisplayInfoID, description, source, isSelfMount, mountTypeID, uiModelSceneID, animID, spellVisualKitID, disablePlayerMountPreview = C_MountJournal.GetMountInfoExtraByID(mountID)
+        R.mountIDs[spellID] = {name = name, icon = icon}
     end
 end
 
@@ -355,7 +355,6 @@ function R:GetUnitMountInfo(unit)
         local mountInfo = R.mountIDs[spellID]
         if mountInfo then
             return mountInfo
-            break
         else
             index = index + 1
             spellID = select(10, UnitAura(unit, index, "HELPFUL"))

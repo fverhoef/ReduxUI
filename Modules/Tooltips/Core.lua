@@ -278,7 +278,7 @@ function TT:AddVendorPrice(tooltip, sellPrice, classID)
 end
 
 function TT:AddMountText(tooltip, unit)
-    if not TT.config.showMount then return end
+    if not R.isRetail or not TT.config.showMount then return end
 
     local mountInfo = R:GetUnitMountInfo(unit)
     if mountInfo then tooltip:AddDoubleLine(string.format("%s", MOUNT), mountInfo.name, TT.config.colors.mount[1], TT.config.colors.mount[2], TT.config.colors.mount[3], 1, 1, 1) end
