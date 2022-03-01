@@ -4,6 +4,7 @@
     <Include file="Bags\Bags.xml"/>
     <Include file="ButtonStyles\ButtonStyles.xml"/>
     <Include file="Chat\Chat.xml"/>
+    <Include file="Installer\Installer.xml"/>
     <Include file="Minimap\Minimap.xml"/>
     <Include file="ScreenSaver\ScreenSaver.xml"/>
     <Include file="Skins\Skins.xml"/>
