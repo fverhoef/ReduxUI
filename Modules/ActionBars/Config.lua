@@ -283,12 +283,12 @@ R:RegisterModuleConfig(AB, {
     },
     extraActionBar = {
         enabled = true,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 235},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 305},
         fader = R.config.faders.onShow
     },
     zoneBar = {
         enabled = true,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 235},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 225},
         fader = R.config.faders.onShow
     },
     cooldownBars = {
