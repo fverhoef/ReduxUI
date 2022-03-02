@@ -342,8 +342,7 @@ R.mountIDs = {}
 if R.isRetail then
     local mountIDs = C_MountJournal.GetMountIDs()
     for _, mountID in ipairs(mountIDs) do
-        local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(mountID)
-        -- local creatureDisplayInfoID, description, source, isSelfMount, mountTypeID, uiModelSceneID, animID, spellVisualKitID, disablePlayerMountPreview = C_MountJournal.GetMountInfoExtraByID(mountID)
+        local name, spellID, icon = C_MountJournal.GetMountInfoByID(mountID)
         R.mountIDs[spellID] = {name = name, icon = icon}
     end
 end
