@@ -356,7 +356,7 @@ R:RegisterModuleConfig(UF, {
         castbar = {enabled = false},
         pvpIndicator = {enabled = false}
     }),
-    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM"}),
+    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM", groupAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {90, 36},
         point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 280},

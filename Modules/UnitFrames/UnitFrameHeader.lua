@@ -107,7 +107,7 @@ function UnitFrameHeaderParentMixin:Update()
             elseif config.groupAnchorPoint == "TOP" then
                 groupAnchorPoint = config.unitAnchorPoint == "RIGHT" and "TOPRIGHT" or "TOPLEFT"
             elseif config.groupAnchorPoint == "BOTTOM" then
-                groupAnchorPoint = config.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT" or "TOPLEFT"
+                groupAnchorPoint = config.unitAnchorPoint == "RIGHT" and "BOTTOMRIGHT" or "BOTTOMLEFT"
             end
 
             group:SetPoint(groupAnchorPoint, self, groupAnchorPoint)
