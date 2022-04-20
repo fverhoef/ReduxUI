@@ -11,6 +11,7 @@ function S:Enable()
     
     S:StyleDurabilityFrame()
     S:StyleObjectiveTrackerFrame()
+    S:StyleQuestWatchFrame()
     S:StyleTicketStatusFrame()
     S:StyleVehicleSeatIndicator()
 
