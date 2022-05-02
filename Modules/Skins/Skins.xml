@@ -9,6 +9,7 @@
     <Script file="ObjectiveTracker.lua"/>
     <Script file="TicketStatus.lua"/>
     <Script file="VehicleSeat.lua"/>
+    <Script file="WorldMapFrame.lua"/>
 
     <!-- TBC -->
     <Script file="CharacterFrame.lua"/>
@@ -18,5 +19,4 @@
     <Script file="QuestLogFrame.lua"/>
     <Script file="TradeSkillFrame.lua"/>
     <Script file="WhoFrame.lua"/>
-    <Script file="WorldMapFrame.lua"/>
 </Ui>

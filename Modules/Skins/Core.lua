@@ -14,6 +14,7 @@ function S:Enable()
     S:StyleQuestWatchFrame()
     S:StyleTicketStatusFrame()
     S:StyleVehicleSeatIndicator()
+    S:StyleWorldMapFrame()
 
     if not R.isRetail then
         S:StyleCharacterFrame()
@@ -21,7 +22,6 @@ function S:Enable()
         S:StyleGuildFrame()
         S:StyleWhoFrame()
         S:StyleQuestLogFrame()
-        S:StyleWorldMapFrame()
 
         S:RegisterEvent("ADDON_LOADED")
     end
