@@ -171,7 +171,7 @@ function MM:UpdateMinimap()
         if MiniMapBattlefieldFrame then
             MiniMapBattlefieldFrame:ClearAllPoints()
             MiniMapBattlefieldFrame:SetParent(Minimap.InformationFrame)
-            MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 5, 2)
+            MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 32, 2)
         end
     else
         Minimap.InformationFrame.Background:Hide()
