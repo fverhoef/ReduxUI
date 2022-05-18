@@ -14,7 +14,7 @@ R:RegisterModuleConfig(AB, {
     enabled = true,
     statusbars = {experience = R.Libs.SharedMedia:Fetch("statusbar", "Redux"), reputation = R.Libs.SharedMedia:Fetch("statusbar", "Redux")},
     colors = {},
-    mainMenuBarArt = {enabled = true, fader = R.config.faders.onShow, style = "Stone", stackBottomBars = false},
+    mainMenuBarArt = {enabled = true, fader = R.config.faders.onShow, style = "Default - Gryphon", stackBottomBars = false},
     microButtonAndBags = {enabled = true, point = {"BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0}, fader = R.config.faders.mouseOver},
     actionBar1 = {
         enabled = true,

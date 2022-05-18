@@ -5,25 +5,25 @@ local oUF = ns.oUF or oUF
 
 local AURA_FILTER_WHITELIST = {
     Boss = true,
-    MyPet = true,
-    OtherPet = true,
+    MyPet = false,
+    OtherPet = false,
     Personal = true,
-    NonPersonal = true,
-    CastByUnit = true,
-    NotCastByUnit = true,
-    Dispellable = true,
-    NotDispellable = true,
-    CastByNPC = true,
-    CastByPlayers = true,
-    Nameplate = true,
+    NonPersonal = false,
+    CastByUnit = false,
+    NotCastByUnit = false,
+    Dispellable = false,
+    NotDispellable = false,
+    CastByNPC = false,
+    CastByPlayers = false,
+    Nameplate = false,
     CrowdControl = true,
-    PlayerBuffs = true,
-    TurtleBuffs = true,
+    PlayerBuffs = false,
+    TurtleBuffs = false,
     RaidBuffs = true,
     RaidDebuffs = true
 }
 
-local AURA_FILTER_BLACKLIST = {BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = true, BlockDispellable = false, BlockNotDispellable = false}
+local AURA_FILTER_BLACKLIST = {BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = false, BlockDispellable = false, BlockNotDispellable = false}
 
 local DEFAULT_UNIT_CONFIG = {
     enabled = true,

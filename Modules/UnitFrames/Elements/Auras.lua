@@ -170,7 +170,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
         return true
     end
 
-    return isWhiteListed and not isBlackListed
+    return isWhiteListed or not isBlackListed
 end
 
 UF.auraFilters = {}
