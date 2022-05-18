@@ -1,6 +1,0 @@
-## Interface: 80200
-## Title: LibItemSearch-1.2
-## Author: Jaliborc (João Cardoso)
-
-LibItemSearch-1.2.lua
-Tests.lua
