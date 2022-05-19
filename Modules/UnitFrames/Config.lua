@@ -530,6 +530,7 @@ R:RegisterModuleConfig(UF, {
             enabled = true,
             buffs = {
                 filter = {
+                    maxDuration = 300,
                     whitelist = {
                         Dispellable = true,
                         PlayerBuffs = true,

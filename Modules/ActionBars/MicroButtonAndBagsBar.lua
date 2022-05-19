@@ -44,7 +44,7 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     R:FixNormalTextureSize(CharacterBag3Slot)
 
     if not R.isRetail then
-        KeyRingButton:ClearAllPoints()
+        KeyRingButton:SetParent(R.HiddenFrame)
         KeyRingButton:ClearAllPoints()
         KeyRingButton:SetPoint("BOTTOMRIGHT", CharacterBag3Slot, "BOTTOMLEFT", -4, -2)
         KeyRingButton:SetSize(16, 32)
