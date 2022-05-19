@@ -118,6 +118,7 @@ function MM:StyleMinimap()
         MiniMapTrackingIcon:SetTexture([[Interface\Minimap\Tracking\None]])
         MiniMapTrackingIcon:SetSize(20, 20)
         MiniMapTrackingBorder:Hide()
+        BattlegroundShine:Hide()
     end
 
     MiniMapTrackingBackground:Hide()

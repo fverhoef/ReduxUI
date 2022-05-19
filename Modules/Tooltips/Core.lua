@@ -288,6 +288,7 @@ function TT:FormatNameText(tooltip, unit)
     local class = select(2, UnitClass(unit))
     if not class then return end
 
+    local name, realm = UnitName(unit)
     local fullName = (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN
     if realm then
         fullName = fullName .. (IsShiftKeyDown() and ("-" .. realm) or " (*)")
