@@ -288,7 +288,12 @@ function TT:FormatNameText(tooltip, unit)
     local class = select(2, UnitClass(unit))
     if not class then return end
 
-    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN,
+    local fullName = (TT.config.showTitle and UnitPVPName(unit) or UnitName(unit)) or UNKNOWN
+    if realm then
+        fullName = fullName .. (IsShiftKeyDown() and ("-" .. realm) or " (*)")
+    end
+
+    _G.GameTooltipTextLeft1:SetFormattedText("%s%s|r%s", R:Hex(RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]), fullName,
                                              UnitIsAFK(unit) and (R:Hex(TT.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and
                                                  (R:Hex(TT.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or "")
 end
