@@ -74,6 +74,7 @@ function S:StyleTradeSkillFrame()
 
     regions[4]:Hide()
     regions[5]:Hide()
+    regions[6]:Hide()
 
     TradeSkillCreateButton:ClearAllPoints()
     TradeSkillCreateButton:SetPoint("RIGHT", TradeSkillCancelButton, "LEFT", -1, 0)
@@ -90,4 +91,10 @@ function S:StyleTradeSkillFrame()
     TradeSkillInvSlotDropDown:SetPoint("TOPLEFT", TradeSkillFrame, "TOPLEFT", 510, -40)
     TradeSkillSubClassDropDown:ClearAllPoints()
     TradeSkillSubClassDropDown:SetPoint("RIGHT", TradeSkillInvSlotDropDown, "LEFT", 0, 0)
+
+    --TradeSkillFrameAvailableFilterCheckButton
+    TradeSearchInputBox:ClearAllPoints()
+    TradeSearchInputBox:SetPoint("TOPLEFT", TradeSkillFrame, "TOPLEFT", 77, -51)
+    TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
+    TradeSkillFrameAvailableFilterCheckButton:SetPoint("TOPLEFT", TradeSearchInputBox, "TOPRIGHT", 5, -2)
 end
