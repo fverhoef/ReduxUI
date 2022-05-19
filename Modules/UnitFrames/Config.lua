@@ -4,10 +4,10 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 local AURA_FILTER_WHITELIST = {
-    Boss = true,
+    Boss = false,
     MyPet = false,
     OtherPet = false,
-    Personal = true,
+    Personal = false,
     NonPersonal = false,
     CastByUnit = false,
     NotCastByUnit = false,
@@ -16,11 +16,11 @@ local AURA_FILTER_WHITELIST = {
     CastByNPC = false,
     CastByPlayers = false,
     Nameplate = false,
-    CrowdControl = true,
+    CrowdControl = false,
     PlayerBuffs = false,
     TurtleBuffs = false,
-    RaidBuffs = true,
-    RaidDebuffs = true
+    RaidBuffs = false,
+    RaidDebuffs = false
 }
 
 local AURA_FILTER_BLACKLIST = {BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = false, BlockDispellable = false, BlockNotDispellable = false}
@@ -312,7 +312,32 @@ R:RegisterModuleConfig(UF, {
         power = {insetPoint = {"LEFT", "BOTTOMLEFT", 10, 0}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = {enabled = true},
+        auras = {
+            enabled = true,
+            buffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        NonPersonal = true,
+                        CastByUnit = true,
+                        Dispellable = true,
+                        PlayerBuffs = true,
+                        RaidBuffs = true
+                    }
+                }
+            },
+            debuffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        Boss = true,
+                        Dispellable = true,
+                        CrowdControl = true,
+                        RaidDebuffs = true
+                    }
+                }
+            }
+        },
         combatIndicator = {point = {"CENTER", "LEFT", 0, 0}},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
@@ -342,7 +367,32 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = {enabled = true},
+        auras = {
+            enabled = true,
+            buffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        NonPersonal = true,
+                        CastByUnit = true,
+                        Dispellable = true,
+                        PlayerBuffs = true,
+                        RaidBuffs = true
+                    }
+                }
+            },
+            debuffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        Boss = true,
+                        Dispellable = true,
+                        CrowdControl = true,
+                        RaidDebuffs = true
+                    }
+                }
+            }
+        },
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
     }),
@@ -356,7 +406,8 @@ R:RegisterModuleConfig(UF, {
         castbar = {enabled = false},
         pvpIndicator = {enabled = false}
     }),
-    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM", groupAnchorPoint = "BOTTOM"}),
+    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG,
+                        {size = {180, 30}, point = {"BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450}, pvpIndicator = {enabled = false}, unitAnchorPoint = "BOTTOM", groupAnchorPoint = "BOTTOM"}),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = {90, 36},
         point = {"BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 280},
@@ -407,7 +458,29 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = {enabled = true},
+        auras = {
+            enabled = true,
+            buffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        Dispellable = true,
+                        PlayerBuffs = true,
+                        TurtleBuffs = true
+                    }
+                }
+            },
+            debuffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        Dispellable = true,
+                        CrowdControl = true,
+                        RaidDebuffs = true
+                    }
+                }
+            }
+        },
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -417,7 +490,31 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
         portrait = {point = "RIGHT"},
-        auras = {enabled = true},
+        auras = {
+            enabled = true,
+            buffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        NonPersonal = true,
+                        CastByUnit = true,
+                        Dispellable = true,
+                        RaidBuffs = true
+                    }
+                }
+            },
+            debuffs = {
+                filter = {
+                    whitelist = {
+                        Personal = true,
+                        Boss = true,
+                        Dispellable = true,
+                        CrowdControl = true,
+                        RaidDebuffs = true
+                    }
+                }
+            }
+        },
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -431,21 +528,21 @@ R:RegisterModuleConfig(UF, {
         portrait = {enabled = false},
         auras = {
             enabled = true,
-            buffs = {enabled = false},
+            buffs = {
+                filter = {
+                    whitelist = {
+                        Dispellable = true,
+                        PlayerBuffs = true,
+                        TurtleBuffs = true
+                    }
+                }
+            },
             debuffs = {
                 filter = {
                     whitelist = {
-                        Boss = false,
-                        MyPet = false,
-                        OtherPet = false,
                         Personal = true,
-                        NonPersonal = false,
-                        CastByUnit = false,
-                        NotCastByUnit = false,
                         Dispellable = true,
-                        NotDispellable = false,
-                        CastByNPC = false,
-                        CastByPlayers = false,
+                        CrowdControl = true,
                         Nameplate = true
                     }
                 }
