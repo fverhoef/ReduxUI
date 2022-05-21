@@ -28,7 +28,7 @@ R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
 R:AddLib("ActionButton", "LibActionButton-1.0")
-R:AddLib("CustomGlow", "LibCustomGlow-1.0")
+R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
 R:AddLib("ItemSearch", "LibItemSearch-1.2")
 R:AddLib("KeyBound", "LibKeyBound-1.0")
 R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
