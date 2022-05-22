@@ -314,29 +314,8 @@ R:RegisterModuleConfig(UF, {
         portrait = {point = "RIGHT"},
         auras = {
             enabled = true,
-            buffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        NonPersonal = true,
-                        CastByUnit = true,
-                        Dispellable = true,
-                        PlayerBuffs = true,
-                        RaidBuffs = true
-                    }
-                }
-            },
-            debuffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Boss = true,
-                        Dispellable = true,
-                        CrowdControl = true,
-                        RaidDebuffs = true
-                    }
-                }
-            }
+            buffs = {filter = {whitelist = {Personal = true, NonPersonal = true, CastByUnit = true, Dispellable = true, PlayerBuffs = true, RaidBuffs = true}}},
+            debuffs = {filter = {whitelist = {Personal = true, Boss = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         combatIndicator = {point = {"CENTER", "LEFT", 0, 0}},
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
@@ -369,29 +348,8 @@ R:RegisterModuleConfig(UF, {
         portrait = {point = "RIGHT"},
         auras = {
             enabled = true,
-            buffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        NonPersonal = true,
-                        CastByUnit = true,
-                        Dispellable = true,
-                        PlayerBuffs = true,
-                        RaidBuffs = true
-                    }
-                }
-            },
-            debuffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Boss = true,
-                        Dispellable = true,
-                        CrowdControl = true,
-                        RaidDebuffs = true
-                    }
-                }
-            }
+            buffs = {filter = {whitelist = {Personal = true, NonPersonal = true, CastByUnit = true, Dispellable = true, PlayerBuffs = true, RaidBuffs = true}}},
+            debuffs = {filter = {whitelist = {Personal = true, Boss = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         pvpIndicator = {point = {"CENTER", "RIGHT", 0, 0}},
         highlight = {target = false}
@@ -460,26 +418,8 @@ R:RegisterModuleConfig(UF, {
         portrait = {point = "RIGHT"},
         auras = {
             enabled = true,
-            buffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Dispellable = true,
-                        PlayerBuffs = true,
-                        TurtleBuffs = true
-                    }
-                }
-            },
-            debuffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Dispellable = true,
-                        CrowdControl = true,
-                        RaidDebuffs = true
-                    }
-                }
-            }
+            buffs = {filter = {whitelist = {Personal = true, Dispellable = true, PlayerBuffs = true, TurtleBuffs = true}}},
+            debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
@@ -492,65 +432,78 @@ R:RegisterModuleConfig(UF, {
         portrait = {point = "RIGHT"},
         auras = {
             enabled = true,
-            buffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        NonPersonal = true,
-                        CastByUnit = true,
-                        Dispellable = true,
-                        RaidBuffs = true
-                    }
-                }
-            },
-            debuffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Boss = true,
-                        Dispellable = true,
-                        CrowdControl = true,
-                        RaidDebuffs = true
-                    }
-                }
-            }
+            buffs = {filter = {whitelist = {Personal = true, NonPersonal = true, CastByUnit = true, Dispellable = true, RaidBuffs = true}}},
+            debuffs = {filter = {whitelist = {Personal = true, Boss = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         pvpIndicator = {enabled = false},
         unitAnchorPoint = "BOTTOM"
     }),
-    nameplates = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
-        size = {150, 16},
-        point = {"CENTER"},
-        health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
-        power = {enabled = false},
-        name = {size = {130, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
-        level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
-        portrait = {enabled = false},
-        auras = {
-            enabled = true,
-            buffs = {
-                filter = {
-                    maxDuration = 300,
-                    whitelist = {
-                        Dispellable = true,
-                        PlayerBuffs = true,
-                        TurtleBuffs = true
-                    }
-                }
+    nameplates = {
+        enabled = true,
+        friendlyPlayer = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+            size = {160, 14},
+            point = {"CENTER"},
+            health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+            power = {enabled = false},
+            name = {size = {140, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
+            level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
+            portrait = {enabled = false},
+            auras = {
+                enabled = true,
+                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {blockNoDuration = true}}},
+                debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true}, blacklist = {blockNoDuration = true}}}
             },
-            debuffs = {
-                filter = {
-                    whitelist = {
-                        Personal = true,
-                        Dispellable = true,
-                        CrowdControl = true,
-                        Nameplate = true
-                    }
-                }
-            }
-        },
-        highlight = {targetArrows = true},
-        pvpIndicator = {enabled = false},
+            highlight = {targetArrows = true},
+            pvpIndicator = {enabled = false}
+        }),
+        enemyPlayer = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+            size = {160, 14},
+            point = {"CENTER"},
+            health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+            power = {enabled = false},
+            name = {size = {140, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
+            level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
+            portrait = {enabled = false},
+            auras = {
+                enabled = true,
+                buffs = {filter = {maxDuration = 300, whitelist = {Dispellable = true, PlayerBuffs = true, TurtleBuffs = true}}},
+                debuffs = {filter = {whitelist = {Personal = true, CrowdControl = true}, blacklist = {blockNoDuration = true}}}
+            },
+            highlight = {targetArrows = true},
+            pvpIndicator = {enabled = false}
+        }),
+        friendlyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+            size = {160, 14},
+            point = {"CENTER"},
+            health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+            power = {enabled = false},
+            name = {size = {140, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
+            level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
+            portrait = {enabled = false},
+            auras = {
+                enabled = true,
+                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {blockNoDuration = true}}},
+                debuffs = {filter = {whitelist = {Dispellable = true, RaidDebuffs = true, CrowdControl = true}}}
+            },
+            highlight = {targetArrows = true},
+            pvpIndicator = {enabled = false}
+        }),
+        enemyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+            size = {160, 14},
+            point = {"CENTER"},
+            health = {value = {point = {"CENTER", "CENTER", 0, 0}, fontSize = 12}, percent = {enabled = false}},
+            power = {enabled = false},
+            name = {size = {140, 10}, tag = "[name]", point = {"BOTTOMLEFT", "TOPLEFT", 2, 5}},
+            level = {enabled = true, point = {"BOTTOMRIGHT", "TOPRIGHT", 2, 5}},
+            portrait = {enabled = false},
+            auras = {
+                enabled = true,
+                buffs = {filter = {whitelist = {RaidBuffs = true, Dispellable = true, CastByUnit = true}, blacklist = {blockNoDuration = true}}},
+                debuffs = {filter = {whitelist = {Personal = true, CrowdControl = true}}}
+            },
+            highlight = {targetArrows = true},
+            pvpIndicator = {enabled = false}
+        }),
         cvars = {
             nameplateMaxDistance = 41,
             nameplateMinScale = 1,
@@ -579,5 +532,5 @@ R:RegisterModuleConfig(UF, {
             nameplateShowFriendlyPets = 0,
             nameplateShowFriendlyTotems = 0
         }
-    })
+    }
 })

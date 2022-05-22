@@ -6,12 +6,15 @@ local oUF = ns.oUF or oUF
 function UF:CreateReadyCheckIndicator()
     if not self.config.readyCheckIndicator.enabled then return end
 
-    self.ReadyCheckIndicator = self:CreateTexture("$parentReadyCheckIcon", "OVERLAY", nil, 7)
+    self.ReadyCheckIndicatorHolder = CreateFrame("Frame", "$parentReadyCheckIndicatorHolder", self)
+    self.ReadyCheckIndicatorHolder:SetAllPoints(self.Overlay)
+    self.ReadyCheckIndicatorHolder:SetParent(self.Overlay)
+    self.ReadyCheckIndicatorHolder:SetFrameLevel(self.Overlay:GetFrameLevel() + 2)
+
+    self.ReadyCheckIndicator = self.ReadyCheckIndicatorHolder:CreateTexture("$parentReadyCheckIcon", "OVERLAY")
     self.ReadyCheckIndicator:SetParent(self.Overlay)
     self.ReadyCheckIndicator.delayTime = 2
     self.ReadyCheckIndicator.fadeTime = 0.5
-
-    -- TODO: oUF's ready check element only works on party/unit
 
     return self.ReadyCheckIndicator
 end

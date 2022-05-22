@@ -6,8 +6,12 @@ local oUF = ns.oUF or oUF
 function UF:CreateRaidTargetIndicator()
     if not self.config.raidTargetIndicator.enabled then return end
 
-    self.RaidTargetIndicator = self:CreateTexture("$parentRaidTargetIcon", "OVERLAY", nil, 7)
-    self.RaidTargetIndicator:SetParent(self.Overlay)
+    self.RaidTargetHolder = CreateFrame("Frame", "$parentRaidTargetIconHolder", self)
+    self.RaidTargetHolder:SetAllPoints(self.Overlay)
+    self.RaidTargetHolder:SetParent(self.Overlay)
+    self.RaidTargetHolder:SetFrameLevel(self.Overlay:GetFrameLevel() + 2)
+    
+    self.RaidTargetIndicator = self.RaidTargetHolder:CreateTexture("$parentRaidTargetIcon", "OVERLAY")
     self.RaidTargetIndicator:SetSize(24, 24)
 
     return self.RaidTargetIndicator

@@ -25,7 +25,7 @@ function UF:InitializeFrame()
     end
 
     self.Overlay = CreateFrame("Frame", "$parentOverlay", self)
-    self.Overlay:SetFrameLevel(self:GetFrameLevel() + 10)
+    self.Overlay:SetFrameLevel(self:GetFrameLevel() + 100)
     self.Overlay:SetAllPoints()
 
     self:CreateBorder()

@@ -6,7 +6,12 @@ local oUF = ns.oUF or oUF
 function UF:CreateResurrectIndicator()
     if not self.config.resurrectIndicator.enabled then return end
 
-    self.ResurrectIndicator = self:CreateTexture(nil, "OVERLAY")
+    self.ResurrectIndicatorHolder = CreateFrame("Frame", "$parentResurrectIndicatorHolder", self)
+    self.ResurrectIndicatorHolder:SetAllPoints(self.Overlay)
+    self.ResurrectIndicatorHolder:SetParent(self.Overlay)
+    self.ResurrectIndicatorHolder:SetFrameLevel(self.Overlay:GetFrameLevel() + 2)
+
+    self.ResurrectIndicator = self.ResurrectIndicatorHolder:CreateTexture("$parentResurrectIcon", "OVERLAY")
     self.ResurrectIndicator:SetParent(self.Overlay)
     self.ResurrectIndicator:SetSize(16, 16)
 end

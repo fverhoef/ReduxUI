@@ -12,26 +12,27 @@ function UF:SpawnNamePlates()
     end
 end
 
-function UF:UpdateNamePlates()
-    for i, nameplate in ipairs(UF.nameplates) do UF:UpdateNamePlate(nameplate) end
-end
+function UF:UpdateNamePlates() for i, nameplate in ipairs(UF.nameplates) do UF:UpdateNamePlate(nameplate) end end
 
 function UF:CreateNamePlate()
-    self.config = UF.config.nameplates
-    self.defaults = UF.defaults.nameplates
+    local configKey = (UnitIsFriend("player", self.unit) and "friendly" or "enemy") .. (UnitIsPlayer(self.unit) and "Player" or "Npc")
+    self.config = UF.config.nameplates[configKey]
+    self.defaults = UF.defaults.nameplates[configKey]
 
     self:InitializeFrame()
     self:SetPoint("CENTER")
 
     table.insert(UF.nameplates, self)
 
-    self.Update = function(self)
-        UF:UpdateNamePlate(self)
-    end
+    self.Update = function(self) UF:UpdateNamePlate(self) end
 end
 
 function UF:UpdateNamePlate(self)
     if not self then return end
+
+    local configKey = (UnitIsFriend("player", self.unit) and "friendly" or "enemy") .. (UnitIsPlayer(self.unit) and "Player" or "Npc")
+    self.config = UF.config.nameplates[configKey]
+    self.defaults = UF.defaults.nameplates[configKey]
 
     self:ConfigureFrame()
     self:SetScale((self.config.scale or 1) * UIParent:GetScale())

@@ -6,7 +6,12 @@ local oUF = ns.oUF or oUF
 function UF:CreateSummonIndicator()
     if not self.config.summonIndicator.enabled then return end
 
-    self.SummonIndicator = self:CreateTexture(nil, "OVERLAY")
+    self.SummonIndicatorHolder = CreateFrame("Frame", "$parentSummonIndicatorHolder", self)
+    self.SummonIndicatorHolder:SetAllPoints(self.Overlay)
+    self.SummonIndicatorHolder:SetParent(self.Overlay)
+    self.SummonIndicatorHolder:SetFrameLevel(self.Overlay:GetFrameLevel() + 2)
+
+    self.SummonIndicator = self.SummonIndicatorHolder:CreateTexture("$parentSummonIcon", "OVERLAY")
     self.SummonIndicator:SetParent(self.Overlay)
     self.SummonIndicator:SetSize(16, 16)
 end
