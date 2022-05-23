@@ -139,6 +139,8 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 
     if not allowDuration then return false end
 
+    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
+    
     if filter.whitelist.CrowdControl and UF.auraFilters.CrowdControl[spellID] then
         return true
     elseif filter.whitelist.TurtleBuffs and UF.auraFilters.TurtleBuffs[spellID] then
@@ -161,7 +163,6 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
     local unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
     local canDispel = (self.type == "debuffs" and R:PlayerCanDispel(debuffType)) or (self.type == "buffs" and isStealable)
 
-    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
     local isWhiteListed =
         (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and isBossDebuff) or (filter.whitelist.MyPet and myPet) or
             (filter.whitelist.OtherPet and otherPet) or (filter.whitelist.CastByUnit and unitIsCaster) or (filter.whitelist.NotCastByUnit and not unitIsCaster) or
