@@ -139,21 +139,6 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 
     if not allowDuration then return false end
 
-    local myPet = caster == "pet"
-    local otherPet = caster and not UnitIsUnit("pet", caster) and string.match(caster, "pet%d+")
-    local isPlayer = caster == "player" or caster == "vehicle"
-    local unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
-    local canDispel = (self.type == "debuffs" and R:PlayerCanDispel(debuffType)) or (self.type == "buffs" and isStealable)
-
-    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
-    local isWhiteListed =
-        (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and isBossDebuff) or (filter.whitelist.MyPet and myPet) or
-            (filter.whitelist.OtherPet and otherPet) or (filter.whitelist.CastByUnit and caster and unitIsCaster) or (filter.whitelist.NotCastByUnit and caster and not unitIsCaster) or
-            (filter.whitelist.Dispellable and canDispel) or (filter.whitelist.NotDispellable and not canDispel) or (filter.whitelist.CastByNPC and not casterIsPlayer) or
-            (filter.whitelist.CastByPlayers and casterIsPlayer) or (filter.whitelist.Nameplate and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))
-    local isBlackListed = (filter.blacklist.BlockCastByPlayers and casterIsPlayer) or (filter.blacklist.BlockNoDuration and noDuration) or (filter.blacklist.BlockNonPersonal and not isPlayer) or
-                              (filter.blacklist.BlockDispellable and canDispel) or (filter.blacklist.BlockNotDispellable and not canDispel)
-
     if filter.whitelist.CrowdControl and UF.auraFilters.CrowdControl[spellID] then
         return true
     elseif filter.whitelist.TurtleBuffs and UF.auraFilters.TurtleBuffs[spellID] then
@@ -170,7 +155,22 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
         return true
     end
 
-    return isWhiteListed or not isBlackListed
+    local myPet = caster == "pet"
+    local otherPet = caster and not UnitIsUnit("pet", caster) and string.match(caster, "pet%d+")
+    local isPlayer = caster == "player" or caster == "vehicle"
+    local unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
+    local canDispel = (self.type == "debuffs" and R:PlayerCanDispel(debuffType)) or (self.type == "buffs" and isStealable)
+
+    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
+    local isWhiteListed =
+        (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and isBossDebuff) or (filter.whitelist.MyPet and myPet) or
+            (filter.whitelist.OtherPet and otherPet) or (filter.whitelist.CastByUnit and unitIsCaster) or (filter.whitelist.NotCastByUnit and not unitIsCaster) or
+            (filter.whitelist.Dispellable and canDispel) or (filter.whitelist.NotDispellable and not canDispel) or (filter.whitelist.CastByNPC and not casterIsPlayer) or
+            (filter.whitelist.CastByPlayers and casterIsPlayer) or (filter.whitelist.Nameplate and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))
+    local isBlackListed = (filter.blacklist.BlockCastByPlayers and casterIsPlayer) or (filter.blacklist.BlockNoDuration and noDuration) or (filter.blacklist.BlockNonPersonal and not isPlayer) or
+                              (filter.blacklist.BlockDispellable and canDispel) or (filter.blacklist.BlockNotDispellable and not canDispel)
+
+    return isWhiteListed and not isBlackListed
 end
 
 UF.auraFilters = {}
