@@ -88,6 +88,19 @@ R.config.options = {
                         end}
                     }
                 },
+                tweaks = {
+                    type = "group",
+                    name = L["Tweaks"],
+                    order = 3,
+                    inline = true,
+                    args = {
+                        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 3, nil, 1, 4, 4, 0.1, function()
+                            GetCVar('cameraDistanceMaxZoomFactor')
+                        end, function(value)
+                            SetCVar('cameraDistanceMaxZoomFactor', value)
+                        end),
+                    }
+                },
                 inventoryDatabase = {
                     type = "group",
                     name = L["Inventory Database"],
