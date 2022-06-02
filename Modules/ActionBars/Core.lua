@@ -72,9 +72,9 @@ function AB:CreateActionBar(id)
     for i = 1, 12 do
         local button = R.Libs.ActionButton:CreateButton(i, "$parent_Button" .. i, bar, nil)
         button:SetState(0, "action", i)
+        button:SetAttribute("buttonlock", true)
 
         for k = 1, 14 do button:SetState(k, "action", (k - 1) * 12 + i) end
-
         button:UpdateConfig({keyBoundTarget = bar.config.keyBoundTarget .. i})
         R.Modules.ButtonStyles:StyleActionButton(button)
 
@@ -286,6 +286,7 @@ function AB:ConfigureActionBar(bar)
             button:Show()
         end
 
+        button:SetAttribute("buttonlock", true)
         if button.UpdateConfig then
             button:UpdateConfig({
                 clickOnDown = bar.config.clickOnDown,

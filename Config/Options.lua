@@ -94,11 +94,10 @@ R.config.options = {
                     order = 3,
                     inline = true,
                     args = {
-                        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 3, nil, 1, 4, 4, 0.1, function()
-                            GetCVar('cameraDistanceMaxZoomFactor')
-                        end, function(value)
-                            SetCVar('cameraDistanceMaxZoomFactor', value)
-                        end),
+                        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 3, nil, 1, 4, 4, 0.1,
+                                                                          function() GetCVar("cameraDistanceMaxZoomFactor") end, function(value)
+                            SetCVar("cameraDistanceMaxZoomFactor", value)
+                        end)
                     }
                 },
                 inventoryDatabase = {
