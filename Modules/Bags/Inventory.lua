@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
+local ID = R.Modules.InventoryDatabase
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
@@ -62,6 +63,15 @@ function InventoryMoneyMixin:Money_OnEnter()
         end
     end
     _G.GameTooltip:AddDoubleLine("Total:", R:FormatMoney(total, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
+
+    _G.GameTooltip:AddLine("\nStatistics")
+    _G.GameTooltip:AddDoubleLine("Earned:", R:FormatMoney(ID.earned, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
+    _G.GameTooltip:AddDoubleLine("Spent:", R:FormatMoney(ID.spent, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
+    if ID.profit > 0 then
+        _G.GameTooltip:AddDoubleLine("Profit:", R:FormatMoney(ID.profit, "BLIZZARD"), 0, 1, 0, 1, 1, 1)
+    elseif ID.profit < 0 then
+        _G.GameTooltip:AddDoubleLine("Deficit:", R:FormatMoney(ID.profit, "BLIZZARD"), 1, 0, 0, 1, 1, 1)
+    end
     _G.GameTooltip:Show()
 end
 

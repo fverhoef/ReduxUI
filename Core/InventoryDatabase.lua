@@ -1,7 +1,8 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local ID = R:AddModule("InventoryDatabase", "AceEvent-3.0")
-R.InventoryDatabase = SI
+ID.earned = 0
+ID.spent = 0
 
 local bagIDs = {bags = {0, 1, 2, 3, 4, -2}, bank = {-1, 5, 6, 7, 8, 9, 10}, reagentBank = {}}
 if R.isRetail then
@@ -9,8 +10,7 @@ if R.isRetail then
     table.insert(bagIDs.reagentBank, -3)
 end
 
-function ID:Initialize()
-end
+function ID:Initialize() end
 
 function ID:Enable()
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
@@ -21,6 +21,9 @@ function ID:Enable()
     ID:RegisterEvent("QUEST_REMOVED", ID.Update)
     ID:RegisterEvent("PLAYER_MONEY", ID.Update)
     ID:RegisterEvent("PLAYER_TRADE_MONEY", ID.Update)
+    ID:RegisterEvent("TRADE_MONEY_CHANGED", ID.Update)
+    ID:RegisterEvent("SEND_MAIL_MONEY_CHANGED", ID.Update)
+    ID:RegisterEvent("SEND_MAIL_COD_CHANGED", ID.Update)
     ID:RegisterEvent("BANKFRAME_OPENED", ID.Update)
     ID:RegisterEvent("BANKFRAME_CLOSED", ID.Update)
     ID:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", ID.Update)
@@ -30,7 +33,18 @@ end
 
 function ID:Update()
     local db = ID:GetCharacterDatabase()
-    db.money = GetMoney()
+
+    local oldMoney = db.money
+    local newMoney = GetMoney()
+    local change = newMoney - oldMoney
+    if change < 0 then
+        ID.spent = ID.spent - change
+    else
+        ID.earned = ID.earned + change
+    end
+    ID.profit = ID.earned - ID.spent
+
+    db.money = newMoney
 
     db.equipped = {}
     ID:StoreEquippedItems(db)
@@ -64,9 +78,7 @@ function ID:GetCharacterKeys()
     return keys
 end
 
-function ID:ClearCharacterDatabase(name)
-    if name and R.config.db.realm.inventory[name] then R.config.db.realm.inventory[name] = nil end
-end
+function ID:ClearCharacterDatabase(name) if name and R.config.db.realm.inventory[name] then R.config.db.realm.inventory[name] = nil end end
 
 function ID:GetItemCount(itemId)
     local chars = {}
