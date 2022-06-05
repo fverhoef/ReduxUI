@@ -22,10 +22,13 @@ end
 function S:StyleObjectiveTrackerFrame()
     if not ObjectiveTrackerFrame or not S.config.objectiveTracker.enabled then return end
 
+	local objectiveFrameHeight = ObjectiveTrackerFrame:GetHeight()
     ObjectiveTrackerFrame.config = S.config.objectiveTracker
-    ObjectiveTrackerFrame:SetMovable(true)
-    ObjectiveTrackerFrame:SetUserPlaced(true)
+	ObjectiveTrackerFrame:SetClampedToScreen(false)
     ObjectiveTrackerFrame:ClearAllPoints()
     ObjectiveTrackerFrame:SetNormalizedPoint(unpack(ObjectiveTrackerFrame.config.point))
+    ObjectiveTrackerFrame:SetMovable(true)
+    ObjectiveTrackerFrame:SetUserPlaced(true)
+	ObjectiveTrackerFrame:SetHeight(objectiveFrameHeight)
     ObjectiveTrackerFrame:CreateMover("Objective Tracker", ObjectiveTrackerFrame.config.point)
 end
