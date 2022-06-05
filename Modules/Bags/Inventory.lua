@@ -70,7 +70,7 @@ function InventoryMoneyMixin:Money_OnEnter()
     if ID.profit > 0 then
         _G.GameTooltip:AddDoubleLine("Profit:", R:FormatMoney(ID.profit, "BLIZZARD"), 0, 1, 0, 1, 1, 1)
     elseif ID.profit < 0 then
-        _G.GameTooltip:AddDoubleLine("Deficit:", R:FormatMoney(ID.profit, "BLIZZARD"), 1, 0, 0, 1, 1, 1)
+        _G.GameTooltip:AddDoubleLine("Loss:", R:FormatMoney(ID.profit, "BLIZZARD"), 1, 0, 0, 1, 1, 1)
     end
     _G.GameTooltip:Show()
 end
