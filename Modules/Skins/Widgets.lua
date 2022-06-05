@@ -9,25 +9,25 @@ function S:StyleWidgets()
     UIWidgetTopCenterContainerFrame:SetMovable(true)
     UIWidgetTopCenterContainerFrame:SetUserPlaced(true)
     UIWidgetTopCenterContainerFrame:ClearAllPoints()
-    UIWidgetTopCenterContainerFrame:Point(UIWidgetTopCenterContainerFrame.config.point)
-    UIWidgetTopCenterContainerFrame:CreateMover("Top Widgets Frame", UIWidgetTopCenterContainerFrame.config.point)
+    UIWidgetTopCenterContainerFrame:SetNormalizedPoint(UIWidgetTopCenterContainerFrame.config.point)
+    UIWidgetTopCenterContainerFrame:CreateMover("Top Widgets Frame", UIWidgetTopCenterContainerFrame.config.point, 200, 50)
     R:SecureHook(UIWidgetTopCenterContainerFrame, "SetPoint", function(self, point, anchor, relativePoint, x, y)
         if point ~= self.config.point[1] or anchor ~= self.config.point[2] or relativePoint ~= self.config.point[3] then
             self:ClearAllPoints()
-            self:Point(self.config.point)
+            self:SetNormalizedPoint(self.config.point)
         end
     end)
 
-    UIWidgetBelowMinimapContainerFrame.config = S.config.widgets.top
+    UIWidgetBelowMinimapContainerFrame.config = S.config.widgets.belowMinimap
     UIWidgetBelowMinimapContainerFrame:SetMovable(true)
     UIWidgetBelowMinimapContainerFrame:SetUserPlaced(true)
     UIWidgetBelowMinimapContainerFrame:ClearAllPoints()
-    UIWidgetBelowMinimapContainerFrame:Point(UIWidgetBelowMinimapContainerFrame.config.point)
-    UIWidgetBelowMinimapContainerFrame:CreateMover("Minimap Widgets Frame", UIWidgetBelowMinimapContainerFrame.config.point)
+    UIWidgetBelowMinimapContainerFrame:SetNormalizedPoint(UIWidgetBelowMinimapContainerFrame.config.point)
+    UIWidgetBelowMinimapContainerFrame:CreateMover("Minimap Widgets Frame", UIWidgetBelowMinimapContainerFrame.config.point, 200, 50)
     R:SecureHook(UIWidgetBelowMinimapContainerFrame, "SetPoint", function(self, point, anchor, relativePoint, x, y)
         if point ~= self.config.point[1] or anchor ~= self.config.point[2] or relativePoint ~= self.config.point[3] then
             self:ClearAllPoints()
-            self:Point(self.config.point)
+            self:SetNormalizedPoint(self.config.point)
         end
     end)
 end
