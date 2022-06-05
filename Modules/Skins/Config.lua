@@ -23,6 +23,7 @@ R:RegisterModuleConfig(S, {
     ticketStatus = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -228, -240}},
     tradeSkill = {enabled = true},
     vehicleSeat = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
+    widgets = {enabled = true, top = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -50}}, belowMinimap = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -50}}},
     who = {enabled = true},
     worldMap = {enabled = true, scale = 0.7, movingOpacity = 0.5, stationaryOpacity = 1.0}
 })

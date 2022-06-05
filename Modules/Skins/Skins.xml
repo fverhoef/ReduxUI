@@ -9,6 +9,7 @@
     <Script file="ObjectiveTracker.lua"/>
     <Script file="TicketStatus.lua"/>
     <Script file="VehicleSeat.lua"/>
+    <Script file="Widgets.lua"/>
     <Script file="WorldMapFrame.lua"/>
 
     <!-- TBC -->

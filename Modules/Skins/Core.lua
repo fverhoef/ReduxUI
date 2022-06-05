@@ -14,6 +14,7 @@ function S:Enable()
     S:StyleQuestWatchFrame()
     S:StyleTicketStatusFrame()
     S:StyleVehicleSeatIndicator()
+    S:StyleWidgets()
 
     if not R.isRetail then
         S:StyleCharacterFrame()
