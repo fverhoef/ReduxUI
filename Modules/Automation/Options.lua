@@ -1,5 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
+local L = R.L
 local AM = R.Modules.Automation
 
 R:RegisterModuleOptions(AM, {
@@ -155,6 +156,9 @@ R:RegisterModuleOptions(AM, {
             set = function(_, val)
                 AM.config.autoInvitePassword = val
             end
-        }
+        },
+        lineBreak2 = {type = "header", name = "Tweaks", order = 30},
+        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 31, nil, 1, 4, 4, 0.1,
+                                                          function() return AM.config.cameraDistanceMaxZoomFactor end, function(value) AM.config.cameraDistanceMaxZoomFactor = value end, AM.Update)
     }
 })

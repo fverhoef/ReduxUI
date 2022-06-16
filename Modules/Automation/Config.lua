@@ -15,5 +15,6 @@ R:RegisterModuleConfig(AM, {
     disableVendorRefundWarning = true,
     disableMailRefundWarning = true,
     autoInvite = true,
-    autoInvitePassword = "inv"
+    autoInvitePassword = "inv",
+    cameraDistanceMaxZoomFactor = 4.0
 })

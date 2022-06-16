@@ -28,6 +28,12 @@ function AM:Enable()
     AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
     AM:RegisterEvent("CHAT_MSG_WHISPER")
     AM:RegisterEvent("CHAT_MSG_BN_WHISPER")
+
+    AM:Update()
+end
+
+function AM:Update()
+    SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)
