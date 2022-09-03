@@ -52,7 +52,6 @@ function MM:StyleMinimap()
     MinimapZoomIn:Hide()
     MinimapZoomOut:Hide()
     R:Disable(MiniMapWorldMapButton)
-    if not R.isRetail then MinimapToggleButton:Hide() end
     GameTimeFrame:Hide()
 
     LoadAddOn("Blizzard_TimeManager")
@@ -117,7 +116,6 @@ function MM:StyleMinimap()
         MiniMapTracking:SetScript("OnEvent", nil)
         MiniMapTrackingIcon:SetTexture([[Interface\Minimap\Tracking\None]])
         MiniMapTrackingIcon:SetSize(20, 20)
-        MiniMapTrackingBorder:Hide()
         BattlegroundShine:Hide()
     end
 

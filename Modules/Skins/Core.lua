@@ -21,7 +21,6 @@ function S:Enable()
         S:StyleFriendsFrame()
         S:StyleGuildFrame()
         S:StyleWhoFrame()
-        S:StyleQuestLogFrame()
 
         S:RegisterEvent("ADDON_LOADED")
     end

@@ -42,6 +42,7 @@ local str_match, format, tinsert, tremove = string.match, format, tinsert, tremo
 
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+local WoWWotLK = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -680,13 +681,15 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 	if not WoWClassic and not WoWBCC then
-		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
+		if not WoWWotLK then
+			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
+			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
+		end
 		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
 		lib.eventFrame:RegisterEvent("COMPANION_UPDATE")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 	end
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
@@ -1158,7 +1161,7 @@ function UpdateUsable(self)
 		end
 	end
 
-	if not WoWClassic and not WoWBCC and self._state_type == "action" then
+	if not WoWClassic and not WoWBCC and not WoWWotLK and self._state_type == "action" then
 		local isLevelLinkLocked = C_LevelLink.IsActionLocked(self._state_action)
 		if not self.icon:IsDesaturated() then
 			self.icon:SetDesaturated(isLevelLinkLocked)
@@ -1641,7 +1644,7 @@ Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
 --- WoW Classic overrides
-if WoWClassic or WoWBCC then
+if WoWClassic or WoWBCC or WoWWotLK then
 	UpdateOverlayGlow = function() end
 end
 

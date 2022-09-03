@@ -17,7 +17,6 @@
     <Script file="ClassTrainerFrame.lua"/>
     <Script file="FriendsFrame.lua"/>
     <Script file="GuildFrame.lua"/>
-    <Script file="QuestLogFrame.lua"/>
     <Script file="TradeSkillFrame.lua"/>
     <Script file="WhoFrame.lua"/>
 </Ui>

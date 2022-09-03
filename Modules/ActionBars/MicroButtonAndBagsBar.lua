@@ -51,7 +51,7 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     end
 
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", -18, 3)
+    CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", -63, 3)
 
     if not R.isRetail then
         MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, MainMenuMicroButton)
