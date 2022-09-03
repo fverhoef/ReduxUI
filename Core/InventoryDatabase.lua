@@ -82,6 +82,7 @@ function ID:ClearCharacterDatabase(name) if name and R.config.db.realm.inventory
 
 function ID:GetItemCount(itemId)
     local chars = {}
+    ID:UpdateItemCount(itemId, db)
     for i, char in next, R.config.db.realm.inventory do
         local bagCount = char.bags and char.bags[itemId] or 0
         local bankCount = char.bank and char.bank[itemId] or 0
