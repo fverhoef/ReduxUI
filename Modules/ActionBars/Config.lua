@@ -8,7 +8,6 @@ AB.COLUMN_DIRECTIONS = {"Right", "Left"}
 AB.ROW_DIRECTIONS = {"Up", "Down"}
 AB.DEFAULT_COOLDOWN_LABELS = {5, 15, 30, 60, 120, 180, 300}
 AB.COOLDOWN_FILTERS = {NONE = "NONE"}
-AB.ART_STYLES = {"Default - Gryphon", "Default - Lion", "Alliance", "Horde", "Mechanical", "Stone", "Tree", "Wood"}
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
