@@ -7,20 +7,22 @@ local CATEGORY_HEADER_HEIGHT = 23
 local CATEGORY_SPACING = 5
 local ITEM_LEVEL_HEIGHT = 27
 local STAT_HEIGHT = 18
-local ENHANCEMENT_CATEGORIES = {"PLAYERSTAT_MELEE_COMBAT", "PLAYERSTAT_RANGED_COMBAT", "PLAYERSTAT_SPELL_COMBAT", "PLAYERSTAT_DEFENSES"}
+local ENHANCEMENT_CATEGORIES = { "PLAYERSTAT_MELEE_COMBAT", "PLAYERSTAT_RANGED_COMBAT", "PLAYERSTAT_SPELL_COMBAT", "PLAYERSTAT_DEFENSES" }
 local PAPERDOLL_SIDEBARS = {
     {
         name = PAPERDOLL_SIDEBAR_STATS,
         frame = "CharacterStatsPane",
         icon = nil, -- Uses the character portrait
-        texCoords = {0.109375, 0.890625, 0.09375, 0.90625},
+        texCoords = { 0.109375, 0.890625, 0.09375, 0.90625 },
         disabledTooltip = nil,
-        IsActive = function() return true end
+        IsActive = function()
+            return true
+        end
     }, {
         name = PAPERDOLL_SIDEBAR_TITLES,
         frame = "PaperDollTitlesPane",
         icon = "Interface\\PaperDollInfoFrame\\PaperDollSidebarTabs",
-        texCoords = {0.01562500, 0.53125000, 0.32421875, 0.46093750},
+        texCoords = { 0.01562500, 0.53125000, 0.32421875, 0.46093750 },
         disabledTooltip = NO_TITLES_TOOLTIP,
         IsActive = function()
             -- You always have the "No Title" title so you need to have more than one to have an option.
@@ -30,17 +32,21 @@ local PAPERDOLL_SIDEBARS = {
         name = PAPERDOLL_EQUIPMENTMANAGER,
         frame = "PaperDollEquipmentManagerPane",
         icon = "Interface\\PaperDollInfoFrame\\PaperDollSidebarTabs",
-        texCoords = {0.01562500, 0.53125000, 0.46875000, 0.60546875},
+        texCoords = { 0.01562500, 0.53125000, 0.46875000, 0.60546875 },
         disabledTooltip = function()
             local _, failureReason = C_LFGInfo.CanPlayerUseLFD()
             return failureReason
         end,
-        IsActive = function() return C_EquipmentSet.GetNumEquipmentSets() > 0 or C_LFGInfo.CanPlayerUseLFD() end
+        IsActive = function()
+            return C_EquipmentSet.GetNumEquipmentSets() > 0 or C_LFGInfo.CanPlayerUseLFD()
+        end
     }
 }
 
 function S:StyleCharacterFrame()
-    if R.isRetail or not S.config.character.enabled then return end
+    if R.isRetail or not S.config.character.enabled then
+        return
+    end
 
     CharacterModelFrame:SetSize(231, 320)
     CharacterModelFrame:SetFrameLevel(10)
@@ -67,59 +73,20 @@ function S:StyleCharacterFrame()
     CharacterModelFrame.Background.TopLeft:SetPoint("TOPLEFT", 0, 0)
     CharacterModelFrame.Background.TopLeft:SetDesaturated(1)
 
-    CharacterModelFrame.Background.TopRight = CharacterModelFrame.Background:CreateTexture("$parentBackgroundTopRight", "BACKGROUND")
-    CharacterModelFrame.Background.TopRight:SetTexture(texturePath .. 2)
-    CharacterModelFrame.Background.TopRight:SetSize(62, 255)
-    CharacterModelFrame.Background.TopRight:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "TOPRIGHT")
-    CharacterModelFrame.Background.TopRight:SetDesaturated(1)
-    CharacterModelFrame.Background.TopRight:Hide()
-
     CharacterModelFrame.Background.BottomLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundBot", "BACKGROUND")
     CharacterModelFrame.Background.BottomLeft:SetTexture(texturePath .. 3)
     CharacterModelFrame.Background.BottomLeft:SetSize(256, 128)
     CharacterModelFrame.Background.BottomLeft:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "BOTTOMLEFT")
     CharacterModelFrame.Background.BottomLeft:SetDesaturated(1)
 
-    CharacterModelFrame.Background.BottomRight = CharacterModelFrame.Background:CreateTexture("$parentBackgroundBot", "BACKGROUND")
-    CharacterModelFrame.Background.BottomRight:SetTexture(texturePath .. 4)
-    CharacterModelFrame.Background.BottomRight:SetSize(62, 128)
-    CharacterModelFrame.Background.BottomRight:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "BOTTOMRIGHT")
-    CharacterModelFrame.Background.BottomRight:SetDesaturated(1)
-    CharacterModelFrame.Background.BottomRight:Hide()
-
-    CharacterFrame.originalWidth = CharacterFrame:GetWidth()
     PaperDollFrame.CharacterStatsPane = S:CreateCharacterStatsPane()
 
-    S:SecureHook("CharacterFrame_ShowSubFrame", function()
-        if PaperDollFrame:IsShown() then
-            CharacterFrame:SetWidth(CharacterFrame.originalWidth + PaperDollFrame.CharacterStatsPane:GetWidth() - 71)
-            UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth() - 30
-        else
-            CharacterFrame:SetWidth(CharacterFrame.originalWidth)
-            UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth()
-        end
-    end)
+    CharacterFrame.normalWidth = CharacterFrame:GetWidth()
+    CharacterFrame.extraWidth = PaperDollFrame.CharacterStatsPane:GetWidth() - 71
+    S:ResizeCharacterFrame()
+    S:SecureHook("CharacterFrame_ShowSubFrame", S.ResizeCharacterFrame)
 
-    S:SecureHook("ToggleCharacter", function()
-        if PaperDollFrame:IsShown() then
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -46, -25)
-            CharacterLevelText:Show()
-            if CharacterGuildText then CharacterGuildText:Show() end
-        else
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44, -25)
-            CharacterLevelText:Hide()
-            if CharacterGuildText then CharacterGuildText:Hide() end
-        end
-        if HonorFrame then
-            if HonorFrame:IsShown() then
-                HonorLevelText:Show()
-                HonorGuildText:Show()
-            else
-                HonorLevelText:Hide()
-                HonorGuildText:Hide()
-            end
-        end
-    end)
+    CharacterNameText:ClearAllPoints()
 
     CharacterLevelText:SetParent(CharacterNameFrame)
     CharacterLevelText:ClearAllPoints()
@@ -134,7 +101,9 @@ function S:StyleCharacterFrame()
         end)
         S:SecureHook("PaperDollFrame_SetGuild", function()
             local guildName, title, rank = GetGuildInfo("player")
-            if guildName then CharacterGuildText:SetFormattedText(GUILD_TITLE_TEMPLATE, title, R:Hex(0, 230 / 255, 0) .. guildName .. "|r") end
+            if guildName then
+                CharacterGuildText:SetFormattedText(GUILD_TITLE_TEMPLATE, title, R:Hex(0, 230 / 255, 0) .. guildName .. "|r")
+            end
         end)
     end
 
@@ -142,8 +111,80 @@ function S:StyleCharacterFrame()
     CharacterFrame:HookScript("OnShow", S.UpdateCharacterStatsPane)
 end
 
+function S:PositionCharacterFrameElements()
+    if PaperDollFrame:IsShown() then
+        if not CharacterFrame.resized then
+            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -46 + CharacterFrame.extraWidth, -25)
+            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 104, 232)
+        else
+            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -46, -25)
+            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 6, 232)
+        end
+        CharacterLevelText:Show()
+    else
+        if CharacterFrame.resized then
+            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44 - CharacterFrame.extraWidth, -25)
+            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", -92, 232)
+        else
+            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44, -25)
+            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 6, 232)
+        end
+        CharacterLevelText:Hide()
+
+        if TokenFrame and TokenFrame:IsShown() then            
+            local extraCloseButton = select(4, TokenFrame:GetChildren())
+            extraCloseButton:ClearAllPoints()
+            extraCloseButton:SetAllPoints(CharacterFrameCloseButton)
+            extraCloseButton:Hide()
+        end
+    end
+end
+
+function S:ResizeCharacterFrame()
+    if InCombatLockdown() then
+        S:RegisterEvent("PLAYER_REGEN_ENABLED", S.ResizeCharacterFrame)
+        S:PositionCharacterFrameElements()
+        return
+    else
+        S:UnregisterEvent("PLAYER_REGEN_ENABLED", S.ResizeCharacterFrame)
+    end
+
+    local otherFrames = { PetPaperDollFrame, ReputationFrame, SkillFrame, TokenFrame }
+    if PaperDollFrame:IsShown() then
+        CharacterFrame:SetWidth(CharacterFrame.normalWidth + CharacterFrame.extraWidth)
+        UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth() - 30
+        CharacterFrame.resized = true
+
+        PaperDollFrame:ClearAllPoints()
+        PaperDollFrame:SetAllPoints()
+
+        for i, frame in ipairs(otherFrames) do
+            frame:ClearAllPoints()
+            frame:SetPoint("TOPLEFT")
+            frame:SetPoint("BOTTOMRIGHT", -CharacterFrame.extraWidth, 0)
+        end
+    else
+        CharacterFrame:SetWidth(CharacterFrame.normalWidth)
+        UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth()
+        CharacterFrame.resized = false
+
+        PaperDollFrame:ClearAllPoints()
+        PaperDollFrame:SetPoint("TOPLEFT")
+        PaperDollFrame:SetPoint("BOTTOMRIGHT", CharacterFrame.extraWidth, 0)
+
+        for i, frame in ipairs(otherFrames) do
+            frame:ClearAllPoints()
+            frame:SetAllPoints()
+        end
+    end
+
+    S:PositionCharacterFrameElements()
+end
+
 function S:DressUpTexturePath(raceFileName)
-    if not raceFileName then raceFileName = "Orc"; end
+    if not raceFileName then
+        raceFileName = "Orc";
+    end
 
     return "Interface\\DressUpFrame\\DressUpBackground-" .. raceFileName;
 end
@@ -259,12 +300,12 @@ function S:CreateCharacterStatsPane_Attributes(parent)
     local stat5 = _G["PlayerStatFrameLeft5"]
     local stat6 = _G["PlayerStatFrameLeft6"]
 
-    S:HandleStat(stat1, frame, false, {"TOPLEFT", frame.Header, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", frame.Header, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat2, frame, true, {"TOPLEFT", stat1, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat1, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat3, frame, false, {"TOPLEFT", stat2, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat2, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat4, frame, true, {"TOPLEFT", stat3, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat3, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat5, frame, false, {"TOPLEFT", stat4, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat4, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat6, frame, true, {"TOPLEFT", stat5, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat5, "BOTTOMRIGHT", 0, 0})
+    S:HandleStat(stat1, frame, false, { "TOPLEFT", frame.Header, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", frame.Header, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat2, frame, true, { "TOPLEFT", stat1, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat1, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat3, frame, false, { "TOPLEFT", stat2, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat2, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat4, frame, true, { "TOPLEFT", stat3, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat3, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat5, frame, false, { "TOPLEFT", stat4, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat4, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat6, frame, true, { "TOPLEFT", stat5, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat5, "BOTTOMRIGHT", 0, 0 })
 
     return frame
 end
@@ -301,7 +342,9 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
         GameTooltip:Hide()
         btn:GetNormalTexture():SetVertexColor(1, 1, 1)
     end)
-    frame.Header.ButtonPrevious:SetScript("OnClick", function() frame:PreviousCategory() end)
+    frame.Header.ButtonPrevious:SetScript("OnClick", function()
+        frame:PreviousCategory()
+    end)
 
     frame.Header.ButtonNext = CreateFrame("Button", addonName .. "CharacterStatsPaneEnhancementsNext", frame.Header)
     frame.Header.ButtonNext:SetNormalTexture([[Interface\BUTTONS\Arrow-Up-Up]])
@@ -319,7 +362,9 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
         GameTooltip:Hide()
         btn:GetNormalTexture():SetVertexColor(1, 1, 1)
     end)
-    frame.Header.ButtonNext:SetScript("OnClick", function() frame:NextCategory() end)
+    frame.Header.ButtonNext:SetScript("OnClick", function()
+        frame:NextCategory()
+    end)
 
     local stat1 = _G["PlayerStatFrameRight1"]
     local stat2 = _G["PlayerStatFrameRight2"]
@@ -328,12 +373,12 @@ function S:CreateCharacterStatsPane_Enhancements(parent)
     local stat5 = _G["PlayerStatFrameRight5"]
     local stat6 = _G["PlayerStatFrameRight6"]
 
-    S:HandleStat(stat1, frame, false, {"TOPLEFT", frame.Header, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", frame.Header, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat2, frame, true, {"TOPLEFT", stat1, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat1, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat3, frame, false, {"TOPLEFT", stat2, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat2, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat4, frame, true, {"TOPLEFT", stat3, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat3, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat5, frame, false, {"TOPLEFT", stat4, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat4, "BOTTOMRIGHT", 0, 0})
-    S:HandleStat(stat6, frame, true, {"TOPLEFT", stat5, "BOTTOMLEFT", 0, 0}, {"TOPRIGHT", stat5, "BOTTOMRIGHT", 0, 0})
+    S:HandleStat(stat1, frame, false, { "TOPLEFT", frame.Header, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", frame.Header, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat2, frame, true, { "TOPLEFT", stat1, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat1, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat3, frame, false, { "TOPLEFT", stat2, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat2, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat4, frame, true, { "TOPLEFT", stat3, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat3, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat5, frame, false, { "TOPLEFT", stat4, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat4, "BOTTOMRIGHT", 0, 0 })
+    S:HandleStat(stat6, frame, true, { "TOPLEFT", stat5, "BOTTOMLEFT", 0, 0 }, { "TOPRIGHT", stat5, "BOTTOMRIGHT", 0, 0 })
 
     frame.Update = function(self)
         self.Header.Text:SetText(_G[GetCVar("playerStatRightDropdown")])
@@ -369,12 +414,18 @@ function S:HandleStat(stat, parent, showBackground, point1, point2)
     stat:ClearAllPoints()
     stat:SetParent(parent)
     stat:SetNormalizedPoint(unpack(point1))
-    if point2 then stat:SetNormalizedPoint(unpack(point2)) end
-    if showBackground then S:CreateStatBackground(stat) end
+    if point2 then
+        stat:SetNormalizedPoint(unpack(point2))
+    end
+    if showBackground then
+        S:CreateStatBackground(stat)
+    end
 end
 
 function S:CreateStatBackground(entry)
-    if entry.Background then return end
+    if entry.Background then
+        return
+    end
 
     entry.Background = entry:CreateTexture("BACKGROUND")
     entry.Background:SetAllPoints()
@@ -385,7 +436,9 @@ function S:CreateStatBackground(entry)
 end
 
 function S:UpdateCharacterStatsPane()
-    if not _G.CharacterFrame:IsShown() then return end
+    if not _G.CharacterFrame:IsShown() then
+        return
+    end
 
     S:UpdateAverageItemLevel()
     SetCVar("playerStatLeftDropdown", "PLAYERSTAT_BASE_STATS")
@@ -405,9 +458,15 @@ local function GetPlayerItemLevelAndQuality()
         local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
         if link then
             local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
-            if itemEquipLoc == "INVTYPE_2HWEAPON" then hasTwoHander = true end
-            if itemLevel then totalItemLevel = totalItemLevel + itemLevel end
-            if itemRarity and itemRarity < minimumItemQuality then minimumItemQuality = itemRarity end
+            if itemEquipLoc == "INVTYPE_2HWEAPON" then
+                hasTwoHander = true
+            end
+            if itemLevel then
+                totalItemLevel = totalItemLevel + itemLevel
+            end
+            if itemRarity and itemRarity < minimumItemQuality then
+                minimumItemQuality = itemRarity
+            end
             count = count + 1
         elseif slot ~= "SecondaryHandSlot" and hasTwoHander then
             count = count + 1
