@@ -1,7 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
-local ID = R.Modules.InventoryDatabase
 local L = R.L
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
@@ -54,11 +53,13 @@ end
 
 InventoryMoneyMixin = {}
 
-function InventoryMoneyMixin:Money_OnEnter()    
+function InventoryMoneyMixin:Money_OnEnter()   
+    local ID = R.Modules.InventoryDatabase
+     
     _G.GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
     _G.GameTooltip:AddLine("Money")
     local total = 0
-    for i, char in next, R.config.realm.inventory do
+    for i, char in next, R.config.db.realm.inventory do
         if char.money then
             total = total + char.money
             _G.GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "BLIZZARD"), 1, 1, 1, 1, 1, 1)
