@@ -4,7 +4,6 @@
     <Script file="Fader.lua"/>
     <Script file="Mover.lua"/>
     <Script file="Grid.lua"/>
-    <Script file="InventoryDatabase.lua"/>
     <Script file="SpellDatabase.lua"/>
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
