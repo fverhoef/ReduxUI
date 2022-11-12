@@ -1,9 +1,0 @@
-## Interface: 11304
-## Title: oUF EnergyManaRegen
-## Author: Astromech
-## Version: 1.6.8-8
-## Notes: Adds energy/mana regen spark to oUF
-## RequiredDeps: oUF
-## X-oUF: oUF
-
-oUF_EnergyManaRegen.lua
