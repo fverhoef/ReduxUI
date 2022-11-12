@@ -283,10 +283,8 @@ local function initObject(unit, style, styleFunc, header, ...)
 		end
 
 		if(not (suffix == 'target' or objectUnit and objectUnit:match('target'))) then
-			if oUF.isRetail  then
-				object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
-				object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
-			end
+			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
+			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
 
 			-- We don't need to register UNIT_PET for the player unit. We register it
 			-- mainly because UNIT_EXITED_VEHICLE and UNIT_ENTERED_VEHICLE doesn't always
@@ -371,6 +369,11 @@ local function walkObject(object, unit)
 		object.hasChildren = true
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
 		return initObject(unit, style, styleFunc, header, object:GetChildren())
+	end
+	
+	-- Check if we should only process the main frame blank.
+	if(object:GetAttribute('oUF-onlyProcessRoot')) then
+		return initObject(unit, style, styleFunc, header, object)
 	end
 
 	return initObject(unit, style, styleFunc, header, object, object:GetChildren())
@@ -715,26 +718,27 @@ do
 	end
 end
 
---[[ oUF:Spawn(unit, overrideName)
+--[[ oUF:Spawn(unit, overrideName, template)
 Used to create a single unit frame and apply the currently active style to it.
 
 * self         - the global oUF object
 * unit         - the frame's unit (string)
 * overrideName - unique global name to use for the unit frame. Defaults to an auto-generated name based on the unit
                  (string?)
+* template     - the template to use (string?)
 
 oUF implements some of its own attributes. These can be supplied by the layout, but are optional.
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
-function oUF:Spawn(unit, overrideName)
+function oUF:Spawn(unit, overrideName, template)
 	argcheck(unit, 2, 'string')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
 
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, PetBattleFrameHider, 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, PetBattleFrameHider, template or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -746,7 +750,7 @@ function oUF:Spawn(unit, overrideName)
 	return object
 end
 
---[[ oUF:SpawnNamePlates(prefix, callback, variables)
+--[[ oUF:SpawnNamePlates(prefix, callback, variables, template)
 Used to create nameplates and apply the currently active style to them.
 
 * self      - the global oUF object
@@ -755,8 +759,9 @@ Used to create nameplates and apply the currently active style to them.
               the callback are the updated nameplate, if any, the event that triggered the update, and the new unit
               (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
+* template  - the template to use (string?)
 --]]
-function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
+function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars, template)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
 	argcheck(nameplateCVars, 4, 'table', 'nil')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
@@ -815,7 +820,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate.unitFrame) then
 				nameplate.style = style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
+				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, template)
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 

@@ -211,7 +211,7 @@ local function Enable(self, unit)
 			end
 		end
 
-		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		if oUF.isRetail then self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath) end
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
@@ -225,7 +225,7 @@ local function Disable(self)
 			element[i]:Hide()
 		end
 
-		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		if oUF.isRetail then self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath) end
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
 	end
 end

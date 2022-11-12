@@ -81,8 +81,6 @@ A default texture will be applied to the Texture widgets if they don't have a te
 local _, ns = ...
 local oUF = ns.oUF
 
-local HealComm = LibStub("LibHealComm-4.0", true)
-
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
 
@@ -219,35 +217,10 @@ local function Enable(self)
 
 		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		self:RegisterEvent('UNIT_HEAL_PREDICTION', Path)
 		if oUF.isRetail then
-			self:RegisterEvent('UNIT_HEAL_PREDICTION', Path)
 			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
-		else
-			local function HealCommUpdate(...)
-				if self.HealthPrediction and self:IsVisible() then
-					for i = 1, select('#', ...) do
-						if self.unit and UnitGUID(self.unit) == select(i, ...) then
-							Path(self, nil, self.unit)
-						end
-					end
-				end
-			end
-	
-			local function HealComm_Heal_Update(event, casterGUID, spellID, healType, _, ...)
-				HealCommUpdate(...)
-			end
-	
-			local function HealComm_Modified(event, guid)
-				HealCommUpdate(guid)
-			end
-	
-			HealComm.RegisterCallback(element, 'HealComm_HealStarted', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealUpdated', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealDelayed', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealStopped', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', HealComm_Modified)
-			HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', HealComm_Modified)
 		end
 
 		if(not element.maxOverflow) then
@@ -325,17 +298,10 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
+		self:UnregisterEvent('UNIT_HEAL_PREDICTION', Path)
 		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_HEAL_PREDICTION', Path)
 			self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
-		else
-			HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
-			HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
-			HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
-			HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
-			HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
-			HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
 		end
 	end
 end

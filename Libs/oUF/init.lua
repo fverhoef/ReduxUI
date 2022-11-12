@@ -6,25 +6,11 @@ ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 if not ns.oUF.isRetail then
     if not Enum.PowerType then
-        Enum.PowerType = {
-            HealthCost = -2,
-            None = -1,
-            Mana = 0,
-            Rage = 1,
-            Focus = 2,
-            Energy = 3,
-            ComboPoints = 4
-        }
+        Enum.PowerType = { HealthCost = -2, None = -1, Mana = 0, Rage = 1, Focus = 2, Energy = 3, ComboPoints = 4 }
     end
 
     if not _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO then
-        _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO = {
-            DRUID = {
-                [Enum.PowerType.Mana] = false,
-                [Enum.PowerType.Energy] = true,
-                [Enum.PowerType.Rage] = true
-            }
-        };
+        _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO = { DRUID = { [Enum.PowerType.Mana] = false, [Enum.PowerType.Energy] = true, [Enum.PowerType.Rage] = true } };
     end
 
     if not Enum.PvPUnitClassification then
@@ -33,27 +19,6 @@ if not ns.oUF.isRetail then
 
     if not Enum.SummonStatus then
         Enum.SummonStatus = {}
-    end
-
-    if not _G.UnitCastingInfo then
-        _G.UnitCastingInfo = function(unit)
-            return CastingInfo(unit)
-        end
-    end
-
-    if not _G.UnitChannelInfo then
-        _G.UnitChannelInfo = function(unit)
-            return ChannelInfo(unit)
-        end
-    end
-
-    if not _G.UnitGetIncomingHeals then
-        local HealComm = LibStub("LibHealComm-4.0", true)
-        _G.UnitGetIncomingHeals = function(unit, healer)
-            if HealComm then
-                return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, nil, healer and UnitGUID(healer) or nil)
-            end
-        end
     end
 
     if not _G.UnitGetTotalAbsorbs then
@@ -71,12 +36,6 @@ if not ns.oUF.isRetail then
     if not _G.UnitEffectiveLevel then
         _G.UnitEffectiveLevel = function(u)
             return UnitLevel(u)
-        end
-    end
-
-    if not _G.UnitHasVehicleUI then
-        _G.UnitHasVehicleUI = function()
-            return false
         end
     end
 
@@ -132,5 +91,9 @@ if not ns.oUF.isRetail then
         _G.GetSpecialization = function()
             return nil
         end
+    end
+
+    if not _G.PowerBarColor.RUNES then
+        _G.PowerBarColor.RUNES = { r = 0.50, g = 0.50, b = 0.50 }
     end
 end
