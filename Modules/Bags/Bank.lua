@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
+local L = R.L
 
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local REAGENTBANK_SIZE = 98
@@ -32,13 +33,13 @@ function BankMixin:OnLoad()
         self.ReagentsTab:Hide()
     end
 
-    SetPortraitToTexture(self.portrait, [[Interface\ICONS\INV_Misc_EngGizmos_17]])
+    self.portrait:SetTexture(R.media.textures.icons.bank)
 
     table.insert(_G.UISpecialFrames, self:GetName())
     BankFrame:SetParent(R.HiddenFrame)
 
     self:SetNormalizedPoint(self.config.point)
-    self:CreateMover("Bank", B.defaults.bank.point)
+    self:CreateMover(L["Bank"], B.defaults.bank.point)
 end
 
 function BankMixin:OnHide() CloseBankFrame() end

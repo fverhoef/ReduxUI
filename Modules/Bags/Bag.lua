@@ -31,7 +31,15 @@ function BagMixin:Initialize(bagID)
 end
 
 function BagMixin:Update()
-    for _, button in ipairs(self.Buttons) do button:Update() end
+    for _, button in ipairs(self.Buttons) do
+        button:Update()
+    end
+end
+
+function BagMixin:UpdateCooldowns()
+    for _, button in ipairs(self.Buttons) do
+        button:UpdateCooldown()
+    end
 end
 
 function BagMixin:Layout(config, row, column)

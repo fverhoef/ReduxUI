@@ -53,6 +53,12 @@ function BagFrameMixin:Update()
     self:SetSize(width, height)
 end
 
+function BagFrameMixin:UpdateCooldowns()
+    for _, bag in ipairs(self.Bags) do
+        bag:UpdateCooldowns()
+    end
+end
+
 function BagFrameMixin:HighlightBagButtons(highlightID)
     for _, bag in ipairs(self.Bags) do
         local bagID = bag:GetID()

@@ -7,7 +7,7 @@
         <Frames>
             <Frame name="$parentCurrency" mixin="InventoryMoneyMixin" parentKey="Money" inherits="MoneyFrameTemplate">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT" x="0" y="5"/>
+                    <Anchor point="BOTTOMRIGHT" x="0" y="5" />
                 </Anchors>
 
                 <Scripts>

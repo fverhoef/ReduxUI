@@ -2,6 +2,7 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
 local ID = R.Modules.InventoryDatabase
+local L = R.L
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
@@ -17,13 +18,13 @@ function InventoryMixin:OnLoad()
     self.Title:SetText(BACKPACK_TOOLTIP)
     self.Money:SetScale(0.8)
 
-    SetPortraitToTexture(self.portrait, "Interface\\ICONS\\INV_Misc_Bag_08")
+    self.portrait:SetTexture(R.media.textures.icons.backpack)
 
     table.insert(_G.UISpecialFrames, self:GetName())
     for i = 1, NUM_CONTAINER_FRAMES do _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame) end
 
     self:SetNormalizedPoint(self.config.point)
-    self:CreateMover("Inventory", B.defaults.inventory.point)
+    self:CreateMover(L["Inventory"], B.defaults.inventory.point)
 
     B:SecureHook("OpenAllBags", B.ShowInventory)
     B:SecureHook("CloseAllBags", B.HideInventory)
@@ -34,6 +35,7 @@ function InventoryMixin:OnLoad()
         B:SecureHook("ManageBackpackTokenFrame", function(backpack)
             if BackpackTokenFrame_IsShown() then
                 BackpackTokenFrame:SetParent(self)
+                BackpackTokenFrame:SetFrameLevel(self:GetFrameLevel() - 1)
                 BackpackTokenFrame:ClearAllPoints()
                 BackpackTokenFrame:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 9, -28)
                 BackpackTokenFrame:Show()
@@ -52,11 +54,11 @@ end
 
 InventoryMoneyMixin = {}
 
-function InventoryMoneyMixin:Money_OnEnter()
+function InventoryMoneyMixin:Money_OnEnter()    
     _G.GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
     _G.GameTooltip:AddLine("Money")
     local total = 0
-    for i, char in next, R.config.db.realm.inventory do
+    for i, char in next, R.Config.realm.inventory do
         if char.money then
             total = total + char.money
             _G.GameTooltip:AddDoubleLine(R:Hex(RAID_CLASS_COLORS[char.class or "MAGE"]) .. i .. "|r:", R:FormatMoney(char.money, "BLIZZARD"), 1, 1, 1, 1, 1, 1)

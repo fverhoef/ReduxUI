@@ -13,23 +13,26 @@ function BagButtonMixin:Initialize(bagID, slot)
     if self.IconQuestTexture then
         self.IconQuestTexture:SetTexture("Interface\\ContainerFrame\\UI-Icon-QuestBang")
     end
+
+    self.Cooldown = self.Cooldown or _G[self:GetName() .. "Cooldown"]
 end
 
 function BagButtonMixin:Update()
     local texture, itemCount, locked, quality, readable, _, _, _, _, itemId = GetContainerItemInfo(self.bagID, self.slot)
+    self.readable = readable
 
     SetItemButtonTexture(self, texture)
     SetItemButtonQuality(self, quality, itemId)
     SetItemButtonCount(self, itemCount)
     SetItemButtonDesaturated(self, locked)
 
-    self.readable = readable
+    self.Quality = quality
+    self.ItemIDOrLink = itemId
+
     if texture then
-        ContainerFrame_UpdateCooldown(self.bagID, self);
-        self.hasItem = 1;
+        self.hasItem = 1
     else
-        _G[self:GetName() .. "Cooldown"]:Hide();
-        self.hasItem = nil;
+        self.hasItem = nil
     end
 
     if self.IconQuestTexture then
@@ -37,11 +40,17 @@ function BagButtonMixin:Update()
         self.IconQuestTexture:SetShown(itemClassID == LE_ITEM_CLASS_QUESTITEM)
     end
     local battlepayItemTexture = self.BattlepayItemTexture
-    if battlepayItemTexture then battlepayItemTexture:Hide() end
+    if battlepayItemTexture then
+        battlepayItemTexture:Hide()
+    end
     local newItemTexture = self.NewItemTexture
-    if newItemTexture then newItemTexture:Hide() end
+    if newItemTexture then
+        newItemTexture:Hide()
+    end
     local junkIcon = self.JunkIcon
-    if junkIcon then junkIcon:SetShown(quality == 0) end
+    if junkIcon then
+        junkIcon:SetShown(quality == 0)
+    end
 
     if self == _G.GameTooltip:GetOwner() then
         if self.hasItem then
@@ -51,11 +60,30 @@ function BagButtonMixin:Update()
         end
     end
 
+    self:UpdateCooldown()
+
     R.Modules.ButtonStyles:StyleItemButton(self)
 end
 
+function BagButtonMixin:UpdateCooldown()
+    if self.hasItem then
+        local start, duration, enable = GetContainerItemCooldown(self.bagID, self.slot)
+        CooldownFrame_Set(self.Cooldown, start, duration, enable)
+
+        if (duration > 0 and enable == 0) then
+            SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
+        else
+            SetItemButtonTextureVertexColor(self, 1, 1, 1)
+        end
+    else
+        self.Cooldown:Hide();
+    end
+end
+
 function BagButtonMixin:UpdateContainerButtonLockedState(bagID, slot)
-    if not self then return end
+    if not self then
+        return
+    end
 
     SetItemButtonDesaturated(self, select(3, GetContainerItemInfo(bagID, slot)))
 end

@@ -8,8 +8,8 @@
             <EditBox name="$parentSearchBox" parentKey="SearchBox" inherits="SearchBoxTemplate">
                 <Size x="158" y="18" />
                 <Anchors>
-                    <Anchor point="LEFT" relativePoint="TOPLEFT" x="70" y="-42"/>
-                    <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-15" y="-42"/>
+                    <Anchor point="LEFT" relativePoint="TOPLEFT" x="70" y="-42" />
+                    <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-15" y="-42" />
                 </Anchors>
                 <Scripts>
                     <OnTextChanged function="BagFrame_SearchBox_OnTextChanged" />
@@ -21,7 +21,7 @@
             <Layer level="OVERLAY">
                 <FontString name="$parentTitle" parentKey="Title" inherits="GameFontHighlight" justifyH="MIDDLE">
                     <Anchors>
-                        <Anchor point="TOP" x="0" y="-6"/>
+                        <Anchor point="TOP" x="0" y="-6" />
                     </Anchors>
                 </FontString>
             </Layer>

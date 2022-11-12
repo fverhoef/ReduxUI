@@ -19,6 +19,7 @@ function B:Enable()
     B:RegisterEvent("BAG_NEW_ITEMS_UPDATED")
     B:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
     B:RegisterEvent("BAG_UPDATE")
+    B:RegisterEvent("BAG_UPDATE_COOLDOWN")
     B:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
     B:RegisterEvent("ITEM_LOCK_CHANGED")
     B:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
@@ -43,8 +44,12 @@ function B:BAG_UPDATE(event, bagID)
 end
 
 function B:BAG_UPDATE_COOLDOWN(event)
-    if B.Inventory:IsShown() then B.Inventory:Update() end
-    if B.Bank:IsShown() then B.Bank:Update() end
+    if B.Inventory:IsShown() then
+        B.Inventory:UpdateCooldowns()
+    end
+    if B.Bank:IsShown() then
+        B.Bank:UpdateCooldowns()
+    end
 end
 
 function B:BAG_NEW_ITEMS_UPDATED(event)

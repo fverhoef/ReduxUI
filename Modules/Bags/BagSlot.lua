@@ -9,8 +9,6 @@ local KEYRING_CONTAINER = _G.KEYRING_CONTAINER or -2
 function BagSlot_OnLoad(self)
     self:RegisterForDrag("LeftButton")
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-
-    if not R.isRetail then end
 end
 
 function BagSlot_OnDragStart(self) if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then PickupBagFromSlot(self.slotID) end end
