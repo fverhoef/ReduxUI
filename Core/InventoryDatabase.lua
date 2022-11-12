@@ -13,6 +13,10 @@ end
 function ID:Initialize() end
 
 function ID:Enable()
+    if not R.config.db.realm.inventory then
+        R.config.db.realm.inventory = {}
+    end
+
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
     ID:RegisterEvent("BAG_UPDATE", ID.Update)
     ID:RegisterEvent("BAG_UPDATE_COOLDOWN", ID.Update)
@@ -34,7 +38,7 @@ end
 function ID:Update()
     local db = ID:GetCharacterDatabase()
 
-    local oldMoney = db.money
+    local oldMoney = db.money or 0
     local newMoney = GetMoney()
     local change = newMoney - oldMoney
     if change < 0 then
