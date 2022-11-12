@@ -3,7 +3,9 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-function AB:CreateMainMenuBarArtFrame() AB.MainMenuBarArtFrame = CreateFrame("Frame", addonName .. "MainMenuBarArtFrame", UIParent, "MainMenuBarArtFrameTemplate") end
+function AB:CreateMainMenuBarArtFrame()
+    AB.MainMenuBarArtFrame = CreateFrame("Frame", addonName .. "MainMenuBarArtFrame", UIParent, "MainMenuBarArtFrameTemplate")
+end
 
 MainMenuBarArtFrameMixin = {}
 
@@ -37,7 +39,11 @@ function MainMenuBarArtFrameMixin:OnLoad()
     self:RegisterEvent("PLAYER_UPDATE_RESTING")
     self:RegisterEvent("PLAYER_XP_UPDATE")
     self:RegisterEvent("UPDATE_EXHAUSTION")
-    if not R.isRetail then AB:SecureHook("MainMenuBar_UpdateExperienceBars", function() self:Update() end) end
+    if not R.isRetail then
+        AB:SecureHook("MainMenuBar_UpdateExperienceBars", function()
+            self:Update()
+        end)
+    end
 
     self:Update()
 end
@@ -55,7 +61,9 @@ function MainMenuBarArtFrameMixin:OnEvent(event, ...)
     end
 end
 
-function MainMenuBarArtFrameMixin:OnStatusBarsUpdated() self:Update() end
+function MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
+    self:Update()
+end
 
 function MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
     if R.isRetail then
@@ -110,7 +118,7 @@ function MainMenuBarArtFrameMixin:Update()
         local expValue = MainMenuExpBar:GetValue()
         local expText = string.format("%s %i / %i", XP, expValue, expMax)
         self.ExperienceBar:SetStatusBarTexture(AB.config.statusbars.experience)
-        self.ExperienceBar:SetStatusBarColor(unpack({MainMenuExpBar:GetStatusBarColor()}))
+        self.ExperienceBar:SetStatusBarColor(unpack({ MainMenuExpBar:GetStatusBarColor() }))
         self.ExperienceBar:SetMinMaxValues(expMin, expMax)
         self.ExperienceBar:SetValue(expValue)
         self.ExperienceBar:SetShown(showXP)
@@ -127,7 +135,7 @@ function MainMenuBarArtFrameMixin:Update()
         local repValue = ReputationWatchBar.StatusBar:GetValue()
         local repText = string.format("%s %i / %i", watchedFactionName or "None", repValue, repMax)
         self.ReputationBar:SetStatusBarTexture(AB.config.statusbars.reputation)
-        self.ReputationBar:SetStatusBarColor(unpack({ReputationWatchBar.StatusBar:GetStatusBarColor()}))
+        self.ReputationBar:SetStatusBarColor(unpack({ ReputationWatchBar.StatusBar:GetStatusBarColor() }))
         self.ReputationBar:SetMinMaxValues(repMin, repMax)
         self.ReputationBar:SetValue(repValue)
         self.ReputationBar:SetShown(showRep)
@@ -139,22 +147,12 @@ function MainMenuBarArtFrameMixin:Update()
         self.ReputationBar:SetPoint("BOTTOMRIGHT", 0, showXP and -8 or -13)
     end
 
-    local backgroundTexture = R.media.textures.actionBars["mainMenuBarBackground" .. AB.config.mainMenuBarArt.style] or R.media.textures.actionBars.mainMenuBarBackground
-    self.BackgroundLarge:SetTexture(backgroundTexture)
-    self.BackgroundSmall:SetTexture(backgroundTexture)
-
-    local endCapTexture = R.media.textures.actionBars["mainMenuBarEndCap" .. AB.config.mainMenuBarArt.style] or
-                              (AB.config.mainMenuBarArt.style == "Default - Lion" and R.media.textures.actionBars.mainMenuBarEndCapLion) or R.media.textures.actionBars.mainMenuBarEndCapGryphon
-    self.LeftEndCap:SetTexture(endCapTexture)
-    self.RightEndCap:SetTexture(endCapTexture)
-
     local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
     local numBars = self:GetNumberOfVisibleTrackingBars()
     local isDouble = numBars >= 2
 
     self:SetSize(isLarge and 804 or 550, 64)
-    self.BackgroundLarge:SetShown(isLarge)
-    self.BackgroundSmall:SetShown(not isLarge)
+    self.Background2:SetShown(isLarge)
 
     if numBars >= 2 then
         self:SetPoint("BOTTOM", 0, 19)
@@ -182,8 +180,14 @@ function MainMenuBarArtFrameMixin:Update()
 
     if R.isRetail then
         local visibleBars = {}
-        for i, bar in ipairs(StatusTrackingBarManager.bars) do if bar:ShouldBeVisible() then table.insert(visibleBars, bar) end end
-        table.sort(visibleBars, function(left, right) return left:GetPriority() < right:GetPriority() end);
+        for i, bar in ipairs(StatusTrackingBarManager.bars) do
+            if bar:ShouldBeVisible() then
+                table.insert(visibleBars, bar)
+            end
+        end
+        table.sort(visibleBars, function(left, right)
+            return left:GetPriority() < right:GetPriority()
+        end);
 
         local width = self:GetWidth()
         if (#visibleBars > 1) then
@@ -200,10 +204,18 @@ function MainMenuBarArtFrameMixin:Update()
     end
 end
 
-function MainMenuBarArtFrameMixin:ExperienceBar_OnEnter() self.OverlayFrame.Text:Show() end
+function MainMenuBarArtFrameMixin:ExperienceBar_OnEnter()
+    self.OverlayFrame.Text:Show()
+end
 
-function MainMenuBarArtFrameMixin:ExperienceBar_OnLeave() self.OverlayFrame.Text:Hide() end
+function MainMenuBarArtFrameMixin:ExperienceBar_OnLeave()
+    self.OverlayFrame.Text:Hide()
+end
 
-function MainMenuBarArtFrameMixin:ReputationBar_OnEnter() self.OverlayFrame.Text:Show() end
+function MainMenuBarArtFrameMixin:ReputationBar_OnEnter()
+    self.OverlayFrame.Text:Show()
+end
 
-function MainMenuBarArtFrameMixin:ReputationBar_OnLeave() self.OverlayFrame.Text:Hide() end
+function MainMenuBarArtFrameMixin:ReputationBar_OnLeave()
+    self.OverlayFrame.Text:Hide()
+end

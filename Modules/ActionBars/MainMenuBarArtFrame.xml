@@ -7,13 +7,26 @@
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="BackgroundLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background" hidden="true">
-                    <Size x="804" y="64"/>
-                    <TexCoords left="0" right="0.78515625" top="0" bottom="1"/>
+                <Texture parentKey="Background0" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-left">
+                    <Size x="512" y="64"/>
+                    <TexCoords left="0" right="1" top="0" bottom="1"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="0" y="0"/>
+                    </Anchors>
                 </Texture>
-                <Texture parentKey="BackgroundSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background" hidden="true">
-                    <Size x="550" y="64"/>
-                    <TexCoords left="0" right="0.537109375" top="0" bottom="1"/>
+                <Texture parentKey="Background1" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-right">
+                    <Size x="38" y="64"/>
+                    <TexCoords left="0" right="0.07421875" top="0" bottom="1"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background0" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="Background2" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-right">
+                    <Size x="254" y="64"/>
+                    <TexCoords left="0.07421875" right="0.5703125" top="0" bottom="1"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background1" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                    </Anchors>
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="5">
@@ -47,13 +60,13 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="6">
-                <Texture parentKey="LeftEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap-gryphon">
+                <Texture parentKey="LeftEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap">
                     <Anchors>
                         <Anchor point="BOTTOMLEFT" x="-98" y="-10"/>
                     </Anchors>
                     <Size x="128" y="128"/>
                 </Texture>
-                <Texture parentKey="RightEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap-gryphon">
+                <Texture parentKey="RightEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap">
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" x="98" y="-10"/>
                     </Anchors>

@@ -536,9 +536,7 @@ R:RegisterModuleOptions(AB, function()
                 args = {
                     enableArt = R:CreateToggleOption(L["Enabled"], nil, 1, "full", nil, function() return AB.config.mainMenuBarArt.enabled end,
                                                      function(value) AB.config.mainMenuBarArt.enabled = value end, AB.Update),
-                    style = R:CreateSelectOption(L["Style"], nil, 2, nil, AB.ART_STYLES, function() return AB.config.mainMenuBarArt.style end,
-                                                 function(value) AB.config.mainMenuBarArt.style = value end, AB.Update),
-                    stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 3, nil, function() return not AB.config.mainMenuBarArt.enabled end,
+                    stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 2, nil, function() return not AB.config.mainMenuBarArt.enabled end,
                                                            function() return AB.config.mainMenuBarArt.stackBottomBars end, function(value)
                         AB.config.mainMenuBarArt.stackBottomBars = value
                     end, AB.Update)
