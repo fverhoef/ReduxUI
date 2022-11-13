@@ -24,7 +24,8 @@
     <Script file="LibHealComm-4.0\LibHealComm-4.0.lua"/>
     <Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>
     <Script file="LibSmoothStatusBar-1.0\LibSmoothStatusBar-1.0.lua"/>
-    <Script file="LibSpellCache-1.0/LibSpellCache-1.0.lua"/>
+    <Include file="LibDetours-1.0\LibDetours-1.0.lua" />
+    <Include file="LibClassicInspector\LibClassicInspector.lua" />
 
     <!-- oUF -->
     <Script file="LibDispel\LibDispel.lua" />
@@ -35,8 +36,5 @@
     <Script file="oUF_AuraWatch\oUF_AuraWatch.lua"/>
     <Script file="oUF_DiminishingReturnsTracker\oUF_DiminishingReturnsTracker.lua" />
     <Script file="oUF_TargetIndicator\oUF_TargetIndicator.lua"/>
-    <Script file="oUF_Trinkets\oUF_Trinkets.lua" />
-    
-    <Include file="LibDetours-1.0\LibDetours-1.0.lua" />
-    <Include file="LibClassicInspector\LibClassicInspector.lua" />
+    <Script file="oUF_Trinkets\oUF_Trinkets.lua" />    
 </Ui>

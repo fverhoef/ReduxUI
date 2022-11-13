@@ -9,7 +9,7 @@ end
 function AB:Enable()
     if not AB.config.enabled then return end
 
-    AB:DisableBlizzard()
+    AB:DisableBlizzardBars()
     if AB.config.mainMenuBarArt.enabled then AB:CreateMainMenuBarArtFrame() end
     AB:CreateMicroButtonAndBagsBar()
 
@@ -22,8 +22,6 @@ function AB:Enable()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
-    AB:LoadCooldownBars()
-    AB:LoadFlyoutBars()
     AB:ReassignBindings()
     AB:Update()
 
@@ -36,11 +34,9 @@ function AB:Update()
     if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then AB:CreateMainMenuBarArtFrame() end
     if AB.MainMenuBarArtFrame then AB.MainMenuBarArtFrame:Update() end
     AB:ConfigureActionBars()
-    AB:UpdateCooldownBars()
-    AB:UpdateFlyoutBars()
 end
 
-function AB:DisableBlizzard()
+function AB:DisableBlizzardBars()
     R:Disable(MainMenuBarArtFrame, true)
     R:Disable(MainMenuBarArtFrameBackground)
     R:Disable(MainMenuBar)
