@@ -7,20 +7,30 @@ function AB:Initialize()
 end
 
 function AB:Enable()
-    if not AB.config.enabled then return end
+    if not AB.config.enabled then
+        return
+    end
 
     AB:DisableBlizzardBars()
-    if AB.config.mainMenuBarArt.enabled then AB:CreateMainMenuBarArtFrame() end
+    if AB.config.mainMenuBarArt.enabled then
+        AB:CreateMainMenuBarArtFrame()
+    end
     AB:CreateMicroButtonAndBagsBar()
 
     AB.bars = {}
-    for i = 1, 10 do AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i]) end
+    for i = 1, 10 do
+        AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
+    end
 
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
     AB.vehicleExitBar = AB:CreateVehicleExitBar()
+    AB.totemBar = AB:CreateTotemBar()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
+
+    --AB.experienceBar = AB:CreateExperienceBar()
+    --AB.reputationBar = AB:CreateReputationBar()
 
     AB:ReassignBindings()
     AB:Update()
@@ -31,8 +41,12 @@ function AB:Enable()
 end
 
 function AB:Update()
-    if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then AB:CreateMainMenuBarArtFrame() end
-    if AB.MainMenuBarArtFrame then AB.MainMenuBarArtFrame:Update() end
+    if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then
+        AB:CreateMainMenuBarArtFrame()
+    end
+    if AB.MainMenuBarArtFrame then
+        AB.MainMenuBarArtFrame:Update()
+    end
     AB:ConfigureActionBars()
 end
 
@@ -70,8 +84,10 @@ function AB:CreateActionBar(id)
         button:SetState(0, "action", i)
         button:SetAttribute("buttonlock", true)
 
-        for k = 1, 14 do button:SetState(k, "action", (k - 1) * 12 + i) end
-        button:UpdateConfig({keyBoundTarget = bar.config.keyBoundTarget .. i})
+        for k = 1, 14 do
+            button:SetState(k, "action", (k - 1) * 12 + i)
+        end
+        button:UpdateConfig({ keyBoundTarget = bar.config.keyBoundTarget .. i })
         R.Modules.ButtonStyles:StyleActionButton(button)
 
         bar.buttons[i] = button
@@ -104,7 +120,7 @@ function AB:CreateActionBar(id)
 
     RegisterStateDriver(bar, "page", page)
 
-    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBackdrop({ bgFile = R.media.textures.blank })
     bar:CreateBorder()
     bar:CreateShadow()
     bar:CreateFader(bar.config.fader, bar.buttons)
@@ -114,7 +130,9 @@ function AB:CreateActionBar(id)
 end
 
 function AB:ConfigureActionBars()
-    for _, bar in ipairs(AB.bars) do AB:ConfigureActionBar(bar) end
+    for _, bar in ipairs(AB.bars) do
+        AB:ConfigureActionBar(bar)
+    end
 
     AB:ConfigureActionBar(AB.petBar)
     AB:ConfigureActionBar(AB.stanceBar)
@@ -262,14 +280,14 @@ function AB:ConfigureActionBar(bar)
 
         local point
         if i == 1 then
-            point = {columnAnchor, bar, columnAnchor, 0, 0}
+            point = { columnAnchor, bar, columnAnchor, 0, 0 }
         elseif (i - 1) % buttonsPerRow == 0 then
             parent = bar.buttons[rowCount * buttonsPerRow + 1]
-            point = {rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing}
+            point = { rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing }
             rowCount = rowCount + 1
         else
             parent = bar.buttons[i - 1]
-            point = {columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0}
+            point = { columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0 }
         end
 
         button:SetSize(width, height)
@@ -287,17 +305,21 @@ function AB:ConfigureActionBar(bar)
             button:UpdateConfig({
                 clickOnDown = bar.config.clickOnDown,
                 showGrid = bar.config.showGrid,
-                hideElements = {hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro},
+                hideElements = { hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro },
                 flyoutDirection = bar.config.flyoutDirection or "UP",
                 keyBoundTarget = bar.config.keyBoundTarget .. i
             })
         end
 
         columnCount = columnCount + 1
-        if columnCount > buttonsPerRow then columnCount = buttonsPerRow end
+        if columnCount > buttonsPerRow then
+            columnCount = buttonsPerRow
+        end
     end
 
-    if not bar.visibility then bar:SetShown(bar.config.enabled) end
+    if not bar.visibility then
+        bar:SetShown(bar.config.enabled)
+    end
     bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
 
     bar:ClearAllPoints()
@@ -308,21 +330,33 @@ function AB:ConfigureActionBar(bar)
     bar.Shadow:SetShown(bar.config.shadow)
     bar.Mover:Unlock()
 
-    if bar.Update then bar:Update() end
+    if bar.Update then
+        bar:Update()
+    end
 end
 
 function AB:ReassignBindings()
-    if InCombatLockdown() then return end
+    if InCombatLockdown() then
+        return
+    end
     for _, bar in ipairs(AB.bars) do
         ClearOverrideBindings(bar)
 
         for i, button in next, bar.buttons do
-            for _, key in next, {GetBindingKey(bar.config.keyBoundTarget .. i)} do if key and key ~= "" then SetOverrideBindingClick(bar, false, key, button:GetName()) end end
+            for _, key in next, { GetBindingKey(bar.config.keyBoundTarget .. i) } do
+                if key and key ~= "" then
+                    SetOverrideBindingClick(bar, false, key, button:GetName())
+                end
+            end
         end
     end
 end
 
 function AB:ClearBindings()
-    if InCombatLockdown() then return end
-    for _, bar in ipairs(AB.bars) do ClearOverrideBindings(bar) end
+    if InCombatLockdown() then
+        return
+    end
+    for _, bar in ipairs(AB.bars) do
+        ClearOverrideBindings(bar)
+    end
 end

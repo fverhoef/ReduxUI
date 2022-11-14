@@ -1,0 +1,58 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="ExperienceBar.lua" />
+    <StatusBar name="ExperienceBarTemplate" mixin="ExperienceBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
+        <Anchors>
+            <Anchor point="BOTTOM" x="0" y="10" />
+        </Anchors>
+        <Size x="454" y="14" />
+        <Layers>
+            <Layer level="BORDER">
+                <Texture parentKey="RestedFillBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMLEFT" />
+                    </Anchors>
+                    <Color r="0.58" g="0" b="0.55" a="0.15" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="Backdrop" inherits="BackdropTemplate">
+                <KeyValues>
+                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global"/>
+                </KeyValues>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="-5" y="5" />
+                    <Anchor point="BOTTOMRIGHT" x="5" y="-5" />
+                </Anchors>
+            </Frame>
+            <Button parentKey="RestedTick" hidden="false" frameStrata="MEDIUM">
+                <Size>
+                    <AbsDimension x="32" y="32" />
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER" />
+                </Anchors>
+                <NormalTexture file="Interface\MainMenuBar\UI-ExhaustionTickNormal" />
+                <HighlightTexture file="Interface\MainMenuBar\UI-ExhaustionTickHighlight" alphaMode="ADD" />
+            </Button>
+            <Frame parentKey="OverlayFrame" frameStrata="DIALOG" setAllPoints="true">
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Text" inherits="TextStatusBarText" hidden="true">
+                            <Anchors>
+                                <Anchor point="CENTER" x="0" y="1" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEvent method="OnEvent"/>
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+        </Scripts>
+    </StatusBar>
+</Ui>

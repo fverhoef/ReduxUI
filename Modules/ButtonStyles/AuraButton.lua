@@ -18,109 +18,85 @@ function BS:StyleAuraButton(button)
         end
         return
     end
-    if button.__styled then
-        BS:UpdateAuraButton(button)
-        return
-    end
 
     local buttonName = button:GetName() or "nil"
     local config = BS.config.auras
 
-    local border = _G[buttonName .. "Border"] or button.Border
-    if border then
-        border:Hide()
-        button.Border = nil
-    end
-
-    button:CreateBorder(nil, nil, 0)
-    --button:CreateShadow()
-    --button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
-
-    local icon = _G[buttonName .. "Icon"] or button.icon
-    if icon then
-        icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        icon:SetInside(button, 3, 3)
-    end
-
-    local overlay = CreateFrame("Frame", nil, button)
-    overlay:SetAllPoints()
-
-    local count = _G[buttonName .. "Count"] or button.count
-    if count then
-        count:SetParent(overlay)
-    end
-
-    local duration = _G[buttonName .. "Duration"]
-    if duration then
-        duration:SetParent(overlay)
-    end
-
-    local symbol = button.symbol
-    if symbol then
-        symbol:SetParent(overlay)
-    end
-
-    local cooldown = _G[buttonName .. "Cooldown"] or button.cd
-    if cooldown then
-        cooldown:SetParent(overlay)
-        cooldown:SetInside(button, 1, 1)
-    end
-
-    BS.auraButtons[button] = true
-    button.__styled = true
-
-    BS:UpdateAuraButton(button)
-end
-
-function BS:UpdateAuraButton(button)
-    if not button then
-        return
-    end
     if not button.__styled then
-        BS:StyleAuraButton(button)
-        return
-    end
-    
-    local config = BS.config.auras
-    local buttonName = button:GetName() or "nil"
+        button.__styled = true
+        BS.auraButtons[button] = true
 
-    local count = _G[buttonName .. "Count"] or button.count
-    if count then
-        count:SetFont(config.font, config.fontSize, config.fontOutline)
+        local overlay = CreateFrame("Frame", "$parentOverlay", button)
+        overlay:SetAllPoints()
+        overlay:SetFrameLevel(button:GetFrameLevel() + 1)
+
+        button.icon = _G[buttonName .. "Icon"] or button.icon
+        if button.icon then
+            button.icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+            button.icon:SetInside(button, 2, 2)
+        end
+
+        button.count = _G[buttonName .. "Count"]
+        if button.count then
+            button.count:SetParent(overlay)
+        end
+
+        button.cooldown = _G[buttonName .. "Cooldown"]
+        if button.cooldown then
+            button.cooldown:SetParent(overlay)
+            button.cooldown:SetInside(button, 1, 1)
+        end
+
+        button.duration = _G[buttonName .. "Duration"]
+        if button.duration then
+            button.duration:SetParent(overlay)
+        end
+
+        if button.symbol then
+            button.symbol:SetParent(overlay)
+        end
+
+        local border = _G[buttonName .. "Border"] or button.Border
+        if border then
+            border:Hide()
+            button.Border = nil
+        end
+
+        button:CreateBorder(nil, nil, 0)
+        -- button:CreateShadow()
+        -- button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
     end
 
-    local duration = _G[buttonName .. "Duration"]
-    if duration then
-        duration:SetFont(config.font, config.fontSize, config.fontOutline)
+    if button.count then
+        button.count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    local symbol = button.symbol
-    if symbol then
-        symbol:SetFont(config.font, config.fontSize, config.fontOutline)
+    if button.duration then
+        button.duration:SetFont(config.font, config.fontSize, config.fontOutline)
+    end
+
+    if button.symbol then
+        button.symbol:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local borderColor = BS.config.colors.border
     if button.isDebuff then
         local debuffColor = _G.DebuffTypeColor[(button.debuffType or "none")]
         if debuffColor then
-            borderColor = {debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1}
+            borderColor = { debuffColor.r, debuffColor.g, debuffColor.b, debuffColor.a or 1 }
         end
     end
     if button.isTempEnchant then
         local quality = GetInventoryItemQuality("player", button:GetID())
         if quality and quality > 1 then
-            borderColor = {GetItemQualityColor(quality)}
+            borderColor = { GetItemQualityColor(quality) }
         end
     end
-    
-    button.Border:SetBackdropBorderColor(unpack(borderColor))
-
-    --button.Gloss:SetShown(config.gloss)
 end
 
 function BS:UpdateAllAuraButtons()
     for button in pairs(BS.auraButtons) do
-        BS:UpdateAuraButton(button)
+        BS:StyleAuraButton(button)
     end
 end
 

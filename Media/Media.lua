@@ -18,7 +18,7 @@ R.media = {
             microButtonSettings_Down = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Down",
             performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\PerformanceBar"
         },
-        buttons = {backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop", borderThick = MEDIA_PREFIX .. "\\Textures\\Buttons\\BorderThick"},
+        buttons = {backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop", border = MEDIA_PREFIX .. "\\Textures\\Buttons\\Border"},
         edgeFiles = {
             borderMetal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderMetal",
             borderThick = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThick",

@@ -5,9 +5,11 @@ local L = R.L
 
 function AB:CreateStanceBar()
     local bar = CreateFrame("Frame", addonName .. "_StanceBar", UIParent, "SecureHandlerStateTemplate")
-    bar:SetFrameStrata("LOW")
     bar.config = AB.config.stanceBar
+    bar.defaults = AB.defaults.stanceBar
     bar.buttons = {}
+    bar:SetFrameStrata("LOW")
+    _G.Mixin(bar, StanceBarMixin)
 
     for i = 1, 10 do
         local button = CreateFrame("CheckButton", "$parent_Button" .. i, bar, "StanceButtonTemplate")
@@ -15,15 +17,19 @@ function AB:CreateStanceBar()
         button:SetScript("OnEvent", nil)
         button:SetScript("OnUpdate", nil)
         button:UnregisterAllEvents()
-        R.Modules.ButtonStyles:StyleActionButton(button)
-        button.keyBoundTarget = bar.config.keyBoundTarget .. i
-        AB:UpdateStanceButton(button)
 
-        button:SetScript("OnEnter", function(self)
+        _G.Mixin(button, StanceButtonMixin)
+        _G.Mixin(button, KeyBoundButtonMixin)
+
+        button.keyBoundTarget = bar.config.keyBoundTarget .. i
+        AB:SecureHookScript(button, "OnEnter", function(self)
             R.Libs.KeyBound:Set(self)
         end)
 
+        button:Update()
         bar.buttons[i] = button
+
+        R.Modules.ButtonStyles:StyleActionButton(button)
     end
 
     bar.visibility = "[overridebar][vehicleui][possessbar] hide; show"
@@ -31,18 +37,18 @@ function AB:CreateStanceBar()
 
     bar:SetScript("OnEvent", function(self, event)
         if event == "UPDATE_SHAPESHIFT_COOLDOWN" then
-            AB:UpdateStanceBar(self)
+            self:Update()
         elseif event == "PLAYER_REGEN_ENABLED" then
             if self.needsUpdate and not InCombatLockdown() then
                 self.needsUpdate = nil
-                AB:UpdateStanceButtonVisibility(self)
+                self:UpdateStanceButtonVisibility()
             end
         else
             if InCombatLockdown() then
                 self.needsUpdate = true
-                AB:UpdateStanceBar(self)
+                self:Update()
             else
-                AB:UpdateStanceButtonVisibility(self)
+                self:UpdateStanceButtonVisibility()
             end
         end
     end)
@@ -61,39 +67,49 @@ function AB:CreateStanceBar()
     bar:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
     bar:RegisterEvent("UPDATE_SHAPESHIFT_USABLE")
 
-    bar.Update = function(self) AB:UpdateStanceButtonVisibility(self) end
-
-    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBackdrop({ bgFile = R.media.textures.blank })
     bar:CreateBorder()
     bar:CreateShadow()
     bar:CreateFader(bar.config.fader, bar.buttons)
-    bar:CreateMover(bar:GetName(), AB.defaults.stanceBar.point)
+    bar:CreateMover(L["Stance Bar"], bar.defaults.point)
 
     return bar
 end
 
-function AB:UpdateStanceBar(bar) for _, button in ipairs(bar.buttons) do AB:UpdateStanceButton(button) end end
+StanceBarMixin = {}
 
-function AB:UpdateStanceButtonVisibility(bar)
-    local numForms = GetNumShapeshiftForms()
-    for i, button in ipairs(bar.buttons) do button:SetShown(i <= numForms) end
-    AB:UpdateStanceBar(bar)
+function StanceBarMixin:Update()
+    for _, button in ipairs(self.buttons) do
+        button:Update()
+    end
 end
 
-function AB:UpdateStanceButton(button)
-    if not button:IsShown() then return end
+function StanceBarMixin:UpdateStanceButtonVisibility()
+    local numForms = GetNumShapeshiftForms()
+    for i, button in ipairs(self.buttons) do
+        button:SetShown(i <= numForms)
+    end
+    self:Update()
+end
 
-    local id = button:GetID()
+StanceButtonMixin = {}
+
+function StanceButtonMixin:Update()
+    if not self:IsShown() then
+        return
+    end
+
+    local id = self:GetID()
     local texture, isActive, isCastable = GetShapeshiftFormInfo(id)
 
-    button.icon:SetTexture(texture)
-    button.icon:SetDesaturated(not isCastable)
-    button.icon:SetVertexColor(unpack(isCastable and {1.0, 1.0, 1.0} or {0.4, 0.4, 0.4}))
-    button.cooldown:SetShown(texture ~= nil)
+    self.icon:SetTexture(texture)
+    self.icon:SetDesaturated(not isCastable)
+    self.icon:SetVertexColor(unpack(isCastable and { 1.0, 1.0, 1.0 } or { 0.4, 0.4, 0.4 }))
+    self.cooldown:SetShown(texture ~= nil)
 
-    button:SetChecked(isActive)
+    self:SetChecked(isActive)
 
-    button.HotKey:SetVertexColor(1.0, 1.0, 1.0)
-    button.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(button.keyBoundTarget)))
-    button.HotKey:Show()
+    self.HotKey:SetVertexColor(1.0, 1.0, 1.0)
+    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+    self.HotKey:Show()
 end

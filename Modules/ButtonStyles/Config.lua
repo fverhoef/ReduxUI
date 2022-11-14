@@ -6,7 +6,7 @@ BS.OUT_OF_RANGE_MODES = {Button = "Button", Hotkey = "Hotkey"}
 
 R:RegisterModuleConfig(BS, {
     enabled = true,
-    border = R.media.textures.buttons.borderThick,
+    border = R.media.textures.buttons.border,
     outOfRangeColoring = BS.OUT_OF_RANGE_MODES.Button,
     colors = {
         border = {0.5, 0.5, 0.5, 1},
@@ -23,10 +23,9 @@ R:RegisterModuleConfig(BS, {
         fontOutline = "OUTLINE",
         hideKeybindText = false,
         hideMacroText = true,
-        gloss = true,
-        replaceBorders = true
+        gloss = true
     },
     auras = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", minSizeToShowDuration = 30, gloss = true},
-    items = {backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE", gloss = true, replaceBorders = true},
+    items = {backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE", gloss = true},
     microMenu = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", gloss = true}
 })

@@ -29,9 +29,6 @@ function BS:Enable()
 
     if not BS.masque then
         BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
-        BS:SecureHook(nil, "SetItemButtonQuality", BS.SetItemButtonQuality)
-        BS:SecureHook(nil, "SetItemButtonTexture", BS.SetItemButtonTexture)
-        BS:SecureHook(nil, "SetItemButtonNormalTextureVertexColor", BS.SetItemButtonNormalTextureVertexColor)
         BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)
     end

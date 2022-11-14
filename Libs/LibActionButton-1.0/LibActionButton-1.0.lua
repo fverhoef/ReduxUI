@@ -28,7 +28,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
-local MAJOR_VERSION = "LibActionButton-1.0"
+local MAJOR_VERSION = "LibActionButton-1.0-Redux"
 local MINOR_VERSION = 82
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1080,21 +1080,21 @@ function Update(self)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 		self.rangeTimer = - 1
-		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
 		if not self.LBFSkinned and not self.MasqueSkinned then
+			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
 			self.NormalTexture:SetTexCoord(0, 0, 0, 0)
 		end
 	else
 		self.icon:Hide()
 		self.cooldown:Hide()
 		self.rangeTimer = nil
-		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
 		if self.HotKey:GetText() == RANGE_INDICATOR then
 			self.HotKey:Hide()
 		else
 			self.HotKey:SetVertexColor(0.75, 0.75, 0.75)
 		end
 		if not self.LBFSkinned and not self.MasqueSkinned then
+			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
 			self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
 		end
 	end

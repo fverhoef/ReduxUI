@@ -31,6 +31,18 @@ local function SetNormalizedPoint(self, arg1, arg2, arg3, arg4, arg5)
     self:SetPoint(point, anchor, relativePoint, offsetX, offsetY)
 end
 
+local function SetNormalizedSize(self, arg1, arg2)
+    if not self or not arg1 or not self.SetSize then
+        return
+    end
+
+    if type(arg1) == "table" then
+        arg1, arg2 = unpack(arg1)
+    end
+
+    self:SetSize(arg1, arg2)
+end
+
 local function SetInside(self, anchor, xOffset, yOffset, anchor2)
     xOffset = xOffset or 6
     yOffset = yOffset or 6
@@ -66,6 +78,7 @@ local function AddApi(object)
 	-- Utilities
 	if not object.GetNormalizedPoint then mt.GetNormalizedPoint = GetNormalizedPoint end
 	if not object.SetNormalizedPoint then mt.SetNormalizedPoint = SetNormalizedPoint end
+	if not object.SetNormalizedSize then mt.SetNormalizedSize = SetNormalizedSize end
     if not object.SetOutside then mt.SetOutside = SetOutside end
     if not object.SetInside then mt.SetInside = SetInside end
     if not object.Offset then mt.Offset = Offset end

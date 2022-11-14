@@ -5,9 +5,11 @@ local L = R.L
 
 function AB:CreatePetBar()
     local bar = CreateFrame("Frame", addonName .. "_PetBar", UIParent, "SecureHandlerStateTemplate")
-    bar:SetFrameStrata("LOW")
     bar.config = AB.config.petBar
+    bar.defaults = AB.defaults.petBar
     bar.buttons = {}
+    bar:SetFrameStrata("LOW")
+    _G.Mixin(bar, PetBarMixin)
 
     for i = 1, 10 do
         local button = CreateFrame("CheckButton", "$parent_Button" .. i, bar, "PetActionButtonTemplate")
@@ -15,19 +17,29 @@ function AB:CreatePetBar()
         button:SetScript("OnEvent", nil)
         button:SetScript("OnUpdate", nil)
         button:UnregisterAllEvents()
-        R.Modules.ButtonStyles:StyleActionButton(button)
-        button.keyBoundTarget = bar.config.keyBoundTarget .. i
-        AB:UpdatePetButton(button)
 
+        _G.Mixin(button, PetButtonMixin)
+        _G.Mixin(button, KeyBoundButtonMixin)
+
+        button.keyBoundTarget = bar.config.keyBoundTarget .. i
         AB:SecureHookScript(button, "OnEnter", function(self)
             R.Libs.KeyBound:Set(self)
         end)
 
+        button:Update()
         bar.buttons[i] = button
+
+        R.Modules.ButtonStyles:StyleActionButton(button)
     end
 
     local dismissButton = R.Libs.ActionButton:CreateButton(11, "$parent_Button11", bar, nil)
-    dismissButton:SetState(0, "custom", {func = function() PetDismiss() end, texture = [[Interface\Icons\Spell_Shadow_SacrificialShield]], tooltip = _G.PET_DISMISS})
+    dismissButton:SetState(0, "custom", {
+        func = function()
+            PetDismiss()
+        end,
+        texture = [[Interface\Icons\Spell_Shadow_SacrificialShield]],
+        tooltip = _G.PET_DISMISS
+    })
     bar.buttons[11] = dismissButton
     R.Modules.ButtonStyles:StyleActionButton(dismissButton)
 
@@ -37,12 +49,18 @@ function AB:CreatePetBar()
     bar:SetScript("OnEvent", function(self, event, arg1)
         if event == "PET_BAR_UPDATE" or event == "PET_SPECIALIZATION_CHANGED" or event == "PET_UI_UPDATE" or (event == "UNIT_PET" and arg1 == "player") or
             ((event == "UNIT_FLAGS" or event == "UNIT_AURA") and arg1 == "pet") or event == "PLAYER_CONTROL_LOST" or event == "PLAYER_CONTROL_GAINED" or event == "PLAYER_FARSIGHT_FOCUS_CHANGED" or
-            event == "PET_BAR_UPDATE_COOLDOWN" then for i = 1, 10 do AB:UpdatePetButton(self.buttons[i]) end end
+            event == "PET_BAR_UPDATE_COOLDOWN" then
+            for i = 1, 10 do
+                self.buttons[i]:Update()
+            end
+        end
     end)
 
     bar:RegisterEvent("PET_BAR_UPDATE_COOLDOWN")
     bar:RegisterEvent("PET_BAR_UPDATE")
-    if R.isRetail then bar:RegisterEvent("PET_SPECIALIZATION_CHANGED") end
+    if R.isRetail then
+        bar:RegisterEvent("PET_SPECIALIZATION_CHANGED")
+    end
     bar:RegisterEvent("PLAYER_CONTROL_GAINED")
     bar:RegisterEvent("PLAYER_CONTROL_LOST")
     bar:RegisterEvent("PLAYER_FARSIGHT_FOCUS_CHANGED")
@@ -50,49 +68,63 @@ function AB:CreatePetBar()
     bar:RegisterEvent("UNIT_FLAGS")
     bar:RegisterEvent("UNIT_PET")
 
-    bar:CreateBackdrop({bgFile = R.media.textures.blank})
+    bar:CreateBackdrop({ bgFile = R.media.textures.blank })
     bar:CreateBorder()
     bar:CreateShadow()
     bar:CreateFader(bar.config.fader, bar.buttons)
-    bar:CreateMover(bar:GetName(), AB.defaults.petBar.point)
+    bar:CreateMover(L["Pet Bar"], bar.defaults.point)
 
     return bar
 end
 
-function AB:UpdatePetButton(button)
-    local id = button:GetID()
+PetBarMixin = {}
+
+function PetBarMixin:Update()
+    for _, button in ipairs(self.buttons) do
+        if button.Update then
+            button:Update()
+        end
+    end
+end
+
+PetButtonMixin = {}
+
+function PetButtonMixin:Update()
+    local id = self:GetID()
     local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(id)
 
-    button.tooltipName = isToken and _G[name] or name
-    button.isToken = isToken
-    button.icon:SetTexture(isToken and _G[texture] or texture)
-    button.icon:SetShown(texture ~= nil)
+    self.tooltipName = isToken and _G[name] or name
+    self.isToken = isToken
+    self.icon:SetTexture(isToken and _G[texture] or texture)
+    self.icon:SetShown(texture ~= nil)
 
-    if spellID then button.tooltipSubtext = GetSpellSubtext(spellID) end
+    if spellID then
+        self.tooltipSubtext = GetSpellSubtext(spellID)
+    end
 
     if PetHasActionBar() and isActive then
         if IsPetAttackAction(id) then
-            PetActionButton_StartFlash(button)
-            button:GetCheckedTexture():SetAlpha(0.5)
+            PetActionButton_StartFlash(self)
+            self:GetCheckedTexture():SetAlpha(0.5)
         else
-            PetActionButton_StopFlash(button)
-            button:GetCheckedTexture():SetAlpha(1.0)
+            PetActionButton_StopFlash(self)
+            self:GetCheckedTexture():SetAlpha(1.0)
         end
 
-        button:SetChecked(true)
+        self:SetChecked(true)
     else
-        PetActionButton_StopFlash(button)
-        button:GetCheckedTexture():SetAlpha(1.0)
-        button:SetChecked(false)
+        PetActionButton_StopFlash(self)
+        self:GetCheckedTexture():SetAlpha(1.0)
+        self:SetChecked(false)
     end
 
-    _G[button:GetName() .. "AutoCastable"]:SetShown(autoCastAllowed)
+    _G[self:GetName() .. "AutoCastable"]:SetShown(autoCastAllowed)
     if autoCastEnabled then
-        AutoCastShine_AutoCastStart(button.AutoCastShine)
+        AutoCastShine_AutoCastStart(self.AutoCastShine)
     else
-        AutoCastShine_AutoCastStop(button.AutoCastShine)
+        AutoCastShine_AutoCastStop(self.AutoCastShine)
     end
 
-    button.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(button.keyBoundTarget)))
-    button.HotKey:Show()
+    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+    self.HotKey:Show()
 end

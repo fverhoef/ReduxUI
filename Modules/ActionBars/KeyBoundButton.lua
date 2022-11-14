@@ -3,11 +3,11 @@ local R = _G.ReduxUI
 KeyBoundButtonMixin = {}
 
 function KeyBoundButtonMixin:GetBindingAction()
-    return self.KeyBoundTarget
+    return self.keyBoundTarget
 end
 
 function KeyBoundButtonMixin:GetHotkey()
-    local key = GetBindingKey(self.KeyBoundTarget)
+    local key = GetBindingKey(self.keyBoundTarget)
     if key then
         return R.Libs.KeyBound:ToShortKey(key) or key
     end
@@ -15,8 +15,8 @@ end
 
 function KeyBoundButtonMixin:GetBindings()
     local keys = ""
-    for i = 1, select("#", GetBindingKey(self.KeyBoundTarget)) do
-        local hotKey = select(i, GetBindingKey(self.KeyBoundTarget))
+    for i = 1, select("#", GetBindingKey(self.keyBoundTarget)) do
+        local hotKey = select(i, GetBindingKey(self.keyBoundTarget))
         if keys ~= "" then
             keys = keys .. ", "
         end
@@ -26,11 +26,11 @@ function KeyBoundButtonMixin:GetBindings()
 end
 
 function KeyBoundButtonMixin:SetKey(key)
-    SetBinding(key, self.KeyBoundTarget)
+    SetBinding(key, self.keyBoundTarget)
 end
 
 function KeyBoundButtonMixin:ClearBindings()
-    while GetBindingKey(self.KeyBoundTarget) do
-        SetBinding(GetBindingKey(self.KeyBoundTarget), nil)
+    while GetBindingKey(self.keyBoundTarget) do
+        SetBinding(GetBindingKey(self.keyBoundTarget), nil)
     end
 end

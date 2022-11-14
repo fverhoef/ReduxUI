@@ -8,7 +8,10 @@
     <Include file="SettingsMicroButton.xml"/>
     <Script file="PetBar.lua"/>
     <Script file="StanceBar.lua"/>
+    <Script file="TotemBar.lua"/>
     <Script file="VehicleExitBar.lua"/>
     <Script file="ExtraActionBar.lua"/>
     <Script file="ZoneBar.lua"/>
+    <Include file="ExperienceBar.xml" />
+    <Include file="ReputationBar.xml" />
 </Ui>

@@ -115,7 +115,7 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
     end
 
     button.Border:Show()
-    R.Modules.ButtonStyles:UpdateAuraButton(button)
+    R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
 function UF:PostUpdateGap(unit, gapButton, visibleBuffs) gapButton.Border:Hide() end

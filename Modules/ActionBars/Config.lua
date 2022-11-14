@@ -280,6 +280,11 @@ R:RegisterModuleConfig(AB, {
         border = false,
         shadow = false
     },
+    totemBar = {
+        enabled = true,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 225},
+        fader = R.config.faders.onShow
+    },
     extraActionBar = {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 305},
@@ -289,6 +294,16 @@ R:RegisterModuleConfig(AB, {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 225},
         fader = R.config.faders.onShow
+    },
+    experienceBar = {
+        Enabled = true,
+        Point = {"BOTTOM", "UIParent", "BOTTOM", 0, 25},
+        Size = { 452, 14 }
+    },
+    reputationBar = {
+        Enabled = true,
+        Point = {"BOTTOM", "UIParent", "BOTTOM", 0, 8},
+        Size = { 452, 11 }
     },
     systemInfo = {
         enabled = true,
