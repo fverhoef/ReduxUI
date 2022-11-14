@@ -4,7 +4,7 @@ local R = _G.ReduxUI
 local MEDIA_PREFIX = "Interface\\AddOns\\" .. addonName .. "\\Media"
 
 R.media = {
-    fonts = {adventure = MEDIA_PREFIX .. "\\Fonts\\Adventure.ttf", expresswayFree = MEDIA_PREFIX .. "\\Fonts\\ExpresswayFree.ttf"},
+    fonts = { adventure = MEDIA_PREFIX .. "\\Fonts\\Adventure.ttf", expresswayFree = MEDIA_PREFIX .. "\\Fonts\\ExpresswayFree.ttf" },
     textures = {
         blank = [[Interface\Buttons\WHITE8X8]],
         arrow = MEDIA_PREFIX .. "\\Textures\\Arrow",
@@ -18,7 +18,12 @@ R.media = {
             microButtonSettings_Down = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Down",
             performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\PerformanceBar"
         },
-        buttons = {backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop", border = MEDIA_PREFIX .. "\\Textures\\Buttons\\Border"},
+        buttons = {
+            backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop",
+            border = MEDIA_PREFIX .. "\\Textures\\Buttons\\Border",
+            round = MEDIA_PREFIX .. "\\Textures\\Buttons\\Round",
+            roundGoldInlay = MEDIA_PREFIX .. "\\Textures\\Buttons\\RoundGoldInlay"
+        },
         edgeFiles = {
             borderMetal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderMetal",
             borderThick = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThick",
@@ -28,7 +33,7 @@ R.media = {
             separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
-        frames = { paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame"},
+        frames = { paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame" },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
             minimapMask1 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask1",
