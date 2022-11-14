@@ -88,6 +88,7 @@ function S:StyleCharacterFrame()
     end
 
     S:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", S.UpdateCharacterStatsPane)
+    S:SecureHook(nil, "PaperDollItemSlotButton_Update", S.UpdateEquipmentSlotButton)
     CharacterFrame:HookScript("OnShow", S.UpdateCharacterStatsPane)
 end
 
@@ -425,4 +426,9 @@ function S:UpdateAverageItemLevel()
     local averageItemLevel, minimumItemQuality = GetPlayerItemLevelAndQuality()
     local r, g, b = GetItemQualityColor(minimumItemQuality)
     PaperDollFrame.CharacterStatsPane.ItemLevel.Value.Text:SetText(R:Hex(r, g, b) .. averageItemLevel .. "|r")
+end
+
+function S:UpdateEquipmentSlotButton()
+    self.ItemIDOrLink = GetInventoryItemLink("player", self:GetID())
+    R.Modules.ButtonStyles:StyleItemButton(self)
 end
