@@ -9,6 +9,7 @@ function UF:CreateTrinket()
     self.Trinket = CreateFrame("Frame", "$parentTrinket", self)
     self.Trinket:SetSize(42, 42)
     self.Trinket:CreateBorder()
+    self.Trinket.Border:SetInside(self.Trinket, 1, 1)
 
     return self.Trinket
 end

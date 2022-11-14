@@ -176,7 +176,7 @@ end
 
 if R.isRetail then
     --TODO: update
-    UF.AuraFilters = {
+    UF.auraFilters = {
         CrowdControl = {
             -- Death Knight
             [55741] = true, -- Desecration
@@ -1003,7 +1003,7 @@ if R.isRetail then
         Whitelist = {}
     }
 else
-    UF.AuraFilters = {
+    UF.auraFilters = {
         CrowdControl = {
             -- Death Knight
             [55741] = true, -- Desecration

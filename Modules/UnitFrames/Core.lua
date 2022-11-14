@@ -62,6 +62,7 @@ function UF:UpdateColors()
     oUF.colors.power["ENERGY"] = UF.config.colors.energy
     oUF.colors.power["FOCUS"] = UF.config.colors.focus
     oUF.colors.power["COMBO_POINTS"] = UF.config.colors.comboPoints
+    oUF.colors.power["RUNIC_POWER"] = UF.config.colors.runicPower
 
     for key, value in next, UF.config.colors.class do
         oUF.colors.class[key] = value

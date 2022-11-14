@@ -127,7 +127,7 @@ local DEFAULT_UNIT_CONFIG = {
         justifyH = "RIGHT",
         tag = "[difficultycolor][level][shortclassification]|r"
     },
-    portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = true, model = false, showSeparator = true},
+    portrait = {enabled = true, point = "LEFT", size = {32, 32}, class = false, model = false, showSeparator = true},
     auras = {
         enabled = false,
         separateBuffsAndDebuffs = false,
@@ -276,6 +276,7 @@ R:RegisterModuleConfig(UF, {
         rage = oUF.colors.power["RAGE"],
         energy = oUF.colors.power["ENERGY"],
         focus = oUF.colors.power["FOCUS"],
+        runicPower = oUF.colors.power["RUNIC_POWER"],
         comboPoints = oUF.colors.power["COMBO_POINTS"],
         castbar = {255 / 255, 175 / 255, 0 / 255},
         castbar_Shielded = {175 / 255, 175 / 255, 175 / 255},
@@ -305,6 +306,7 @@ R:RegisterModuleConfig(UF, {
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}, buffs = {iconSize = 36}, debuffs = {iconSize = 36}, tempEnchants = {iconSize = 36}},
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         power = {energyManaRegen = true, powerPrediction = true, insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0}},
+        portrait = {size = {36, 36}},
         castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 200}, detached = true, showSafeZone = true},
         highlight = {target = false}
     }),
@@ -313,7 +315,7 @@ R:RegisterModuleConfig(UF, {
         health = {value = {point = {"LEFT", "LEFT", 5, 0}}, percent = {point = {"BOTTOMLEFT", "TOPLEFT", 2, 0}}},
         power = {insetPoint = {"LEFT", "BOTTOMLEFT", 10, 0}},
         name = {point = {"BOTTOMRIGHT", "TOPRIGHT", -2, 0}, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r"},
-        portrait = {point = "RIGHT"},
+        portrait = {size = {36, 36}, point = "RIGHT"},
         auras = {
             enabled = true,
             buffs = {filter = {whitelist = {Personal = true, NonPersonal = true, CastByUnit = true, Dispellable = true, PlayerBuffs = true, RaidBuffs = true}}},
@@ -424,7 +426,7 @@ R:RegisterModuleConfig(UF, {
             debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         pvpIndicator = {enabled = false},
-        trinket = {enabled = true, size = {42, 42}, point = {"LEFT", "RIGHT", 0, 0}},
+        trinket = {enabled = true, size = {40, 40}, point = {"LEFT", "RIGHT", 5, 0}},
         diminishingReturnsTracker = {enabled = true, size = {145, 24}, iconSize = 24, iconSpacing = 5, point = {"LEFT", "RIGHT", 47, 0}},
         unitAnchorPoint = "BOTTOM"
     }),
@@ -454,8 +456,8 @@ R:RegisterModuleConfig(UF, {
             portrait = {enabled = false},
             auras = {
                 enabled = true,
-                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {blockNoDuration = true}}},
-                debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true}, blacklist = {blockNoDuration = true}}}
+                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {BlockNoDuration = true}}},
+                debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true}, blacklist = {BlockNoDuration = true}}}
             },
             highlight = {targetArrows = true},
             pvpIndicator = {enabled = false}
@@ -471,7 +473,7 @@ R:RegisterModuleConfig(UF, {
             auras = {
                 enabled = true,
                 buffs = {filter = {maxDuration = 300, whitelist = {Dispellable = true, PlayerBuffs = true, TurtleBuffs = true}}},
-                debuffs = {filter = {whitelist = {Personal = true, CrowdControl = true}, blacklist = {blockNoDuration = true}}}
+                debuffs = {filter = {whitelist = {Personal = true, CrowdControl = true}, blacklist = {BlockNoDuration = true}}}
             },
             highlight = {targetArrows = true},
             pvpIndicator = {enabled = false}
@@ -486,7 +488,7 @@ R:RegisterModuleConfig(UF, {
             portrait = {enabled = false},
             auras = {
                 enabled = true,
-                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {blockNoDuration = true}}},
+                buffs = {filter = {whitelist = {Personal = true, TurtleBuffs = true}, blacklist = {BlockNoDuration = true}}},
                 debuffs = {filter = {whitelist = {Dispellable = true, RaidDebuffs = true, CrowdControl = true}}}
             },
             highlight = {targetArrows = true},
@@ -502,8 +504,8 @@ R:RegisterModuleConfig(UF, {
             portrait = {enabled = false},
             auras = {
                 enabled = true,
-                buffs = {filter = {whitelist = {RaidBuffs = true, Dispellable = true, CastByUnit = true}, blacklist = {blockNoDuration = true}}},
-                debuffs = {filter = {whitelist = {Personal = true, CrowdControl = true}}}
+                buffs = {filter = {whitelist = {RaidBuffs = true, Dispellable = true, CastByUnit = true}, blacklist = {BlockNoDuration = true}}},
+                debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true}, blacklist = {BlockNoDuration = true}}}
             },
             highlight = {targetArrows = true},
             pvpIndicator = {enabled = false}
@@ -520,10 +522,10 @@ R:RegisterModuleConfig(UF, {
             nameplateSelfScale = 1,
             nameplateSelectedScale = 1.2,
             nameplateLargerScale = 1.2,
-            nameplateMinAlpha = 0.5,
-            nameplateMaxAlpha = 0.8,
+            nameplateMinAlpha = 0.4,
+            nameplateMaxAlpha = 1,
             nameplateMinAlphaDistance = 0,
-            nameplateMaxAlphaDistance = 80,
+            nameplateMaxAlphaDistance = 40,
             nameplateSelectedAlpha = 1,
             nameplateShowAll = 1,
             nameplateShowEnemyMinions = 0,

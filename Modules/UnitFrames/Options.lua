@@ -245,8 +245,8 @@ function UF:CreateUnitSizeOption(unit, order)
                                          function(value) UF:UnitConfig(unit).size[1] = value end),
             height = UF:CreateRangeOption(unit, L["Height"], L["The height of the unit frame."], 2, nil, 10, nil, 400, 1, function() return UF:UnitConfig(unit).size[2] end,
                                           function(value) UF:UnitConfig(unit).size[2] = value end),
-            scale = UF:CreateRangeOption(unit, L["Scale"], L["The scale of the unit frame."], 3, nil, 0.1, nil, 3, 0.1, function() return UF:UnitConfig(unit).size[2] end,
-                                         function(value) UF:UnitConfig(unit).size[2] = value end)
+            scale = UF:CreateRangeOption(unit, L["Scale"], L["The scale of the unit frame."], 3, nil, 0.1, nil, 3, 0.1, function() return UF:UnitConfig(unit).scale end,
+                                         function(value) UF:UnitConfig(unit).scale = value end)
         }
     }
 end
@@ -868,8 +868,9 @@ R:RegisterModuleOptions(UF, {
                 energy = UF:CreateStatusBarColorOption(L["Energy"], "energy", 4),
                 focus = UF:CreateStatusBarColorOption(L["Focus"], "focus", 5),
                 comboPoints = UF:CreateStatusBarColorOption(L["Combo Points"], "comboPoints", 6),
-                castbar = UF:CreateStatusBarColorOption(L["Castbar"], "castbar", 7),
-                castbar_Shielded = UF:CreateStatusBarColorOption(L["Castbar (Shielded)"], "castbar_Shielded", 8),
+                runicPower = UF:CreateStatusBarColorOption(L["Runic Power"], "runicPower", 7),
+                castbar = UF:CreateStatusBarColorOption(L["Castbar"], "castbar", 8),
+                castbar_Shielded = UF:CreateStatusBarColorOption(L["Castbar (Shielded)"], "castbar_Shielded", 9),
                 lineBreak1 = {type = "header", name = "", order = 20},
                 colorHealthClass = R:CreateToggleOption(L["Color Health by Class"], nil, 21, nil, nil, function() return UF.config.colors.colorHealthClass end,
                                                         function(val) UF.config.colors.colorHealthClass = val end, UF.UpdateAll),
@@ -891,7 +892,7 @@ R:RegisterModuleOptions(UF, {
             order = 8,
             inline = true,
             args = {
-                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 10, not R.isRetail),
+                deathKnight = UF:CreateClassColorOption("DEATHKNIGHT", R:LocalizedClassName("Death Knight"), 10),
                 demonHunter = UF:CreateClassColorOption("DEMONHUNTER", R:LocalizedClassName("Demon Hunter"), 11, not R.isRetail),
                 druid = UF:CreateClassColorOption("DRUID", R:LocalizedClassName("Druid"), 12),
                 hunter = UF:CreateClassColorOption("HUNTER", R:LocalizedClassName("Hunter"), 13),
