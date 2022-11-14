@@ -7,6 +7,7 @@
     <Script file="Castbar.lua"/>
     <Script file="ClassPower.lua"/>
     <Script file="CombatIndicator.lua"/>
+    <Script file="DiminishingReturnsTracker.lua"/>    
     <Script file="GroupRoleIndicator.lua"/>
     <Script file="Health.lua"/>
     <Script file="Highlight.lua"/>
@@ -32,4 +33,5 @@
     <Script file="TargetIndicator.lua"/>
     <Script file="ThreatIndicator.lua"/>
     <Script file="Totems.lua"/>
+    <Script file="Trinket.lua"/>
 </Ui>

@@ -65,6 +65,9 @@ function UF:InitializeFrame()
     else
         self:CreateMasterLooterIndicator()
     end
+
+    self:CreateTrinket()
+    self:CreateDiminishingReturnsTracker()
 end
 
 oUF:RegisterMetaFunction("InitializeFrame", UF.InitializeFrame)
@@ -117,6 +120,9 @@ function UF:ConfigureFrame()
     else
         self:ConfigureMasterLooterIndicator()
     end
+
+    self:ConfigureTrinket()
+    self:ConfigureDiminishingReturnsTracker()
 end
 
 oUF:RegisterMetaFunction("ConfigureFrame", UF.ConfigureFrame)

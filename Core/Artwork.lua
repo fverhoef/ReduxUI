@@ -73,6 +73,8 @@ function R:CreateShadow(size, color, offset)
     shadow:SetFrameStrata(self:GetFrameStrata())
     shadow:SetOutside(self, offset, offset)
 
+    shadow.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
+
     self.Shadow = shadow
 end
 
@@ -90,6 +92,8 @@ function R:CreateInlay(color, size, offset, frameLevel)
     inlay:SetBackdropBorderColor(unpack(color))
     inlay:SetFrameLevel(frameLevel)
     inlay:SetOutside(self, offset, offset)
+
+    inlay.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
 
     self.Inlay = inlay
 end

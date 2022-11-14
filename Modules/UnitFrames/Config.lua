@@ -216,7 +216,9 @@ local DEFAULT_UNIT_CONFIG = {
     raidTargetIndicator = {enabled = true, size = {20, 20}, point = {"CENTER", "TOP", 0, 0}},
     restingIndicator = {enabled = true, size = {24, 24}, point = {"CENTER", "RIGHT", 0, 0}},
     resurrectIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
-    summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}}
+    summonIndicator = {enabled = true, size = {32, 32}, point = {"CENTER", "CENTER", 0, 0}},
+    trinket = {enabled = false, size = {42, 42}, point = {"LEFT", "RIGHT", 0, 0}},
+    diminishingReturnsTracker = {enabled = false, size = {145, 24}, iconSize = 24, iconSpacing = 5, point = {"LEFT", "RIGHT", 0, 0}}
 }
 
 local DEFAULT_UNIT_CONFIG_NO_INDICATORS = R:CopyTable(DEFAULT_UNIT_CONFIG, {
@@ -422,6 +424,8 @@ R:RegisterModuleConfig(UF, {
             debuffs = {filter = {whitelist = {Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true}}}
         },
         pvpIndicator = {enabled = false},
+        trinket = {enabled = true, size = {42, 42}, point = {"LEFT", "RIGHT", 0, 0}},
+        diminishingReturnsTracker = {enabled = true, size = {145, 24}, iconSize = 24, iconSpacing = 5, point = {"LEFT", "RIGHT", 47, 0}},
         unitAnchorPoint = "BOTTOM"
     }),
     boss = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {

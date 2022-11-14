@@ -28,7 +28,7 @@ function UF:Enable()
     UF.headers.assist = UF:SpawnAssistHeader()
     UF.headers.tank = UF:SpawnTankHeader()
     UF.headers.arena = UF:SpawnArenaHeader()
-    if R.isRetail then UF.headers.boss = UF:SpawnBossHeader() end
+    UF.headers.boss = UF:SpawnBossHeader()
 
     UF:SpawnNamePlates()
 
