@@ -48,8 +48,7 @@ local function SetInside(self, anchor, xOffset, yOffset, anchor2)
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
 
-    if self:GetPoint() then self:ClearAllPoints() end
-
+    self:ClearAllPoints()
     self:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", -xOffset, yOffset)
 end
@@ -59,8 +58,7 @@ local function SetOutside(self, anchor, xOffset, yOffset, anchor2)
     yOffset = yOffset or 6
     anchor = anchor or self:GetParent()
 
-    if self:GetPoint() then self:ClearAllPoints() end
-
+    self:ClearAllPoints()
     self:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
     self:SetPoint("BOTTOMRIGHT", anchor2 or anchor, "BOTTOMRIGHT", xOffset, -yOffset)
 end
