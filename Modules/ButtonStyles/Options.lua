@@ -24,85 +24,44 @@ function BS:CreateColorOption(name, option, order)
 end
 
 function BS:CreateFontFamilyOption(parent, order)
-    return {
-        name = L["Font Family"],
-        type = "select",
-        desc = L["The font family of button text."],
-        order = order,
-        dialogControl = "LSM30_Font",
-        values = R.Libs.SharedMedia:HashTable("font"),
-        get = function()
-            for key, font in pairs(R.Libs.SharedMedia:HashTable("font")) do
-                if BS.config[parent].font == font then
-                    return key
-                end
-            end
-        end,
-        set = function(_, key)
-            BS.config[parent].font = R.Libs.SharedMedia:Fetch("font", key)
-            BS:UpdateAll()
-        end
-    }
+    return R:CreateFontOption(L["Font Family"], L["The font to use for button text."], order, nil, function()
+        return BS.config[parent].font
+    end, function(value)
+        BS.config[parent].font = value
+    end, BS.UpdateAll)
 end
 
 function BS:CreateFontSizeOption(parent, order)
-    return {
-        name = L["Font Size"],
-        type = "range",
-        desc = L["The size of button text."],
-        order = order,
-        min = R.FONT_MIN_SIZE,
-        max = R.FONT_MAX_SIZE,
-        step = 1,
-        get = function()
-            return BS.config[parent].fontSize
-        end,
-        set = function(_, val)
-            BS.config[parent].fontSize = val
-            BS:UpdateAll()
-        end
-    }
+    return R:CreateRangeOption(L["Font Size"], L["The size of chat text."], order, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+        return BS.config[parent].fontSize
+    end, function(value)
+        BS.config[parent].fontSize = value
+    end, BS.UpdateAll)
 end
 
 function BS:CreateFontOutlineOption(parent, order)
-    return {
-        name = L["Font Outline"],
-        type = "select",
-        desc = L["The outline style of name text."],
-        order = order,
-        values = R.FONT_OUTLINES,
-        get = function()
-            return BS.config[parent].fontOutline
-        end,
-        set = function(_, key)
-            BS.config[parent].fontOutline = key
-            BS:UpdateAll()
-        end
-    }
+    return R:CreateSelectOption(L["Font Outline"], L["The outline style of this button type."], order, nil, R.FONT_OUTLINES, function()
+        return BS.config[parent].fontOutline
+    end, function(value)
+        BS.config[parent].fontOutline = value
+    end, BS.UpdateAll)
 end
 
 function BS:CreateGlowOption(parent, option, order)
-    return {
-        type = "toggle",
-        name = L["Gloss"],
-        order = order,
-        get = function()
-            return BS.config[parent][option]
-        end,
-        set = function(_, val)
-            BS.config[parent][option] = val
-            BS:UpdateAll()
-        end
-    }
+    return R:CreateToggleOption(L["Gloss"], L["Whether to show a gloss inlay for this button type."], 4, nil, nil, function()
+        return BS.config[parent][option]
+    end, function(value)
+        BS.config[parent][option] = val
+    end, BS.UpdateAll)
 end
 
 R:RegisterModuleOptions(BS, {
     type = "group",
     name = L["Button Styles"],
     args = {
-        header = {type = "header", name = R.title .. " > Button Styles", order = 0},
+        header = { type = "header", name = R.title .. " > Button Styles", order = 0 },
         enabled = R:CreateModuleEnabledOption(1, nil, "ButtonStyles"),
-        lineBreak = {type = "header", name = "", order = 2},
+        lineBreak = { type = "header", name = "", order = 2 },
         colors = {
             type = "group",
             name = "Colors",
@@ -111,11 +70,11 @@ R:RegisterModuleOptions(BS, {
             args = {
                 border = BS:CreateColorOption(L["Normal Border"], "border", 1),
                 pushed = BS:CreateColorOption(L["Pushed Border"], "pushed", 1),
-                lineBreak = {type = "description", name = "", order = 3},
+                lineBreak = { type = "description", name = "", order = 3 },
                 usable = BS:CreateColorOption(L["Usable"], "usable", 4),
                 notUsable = BS:CreateColorOption(L["Not Usable"], "notUsable", 5),
                 notEnoughMana = BS:CreateColorOption(L["Not Enough Mana"], "notEnoughMana", 6),
-                lineBreak = {type = "description", name = "", order = 7},
+                lineBreak = { type = "description", name = "", order = 7 },
                 outOfRange = BS:CreateColorOption(L["Out of Range"], "outOfRange", 8),
                 outOfRangeColoring = {
                     type = "select",
@@ -170,8 +129,7 @@ R:RegisterModuleOptions(BS, {
                         BS.config.actions.hideMacroText = val
                         BS:UpdateAll()
                     end
-                },
-                gloss = BS:CreateGlowOption("actions", "gloss", 10)
+                }
             }
         },
         auras = {
@@ -182,8 +140,7 @@ R:RegisterModuleOptions(BS, {
             args = {
                 fontFamily = BS:CreateFontFamilyOption("auras", 1),
                 fontSize = BS:CreateFontSizeOption("auras", 2),
-                fontOutline = BS:CreateFontOutlineOption("auras", 3),
-                gloss = BS:CreateGlowOption("auras", "gloss", 4)
+                fontOutline = BS:CreateFontOutlineOption("auras", 3)
             }
         },
         items = {
@@ -194,8 +151,7 @@ R:RegisterModuleOptions(BS, {
             args = {
                 fontFamily = BS:CreateFontFamilyOption("items", 1),
                 fontSize = BS:CreateFontSizeOption("items", 2),
-                fontOutline = BS:CreateFontOutlineOption("items", 3),
-                gloss = BS:CreateGlowOption("items", "gloss", 4)
+                fontOutline = BS:CreateFontOutlineOption("items", 3)
             }
         }
     }

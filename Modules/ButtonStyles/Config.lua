@@ -22,10 +22,9 @@ R:RegisterModuleConfig(BS, {
         fontSize = 11,
         fontOutline = "OUTLINE",
         hideKeybindText = false,
-        hideMacroText = true,
-        gloss = true
+        hideMacroText = true
     },
-    auras = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", minSizeToShowDuration = 30, gloss = true},
-    items = {backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE", gloss = true},
-    microMenu = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", gloss = true}
+    auras = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", minSizeToShowDuration = 30},
+    items = {backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE"},
+    microMenu = {font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE"}
 })
