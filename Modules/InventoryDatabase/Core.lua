@@ -4,13 +4,14 @@ local ID = R:AddModule("InventoryDatabase", "AceEvent-3.0")
 ID.earned = 0
 ID.spent = 0
 
-local bagIDs = {bags = {0, 1, 2, 3, 4, -2}, bank = {-1, 5, 6, 7, 8, 9, 10}, reagentBank = {}}
+local bagIDs = { bags = { 0, 1, 2, 3, 4, -2 }, bank = { -1, 5, 6, 7, 8, 9, 10 }, reagentBank = {} }
 if R.isRetail then
     table.insert(bagIDs.bank, 11)
     table.insert(bagIDs.reagentBank, -3)
 end
 
-function ID:Initialize() end
+function ID:Initialize()
+end
 
 function ID:Enable()
     if not R.config.db.realm.inventory then
@@ -19,7 +20,6 @@ function ID:Enable()
 
     ID:RegisterEvent("BAG_SLOT_FLAGS_UPDATED", ID.Update)
     ID:RegisterEvent("BAG_UPDATE", ID.Update)
-    ID:RegisterEvent("BAG_UPDATE_COOLDOWN", ID.Update)
     ID:RegisterEvent("BAG_NEW_ITEMS_UPDATED", ID.Update)
     ID:RegisterEvent("QUEST_ACCEPTED", ID.Update)
     ID:RegisterEvent("QUEST_REMOVED", ID.Update)
@@ -31,11 +31,17 @@ function ID:Enable()
     ID:RegisterEvent("BANKFRAME_OPENED", ID.Update)
     ID:RegisterEvent("BANKFRAME_CLOSED", ID.Update)
     ID:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED", ID.Update)
-    if R.isRetail then ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update) end
-    ID:Update()
+    if R.isRetail then
+        ID:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", ID.Update)
+    end
+    ID.Update(nil)
 end
 
 function ID:Update()
+    if self then
+        R:Print("Event: " .. self)
+    end
+
     local db = ID:GetCharacterDatabase()
 
     local oldMoney = db.money or 0
@@ -77,12 +83,18 @@ end
 
 function ID:GetCharacterKeys()
     local keys = {}
-    for key, _ in pairs(R.config.db.realm.inventory) do keys[key] = key end
+    for key, _ in pairs(R.config.db.realm.inventory) do
+        keys[key] = key
+    end
 
     return keys
 end
 
-function ID:ClearCharacterDatabase(name) if name and R.config.db.realm.inventory[name] then R.config.db.realm.inventory[name] = nil end end
+function ID:ClearCharacterDatabase(name)
+    if name and R.config.db.realm.inventory[name] then
+        R.config.db.realm.inventory[name] = nil
+    end
+end
 
 function ID:GetItemCount(itemId)
     local chars = {}
@@ -91,14 +103,18 @@ function ID:GetItemCount(itemId)
         local bagCount = char.bags and char.bags[itemId] or 0
         local bankCount = char.bank and char.bank[itemId] or 0
         local equippedCount = char.equipped and char.equipped[itemId] or 0
-        if bagCount > 0 or bankCount > 0 or equippedCount > 0 then chars[i] = {class = char.class, bag = bagCount, bank = bankCount, equipped = equippedCount} end
+        if bagCount > 0 or bankCount > 0 or equippedCount > 0 then
+            chars[i] = { class = char.class, bag = bagCount, bank = bankCount, equipped = equippedCount }
+        end
     end
 
     return chars
 end
 
 function ID:UpdateItemCount(itemId, db)
-    if not itemId then return end
+    if not itemId then
+        return
+    end
     db = db or ID:GetCharacterDatabase()
 
     local equippedCount = db.equipped["" .. itemId] or 0
@@ -115,7 +131,9 @@ function ID:StoreEquippedItems(db)
         local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
         if link then
             local itemId = R:GetItemIdFromLink(link)
-            if itemId then db.equipped["" .. itemId] = 1 end
+            if itemId then
+                db.equipped["" .. itemId] = 1
+            end
         end
     end
 end
