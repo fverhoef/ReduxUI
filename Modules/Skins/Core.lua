@@ -10,8 +10,9 @@ function S:Enable()
     if not S.config.enabled then return end
     
     S:StyleDurabilityFrame()
-    S:StyleObjectiveTrackerFrame()
+    S:StyleWatchFrame()
     S:StyleQuestWatchFrame()
+    S:StyleObjectiveTrackerFrame()
     S:StyleTicketStatusFrame()
     S:StyleVehicleSeatIndicator()
     S:StyleWidgets()
