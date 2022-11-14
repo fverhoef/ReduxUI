@@ -112,13 +112,13 @@ function S:AddCharacterModelBackground()
 
     CharacterModelFrame.Background.TopLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundTopLeft", "BACKGROUND")
     CharacterModelFrame.Background.TopLeft:SetTexture(texturePath .. 1)
-    CharacterModelFrame.Background.TopLeft:SetSize(256, 255)
+    CharacterModelFrame.Background.TopLeft:SetSize(259, 255)
     CharacterModelFrame.Background.TopLeft:SetPoint("TOPLEFT", 0, 0)
     CharacterModelFrame.Background.TopLeft:SetDesaturated(1)
 
     CharacterModelFrame.Background.BottomLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundBot", "BACKGROUND")
     CharacterModelFrame.Background.BottomLeft:SetTexture(texturePath .. 3)
-    CharacterModelFrame.Background.BottomLeft:SetSize(256, 128)
+    CharacterModelFrame.Background.BottomLeft:SetSize(259, 128)
     CharacterModelFrame.Background.BottomLeft:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "BOTTOMLEFT")
     CharacterModelFrame.Background.BottomLeft:SetDesaturated(1)
 end

@@ -2,7 +2,7 @@
     <Script file="SettingsMicroButton.lua"/>
 
     <Button name="SettingsMicroButton" parent="MainMenuBarArtFrame" inherits="MainMenuBarMicroButton" mixin="SettingsMicroButtonMixin">
-		<Size x="27" y="55"/>
+		<Size x="29" y="58"/>
         <Scripts>
             <OnLoad method="OnLoad" />
             <OnClick method="OnClick" />
