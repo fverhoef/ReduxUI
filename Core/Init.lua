@@ -27,7 +27,7 @@ R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
-R:AddLib("ActionButton", "LibActionButton-1.0-Redux")
+R:AddLib("ActionButton", "LibActionButton-1.0")
 R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
 R:AddLib("ClassicInspector", "LibClassicInspector")
 R:AddLib("Dispel", "LibDispel-1.0")
