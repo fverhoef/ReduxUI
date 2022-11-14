@@ -38,10 +38,6 @@ function ID:Enable()
 end
 
 function ID:Update()
-    if self then
-        R:Print("Event: " .. self)
-    end
-
     local db = ID:GetCharacterDatabase()
 
     local oldMoney = db.money or 0
