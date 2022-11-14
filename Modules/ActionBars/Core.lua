@@ -76,6 +76,7 @@ function AB:CreateActionBar(id)
     local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerStateTemplate")
     SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
     bar.config = AB.config["actionBar" .. id]
+    bar.defaults = AB.defaults["actionBar" .. id]
     bar.id = id
 
     bar.buttons = {}
@@ -124,7 +125,7 @@ function AB:CreateActionBar(id)
     bar:CreateBorder()
     bar:CreateShadow()
     bar:CreateFader(bar.config.fader, bar.buttons)
-    bar:CreateMover(bar:GetName(), AB.defaults["actionBar" .. id].point)
+    bar:CreateMover(L["Action Bar " .. id], bar.defaults.point)
 
     return bar
 end

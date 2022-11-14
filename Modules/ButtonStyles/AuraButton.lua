@@ -22,38 +22,40 @@ function BS:StyleAuraButton(button)
     local buttonName = button:GetName() or "nil"
     local config = BS.config.auras
 
+    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
+    local count = _G[buttonName .. "Count"]
+    local cooldown = _G[buttonName .. "Cooldown"]
+    local duration = _G[buttonName .. "Duration"]
+    local symbol = button.symbol
+
     if not button.__styled then
         button.__styled = true
         BS.auraButtons[button] = true
 
-        local overlay = CreateFrame("Frame", "$parentOverlay", button)
+        local overlay = CreateFrame("Frame", nil, button)
         overlay:SetAllPoints()
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
-        button.icon = _G[buttonName .. "Icon"] or button.icon
-        if button.icon then
-            button.icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
-            button.icon:SetInside(button, 2, 2)
+        if icon then
+            icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+            icon:SetInside(button, 2, 2)
         end
 
-        button.count = _G[buttonName .. "Count"]
-        if button.count then
-            button.count:SetParent(overlay)
+        if count then
+            count:SetParent(overlay)
         end
 
-        button.cooldown = _G[buttonName .. "Cooldown"]
-        if button.cooldown then
-            button.cooldown:SetParent(overlay)
-            button.cooldown:SetInside(button, 1, 1)
+        if cooldown then
+            cooldown:SetParent(overlay)
+            cooldown:SetInside(button, 1, 1)
         end
 
-        button.duration = _G[buttonName .. "Duration"]
-        if button.duration then
-            button.duration:SetParent(overlay)
+        if duration then
+            duration:SetParent(overlay)
         end
 
-        if button.symbol then
-            button.symbol:SetParent(overlay)
+        if symbol then
+            symbol:SetParent(overlay)
         end
 
         local border = _G[buttonName .. "Border"] or button.Border
@@ -67,16 +69,16 @@ function BS:StyleAuraButton(button)
         -- button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
     end
 
-    if button.count then
-        button.count:SetFont(config.font, config.fontSize, config.fontOutline)
+    if count then
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    if button.duration then
-        button.duration:SetFont(config.font, config.fontSize, config.fontOutline)
+    if duration then
+        duration:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    if button.symbol then
-        button.symbol:SetFont(config.font, config.fontSize, config.fontOutline)
+    if symbol then
+        symbol:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local borderColor = BS.config.colors.border

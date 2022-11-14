@@ -16,6 +16,12 @@ function BS:StyleActionButton(button)
     local buttonName = button:GetName()
     local config = BS.config.actions
 
+    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
+    local count = _G[buttonName .. "Count"]
+    local cooldown = _G[buttonName .. "Cooldown"]
+    local hotkey = _G[buttonName .. "HotKey"]
+    local name = _G[buttonName .. "Name"]
+
     if not button.__styled then
         button.__styled = true
         button.LBFSkinned = true
@@ -25,31 +31,26 @@ function BS:StyleActionButton(button)
         overlay:SetAllPoints()
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
-        button.icon = button.icon or _G[buttonName .. "Icon"]
         if icon then
             icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
             icon:SetInside(button, 2, 2)
         end
 
-        button.count = _G[buttonName .. "Count"]
-        if button.count then
-            button.count:SetParent(overlay)
+        if count then
+            count:SetParent(overlay)
         end
 
-        button.cooldown = _G[buttonName .. "Cooldown"]
-        if button.cooldown then
-            button.cooldown:SetFrameLevel(button.cooldown:GetParent():GetFrameLevel())
-            button.cooldown:SetInside(button, 1, 1)
+        if cooldown then
+            cooldown:SetFrameLevel(cooldown:GetParent():GetFrameLevel())
+            cooldown:SetInside(button, 1, 1)
         end
 
-        button.hotkey = _G[buttonName .. "HotKey"]
-        if button.hotkey then
-            button.hotkey:SetParent(overlay)
+        if hotkey then
+            hotkey:SetParent(overlay)
         end
 
-        button.name = _G[buttonName .. "Name"]
-        if button.name then
-            button.name:SetParent(overlay)
+        if name then
+            name:SetParent(overlay)
         end
 
         local floatingBG = _G[buttonName .. "FloatingBG"]
@@ -60,18 +61,18 @@ function BS:StyleActionButton(button)
         button:CreateBackdrop({ bgFile = config.backdrop, edgeSize = 2, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
     end
 
-    if button.count then
-        button.count:SetFont(config.font, config.fontSize, config.fontOutline)
+    if count then
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    if button.hotkey then
-        button.hotkey:SetFont(config.font, config.fontSize, config.fontOutline)
-        button.hotkey:SetAlpha(not config.hideKeybindText and 1 or 0)
+    if hotkey then
+        hotkey:SetFont(config.font, config.fontSize, config.fontOutline)
+        hotkey:SetAlpha(not config.hideKeybindText and 1 or 0)
     end
 
-    if button.name then
-        button.name:SetFont(config.font, config.fontSize, config.fontOutline)
-        button.name:SetAlpha(not config.hideMacroText and 1 or 0)
+    if name then
+        name:SetFont(config.font, config.fontSize, config.fontOutline)
+        name:SetAlpha(not config.hideMacroText and 1 or 0)
     end
 
     button:SetNormalTexture(BS.config.border)

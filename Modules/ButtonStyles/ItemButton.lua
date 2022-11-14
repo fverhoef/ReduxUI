@@ -16,28 +16,29 @@ function BS:StyleItemButton(button)
     local buttonName = button:GetName()
     local config = BS.config.items
 
+    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
+    local count = _G[buttonName .. "Count"]
+    local stock = _G[buttonName .. "Stock"]
+
     if not button.__styled then
         button.__styled = true
         BS.itemButtons[button] = true
 
-        local overlay = CreateFrame("Frame", "$parentOverlay", button)
+        local overlay = CreateFrame("Frame", nil, button)
         overlay:SetAllPoints()
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
-        button.icon = button.icon or _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"]
         if icon then
             icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
             icon:SetInside(button, 2, 2)
         end
 
-        button.count = _G[buttonName .. "Count"]
-        if button.count then
-            button.count:SetParent(overlay)
+        if count then
+            count:SetParent(overlay)
         end
 
-        button.stock = _G[buttonName .. "Stock"]
-        if button.stock then
-            button.stock:SetParent(overlay)
+        if stock then
+            stock:SetParent(overlay)
         end
 
         button:SetNormalTexture(BS.config.border)
@@ -50,12 +51,12 @@ function BS:StyleItemButton(button)
         pushedTexture:SetOutside(button, 4, 4)
     end
 
-    if button.count then
-        button.count:SetFont(config.font, config.fontSize, config.fontOutline)
+    if count then
+        count:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
-    if button.stock then
-        button.stock:SetFont(config.font, config.fontSize, config.fontOutline)
+    if stock then
+        stock:SetFont(config.font, config.fontSize, config.fontOutline)
     end
 
     local color = BS.config.colors.border
