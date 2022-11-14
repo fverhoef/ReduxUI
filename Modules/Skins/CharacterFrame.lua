@@ -21,7 +21,7 @@ local PAPERDOLL_SIDEBARS = {
     }, {
         name = PAPERDOLL_SIDEBAR_TITLES,
         frame = "PaperDollTitlesPane",
-        icon = "Interface\\PaperDollInfoFrame\\PaperDollSidebarTabs",
+        icon = [[Interface\PaperDollInfoFrame\PaperDollSidebarTabs]],
         texCoords = { 0.01562500, 0.53125000, 0.32421875, 0.46093750 },
         disabledTooltip = NO_TITLES_TOOLTIP,
         IsActive = function()
@@ -31,7 +31,7 @@ local PAPERDOLL_SIDEBARS = {
     }, {
         name = PAPERDOLL_EQUIPMENTMANAGER,
         frame = "PaperDollEquipmentManagerPane",
-        icon = "Interface\\PaperDollInfoFrame\\PaperDollSidebarTabs",
+        icon = [[Interface\PaperDollInfoFrame\PaperDollSidebarTabs]],
         texCoords = { 0.01562500, 0.53125000, 0.46875000, 0.60546875 },
         disabledTooltip = function()
             local _, failureReason = C_LFGInfo.CanPlayerUseLFD()
@@ -57,34 +57,14 @@ function S:StyleCharacterFrame()
 
     CharacterAttributesFrame:Hide()
 
-    -- add model background
-    local race, raceFileName = UnitRace("player");
-    local texturePath = S:DressUpTexturePath(raceFileName)
-
-    CharacterModelFrame.Background = CreateFrame("Frame", addonName .. "CharacterModelFrameBackground", CharacterModelFrame)
-    CharacterModelFrame.Background:SetSize(231, 320)
-    CharacterModelFrame.Background:SetAllPoints()
-    CharacterModelFrame.Background:SetFrameLevel(5)
-    CharacterModelFrame.Background:SetScale(0.90)
-
-    CharacterModelFrame.Background.TopLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundTopLeft", "BACKGROUND")
-    CharacterModelFrame.Background.TopLeft:SetTexture(texturePath .. 1)
-    CharacterModelFrame.Background.TopLeft:SetSize(256, 255)
-    CharacterModelFrame.Background.TopLeft:SetPoint("TOPLEFT", 0, 0)
-    CharacterModelFrame.Background.TopLeft:SetDesaturated(1)
-
-    CharacterModelFrame.Background.BottomLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundBot", "BACKGROUND")
-    CharacterModelFrame.Background.BottomLeft:SetTexture(texturePath .. 3)
-    CharacterModelFrame.Background.BottomLeft:SetSize(256, 128)
-    CharacterModelFrame.Background.BottomLeft:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "BOTTOMLEFT")
-    CharacterModelFrame.Background.BottomLeft:SetDesaturated(1)
-
+    S:AddCharacterModelBackground()
+    S:StylePaperDollFrame()
     PaperDollFrame.CharacterStatsPane = S:CreateCharacterStatsPane()
 
     CharacterFrame.normalWidth = CharacterFrame:GetWidth()
-    CharacterFrame.extraWidth = PaperDollFrame.CharacterStatsPane:GetWidth() - 71
-    S:ResizeCharacterFrame()
-    S:SecureHook("CharacterFrame_ShowSubFrame", S.ResizeCharacterFrame)
+    CharacterFrame.extraWidth = 160
+    S:RepositionCharacterFrameElements()
+    S:SecureHook("CharacterFrame_ShowSubFrame", S.RepositionCharacterFrameElements)
 
     CharacterNameText:ClearAllPoints()
 
@@ -111,27 +91,65 @@ function S:StyleCharacterFrame()
     CharacterFrame:HookScript("OnShow", S.UpdateCharacterStatsPane)
 end
 
-function S:PositionCharacterFrameElements()
+local function DressUpTexturePath(raceFileName)
+    if not raceFileName then
+        raceFileName = "Orc";
+    end
+
+    return [[Interface\DressUpFrame\DressUpBackground-]] .. raceFileName;
+end
+
+function S:AddCharacterModelBackground()
+    local race, raceFileName = UnitRace("player");
+    local texturePath = DressUpTexturePath(raceFileName)
+
+    CharacterModelFrame.Background = CreateFrame("Frame", addonName .. "CharacterModelFrameBackground", CharacterModelFrame)
+    CharacterModelFrame.Background:SetSize(231, 320)
+    CharacterModelFrame.Background:SetAllPoints()
+    CharacterModelFrame.Background:SetFrameLevel(5)
+    CharacterModelFrame.Background:SetScale(0.90)
+
+    CharacterModelFrame.Background.TopLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundTopLeft", "BACKGROUND")
+    CharacterModelFrame.Background.TopLeft:SetTexture(texturePath .. 1)
+    CharacterModelFrame.Background.TopLeft:SetSize(256, 255)
+    CharacterModelFrame.Background.TopLeft:SetPoint("TOPLEFT", 0, 0)
+    CharacterModelFrame.Background.TopLeft:SetDesaturated(1)
+
+    CharacterModelFrame.Background.BottomLeft = CharacterModelFrame.Background:CreateTexture("$parentBackgroundBot", "BACKGROUND")
+    CharacterModelFrame.Background.BottomLeft:SetTexture(texturePath .. 3)
+    CharacterModelFrame.Background.BottomLeft:SetSize(256, 128)
+    CharacterModelFrame.Background.BottomLeft:SetPoint("TOPLEFT", CharacterModelFrame.Background.TopLeft, "BOTTOMLEFT")
+    CharacterModelFrame.Background.BottomLeft:SetDesaturated(1)
+end
+
+function S:StylePaperDollFrame()
+    local regions = { PaperDollFrame:GetRegions() }
+    regions[1]:SetTexture(R.media.textures.frames.paperDollInfoFrame)
+    regions[1]:ClearAllPoints()
+    regions[1]:SetPoint("TOPLEFT", 0, -1)
+    regions[1]:SetSize(512, 512)
+    regions[2]:Hide()
+    regions[3]:Hide()
+    regions[4]:Hide()
+
+    PaperDollFrame:ClearAllPoints()
+    PaperDollFrame:SetPoint("TOPLEFT")
+    PaperDollFrame:SetPoint("BOTTOMRIGHT", 160, 0)
+end
+
+function S:RepositionCharacterFrameElements()
     if PaperDollFrame:IsShown() then
-        if not CharacterFrame.resized then
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -46 + CharacterFrame.extraWidth, -25)
-            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 104, 232)
-        else
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -46, -25)
-            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 6, 232)
-        end
+        CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44 + CharacterFrame.extraWidth, -25)
+        CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 84, 232)
+        CharacterLevelText:ClearAllPoints()
+        CharacterLevelText:SetPoint("TOP", CharacterNameText, "BOTTOM", 0, -10)
         CharacterLevelText:Show()
     else
-        if CharacterFrame.resized then
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44 - CharacterFrame.extraWidth, -25)
-            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", -92, 232)
-        else
-            CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44, -25)
-            CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 6, 232)
-        end
+        CharacterFrameCloseButton:SetPoint("CENTER", CharacterFrame, "TOPRIGHT", -44, -25)
+        CharacterNameText:SetPoint("CENTER", CharacterFrame, "CENTER", 6, 232)
         CharacterLevelText:Hide()
 
-        if TokenFrame and TokenFrame:IsShown() then            
+        if TokenFrame and TokenFrame:IsShown() then
             local extraCloseButton = select(4, TokenFrame:GetChildren())
             extraCloseButton:ClearAllPoints()
             extraCloseButton:SetAllPoints(CharacterFrameCloseButton)
@@ -140,116 +158,38 @@ function S:PositionCharacterFrameElements()
     end
 end
 
-function S:ResizeCharacterFrame()
-    if InCombatLockdown() then
-        S:RegisterEvent("PLAYER_REGEN_ENABLED", S.ResizeCharacterFrame)
-        S:PositionCharacterFrameElements()
-        return
-    else
-        S:UnregisterEvent("PLAYER_REGEN_ENABLED", S.ResizeCharacterFrame)
-    end
-
-    local otherFrames = { PetPaperDollFrame, ReputationFrame, SkillFrame, TokenFrame }
-    if PaperDollFrame:IsShown() then
-        CharacterFrame:SetWidth(CharacterFrame.normalWidth + CharacterFrame.extraWidth)
-        UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth() - 30
-        CharacterFrame.resized = true
-
-        PaperDollFrame:ClearAllPoints()
-        PaperDollFrame:SetAllPoints()
-
-        for i, frame in ipairs(otherFrames) do
-            frame:ClearAllPoints()
-            frame:SetPoint("TOPLEFT")
-            frame:SetPoint("BOTTOMRIGHT", -CharacterFrame.extraWidth, 0)
-        end
-    else
-        CharacterFrame:SetWidth(CharacterFrame.normalWidth)
-        UIPanelWindows["CharacterFrame"].width = CharacterFrame:GetWidth()
-        CharacterFrame.resized = false
-
-        PaperDollFrame:ClearAllPoints()
-        PaperDollFrame:SetPoint("TOPLEFT")
-        PaperDollFrame:SetPoint("BOTTOMRIGHT", CharacterFrame.extraWidth, 0)
-
-        for i, frame in ipairs(otherFrames) do
-            frame:ClearAllPoints()
-            frame:SetAllPoints()
-        end
-    end
-
-    S:PositionCharacterFrameElements()
-end
-
-function S:DressUpTexturePath(raceFileName)
-    if not raceFileName then
-        raceFileName = "Orc";
-    end
-
-    return "Interface\\DressUpFrame\\DressUpBackground-" .. raceFileName;
-end
-
 function S:CreateCharacterStatsPane()
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPane", PaperDollFrame)
-    frame:SetSize(150 + 128, 512)
-    frame:SetPoint("TOPRIGHT", _G.PaperDollFrame, "TOPRIGHT", 0, -1)
+    frame:SetSize(152, 355)
+    frame:SetPoint("TOPRIGHT", _G.PaperDollFrame, "TOPRIGHT", -42, -76)
 
-    frame.ItemLevel = S:CreateCharacterStatsPane_ItemLevel(frame)
-    frame.Attributes = S:CreateCharacterStatsPane_Attributes(frame)
-    frame.Enhancements = S:CreateCharacterStatsPane_Enhancements(frame)
-
-    frame.Background = CreateFrame("Frame", addonName .. "CharacterStatsPaneBackground", frame)
+    frame.Background = frame:CreateTexture("BACKGROUND")
+    frame.Background:SetTexture(R.media.textures.blank)
+    frame.Background:SetVertexColor(1, 1, 1, 0.5)
     frame.Background:SetAllPoints()
+    frame.Background:Hide()
 
-    frame.Background.Top = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.Top:SetSize(150, 72)
-    frame.Background.Top:SetPoint("TOPLEFT", frame.Background, "TOPLEFT", 0, 0)
-    frame.Background.Top:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
-    frame.Background.Top:SetTexCoord((256 - 150) / 256, 256 / 256, 0 / 256, 72 / 256)
+    frame.Inset = CreateFrame("Frame", "$parentInset", frame)
+    frame.Inset:SetPoint("TOPLEFT", 5, 0)
+    frame.Inset:SetPoint("BOTTOMRIGHT", -5, 0)
 
-    frame.Background.CenterTop = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.CenterTop:SetSize(115, 256 - 72)
-    frame.Background.CenterTop:SetPoint("TOPRIGHT", frame.Background.Top, "BOTTOMRIGHT", 0, 0)
-    frame.Background.CenterTop:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
-    frame.Background.CenterTop:SetTexCoord((256 - 115) / 256, 256 / 256, 72 / 256, 256 / 256)
-
-    frame.Background.TopRight = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.TopRight:SetSize(128, 256)
-    frame.Background.TopRight:SetPoint("TOPLEFT", frame.Background.Top, "TOPRIGHT", 0, 0)
-    frame.Background.TopRight:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
-
-    frame.Background.Bottom = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.Bottom:SetSize(150, 108)
-    frame.Background.Bottom:SetPoint("BOTTOMLEFT", frame.Background, "BOTTOMLEFT", 0, 0)
-    frame.Background.Bottom:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
-    frame.Background.Bottom:SetTexCoord((256 - 150) / 256, 256 / 256, (256 - 108) / 256, 256 / 256)
-
-    frame.Background.CenterBottom = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.CenterBottom:SetSize(115, 256 - 108)
-    frame.Background.CenterBottom:SetPoint("BOTTOMRIGHT", frame.Background.Bottom, "TOPRIGHT", 0, 0)
-    frame.Background.CenterBottom:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
-    frame.Background.CenterBottom:SetTexCoord((256 - 115) / 256, 256 / 256, 0 / 256, (256 - 108) / 256)
-
-    frame.Background.BottomRight = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 0)
-    frame.Background.BottomRight:SetSize(128, 256)
-    frame.Background.BottomRight:SetPoint("BOTTOMLEFT", frame.Background.Bottom, "BOTTOMRIGHT", 0, 0)
-    frame.Background.BottomRight:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
-
-    frame.Background.Inset = frame.Background:CreateTexture(nil, "BACKGROUND", nil, 1)
-    frame.Background.Inset:SetSize(199, 357)
-    frame.Background.Inset:SetPoint("TOPLEFT", frame.Background, "TOPLEFT", 35, -74)
+    frame.ItemLevel = S:CreateCharacterStatsPane_ItemLevel(frame, frame.Inset)
+    frame.Attributes = S:CreateCharacterStatsPane_Attributes(frame, frame.Inset)
+    frame.Enhancements = S:CreateCharacterStatsPane_Enhancements(frame, frame.Inset)
 
     return frame
 end
 
-function S:CreateCharacterStatsPane_ItemLevel(parent)
+function S:CreateCharacterStatsPane_ItemLevel(parent, anchor)
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevel", parent)
-    frame:SetSize(198, CATEGORY_HEADER_HEIGHT + ITEM_LEVEL_HEIGHT)
-    frame:SetPoint("TOP", parent, "TOP", 0, -74)
+    frame:SetHeight(CATEGORY_HEADER_HEIGHT + ITEM_LEVEL_HEIGHT)
+    frame:SetPoint("TOPLEFT", anchor, "TOPLEFT")
+    frame:SetPoint("TOPRIGHT", anchor, "TOPRIGHT")
 
-    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", parent)
-    frame.Header:SetSize(198, CATEGORY_HEADER_HEIGHT)
-    frame.Header:SetPoint("TOP", frame, "TOP", 0, 0)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", frame)
+    frame.Header:SetHeight(CATEGORY_HEADER_HEIGHT)
+    frame.Header:SetPoint("TOPLEFT")
+    frame.Header:SetPoint("TOPRIGHT")
     frame.Header.Text = frame.Header:CreateFontString(nil, "OVERLAY")
     frame.Header.Text:SetAllPoints()
     frame.Header.Text:SetJustifyH("CENTER")
@@ -258,9 +198,10 @@ function S:CreateCharacterStatsPane_ItemLevel(parent)
     frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
     frame.Header.Text:SetText(STAT_AVERAGE_ITEM_LEVEL)
 
-    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", parent)
-    frame.Value:SetSize(145, ITEM_LEVEL_HEIGHT)
-    frame.Value:SetPoint("TOP", frame.Header, "BOTTOM", 0, 0)
+    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", frame)
+    frame.Value:SetHeight(ITEM_LEVEL_HEIGHT)
+    frame.Value:SetPoint("TOPLEFT", frame.Header, "BOTTOMLEFT")
+    frame.Value:SetPoint("TOPRIGHT", frame.Header, "BOTTOMRIGHT")
     frame.Value.Text = frame.Value:CreateFontString(nil, "OVERLAY")
     frame.Value.Text:SetAllPoints()
     frame.Value.Text:SetJustifyH("CENTER")
@@ -277,14 +218,16 @@ function S:CreateCharacterStatsPane_ItemLevel(parent)
     return frame
 end
 
-function S:CreateCharacterStatsPane_Attributes(parent)
+function S:CreateCharacterStatsPane_Attributes(parent, anchor)
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributes", parent)
-    frame:SetSize(168, CATEGORY_HEADER_HEIGHT + 6 * STAT_HEIGHT)
-    frame:SetPoint("TOP", parent.ItemLevel, "BOTTOM", 0, -CATEGORY_SPACING)
+    frame:SetHeight(CATEGORY_HEADER_HEIGHT + 6 * STAT_HEIGHT)
+    frame:SetPoint("TOPLEFT", parent.ItemLevel, "BOTTOMLEFT", 0, -CATEGORY_SPACING)
+    frame:SetPoint("TOPRIGHT", parent.ItemLevel, "BOTTOMRIGHT", 0, -CATEGORY_SPACING)
 
-    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributesHeader", parent)
-    frame.Header:SetSize(168, CATEGORY_HEADER_HEIGHT)
-    frame.Header:SetPoint("TOP", frame, "TOP", 0, 0)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneAttributesHeader", frame)
+    frame.Header:SetHeight(CATEGORY_HEADER_HEIGHT)
+    frame.Header:SetPoint("TOPLEFT")
+    frame.Header:SetPoint("TOPRIGHT")
     frame.Header.Text = frame.Header:CreateFontString(nil, "OVERLAY")
     frame.Header.Text:SetAllPoints()
     frame.Header.Text:SetJustifyH("CENTER")
@@ -310,21 +253,23 @@ function S:CreateCharacterStatsPane_Attributes(parent)
     return frame
 end
 
-function S:CreateCharacterStatsPane_Enhancements(parent)
+function S:CreateCharacterStatsPane_Enhancements(parent, anchor)
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancements", parent)
-    frame:SetSize(168, CATEGORY_HEADER_HEIGHT + 6 * STAT_HEIGHT)
-    frame:SetPoint("TOP", parent.Attributes, "BOTTOM", 0, -CATEGORY_SPACING)
+    frame:SetHeight(CATEGORY_HEADER_HEIGHT + 6 * STAT_HEIGHT)
+    frame:SetPoint("TOPLEFT", parent.Attributes, "BOTTOMLEFT", 0, -CATEGORY_SPACING)
+    frame:SetPoint("TOPRIGHT", parent.Attributes, "BOTTOMRIGHT", 0, -CATEGORY_SPACING)
 
-    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancementsHeader", parent)
-    frame.Header:SetSize(168, CATEGORY_HEADER_HEIGHT)
-    frame.Header:SetPoint("TOP", frame, "TOP", 0, 0)
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancementsHeader", frame)
+    frame.Header:SetHeight(CATEGORY_HEADER_HEIGHT)
+    frame.Header:SetPoint("TOPLEFT")
+    frame.Header:SetPoint("TOPRIGHT")
     frame.Header.Text = frame.Header:CreateFontString(nil, "OVERLAY")
     frame.Header.Text:SetAllPoints()
     frame.Header.Text:SetJustifyH("CENTER")
     frame.Header.Text:SetJustifyV("CENTER")
     frame.Header.Text:SetShadowOffset(1, -1)
     frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
-    frame.Header.Text:SetText(STAT_CATEGORY_ENHANCEMENTS)
+    frame.Header.Text:SetText(_G[GetCVar("playerStatRightDropdown")])
 
     frame.Header.ButtonPrevious = CreateFrame("Button", addonName .. "CharacterStatsPaneEnhancementsPrevious", frame.Header)
     frame.Header.ButtonPrevious:SetSize(16, 16)

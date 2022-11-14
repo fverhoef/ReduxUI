@@ -28,6 +28,7 @@ R.media = {
             separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
+        frames = { paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame"},
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
             minimapMask1 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask1",

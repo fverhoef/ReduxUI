@@ -5,7 +5,7 @@ local L = R.L
 
 function S:CreateEnabledOption(name, desc, order, hidden, property, reload)
     return R:CreateToggleOption(name, desc, order, "double", hidden, function() return S.config[property].enabled end, function(value) S.config[property].enabled = value end,
-                                function() (not S.config[property].enabled and ReloadUI or C.Initialize)() end,
+                                function() (not S.config[property].enabled and ReloadUI or S.Initialize)() end,
                                 function() return S.config[property].enabled and L["Disabling this feature requires a UI reload. Proceed?"] end)
 end
 
