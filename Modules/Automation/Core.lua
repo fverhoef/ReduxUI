@@ -28,11 +28,16 @@ function AM:Enable()
     AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
     AM:RegisterEvent("CHAT_MSG_WHISPER")
     AM:RegisterEvent("CHAT_MSG_BN_WHISPER")
+    AM:RegisterEvent("PLAYER_ENTERING_WORLD")
 
     AM:Update()
 end
 
 function AM:Update()
+    SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
+end
+
+function AM:PLAYER_ENTERING_WORLD()
     SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
 end
 
