@@ -53,7 +53,7 @@ R:RegisterModuleOptions(S, {
             inline = true,
             hidden = R.isRetail,
             args = {
-                character = S:CreateEnabledOption(L["Retail-style Character Frame"], nil, 1, R.isRetail, "character", true),
+                character = S:CreateEnabledOption(L["Style Character Frame"], nil, 1, R.isRetail, "character", true),
                 friends = S:CreateEnabledOption(L["Style Friends Frame"], nil, 2, R.isRetail, "friends", true),
                 guild = S:CreateEnabledOption(L["Style Guild Frame"], nil, 3, R.isRetail, "guild", true),
                 who = S:CreateEnabledOption(L["Style Who Frame"], nil, 4, R.isRetail, "who", true),
