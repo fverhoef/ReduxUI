@@ -34,7 +34,6 @@ R:RegisterModuleConfig(TT, {
     showTitle = true,
     showHealthValues = true,
     showGuildRank = true,
-    showPvPRank = true,
     showIcons = true,
     showSpellId = false,
     showItemId = false,

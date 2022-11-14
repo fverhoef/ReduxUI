@@ -122,14 +122,6 @@ function TT:OnTooltipSetUnit()
         TT:FormatNameText(self, unit)
         TT:FormatGuildText(self, unit)
         TT:FormatPvPText(self)
-
-        local rank = UnitPVPRank and UnitPVPRank(unit)
-        if rank and rank > 0 then
-            -- rank starts at 5 for some reason
-            rank = rank - 4
-            TT:AddPvPRank(self, rank)
-        end
-
         TT:AddMountText(self, unit)
     end
     TT:FormatLevelText(self, unit)
@@ -347,15 +339,6 @@ function TT:FormatPvPText(tooltip)
     local line = TT:GetPvPLine(tooltip)
     if not line then return end
     line:SetTextColor(unpack(TT.config.colors.pvp))
-end
-
-function TT:AddPvPRank(tooltip, rank)
-    if not R.isRetail and rank and TT.config.showPvPRank then
-        local size = TT.config.rankSize or 12
-        local rank = "Interface\\PvPRankBadges\\PvPRank" .. (rank < 10 and "0" or "") .. rank
-        local title = _G[tooltip:GetName() .. "TextLeft1"]
-        if title and not title:GetText():find("|T" .. rank) then title:SetFormattedText("|T%s:%d:%d:0:0|t %s", rank, size, size, title:GetText()) end
-    end
 end
 
 function TT:AddStatusBarColor(tooltip)

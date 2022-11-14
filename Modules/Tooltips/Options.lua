@@ -27,7 +27,6 @@ R:RegisterModuleOptions(TT, {
         showHealthValues = R:CreateToggleOption(L["Show Health Values"], nil, 10, "double", nil, function() return TT.config.showHealthValues end,
                                                 function(value) TT.config.showHealthValues = value end),
         showGuildRank = R:CreateToggleOption(L["Show Guild Rank"], nil, 11, "double", nil, function() return TT.config.showGuildRank end, function(value) TT.config.showGuildRank = value end),
-        showPvPRank = R:CreateToggleOption(L["Show PvP Rank"], nil, 12, "double", R.isRetail, function() return TT.config.showPvPRank end, function(value) TT.config.showPvPRank = value end),
         showVendorPrice = R:CreateToggleOption(L["Show Vendor Price"], nil, 13, "double", R.isRetail, function() return TT.config.showVendorPrice end,
                                                function(value) TT.config.showVendorPrice = value end),
         showItemLevel = R:CreateToggleOption(L["Show Item Level"], nil, 14, "double", R.isRetail, function() return TT.config.showItemLevel end, function(value) TT.config.showItemLevel = value end),
@@ -35,7 +34,7 @@ R:RegisterModuleOptions(TT, {
         showIcons = R:CreateToggleOption(L["Show Item/Spell Icons"], nil, 16, "double", nil, function() return TT.config.showIcons end, function(value) TT.config.showIcons = value end),
         showItemId = R:CreateToggleOption(L["Show Item IDs"], nil, 17, "double", nil, function() return TT.config.showItemId end, function(value) TT.config.showItemId = value end),
         showSpellId = R:CreateToggleOption(L["Show Spell IDs"], nil, 18, "double", nil, function() return TT.config.showSpellId end, function(value) TT.config.showSpellId = value end),
-        showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", nil, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
+        showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", R.isRetail, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
         font = {
             type = "group",
             name = L["Font"],
