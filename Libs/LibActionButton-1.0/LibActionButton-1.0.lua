@@ -28,7 +28,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
-local MAJOR_VERSION = "LibActionButton-1.0-Redux"
+local MAJOR_VERSION = "LibActionButton-1.0"
 local MINOR_VERSION = 82
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
