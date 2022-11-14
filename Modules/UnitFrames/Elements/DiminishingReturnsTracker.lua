@@ -7,8 +7,7 @@ function UF:CreateDiminishingReturnsTracker()
     if not self.config.diminishingReturnsTracker.enabled then return end
 
     self.DiminishingReturnsTracker = CreateFrame("Frame", "$parentDiminishingReturnsTracker", self)
-    self.DiminishingReturnsTracker.iconSize = self.config.diminishingReturnsTracker.iconSize
-    self.DiminishingReturnsTracker.PostCreateTimer = DiminishingReturnsTracker_PostCreateTimer
+    self.DiminishingReturnsTracker.PostCreateTimer = UF.DiminishingReturnsTracker_PostCreateTimer
 
     return self.DiminishingReturnsTracker
 end
@@ -26,7 +25,9 @@ function UF:ConfigureDiminishingReturnsTracker()
 
     self:EnableElement("DiminishingReturnsTracker")
 
-    self.DiminishingReturnsTracker.iconSize = self.config.diminishingReturnsTracker.iconSize
+    self.DiminishingReturnsTracker.iconSize = config.iconSize
+    self.DiminishingReturnsTracker.iconSpacing = config.iconSpacing
+    self.DiminishingReturnsTracker:SetSize(5 * config.iconSize + 4 * config.iconSpacing, config.iconSize)
     self.DiminishingReturnsTracker:ClearAllPoints()
     self.DiminishingReturnsTracker:SetNormalizedPoint(unpack(config.point))
 end
