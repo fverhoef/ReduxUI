@@ -37,7 +37,7 @@ function BS:StyleAuraButton(button)
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
         if icon then
-            icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+            icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
             icon:SetInside(button, 2, 2)
         end
 
@@ -64,9 +64,9 @@ function BS:StyleAuraButton(button)
             button.Border = nil
         end
 
-        button:CreateBorder(nil, nil, 0)
-        -- button:CreateShadow()
-        -- button:CreateGlossOverlay(nil, nil, nil, 0, 0, -1, 0)
+        local border = button:CreateTexture("OVERLAY", "$parentBorder", nil, 7)
+        border:SetTexture(R.media.textures.buttons.border)
+        button.Border = border
     end
 
     if count then
@@ -93,6 +93,20 @@ function BS:StyleAuraButton(button)
         if quality and quality > 1 then
             borderColor = { GetItemQualityColor(quality) }
         end
+    end
+
+    local borderInset = (button:GetWidth() or 36) / 12
+    button.Border:SetOutside(button, borderInset, borderInset)
+    button.Border:SetVertexColor(borderColor[1], borderColor[2], borderColor[3], borderColor[4] or 1)
+
+    if icon then
+        local iconInset = (button:GetWidth() or 36) / 18
+        icon:SetInside(button, iconInset, iconInset)
+    end
+
+    if cooldown then
+        local cdInset = (button:GetWidth() or 36) / 18
+        cooldown:SetInside(button, cdInset, cdInset)
     end
 end
 
