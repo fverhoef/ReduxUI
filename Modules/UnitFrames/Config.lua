@@ -303,7 +303,7 @@ R:RegisterModuleConfig(UF, {
     buffFrame = {point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -215, -13}, buffs = {iconSize = 36}, debuffs = {iconSize = 36}, tempEnchants = {iconSize = 36}},
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         power = {energyManaRegen = true, powerPrediction = true, insetPoint = {"RIGHT", "BOTTOMRIGHT", -10, 0}},
-        castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 150}, detached = true, showSafeZone = true},
+        castbar = {size = {250, 24}, point = {"BOTTOM", "UIParent", "BOTTOM", 0, 200}, detached = true, showSafeZone = true},
         highlight = {target = false}
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {

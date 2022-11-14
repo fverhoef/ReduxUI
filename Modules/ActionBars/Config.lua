@@ -18,7 +18,7 @@ R:RegisterModuleConfig(AB, {
     actionBar1 = {
         enabled = true,
         keyBoundTarget = "ACTIONBUTTON",
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -40,7 +40,7 @@ R:RegisterModuleConfig(AB, {
         enabled = true,
         keyBoundTarget = "MULTIACTIONBAR1BUTTON",
         page = 6,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 45},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 90},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -62,7 +62,7 @@ R:RegisterModuleConfig(AB, {
         enabled = true,
         keyBoundTarget = "MULTIACTIONBAR2BUTTON",
         page = 5,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 85},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 128},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -232,7 +232,7 @@ R:RegisterModuleConfig(AB, {
     stanceBar = {
         enabled = true,
         keyBoundTarget = "SHAPESHIFTBUTTON",
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 95},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 166},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -250,7 +250,7 @@ R:RegisterModuleConfig(AB, {
     petBar = {
         enabled = true,
         keyBoundTarget = "BONUSACTIONBUTTON",
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 135},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 166},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
@@ -267,7 +267,7 @@ R:RegisterModuleConfig(AB, {
     },
     vehicleExitBar = {
         enabled = true,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 135},
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 166},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
         rowDirection = "Down",
