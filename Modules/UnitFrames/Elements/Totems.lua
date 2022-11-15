@@ -15,12 +15,17 @@ function UF:CreateTotems()
     self.Totems = {}
     for i = 1, NUM_TOTEMS do
         local totem = CreateFrame("Button", nil, self.TotemsHolder)
-        totem.Icon = totem:CreateTexture(nil, "OVERLAY")
-        totem.Icon:SetAllPoints()
-        totem.Cooldown = CreateFrame("Cooldown", nil, totem, "CooldownFrameTemplate")
-        totem.Cooldown:SetAllPoints()
+        totem.Icon = totem:CreateTexture(nil, "OVERLAY")        
+        totem.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        totem.Icon:SetInside(totem, 2, 2)
 
-        R.Modules.ButtonStyles:StyleAuraButton(totem)
+        totem.Cooldown = CreateFrame("Cooldown", nil, totem, "CooldownFrameTemplate")
+        totem.Cooldown:SetInside(totem, 1, 1)
+        totem.Cooldown:SetFrameLevel(totem:GetFrameLevel() + 1)
+
+        totem:CreateBorder()
+        totem.Border:SetOutside(totem, 1, 1)
+        totem.Border:SetFrameLevel(totem:GetFrameLevel() + 2)
 
         self.Totems[i] = totem
     end

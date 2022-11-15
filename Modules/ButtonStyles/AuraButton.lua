@@ -22,9 +22,9 @@ function BS:StyleAuraButton(button)
     local buttonName = button:GetName() or "nil"
     local config = BS.config.auras
 
-    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
+    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon or button.Icon
     local count = _G[buttonName .. "Count"]
-    local cooldown = _G[buttonName .. "Cooldown"]
+    local cooldown = _G[buttonName .. "Cooldown"] or button.Cooldown
     local duration = _G[buttonName .. "Duration"]
     local symbol = button.symbol
 
@@ -46,7 +46,6 @@ function BS:StyleAuraButton(button)
         end
 
         if cooldown then
-            cooldown:SetParent(overlay)
             cooldown:SetInside(button, 1, 1)
         end
 
@@ -64,7 +63,7 @@ function BS:StyleAuraButton(button)
             button.Border = nil
         end
 
-        local border = button:CreateTexture("OVERLAY", "$parentBorder", nil, 7)
+        local border = overlay:CreateTexture("OVERLAY", "$parentBorder", nil, 7)
         border:SetTexture(R.media.textures.buttons.border)
         button.Border = border
     end
