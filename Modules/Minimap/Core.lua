@@ -32,6 +32,8 @@ function MM:StyleMinimap()
     MinimapButtonFrame = CreateFrame("Frame", "MinimapButtonFrame", Minimap, "MinimapButtonFrameTemplate")
     MinimapButtonFrame:SetShown(not MM.config.buttonFrame.collapsed)
     MinimapButtonFrame:CreateFader(MM.config.buttonFrame.fader, MinimapButtonFrame.Buttons)
+    MinimapButtonFrame:ClearAllPoints()
+    MinimapButtonFrame:SetPoint("TOPRIGHT", MinimapButtonFrameToggleButton, "BOTTOMLEFT", 5, 5)
 
     MinimapZoneText:SetSize(190, 10)
     MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -8)
@@ -68,7 +70,7 @@ function MM:UpdateMinimap()
     Minimap:SetSize(width, height)
 
     MinimapBorder:ClearAllPoints()
-    MinimapBorder:SetOutside(Minimap, 3, 3)
+    MinimapBorder:SetOutside(Minimap, 5, 5)
     MinimapBorder:SetTexture(R.media.textures.minimap.border)
     MinimapBorder:SetTexCoord(0, 1, 0, 1)
 
@@ -77,21 +79,25 @@ function MM:UpdateMinimap()
 
     MinimapZoneText:SetShown(MM.config.zoneText.enabled)
     if MM.config.zoneText.enabled then
-        MinimapCluster.ZoneBackground:Show()
         MinimapCluster:SetSize(width, height + 35)
         Minimap:SetPoint("TOP", 0, -35)
     else
-        MinimapCluster.ZoneBackground:Hide()
         MinimapCluster:SetSize(width, height)
         Minimap:SetPoint("TOP", 0, 0)
     end
     MinimapZoneText:SetFont(MM.config.zoneText.font, MM.config.zoneText.fontSize, MM.config.zoneText.fontOutline)
     MinimapZoneText:SetJustifyH(MM.config.zoneText.justifyH)
     MinimapZoneText:SetShadowOffset(MM.config.zoneText.fontShadow and 1 or 0, MM.config.zoneText.fontShadow and -2 or 0)
+    
+    MinimapCluster.ZoneBackground:SetShown(MM.config.zoneText.enabled and MM.config.zoneText.showBorder)
 
     LoadAddOn("Blizzard_TimeManager")
     TimeManagerClockButton:ClearAllPoints()
-    TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 20)
+    TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 23)
+    TimeManagerClockButton:SetSize(1.1 * 60, 1.1 * 28)
+
+    MinimapButtonFrame:SetWidth(width)
+    MinimapButtonFrame:Update()
 
     local radius = width / 2 - 5
     local x, y = R:PolarToXY(127, radius)
@@ -113,6 +119,10 @@ function MM:UpdateMinimap()
     x, y = R:PolarToXY(-45, radius)
     MiniMapTracking:ClearAllPoints()
     MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(225, radius)
+    MinimapButtonFrameToggleButton:ClearAllPoints()
+    MinimapButtonFrameToggleButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
 function MM:Minimap_OnMouseWheel(direction)

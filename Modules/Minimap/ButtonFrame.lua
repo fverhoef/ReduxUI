@@ -153,6 +153,7 @@ function ButtonFrameMixin:Update()
 
     self.Backdrop:SetShown(MM.config.buttonFrame.showBorder)
     self.Border:SetShown(MM.config.buttonFrame.showBorder)
+
     self:SetHeight(2 * spacing + (iconSize * rowCount) + (spacing * (rowCount - 1)))
 
     if MM.Config then

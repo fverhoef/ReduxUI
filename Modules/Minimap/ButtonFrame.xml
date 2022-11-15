@@ -8,7 +8,7 @@
         </Anchors>
         <NormalTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Up" />
         <PushedTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Down" />
-        <HighlightTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\MinimapButton-Highlight" />
+        <HighlightTexture alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\Minimap\MinimapButton-Highlight" />
         <Scripts>
             <OnEnter method="OnEnter" />
             <OnLeave method="OnLeave" />
@@ -24,7 +24,7 @@
         <Frames>
             <Frame parentKey="Backdrop" inherits="BackdropTemplate">
                 <KeyValues>
-                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global"/>
+                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global" />
                 </KeyValues>
                 <Anchors>
                     <Anchor point="TOPLEFT" x="-5" y="5" />
