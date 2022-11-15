@@ -59,7 +59,6 @@ R:RegisterModuleOptions(S, {
                 who = S:CreateEnabledOption(L["Style Who Frame"], nil, 4, R.isRetail, "who", true),
                 worldMap = S:CreateEnabledOption(L["Style World Map"], nil, 5, R.isRetail, "worldMap", true),
                 classTrainer = S:CreateEnabledOption(L["Wider Class Trainer Frame"], nil, 6, R.isRetail, "classTrainer", true),
-                questLog = S:CreateEnabledOption(L["Wider Quest Log"], nil, 7, R.isRetail, "questLog", true),
                 tradeSkill = S:CreateEnabledOption(L["Wider Trade Skill Frame"], nil, 8, R.isRetail, "tradeSkill", true)
             }
         }
