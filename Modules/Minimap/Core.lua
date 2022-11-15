@@ -3,35 +3,35 @@ local R = _G.ReduxUI
 local MM = R:AddModule("Minimap", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = R.L
 
-function MM:Initialize() end
+MM.Styles = {}
+
+function MM:Initialize()
+end
 
 function MM:Enable()
-    if not MM.config.enabled then return end
+    if not MM.config.enabled then
+        return
+    end
 
     MM:StyleMinimap()
 end
 
 function MM:StyleMinimap()
-    local width, height = unpack(MM.config.size)
-
     MinimapCluster.config = MM.config
-    MinimapCluster:SetSize(width, height + 30)
-    MinimapCluster:ClearAllPoints()
-    MinimapCluster:SetPoint(unpack(MM.config.point))
+    MinimapCluster:CreateFader(MM.config.fader)
+    MinimapCluster:CreateMover("Minimap", MM.config.point)
 
     if MM.config.visibility then
         MinimapCluster.visibility = MM.config.visibility
         RegisterStateDriver(MinimapCluster, "visibility", MM.config.visibility)
     end
 
-    MinimapCluster:CreateFader(MM.config.fader)
-    MinimapCluster:CreateMover("Minimap", MM.config.point)
+    MinimapButtonFrameToggleButton = CreateFrame("CheckButton", "MinimapButtonFrameToggleButton", Minimap, "MinimapButtonFrameToggleButtonTemplate")
+    MinimapButtonFrameToggleButton:SetChecked(not MM.config.buttonFrame.collapsed)
 
-    Minimap:ClearAllPoints()
-    Minimap:SetPoint("TOP", 0, -30)
-    Minimap:SetSize(width, height)
-    Minimap:CreateBorder()
-    Minimap:CreateShadow()
+    MinimapButtonFrame = CreateFrame("Frame", "MinimapButtonFrame", Minimap, "MinimapButtonFrameTemplate")
+    MinimapButtonFrame:SetShown(not MM.config.buttonFrame.collapsed)
+    MinimapButtonFrame:CreateFader(MM.config.buttonFrame.fader, MinimapButtonFrame.Buttons)
 
     MinimapZoneText:SetSize(190, 10)
     MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -8)
@@ -40,106 +40,46 @@ function MM:StyleMinimap()
     MinimapZoneText:SetShadowColor(0, 0, 0, 0.25)
     MinimapZoneText:SetShadowOffset(1, -2)
 
-    MinimapNorthTag:ClearAllPoints()
-    MinimapNorthTag:SetPoint("TOP", Minimap, "TOP", 0, -10)
-    MinimapNorthTag:SetAlpha(1)
+    MinimapCluster.ZoneBackground = MinimapCluster:CreateTexture("BACKGROUND")
+    MinimapCluster.ZoneBackground:SetTexture(R.media.textures.minimap.zoneBorder)
+    MinimapCluster.ZoneBackground:SetTexCoord(0, 1, 0, 78 / 128)
+    MinimapCluster.ZoneBackground:SetHeight(30)
+    MinimapCluster.ZoneBackground:SetPoint("TOPLEFT", MinimapCluster, "TOPLEFT")
+    MinimapCluster.ZoneBackground:SetPoint("TOPRIGHT", MinimapCluster, "TOPRIGHT")
+
+    MinimapBorderTop:Hide()
 
     Minimap:EnableMouseWheel()
     Minimap:SetScript("OnMouseWheel", MM.Minimap_OnMouseWheel)
 
-    MinimapBorder:Hide()
-    MinimapBorderTop:Hide()
-    MinimapZoomIn:Hide()
-    MinimapZoomOut:Hide()
-    R:Disable(MiniMapWorldMapButton)
-    GameTimeFrame:Hide()
+    MinimapNorthTag:ClearAllPoints()
+    MinimapNorthTag:SetPoint("TOP", Minimap, "TOP", 0, -15)
+    MinimapNorthTag.__texture = MinimapNorthTag:GetTexture()
 
-    LoadAddOn("Blizzard_TimeManager")
-    TimeManagerClockButton:GetRegions():Hide()
-    TimeManagerClockButton:ClearAllPoints()
-    TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
-    TimeManagerClockTicker:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
-    TimeManagerClockTicker:SetTextColor(0.8, 0.8, 0.6, 1)
-
-    MM:CreateZoneBackground()
-    MM:CreateInformationFrame()
-    MM:CreateButtonFrame()
-
-    MiniMapMailFrame:SetParent(Minimap.InformationFrame)
-    MiniMapMailFrame:ClearAllPoints()
-    MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "TOPRIGHT", -25, 3)
-    MiniMapMailIcon:SetTexture([[Interface\MINIMAP\TRACKING\Mailbox]])
-    MiniMapMailIcon:SetTexCoord(0, 0.95, 0, 0.95)
-
-    MiniMapMailBorder:SetTexture([[Interface\Calendar\EventNotificationGlow]])
-    MiniMapMailBorder:SetBlendMode("ADD")
-    MiniMapMailBorder:ClearAllPoints()
-    MiniMapMailBorder:SetPoint("CENTER", MiniMapMailFrame, -0.5, 1.5)
-    MiniMapMailBorder:SetSize(25, 25)
-    MiniMapMailBorder:SetAlpha(0.4)
-
-    if not MM.config.enableMailGlow then MiniMapMailBorder:Hide() end
-
-    if MiniMapBattlefieldFrame then
-        MiniMapBattlefieldFrame:SetSize(33, 33)
-        MiniMapBattlefieldBorder:Hide()
-        MiniMapBattlefieldIcon:SetSize(MiniMapBattlefieldFrame:GetSize())
-    end
-
-    if R.isRetail then
-        MM:SecureHook("GarrisonLandingPageMinimapButton_UpdateIcon", function(self)
-            GarrisonLandingPageMinimapButton:ClearAllPoints()
-            GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 0)
-        end)
-
-        QueueStatusMinimapButton:SetParent(Minimap.InformationFrame)
-        QueueStatusMinimapButton:SetSize(33, 33)
-        QueueStatusMinimapButton:ClearAllPoints()
-        QueueStatusMinimapButton:SetPoint("TOPLEFT", 40, 2)
-        QueueStatusMinimapButtonBorder:Hide()
-        QueueStatusMinimapButtonIcon:SetSize(QueueStatusMinimapButton:GetSize())
-
-        MiniMapInstanceDifficulty:ClearAllPoints()
-        MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
-        GuildInstanceDifficulty:ClearAllPoints()
-        GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
-        MiniMapChallengeMode:ClearAllPoints()
-        MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 10, -10)
-
-        MiniMapTrackingButtonBorder:Hide()
-        
-		Minimap:SetArchBlobRingAlpha(0)
-		Minimap:SetArchBlobRingScalar(0)
-		Minimap:SetQuestBlobRingAlpha(0)
-		Minimap:SetQuestBlobRingScalar(0)
-    else
-        MiniMapTracking:SetScript("OnEvent", nil)
-        MiniMapTrackingIcon:SetTexture([[Interface\Minimap\Tracking\None]])
-        MiniMapTrackingIcon:SetSize(20, 20)
-        BattlegroundShine:Hide()
-    end
-
-    MiniMapTrackingBackground:Hide()
-
-    Minimap.ButtonFrame:Toggle()
     MM:UpdateMinimap()
 end
 
 function MM:UpdateMinimap()
     local width, height = unpack(MM.config.size)
+    MinimapCluster:ClearAllPoints()
+    MinimapCluster:SetPoint(unpack(MM.config.point))
+
+    Minimap:SetMaskTexture([[Interface\Masks\CircleMaskScalable]])
     Minimap:SetSize(width, height)
 
-    local mask = MM.config.border.enabled and [[interface\chatframe\chatframebackground]] or MM.config.mask
-    Minimap:SetMaskTexture(mask)
+    MinimapBorder:ClearAllPoints()
+    MinimapBorder:SetOutside(Minimap, 3, 3)
+    MinimapBorder:SetTexture(R.media.textures.minimap.border)
+    MinimapBorder:SetTexCoord(0, 1, 0, 1)
 
-    Minimap.Border:SetShown(MM.config.border.enabled)
-    Minimap.Shadow:SetShown(MM.config.shadow.enabled)
+    MinimapNorthTag:SetTexture(MM.config.showNorthTag and MinimapNorthTag.__texture or nil)
+    MiniMapMailBorder:SetShown(MM.config.enableMailGlow)
 
     MinimapZoneText:SetShown(MM.config.zoneText.enabled)
-    if MM.config.zoneText.enabled and MM.config.zoneText.showBackground then
+    if MM.config.zoneText.enabled then
         MinimapCluster.ZoneBackground:Show()
-        MinimapCluster:SetSize(width, height + 30)
-        Minimap:SetPoint("TOP", 0, -30)
+        MinimapCluster:SetSize(width, height + 35)
+        Minimap:SetPoint("TOP", 0, -35)
     else
         MinimapCluster.ZoneBackground:Hide()
         MinimapCluster:SetSize(width, height)
@@ -149,57 +89,30 @@ function MM:UpdateMinimap()
     MinimapZoneText:SetJustifyH(MM.config.zoneText.justifyH)
     MinimapZoneText:SetShadowOffset(MM.config.zoneText.fontShadow and 1 or 0, MM.config.zoneText.fontShadow and -2 or 0)
 
-    Minimap.InformationFrame:SetShown(MM.config.infoPanel.enabled)
-    if MM.config.infoPanel.enabled and MM.config.infoPanel.showBackground then
-        Minimap.InformationFrame.Background:Show()
+    LoadAddOn("Blizzard_TimeManager")
+    TimeManagerClockButton:ClearAllPoints()
+    TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 20)
 
-        Minimap.InformationFrame:ClearAllPoints()
-        Minimap.InformationFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
-        Minimap.InformationFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
+    local radius = width / 2 - 5
+    local x, y = R:PolarToXY(127, radius)
+    MinimapZoomIn:ClearAllPoints()
+    MinimapZoomIn:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
-        TimeManagerClockButton:ClearAllPoints()
-        TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 0)
+    x, y = R:PolarToXY(143, radius)
+    MinimapZoomOut:ClearAllPoints()
+    MinimapZoomOut:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
-        MiniMapTracking:ClearAllPoints()
-        MiniMapTracking:SetPoint("TOPLEFT", Minimap.InformationFrame, "TOPLEFT", 7, R.isRetail and 2 or 4)
+    x, y = R:PolarToXY(35, radius)
+    GameTimeFrame:ClearAllPoints()
+    GameTimeFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
-        Minimap.ButtonFrame:ClearAllPoints()
-        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap.InformationFrame, "BOTTOMLEFT", 0, 0)
-        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap.InformationFrame, "BOTTOMRIGHT", 0, 0)
+    x, y = R:PolarToXY(55, radius)
+    MiniMapWorldMapButton:ClearAllPoints()
+    MiniMapWorldMapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
-        if MiniMapBattlefieldFrame then
-            MiniMapBattlefieldFrame:ClearAllPoints()
-            MiniMapBattlefieldFrame:SetParent(Minimap.InformationFrame)
-            MiniMapBattlefieldFrame:SetPoint("TOPLEFT", 32, 2)
-        end
-    else
-        Minimap.InformationFrame.Background:Hide()
-
-        Minimap.InformationFrame:ClearAllPoints()
-        Minimap.InformationFrame:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 0)
-        Minimap.InformationFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
-
-        TimeManagerClockButton:ClearAllPoints()
-        TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, 0)
-
-        MiniMapTracking:ClearAllPoints()
-        MiniMapTracking:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 6, R.isRetail and 2 or 4)
-
-        Minimap.ButtonFrame:ClearAllPoints()
-        Minimap.ButtonFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
-        Minimap.ButtonFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, 0)
-
-        if MiniMapBattlefieldFrame then
-            MiniMapBattlefieldFrame:ClearAllPoints()
-            MiniMapBattlefieldFrame:SetParent(Minimap)
-            MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", 2, -2)
-        end
-    end
-
-    MinimapNorthTag:SetShown(MM.config.showNorthTag)
-    MiniMapMailBorder:SetShown(MM.config.enableMailGlow)
-
-    Minimap.ButtonFrame:Update()
+    x, y = R:PolarToXY(-45, radius)
+    MiniMapTracking:ClearAllPoints()
+    MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
 function MM:Minimap_OnMouseWheel(direction)

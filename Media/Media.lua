@@ -36,10 +36,12 @@ R.media = {
         frames = { paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame" },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
-            minimapMask1 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask1",
-            minimapMask2 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask2",
-            minimapMask3 = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapMask3",
-            minimapButtonBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\MinimapButtonBorder"
+            border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Border",
+            zoneBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\ZoneBorder",
+            round = {
+                buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Round\\ButtonFrameToggle",
+                buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Round\\ButtonFrameToggle-Highlight"
+            }
         },
         statusBars = {
             redux = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Redux",

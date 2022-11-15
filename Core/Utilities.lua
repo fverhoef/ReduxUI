@@ -175,6 +175,10 @@ function R:Round(num, idp)
     return math.floor(num + 0.5)
 end
 
+function R:PolarToXY(angle, radius)
+    return radius * math.sin(math.rad(angle)), radius * math.cos(math.rad(angle))
+end
+
 function R:RomanNumeral(number)
     local roman = nil
     if number == 1 then

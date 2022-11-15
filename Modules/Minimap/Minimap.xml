@@ -1,9 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="Core.lua"/>
-    <Script file="ButtonFrame.lua"/>
-    <Script file="ButtonFrameToggleButton.lua"/>
-    <Script file="InformationFrame.lua"/>
-    <Script file="ZoneBackground.lua"/>
-    <Script file="Config.lua"/>
-    <Script file="Options.lua"/>
+    <Script file="Core.lua" />
+    <Include file="ButtonFrame.xml" />
+    <Script file="Config.lua" />
+    <Script file="Options.lua" />
 </Ui>

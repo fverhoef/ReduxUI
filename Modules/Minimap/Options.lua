@@ -10,6 +10,16 @@ R:RegisterModuleOptions(MM, {
         header = {type = "header", name = R.title .. " > Minimap", order = 0},
         enabled = R:CreateModuleEnabledOption(1, nil, "Minimap"),
         lineBreak1 = {type = "header", name = "", order = 2},
+        elements = {
+            type = "group",
+            name = L["Elements"],
+            order = 3,
+            inline = true,
+            args = {
+                showNorthTag = R:CreateToggleOption(L["Show North Tag"], nil, 3, nil, nil, function() return MM.config.showNorthTag end, function(value) MM.config.showNorthTag = value end, MM.UpdateMinimap),
+                enableMailGlow = R:CreateToggleOption(L["Enable Mail Glow"], nil, 4, nil, nil, function() return MM.config.enableMailGlow end, function(value) MM.config.enableMailGlow = value end, MM.UpdateMinimap)
+            }
+        },
         zoneText = {
             type = "group",
             name = L["Zone Text"],
@@ -19,8 +29,6 @@ R:RegisterModuleOptions(MM, {
                 enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return MM.config.zoneText.enabled end, function(value) MM.config.zoneText.enabled = value end,
                                                MM.UpdateMinimap),
                 lineBreak1 = {type = "description", name = "", order = 10},
-                showBackground = R:CreateToggleOption(L["Show Background"], nil, 11, nil, nil, function() return MM.config.zoneText.showBackground end,
-                                                      function(value) MM.config.zoneText.showBackground = value end, MM.UpdateMinimap),
                 font = {
                     type = "group",
                     name = L["Font"],
@@ -43,19 +51,6 @@ R:RegisterModuleOptions(MM, {
                 }
             }
         },
-        infoPanel = {
-            type = "group",
-            name = L["Information Panel"],
-            order = 5,
-            inline = true,
-            args = {
-                enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return MM.config.infoPanel.enabled end, function(value) MM.config.infoPanel.enabled = value end,
-                                               MM.UpdateMinimap),
-                lineBreak1 = {type = "description", name = "", order = 2},
-                showBackground = R:CreateToggleOption(L["Show Background"], nil, 11, nil, nil, function() return MM.config.infoPanel.showBackground end,
-                                                      function(value) MM.config.infoPanel.showBackground = value end, MM.UpdateMinimap)
-            }
-        },
         buttonFrame = {
             type = "group",
             name = "Button Frame",
@@ -70,24 +65,6 @@ R:RegisterModuleOptions(MM, {
                 buttonSpacing = R:CreateRangeOption(L["Button Spacing"], L["The spacing between minimap buttons."], 12, nil, 0, nil, 50, 1, function()
                     return MM.config.buttonFrame.buttonSpacing
                 end, function(value) MM.config.buttonFrame.buttonSpacing = value end, MM.UpdateMinimap)
-            }
-        },
-        border = {
-            type = "group",
-            name = "Border",
-            order = 21,
-            inline = true,
-            args = {
-                enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return MM.config.border.enabled end, function(value) MM.config.border.enabled = value end, MM.UpdateMinimap)
-            }
-        },
-        shadow = {
-            type = "group",
-            name = "Shadow",
-            order = 22,
-            inline = true,
-            args = {
-                enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function() return MM.config.shadow.enabled end, function(value) MM.config.shadow.enabled = value end, MM.UpdateMinimap)
             }
         }
     }

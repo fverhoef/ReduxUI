@@ -1,0 +1,39 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="ButtonFrame.lua" />
+
+    <CheckButton name="MinimapButtonFrameToggleButtonTemplate" parent="Minimap" frameLevel="5" mixin="ButtonFrameToggleButtonMixin" virtual="true">
+        <Size x="32" y="32" />
+        <Anchors>
+            <Anchor point="TOP" relativePoint="BOTTOM" y="10" />
+        </Anchors>
+        <NormalTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Up" />
+        <PushedTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Down" />
+        <HighlightTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\MinimapButton-Highlight" />
+        <Scripts>
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnClick method="OnClick" />
+        </Scripts>
+    </CheckButton>
+
+    <Frame name="MinimapButtonFrameTemplate" parent="Minimap" mixin="ButtonFrameMixin" frameStrata="MEDIUM" frameLevel="1" enableMouse="true" virtual="true">
+        <Size x="176" y="176" />
+        <Anchors>
+            <Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-10" />
+        </Anchors>
+        <Frames>
+            <Frame parentKey="Backdrop" inherits="BackdropTemplate">
+                <KeyValues>
+                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global"/>
+                </KeyValues>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="-5" y="5" />
+                    <Anchor point="BOTTOMRIGHT" x="5" y="-5" />
+                </Anchors>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+</Ui>
