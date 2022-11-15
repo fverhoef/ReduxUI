@@ -10,7 +10,7 @@ MicroButtonAndBagsBarMixin = {}
 function MicroButtonAndBagsBarMixin:OnLoad()
     self:HideBlizzard()
     self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
-    self:SetWidth(R.isRetail and 298 or 220)
+    self:SetWidth(R.isRetail and 298 or 283)
 
     self.buttonList = {MainMenuBarBackpackButton, CharacterBag0Slot, CharacterBag1Slot, CharacterBag2Slot, CharacterBag3Slot, SettingsMicroButton}
     if not R.isRetail then table.insert(self.buttonList, KeyRingButton) end
@@ -51,7 +51,7 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     end
 
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", -63, 3)
+    CharacterMicroButton:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, 3)
 
     if not R.isRetail then
         MainMenuMicroButton.PerformanceBar = CreateFrame("Frame", nil, MainMenuMicroButton)

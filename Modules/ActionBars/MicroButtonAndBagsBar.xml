@@ -15,7 +15,7 @@
                 <Texture parentKey="MicroBagBarEndCap" file="interface/addons/reduxui/media/textures/actionbars/MicroButtonAndBagsBar">
                     <Size x="102" y="88" />
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-67" y="0"/>
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="-2" y="0"/>
                     </Anchors>
                     <TexCoords left="0.419921875" right="0.6181640625" top="0.31640625" bottom="1"/>
                 </Texture>
