@@ -75,7 +75,6 @@ function MM:UpdateMinimap()
     MinimapBorder:SetTexCoord(0, 1, 0, 1)
 
     MinimapNorthTag:SetTexture(MM.config.showNorthTag and MinimapNorthTag.__texture or nil)
-    MiniMapMailBorder:SetShown(MM.config.enableMailGlow)
 
     MinimapZoneText:SetShown(MM.config.zoneText.enabled)
     if MM.config.zoneText.enabled then
@@ -116,13 +115,29 @@ function MM:UpdateMinimap()
     MiniMapWorldMapButton:ClearAllPoints()
     MiniMapWorldMapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
-    x, y = R:PolarToXY(-45, radius)
-    MiniMapTracking:ClearAllPoints()
-    MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
+    x, y = R:PolarToXY(72, radius)
+    MiniMapMailFrame:ClearAllPoints()
+    MiniMapMailFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
     x, y = R:PolarToXY(225, radius)
     MinimapButtonFrameToggleButton:ClearAllPoints()
     MinimapButtonFrameToggleButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-35, radius)
+    MiniMapInstanceDifficulty:ClearAllPoints()
+    MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-55, radius)
+    MiniMapTracking:ClearAllPoints()
+    MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-72, radius)
+    MiniMapBattlefieldFrame:ClearAllPoints()
+    MiniMapBattlefieldFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-72, radius)
+    MiniMapLFGFrame:ClearAllPoints()
+    MiniMapLFGFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
 function MM:Minimap_OnMouseWheel(direction)

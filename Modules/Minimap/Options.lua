@@ -20,11 +20,6 @@ R:RegisterModuleOptions(MM, {
                     return MM.config.showNorthTag
                 end, function(value)
                     MM.config.showNorthTag = value
-                end, MM.UpdateMinimap),
-                enableMailGlow = R:CreateToggleOption(L["Enable Mail Glow"], nil, 4, nil, nil, function()
-                    return MM.config.enableMailGlow
-                end, function(value)
-                    MM.config.enableMailGlow = value
                 end, MM.UpdateMinimap)
             }
         },

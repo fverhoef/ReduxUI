@@ -7,7 +7,6 @@ R:RegisterModuleConfig(MM, {
     enabled = true,
     point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -13, -13 },
     size = { 220, 220 },
-    enableMailGlow = false,
     showNorthTag = true,
     zoneText = { enabled = true, showBackground = true, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 14, fontOutline = "OUTLINE", fontShadow = true, justifyH = "CENTER", showBorder = true },
     infoPanel = { enabled = true, showBackground = true, showTime = true },
