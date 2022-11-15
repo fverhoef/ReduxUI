@@ -161,7 +161,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
     local otherPet = caster and not UnitIsUnit("pet", caster) and string.match(caster, "pet%d+")
     local isPlayer = caster == "player" or caster == "vehicle"
     local unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
-    local canDispel = (self.type == "debuffs" and R:PlayerCanDispel(debuffType)) or (self.type == "buffs" and isStealable)
+    local canDispel = (self.type == "debuffs" and R.Libs.Dispel:IsDispellableByMe(debuffType)) or (self.type == "buffs" and isStealable)
 
     local isWhiteListed =
         (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and isBossDebuff) or (filter.whitelist.MyPet and myPet) or

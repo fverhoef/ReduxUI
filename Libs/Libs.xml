@@ -23,8 +23,6 @@
     <Script file="LibActionButton-1.0\LibActionButton-1.0.lua"/>
     <Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>
     <Script file="LibSmoothStatusBar-1.0\LibSmoothStatusBar-1.0.lua"/>
-    <Include file="LibDetours-1.0\LibDetours-1.0.lua" />
-    <Include file="LibClassicInspector\LibClassicInspector.lua" />
 
     <!-- oUF -->
     <Script file="LibDispel\LibDispel.lua" />
