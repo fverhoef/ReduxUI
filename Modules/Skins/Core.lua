@@ -22,17 +22,7 @@ function S:Enable()
         S:StyleFriendsFrame()
         S:StyleGuildFrame()
         S:StyleWhoFrame()
-
-        S:RegisterEvent("ADDON_LOADED")
     end
     
     S:StyleWorldMapFrame()
-end
-
-function S:ADDON_LOADED(event, addonName)
-    if addonName == "Blizzard_TrainerUI" then
-        S:StyleClassTrainerFrame()
-    elseif addonName == "Blizzard_TradeSkillUI" then
-        S:StyleTradeSkillFrame()
-    end
 end

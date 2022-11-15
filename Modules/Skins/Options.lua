@@ -57,9 +57,7 @@ R:RegisterModuleOptions(S, {
                 friends = S:CreateEnabledOption(L["Style Friends Frame"], nil, 2, R.isRetail, "friends", true),
                 guild = S:CreateEnabledOption(L["Style Guild Frame"], nil, 3, R.isRetail, "guild", true),
                 who = S:CreateEnabledOption(L["Style Who Frame"], nil, 4, R.isRetail, "who", true),
-                worldMap = S:CreateEnabledOption(L["Style World Map"], nil, 5, R.isRetail, "worldMap", true),
-                classTrainer = S:CreateEnabledOption(L["Wider Class Trainer Frame"], nil, 6, R.isRetail, "classTrainer", true),
-                tradeSkill = S:CreateEnabledOption(L["Wider Trade Skill Frame"], nil, 8, R.isRetail, "tradeSkill", true)
+                worldMap = S:CreateEnabledOption(L["Style World Map"], nil, 5, R.isRetail, "worldMap", true)
             }
         }
     }
