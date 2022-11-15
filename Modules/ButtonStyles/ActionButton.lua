@@ -16,9 +16,7 @@ function BS:StyleActionButton(button)
     local buttonName = button:GetName()
     local config = BS.config.actions
 
-    local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
     local count = _G[buttonName .. "Count"]
-    local cooldown = _G[buttonName .. "Cooldown"]
     local hotkey = _G[buttonName .. "HotKey"]
     local name = _G[buttonName .. "Name"]
 
@@ -31,6 +29,7 @@ function BS:StyleActionButton(button)
         overlay:SetAllPoints()
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
+        local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
         if icon then
             icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
             icon:SetInside(button, 2, 2)
@@ -40,6 +39,7 @@ function BS:StyleActionButton(button)
             count:SetParent(overlay)
         end
 
+        local cooldown = _G[buttonName .. "Cooldown"]
         if cooldown then
             cooldown:SetFrameLevel(cooldown:GetParent():GetFrameLevel())
             cooldown:SetInside(button, 1, 1)

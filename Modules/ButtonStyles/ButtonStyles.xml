@@ -6,4 +6,5 @@
     <Script file="AuraButton.lua"/>
     <Script file="ItemButton.lua"/>
     <Script file="MicroButton.lua"/>
+    <Script file="TotemBarButton.lua"/>
 </Ui>

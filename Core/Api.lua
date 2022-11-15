@@ -40,7 +40,7 @@ local function SetNormalizedSize(self, arg1, arg2)
         arg1, arg2 = unpack(arg1)
     end
 
-    self:SetSize(arg1, arg2)
+    self:SetSize(arg1, arg2 or arg1)
 end
 
 local function SetInside(self, anchor, xOffset, yOffset, anchor2)

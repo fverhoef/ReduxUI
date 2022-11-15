@@ -17,6 +17,7 @@ function BS:Enable()
             actionButtons = BS.masque:Group(R.title, "Action Buttons"),
             itemButtons = BS.masque:Group(R.title, "Item Buttons"),
             bagSlotButtons = BS.masque:Group(R.title, "Bag Slot Buttons"),
+            totemBarButtons = BS.masque:Group(R.title, "Totem Bar Buttons"),
             buffs = BS.masque:Group(R.title, "Buffs"),
             debuffs = BS.masque:Group(R.title, "Debuffs"),
             tempEnchants = BS.masque:Group(R.title, "Temp Enchants")
@@ -26,6 +27,7 @@ function BS:Enable()
     BS:StyleAllActionButtons()
     BS:StyleAllMicroButtons()
     BS:StyleAllItemButtons()
+    BS:StyleAllTotemBarButtons()
 
     if not BS.masque then
         BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
@@ -39,6 +41,7 @@ function BS:UpdateAll()
     BS:UpdateAllAuraButtons()
     BS:UpdateAllItemButtons()
     BS:UpdateAllMicroButtons()
+    BS:UpdateAllTotemBarButtons()
 end
 
 function BS:PLAYER_EQUIPMENT_CHANGED(event)

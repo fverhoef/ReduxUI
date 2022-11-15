@@ -272,7 +272,7 @@ R:RegisterModuleConfig(AB, {
         columnDirection = "Right",
         rowDirection = "Down",
         buttons = 12,
-        buttonsPerRow = 6,
+        buttonsPerRow = 12,
         buttonSize = 32,
         columnSpacing = 2,
         rowSpacing = 2,
@@ -285,6 +285,7 @@ R:RegisterModuleConfig(AB, {
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 225},
         fader = R.config.faders.onShow,
         buttonSize = 32,
+        columnSpacing = 5,
         backdrop = false,
         border = false,
         shadow = false
