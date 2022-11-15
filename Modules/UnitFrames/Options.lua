@@ -97,7 +97,7 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
                 type = "group",
                 name = L["General"],
                 order = 4,
-                args = {size = UF:CreateUnitSizeOption(unit, 1), position = UF:CreateUnitPositionOption(unit, 2), highlight = UF:CreateUnitHighlightOption(unit, 3)}
+                args = {styling = UF:CreateUnitStylingOption(unit, 1), size = UF:CreateUnitSizeOption(unit, 2), position = UF:CreateUnitPositionOption(unit, 3), highlight = UF:CreateUnitHighlightOption(unit, 4)}
             },
             elements = {
                 type = "group",
@@ -782,6 +782,22 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
             }
         }
     }
+end
+
+function UF:CreateUnitStylingOption(unit, order)
+    local styling = {
+        type = "group",
+        name = L["Styling"],
+        order = order,
+        inline = true,
+        args = {
+            inlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether to show an inlay for this unit."], 1, nil, nil, function() return UF:UnitConfig(unit).inlay.enabled end, function(value)
+                UF:UnitConfig(unit).inlay.enabled = value
+            end)
+        }
+    }
+
+    return styling
 end
 
 function UF:CreateUnitHighlightOption(unit, order)

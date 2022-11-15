@@ -449,6 +449,7 @@ R:RegisterModuleConfig(UF, {
         friendlyPlayer = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
             size = { 160, 14 },
             point = { "CENTER" },
+            inlay = { enabled = false },
             health = { value = { point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
             power = { enabled = false },
             name = { size = { 140, 10 }, tag = "[name]", point = { "BOTTOMLEFT", "TOPLEFT", 2, 5 } },
@@ -465,6 +466,7 @@ R:RegisterModuleConfig(UF, {
         enemyPlayer = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
             size = { 160, 14 },
             point = { "CENTER" },
+            inlay = { enabled = false },
             health = { value = { point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
             power = { enabled = false },
             name = { size = { 140, 10 }, tag = "[name]", point = { "BOTTOMLEFT", "TOPLEFT", 2, 5 } },
@@ -481,6 +483,7 @@ R:RegisterModuleConfig(UF, {
         friendlyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
             size = { 160, 14 },
             point = { "CENTER" },
+            inlay = { enabled = false },
             health = { value = { point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
             power = { enabled = false },
             name = { size = { 140, 10 }, tag = "[name]", point = { "BOTTOMLEFT", "TOPLEFT", 2, 5 } },
@@ -497,6 +500,7 @@ R:RegisterModuleConfig(UF, {
         enemyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
             size = { 160, 14 },
             point = { "CENTER" },
+            inlay = { enabled = false },
             health = { value = { point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
             power = { enabled = false },
             name = { size = { 140, 10 }, tag = "[name]", point = { "BOTTOMLEFT", "TOPLEFT", 2, 5 } },
@@ -522,8 +526,8 @@ R:RegisterModuleConfig(UF, {
             nameplateSelfScale = 1,
             nameplateSelectedScale = 1.2,
             nameplateLargerScale = 1.2,
-            nameplateMinAlpha = 0.4,
-            nameplateMaxAlpha = 1,
+            nameplateMinAlpha = 0.3,
+            nameplateMaxAlpha = 0.8,
             nameplateMinAlphaDistance = 0,
             nameplateMaxAlphaDistance = 40,
             nameplateSelectedAlpha = 1,
