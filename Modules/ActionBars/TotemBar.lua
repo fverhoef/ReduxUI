@@ -21,12 +21,28 @@ function AB:CreateTotemBar()
     bar:SetAttribute("ignoreFramePositionManager", true)
     UIPARENT_MANAGED_FRAME_POSITIONS[bar:GetName()] = nil
 
+    bar:CreateBackdrop({ bgFile = R.media.textures.blank })
+    bar:CreateBorder()
+    bar:CreateShadow()
     bar:CreateMover(L["Totem Bar"], bar.defaults.point)
     bar:CreateFader(bar.config.fader)
-    bar:SetNormalizedPoint(bar.config.point)
 
     -- TODO: Styling
     -- TODO: KeyBound support
 
     return bar
+end
+
+function AB:ConfigureTotemBar()
+    if R.isRetail then return end
+    
+    local bar = _G.MultiCastActionBarFrame
+
+    bar:ClearAllPoints()
+    bar:SetNormalizedPoint(bar.config.point)
+
+    bar.Backdrop:SetShown(bar.config.backdrop)
+    bar.Border:SetShown(bar.config.border)
+    bar.Shadow:SetShown(bar.config.shadow)
+    bar.Mover:Unlock()
 end

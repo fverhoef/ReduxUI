@@ -283,7 +283,11 @@ R:RegisterModuleConfig(AB, {
     totemBar = {
         enabled = true,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 225},
-        fader = R.config.faders.onShow
+        fader = R.config.faders.onShow,
+        buttonSize = 32,
+        backdrop = false,
+        border = false,
+        shadow = false
     },
     extraActionBar = {
         enabled = true,

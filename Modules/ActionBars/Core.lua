@@ -29,8 +29,8 @@ function AB:Enable()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
-    --AB.experienceBar = AB:CreateExperienceBar()
-    --AB.reputationBar = AB:CreateReputationBar()
+    -- AB.experienceBar = AB:CreateExperienceBar()
+    -- AB.reputationBar = AB:CreateReputationBar()
 
     AB:ReassignBindings()
     AB:Update()
@@ -138,6 +138,7 @@ function AB:ConfigureActionBars()
     AB:ConfigureActionBar(AB.petBar)
     AB:ConfigureActionBar(AB.stanceBar)
     AB:ConfigureActionBar(AB.vehicleExitBar)
+    AB:ConfigureTotemBar()
 
     if AB.config.mainMenuBarArt.enabled then
         local mainMenuBar = AB.bars[1]
@@ -227,6 +228,14 @@ function AB:ConfigureActionBars()
         stanceBar.Border:SetShown(false)
         stanceBar.Shadow:SetShown(false)
         stanceBar.Mover:Lock(true)
+
+        local totemBar = AB.totemBar
+        totemBar:ClearAllPoints()
+        totemBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
+        totemBar.Backdrop:SetShown(false)
+        totemBar.Border:SetShown(false)
+        totemBar.Shadow:SetShown(false)
+        totemBar.Mover:Lock(true)
 
         AB.vehicleExitBar:ClearAllPoints()
         AB.vehicleExitBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
