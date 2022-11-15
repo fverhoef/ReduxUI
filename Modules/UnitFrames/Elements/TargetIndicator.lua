@@ -11,17 +11,17 @@ function UF:CreateTargetIndicator()
     self.TargetIndicator.PostUpdate = UF.TargetIndicator_PostUpdate
 
     self.TargetIndicator.LeftArrow = self.TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-    self.TargetIndicator.LeftArrow:SetTexture(R.media.textures.arrow)
+    self.TargetIndicator.LeftArrow:SetTexture(R.media.textures.arrow1)
     self.TargetIndicator.LeftArrow:SetRotation(-math.pi / 2)
     self.TargetIndicator.LeftArrow:SetSize(16, 16)
-    self.TargetIndicator.LeftArrow:SetPoint("RIGHT", self.Health, "LEFT", 0, 0)
+    self.TargetIndicator.LeftArrow:SetPoint("RIGHT", self.Health, "LEFT", -5, 0)
     self.TargetIndicator.LeftArrow:Hide()
 
     self.TargetIndicator.RightArrow = self.TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-    self.TargetIndicator.RightArrow:SetTexture(R.media.textures.arrow)
+    self.TargetIndicator.RightArrow:SetTexture(R.media.textures.arrow1)
     self.TargetIndicator.RightArrow:SetRotation(math.pi / 2)
     self.TargetIndicator.RightArrow:SetSize(16, 16)
-    self.TargetIndicator.RightArrow:SetPoint("LEFT", self.Health, "RIGHT", 0, 0)
+    self.TargetIndicator.RightArrow:SetPoint("LEFT", self.Health, "RIGHT", 5, 0)
     self.TargetIndicator.RightArrow:Hide()
 
     return self.TargetIndicator

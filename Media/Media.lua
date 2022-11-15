@@ -7,7 +7,7 @@ R.media = {
     fonts = { adventure = MEDIA_PREFIX .. "\\Fonts\\Adventure.ttf", expresswayFree = MEDIA_PREFIX .. "\\Fonts\\ExpresswayFree.ttf" },
     textures = {
         blank = [[Interface\Buttons\WHITE8X8]],
-        arrow = MEDIA_PREFIX .. "\\Textures\\Arrow",
+        arrow1 = MEDIA_PREFIX .. "\\Textures\\Arrow1",
         logo = MEDIA_PREFIX .. "\\Textures\\Logo",
         actionBars = {
             mainMenuBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MainMenuBar-Background",
