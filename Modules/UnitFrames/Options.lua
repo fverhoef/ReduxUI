@@ -916,7 +916,7 @@ R:RegisterModuleOptions(UF, {
         raid = UF:CreateUnitOptions("raid", 18, L["Raid"]),
         tank = UF:CreateUnitOptions("tank", 19, L["Tank"]),
         assist = UF:CreateUnitOptions("assist", 19, L["Assist"]),
-        boss = UF:CreateUnitOptions("boss", 20, L["Boss"], not R.isRetail),
+        boss = UF:CreateUnitOptions("boss", 20, L["Boss"]),
         arena = UF:CreateUnitOptions("arena", 21, L["Arena"]),
         nameplates = {
             type = "group",
