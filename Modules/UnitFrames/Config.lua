@@ -368,8 +368,14 @@ R:RegisterModuleConfig(UF, {
         castbar = { enabled = false },
         pvpIndicator = { enabled = false }
     }),
-    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG,
-                        { size = { 180, 30 }, point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 }, pvpIndicator = { enabled = false }, unitAnchorPoint = "BOTTOM", groupAnchorPoint = "BOTTOM" }),
+    party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
+        size = { 180, 30 },
+        point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 },
+        portrait = { size = { 28, 28 } },
+        pvpIndicator = { enabled = false },
+        unitAnchorPoint = "BOTTOM",
+        groupAnchorPoint = "BOTTOM"
+    }),
     raid = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         size = { 90, 36 },
         point = { "BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 280 },
@@ -419,7 +425,7 @@ R:RegisterModuleConfig(UF, {
         point = { "BOTTOMLEFT", "UIParent", "BOTTOM", 350, 450 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
         name = { point = { "BOTTOMRIGHT", "TOPRIGHT", -2, 0 }, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r" },
-        portrait = { point = "RIGHT" },
+        portrait = { point = "RIGHT", size = { 28, 28 } },
         auras = {
             enabled = true,
             buffs = { filter = { whitelist = { Personal = true, Dispellable = true, PlayerBuffs = true, TurtleBuffs = true } } },
@@ -435,7 +441,7 @@ R:RegisterModuleConfig(UF, {
         point = { "BOTTOMLEFT", "UIParent", "BOTTOM", 350, 450 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
         name = { point = { "BOTTOMRIGHT", "TOPRIGHT", -2, 0 }, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r" },
-        portrait = { point = "RIGHT" },
+        portrait = { point = "RIGHT", size = { 28, 28 } },
         auras = {
             enabled = true,
             buffs = { filter = { whitelist = { Personal = true, NonPersonal = true, CastByUnit = true, Dispellable = true, RaidBuffs = true } } },
