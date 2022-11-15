@@ -20,6 +20,10 @@ function UF:CreateCombatIndicator()
     self.CombatIndicator.Glow:SetAlpha(0)
     self.CombatIndicator.Glow:Hide()
 
+    self.CombatIndicator.PostUpdate = function(element, inCombat)
+        self.inCombat = inCombat
+    end
+
     return self.CombatIndicator
 end
 

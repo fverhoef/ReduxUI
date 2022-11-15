@@ -4,8 +4,6 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePower()
-    if not self.config.power.enabled then return end
-
     self.Power = CreateFrame("StatusBar", "$parentPower", self, BackdropTemplateMixin and "BackdropTemplate")
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
     self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
@@ -28,6 +26,10 @@ function UF:CreatePower()
     self.Power.Value = self.Power.Overlay:CreateFontString("$parentPowerText", "OVERLAY", nil, 7)
     self.Power.Value:SetParent(self.Power.Overlay)
     self.Power.Value:SetFont(UF.config.font, 10)
+
+    self.Power.Percent = self.Power.Overlay:CreateFontString("$parentPowerPercent", "OVERLAY", nil, 7)
+    self.Power.Percent:SetParent(self.Power.Overlay)
+    self.Power.Percent:SetFont(UF.config.font, 10)
 
     return self.Power
 end
@@ -93,6 +95,24 @@ function UF:ConfigurePower()
     else
         self.Power.Value:Hide()
         self:Untag(self.Power.Value)
+    end
+
+    if config.percent.enabled then
+        self.Power.Percent:Show()
+        self.Power.Percent:SetFont(config.percent.font or UF.config.font, config.percent.fontSize or 10, config.percent.fontOutline)
+        self.Power.Percent:SetShadowOffset(config.percent.fontShadow and 1 or 0, config.percent.fontShadow and -1 or 0)
+
+        if config.percent.tag then
+            self:Tag(self.Power.Percent, config.percent.tag)
+        else
+            self:Untag(self.Power.Percent)
+        end
+
+        self.Power.Percent:ClearAllPoints()
+        self.Power.Percent:SetNormalizedPoint(config.percent.point)
+    else
+        self.Power.Percent:Hide()
+        self:Untag(self.Power.Percent)
     end
 
     if config.smooth then

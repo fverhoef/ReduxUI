@@ -4,8 +4,6 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRaidTargetIndicator()
-    if not self.config.raidTargetIndicator.enabled then return end
-
     self.RaidTargetHolder = CreateFrame("Frame", "$parentRaidTargetIconHolder", self)
     self.RaidTargetHolder:SetAllPoints(self.Overlay)
     self.RaidTargetHolder:SetParent(self.Overlay)

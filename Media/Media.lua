@@ -52,6 +52,11 @@ R.media = {
             kait2 = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Kait2",
             melli = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Melli",
             melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark"
+        },
+        unitFrames = {
+            restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
+            targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
+            targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth"
         }
     }
 }

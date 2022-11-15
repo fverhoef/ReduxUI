@@ -4,20 +4,18 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRestingIndicator()
-    if not self.config.restingIndicator.enabled then return end
+    if self.unit ~= "player" or self.RestingIndicator then return end
 
-    self.RestingIndicator = self:CreateTexture("$parentRestingIcon", "OVERLAY")
-    self.RestingIndicator:SetParent(self.Overlay)
-    self.RestingIndicator:SetDrawLayer("OVERLAY", 7)
+    self.RestingIndicator = self.Overlay:CreateTexture("$parentRestingIcon", "OVERLAY", nil, 6)
     self.RestingIndicator:SetSize(31, 31) -- 31,34
+    self.RestingIndicator:SetTexture(R.media.textures.unitFrames.restingFlipbook)
+    self.RestingIndicator.animationIndex = 0
 
-    self.RestingIndicator.Glow = self:CreateTexture("$parentRestingIconGlow", "OVERLAY")
-    self.RestingIndicator.Glow:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
-    self.RestingIndicator.Glow:SetTexCoord(0.0, 0.5, 0.5, 1.0)
-    self.RestingIndicator.Glow:SetBlendMode("ADD")
-    self.RestingIndicator.Glow:SetAllPoints(self.RestingIndicator)
-    self.RestingIndicator.Glow:SetAlpha(0)
-    self.RestingIndicator.Glow:Hide()
+    self.RestingIndicator.PostUpdate = function(element, isResting)
+        self.isResting = isResting
+    end
+
+    UF:ScheduleRepeatingTimer(UF.UpdateRestingIndicatorTexture, 0.2, self)
 
     return self.RestingIndicator
 end
@@ -41,3 +39,17 @@ function UF:ConfigureRestingIndicator()
 end
 
 oUF:RegisterMetaFunction("ConfigureRestingIndicator", UF.ConfigureRestingIndicator)
+
+function UF:UpdateRestingIndicatorTexture()
+    if not self.RestingIndicator:IsShown() then
+        return
+    end
+
+    self.RestingIndicator:SetTexCoord((self.RestingIndicator.animationIndex * 64) / 1024, ((self.RestingIndicator.animationIndex + 1) * 64) / 1024, 0, 0.5)
+
+    if self.RestingIndicator.animationIndex >= 4 then
+        self.RestingIndicator.animationIndex = 0
+    else
+        self.RestingIndicator.animationIndex = self.RestingIndicator.animationIndex + 1
+    end
+end

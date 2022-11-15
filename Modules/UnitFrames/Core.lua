@@ -1,6 +1,6 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local oUF = ns.oUF or oUF
 
 UF.frames = {}

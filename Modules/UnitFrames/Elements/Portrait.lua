@@ -4,17 +4,26 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    if not self.config.portrait.enabled then return end
+    if not self.config.portrait.enabled then
+        return
+    end
 
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
     self.PortraitHolder:SetFrameLevel(self:GetFrameLevel())
 
     self.Portrait2D = self:CreateTexture("$parentPortrait2D", "BACKGROUND")
-    self.Portrait2D.PostUpdate = function() self:UpdatePortraitTexture() end
+    self.Portrait2D.PostUpdate = function()
+        self:UpdatePortraitTexture()
+    end
     self.Portrait2D:SetAllPoints(self.PortraitHolder)
 
     self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
     self.Portrait3D:SetAllPoints(self.PortraitHolder)
+    
+    self.PortraitRound = self:CreateTexture("$parentPortraitRound", "BACKGROUND")
+    self.PortraitRound.PostUpdate = function()
+        self:UpdatePortraitTexture()
+    end
 
     self.Portrait = self.Portrait2D
 end
@@ -24,8 +33,14 @@ oUF:RegisterMetaFunction("CreatePortrait", UF.CreatePortrait)
 function UF:ConfigurePortrait()
     local config = self.config.portrait
     if not config.enabled then
-        if self.PortraitHolder then self.PortraitHolder:Hide() end
+        if self.PortraitHolder then
+            self.PortraitHolder:Hide()
+        end
         self:DisableElement("Portrait")
+
+        if self.config.style ~= UF.Styles.Custom then
+            self:UpdatePortraitTexture()
+        end
         return
     elseif not self.Portrait then
         self:CreatePortrait()
@@ -58,7 +73,7 @@ function UF:ConfigurePortrait()
         self.PortraitHolder:SetNormalizedPoint("BOTTOMRIGHT")
         self.PortraitHolder:CreateSeparator(nil, nil, nil, nil, "LEFT")
     end
-    
+
     self.PortraitHolder.Separator:SetShown(config.showSeparator)
 
     self:UpdatePortraitTexture()
@@ -67,10 +82,14 @@ end
 oUF:RegisterMetaFunction("ConfigurePortrait", UF.ConfigurePortrait)
 
 function UF:UpdatePortraitTexture()
-    if not self.Portrait then return end
+    if not self.Portrait then
+        return
+    end
 
     local config = self.config.portrait
-    if not config.enabled or config.model then return end
+    if self.config.style == UF.Styles.Custom and (not config.enabled or config.model) then
+        return
+    end
 
     self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
 
@@ -82,15 +101,22 @@ function UF:UpdatePortraitTexture()
             local width = r - l
             local height = b - t
 
-            l = l + 0.15 * width
-            r = r - 0.15 * width
-            t = t + 0.15 * height
-            b = b - 0.15 * height
+            if self.config.style == UF.Styles.Custom then
+                l = l + 0.15 * width
+                r = r - 0.15 * width
+                t = t + 0.15 * height
+                b = b - 0.15 * height
+            end
             self.Portrait:SetTexCoord(l, r, t, b)
         end
     else
         SetPortraitTexture(self.Portrait, self.unit)
-        self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+
+        if self.config.style == UF.Styles.Custom then
+            self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+        else
+            self.Portrait:SetTexCoord(0, 1, 0, 1)
+        end
     end
 end
 

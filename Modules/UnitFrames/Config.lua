@@ -3,6 +3,11 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
+UF.Styles = {
+    Blizzard = "Blizzard",
+    Custom = "Custom"
+}
+
 local AURA_FILTER_WHITELIST = {
     Boss = false,
     MyPet = false,
@@ -27,6 +32,7 @@ local AURA_FILTER_BLACKLIST = { BlockNonPersonal = false, BlockCastByPlayers = f
 
 local DEFAULT_UNIT_CONFIG = {
     enabled = true,
+    style = UF.Styles.Custom,
     size = { 200, 36 },
     scale = 1,
     point = { "TOPRIGHT", "UIParent", "BOTTOM", -150, 350 },
@@ -67,17 +73,17 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 10,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[curpp]",
+            tag = "[curpp:shortvalue]",
             frequentUpdates = true
         },
         percent = {
-            enabled = true,
+            enabled = false,
             point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 },
             font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[perhp]%"
+            tag = "[perpp]%"
         },
         smooth = true,
         energyManaRegen = false,
@@ -201,7 +207,7 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = { enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, targetClassColor = false },
+    highlight = { enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
     assistantIndicator = { enabled = true, size = { 16, 16 }, point = { "CENTER", "TOPLEFT", 0, 0 } },
     combatIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
     groupRoleIndicator = { enabled = true, size = { 20, 20 }, point = { "CENTER", "TOPRIGHT", 0, 0 } },
@@ -296,6 +302,8 @@ R:RegisterModuleConfig(UF, {
         },
         auraHighlight = { Magic = { 0.2, 0.6, 1, 0.45 }, Curse = { 0.6, 0, 1, 0.45 }, Disease = { 0.6, 0.4, 0, 0.45 }, Poison = { 0, 0.6, 0, 0.45 }, blendMode = "ADD" },
         targetHighlight = { 1, 1, 1 },
+        restingHighlight = { 1, 0.88, 0.25 },
+        combatHighlight = { 1, 0, 0 },
         colorHealthClass = true,
         colorHealthSmooth = false,
         colorHealthDisconnected = true,
@@ -305,12 +313,16 @@ R:RegisterModuleConfig(UF, {
     },
     buffFrame = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, buffs = { iconSize = 36 }, debuffs = { iconSize = 36 }, tempEnchants = { iconSize = 36 } },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        style = UF.Styles.Blizzard,
+        largeHealth = true,
         power = { energyManaRegen = true, powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
         castbar = { size = { 250, 24 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
-        highlight = { target = false }
+        highlight = { target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        style = UF.Styles.Blizzard,
+        largeHealth = true,
         point = { "TOPLEFT", "UIParent", "BOTTOM", 150, 350 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
         power = { insetPoint = { "LEFT", "BOTTOMLEFT", 10, 0 } },

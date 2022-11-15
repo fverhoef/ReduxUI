@@ -119,7 +119,8 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
                     health = UF:CreateUnitHealthValueOption(unit, 2),
                     healthPercent = UF:CreateUnitHealthPercentOption(unit, 3),
                     power = UF:CreateUnitPowerValueOption(unit, 4),
-                    level = UF:CreateUnitLevelOption(unit, 5)
+                    powerPercent = UF:CreateUnitPowerPercentOption(unit, 5),
+                    level = UF:CreateUnitLevelOption(unit, 6)
                 }
             },
             indicators = {
@@ -410,7 +411,7 @@ end
 function UF:CreateUnitPowerValueOption(unit, order)
     return {
         type = "group",
-        name = "Power",
+        name = L["Power"],
         order = order,
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function() return UF:UnitConfig(unit).power.value.enabled end,
@@ -427,6 +428,30 @@ function UF:CreateUnitPowerValueOption(unit, order)
             fontShadow = UF:CreateFontShadowOption(unit, 24, function() return UF:UnitConfig(unit).power.value.fontShadow end, function(value) UF:UnitConfig(unit).power.value.fontShadow = value end),
             lineBreakTag = {type = "header", name = "Tag", order = 30},
             tag = UF:CreateTagOption(unit, 31, function() return UF:UnitConfig(unit).power.value.tag end, function(value) UF:UnitConfig(unit).power.value.tag = value end)
+        }
+    }
+end
+
+function UF:CreateUnitPowerPercentOption(unit, order)
+    return {
+        type = "group",
+        name = L["Power (Percentage)"],
+        order = order,
+        args = {
+            enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function() return UF:UnitConfig(unit).power.percent.enabled end,
+                                            function(value) UF:UnitConfig(unit).power.percent.enabled = value end),
+            lineBreakPoint = {type = "header", name = L["Position"], order = 2},
+            point = UF:CreatePointOption(unit, 3, function() return UF:UnitConfig(unit).power.percent.point[1] end, function(value) UF:UnitConfig(unit).power.percent.point[1] = value end),
+            relativePoint = UF:CreateRelativePointOption(unit, 4, function() return UF:UnitConfig(unit).power.percent.point[2] end, function(value) UF:UnitConfig(unit).power.percent.point[2] = value end),
+            offsetX = UF:CreateOffsetXOption(unit, 5, function() return UF:UnitConfig(unit).power.percent.point[3] end, function(value) UF:UnitConfig(unit).power.percent.point[3] = value end),
+            offsetY = UF:CreateOffsetYOption(unit, 6, function() return UF:UnitConfig(unit).power.percent.point[4] end, function(value) UF:UnitConfig(unit).power.percent.point[4] = value end),
+            lineBreakFont = {type = "header", name = "Font", order = 20},
+            font = UF:CreateFontFamilyOption(unit, 21, function() return UF:UnitConfig(unit).power.percent.font end, function(value) UF:UnitConfig(unit).power.percent.font = value end),
+            fontSize = UF:CreateFontSizeOption(unit, 22, function() return UF:UnitConfig(unit).power.percent.fontSize end, function(value) UF:UnitConfig(unit).power.percent.fontSize = value end),
+            fontOutline = UF:CreateFontOutlineOption(unit, 23, function() return UF:UnitConfig(unit).power.percent.fontOutline end, function(value) UF:UnitConfig(unit).power.percent.fontOutline = value end),
+            fontShadow = UF:CreateFontShadowOption(unit, 24, function() return UF:UnitConfig(unit).power.percent.fontShadow end, function(value) UF:UnitConfig(unit).power.percent.fontShadow = value end),
+            lineBreakTag = {type = "header", name = "Tag", order = 30},
+            tag = UF:CreateTagOption(unit, 31, function() return UF:UnitConfig(unit).power.percent.tag end, function(value) UF:UnitConfig(unit).power.percent.tag = value end)
         }
     }
 end
@@ -502,11 +527,11 @@ function UF:CreateUnitPortraitOption(unit, order)
             class = UF:CreateToggleOption(unit, L["Use Class Icons"], L["Whether to use class icons for the portrait texture."], 4, nil, nil, function()
                 return UF:UnitConfig(unit).portrait.class
             end, function(value)
-                UF:UnitConfig(unit).portrait.model = false;
+                UF:UnitConfig(unit).portrait.model = false
                 UF:UnitConfig(unit).portrait.class = value
             end),
             model = UF:CreateToggleOption(unit, L["Use 3D Portrait"], L["Whether to use class 3D portraits."], 5, nil, nil, function() return UF:UnitConfig(unit).portrait.model end, function(value)
-                UF:UnitConfig(unit).portrait.class = false;
+                UF:UnitConfig(unit).portrait.class = false
                 UF:UnitConfig(unit).portrait.model = value
             end),
             lineBreakDetached = {type = "description", name = "", order = 6},
