@@ -4,11 +4,20 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateCastbar()
-    if not self.config.castbar.enabled then return end
+    if not self.config.castbar.enabled then
+        return
+    end
 
-    self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self)
+    self.CastbarHolder = CreateFrame("Frame", "$parentCastbarHolder", self)
+    self.CastbarHolder:CreateBorder(nil, nil, nil, self.CastbarHolder:GetFrameLevel() + 3)
+    self.CastbarHolder.Border:SetOutside(nil, 0, 0)
+
+    self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
     self.Castbar:SetOrientation("HORIZONTAL")
-    self.Castbar:CreateBorder(nil, nil, nil, self.Castbar:GetFrameLevel() + 1)
+    self.Castbar:SetInside(self.CastbarHolder, 3, 3)
+    self.Castbar.Holder = self.CastbarHolder
+    UF:SecureHookScript(self.Castbar, "OnShow", UF.Castbar_OnShow)
+    UF:SecureHookScript(self.Castbar, "OnHide", UF.Castbar_OnHide)
 
     self.Castbar.bg = self.Castbar:CreateTexture("$parentBackground", "BACKGROUND")
     self.Castbar.bg:SetAllPoints()
@@ -34,20 +43,29 @@ function UF:CreateCastbar()
 
     self.Castbar.IconHolder = CreateFrame("Frame", "$parentIconHolder", self.Castbar)
     self.Castbar.IconHolder:CreateBorder(nil, nil, nil, self.Castbar.IconHolder:GetFrameLevel() + 1)
-    self.Castbar.Icon = self.Castbar:CreateTexture("$parentIcon", "BACKGROUND", nil, -8)
-    self.Castbar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-    self.Castbar.Icon:SetAllPoints(self.Castbar.IconHolder)
+    self.Castbar.IconHolder.Border:SetOutside(nil, 0, 0)
+    self.Castbar.IconHolder:CreateSeparator(nil, nil, 3, self.Castbar.IconHolder:GetFrameLevel() + 1, "RIGHT")
+    self.Castbar.Icon = self.Castbar:CreateTexture("$parentIcon", "BACKGROUND", nil, -7)
+    self.Castbar.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+    self.Castbar.Icon:SetInside(self.Castbar.IconHolder, 3, 3)
 
     self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "OVERLAY")
     self.Castbar.SafeZone:SetAlpha(0.4)
 
-    -- TODO: shield
-    -- self.Castbar.Shield = self.Castbar:CreateTexture(nil, "BACKGROUND", nil, -8)
-    -- self.Castbar.Shield.__owner = self.Castbar
-    -- hooksecurefunc(self.Castbar.Shield, "Show", SetCastbarColorShielded)
-    -- hooksecurefunc(self.Castbar.Shield, "Hide", SetCastbarColorDefault)
+    self.Castbar.Shield = self.Castbar:CreateTexture(nil, "BACKGROUND", nil, -8)
+    self.Castbar.Shield:SetTexture(R.media.textures.unitFrames.shield)
+    self.Castbar.Shield:SetSize(32, 32)
+    self.Castbar.Shield:SetPoint("RIGHT", self.CastbarHolder, "LEFT", -2, 0)
 
     return self.Castbar
+end
+
+function UF:Castbar_OnShow()
+    self.Holder:Show()
+end
+
+function UF:Castbar_OnHide()
+    self.Holder:Hide()
 end
 
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
@@ -63,10 +81,14 @@ function UF:ConfigureCastbar()
 
     self:EnableElement("Castbar")
 
-    if not config.detached then config.point[5] = nil end
-    self.Castbar:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
-    self.Castbar:ClearAllPoints()
-    self.Castbar:SetNormalizedPoint(config.point)
+    if not config.detached then
+        config.point[5] = nil
+    end
+    self.CastbarHolder:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
+    self.CastbarHolder:ClearAllPoints()
+    self.CastbarHolder:SetNormalizedPoint(config.point)
+
+    self.Castbar:SetPoint("TOPLEFT", self.CastbarHolder, "TOPLEFT", 3 + (config.showIcon and not config.showIconOutside and (config.size[2] - 3) or 0), -3)
 
     self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
     self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
@@ -91,9 +113,18 @@ function UF:ConfigureCastbar()
 
     if config.showIcon then
         self.Castbar.Icon:Show()
+        self.Castbar.Icon:SetInside(self.Castbar.IconHolder, config.showIconOutside and 3 or 0, config.showIconOutside and 3 or 0)
+        self.Castbar.IconHolder.Border:SetShown(config.showIconOutside)
+        self.Castbar.IconHolder.Separator:SetShown(not config.showIconOutside)
         self.Castbar.IconHolder:Show()
-        self.Castbar.IconHolder:SetSize(config.size[2], config.size[2])
-        self.Castbar.IconHolder:SetPoint("RIGHT", self.Castbar, "LEFT", -6, 0)
+        self.Castbar.IconHolder:SetSize(config.size[2] - (not config.showIconOutside and 3 or 0), config.size[2] - (not config.showIconOutside and 3 or 0))
+
+        self.Castbar.IconHolder:ClearAllPoints()
+        if config.showIconOutside then
+            self.Castbar.IconHolder:SetPoint("CENTER", self.Castbar.Shield, "CENTER", 0, 0)
+        else
+            self.Castbar.IconHolder:SetPoint("RIGHT", self.Castbar, "LEFT", 0, 0)
+        end
     else
         self.Castbar.Icon:Hide()
         self.Castbar.IconHolder:Hide()
@@ -104,6 +135,8 @@ function UF:ConfigureCastbar()
     else
         self.Castbar.SafeZone:Hide()
     end
+
+    self.Castbar.Shield:SetAlpha(config.showShield and 1 or 0)
 end
 
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)

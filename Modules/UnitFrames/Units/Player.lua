@@ -29,7 +29,7 @@ function PlayerMixin:PostInitialize()
     end
 
     self.Power:CreateMover("PlayerPower", self.defaults.power.point)
-    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
+    self.CastbarHolder:CreateMover("PlayerCastbar", self.defaults.castbar.point)
 
     self.isResting = false
     self.inCombat = false
@@ -63,9 +63,9 @@ function PlayerMixin:PostConfigure()
     end
 
     if self.config.castbar.detached then
-        self.Castbar.Mover:Unlock()
+        self.CastbarHolder.Mover:Unlock()
     else
-        self.Castbar.Mover:Lock(true)
+        self.CastbarHolder.Mover:Lock(true)
     end
 
     if self.config.style == UF.Styles.Blizzard then

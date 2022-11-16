@@ -197,11 +197,12 @@ local DEFAULT_UNIT_CONFIG = {
     auraWatch = { enabled = false, iconSize = 12, countFontSize = 9 },
     castbar = {
         enabled = true,
-        size = { 200, 16 },
+        size = { 200, 18 },
         point = { "TOPLEFT", "BOTTOMLEFT", 0, -5 },
         showIcon = true,
         showIconOutside = false,
         showSpark = true,
+        showShield = true,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
@@ -317,7 +318,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { energyManaRegen = true, powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 250, 24 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
+        castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
         highlight = { target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {

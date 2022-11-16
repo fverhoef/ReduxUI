@@ -1031,20 +1031,25 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end, function(value)
                 UF:UnitConfig(unit).castbar.showSpark = value
             end),
-            lineBreakDetached = { type = "description", name = "", order = 7 },
-            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 8, nil, not canDetach, function()
+            showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 7, nil, nil, function()
+                return UF:UnitConfig(unit).castbar.showShield
+            end, function(value)
+                UF:UnitConfig(unit).castbar.showShield = value
+            end),
+            lineBreakDetached = { type = "description", name = "", order = 8 },
+            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 9, nil, not canDetach, function()
                 return UF:UnitConfig(unit).castbar.detached
             end, function(value)
                 UF:UnitConfig(unit).castbar.detached = value;
                 UF:UnitConfig(unit).castbar.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 150 } or { "TOPLEFT", "BOTTOMLEFT", 0, -5 }
             end),
-            lineBreakSize = { type = "description", name = L["Size"], order = 9 },
-            width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 10, not canDetach, 10, nil, 400, 1, function()
+            lineBreakSize = { type = "description", name = L["Size"], order = 10 },
+            width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 11, not canDetach, 10, nil, 400, 1, function()
                 return UF:UnitConfig(unit).castbar.size[1]
             end, function(value)
                 UF:UnitConfig(unit).castbar.size[1] = value
             end),
-            height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 11, nil, 4, nil, 400, 1, function()
+            height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 12, nil, 4, nil, 400, 1, function()
                 return UF:UnitConfig(unit).castbar.size[2]
             end, function(value)
                 UF:UnitConfig(unit).castbar.size[2] = value

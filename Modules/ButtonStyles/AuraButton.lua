@@ -46,7 +46,8 @@ function BS:StyleAuraButton(button)
         end
 
         if cooldown then
-            cooldown:SetInside(button, 1, 1)
+            cooldown:SetInside(button, 2, 2)
+            cooldown:SetSwipeColor(0, 0, 0)
         end
 
         if duration then

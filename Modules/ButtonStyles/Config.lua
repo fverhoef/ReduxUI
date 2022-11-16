@@ -9,7 +9,7 @@ R:RegisterModuleConfig(BS, {
     border = R.media.textures.buttons.border,
     outOfRangeColoring = BS.OUT_OF_RANGE_MODES.Button,
     colors = {
-        border = { 0.5, 0.5, 0.5, 1 },
+        border = R.DEFAULT_BORDER_COLOR,
         pushed = { 1, 200 / 255, 0, 1 },
         outOfRange = { 0.8, 0.1, 0.1 },
         usable = { 1.0, 1.0, 1.0 },

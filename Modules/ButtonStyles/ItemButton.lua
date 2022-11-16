@@ -29,8 +29,14 @@ function BS:StyleItemButton(button)
         overlay:SetFrameLevel(button:GetFrameLevel() + 1)
 
         if icon then
-            icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+            icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
             icon:SetInside(button, 2, 2)
+        end
+
+        local cooldown = _G[buttonName .. "Cooldown"]
+        if cooldown then
+            cooldown:SetInside(button, 2, 2)
+            cooldown:SetSwipeColor(0, 0, 0)
         end
 
         if count then

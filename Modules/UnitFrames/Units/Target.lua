@@ -114,6 +114,12 @@ function TargetMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
 
+        if self.CastbarHolder then
+            self.CastbarHolder:SetSize(121, 18)
+            self.CastbarHolder:ClearAllPoints()
+            self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
+        end
+
         if self.PvPIndicator then
             self.PvPIndicator:SetSize(32, 32)
             self.PvPIndicator:ClearAllPoints()

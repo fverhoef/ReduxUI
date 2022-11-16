@@ -27,14 +27,13 @@ function BS:StyleTotemBarButton(button, element)
         button.element = ELEMENTS[element]
 
         if icon then
-            button.icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
-            button.icon:SetInside(button, 2, 2)
+            icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+            icon:SetInside(button, 2, 2)
         end
 
         local cooldown = _G[buttonName .. "Cooldown"]
         if cooldown then
-            cooldown:SetFrameLevel(cooldown:GetParent():GetFrameLevel())
-            cooldown:SetInside(button, 1, 1)
+            cooldown:SetInside(button, 2, 2)
             cooldown:SetSwipeColor(0, 0, 0)
         end
 
@@ -53,7 +52,7 @@ function BS:StyleTotemBarButton(button, element)
     end
 
     if icon then
-        icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+        icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     end
     if button.overlayTex then
         button.overlayTex:SetTexCoord(0, 1, 0, 1)

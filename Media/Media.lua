@@ -55,6 +55,7 @@ R.media = {
         },
         unitFrames = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
+            shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
             targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth"
         }

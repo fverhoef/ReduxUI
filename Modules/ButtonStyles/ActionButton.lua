@@ -31,7 +31,7 @@ function BS:StyleActionButton(button)
 
         local icon = _G[buttonName .. "Icon"] or _G[buttonName .. "IconTexture"] or button.icon
         if icon then
-            icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+            icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
             icon:SetInside(button, 2, 2)
         end
 
@@ -41,8 +41,8 @@ function BS:StyleActionButton(button)
 
         local cooldown = _G[buttonName .. "Cooldown"]
         if cooldown then
-            cooldown:SetFrameLevel(cooldown:GetParent():GetFrameLevel())
-            cooldown:SetInside(button, 1, 1)
+            cooldown:SetInside(button, 2, 2)
+            cooldown:SetSwipeColor(0, 0, 0)
         end
 
         if hotkey then
