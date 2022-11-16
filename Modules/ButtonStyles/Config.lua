@@ -11,6 +11,7 @@ R:RegisterModuleConfig(BS, {
     colors = {
         border = R.DEFAULT_BORDER_COLOR,
         pushed = { 1, 200 / 255, 0, 1 },
+        equipped = { 0, 0.8, 0, 1 },
         outOfRange = { 0.8, 0.1, 0.1 },
         usable = { 1.0, 1.0, 1.0 },
         notEnoughMana = { 0.5, 0.5, 1.0 },

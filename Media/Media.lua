@@ -21,6 +21,7 @@ R.media = {
         buttons = {
             backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop",
             border = MEDIA_PREFIX .. "\\Textures\\Buttons\\Border",
+            equippedOverlay = MEDIA_PREFIX .. "\\Textures\\Buttons\\EquippedOverlay",
             round = MEDIA_PREFIX .. "\\Textures\\Buttons\\Round",
             roundGoldInlay = MEDIA_PREFIX .. "\\Textures\\Buttons\\RoundGoldInlay"
         },

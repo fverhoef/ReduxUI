@@ -19,6 +19,7 @@ function BS:StyleActionButton(button)
     local count = _G[buttonName .. "Count"]
     local hotkey = _G[buttonName .. "HotKey"]
     local name = _G[buttonName .. "Name"]
+    local border = button.Border
 
     if not button.__styled then
         button.__styled = true
@@ -58,6 +59,12 @@ function BS:StyleActionButton(button)
             floatingBG:Hide()
         end
 
+        if border then
+            border:ClearAllPoints()
+            border:SetAllPoints()
+            border:SetTexture(R.media.textures.buttons.equippedOverlay)
+        end
+
         button:CreateBackdrop({ bgFile = config.backdrop, edgeSize = 2, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
     end
 
@@ -85,6 +92,16 @@ function BS:StyleActionButton(button)
     local pushedTexture = button:GetPushedTexture()
     pushedTexture:SetOutside(button, 4, 4)
     pushedTexture:SetVertexColor(unpack(BS.config.colors.pushed))
+
+    BS:UpdateActionButton(button)
+end
+
+function BS:UpdateActionButton(button)
+    if button.equippedBorderShown then
+        button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.equipped))
+    else
+        button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.border))
+    end
 end
 
 function BS:StyleAllActionButtons()
@@ -113,3 +130,5 @@ function BS:UpdateAllActionButtons()
 
     _G.MainMenuBarVehicleLeaveButton.Border:SetBackdropBorderColor(unpack(BS.config.colors.border))
 end
+
+R.Libs.ActionButton:RegisterCallback("OnButtonEquippedUpdate", BS.UpdateActionButton)

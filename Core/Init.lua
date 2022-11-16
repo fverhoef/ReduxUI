@@ -25,6 +25,7 @@ R:AddLib("AceConfig", "AceConfig-3.0")
 R:AddLib("AceConfigDialog", "AceConfigDialog-3.0")
 R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 
+R:AddLib("CallbackHandler", "CallbackHandler-1.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
 R:AddLib("ActionButton", "LibActionButton-1.0")

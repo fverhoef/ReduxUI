@@ -1056,9 +1056,17 @@ function Update(self)
 
 	-- Add a green border if button is an equipped item
 	if self:IsEquipped() and not self.config.hideElements.equipped then
-		self.Border:SetVertexColor(0, 1.0, 0, 0.35)
+		if not self.equippedBorderShown then
+			self.equippedBorderShown = true
+			self.Border:SetVertexColor(0, 1.0, 0, 0.35)
+			lib.callbacks:Fire("OnButtonEquippedUpdate", self)
+		end
 		self.Border:Show()
 	else
+		if self.equippedBorderShown then
+			self.equippedBorderShown = false
+			lib.callbacks:Fire("OnButtonEquippedUpdate", self)
+		end
 		self.Border:Hide()
 	end
 
