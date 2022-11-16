@@ -9,7 +9,7 @@ end
 
 TargetMixin = {}
 
-function TargetMixin:PostUpdate()
+function TargetMixin:PostConfigure()
     if self.config.style == UF.Styles.Blizzard then
         self:SetSize(194, 76)
 
@@ -114,10 +114,29 @@ function TargetMixin:PostUpdate()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
 
-        self:EnableElement("RaidTargetIndicator")
-        self.RaidTargetIndicator:SetSize(24, 24)
-        self.RaidTargetIndicator:ClearAllPoints()
-        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
+        if self.PVPIndicator then
+            self.PVPIndicator:SetSize(48, 48)
+            self.PVPIndicator:ClearAllPoints()
+            self.PVPIndicator:SetPoint("CENTER", self.Portrait, "RIGHT", 2, 0)
+        end
+
+        if self.LeaderIndicator then
+            self.LeaderIndicator:SetSize(24, 24)
+            self.LeaderIndicator:ClearAllPoints()
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
+        end
+
+        if self.MasterLooterIndicator then
+            self.MasterLooterIndicator:SetSize(24, 24)
+            self.MasterLooterIndicator:ClearAllPoints()
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
+        end
+
+        if self.RaidTargetIndicator then
+            self.RaidTargetIndicator:SetSize(24, 24)
+            self.RaidTargetIndicator:ClearAllPoints()
+            self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
+        end
     elseif self.configstyle == UF.Styles.Custom then
         if self.Artwork then
             self.Artwork:Hide()

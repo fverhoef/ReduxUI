@@ -8,7 +8,7 @@ function UF:SpawnFrame(name, unit, mixin, config, defaultConfig)
         return
     end
     
-    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
+    UF:SetStyle(name, mixin, config, defaultConfig, false)
     local frame = oUF:Spawn(unit, addonName .. name)
     frame:CreateFader(config and config.fader or R.config.faders.onShow)
     frame:CreateMover(name, defaultConfig and defaultConfig.point or nil)
@@ -16,9 +16,9 @@ function UF:SpawnFrame(name, unit, mixin, config, defaultConfig)
     return frame
 end
 
-function UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
+function UF:SetStyle(name, mixin, config, defaultConfig, isGroupUnit)
     oUF:RegisterStyle(addonName .. name, function(frame)
-        UF:InitializeFrame(frame, mixin, config, defaultConfig, false)
+        UF:InitializeFrame(frame, mixin, config, defaultConfig, isGroupUnit)
     end)
     oUF:SetActiveStyle(addonName .. name)
 end
@@ -26,7 +26,7 @@ end
 function UF:InitializeFrame(frame, mixin, config, defaultConfig, isGroupUnit)
     frame.config = config
     frame.defaults = defaultConfig
-    frame.isGroupUnit = false
+    frame.isGroupUnit = isGroupUnit
 
     _G.Mixin(frame, UnitFrameMixin)
     _G.Mixin(frame, mixin)
@@ -95,7 +95,7 @@ function UnitFrameMixin:Initialize()
     end
 end
 
-function UnitFrameMixin:Update()
+function UnitFrameMixin:Configure()
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
 
@@ -146,8 +146,8 @@ function UnitFrameMixin:Update()
     self:ConfigureTrinket()
     self:ConfigureDiminishingReturnsTracker()
 
-    if self.PostUpdate then
-        self:PostUpdate()
+    if self.PostConfigure then
+        self:PostConfigure()
     end
 end
 
@@ -172,7 +172,7 @@ function UnitFrameMixin:ForceShow()
 
     self:Show()
     if self:IsVisible() then
-        self:Update()
+        self:Configure()
     end
 
     local target = _G[self:GetName() .. "Target"]
@@ -206,7 +206,7 @@ function UnitFrameMixin:UnforceShow()
 
     self.unit = self.oldUnit or self.unit
     if self:IsVisible() then
-        self:Update()
+        self:Configure()
     end
 
     local target = _G[self:GetName() .. "Target"]

@@ -27,13 +27,13 @@ end
 
 function UF:UpdateNamePlates()
     for i, nameplate in ipairs(UF.nameplates) do
-        nameplate:Update()
+        nameplate:Configure()
     end
 end
 
 NameplateMixin = {}
 
-function NameplateMixin:PostUpdate()
+function NameplateMixin:PostConfigure()
     local configKey = (UnitIsFriend("player", self.unit) and "friendly" or "enemy") .. (UnitIsPlayer(self.unit) and "Player" or "Npc")
     self.config = UF.config.nameplates[configKey]
     self.defaults = UF.defaults.nameplates[configKey]

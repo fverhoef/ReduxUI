@@ -16,7 +16,7 @@ function UF:SpawnHeader(name, count, mixin, config, defaultConfig, index)
     parent.defaults = defaultConfig
     parent.groups = {}
 
-    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
+    UF:SetStyle(name, mixin, config, defaultConfig, true)
     for i = 1, count do
         local group = oUF:SpawnHeader(addonName .. name .. "Header" .. (count > 1 and i or ""), nil, config.visibility, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty",
                                       config.showParty, "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index or (count > 1 and tostring(i)) or nil,
@@ -35,7 +35,7 @@ function UF:SpawnHeader(name, count, mixin, config, defaultConfig, index)
     end
 
     _G.Mixin(parent, UnitFrameHeaderParentMixin)
-    parent:Update()
+    parent:Configure()
 
     parent:CreateMover(name, defaultConfig.point)
 
@@ -44,7 +44,7 @@ end
 
 UnitFrameHeaderParentMixin = {}
 
-function UnitFrameHeaderParentMixin:Update()
+function UnitFrameHeaderParentMixin:Configure()
     local config = self.config
     self:ClearAllPoints()
     self:SetNormalizedPoint(unpack(config.point))
@@ -62,8 +62,8 @@ function UnitFrameHeaderParentMixin:Update()
     for i, group in ipairs(self.groups) do
         for j = 1, group:GetNumChildren() do
             local child = group:GetAttribute("child" .. j)
-            if child.Update then
-                child:Update()
+            if child.Configure then
+                child:Configure()
             end
         end
 
@@ -160,7 +160,7 @@ function UnitFrameHeaderParentMixin:ForceShow()
         end
     end
 
-    self:Update()
+    self:Configure()
 end
 
 function UnitFrameHeaderParentMixin:UnforceShow()
@@ -179,7 +179,7 @@ function UnitFrameHeaderParentMixin:UnforceShow()
         end
     end
 
-    self:Update()
+    self:Configure()
 end
 
 UnitFrameHeaderMixin = {}

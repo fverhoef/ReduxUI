@@ -14,7 +14,7 @@ function UF:SpawnUnitFrameGroup(name, unit, count, mixin, config, defaultConfig)
     parent.config = config
     parent.frames = {}
 
-    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
+    UF:SetStyle(name, mixin, config, defaultConfig, true)
     for i = 1, count do
         local frame = oUF:Spawn(unit .. i, addonName .. name .. i)
         frame:SetParent(parent)
@@ -25,14 +25,14 @@ function UF:SpawnUnitFrameGroup(name, unit, count, mixin, config, defaultConfig)
     parent:CreateMover(name, defaultConfig.point)
 
     _G.Mixin(parent, UnitFrameGroupMixin)
-    parent:Update()
+    parent:Configure()
 
     return parent
 end
 
 UnitFrameGroupMixin = {}
 
-function UnitFrameGroupMixin:Update()
+function UnitFrameGroupMixin:Configure()
     local count = #self.frames
     local width, height = 0, 0
     if self.config.unitAnchorPoint == "TOP" or self.config.unitAnchorPoint == "BOTTOM" then
@@ -66,7 +66,7 @@ function UnitFrameGroupMixin:Update()
             frame:SetNormalizedPoint(self.config.unitAnchorPoint, self.frames[i - 1], relativePoint, offsetX, offsetY)
         end
 
-        frame:Update()
+        frame:Configure()
     end
 end
 

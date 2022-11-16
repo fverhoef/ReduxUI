@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateCastbar()
-    if not self.config.castbar.enabled and self.config.style == UF.Styles.Custom then return end
+    if not self.config.castbar.enabled then return end
 
     self.Castbar = CreateFrame("StatusBar", self:GetName() .. "Castbar", self)
     self.Castbar:SetOrientation("HORIZONTAL")

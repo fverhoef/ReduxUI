@@ -33,13 +33,13 @@ function PlayerMixin:PostInitialize()
 
     self.isResting = false
     self.inCombat = false
-	self.statusCounter = 0
-	self.statusSign = -1
+    self.statusCounter = 0
+    self.statusSign = -1
 
     UF:ScheduleRepeatingTimer(PlayerMixin.UpdateStatusTexture, STATUS_REFRESH_RATE, self)
 end
 
-function PlayerMixin:PostUpdate()
+function PlayerMixin:PostConfigure()
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()
@@ -171,16 +171,36 @@ function PlayerMixin:PostUpdate()
         self.Power.Percent:SetJustifyH("LEFT")
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
-        
-        self:EnableElement("RaidTargetIndicator")
-        self.RaidTargetIndicator:SetSize(24, 24)
-        self.RaidTargetIndicator:ClearAllPoints()
-        self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
 
-        self:EnableElement("RestingIndicator")
-        self.RestingIndicator:ClearAllPoints()
-        self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
-        self.RestingIndicator:SetSize(32, 32)
+        if self.PVPIndicator then
+            self.PVPIndicator:SetSize(48, 48)
+            self.PVPIndicator:ClearAllPoints()
+            self.PVPIndicator:SetPoint("CENTER", self.Portrait, "LEFT", -2, 0)
+        end
+
+        if self.LeaderIndicator then
+            self.LeaderIndicator:SetSize(24, 24)
+            self.LeaderIndicator:ClearAllPoints()
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
+        end
+
+        if self.MasterLooterIndicator then
+            self.MasterLooterIndicator:SetSize(24, 24)
+            self.MasterLooterIndicator:ClearAllPoints()
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
+        end
+
+        if self.RaidTargetIndicator then
+            self.RaidTargetIndicator:SetSize(24, 24)
+            self.RaidTargetIndicator:ClearAllPoints()
+            self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
+        end
+
+        if self.RestingIndicator then
+            self.RestingIndicator:ClearAllPoints()
+            self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
+            self.RestingIndicator:SetSize(32, 32)
+        end
     elseif self.configstyle == UF.Styles.Custom then
         if self.Artwork then
             self.Artwork:Hide()

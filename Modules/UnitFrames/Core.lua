@@ -36,22 +36,22 @@ function UF:Enable()
 end
 
 oUF:RegisterInitCallback(function(object)
-    if object.Update then object:Update() end
+    if object.Configure then object:Configure() end
 end)
 
 function UF:UpdateAll()
-    for _, frame in pairs(UF.frames) do frame:Update() end
-    for _, header in pairs(UF.headers) do header:Update() end
-    for _, nameplate in pairs(UF.nameplates) do nameplate:Update() end
+    for _, frame in pairs(UF.frames) do frame:Configure() end
+    for _, header in pairs(UF.headers) do header:Configure() end
+    for _, nameplate in pairs(UF.nameplates) do nameplate:Configure() end
 end
 
 function UF:UpdateUnit(unit)
     if UF.frames[unit] then
-        UF.frames[unit]:Update()
+        UF.frames[unit]:Configure()
     elseif UF.headers[unit] then
-        UF.headers[unit]:Update()
+        UF.headers[unit]:Configure()
     elseif unit == "nameplates" then
-        for _, nameplate in pairs(UF.nameplates) do nameplate:Update() end
+        for _, nameplate in pairs(UF.nameplates) do nameplate:Configure() end
     end
 end
 
