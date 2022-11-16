@@ -80,7 +80,6 @@ function TargetMixin:PostConfigure()
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -6, -5)
         self:EnableElement("Portrait")
-        self:UpdatePortraitTexture()
 
         self.Health:ClearAllPoints()
         if self.config.largeHealth then

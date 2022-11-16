@@ -49,7 +49,6 @@ function TargetTargetMixin:PostConfigure()
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -6)
         self:EnableElement("Portrait")
-        self:UpdatePortraitTexture()
 
         self.Health:ClearAllPoints()
         self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", 42, -15)

@@ -56,6 +56,8 @@ function UF:ConfigurePortrait()
         self:DisableElement("Portrait")
         self.Portrait = self.Portrait2D
     end
+    self.Portrait2D.showClass = config.class
+    self.PortraitRound.showClass = config.class
     self:EnableElement("Portrait")
 
     self.PortraitHolder:Show()
@@ -90,31 +92,19 @@ function UF:UpdatePortraitTexture()
 
     self.Portrait:SetDesaturated(not UnitIsConnected(self.unit))
 
-    if config.class and UnitIsPlayer(self.unit) then
-        local coords = _G.CLASS_ICON_TCOORDS[select(2, UnitClass(self.unit))]
-        if coords then
-            self.Portrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
-            local l, r, t, b = unpack(coords)
-            local width = r - l
-            local height = b - t
+    local ULx,ULy,LLx,LLy,URx,URy,LRx,LRy = self.Portrait:GetTexCoord()
+    local l, r, t, b = ULx, URx, ULy, LLy
+    local width = r - l
+    local height = b - t
 
-            if self.config.style == UF.Styles.Custom then
-                l = l + 0.15 * width
-                r = r - 0.15 * width
-                t = t + 0.15 * height
-                b = b - 0.15 * height
-            end
-            self.Portrait:SetTexCoord(l, r, t, b)
-        end
-    else
-        SetPortraitTexture(self.Portrait, self.unit)
-
-        if self.config.style == UF.Styles.Custom then
-            self.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
-        else
-            self.Portrait:SetTexCoord(0, 1, 0, 1)
-        end
+    if self.config.style == UF.Styles.Custom then
+        l = l + 0.15 * width
+        r = r - 0.15 * width
+        t = t + 0.15 * height
+        b = b - 0.15 * height
     end
+
+    self.Portrait:SetTexCoord(l, r, t, b)
 end
 
 oUF:RegisterMetaFunction("UpdatePortraitTexture", UF.UpdatePortraitTexture)

@@ -73,20 +73,16 @@ local function Update(self, event, unit)
 		else
 			local class = element.showClass and UnitClassBase(unit)
 			if(class) then
-				local class = element.showClass and UnitClassBase(unit)
-				if (class) then
-					if oUF.isRetail then
-						element:SetAtlas("classicon-" .. class)
-					else
-						local coords = _G.CLASS_ICON_TCOORDS[class]
-						element:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
-						element:SetTexCoord(unpack(coords))
-					end
+				if oUF.isRetail then
+					element:SetAtlas("classicon-" .. class)
 				else
-					SetPortraitTexture(element, unit)
+					local coords = _G.CLASS_ICON_TCOORDS[class]
+					element:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
+					element:SetTexCoord(unpack(coords))
 				end
 			else
 				SetPortraitTexture(element, unit)
+				element:SetTexCoord(0, 1, 0, 1)
 			end
 		end
 

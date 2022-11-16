@@ -137,7 +137,6 @@ function PlayerMixin:PostConfigure()
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -5)
         self:EnableElement("Portrait")
-        self:UpdatePortraitTexture()
 
         self.Health:ClearAllPoints()
         if self.config.largeHealth then
