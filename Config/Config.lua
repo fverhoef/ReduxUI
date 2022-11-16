@@ -11,7 +11,6 @@ R.DARK_GRAY_FONT_COLOR = {89 / 255, 89 / 255, 89 / 255}
 R.config = {}
 R.config.defaults = {
     profile = {
-        borders = {texture = R.media.textures.edgeFiles.borderThick},
         modules = {}
     },
     char = {modules = {}},

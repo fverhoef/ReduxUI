@@ -25,9 +25,7 @@ R.media = {
             roundGoldInlay = MEDIA_PREFIX .. "\\Textures\\Buttons\\RoundGoldInlay"
         },
         edgeFiles = {
-            borderMetal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderMetal",
-            borderThick = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThick",
-            borderThin = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\BorderThin",
+            border = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Border",
             glow = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Glow",
             inlay = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Inlay",
             separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",

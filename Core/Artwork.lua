@@ -45,7 +45,7 @@ function R:CreateBorder(color, size, offset, frameLevel, texture)
     size = size or R.DEFAULT_BORDER_SIZE
     offset = offset or R.DEFAULT_BORDER_OFFSET
     frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 1)
-    texture = texture or R.config.db.profile.borders.texture or R.media.textures.edgeFiles.borderThick
+    texture = texture or R.media.textures.edgeFiles.border
 
     border:SetBackdrop({edgeFile = texture, edgeSize = size})
     border:SetBackdropBorderColor(unpack(color))

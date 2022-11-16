@@ -10,7 +10,7 @@ function ScreenSaverCanvasMixin:Initialize()
     self:SetAllPoints(_G.UIParent)
     -- self.Bottom:SetHeight(GetScreenHeight() * (1 / 10))
     self.Bottom:SetBackdrop({
-        edgeFile = R.media.textures.edgeFiles.borderThick,
+        edgeFile = R.media.textures.edgeFiles.border,
         bgFile = "Interface\\Buttons\\WHITE8x8",
         tile = false,
         tileEdge = false,
