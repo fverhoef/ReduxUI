@@ -133,7 +133,7 @@ function UF:CreateFontJustifyVOption(unit, order, get, set)
 end
 
 function UF:CreateTagOption(unit, order, get, set)
-    return R:CreateInputOption(L["Tag"], L["The tag determines what is displayed in the this text string."], order, nil, get, set, function()
+    return R:CreateInputOption(L["Tag"], L["The tag determines what is displayed in this text string."], order, nil, get, set, function()
         UF:UpdateUnit(unit)
     end)
 end
