@@ -3,8 +3,10 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleFunc)
-    if not config.enabled then return end
+function UF:SpawnUnitFrameGroup(name, unit, count, mixin, config, defaultConfig)
+    if not config.enabled then
+        return
+    end
 
     local parent = CreateFrame("Frame", addonName .. name, UIParent)
     parent:SetNormalizedPoint(unpack(config.point))
@@ -12,8 +14,7 @@ function UF:SpawnUnitFrameGroup(name, unit, count, config, defaultConfig, styleF
     parent.config = config
     parent.frames = {}
 
-    oUF:RegisterStyle(addonName .. name, styleFunc)
-    oUF:SetActiveStyle(addonName .. name)
+    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
     for i = 1, count do
         local frame = oUF:Spawn(unit .. i, addonName .. name .. i)
         frame:SetParent(parent)
@@ -70,7 +71,9 @@ function UnitFrameGroupMixin:Update()
 end
 
 function UnitFrameGroupMixin:ForceShow()
-    if self.isForced then return end
+    if self.isForced then
+        return
+    end
     self.isForced = true
 
     for i, frame in ipairs(self.frames) do
@@ -79,7 +82,9 @@ function UnitFrameGroupMixin:ForceShow()
 end
 
 function UnitFrameGroupMixin:UnforceShow()
-    if not self.isForced then return end
+    if not self.isForced then
+        return
+    end
     self.isForced = nil
 
     for i, frame in ipairs(self.frames) do

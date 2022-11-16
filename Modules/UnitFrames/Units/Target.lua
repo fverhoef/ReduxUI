@@ -4,32 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
-    local config = UF.config.target
-    if not config.enabled then return end
-
-    return UF:SpawnFrame("Target", "target", UF.CreateTarget, config, UF.defaults.target)
+    return UF:SpawnFrame("Target", "target", TargetMixin, UF.config.target, UF.defaults.target)
 end
 
-function UF:CreateTarget()
-    self.config = UF.config.target
-    self.defaults = UF.defaults.target
+TargetMixin = {}
 
-    self:InitializeFrame()
-
-    self.Update = UF.UpdateTarget
-    self.ApplyStyle = UF.ApplyTargetStyle
-end
-
-function UF:UpdateTarget()
-    if not self then return end
-
-    self:ConfigureFrame()
-    self:ApplyStyle()
-end
-
-function UF:ApplyTargetStyle()
-    if not self then return end
-
+function TargetMixin:PostUpdate()
     if self.config.style == UF.Styles.Blizzard then
         self:SetSize(194, 76)
 
@@ -133,7 +113,7 @@ function UF:ApplyTargetStyle()
         self.Power.Percent:SetJustifyH("RIGHT")
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
-        
+
         self:EnableElement("RaidTargetIndicator")
         self.RaidTargetIndicator:SetSize(24, 24)
         self.RaidTargetIndicator:ClearAllPoints()

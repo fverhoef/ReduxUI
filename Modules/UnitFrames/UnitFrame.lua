@@ -3,10 +3,12 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnFrame(name, unit, func, config, defaultConfig)
-    oUF:RegisterStyle(addonName .. name, func)
-    oUF:SetActiveStyle(addonName .. name)
-
+function UF:SpawnFrame(name, unit, mixin, config, defaultConfig)
+    if not config.enabled then
+        return
+    end
+    
+    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
     local frame = oUF:Spawn(unit, addonName .. name)
     frame:CreateFader(config and config.fader or R.config.faders.onShow)
     frame:CreateMover(name, defaultConfig and defaultConfig.point or nil)
@@ -14,11 +16,30 @@ function UF:SpawnFrame(name, unit, func, config, defaultConfig)
     return frame
 end
 
-function UF:InitializeFrame()
-    local isNameplate = string.match(self.unit, "nameplate")
-    self:SetFrameStrata(isNameplate and "BACKGROUND" or "LOW")
+function UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
+    oUF:RegisterStyle(addonName .. name, function(frame)
+        UF:InitializeFrame(frame, mixin, config, defaultConfig, false)
+    end)
+    oUF:SetActiveStyle(addonName .. name)
+end
 
-    if not isNameplate then
+function UF:InitializeFrame(frame, mixin, config, defaultConfig, isGroupUnit)
+    frame.config = config
+    frame.defaults = defaultConfig
+    frame.isGroupUnit = false
+
+    _G.Mixin(frame, UnitFrameMixin)
+    _G.Mixin(frame, mixin)
+
+    frame:Initialize()
+end
+
+UnitFrameMixin = {}
+
+function UnitFrameMixin:Initialize()
+    self:SetFrameStrata(self.isNameplate and "BACKGROUND" or "LOW")
+
+    if not self.isNameplate then
         self:RegisterForClicks("AnyUp")
         self:SetScript("OnEnter", UnitFrame_OnEnter)
         self:SetScript("OnLeave", UnitFrame_OnLeave)
@@ -32,7 +53,7 @@ function UF:InitializeFrame()
     self:CreateInlay()
     self:CreateShadow()
 
-    self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
+    self.Range = { insideAlpha = 1, outsideAlpha = 0.5 }
 
     self:CreateHealth()
     self:CreatePower()
@@ -68,12 +89,13 @@ function UF:InitializeFrame()
 
     self:CreateTrinket()
     self:CreateDiminishingReturnsTracker()
+
+    if self.PostInitialize then
+        self:PostInitialize()
+    end
 end
 
-oUF:RegisterMetaFunction("InitializeFrame", UF.InitializeFrame)
-
-function UF:ConfigureFrame()
-    local isNameplate = string.match(self.unit, "nameplate")
+function UnitFrameMixin:Update()
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
 
@@ -82,11 +104,11 @@ function UF:ConfigureFrame()
         self:SetNormalizedPoint(unpack(self.config.point))
     end
 
-    if not isNameplate then
+    if not self.isNameplate then
         self:SetAttribute("type3", UF.config.middleClickFocus and "focus" or nil)
     end
 
-    self.Range = {insideAlpha = 1, outsideAlpha = 0.5}
+    self.Range = { insideAlpha = 1, outsideAlpha = 0.5 }
 
     self.Inlay:SetShown(self.config.inlay.enabled or false)
 
@@ -123,12 +145,16 @@ function UF:ConfigureFrame()
 
     self:ConfigureTrinket()
     self:ConfigureDiminishingReturnsTracker()
+
+    if self.PostUpdate then
+        self:PostUpdate()
+    end
 end
 
-oUF:RegisterMetaFunction("ConfigureFrame", UF.ConfigureFrame)
-
-function UF:ForceShow()
-    if not self or InCombatLockdown() then return end
+function UnitFrameMixin:ForceShow()
+    if not self or InCombatLockdown() then
+        return
+    end
     if not self.isForced then
         self.oldUnit = self.unit
         self.unit = "player"
@@ -145,19 +171,25 @@ function UF:ForceShow()
     self:EnableMouse(false)
 
     self:Show()
-    if self:IsVisible() and self.Update then self:Update() end
+    if self:IsVisible() then
+        self:Update()
+    end
 
     local target = _G[self:GetName() .. "Target"]
-    if target then target:ForceShow() end
+    if target then
+        target:ForceShow()
+    end
 
     local pet = _G[self:GetName() .. "Pet"]
-    if pet then pet:ForceShow() end
+    if pet then
+        pet:ForceShow()
+    end
 end
 
-oUF:RegisterMetaFunction("ForceShow", UF.ForceShow)
-
-function UF:UnforceShow()
-    if not self or not self.isForced or InCombatLockdown() then return end
+function UnitFrameMixin:UnforceShow()
+    if not self or not self.isForced or InCombatLockdown() then
+        return
+    end
 
     self.forceShowAuras = nil
     self.isForced = nil
@@ -173,13 +205,17 @@ function UF:UnforceShow()
     end
 
     self.unit = self.oldUnit or self.unit
-    if self:IsVisible() and self.Update then self:Update() end
+    if self:IsVisible() then
+        self:Update()
+    end
 
     local target = _G[self:GetName() .. "Target"]
-    if target then target:UnforceShow() end
+    if target then
+        target:UnforceShow()
+    end
 
     local pet = _G[self:GetName() .. "Pet"]
-    if pet then pet:UnforceShow() end
+    if pet then
+        pet:UnforceShow()
+    end
 end
-
-oUF:RegisterMetaFunction("UnforceShow", UF.UnforceShow)

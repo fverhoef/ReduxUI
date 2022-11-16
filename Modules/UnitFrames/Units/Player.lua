@@ -6,19 +6,12 @@ local oUF = ns.oUF or oUF
 local STATUS_REFRESH_RATE = 0.05
 
 function UF:SpawnPlayer()
-    local config = UF.config.player
-    if not config.enabled then
-        return
-    end
-
-    return UF:SpawnFrame("Player", "player", UF.CreatePlayer, config, UF.defaults.player)
+    return UF:SpawnFrame("Player", "player", PlayerMixin, UF.config.player, UF.defaults.player)
 end
 
-function UF:CreatePlayer()
-    self.config = UF.config.player
-    self.defaults = UF.defaults.player
+PlayerMixin = {}
 
-    self:InitializeFrame()
+function PlayerMixin:PostInitialize()
     self:CreateAdditionalPower()
     self:CreatePowerPrediction()
     self:CreateCombatIndicator()
@@ -38,24 +31,15 @@ function UF:CreatePlayer()
     self.Power:CreateMover("PlayerPower", self.defaults.power.point)
     self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
 
-
     self.isResting = false
     self.inCombat = false
 	self.statusCounter = 0
 	self.statusSign = -1
 
-    UF:ScheduleRepeatingTimer(UF.UpdatePlayerStatusTexture, STATUS_REFRESH_RATE, self)
-
-    self.Update = UF.UpdatePlayer
-    self.ApplyStyle = UF.ApplyPlayerStyle
+    UF:ScheduleRepeatingTimer(PlayerMixin.UpdateStatusTexture, STATUS_REFRESH_RATE, self)
 end
 
-function UF:UpdatePlayer()
-    if not self then
-        return
-    end
-
-    self:ConfigureFrame()
+function PlayerMixin:PostUpdate()
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()
@@ -82,14 +66,6 @@ function UF:UpdatePlayer()
         self.Castbar.Mover:Unlock()
     else
         self.Castbar.Mover:Lock(true)
-    end
-
-    self:ApplyStyle()
-end
-
-function UF:ApplyPlayerStyle()
-    if not self then
-        return
     end
 
     if self.config.style == UF.Styles.Blizzard then
@@ -218,12 +194,12 @@ function UF:ApplyPlayerStyle()
     end
 end
 
-function UF:UpdatePlayerStatusTexture()
+function PlayerMixin:UpdateStatusTexture()
     if not self.Flash:IsShown() then
         return
     end
 
-    if not self.isResting and not self.inCombat then
+    if (not self.isResting or not self.config.highlight.resting) and (not self.inCombat or not self.config.highlight.combat) then
         self.Flash:SetAlpha(1)
         return
     end

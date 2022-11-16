@@ -3,7 +3,11 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
+function UF:SpawnHeader(name, count, mixin, config, defaultConfig, index)
+    if not config.enabled then
+        return
+    end
+
     local parent = CreateFrame("Frame", addonName .. name, UIParent)
     parent:SetNormalizedPoint(unpack(config.point))
     parent:SetSize(200, 40)
@@ -12,11 +16,11 @@ function UF:SpawnHeader(name, count, config, defaultConfig, styleFunc, index)
     parent.defaults = defaultConfig
     parent.groups = {}
 
-    oUF:RegisterStyle(addonName .. name, styleFunc)
-    oUF:SetActiveStyle(addonName .. name)
+    UF:SetStyle(name, frame, mixin, config, defaultConfig, isGroupUnit)
     for i = 1, count do
         local group = oUF:SpawnHeader(addonName .. name .. "Header" .. (count > 1 and i or ""), nil, config.visibility, "showPlayer", config.showPlayer, "showSolo", config.showSolo, "showParty",
-                                      config.showParty, "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index or (count > 1 and tostring(i)) or nil, "oUF-initialConfigFunction", ([[
+                                      config.showParty, "showRaid", config.showRaid, "point", config.unitAnchorPoint, "groupFilter", index or (count > 1 and tostring(i)) or nil,
+                                      "oUF-initialConfigFunction", ([[
                 self:SetWidth(%d)
                 self:SetHeight(%d)
                 self:GetParent():SetScale(%f)
@@ -51,12 +55,16 @@ function UnitFrameHeaderParentMixin:Update()
     local width = (config.groupAnchorPoint == "LEFT" or config.groupAnchorPoint == "RIGHT") and (numGroups * groupWidth + (numGroups - 1) * config.groupSpacing) or groupWidth
     local height = (config.groupAnchorPoint == "TOP" or config.groupAnchorPoint == "BOTTOM") and (numGroups * groupHeight + (numGroups - 1) * config.groupSpacing) or groupHeight
     self:SetSize(width, height)
-    if self.Mover then self.Mover:SetSize(width, height) end
+    if self.Mover then
+        self.Mover:SetSize(width, height)
+    end
 
     for i, group in ipairs(self.groups) do
         for j = 1, group:GetNumChildren() do
             local child = group:GetAttribute("child" .. j)
-            if child.Update then child:Update() end
+            if child.Update then
+                child:Update()
+            end
         end
 
         group:SetAttribute("point", config.unitAnchorPoint)
@@ -137,7 +145,9 @@ function UnitFrameHeaderParentMixin:Update()
 end
 
 function UnitFrameHeaderParentMixin:ForceShow()
-    if self.isForced then return end
+    if self.isForced then
+        return
+    end
 
     self.isForced = true
 
@@ -145,14 +155,18 @@ function UnitFrameHeaderParentMixin:ForceShow()
         group.isForced = true
         group:SetAttribute("startingIndex", -4)
 
-        for i = 1, group:GetNumChildren() do group:GetAttribute("child" .. i):ForceShow(child) end
+        for i = 1, group:GetNumChildren() do
+            group:GetAttribute("child" .. i):ForceShow(child)
+        end
     end
 
     self:Update()
 end
 
 function UnitFrameHeaderParentMixin:UnforceShow()
-    if not self.isForced then return end
+    if not self.isForced then
+        return
+    end
 
     self.isForced = nil
 
@@ -160,7 +174,9 @@ function UnitFrameHeaderParentMixin:UnforceShow()
         group.isForced = nil
         group:SetAttribute("startingIndex", 1)
 
-        for i = 1, group:GetNumChildren() do group:GetAttribute("child" .. i):UnforceShow() end
+        for i = 1, group:GetNumChildren() do
+            group:GetAttribute("child" .. i):UnforceShow()
+        end
     end
 
     self:Update()
@@ -186,7 +202,9 @@ local function GetCondition(...)
         short = select(i, ...)
 
         condition = CONDITIONS[short]
-        if condition then cond = cond .. condition end
+        if condition then
+            cond = cond .. condition
+        end
     end
 
     return cond .. "hide"
