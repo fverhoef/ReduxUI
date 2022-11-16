@@ -43,6 +43,11 @@ function UF:ConfigurePortrait()
     elseif config.model then
         config.class = false
     end
+    
+    if self.config.style ~= UF.Styles.Custom then
+        config.detached = false
+        config.model = false
+    end
 
     if config.model and self.Portrait ~= self.Portrait3D then
         self:DisableElement("Portrait")

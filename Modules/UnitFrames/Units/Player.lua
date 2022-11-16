@@ -137,6 +137,7 @@ function PlayerMixin:PostConfigure()
         self.Portrait:ClearAllPoints()
         self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -5)
         self:EnableElement("Portrait")
+        self:UpdatePortraitTexture()
 
         self.Health:ClearAllPoints()
         if self.config.largeHealth then
@@ -243,6 +244,7 @@ function PlayerMixin:UpdateStatusTexture()
     end
 
     if self.config.style == UF.Styles.Custom then
+        self.Flash:SetAlpha(0)
         self.Flash:Hide()
         return
     end

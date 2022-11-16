@@ -7,7 +7,7 @@ function UF:SpawnFrame(name, unit, mixin, config, defaultConfig)
     if not config.enabled then
         return
     end
-    
+
     UF:SetStyle(name, mixin, config, defaultConfig, false)
     local frame = oUF:Spawn(unit, addonName .. name)
     frame:CreateFader(config and config.fader or R.config.faders.onShow)
@@ -110,7 +110,6 @@ function UnitFrameMixin:Configure()
 
     self.Range = { insideAlpha = 1, outsideAlpha = 0.5 }
 
-
     self.Border:Show()
     self.Shadow:Show()
     self.Inlay:SetShown(self.config.inlay.enabled or false)
@@ -147,13 +146,14 @@ function UnitFrameMixin:Configure()
     end
 
     self:ConfigureTrinket()
-    self:ConfigureDiminishingReturnsTracker()    
+    self:ConfigureDiminishingReturnsTracker()
 
     if self.PostConfigure then
         self:PostConfigure()
     end
-    
+
     self:UpdateHighlight()
+    self:UpdateAllElements("RefreshUnit")
 end
 
 function UnitFrameMixin:ForceShow()

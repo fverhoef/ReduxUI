@@ -956,29 +956,29 @@ function UF:CreateUnitPortraitOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).portrait.class = false
                 UF:UnitConfig(unit).portrait.model = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             lineBreakDetached = { type = "description", name = "", order = 6 },
             detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the portrait is detached from the health bar."], 7, nil, nil, function()
                 return UF:UnitConfig(unit).portrait.detached
             end, function(value)
                 UF:UnitConfig(unit).portrait.detached = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             showSeparator = UF:CreateToggleOption(unit, L["Show Separator"], L["Whether the portrait has a separator between it and the health bar."], 8, nil, nil, function()
                 return UF:UnitConfig(unit).portrait.showSeparator
             end, function(value)
                 UF:UnitConfig(unit).portrait.showSeparator = value
-            end),
+            end, nil , IsBlizzardStyled(unit)),
             lineBreakSize = { type = "description", name = L["Size"], order = 10 },
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the portrait."], 11, nil, 0, nil, 500, 1, function()
                 return UF:UnitConfig(unit).portrait.size[1]
             end, function(value)
                 UF:UnitConfig(unit).portrait.size[1] = value
-            end),
+            end, IsBlizzardStyled(unit)),
             height = UF:CreateRangeOption(unit, L["Height"], L["The height of the portrait."], 12, nil, 0, nil, 100, 1, function()
                 return UF:UnitConfig(unit).portrait.size[2]
             end, function(value)
                 UF:UnitConfig(unit).portrait.size[2] = value
-            end),
+            end, IsBlizzardStyled(unit)),
             detachedPosition = {
                 type = "group",
                 name = L["Position"],
