@@ -86,7 +86,6 @@ local DEFAULT_UNIT_CONFIG = {
             tag = "[perpp]%"
         },
         smooth = true,
-        energyManaRegen = false,
         powerPrediction = false,
         showSeparator = false,
         inset = false,
@@ -221,7 +220,7 @@ local DEFAULT_UNIT_CONFIG = {
     raidRoleIndicator = { enabled = true, size = { 14, 14 }, point = { "CENTER", "TOPRIGHT", 0, 0 } },
     readyCheckIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
     raidTargetIndicator = { enabled = true, size = { 20, 20 }, point = { "CENTER", "TOP", 0, 0 } },
-    restingIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
+    restingIndicator = { enabled = true, size = { 24, 24 }, point = { "BOTTOMLEFT", "TOPRIGHT", 0, 0 } },
     resurrectIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
     summonIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
     trinket = { enabled = false, size = { 40, 40 }, point = { "LEFT", "RIGHT", 5, 0 } },
@@ -316,7 +315,7 @@ R:RegisterModuleConfig(UF, {
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = UF.Styles.Blizzard,
         largeHealth = true,
-        power = { energyManaRegen = true, powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
+        power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
         castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
         highlight = { target = false, resting = true, combat = true }

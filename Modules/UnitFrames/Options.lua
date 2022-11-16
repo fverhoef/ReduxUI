@@ -8,6 +8,18 @@ R.UNIT_ANCHORS = { "TOP", "BOTTOM", "LEFT", "RIGHT" }
 R.GROUP_ANCHORS = { "TOP", "BOTTOM", "LEFT", "RIGHT" }
 R.GROUP_UNITS = { ["party"] = true, ["raid"] = true, ["assist"] = true, ["tank"] = true, ["arena"] = true, ["boss"] = true }
 
+local function IsBlizzardStyled(unit)
+    return function()
+        return UF:UnitConfig(unit).style ~= nil and UF:UnitConfig(unit).style ~= UF.Styles.Custom
+    end
+end
+
+local function IsCustomStyled(unit)
+    return function()
+        return UF:UnitConfig(unit).style == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
+    end
+end
+
 function UF:UnitConfig(unit)
     return UF.config[unit] or UF.config.nameplates[unit]
 end
@@ -36,16 +48,22 @@ function UF:CreateClassColorOption(class, name, order, hidden)
     end, UF.UpdateAll)
 end
 
-function UF:CreateRangeOption(unit, name, desc, order, hidden, min, max, softMax, step, get, set)
+function UF:CreateRangeOption(unit, name, desc, order, hidden, min, max, softMax, step, get, set, disabled)
     return R:CreateRangeOption(name, desc, order, hidden, min, max, softMax, step, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateToggleOption(unit, name, desc, order, width, hidden, get, set, confirm)
+function UF:CreateToggleOption(unit, name, desc, order, width, hidden, get, set, confirm, disabled)
     return R:CreateToggleOption(name, desc, order, width, hidden, get, set, function()
         UF:UpdateUnit(unit)
-    end, confirm)
+    end, confirm, disabled)
+end
+
+function UF:CreateSelectOption(unit, name, desc, order, hidden, values, get, set, disabled)
+    return R:CreateSelectOption(name, desc, order, hidden, values, get, set, function()
+        UF:UpdateUnit(unit)
+    end, disabled)
 end
 
 function UF:CreatePointOption(unit, order, get, set)
@@ -342,6 +360,7 @@ function UF:CreateUnitSizeOption(unit, order)
         name = L["Size"],
         order = order,
         inline = true,
+        disabled = IsBlizzardStyled(unit),
         args = {
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the unit frame."], 1, nil, 10, nil, 400, 1, function()
                 return UF:UnitConfig(unit).size[1]
@@ -507,13 +526,14 @@ function UF:CreateUnitPowerOption(unit, order)
                 return UF:UnitConfig(unit).power.enabled
             end, function(value)
                 UF:UnitConfig(unit).power.enabled = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             lineBreakLayout = { type = "description", name = "", order = 2 },
             layout = {
                 type = "group",
                 name = L["Layout"],
                 order = 3,
                 inline = true,
+                disabled = IsBlizzardStyled(unit),
                 args = {
                     width = UF:CreateRangeOption(unit, L["Width"], L["The width of the power bar."], 1, nil, 0, nil, 500, 1, function()
                         return UF:UnitConfig(unit).power.size[1]
@@ -622,11 +642,6 @@ function UF:CreateUnitPowerOption(unit, order)
                 return UF:UnitConfig(unit).power.powerPrediction
             end, function(value)
                 UF:UnitConfig(unit).power.powerPrediction = value
-            end),
-            energyManaRegen = UF:CreateToggleOption(unit, L["Energy/Mana Regen Tick"], nil, 9, nil, R.isRetail or unit ~= "player", function()
-                return UF:UnitConfig(unit).power.energyManaRegen
-            end, function(value)
-                UF:UnitConfig(unit).power.energyManaRegen = value
             end)
         }
     }
@@ -763,6 +778,7 @@ function UF:CreateUnitNameOption(unit, order)
         type = "group",
         name = L["Name"],
         order = order,
+        disabled = IsBlizzardStyled(unit),
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
                 return UF:UnitConfig(unit).name.enabled
@@ -842,23 +858,24 @@ function UF:CreateUnitLevelOption(unit, order)
         type = "group",
         name = L["Level"],
         order = order,
+        disabled = IsBlizzardStyled(unit),
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
                 return UF:UnitConfig(unit).level.enabled
             end, function(value)
                 UF:UnitConfig(unit).level.enabled = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             lineBreakSize = { type = "header", name = "Size", order = 2 },
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the name text."], 3, nil, 10, nil, 400, 1, function()
                 return UF:UnitConfig(unit).level.size[1]
             end, function(value)
                 UF:UnitConfig(unit).level.size[1] = value
-            end),
+            end, IsBlizzardStyled(unit)),
             height = UF:CreateRangeOption(unit, L["Height"], L["The height of the name text."], 4, nil, 10, nil, 400, 1, function()
                 return UF:UnitConfig(unit).level.size[2]
             end, function(value)
                 UF:UnitConfig(unit).level.size[2] = value
-            end),
+            end, IsBlizzardStyled(unit)),
             lineBreakPoint = { type = "header", name = L["Position"], order = 5 },
             point = UF:CreatePointOption(unit, 6, function()
                 return UF:UnitConfig(unit).level.point[1]
@@ -1009,17 +1026,17 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 UF:UnitConfig(unit).castbar.enabled = value
             end),
             lineBreakOptions = { type = "description", name = "", order = 2 },
-            showIcon = UF:CreateToggleOption(unit, L["Show Icon"], L["Whether to show an icon in the castbar."], 3, nil, not canDetach, function()
+            showIcon = UF:CreateToggleOption(unit, L["Show Icon"], L["Whether to show an icon in the castbar."], 3, nil, nil, function()
                 return UF:UnitConfig(unit).castbar.showIcon
             end, function(value)
                 UF:UnitConfig(unit).castbar.showIcon = value
             end),
-            showIconOutside = UF:CreateToggleOption(unit, L["Show Icon Outside"], L["Whether to show the icon outside the castbar."], 4, nil, function()
-                return not canDetach or not UF:UnitConfig(unit).castbar.showIcon
-            end, function()
+            showIconOutside = UF:CreateToggleOption(unit, L["Show Icon Outside"], L["Whether to show the icon outside the castbar."], 4, nil, nil, function()
                 return UF:UnitConfig(unit).castbar.showIconOutside
             end, function(value)
                 UF:UnitConfig(unit).castbar.showIconOutside = value
+            end, nil, function()
+                return not UF:UnitConfig(unit).castbar.showIcon
             end),
             showSafeZone = UF:CreateToggleOption(unit, L["Show Latency"], L["Whether to show a latency indicator."], 5, nil, unit ~= "player", function()
                 return UF:UnitConfig(unit).castbar.showSafeZone
@@ -1420,10 +1437,25 @@ function UF:CreateUnitStylingOption(unit, order)
         order = order,
         inline = true,
         args = {
-            inlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether to show an inlay for this unit."], 1, nil, nil, function()
+            style = UF:CreateSelectOption(unit, L["Style"], L["The style preset for this unit."], 1, nil, UF.Styles, function()
+                return UF:UnitConfig(unit).style
+            end, function(value)
+                UF:UnitConfig(unit).style = value
+            end, function()
+                return UF:UnitConfig(unit).style == nil
+            end),
+            lineBreak1 = { type = "header", name = "", order = 2 },
+            inlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether to show an inlay for this unit."], 3, nil, nil, function()
                 return UF:UnitConfig(unit).inlay.enabled
             end, function(value)
                 UF:UnitConfig(unit).inlay.enabled = value
+            end, nil, IsBlizzardStyled(unit)),
+            largeHealth = UF:CreateToggleOption(unit, L["Large Health"], L["Whether to use a larger health for this unit."], 4, nil, nil, function()
+                return UF:UnitConfig(unit).largeHealth
+            end, function(value)
+                UF:UnitConfig(unit).largeHealth = value
+            end, nil, function()
+                return UF:UnitConfig(unit).largeHealth == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
             end)
         }
     }
@@ -1477,7 +1509,8 @@ function UF:CreateUnitHighlightOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).highlight.target = value
             end),
-            targetArrows = UF:CreateToggleOption(unit, L["Show Target Arrows"], L["Whether to show arrows next to the frame when targeted."], 11, nil, UF:UnitDefaults(unit).highlight.targetArrows == nil, function()
+            targetArrows = UF:CreateToggleOption(unit, L["Show Target Arrows"], L["Whether to show arrows next to the frame when targeted."], 11, nil,
+                                                 UF:UnitDefaults(unit).highlight.targetArrows == nil, function()
                 return UF:UnitConfig(unit).highlight.targetArrows
             end, function(value)
                 UF:UnitConfig(unit).highlight.targetArrows = value

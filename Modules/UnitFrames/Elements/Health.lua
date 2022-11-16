@@ -104,6 +104,7 @@ function UF:ConfigureHealth()
     if self.config.power.enabled and not self.config.power.detached and not self.config.power.inset then
         bottomRightOffset[2] = self.config.power.size[2]
     end
+    self.Health:ClearAllPoints()
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", topLeftOffset[1], topLeftOffset[2])
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", bottomRightOffset[1], bottomRightOffset[2])
 

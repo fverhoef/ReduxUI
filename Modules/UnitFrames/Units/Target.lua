@@ -114,12 +114,6 @@ function TargetMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
 
-        if self.CastbarHolder then
-            self.CastbarHolder:SetSize(121, 18)
-            self.CastbarHolder:ClearAllPoints()
-            self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
-        end
-
         if self.PvPIndicator then
             self.PvPIndicator:SetSize(32, 32)
             self.PvPIndicator:ClearAllPoints()
@@ -156,18 +150,24 @@ function TargetMixin:PostConfigure()
             self.ReadyCheckIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
         end
 
+        if self.SummonIndicator then
+            self.SummonIndicator:SetSize(32, 32)
+            self.SummonIndicator:ClearAllPoints()
+            self.SummonIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        end
+
         if self.ResurrectIndicator then
             self.ResurrectIndicator:SetSize(32, 32)
             self.ResurrectIndicator:ClearAllPoints()
             self.ResurrectIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
         end
 
-        if self.SummonIndicator then
-            self.SummonIndicator:SetSize(32, 32)
-            self.SummonIndicator:ClearAllPoints()
-            self.SummonIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        if self.CastbarHolder then
+            self.CastbarHolder:SetSize(121, 18)
+            self.CastbarHolder:ClearAllPoints()
+            self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
         end
-    elseif self.configstyle == UF.Styles.Custom then
+    elseif self.config.style == UF.Styles.Custom then
         if self.Artwork then
             self.Artwork:Hide()
         end

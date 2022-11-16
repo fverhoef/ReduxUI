@@ -22,10 +22,10 @@ function UF:UpdateHighlight()
             color = UF.config.colors.class[class]
         end
         color = color or UF.config.colors.targetHighlight
-    elseif config.resting and self.isResting then
-        color = UF.config.colors.restingHighlight
     elseif config.combat and self.inCombat then
         color = UF.config.colors.combatHighlight
+    elseif config.resting and self.isResting then
+        color = UF.config.colors.restingHighlight
     end
 
     if self.Border then

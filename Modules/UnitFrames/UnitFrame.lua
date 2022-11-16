@@ -110,6 +110,9 @@ function UnitFrameMixin:Configure()
 
     self.Range = { insideAlpha = 1, outsideAlpha = 0.5 }
 
+
+    self.Border:Show()
+    self.Shadow:Show()
     self.Inlay:SetShown(self.config.inlay.enabled or false)
 
     self:ConfigureHealth()
@@ -144,11 +147,13 @@ function UnitFrameMixin:Configure()
     end
 
     self:ConfigureTrinket()
-    self:ConfigureDiminishingReturnsTracker()
+    self:ConfigureDiminishingReturnsTracker()    
 
     if self.PostConfigure then
         self:PostConfigure()
     end
+    
+    self:UpdateHighlight()
 end
 
 function UnitFrameMixin:ForceShow()

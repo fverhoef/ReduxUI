@@ -4,10 +4,6 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    if not self.config.portrait.enabled and self.config.style == UF.Styles.Custom then
-        return
-    end
-
     self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
     self.PortraitHolder:SetFrameLevel(self:GetFrameLevel())
 
@@ -48,10 +44,10 @@ function UF:ConfigurePortrait()
         config.class = false
     end
 
-    if config.model and self.Portrait == self.Portrait2D then
+    if config.model and self.Portrait ~= self.Portrait3D then
         self:DisableElement("Portrait")
         self.Portrait = self.Portrait3D
-    elseif not config.model and self.Portrait == self.Portrait3D then
+    elseif not config.model and self.Portrait ~= self.Portrait2D then
         self:DisableElement("Portrait")
         self.Portrait = self.Portrait2D
     end

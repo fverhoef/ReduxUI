@@ -35,8 +35,7 @@ function PlayerMixin:PostInitialize()
     self.inCombat = false
     self.statusCounter = 0
     self.statusSign = -1
-
-    UF:ScheduleRepeatingTimer(PlayerMixin.UpdateStatusTexture, STATUS_REFRESH_RATE, self)
+    self.statusTextureTimer = UF:ScheduleRepeatingTimer(PlayerMixin.UpdateStatusTexture, STATUS_REFRESH_RATE, self)
 end
 
 function PlayerMixin:PostConfigure()
@@ -225,7 +224,7 @@ function PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
-    elseif self.configstyle == UF.Styles.Custom then
+    elseif self.config.style == UF.Styles.Custom then
         if self.Artwork then
             self.Artwork:Hide()
         end
@@ -239,7 +238,12 @@ function PlayerMixin:PostConfigure()
 end
 
 function PlayerMixin:UpdateStatusTexture()
-    if not self.Flash:IsShown() then
+    if not self.Flash or not self.Flash:IsShown() then
+        return
+    end
+
+    if self.config.style == UF.Styles.Custom then
+        self.Flash:Hide()
         return
     end
 
