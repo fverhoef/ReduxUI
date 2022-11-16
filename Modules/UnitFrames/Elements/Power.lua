@@ -7,7 +7,7 @@ function UF:CreatePower()
     self.Power = CreateFrame("StatusBar", "$parentPower", self, BackdropTemplateMixin and "BackdropTemplate")
     self.Power:SetStatusBarTexture(UF.config.statusbars.power)
     self.Power:SetFrameLevel(self:GetFrameLevel() - 1)
-    self.Power:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
+    self.Power:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8" })
     self.Power:SetBackdropColor(0, 0, 0, 0.70)
     self.Power:SetPoint("BOTTOMLEFT")
     self.Power:SetPoint("BOTTOMRIGHT")
@@ -47,9 +47,13 @@ function UF:ConfigurePower()
 
     self:EnableElement("Power")
 
-    if self.unit ~= "player" then config.detached = false end
+    if self.unit ~= "player" then
+        config.detached = false
+    end
 
-    if not config.detached then config.point[5] = nil end
+    if not config.detached then
+        config.point[5] = nil
+    end
     self.Power:SetSize(unpack(config.size))
     self.Power:ClearAllPoints()
     self.Power.Border:SetShown(config.detached or config.inset)
@@ -59,8 +63,8 @@ function UF:ConfigurePower()
         self.Power:SetNormalizedPoint(config.insetPoint)
         self.Power:SetFrameLevel(self:GetFrameLevel() + 2)
     else
-        local bottomLeftOffset = {0, 0}
-        local bottomRightOffset = {0, 0}
+        local bottomLeftOffset = { 0, 0 }
+        local bottomRightOffset = { 0, 0 }
         if self.config.portrait.enabled then
             if self.config.portrait.point == "LEFT" then
                 bottomLeftOffset[1] = self.config.portrait.point == "LEFT" and self.config.portrait.size[1] or 0

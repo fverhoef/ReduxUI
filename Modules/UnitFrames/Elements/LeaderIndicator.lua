@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateLeaderIndicator()
-    if not self.config.leaderIndicator.enabled then return end
+    if not self.config.leaderIndicator.enabled then
+        return
+    end
 
     self.LeaderIndicator = self:CreateTexture("$parentLeaderIcon", "OVERLAY")
     self.LeaderIndicator:SetParent(self.Overlay)

@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePvPClassificationIndicator()
-    if not self.config.pvpClassificationIndicator.enabled then return end
+    if not self.config.pvpClassificationIndicator.enabled then
+        return
+    end
 
     self.PvPClassificationIndicator = self:CreateTexture(nil, "OVERLAY")
     self.PvPClassificationIndicator:SetParent(self.Overlay)

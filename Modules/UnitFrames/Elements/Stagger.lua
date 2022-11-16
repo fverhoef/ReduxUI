@@ -4,12 +4,14 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateStagger()
-    if not self.config.stagger.enabled then return end
-    
-    self.Stagger = CreateFrame('StatusBar', nil, self)
+    if not self.config.stagger.enabled then
+        return
+    end
+
+    self.Stagger = CreateFrame("StatusBar", nil, self)
     self.Stagger:SetStatusBarTexture(UF.config.statusbars.classPower)
     self.Stagger:SetFrameLevel(self.Power:GetFrameLevel())
-    self.Stagger:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
+    self.Stagger:SetBackdrop({ bgFile = R.Libs.SharedMedia:Fetch("background", "Solid") })
     self.Stagger:SetBackdropColor(0, 0, 0, 0.70)
     self.Stagger:SetSize(120, 20)
     self.Stagger:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)

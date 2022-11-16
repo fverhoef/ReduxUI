@@ -121,7 +121,7 @@ else
     AddAuras(UF.aurawatch.HUNTER, { 13159 }, "TOP", { 0.00, 0.00, 0.85 }, true) -- Aspect of the Pack
     AddAuras(UF.aurawatch.HUNTER, { 20043, 20190, 27045, 49071 }, "TOP", { 0.33, 0.93, 0.79 }) -- Aspect of the Wild
     AddAuras(UF.aurawatch.HUNTER, { 34477 }, "BOTTOM", { 0.85, 0.00, 0.00 }, true) -- Misdirection
-    
+
     AddAuras(UF.aurawatch.MAGE, { 1459, 1460, 1461, 10156, 10157, 27126, 42995, 61024, 61316, 23028, 27127, 43002 }, "TOPLEFT", { 0.89, 0.09, 0.05 }, true) -- Arcane/Dalaran Intellect/Brilliance
     AddAuras(UF.aurawatch.MAGE, { 604, 8450, 8451, 10173, 10174, 33944, 43015 }, "TOPRIGHT", { 0.2, 0.8, 0.2 }, true) -- Dampen Magic
     AddAuras(UF.aurawatch.MAGE, { 1008, 8455, 10169, 10170, 27130, 33946, 43017 }, "TOPRIGHT", { 0.2, 0.8, 0.2 }, true) -- Amplify Magic

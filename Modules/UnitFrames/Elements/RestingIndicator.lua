@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRestingIndicator()
-    if self.unit ~= "player" or not self.config.restingIndicator.enabled then return end
+    if self.unit ~= "player" or not self.config.restingIndicator.enabled then
+        return
+    end
 
     self.RestingIndicator = self.Overlay:CreateTexture("$parentRestingIcon", "OVERLAY", nil, 6)
     self.RestingIndicator:SetSize(31, 31) -- 31,34

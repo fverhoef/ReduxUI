@@ -5,7 +5,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAuras()
-    if not self.config.auras.enabled then return end
+    if not self.config.auras.enabled then
+        return
+    end
 
     self.Auras = CreateFrame("Frame", "$parentAuras", self)
     self.Auras.config = self.config.auras.buffsAndDebuffs
@@ -53,10 +55,10 @@ function UF:ConfigureAuras()
     self.Auras.numBuffs = config.buffsAndDebuffs.numBuffs
     self.Auras.numDebuffs = config.buffsAndDebuffs.numDebuffs
     self.Auras.spacing = config.buffsAndDebuffs.spacing
-    self.Auras.showStealableBuffs = self.Auras.config.showStealableBuffs
-    self.Auras.showBuffType = self.Auras.config.showBuffType
-    self.Auras.showDebuffType = self.Auras.config.showDebuffType
-    self.Auras.gap = self.Auras.config.gap
+    self.Auras.showStealableBuffs = config.buffsAndDebuffs.showStealableBuffs
+    self.Auras.showBuffType = config.buffsAndDebuffs.showBuffType
+    self.Auras.showDebuffType = config.buffsAndDebuffs.showDebuffType
+    self.Auras.gap = config.buffsAndDebuffs.gap
     self.Auras:SetShown(not config.separateBuffsAndDebuffs and config.buffsAndDebuffs.enabled)
     self.Auras:ForceUpdate()
 
@@ -70,8 +72,8 @@ function UF:ConfigureAuras()
     self.Buffs["growth-y"] = config.buffs.growthY
     self.Buffs.num = config.buffs.num
     self.Buffs.spacing = config.buffs.spacing
-    self.Buffs.showStealableBuffs = self.Buffs.config.showStealableBuffs
-    self.Buffs.showBuffType = self.Buffs.config.showBuffType
+    self.Buffs.showStealableBuffs = config.buffs.showStealableBuffs
+    self.Buffs.showBuffType = config.buffs.showBuffType
     self.Buffs:SetShown(config.separateBuffsAndDebuffs and config.buffs.enabled)
     self.Buffs:ForceUpdate()
 
@@ -85,8 +87,8 @@ function UF:ConfigureAuras()
     self.Debuffs["growth-y"] = config.debuffs.growthY
     self.Debuffs.num = config.debuffs.num
     self.Debuffs.spacing = config.debuffs.spacing
-    self.Buffs.showStealableBuffs = self.Buffs.config.showStealableBuffs
-    self.Buffs.showDebuffType = self.Buffs.config.showDebuffType
+    self.Debuffs.showStealableBuffs = config.debuffs.showStealableBuffs
+    self.Debuffs.showDebuffType = config.debuffs.showDebuffType
     self.Debuffs:SetShown(config.separateBuffsAndDebuffs and config.debuffs.enabled)
     self.Debuffs:ForceUpdate()
 end
@@ -101,7 +103,9 @@ end
 function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
     local name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
 
-    if button and button.debuffType ~= debuffType then button.debuffType = debuffType end
+    if button and button.debuffType ~= debuffType then
+        button.debuffType = debuffType
+    end
 
     if button and button.cd then
         if (duration and duration > 0) then
@@ -118,7 +122,9 @@ function UF:PostUpdateAura(unit, button, index, position, duration, expiration, 
     R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
-function UF:PostUpdateGap(unit, gapButton, visibleBuffs) gapButton.Border:Hide() end
+function UF:PostUpdateGap(unit, gapButton, visibleBuffs)
+    gapButton.Border:Hide()
+end
 
 function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll)
     local config = self.config
@@ -137,10 +143,12 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
     local allowDuration = noDuration or
                               (duration and duration > 0 and (not maxDuration or maxDuration == 0 or duration <= maxDuration) and (not minDuration or minDuration == 0 or duration >= minDuration))
 
-    if not allowDuration then return false end
+    if not allowDuration then
+        return false
+    end
 
     local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
-    
+
     if filter.whitelist.CrowdControl and UF.auraFilters.CrowdControl[spellID] then
         return true
     elseif filter.whitelist.TurtleBuffs and UF.auraFilters.TurtleBuffs[spellID] then
@@ -175,7 +183,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 end
 
 if R.isRetail then
-    --TODO: update
+    -- TODO: update
     UF.auraFilters = {
         CrowdControl = {
             -- Death Knight

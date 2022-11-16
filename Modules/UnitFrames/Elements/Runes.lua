@@ -6,7 +6,9 @@ local oUF = ns.oUF or oUF
 local MAX_RUNES = MAX_RUNES or 6
 
 function UF:CreateRunes()
-    if not self.config.runes.enabled then return end
+    if not self.config.runes.enabled then
+        return
+    end
 
     self.RunesHolder = CreateFrame("Frame", "$parentRunesHolder", self)
     self.RunesHolder:SetFrameLevel(self.Power:GetFrameLevel())
@@ -18,7 +20,7 @@ function UF:CreateRunes()
         local rune = CreateFrame("StatusBar", nil, self.RunesHolder, BackdropTemplateMixin and "BackdropTemplate")
         rune:SetStatusBarTexture(UF.config.statusbars.classPower)
         rune:SetFrameLevel(self.Power:GetFrameLevel())
-        rune:SetBackdrop({bgFile = R.Libs.SharedMedia:Fetch("background", "Solid")})
+        rune:SetBackdrop({ bgFile = R.Libs.SharedMedia:Fetch("background", "Solid") })
         rune:SetBackdropColor(0, 0, 0, 0.70)
 
         rune:CreateBorder(nil, 8, 2, rune:GetFrameLevel() + 1)

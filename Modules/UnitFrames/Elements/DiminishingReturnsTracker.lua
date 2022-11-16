@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateDiminishingReturnsTracker()
-    if not self.config.diminishingReturnsTracker.enabled then return end
+    if not self.config.diminishingReturnsTracker.enabled then
+        return
+    end
 
     self.DiminishingReturnsTracker = CreateFrame("Frame", "$parentDiminishingReturnsTracker", self)
     self.DiminishingReturnsTracker.PostCreateTimer = UF.DiminishingReturnsTracker_PostCreateTimer

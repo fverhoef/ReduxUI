@@ -339,6 +339,7 @@ R:RegisterModuleConfig(UF, {
         highlight = { target = false }
     }),
     targettarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        style = UF.Styles.Blizzard,
         size = { 95, 24 },
         point = { "TOPLEFT", addonName .. "Target", "TOPRIGHT", 10, 0 },
         health = { value = { enabled = false }, percent = { enabled = false } },

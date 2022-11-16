@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateSummonIndicator()
-    if not self.config.summonIndicator.enabled then return end
+    if not self.config.summonIndicator.enabled then
+        return
+    end
 
     self.SummonIndicatorHolder = CreateFrame("Frame", "$parentSummonIndicatorHolder", self)
     self.SummonIndicatorHolder:SetAllPoints(self.Overlay)

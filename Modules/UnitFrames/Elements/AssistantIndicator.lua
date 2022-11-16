@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAssistantIndicator()
-    if not self.config.assistantIndicator.enabled then return end
+    if not self.config.assistantIndicator.enabled then
+        return
+    end
 
     self.AssistantIndicator = self:CreateTexture("$parentAssistIcon", "OVERLAY")
     self.AssistantIndicator:SetParent(self.Overlay)

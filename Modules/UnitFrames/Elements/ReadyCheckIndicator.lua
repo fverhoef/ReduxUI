@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateReadyCheckIndicator()
-    if not self.config.readyCheckIndicator.enabled then return end
+    if not self.config.readyCheckIndicator.enabled then
+        return
+    end
 
     self.ReadyCheckIndicatorHolder = CreateFrame("Frame", "$parentReadyCheckIndicatorHolder", self)
     self.ReadyCheckIndicatorHolder:SetAllPoints(self.Overlay)

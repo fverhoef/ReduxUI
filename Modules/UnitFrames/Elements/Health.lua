@@ -7,7 +7,7 @@ function UF:CreateHealth()
     self.Health = CreateFrame("StatusBar", "$parentHealth", self, BackdropTemplateMixin and "BackdropTemplate")
     self.Health:SetStatusBarTexture(UF.config.statusbars.health)
     self.Health:SetFrameLevel(self:GetFrameLevel() - 1)
-    self.Health:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
+    self.Health:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8" })
     self.Health:SetBackdropColor(0, 0, 0, 0.70)
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT")
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT")
@@ -61,19 +61,25 @@ function UF:CreateHealth()
     healAbsorbBar:SetWidth(125)
     healAbsorbBar:Hide()
 
-    self.HealthPrediction = {myBar = myBar, otherBar = otherBar, absorbBar = absorbBar, healAbsorbBar = healAbsorbBar, maxOverflow = 1}
+    self.HealthPrediction = { myBar = myBar, otherBar = otherBar, absorbBar = absorbBar, healAbsorbBar = healAbsorbBar, maxOverflow = 1 }
 
-    if not R.isRetail then self:RegisterEvent("UNIT_HEALTH_FREQUENT", UF.Health_ForceUpdate) end
+    if not R.isRetail then
+        self:RegisterEvent("UNIT_HEALTH_FREQUENT", UF.Health_ForceUpdate)
+    end
 
     return self.Health
 end
 
-function UF:Health_ForceUpdate(event, ...) self.Health:ForceUpdate() end
+function UF:Health_ForceUpdate(event, ...)
+    self.Health:ForceUpdate()
+end
 
 oUF:RegisterMetaFunction("CreateHealth", UF.CreateHealth)
 
 function UF:ConfigureHealth()
-    if not self.Health then return end
+    if not self.Health then
+        return
+    end
 
     local config = self.config.health
     self.Health:SetStatusBarTexture(UF.config.statusbars.health)
@@ -86,8 +92,8 @@ function UF:ConfigureHealth()
     self.HealthPrediction.absorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
     self.HealthPrediction.healAbsorbBar:SetStatusBarTexture(UF.config.statusbars.healthPrediction)
 
-    local topLeftOffset = {0, 0}
-    local bottomRightOffset = {0, 0}
+    local topLeftOffset = { 0, 0 }
+    local bottomRightOffset = { 0, 0 }
     if self.config.portrait.enabled and not self.config.portrait.detached then
         if self.config.portrait.point == "LEFT" then
             topLeftOffset[1] = self.config.portrait.size[1]
@@ -95,7 +101,9 @@ function UF:ConfigureHealth()
             bottomRightOffset[1] = -self.config.portrait.size[1]
         end
     end
-    if self.config.power.enabled and not self.config.power.detached and not self.config.power.inset then bottomRightOffset[2] = self.config.power.size[2] end
+    if self.config.power.enabled and not self.config.power.detached and not self.config.power.inset then
+        bottomRightOffset[2] = self.config.power.size[2]
+    end
     self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", topLeftOffset[1], topLeftOffset[2])
     self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", bottomRightOffset[1], bottomRightOffset[2])
 

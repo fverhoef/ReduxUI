@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAuraHighlight()
-    if not self.config.highlight.debuffs then return end
+    if not self.config.highlight.debuffs then
+        return
+    end
 
     self.AuraHighlight = self:CreateTexture("$parentAuraHighlight", "OVERLAY")
     self.AuraHighlight:SetParent(self.Overlay)
@@ -42,6 +44,6 @@ end
 oUF:RegisterMetaFunction("ConfigureAuraHighlight", UF.ConfigureAuraHighlight)
 
 function UF:AuraHighlight_PostUpdate(self, debuffType, texture, wasFiltered, style, color)
-    self.debuffColor = not wasFiltered and debuffType and color and {color.r, color.g, color.b, color.a} or nil
+    self.debuffColor = not wasFiltered and debuffType and color and { color.r, color.g, color.b, color.a } or nil
     self:UpdateHighlight()
 end

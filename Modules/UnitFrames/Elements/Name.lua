@@ -4,8 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateName()
-    local config = self.config.name
-    if not config or not config.enabled then return end
+    if not self.config.name or not self.config.name.enabled then
+        return
+    end
 
     self.Name = self.Overlay:CreateFontString("$parentName", "OVERLAY", nil, 6)
     self.Name:SetFont(UF.config.font, 13, "OUTLINE")

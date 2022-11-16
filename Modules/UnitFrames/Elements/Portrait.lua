@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    if not self.config.portrait.enabled then
+    if not self.config.portrait.enabled and self.config.style == UF.Styles.Custom then
         return
     end
 
@@ -19,7 +19,7 @@ function UF:CreatePortrait()
 
     self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
     self.Portrait3D:SetAllPoints(self.PortraitHolder)
-    
+
     self.PortraitRound = self:CreateTexture("$parentPortraitRound", "BACKGROUND")
     self.PortraitRound.PostUpdate = function()
         self:UpdatePortraitTexture()
@@ -32,15 +32,11 @@ oUF:RegisterMetaFunction("CreatePortrait", UF.CreatePortrait)
 
 function UF:ConfigurePortrait()
     local config = self.config.portrait
-    if not config.enabled then
+    if not config.enabled and self.config.style == UF.Styles.Custom then
         if self.PortraitHolder then
             self.PortraitHolder:Hide()
         end
         self:DisableElement("Portrait")
-
-        if self.config.style ~= UF.Styles.Custom then
-            self:UpdatePortraitTexture()
-        end
         return
     elseif not self.Portrait then
         self:CreatePortrait()

@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePowerPrediction()
-    if not self.config.power.powerPrediction then return end
+    if not self.config.power.powerPrediction then
+        return
+    end
 
     local mainBar = CreateFrame("StatusBar", nil, self.Power)
     mainBar:SetStatusBarTexture(UF.config.statusbars.powerPrediction)
@@ -20,7 +22,7 @@ function UF:CreatePowerPrediction()
         altBar:SetSize(self.AdditionalPower:GetWidth(), 0)
     end
 
-    self.PowerPrediction = {mainBar = mainBar, altBar = altBar}
+    self.PowerPrediction = { mainBar = mainBar, altBar = altBar }
 
     UF:SecureHook(self.Power, "SetStatusBarColor", function(_, r, g, b)
         self.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25, 0.8)

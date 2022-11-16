@@ -5,7 +5,9 @@ local oUF = ns.oUF or oUF
 local NUM_TOTEMS = R.isRetail and 5 or 4
 
 function UF:CreateTotems()
-    if not self.config.totems.enabled then return end
+    if not self.config.totems.enabled then
+        return
+    end
 
     self.TotemsHolder = CreateFrame("Frame", "$parentTotemsHolder", self)
     self.TotemsHolder:SetFrameLevel(self.Power:GetFrameLevel())
@@ -15,7 +17,7 @@ function UF:CreateTotems()
     self.Totems = {}
     for i = 1, NUM_TOTEMS do
         local totem = CreateFrame("Button", nil, self.TotemsHolder)
-        totem.Icon = totem:CreateTexture(nil, "OVERLAY")        
+        totem.Icon = totem:CreateTexture(nil, "OVERLAY")
         totem.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         totem.Icon:SetInside(totem, 2, 2)
 
@@ -61,7 +63,9 @@ function UF:ConfigureTotems()
         self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
     end
 
-    for i, totem in ipairs(self.Totems) do totem:SetSize(config.size[2], config.size[2]) end
+    for i, totem in ipairs(self.Totems) do
+        totem:SetSize(config.size[2], config.size[2])
+    end
 end
 
 oUF:RegisterMetaFunction("ConfigureTotems", UF.ConfigureTotems)

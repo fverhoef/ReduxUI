@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateRaidRoleIndicator()
-    if not self.config.raidRoleIndicator.enabled then return end
+    if not self.config.raidRoleIndicator.enabled then
+        return
+    end
 
     self.RaidRoleIndicator = self:CreateTexture(nil, "OVERLAY")
     self.RaidRoleIndicator:SetParent(self.Overlay)

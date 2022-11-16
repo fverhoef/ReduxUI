@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateMasterLooterIndicator()
-    if not self.config.masterLooterIndicator.enabled then return end
+    if not self.config.masterLooterIndicator.enabled then
+        return
+    end
 
     self.MasterLooterIndicator = self:CreateTexture(nil, "OVERLAY")
     self.MasterLooterIndicator:SetParent(self.Overlay)

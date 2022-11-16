@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePhaseIndicator()
-    if not self.config.phaseIndicator.enabled then return end
+    if not self.config.phaseIndicator.enabled then
+        return
+    end
 
     self.PhaseIndicator = self:CreateTexture("$parentPhaseIcon", "OVERLAY")
     self.PhaseIndicator:SetParent(self.Overlay)

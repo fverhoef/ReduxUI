@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateTrinket()
-    if not self.config.trinket.enabled then return end
+    if not self.config.trinket.enabled then
+        return
+    end
 
     self.Trinket = CreateFrame("Frame", "$parentTrinket", self)
     self.Trinket:SetSize(42, 42)

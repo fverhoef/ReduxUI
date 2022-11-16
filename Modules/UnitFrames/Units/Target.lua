@@ -46,7 +46,7 @@ function TargetMixin:PostConfigure()
         self.Name:ClearAllPoints()
         self.Name:SetSize(115, 13)
         if self.config.largeHealth then
-            self.Name:SetPoint("TOPRIGHT", self, "TOPRIGHT", -72, -2)
+            self.Name:SetPoint("TOPRIGHT", self, "TOPRIGHT", -72, 0)
         else
             self.Name:SetPoint("TOPRIGHT", self, "TOPRIGHT", -72, -17)
         end
@@ -148,6 +148,24 @@ function TargetMixin:PostConfigure()
             self.GroupRoleIndicator:SetSize(18, 18)
             self.GroupRoleIndicator:ClearAllPoints()
             self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 18, -14)
+        end
+
+        if self.ReadyCheckIndicator then
+            self.ReadyCheckIndicator:SetSize(32, 32)
+            self.ReadyCheckIndicator:ClearAllPoints()
+            self.ReadyCheckIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        end
+
+        if self.ResurrectIndicator then
+            self.ResurrectIndicator:SetSize(32, 32)
+            self.ResurrectIndicator:ClearAllPoints()
+            self.ResurrectIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        end
+
+        if self.SummonIndicator then
+            self.SummonIndicator:SetSize(32, 32)
+            self.SummonIndicator:ClearAllPoints()
+            self.SummonIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
         end
     elseif self.configstyle == UF.Styles.Custom then
         if self.Artwork then

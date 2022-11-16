@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateResurrectIndicator()
-    if not self.config.resurrectIndicator.enabled then return end
+    if not self.config.resurrectIndicator.enabled then
+        return
+    end
 
     self.ResurrectIndicatorHolder = CreateFrame("Frame", "$parentResurrectIndicatorHolder", self)
     self.ResurrectIndicatorHolder:SetAllPoints(self.Overlay)

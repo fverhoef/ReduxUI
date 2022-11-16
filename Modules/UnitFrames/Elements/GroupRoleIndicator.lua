@@ -4,7 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateGroupRoleIndicator()
-    if not self.config.groupRoleIndicator.enabled then return end
+    if not self.config.groupRoleIndicator.enabled then
+        return
+    end
 
     self.GroupRoleIndicator = self:CreateTexture("$parentGroupRoleIcon", "OVERLAY", nil, 7)
     self.GroupRoleIndicator:SetParent(self.Overlay)
