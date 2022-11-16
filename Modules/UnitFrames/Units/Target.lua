@@ -114,28 +114,34 @@ function TargetMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
 
-        if self.PVPIndicator then
-            self.PVPIndicator:SetSize(48, 48)
-            self.PVPIndicator:ClearAllPoints()
-            self.PVPIndicator:SetPoint("CENTER", self.Portrait, "RIGHT", 2, 0)
+        if self.PvPIndicator then
+            self.PvPIndicator:SetSize(32, 32)
+            self.PvPIndicator:ClearAllPoints()
+            self.PvPIndicator:SetPoint("CENTER", self.Portrait, "RIGHT", 2, 0)
         end
 
         if self.LeaderIndicator then
-            self.LeaderIndicator:SetSize(24, 24)
+            self.LeaderIndicator:SetSize(14, 14)
             self.LeaderIndicator:ClearAllPoints()
-            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
         end
 
         if self.MasterLooterIndicator then
-            self.MasterLooterIndicator:SetSize(24, 24)
+            self.MasterLooterIndicator:SetSize(14, 14)
             self.MasterLooterIndicator:ClearAllPoints()
-            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
         end
 
         if self.RaidTargetIndicator then
             self.RaidTargetIndicator:SetSize(24, 24)
             self.RaidTargetIndicator:ClearAllPoints()
             self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
+        end
+
+        if self.GroupRoleIndicator then
+            self.GroupRoleIndicator:SetSize(18, 18)
+            self.GroupRoleIndicator:ClearAllPoints()
+            self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 18, -14)
         end
     elseif self.configstyle == UF.Styles.Custom then
         if self.Artwork then
