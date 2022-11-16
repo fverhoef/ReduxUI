@@ -6,7 +6,7 @@ ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 if not ns.oUF.isRetail then
     if not Enum.PowerType then
-        Enum.PowerType = { HealthCost = -2, None = -1, Mana = 0, Rage = 1, Focus = 2, Energy = 3, ComboPoints = 4 }
+        Enum.PowerType = { HealthCost = -2, None = -1, Mana = 0, Rage = 1, Focus = 2, Energy = 3, ComboPoints = 4, Runes = 5, RunicPower = 6, RuneBlood = 20, RuneFrost = 21, RuneUnholy = 22 }
     end
 
     if not _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO then
