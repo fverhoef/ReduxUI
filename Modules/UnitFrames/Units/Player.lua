@@ -171,6 +171,22 @@ function PlayerMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
 
+        if self.AdditionalPower then
+            self.AdditionalPower:ClearAllPoints()
+            self.AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -2)
+            self.AdditionalPower:SetSize(104, 10)
+            self.AdditionalPower.Border:Hide()
+
+            if not self.AdditionalPower.Background then
+                self.AdditionalPower.Background = self.AdditionalPower:CreateTexture("$parentAdditionalPowerBorder", "OVERLAY", nil, 6)
+                self.AdditionalPower.Background:SetTexture(R.media.textures.unitFrames.additionalPowerBorder)
+                self.AdditionalPower.Background:SetTexCoord(0, 232 / 256, 1, 0)
+                self.AdditionalPower.Background:SetPoint("TOPLEFT", -6, 0)
+                self.AdditionalPower.Background:SetPoint("BOTTOMRIGHT", 6, -6)
+            end
+            self.AdditionalPower.Background:Show()
+        end
+
         if self.PvPIndicator then
             self.PvPIndicator:SetSize(32, 32)
             self.PvPIndicator:ClearAllPoints()
@@ -233,6 +249,12 @@ function PlayerMixin:PostConfigure()
         end
         if self.NameBackground then
             self.NameBackground:Hide()
+        end
+        if self.AdditionalPower then
+            if self.AdditionalPower.Background then
+                self.AdditionalPower.Background:Hide()
+            end
+            self.AdditionalPower.Border:Show()
         end
     end
 end

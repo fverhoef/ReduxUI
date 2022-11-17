@@ -13,8 +13,6 @@ function UF:CreateAdditionalPower()
     self.AdditionalPower:SetFrameLevel(self.Power:GetFrameLevel() - 1)
     self.AdditionalPower:SetBackdrop({ bgFile = R.Libs.SharedMedia:Fetch("background", "Solid") })
     self.AdditionalPower:SetBackdropColor(0, 0, 0, 0.70)
-    self.AdditionalPower:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 10, -1)
-    self.AdditionalPower:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -10, -1)
     self.AdditionalPower:CreateBorder(nil, 8, 2, self.AdditionalPower:GetFrameLevel() + 1)
 
     self.AdditionalPower.Overlay = CreateFrame("Frame", "$parentOverlay", self.AdditionalPower)
@@ -41,6 +39,9 @@ function UF:ConfigureAdditionalPower()
 
     self:EnableElement("AdditionalPower")
 
+    self.AdditionalPower:ClearAllPoints()
+    self.AdditionalPower:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 10, -1)
+    self.AdditionalPower:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -10, -1)
     self.AdditionalPower:SetSize(unpack(config.size))
 
     self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)

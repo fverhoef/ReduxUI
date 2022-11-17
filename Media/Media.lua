@@ -53,6 +53,7 @@ R.media = {
             melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark"
         },
         unitFrames = {
+            additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\AdditionalPowerBorder",
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
