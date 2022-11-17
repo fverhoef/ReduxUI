@@ -127,6 +127,7 @@ R:RegisterModuleConfig(AB, {
     actionBar6 = {
         enabled = false,
         keyBoundTarget = "REDUXUIBAR6BUTTON",
+        page = 4,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -148,6 +149,7 @@ R:RegisterModuleConfig(AB, {
     actionBar7 = {
         enabled = false,
         keyBoundTarget = "REDUXUIBAR7BUTTON",
+        page = 7,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -169,6 +171,7 @@ R:RegisterModuleConfig(AB, {
     actionBar8 = {
         enabled = false,
         keyBoundTarget = "REDUXUIBAR8BUTTON",
+        page = 8,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -190,6 +193,7 @@ R:RegisterModuleConfig(AB, {
     actionBar9 = {
         enabled = false,
         keyBoundTarget = "REDUXUIBAR9BUTTON",
+        page = 9,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -211,6 +215,7 @@ R:RegisterModuleConfig(AB, {
     actionBar10 = {
         enabled = false,
         keyBoundTarget = "REDUXUIBAR10BUTTON",
+        page = 10,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
