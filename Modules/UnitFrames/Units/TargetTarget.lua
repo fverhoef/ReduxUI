@@ -27,10 +27,6 @@ function TargetTargetMixin:PostConfigure()
         end
         self.Artwork:Show()
 
-        if self.PortraitHolder then
-            self.PortraitHolder:Hide()
-        end
-
         self.Name:Show()
         self.Name:SetFont(self.config.name.font, 11, "OUTLINE")
         self.Name:SetJustifyH("CENTER")
@@ -44,6 +40,9 @@ function TargetTargetMixin:PostConfigure()
         self.Level:Hide()
 
         self:DisableElement("Portrait")
+        if self.PortraitHolder then
+            self.PortraitHolder:Hide()
+        end
         self.Portrait = self.PortraitRound
         self.Portrait:SetSize(35, 35)
         self.Portrait:ClearAllPoints()

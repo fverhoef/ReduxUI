@@ -349,6 +349,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     pet = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        style = UF.Styles.Blizzard,
         size = { 120, 28 },
         point = { "TOPLEFT", addonName .. "Player", "BOTTOMLEFT", 5, -10 },
         health = { value = { enabled = false, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
