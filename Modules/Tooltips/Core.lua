@@ -21,8 +21,8 @@ function TT:Enable()
     for i = 1, #_G.FACTION_BAR_COLORS do TT.factionColors[i] = R:Hex(_G.FACTION_BAR_COLORS[i]) end
 
     _G.GameTooltipStatusBar:ClearAllPoints()
-    _G.GameTooltipStatusBar:SetNormalizedPoint("BOTTOMLEFT", "TOPLEFT", 3, 2)
-    _G.GameTooltipStatusBar:SetNormalizedPoint("BOTTOMRIGHT", "TOPRIGHT", -3, 2)
+    _G.GameTooltipStatusBar:SetNormalizedPoint("BOTTOMLEFT", "TOPLEFT", 3.5, 2)
+    _G.GameTooltipStatusBar:SetNormalizedPoint("BOTTOMRIGHT", "TOPRIGHT", -3.5, 2)
     _G.GameTooltipStatusBar:SetHeight(10)
     _G.GameTooltipStatusBar:CreateBorder({1, 1, 1}, 8, 2)
 

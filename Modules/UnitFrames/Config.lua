@@ -480,7 +480,7 @@ R:RegisterModuleConfig(UF, {
                 buffs = { filter = { whitelist = { Personal = true, TurtleBuffs = true }, blacklist = { BlockNoDuration = true } } },
                 debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true }, blacklist = { BlockNoDuration = true } } }
             },
-            highlight = { targetArrows = true },
+            highlight = { animate = false, targetArrows = true },
             pvpIndicator = { enabled = false }
         }),
         enemyPlayer = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
@@ -497,7 +497,7 @@ R:RegisterModuleConfig(UF, {
                 buffs = { filter = { maxDuration = 300, whitelist = { Dispellable = true, PlayerBuffs = true, TurtleBuffs = true } } },
                 debuffs = { filter = { whitelist = { Personal = true, CrowdControl = true }, blacklist = { BlockNoDuration = true } } }
             },
-            highlight = { targetArrows = true },
+            highlight = { animate = false, targetArrows = true },
             pvpIndicator = { enabled = false }
         }),
         friendlyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
@@ -514,7 +514,7 @@ R:RegisterModuleConfig(UF, {
                 buffs = { filter = { whitelist = { Personal = true, TurtleBuffs = true }, blacklist = { BlockNoDuration = true } } },
                 debuffs = { filter = { whitelist = { Dispellable = true, RaidDebuffs = true, CrowdControl = true } } }
             },
-            highlight = { targetArrows = true },
+            highlight = { animate = false, targetArrows = true },
             pvpIndicator = { enabled = false }
         }),
         enemyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
@@ -531,7 +531,7 @@ R:RegisterModuleConfig(UF, {
                 buffs = { filter = { whitelist = { RaidBuffs = true, Dispellable = true, CastByUnit = true }, blacklist = { BlockNoDuration = true } } },
                 debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true }, blacklist = { BlockNoDuration = true } } }
             },
-            highlight = { targetArrows = true },
+            highlight = { animate = false, targetArrows = true },
             pvpIndicator = { enabled = false }
         }),
         cvars = {
