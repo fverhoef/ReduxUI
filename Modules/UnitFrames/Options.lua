@@ -943,7 +943,7 @@ function UF:CreateUnitPortraitOption(unit, order)
                 return UF:UnitConfig(unit).portrait.enabled
             end, function(value)
                 UF:UnitConfig(unit).portrait.enabled = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             lineBreakOptions = { type = "description", name = "", order = 2 },
             class = UF:CreateToggleOption(unit, L["Use Class Icons"], L["Whether to use class icons for the portrait texture."], 4, nil, nil, function()
                 return UF:UnitConfig(unit).portrait.class
