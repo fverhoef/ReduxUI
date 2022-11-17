@@ -23,9 +23,9 @@ function TargetMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetTexCoord(50 / 512, 438 / 512, 0, 200 / 256)
+            self.Artwork:SetTexCoord(50 / 512, 1, 0, 200 / 256)
             self.Artwork:SetPoint("TOPLEFT", 0, 8.5)
-            self.Artwork:SetPoint("BOTTOMRIGHT", 0, -15.5)
+            self.Artwork:SetPoint("BOTTOMRIGHT", 37, -15.5)
         end
         self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
         self.Artwork:Show()
