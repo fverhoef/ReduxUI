@@ -266,11 +266,6 @@ function PlayerMixin:UpdateStatusTexture()
         return
     end
 
-    if (not self.isResting or not self.config.highlight.resting) and (not self.inCombat or not self.config.highlight.combat) then
-        self.Flash:SetAlpha(1)
-        return
-    end
-
     local alpha = 255
     local counter = self.statusCounter + STATUS_REFRESH_RATE
     local sign = self.statusSign

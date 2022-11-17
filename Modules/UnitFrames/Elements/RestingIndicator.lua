@@ -15,6 +15,7 @@ function UF:CreateRestingIndicator()
 
     self.RestingIndicator.PostUpdate = function(element, isResting)
         self.isResting = isResting
+        self:UpdateHighlight()
     end
 
     UF:ScheduleRepeatingTimer(UF.UpdateRestingIndicatorTexture, 0.2, self)
@@ -41,6 +42,7 @@ function UF:ConfigureRestingIndicator()
 
     if self.isResting then
         self.RestingIndicator:Show()
+        self:UpdateHighlight()
     end
 end
 
