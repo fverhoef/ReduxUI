@@ -102,12 +102,7 @@ function AB:CreateActionBar(id)
 
     local page = bar.config.page
     if id == 1 then
-        if R.isRetail then
-            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-        else
-            page = "[bonusbar:5] 11;"
-        end
-
+        page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
         page = page .. " [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;"
 
         if R.PlayerInfo.class == "DRUID" then
