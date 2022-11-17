@@ -360,6 +360,8 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
+        style = UF.Styles.Blizzard,
+        largeHealth = true,
         point = { "TOP", "UIParent", "TOP", 0, -250 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
         name = { point = { "BOTTOMRIGHT", "TOPRIGHT", -2, 0 }, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r" },
@@ -373,6 +375,7 @@ R:RegisterModuleConfig(UF, {
         highlight = { target = false }
     }),
     focustarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
+        style = UF.Styles.Blizzard,
         size = { 95, 24 },
         point = { "TOPLEFT", addonName .. "Focus", "TOPRIGHT", 10, 0 },
         health = { value = { enabled = false }, percent = { enabled = false } },

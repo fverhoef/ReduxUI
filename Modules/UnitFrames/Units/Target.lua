@@ -35,7 +35,7 @@ function TargetMixin:PostConfigure()
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
             self.Flash:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Flash")
             self.Flash:SetTexCoord(16 / 512, 470 / 512, 0 / 1024, 178 / 1024)
-            self.Flash:SetPoint("CENTER", self.Artwork, "CENTER", 0, 2)
+            self.Flash:SetPoint("CENTER", self, "CENTER", 0, 2)
             self.Flash:SetSize(227, 89)
         end
         self.Flash:Hide()
