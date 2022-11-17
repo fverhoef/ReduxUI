@@ -57,7 +57,13 @@ R.media = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
+            targetingFrame_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite",
+            targetingFrame_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare",
+            targetingFrame_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare-Elite",
             targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth",
+            targetingFrame_LargeHealth_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Elite",
+            targetingFrame_LargeHealth_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Rare",
+            targetingFrame_LargeHealth_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Rare-Elite",
             targetOfTargetFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetOfTargetFrame"
         }
     }

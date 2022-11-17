@@ -9,6 +9,10 @@ end
 
 TargetMixin = {}
 
+function TargetMixin:PostInitialize()
+    self:RegisterEvent("PLAYER_TARGET_CHANGED", TargetMixin.UpdateArtwork, true)
+end
+
 function TargetMixin:PostConfigure()
     if self.config.style == UF.Styles.Blizzard then
         self:SetSize(194, 76)
@@ -19,15 +23,13 @@ function TargetMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetTexCoord(50 / 512, 438 / 512, 17 / 256, 169 / 256)
-            self.Artwork:SetAllPoints()
+            self.Artwork:SetTexCoord(50 / 512, 438 / 512, 0, 200 / 256)
+            self.Artwork:SetPoint("TOPLEFT", 0, 8.5)
+            self.Artwork:SetPoint("BOTTOMRIGHT", 0, -15.5)
         end
-        if self.config.largeHealth then
-            self.Artwork:SetTexture(R.media.textures.unitFrames.targetingFrame_LargeHealth)
-        else
-            self.Artwork:SetTexture(R.media.textures.unitFrames.targetingFrame)
-        end
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
         self.Artwork:Show()
+        self:UpdateArtwork()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
@@ -68,7 +70,7 @@ function TargetMixin:PostConfigure()
         self.Level:ClearAllPoints()
         self.Level:SetSize(20, 20)
         self.Level:SetPoint("CENTER", self, "BOTTOMRIGHT", -15, 19)
-        self:Tag(self.Level, "[difficultycolor][level][shortclassification]|r")
+        self:Tag(self.Level, "[difficultycolor][level]|r")
 
         if self.PortraitHolder then
             self.PortraitHolder:Hide()
@@ -177,5 +179,26 @@ function TargetMixin:PostConfigure()
         if self.NameBackground then
             self.NameBackground:Hide()
         end
+    end
+end
+
+function TargetMixin:PostUpdate()
+    self:UpdateArtwork()
+end
+
+function TargetMixin:UpdateArtwork()
+    if self.config.style == UF.Styles.Blizzard then
+        local classification = UnitClassification("target")
+        if classification == "rare" then
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_Rare or R.media.textures.unitFrames.targetingFrame_Rare)
+        elseif classification == "rareelite" then
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_RareElite or R.media.textures.unitFrames.targetingFrame_RareElite)
+        elseif classification == "elite" then
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_Elite or R.media.textures.unitFrames.targetingFrame_Elite)
+        else
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
+        end
+    elseif self.Artwork then
+        self.Artwork:Hide()
     end
 end

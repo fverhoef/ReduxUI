@@ -79,11 +79,7 @@ function PlayerMixin:PostConfigure()
             self.Artwork:SetTexCoord(438 / 512, 50 / 512, 17 / 256, 169 / 256)
             self.Artwork:SetAllPoints()
         end
-        if self.config.largeHealth then
-            self.Artwork:SetTexture(R.media.textures.unitFrames.targetingFrame_LargeHealth)
-        else
-            self.Artwork:SetTexture(R.media.textures.unitFrames.targetingFrame)
-        end
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
         self.Artwork:Show()
 
         if not self.Flash then
@@ -125,7 +121,7 @@ function PlayerMixin:PostConfigure()
         self.Level:ClearAllPoints()
         self.Level:SetSize(20, 20)
         self.Level:SetPoint("CENTER", self, "BOTTOMLEFT", 18, 19)
-        self:Tag(self.Level, "[difficultycolor][level][shortclassification]|r")
+        self:Tag(self.Level, "[difficultycolor][level]|r")
 
         if self.PortraitHolder then
             self.PortraitHolder:Hide()
