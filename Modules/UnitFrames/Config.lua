@@ -32,7 +32,6 @@ local AURA_FILTER_BLACKLIST = { BlockNonPersonal = false, BlockCastByPlayers = f
 
 local DEFAULT_UNIT_CONFIG = {
     enabled = true,
-    style = UF.Styles.Custom,
     size = { 200, 36 },
     scale = 1,
     point = { "TOPRIGHT", "UIParent", "BOTTOM", -150, 350 },

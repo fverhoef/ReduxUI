@@ -401,50 +401,65 @@ function UF:CreateUnitHealthValueOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).health.value.enabled = value
             end),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 2 },
-            point = UF:CreatePointOption(unit, 3, function()
-                return UF:UnitConfig(unit).health.value.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).health.value.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 4, function()
-                return UF:UnitConfig(unit).health.value.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).health.value.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 5, function()
-                return UF:UnitConfig(unit).health.value.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).health.value.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 6, function()
-                return UF:UnitConfig(unit).health.value.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).health.value.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).health.value.font
-            end, function(value)
-                UF:UnitConfig(unit).health.value.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).health.value.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).health.value.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).health.value.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).health.value.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).health.value.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).health.value.fontShadow = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).health.value.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).health.value.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).health.value.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).health.value.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Font"],
+                order = 3,
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).health.value.font
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).health.value.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).health.value.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).health.value.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).health.value.fontShadow = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 5 },
+            tag = UF:CreateTagOption(unit, 6, function()
                 return UF:UnitConfig(unit).health.value.tag
             end, function(value)
                 UF:UnitConfig(unit).health.value.tag = value
@@ -464,50 +479,65 @@ function UF:CreateUnitHealthPercentOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).health.percent.enabled = value
             end),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 2 },
-            point = UF:CreatePointOption(unit, 3, function()
-                return UF:UnitConfig(unit).health.percent.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 4, function()
-                return UF:UnitConfig(unit).health.percent.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 5, function()
-                return UF:UnitConfig(unit).health.percent.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 6, function()
-                return UF:UnitConfig(unit).health.percent.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).health.percent.font
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).health.percent.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).health.percent.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).health.percent.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).health.percent.fontShadow = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).health.percent.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).health.percent.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).health.percent.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).health.percent.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Font"],
+                order = 3,
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).health.percent.font
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).health.percent.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).health.percent.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).health.percent.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).health.percent.fontShadow = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 5 },
+            tag = UF:CreateTagOption(unit, 6, function()
                 return UF:UnitConfig(unit).health.percent.tag
             end, function(value)
                 UF:UnitConfig(unit).health.percent.tag = value
@@ -658,50 +688,65 @@ function UF:CreateUnitPowerValueOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).power.value.enabled = value
             end),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 2 },
-            point = UF:CreatePointOption(unit, 3, function()
-                return UF:UnitConfig(unit).power.value.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).power.value.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 4, function()
-                return UF:UnitConfig(unit).power.value.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).power.value.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 5, function()
-                return UF:UnitConfig(unit).power.value.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).power.value.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 6, function()
-                return UF:UnitConfig(unit).power.value.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).power.value.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).power.value.font
-            end, function(value)
-                UF:UnitConfig(unit).power.value.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).power.value.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).power.value.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).power.value.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).power.value.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).power.value.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).power.value.fontShadow = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).power.value.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).power.value.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).power.value.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).power.value.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Font"],
+                order = 3,
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).power.value.font
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).power.value.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).power.value.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).power.value.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).power.value.fontShadow = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 4 },
+            tag = UF:CreateTagOption(unit, 5, function()
                 return UF:UnitConfig(unit).power.value.tag
             end, function(value)
                 UF:UnitConfig(unit).power.value.tag = value
@@ -721,50 +766,65 @@ function UF:CreateUnitPowerPercentOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).power.percent.enabled = value
             end),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 2 },
-            point = UF:CreatePointOption(unit, 3, function()
-                return UF:UnitConfig(unit).power.percent.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 4, function()
-                return UF:UnitConfig(unit).power.percent.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 5, function()
-                return UF:UnitConfig(unit).power.percent.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 6, function()
-                return UF:UnitConfig(unit).power.percent.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).power.percent.font
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).power.percent.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).power.percent.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).power.percent.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).power.percent.fontShadow = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).power.percent.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).power.percent.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).power.percent.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).power.percent.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Font"],
+                order = 3,
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).power.percent.font
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).power.percent.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).power.percent.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).power.percent.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).power.percent.fontShadow = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 5 },
+            tag = UF:CreateTagOption(unit, 6, function()
                 return UF:UnitConfig(unit).power.percent.tag
             end, function(value)
                 UF:UnitConfig(unit).power.percent.tag = value
@@ -785,66 +845,89 @@ function UF:CreateUnitNameOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).name.enabled = value
             end),
-            lineBreakSize = { type = "header", name = "Size", order = 2 },
-            width = UF:CreateRangeOption(unit, L["Width"], L["The width of the name text."], 3, nil, 10, nil, 400, 1, function()
-                return UF:UnitConfig(unit).name.size[1]
-            end, function(value)
-                UF:UnitConfig(unit).name.size[1] = value
-            end),
-            height = UF:CreateRangeOption(unit, L["Height"], L["The height of the name text."], 4, nil, 10, nil, 400, 1, function()
-                return UF:UnitConfig(unit).name.size[2]
-            end, function(value)
-                UF:UnitConfig(unit).name.size[2] = value
-            end),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 5 },
-            point = UF:CreatePointOption(unit, 6, function()
-                return UF:UnitConfig(unit).name.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).name.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 7, function()
-                return UF:UnitConfig(unit).name.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).name.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 8, function()
-                return UF:UnitConfig(unit).name.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).name.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 9, function()
-                return UF:UnitConfig(unit).name.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).name.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).name.font
-            end, function(value)
-                UF:UnitConfig(unit).name.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).name.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).name.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).name.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).name.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).name.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).name.fontShadow = value
-            end),
-            justifyH = UF:CreateFontJustifyHOption(unit, 25, function()
-                return UF:UnitConfig(unit).name.justifyH
-            end, function(value)
-                UF:UnitConfig(unit).name.justifyH = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            size = {
+                type = "group",
+                name = L["Size"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the name text."], 1, nil, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).name.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.size[1] = value
+                    end),
+                    height = UF:CreateRangeOption(unit, L["Height"], L["The height of the name text."], 2, nil, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).name.size[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.size[2] = value
+                    end)
+                }
+            },
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 3,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).name.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).name.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).name.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).name.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).name.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Position"],
+                order = 4,
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).name.font
+                    end, function(value)
+                        UF:UnitConfig(unit).name.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).name.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).name.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).name.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).name.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).name.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).name.fontShadow = value
+                    end),
+                    justifyH = UF:CreateFontJustifyHOption(unit, 5, function()
+                        return UF:UnitConfig(unit).name.justifyH
+                    end, function(value)
+                        UF:UnitConfig(unit).name.justifyH = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 5 },
+            tag = UF:CreateTagOption(unit, 6, function()
                 return UF:UnitConfig(unit).name.tag
             end, function(value)
                 UF:UnitConfig(unit).name.tag = value
@@ -865,66 +948,90 @@ function UF:CreateUnitLevelOption(unit, order)
             end, function(value)
                 UF:UnitConfig(unit).level.enabled = value
             end, nil, IsBlizzardStyled(unit)),
-            lineBreakSize = { type = "header", name = "Size", order = 2 },
-            width = UF:CreateRangeOption(unit, L["Width"], L["The width of the name text."], 3, nil, 10, nil, 400, 1, function()
-                return UF:UnitConfig(unit).level.size[1]
-            end, function(value)
-                UF:UnitConfig(unit).level.size[1] = value
-            end, IsBlizzardStyled(unit)),
-            height = UF:CreateRangeOption(unit, L["Height"], L["The height of the name text."], 4, nil, 10, nil, 400, 1, function()
-                return UF:UnitConfig(unit).level.size[2]
-            end, function(value)
-                UF:UnitConfig(unit).level.size[2] = value
-            end, IsBlizzardStyled(unit)),
-            lineBreakPoint = { type = "header", name = L["Position"], order = 5 },
-            point = UF:CreatePointOption(unit, 6, function()
-                return UF:UnitConfig(unit).level.point[1]
-            end, function(value)
-                UF:UnitConfig(unit).level.point[1] = value
-            end),
-            relativePoint = UF:CreateRelativePointOption(unit, 7, function()
-                return UF:UnitConfig(unit).level.point[2]
-            end, function(value)
-                UF:UnitConfig(unit).level.point[2] = value
-            end),
-            offsetX = UF:CreateOffsetXOption(unit, 8, function()
-                return UF:UnitConfig(unit).level.point[3]
-            end, function(value)
-                UF:UnitConfig(unit).level.point[3] = value
-            end),
-            offsetY = UF:CreateOffsetYOption(unit, 9, function()
-                return UF:UnitConfig(unit).level.point[4]
-            end, function(value)
-                UF:UnitConfig(unit).level.point[4] = value
-            end),
-            lineBreakFont = { type = "header", name = "Font", order = 20 },
-            font = UF:CreateFontFamilyOption(unit, 21, function()
-                return UF:UnitConfig(unit).level.font
-            end, function(value)
-                UF:UnitConfig(unit).level.font = value
-            end),
-            fontSize = UF:CreateFontSizeOption(unit, 22, function()
-                return UF:UnitConfig(unit).level.fontSize
-            end, function(value)
-                UF:UnitConfig(unit).level.fontSize = value
-            end),
-            fontOutline = UF:CreateFontOutlineOption(unit, 23, function()
-                return UF:UnitConfig(unit).level.fontOutline
-            end, function(value)
-                UF:UnitConfig(unit).level.fontOutline = value
-            end),
-            fontShadow = UF:CreateFontShadowOption(unit, 24, function()
-                return UF:UnitConfig(unit).level.fontShadow
-            end, function(value)
-                UF:UnitConfig(unit).level.fontShadow = value
-            end),
-            justifyH = UF:CreateFontJustifyHOption(unit, 25, function()
-                return UF:UnitConfig(unit).level.justifyH
-            end, function(value)
-                UF:UnitConfig(unit).level.justifyH = value
-            end),
-            lineBreakTag = { type = "header", name = "Tag", order = 30 },
-            tag = UF:CreateTagOption(unit, 31, function()
+            size = {
+                type = "group",
+                name = L["Size"],
+                order = 2,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the name text."], 1, nil, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).level.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.size[1] = value
+                    end, IsBlizzardStyled(unit)),
+                    height = UF:CreateRangeOption(unit, L["Height"], L["The height of the name text."], 2, nil, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).level.size[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.size[2] = value
+                    end, IsBlizzardStyled(unit))
+                }
+            },
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 3,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).level.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).level.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).level.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).level.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).level.point[4] = value
+                    end)
+                }
+            },
+            font = {
+                type = "group",
+                name = L["Position"],
+                order = 4,
+                disabled = IsBlizzardStyled(unit),
+                inline = true,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1, function()
+                        return UF:UnitConfig(unit).level.font
+                    end, function(value)
+                        UF:UnitConfig(unit).level.font = value
+                    end),
+                    fontSize = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).level.fontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).level.fontSize = value
+                    end),
+                    fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).level.fontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).level.fontOutline = value
+                    end),
+                    fontShadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).level.fontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).level.fontShadow = value
+                    end),
+                    justifyH = UF:CreateFontJustifyHOption(unit, 5, function()
+                        return UF:UnitConfig(unit).level.justifyH
+                    end, function(value)
+                        UF:UnitConfig(unit).level.justifyH = value
+                    end)
+                }
+            },
+            lineBreakTag = { type = "header", name = "Tag", order = 5 },
+            tag = UF:CreateTagOption(unit, 6, function()
                 return UF:UnitConfig(unit).level.tag
             end, function(value)
                 UF:UnitConfig(unit).level.tag = value
@@ -967,7 +1074,7 @@ function UF:CreateUnitPortraitOption(unit, order)
                 return UF:UnitConfig(unit).portrait.showSeparator
             end, function(value)
                 UF:UnitConfig(unit).portrait.showSeparator = value
-            end, nil , IsBlizzardStyled(unit)),
+            end, nil, IsBlizzardStyled(unit)),
             lineBreakSize = { type = "description", name = L["Size"], order = 10 },
             width = UF:CreateRangeOption(unit, L["Width"], L["The width of the portrait."], 11, nil, 0, nil, 500, 1, function()
                 return UF:UnitConfig(unit).portrait.size[1]
@@ -1154,6 +1261,7 @@ function UF:CreateUnitIndicatorOption(unit, indicatorName, order, title, hidden)
                 type = "group",
                 name = L["Position"],
                 order = order,
+                disabled = IsBlizzardStyled(unit),
                 inline = true,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
@@ -1183,6 +1291,7 @@ function UF:CreateUnitIndicatorOption(unit, indicatorName, order, title, hidden)
                 name = L["Size"],
                 order = order,
                 inline = true,
+                disabled = IsBlizzardStyled(unit),
                 args = {
                     width = UF:CreateRangeOption(unit, L["Width"], L["The width of the indicator."], 10, nil, 10, nil, 400, 1, function()
                         return UF:UnitConfig(unit)[indicatorName].size[1]
@@ -1437,25 +1546,24 @@ function UF:CreateUnitStylingOption(unit, order)
         order = order,
         inline = true,
         args = {
-            style = UF:CreateSelectOption(unit, L["Style"], L["The style preset for this unit."], 1, nil, UF.Styles, function()
+            style = UF:CreateSelectOption(unit, L["Style"], L["The style preset for this unit."], 1, function()
+                return UF:UnitConfig(unit).style == nil
+            end, UF.Styles, function()
                 return UF:UnitConfig(unit).style
             end, function(value)
                 UF:UnitConfig(unit).style = value
-            end, function()
-                return UF:UnitConfig(unit).style == nil
             end),
-            lineBreak1 = { type = "header", name = "", order = 2 },
-            inlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether to show an inlay for this unit."], 3, nil, nil, function()
+            inlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether to show an inlay for this unit."], 3, nil, IsBlizzardStyled(unit), function()
                 return UF:UnitConfig(unit).inlay.enabled
             end, function(value)
                 UF:UnitConfig(unit).inlay.enabled = value
-            end, nil, IsBlizzardStyled(unit)),
-            largeHealth = UF:CreateToggleOption(unit, L["Large Health"], L["Whether to use a larger health for this unit."], 4, nil, nil, function()
+            end),
+            largeHealth = UF:CreateToggleOption(unit, L["Large Health"], L["Whether to use a larger health for this unit."], 4, nil, function()
+                return UF:UnitConfig(unit).largeHealth == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
+            end, function()
                 return UF:UnitConfig(unit).largeHealth
             end, function(value)
                 UF:UnitConfig(unit).largeHealth = value
-            end, nil, function()
-                return UF:UnitConfig(unit).largeHealth == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
             end)
         }
     }
