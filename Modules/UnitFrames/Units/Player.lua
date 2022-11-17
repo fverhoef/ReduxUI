@@ -33,9 +33,6 @@ function PlayerMixin:PostInitialize()
 
     self.isResting = false
     self.inCombat = false
-    self.statusCounter = 0
-    self.statusSign = -1
-    self.statusTextureTimer = UF:ScheduleRepeatingTimer(PlayerMixin.UpdateStatusTexture, STATUS_REFRESH_RATE, self)
 end
 
 function PlayerMixin:PostConfigure()
@@ -253,35 +250,4 @@ function PlayerMixin:PostConfigure()
             self.AdditionalPower.Border:Show()
         end
     end
-end
-
-function PlayerMixin:UpdateStatusTexture()
-    if not self.Flash or not self.Flash:IsShown() then
-        return
-    end
-
-    if self.config.style == UF.Styles.Custom then
-        self.Flash:SetAlpha(0)
-        self.Flash:Hide()
-        return
-    end
-
-    local alpha = 255
-    local counter = self.statusCounter + STATUS_REFRESH_RATE
-    local sign = self.statusSign
-
-    if counter > 0.5 then
-        sign = -sign
-        self.statusSign = sign
-    end
-    counter = mod(counter, 0.5)
-    self.statusCounter = counter
-
-    if sign == 1 then
-        alpha = (55 + (counter * 400)) / 255
-    else
-        alpha = (255 - (counter * 400)) / 255
-    end
-
-    self.Flash:SetAlpha(alpha)
 end

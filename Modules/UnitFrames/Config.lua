@@ -207,7 +207,7 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = { enabled = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
+    highlight = { enabled = true, animate = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
     assistantIndicator = { enabled = true, size = { 16, 16 }, point = { "CENTER", "TOPLEFT", 0, 0 } },
     combatIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
     groupRoleIndicator = { enabled = true, size = { 20, 20 }, point = { "CENTER", "TOPRIGHT", 0, 0 } },

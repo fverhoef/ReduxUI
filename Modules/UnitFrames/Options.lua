@@ -1476,52 +1476,57 @@ function UF:CreateUnitHighlightOption(unit, order)
                 UF:UnitConfig(unit).highlight.enabled = value
             end),
             lineBreak1 = { type = "description", name = "", order = 2 },
-            colorBorder = UF:CreateToggleOption(unit, L["Color Border"], L["Whether to color unit frame borders when highlighting."], 3, nil, nil, function()
+            animate = UF:CreateToggleOption(unit, L["Animate"], L["Whether to animate highlighting."], 4, nil, nil, function()
+                return UF:UnitConfig(unit).highlight.animate
+            end, function(value)
+                UF:UnitConfig(unit).highlight.animate = value
+            end),
+            colorBorder = UF:CreateToggleOption(unit, L["Color Border"], L["Whether to color unit frame borders when highlighting."], 4, nil, nil, function()
                 return UF:UnitConfig(unit).highlight.colorBorder
             end, function(value)
                 UF:UnitConfig(unit).highlight.colorBorder = value
             end),
-            colorShadow = UF:CreateToggleOption(unit, L["Color Shadows"], L["Whether to color unit frame shadows when highlighting."], 4, nil, nil, function()
+            colorShadow = UF:CreateToggleOption(unit, L["Color Shadows"], L["Whether to color unit frame shadows when highlighting."], 5, nil, nil, function()
                 return UF:UnitConfig(unit).highlight.colorShadow
             end, function(value)
                 UF:UnitConfig(unit).highlight.colorShadow = value
             end),
-            lineBreak2 = { type = "description", name = "", order = 5 },
-            debuffs = UF:CreateToggleOption(unit, L["Highlight Based On Debuff"], L["Whether to color unit frames based on debuff type."], 3, nil, nil, function()
+            lineBreak2 = { type = "description", name = "", order = 6 },
+            debuffs = UF:CreateToggleOption(unit, L["Highlight Based On Debuff"], L["Whether to color unit frames based on debuff type."], 7, nil, nil, function()
                 return UF:UnitConfig(unit).highlight.debuffs
             end, function(value)
                 UF:UnitConfig(unit).highlight.debuffs = value
             end),
-            onlyDispellableDebuffs = UF:CreateToggleOption(unit, L["Only Highlight Dispellable Debuffs"], L["Whether only highlight unit frames when player can dispel the debuff."], 3, nil, nil,
+            onlyDispellableDebuffs = UF:CreateToggleOption(unit, L["Only Highlight Dispellable Debuffs"], L["Whether only highlight unit frames when player can dispel the debuff."], 8, nil, nil,
                                                            function()
                 return UF:UnitConfig(unit).highlight.onlyDispellableDebuffs
             end, function(value)
                 UF:UnitConfig(unit).highlight.onlyDispellableDebuffs = value
             end),
-            lineBreak3 = { type = "description", name = "", order = 8 },
-            threat = UF:CreateToggleOption(unit, L["Highlight Based On Threat"], L["Whether to color unit frames based on threat situation."], 9, nil, nil, function()
+            lineBreak3 = { type = "description", name = "", order = 9 },
+            threat = UF:CreateToggleOption(unit, L["Highlight Based On Threat"], L["Whether to color unit frames based on threat situation."], 10, nil, nil, function()
                 return UF:UnitConfig(unit).highlight.threat
             end, function(value)
                 UF:UnitConfig(unit).highlight.threat = value
             end),
-            target = UF:CreateToggleOption(unit, L["Highlight Target"], L["Whether to color unit frames when targeted."], 10, nil, nil, function()
+            target = UF:CreateToggleOption(unit, L["Highlight Target"], L["Whether to color unit frames when targeted."], 11, nil, nil, function()
                 return UF:UnitConfig(unit).highlight.target
             end, function(value)
                 UF:UnitConfig(unit).highlight.target = value
             end),
-            targetArrows = UF:CreateToggleOption(unit, L["Show Target Arrows"], L["Whether to show arrows next to the frame when targeted."], 11, nil,
+            targetArrows = UF:CreateToggleOption(unit, L["Show Target Arrows"], L["Whether to show arrows next to the frame when targeted."], 12, nil,
                                                  UF:UnitDefaults(unit).highlight.targetArrows == nil, function()
                 return UF:UnitConfig(unit).highlight.targetArrows
             end, function(value)
                 UF:UnitConfig(unit).highlight.targetArrows = value
             end),
-            lineBreak4 = { type = "description", name = "", order = 12 },
-            resting = UF:CreateToggleOption(unit, L["Highlight Resting"], L["Whether to color the player frame when resting."], 13, nil, unit ~= "player", function()
+            lineBreak4 = { type = "description", name = "", order = 13 },
+            resting = UF:CreateToggleOption(unit, L["Highlight Resting"], L["Whether to color the player frame when resting."], 14, nil, unit ~= "player", function()
                 return UF:UnitConfig(unit).highlight.resting
             end, function(value)
                 UF:UnitConfig(unit).highlight.resting = value
             end),
-            combat = UF:CreateToggleOption(unit, L["Highlight Combat"], L["Whether to color the player frame when in combat."], 14, nil, unit ~= "player", function()
+            combat = UF:CreateToggleOption(unit, L["Highlight Combat"], L["Whether to color the player frame when in combat."], 15, nil, unit ~= "player", function()
                 return UF:UnitConfig(unit).highlight.combat
             end, function(value)
                 UF:UnitConfig(unit).highlight.combat = value
