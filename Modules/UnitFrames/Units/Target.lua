@@ -118,7 +118,7 @@ function TargetMixin:PostConfigure()
 
         self.Power.Border:Hide()
         self.Power.Separator:Hide()
-        
+
         if self.PvPIndicator then
             self.PvPIndicator:SetSize(32, 32)
             self.PvPIndicator:ClearAllPoints()
@@ -126,15 +126,21 @@ function TargetMixin:PostConfigure()
         end
 
         if self.LeaderIndicator then
-            self.LeaderIndicator:SetSize(14, 14)
+            self.LeaderIndicator:SetSize(18, 18)
             self.LeaderIndicator:ClearAllPoints()
-            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
+        end
+
+        if self.AssistantIndicator then
+            self.AssistantIndicator:SetSize(18, 18)
+            self.AssistantIndicator:ClearAllPoints()
+            self.AssistantIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
         end
 
         if self.MasterLooterIndicator then
-            self.MasterLooterIndicator:SetSize(14, 14)
+            self.MasterLooterIndicator:SetSize(18, 18)
             self.MasterLooterIndicator:ClearAllPoints()
-            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -6)
         end
 
         if self.RaidTargetIndicator then
@@ -147,6 +153,12 @@ function TargetMixin:PostConfigure()
             self.GroupRoleIndicator:SetSize(18, 18)
             self.GroupRoleIndicator:ClearAllPoints()
             self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 18, -14)
+        end
+
+        if self.RaidRoleIndicator then
+            self.RaidRoleIndicator:SetSize(18, 18)
+            self.RaidRoleIndicator:ClearAllPoints()
+            self.RaidRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 18, -14)
         end
 
         if self.ReadyCheckIndicator then
