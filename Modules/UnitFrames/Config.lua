@@ -36,7 +36,7 @@ local DEFAULT_UNIT_CONFIG = {
     scale = 1,
     point = { "TOPRIGHT", "UIParent", "BOTTOM", -150, 350 },
     fader = R.config.faders.onShow,
-    inlay = { enabled = true },
+    inlay = { enabled = false },
     health = {
         enabled = true,
         size = { 150, 12 },
@@ -385,6 +385,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
+        style = UF.Styles.Blizzard,
         size = { 180, 30 },
         point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 },
         portrait = { size = { 28, 28 } },

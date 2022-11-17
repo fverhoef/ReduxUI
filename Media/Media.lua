@@ -54,9 +54,13 @@ R.media = {
         },
         unitFrames = {
             additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\AdditionalPowerBorder",
+            focusFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame",
+            focusFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame-Flash",
+            focusFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame-LargeHealth",
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
+            targetingFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Flash",
             targetingFrame_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite",
             targetingFrame_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare",
             targetingFrame_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare-Elite",

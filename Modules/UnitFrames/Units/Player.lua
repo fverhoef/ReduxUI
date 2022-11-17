@@ -81,10 +81,10 @@ function PlayerMixin:PostConfigure()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
-            self.Flash:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Flash")
-            self.Flash:SetTexCoord(470 / 512, 16 / 512, 0 / 1024, 178 / 1024)
-            self.Flash:SetPoint("CENTER", self.Artwork, "CENTER", 0, 2)
-            self.Flash:SetSize(227, 89)
+            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
+            self.Flash:SetTexCoord(1, 0, 0, 175 / 256)
+            self.Flash:SetPoint("CENTER", self, "CENTER", -6, 2)
+            self.Flash:SetSize(256, 88)
         end
         self.Flash:Hide()
 
@@ -164,6 +164,9 @@ function PlayerMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
 
+        self.Power.Border:Hide()
+        self.Power.Separator:Hide()
+        
         if self.AdditionalPower then
             self.AdditionalPower:ClearAllPoints()
             self.AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -2)

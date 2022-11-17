@@ -23,15 +23,15 @@ function FocusMixin:PostConfigure()
             self.Artwork:SetPoint("TOPLEFT", 0, 8.5)
             self.Artwork:SetPoint("BOTTOMRIGHT", 37, -15.5)
         end
-        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.focusFrame_LargeHealth or R.media.textures.unitFrames.focusFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
-            self.Flash:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Flash")
-            self.Flash:SetTexCoord(16 / 512, 470 / 512, 0 / 1024, 178 / 1024)
-            self.Flash:SetPoint("CENTER", self, "CENTER", 0, 2)
-            self.Flash:SetSize(227, 89)
+            self.Flash:SetTexture(R.media.textures.unitFrames.focusFrame_Flash)
+            self.Flash:SetTexCoord(0, 1, 0, 175 / 256)
+            self.Flash:SetPoint("CENTER", self, "CENTER", 6, 3)
+            self.Flash:SetSize(256, 88)
         end
         self.Flash:Hide()
 
@@ -57,15 +57,8 @@ function FocusMixin:PostConfigure()
         end
         self.NameBackground:SetShown(not self.config.largeHealth)
 
-        self.Level:Show()
-        self.Level:SetFont(self.config.level.font, 13, "OUTLINE")
-        self.Level:SetJustifyH("CENTER")
-        self.Level:SetShadowOffset(1, -1)
-
-        self.Level:ClearAllPoints()
-        self.Level:SetSize(20, 20)
-        self.Level:SetPoint("CENTER", self, "BOTTOMRIGHT", -15, 19)
-        self:Tag(self.Level, "[difficultycolor][level]|r")
+        self.Level:Hide()
+        self:Untag(self.Level)
 
         if self.PortraitHolder then
             self.PortraitHolder:Hide()
@@ -111,6 +104,9 @@ function FocusMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
 
+        self.Power.Border:Hide()
+        self.Power.Separator:Hide()
+        
         if self.PvPIndicator then
             self.PvPIndicator:SetSize(32, 32)
             self.PvPIndicator:ClearAllPoints()
