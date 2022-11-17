@@ -69,7 +69,7 @@ function PetMixin:PostConfigure()
             self.RaidTargetIndicator:ClearAllPoints()
             self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
         end
-    elseif self.config.style == UF.Styles.Custom then
+    else
         if self.Artwork then
             self.Artwork:Hide()
         end

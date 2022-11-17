@@ -59,7 +59,7 @@ function UF:ConfigureAdditionalPower()
         self.AdditionalPower.Value:ClearAllPoints()
         self.AdditionalPower.Value:SetNormalizedPoint(config.value.point)
     else
-        self.Power.Value:Hide()
+        self.AdditionalPower.Value:Hide()
     end
 
     if config.smooth then

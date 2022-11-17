@@ -87,6 +87,7 @@ function UF:ConfigureCastbar()
     self.CastbarHolder:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
     self.CastbarHolder:ClearAllPoints()
     self.CastbarHolder:SetNormalizedPoint(config.point)
+    self.CastbarHolder:SetShown(self.Castbar:IsShown())
 
     self.Castbar:SetPoint("TOPLEFT", self.CastbarHolder, "TOPLEFT", 3 + (config.showIcon and not config.showIconOutside and (config.size[2] - 3) or 0), -3)
 

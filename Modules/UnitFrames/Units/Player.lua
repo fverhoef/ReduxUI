@@ -233,7 +233,7 @@ function PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
-    elseif self.config.style == UF.Styles.Custom then
+    else
         if self.Artwork then
             self.Artwork:Hide()
         end

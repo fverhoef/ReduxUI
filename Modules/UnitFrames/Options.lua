@@ -1559,7 +1559,7 @@ function UF:CreateUnitStylingOption(unit, order)
                 UF:UnitConfig(unit).inlay.enabled = value
             end),
             largeHealth = UF:CreateToggleOption(unit, L["Large Health"], L["Whether to use a larger health for this unit."], 4, nil, function()
-                return UF:UnitConfig(unit).largeHealth == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
+                return UF:UnitConfig(unit).largeHealth == nil or UF:UnitConfig(unit).style == nil or UF:UnitConfig(unit).style == UF.Styles.Custom
             end, function()
                 return UF:UnitConfig(unit).largeHealth
             end, function(value)

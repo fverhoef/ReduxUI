@@ -88,13 +88,13 @@ function UF:UpdateHighlightAnimation()
         end
     end
 
-    if self.Border and self.config.style == UF.Styles.Custom then
+    if self.Border and self.config.style ~= UF.Styles.Blizzard then
         self.Border:SetAlpha(config.colorBorder and alpha or 1)
     end
-    if self.Shadow and self.config.style == UF.Styles.Custom then
+    if self.Shadow and self.config.style ~= UF.Styles.Blizzard then
         self.Shadow:SetAlpha(config.colorShadow and alpha or 1)
     end
-    if self.Flash and self.config.style ~= UF.Styles.Custom then
+    if self.Flash and self.config.style == UF.Styles.Blizzard then
         self.Flash:SetAlpha(alpha)
     end
 end

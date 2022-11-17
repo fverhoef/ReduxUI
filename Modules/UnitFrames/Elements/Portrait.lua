@@ -28,7 +28,7 @@ oUF:RegisterMetaFunction("CreatePortrait", UF.CreatePortrait)
 
 function UF:ConfigurePortrait()
     local config = self.config.portrait
-    if not config.enabled and self.config.style == UF.Styles.Custom then
+    if not config.enabled and self.config.style ~= UF.Styles.Blizzard then
         if self.PortraitHolder then
             self.PortraitHolder:Hide()
         end
@@ -86,7 +86,7 @@ function UF:UpdatePortraitTexture()
     end
 
     local config = self.config.portrait
-    if self.config.style == UF.Styles.Custom and (not config.enabled or config.model) then
+    if self.config.style ~= UF.Styles.Blizzard and (not config.enabled or config.model) then
         return
     end
 
@@ -97,7 +97,7 @@ function UF:UpdatePortraitTexture()
     local width = r - l
     local height = b - t
 
-    if self.config.style == UF.Styles.Custom then
+    if self.config.style ~= UF.Styles.Blizzard then
         l = l + 0.15 * width
         r = r - 0.15 * width
         t = t + 0.15 * height

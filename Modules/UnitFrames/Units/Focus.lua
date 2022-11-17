@@ -164,7 +164,7 @@ function FocusMixin:PostConfigure()
             self.CastbarHolder:ClearAllPoints()
             self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
         end
-    elseif self.config.style == UF.Styles.Custom then
+    else
         if self.Artwork then
             self.Artwork:Hide()
         end
