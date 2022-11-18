@@ -61,6 +61,8 @@ function PetMixin:PostConfigure()
         self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 42, -23)
         self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 15)
 
+        self.Power.Border:Hide()
+        self.Power.Separator:Hide()
         self.Power.Value:Hide()
         self.Power.Percent:Hide()
 
