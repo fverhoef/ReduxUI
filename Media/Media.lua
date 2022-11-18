@@ -62,6 +62,7 @@ R.media = {
             targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
             targetingFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Flash",
             targetingFrame_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite",
+            targetingFrame_Elite_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite-Flash",
             targetingFrame_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare",
             targetingFrame_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare-Elite",
             targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth",

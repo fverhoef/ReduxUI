@@ -206,7 +206,7 @@ local DEFAULT_UNIT_CONFIG = {
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = { enabled = true, animate = true, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
+    highlight = { enabled = true, animate = false, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
     assistantIndicator = { enabled = true, size = { 16, 16 }, point = { "CENTER", "TOPLEFT", 0, 0 } },
     combatIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
     groupRoleIndicator = { enabled = true, size = { 20, 20 }, point = { "CENTER", "TOPRIGHT", 0, 0 } },
@@ -317,7 +317,7 @@ R:RegisterModuleConfig(UF, {
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
         castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
-        highlight = { target = false, resting = true, combat = true }
+        highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = UF.Styles.Blizzard,

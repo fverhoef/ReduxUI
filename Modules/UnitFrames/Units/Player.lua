@@ -82,9 +82,9 @@ function PlayerMixin:PostConfigure()
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
             self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
-            self.Flash:SetTexCoord(1, 0, 0, 175 / 256)
-            self.Flash:SetPoint("CENTER", self, "CENTER", -6, 2)
-            self.Flash:SetSize(256, 88)
+            self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
+            self.Flash:SetPoint("CENTER", self, "CENTER", -6, -4.5)
+            self.Flash:SetSize(256, 103)
         end
         self.Flash:Hide()
 

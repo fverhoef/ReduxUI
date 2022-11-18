@@ -29,9 +29,9 @@ function FocusMixin:PostConfigure()
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
             self.Flash:SetTexture(R.media.textures.unitFrames.focusFrame_Flash)
-            self.Flash:SetTexCoord(0, 1, 0, 175 / 256)
-            self.Flash:SetPoint("CENTER", self, "CENTER", 6, 3)
-            self.Flash:SetSize(256, 88)
+            self.Flash:SetTexCoord(0, 1, 0, 205 / 256)
+            self.Flash:SetPoint("CENTER", self, "CENTER", 6, -4.5)
+            self.Flash:SetSize(256, 103)
         end
         self.Flash:Hide()
 
