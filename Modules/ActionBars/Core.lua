@@ -239,7 +239,7 @@ function AB:ConfigureActionBars()
 end
 
 function AB:ConfigureActionBar(bar)
-    local buttons = bar.config.buttons
+    local visibleButtons = bar.config.buttons
     local buttonsPerRow = bar.config.buttonsPerRow
     local width = bar.config.buttonSize
     local height = bar.config.buttonSize
@@ -264,7 +264,7 @@ function AB:ConfigureActionBar(bar)
             relativeRowAnchor = "TOPLEFT"
         end
     elseif columnDirection == "Left" then
-        columnMultiplier = 1
+        columnMultiplier = -1
         columnAnchor = "TOPRIGHT"
         relativeColumnAnchor = "TOPLEFT"
 
@@ -279,30 +279,38 @@ function AB:ConfigureActionBar(bar)
         end
     end
 
-    local rowCount, columnCount = 0, 0
+    local totalWidth, totalHeight = 0, 0
+    local row, column = 0, 0, 0
     for i, button in ipairs(bar.buttons) do
         local parent = bar
 
-        local point
-        if i == 1 then
-            point = { columnAnchor, bar, columnAnchor, 0, 0 }
-        elseif (i - 1) % buttonsPerRow == 0 then
-            parent = bar.buttons[rowCount * buttonsPerRow + 1]
-            point = { rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing }
-            rowCount = rowCount + 1
-        else
-            parent = bar.buttons[i - 1]
-            point = { columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0 }
-        end
-
-        button:SetSize(width, height)
-        button:ClearAllPoints()
-        button:SetNormalizedPoint(point)
-
-        if i > buttons then
+        if i > visibleButtons then
             button:Hide()
         else
             button:Show()
+
+            local point
+            if i == 1 then
+                point = { columnAnchor, bar, columnAnchor, 0, 0 }
+                row, column = 1, 1
+                totalWidth, totalHeight = width, height
+            elseif column == buttonsPerRow then
+                parent = bar.buttons[(row - 1) * buttonsPerRow + 1]
+                point = { rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing }
+                row, column = row + 1, 1
+                totalHeight = totalHeight + rowSpacing + height
+            else
+                parent = bar.buttons[i - 1]
+                point = { columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0 }
+                column = column + 1
+                if i <= buttonsPerRow then
+                    totalWidth = totalWidth + columnSpacing + width
+                end
+            end
+
+            button:SetSize(width, height)
+            button:ClearAllPoints()
+            button:SetNormalizedPoint(point)
 
             button:SetAttribute("buttonlock", true)
             if button.UpdateConfig then
@@ -314,18 +322,17 @@ function AB:ConfigureActionBar(bar)
                     keyBoundTarget = bar.config.keyBoundTarget .. i
                 })
             end
-    
-            columnCount = columnCount + 1
-            if columnCount > buttonsPerRow then
-                columnCount = buttonsPerRow
-            end
         end
+    end
+
+    if bar.id == 7 then
+        R:Print("Column count: " .. column .. ", row count: " .. row)
     end
 
     if not bar.visibility then
         bar:SetShown(bar.config.enabled)
     end
-    bar:SetSize(columnCount * width + (columnCount - 1) * columnSpacing, (rowCount + 1) * height + rowCount * rowSpacing)
+    bar:SetSize(totalWidth, totalHeight)
 
     bar:ClearAllPoints()
     bar:SetNormalizedPoint(bar.config.point)
