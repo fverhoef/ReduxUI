@@ -18,8 +18,9 @@ end
 
 function MM:StyleMinimap()
     MinimapCluster.config = MM.config
+    MinimapCluster.defaults = MM.defaults
     MinimapCluster:CreateFader(MM.config.fader)
-    MinimapCluster:CreateMover("Minimap", MM.config.point)
+    MinimapCluster:CreateMover("Minimap", MM.defaults.point)
 
     if MM.config.visibility then
         MinimapCluster.visibility = MM.config.visibility

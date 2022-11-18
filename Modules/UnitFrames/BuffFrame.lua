@@ -5,6 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:StyleBuffFrame()
     _G.BuffFrame.config = UF.config.buffFrame
+    _G.BuffFrame.defaults = UF.defaults.buffFrame
     _G.BuffFrame:ClearAllPoints()
     _G.BuffFrame:SetNormalizedPoint(unpack(UF.config.buffFrame.point))
     _G.BuffFrame:CreateMover("Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
