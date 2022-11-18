@@ -233,7 +233,7 @@ function AB:ConfigureActionBars()
         totemBar.Mover:Lock(true)
 
         AB.vehicleExitBar:ClearAllPoints()
-        AB.vehicleExitBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
+        AB.vehicleExitBar:SetPoint("BOTTOMRIGHT", multiBarBottomRight.buttons[12], "TOPRIGHT", -18, 5)
         AB.vehicleExitBar.Mover:Lock(true)
     end
 end
@@ -303,22 +303,22 @@ function AB:ConfigureActionBar(bar)
             button:Hide()
         else
             button:Show()
-        end
 
-        button:SetAttribute("buttonlock", true)
-        if button.UpdateConfig then
-            button:UpdateConfig({
-                clickOnDown = bar.config.clickOnDown,
-                showGrid = bar.config.showGrid,
-                hideElements = { hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro },
-                flyoutDirection = bar.config.flyoutDirection or "UP",
-                keyBoundTarget = bar.config.keyBoundTarget .. i
-            })
-        end
-
-        columnCount = columnCount + 1
-        if columnCount > buttonsPerRow then
-            columnCount = buttonsPerRow
+            button:SetAttribute("buttonlock", true)
+            if button.UpdateConfig then
+                button:UpdateConfig({
+                    clickOnDown = bar.config.clickOnDown,
+                    showGrid = bar.config.showGrid,
+                    hideElements = { hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro },
+                    flyoutDirection = bar.config.flyoutDirection or "UP",
+                    keyBoundTarget = bar.config.keyBoundTarget .. i
+                })
+            end
+    
+            columnCount = columnCount + 1
+            if columnCount > buttonsPerRow then
+                columnCount = buttonsPerRow
+            end
         end
     end
 
