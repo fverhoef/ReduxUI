@@ -17,21 +17,35 @@ function MoverMixin:OnMouseWheel(offset)
         self.frame:SetNormalizedPoint(point)
     end
 
-    if GameTooltip:IsOwned(self) then self:OnEnter() end
+    if self.frame.config and self.frame.config.point then
+        self.frame.config.point = self.frame:GetNormalizedPoint()
+    end
+
+    if GameTooltip:IsOwned(self) then
+        self:OnEnter()
+    end
 end
 
 function MoverMixin:OnDragStart(button)
-    if self.isLocked then return end
+    if self.isLocked then
+        return
+    end
 
     if IsShiftKeyDown() then
-        if button == "LeftButton" then self.frame:StartMoving() end
-        if button == "RightButton" then self.frame:StartSizing() end
+        if button == "LeftButton" then
+            self.frame:StartMoving()
+        end
+        if button == "RightButton" then
+            self.frame:StartSizing()
+        end
     end
 end
 
 function MoverMixin:OnDragStop()
     self.frame:StopMovingOrSizing()
-    if self.frame.config and self.frame.config.point then self.frame.config.point = self.frame:GetNormalizedPoint() end
+    if self.frame.config and self.frame.config.point then
+        self.frame.config.point = self.frame:GetNormalizedPoint()
+    end
 end
 
 function MoverMixin:OnEnter()
@@ -61,13 +75,21 @@ function MoverMixin:OnShow()
     end
 
     self.displayNameText:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
-    if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then RegisterStateDriver(self.frame, "visibility", "show") end
-    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then self.frame:FadeIn() end
+    if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then
+        RegisterStateDriver(self.frame, "visibility", "show")
+    end
+    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then
+        self.frame:FadeIn()
+    end
 end
 
 function MoverMixin:OnHide()
-    if self.frame.visibility then RegisterStateDriver(self.frame, "visibility", self.frame.visibility) end
-    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then R.Fader_OnEnterOrLeave(self.frame) end
+    if self.frame.visibility then
+        RegisterStateDriver(self.frame, "visibility", self.frame.visibility)
+    end
+    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then
+        R.Fader_OnEnterOrLeave(self.frame)
+    end
 end
 
 function MoverMixin:OnMouseDown(button)
@@ -78,39 +100,57 @@ function MoverMixin:OnMouseDown(button)
 end
 
 function MoverMixin:ResetSize()
-    if not self.frame or not self.frame.defaultSize or InCombatLockdown() then return end
+    if not self.frame or not self.frame.defaultSize or InCombatLockdown() then
+        return
+    end
     self.frame:SetSize(unpack(self.frame.defaultSize))
-    if self.frame.config then self.frame.config.size = self.frame.defaultSize end
+    if self.frame.config then
+        self.frame.config.size = self.frame.defaultSize
+    end
 end
 
 function MoverMixin:ResetPoint()
-    if not self.frame or not self.frame.defaultPoint or InCombatLockdown() then return end
+    if not self.frame or not self.frame.defaultPoint or InCombatLockdown() then
+        return
+    end
     self.frame:ClearAllPoints()
     self.frame:SetNormalizedPoint(self.frame.defaultPoint)
-    if self.frame.config then self.frame.config.point = self.frame.defaultPoint end
+    if self.frame.config then
+        self.frame.config.point = self.frame.defaultPoint
+    end
 end
 
 function MoverMixin:Lock(hideWhenLocked)
-    if not self.frame then return end
+    if not self.frame then
+        return
+    end
 
     self.isLocked = true
     self.hideWhenLocked = hideWhenLocked
     self.texture:SetVertexColor(1, 0, 0)
 
-    if not R.framesLocked then self:Hide() end
+    if not R.framesLocked then
+        self:Hide()
+    end
 end
 
 function MoverMixin:Unlock()
-    if not self.frame or self.isDisabled then return end
+    if not self.frame or self.isDisabled then
+        return
+    end
 
     self.isLocked = false
     self.texture:SetVertexColor(0, 1, 0)
 
-    if not R.framesLocked then self:Show() end
+    if not R.framesLocked then
+        self:Show()
+    end
 end
 
 function R:CreateMover(displayName, defaultPoint, width, height, point)
-    if not self or self.Mover then return end
+    if not self or self.Mover then
+        return
+    end
 
     self.defaultPoint = defaultPoint or self:GetNormalizedPoint()
 
@@ -162,27 +202,35 @@ function R:CreateMover(displayName, defaultPoint, width, height, point)
     self:SetMovable(true)
 
     if self:IsResizable() then
-        self.defaultSize = {self.GetSize()}
+        self.defaultSize = { self.GetSize() }
         self.Mover:RegisterForDrag("LeftButton", "RightButton")
     end
 end
 
 function R:HideMovers()
-    for _, mover in next, R.movers do mover:Hide() end
+    for _, mover in next, R.movers do
+        mover:Hide()
+    end
     R:Print("Frames locked.")
     R:HideGrid()
     R.framesLocked = true
 
-    if R.moverSettings then R.moverSettings:Hide() end
+    if R.moverSettings then
+        R.moverSettings:Hide()
+    end
 end
 
 function R:ShowMovers()
-    for _, mover in next, R.movers do mover:Show() end
+    for _, mover in next, R.movers do
+        mover:Show()
+    end
     R:Print("Frames unlocked.")
     R:ShowGrid()
     R.framesLocked = false
 
-    if not R.moverSettings then R.moverSettings = R:CreateMoverSettingsFrame() end
+    if not R.moverSettings then
+        R.moverSettings = R:CreateMoverSettingsFrame()
+    end
     R.moverSettings:Show()
 end
 
@@ -203,7 +251,9 @@ function R:ResetMovers()
         mover:ResetPoint()
         mover:ResetSize()
 
-        if mover.frame.Update then mover.frame:Update() end
+        if mover.frame.Update then
+            mover.frame:Update()
+        end
     end
     R:Print("Frame positions and sizes have been reset.")
 end
@@ -239,9 +289,10 @@ function R:CreateMoverSettingsFrame()
     settings.usageText:SetPoint("BOTTOMRIGHT", -4, 26)
     settings.usageText:SetJustifyH("LEFT")
     settings.usageText:SetJustifyV("MIDDLE")
-    settings.usageText:SetText(string.format(R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
-                                                 R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" .. R.L["Press the %sAlt|r key to cycle through frames under the cursor."],
-                                             R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
+    settings.usageText:SetText(string.format(
+                                   R.L["Hold %sShift|r to enable dragging."] .. "\n\n" .. R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
+                                       R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" .. R.L["Press the %sAlt|r key to cycle through frames under the cursor."],
+                                       R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
 
     settings.lockButton = CreateFrame("Button", "$parentLockButton", settings, "UIPanelButtonTemplate")
     settings.lockButton:SetSize(80, 21)
@@ -261,10 +312,16 @@ function R:CreateMoverSettingsFrame()
     settings.highlightIndex = 1
     settings.HighlightMovers = function(self)
         local trackedMovers = {}
-        for _, mover in next, R.movers do if mover:IsMouseOver(4, -4, -4, 4) then table.insert(trackedMovers, mover) end end
+        for _, mover in next, R.movers do
+            if mover:IsMouseOver(4, -4, -4, 4) then
+                table.insert(trackedMovers, mover)
+            end
+        end
 
         if #trackedMovers > 0 then
-            if self.highlightIndex > #trackedMovers or #trackedMovers == 1 then self.highlightIndex = 1 end
+            if self.highlightIndex > #trackedMovers or #trackedMovers == 1 then
+                self.highlightIndex = 1
+            end
 
             for i, mover in next, trackedMovers do
                 if i == self.highlightIndex then
@@ -282,11 +339,17 @@ function R:CreateMoverSettingsFrame()
 
             self.highlightIndex = self.highlightIndex + 1
         else
-            for _, mover in next, R.movers do mover:FadeIn(0.3, mover:GetAlpha(), 1) end
+            for _, mover in next, R.movers do
+                mover:FadeIn(0.3, mover:GetAlpha(), 1)
+            end
             self.mover = nil
         end
     end
-    settings:SetScript("OnKeyDown", function(self, key) if key == "LALT" or key == "RALT" then self:HighlightMovers() end end)
+    settings:SetScript("OnKeyDown", function(self, key)
+        if key == "LALT" or key == "RALT" then
+            self:HighlightMovers()
+        end
+    end)
     settings:Hide()
 
     return settings

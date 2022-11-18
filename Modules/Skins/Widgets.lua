@@ -6,7 +6,7 @@ function S:StyleWidgets()
     if not S.config.widgets.enabled then return end
 
     UIWidgetTopCenterContainerFrame.config = S.config.widgets.top
-    UIWidgetTopCenterContainerFrame.defaults = S.config.defaults.top
+    UIWidgetTopCenterContainerFrame.defaults = S.defaults.widgets.top
     UIWidgetTopCenterContainerFrame:SetMovable(true)
     UIWidgetTopCenterContainerFrame:SetUserPlaced(true)
     UIWidgetTopCenterContainerFrame:ClearAllPoints()
@@ -20,7 +20,7 @@ function S:StyleWidgets()
     end)
 
     UIWidgetBelowMinimapContainerFrame.config = S.config.widgets.belowMinimap
-    UIWidgetBelowMinimapContainerFrame.defaults = S.config.defaults.belowMinimap
+    UIWidgetBelowMinimapContainerFrame.defaults = S.defaults.widgets.belowMinimap
     UIWidgetBelowMinimapContainerFrame:SetMovable(true)
     UIWidgetBelowMinimapContainerFrame:SetUserPlaced(true)
     UIWidgetBelowMinimapContainerFrame:ClearAllPoints()
