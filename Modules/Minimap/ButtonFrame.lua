@@ -188,6 +188,11 @@ end
 function ButtonFrameToggleButtonMixin:OnClick()
     self:UpdateTooltip()
     MinimapButtonFrame:Toggle()
+    if MM.config.buttonFrame.collapsed then
+        PlaySound(SOUNDKIT.IG_MINIMAP_CLOSE)
+    else
+        PlaySound(SOUNDKIT.IG_MINIMAP_OPEN)
+    end
 end
 
 function ButtonFrameToggleButtonMixin:UpdateTooltip()
