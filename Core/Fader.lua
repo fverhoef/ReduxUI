@@ -44,10 +44,11 @@ function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1,
 end
 
 function R:CreateFader(faderConfig, children)
-    if not self then return end
+    if not self then
+        return
+    end
 
     if not self.faderConfig then
-        self.faderConfig = faderConfig
         self.children = {}
         self.faded = false
 
@@ -55,10 +56,18 @@ function R:CreateFader(faderConfig, children)
         self:HookScript("OnShow", R.Fader_OnShow)
         self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
         self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
-        if self.faderConfig == R.config.faders.mouseOver then R.Fader_OnEnterOrLeave(self) end
     end
 
-    if not children then return end
+    self.faderConfig = faderConfig
+    if self.faderConfig == R.config.faders.mouseOver then
+        R.Fader_OnEnterOrLeave(self)
+    elseif self.faded then
+        R.Fader_OnShow(self)
+    end
+
+    if not children then
+        return
+    end
 
     for _, child in next, children do
         if not child.faderParent then
@@ -73,7 +82,9 @@ end
 
 function R:Fader_OnShow()
     local frame = self.faderParent or self
-    if frame.faderConfig == R.config.faders.onShow then frame:FadeIn(0.3, 0) end
+    if frame.faderConfig == R.config.faders.onShow then
+        frame:FadeIn(0.3, 0)
+    end
 end
 
 function R:Fader_OnEnterOrLeave()
