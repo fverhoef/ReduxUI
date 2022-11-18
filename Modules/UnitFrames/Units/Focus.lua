@@ -114,15 +114,21 @@ function FocusMixin:PostConfigure()
         end
 
         if self.LeaderIndicator then
-            self.LeaderIndicator:SetSize(14, 14)
+            self.LeaderIndicator:SetSize(16, 16)
             self.LeaderIndicator:ClearAllPoints()
-            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -10)
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
+        end
+
+        if self.AssistantIndicator then
+            self.AssistantIndicator:SetSize(16, 16)
+            self.AssistantIndicator:ClearAllPoints()
+            self.AssistantIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
         end
 
         if self.MasterLooterIndicator then
-            self.MasterLooterIndicator:SetSize(14, 14)
+            self.MasterLooterIndicator:SetSize(16, 16)
             self.MasterLooterIndicator:ClearAllPoints()
-            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -10)
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM", 0, 0)
         end
 
         if self.RaidTargetIndicator then
@@ -132,9 +138,15 @@ function FocusMixin:PostConfigure()
         end
 
         if self.GroupRoleIndicator then
-            self.GroupRoleIndicator:SetSize(18, 18)
+            self.GroupRoleIndicator:SetSize(16, 16)
             self.GroupRoleIndicator:ClearAllPoints()
-            self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 18, -14)
+            self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -6)
+        end
+
+        if self.RaidRoleIndicator then
+            self.RaidRoleIndicator:SetSize(16, 16)
+            self.RaidRoleIndicator:ClearAllPoints()
+            self.RaidRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -6)
         end
 
         if self.ReadyCheckIndicator then
@@ -152,7 +164,7 @@ function FocusMixin:PostConfigure()
         if self.ResurrectIndicator then
             self.ResurrectIndicator:SetSize(32, 32)
             self.ResurrectIndicator:ClearAllPoints()
-            self.ResurrectIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+            self.ResurrectIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
         end
 
         if self.CastbarHolder then
