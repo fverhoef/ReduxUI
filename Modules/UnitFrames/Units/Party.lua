@@ -82,5 +82,8 @@ function PartyMixin:PostConfigure()
         if self.Artwork then
             self.Artwork:Hide()
         end
+        if self.Flash then
+            self.Flash:Hide()
+        end
     end
 end
