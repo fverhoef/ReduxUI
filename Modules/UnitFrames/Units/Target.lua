@@ -31,7 +31,7 @@ function TargetMixin:PostConfigure()
         self.Artwork:Show()
 
         if not self.Flash then
-            self.Flash = self:CreateTexture("$parentFlash", "BORDER", nil, 1)
+            self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
             self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
             self.Flash:SetTexCoord(0, 1, 0, 205 / 256)
             self.Flash:SetPoint("CENTER", self, "CENTER", 6, -4.5)
