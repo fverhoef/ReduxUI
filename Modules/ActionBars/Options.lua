@@ -27,88 +27,108 @@ function AB:CreateActionBarOptions(id)
             end, function()
                 AB:Update()
             end),
-            lineBreak = { type = "header", name = "", order = 2 },
-            buttons = R:CreateRangeOption(L["Button Count"], L["The number of buttons on this bar."], 3, nil, 1, 12, nil, 1, function()
-                return AB.config["actionBar" .. id].buttons
-            end, function(value)
-                AB.config["actionBar" .. id].buttons = value
-            end, function()
-                AB:Update()
-            end),
-            buttonSize = R:CreateRangeOption(L["Button Size"], L["The size of the buttons on this bar."], 4, nil, 10, 50, nil, 1, function()
-                return AB.config["actionBar" .. id].buttonSize
-            end, function(value)
-                AB.config["actionBar" .. id].buttonSize = value
-            end, function()
-                AB:Update()
-            end),
-            buttonsPerRow = R:CreateRangeOption(L["Buttons Per Row"], L["The number of buttons in each row."], 5, nil, 1, 12, nil, 1, function()
-                return AB.config["actionBar" .. id].buttonsPerRow
-            end, function(value)
-                AB.config["actionBar" .. id].buttonsPerRow = value
-            end, function()
-                AB:Update()
-            end),
-            lineBreak2 = { type = "description", name = "", order = 6 },
-            columnSpacing = R:CreateRangeOption(L["Column Spacing"], L["The spacing between each column."], 7, nil, 1, 12, nil, 1, function()
-                return AB.config["actionBar" .. id].columnSpacing
-            end, function(value)
-                AB.config["actionBar" .. id].columnSpacing = value
-            end, function()
-                AB:Update()
-            end),
-            columnDirection = R:CreateSelectOption(L["Column Growth Direction"], L["The direction in which columns grow."], 8, nil, AB.COLUMN_DIRECTIONS, function()
-                return AB.config["actionBar" .. id].columnDirection
-            end, function(value)
-                AB.config["actionBar" .. id].columnDirection = value
-            end, function()
-                AB:Update()
-            end),
-            linebreak3 = { type = "description", name = "", order = 9 },
-            rowSpacing = R:CreateRangeOption(L["Row Spacing"], L["The spacing between each row."], 10, nil, 1, 12, nil, 1, function()
-                return AB.config["actionBar" .. id].rowSpacing
-            end, function(value)
-                AB.config["actionBar" .. id].rowSpacing = value
-            end, function()
-                AB:Update()
-            end),
-            rowDirection = R:CreateSelectOption(L["Row Growth Direction"], L["The direction in which rows grow."], 11, nil, AB.ROW_DIRECTIONS, function()
-                return AB.config["actionBar" .. id].rowDirection
-            end, function(value)
-                AB.config["actionBar" .. id].rowDirection = value
-            end, function()
-                AB:Update()
-            end),
-            linebreak4 = { type = "description", name = "", order = 12 },
-            fade = R:CreateToggleOption(L["Mouseover Fade"], nil, 13, nil, nil, function()
-                return AB.config["actionBar" .. id].fader == R.config.faders.mouseOver
-            end, function(value)
-                AB.config["actionBar" .. id].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
-            end, function()
-                AB:Update()
-            end),
-            linebreak5 = { type = "description", name = "", order = 14 },
-            backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 15, nil, nil, function()
-                return AB.config["actionBar" .. id].backdrop
-            end, function(value)
-                AB.config["actionBar" .. id].backdrop = value
-            end, function()
-                AB:Update()
-            end),
-            border = R:CreateToggleOption(L["Show Border"], nil, 16, nil, nil, function()
-                return AB.config["actionBar" .. id].border
-            end, function(value)
-                AB.config["actionBar" .. id].border = value
-            end, function()
-                AB:Update()
-            end),
-            shadow = R:CreateToggleOption(L["Shadow"], nil, 17, nil, nil, function()
-                return AB.config["actionBar" .. id].shadow
-            end, function(value)
-                AB.config["actionBar" .. id].shadow = value
-            end, function()
-                AB:Update()
-            end)
+            layout = {
+                type = "group",
+                name = L["Layout"],
+                order = 2,
+                inline = true,
+                disabled = function()
+                    return not AB.config["actionBar" .. id].enabled
+                end,
+                args = {
+                    buttons = R:CreateRangeOption(L["Button Count"], L["The number of buttons on this bar."], 3, nil, 1, 12, nil, 1, function()
+                        return AB.config["actionBar" .. id].buttons
+                    end, function(value)
+                        AB.config["actionBar" .. id].buttons = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    buttonSize = R:CreateRangeOption(L["Button Size"], L["The size of the buttons on this bar."], 4, nil, 10, 50, nil, 1, function()
+                        return AB.config["actionBar" .. id].buttonSize
+                    end, function(value)
+                        AB.config["actionBar" .. id].buttonSize = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    buttonsPerRow = R:CreateRangeOption(L["Buttons Per Row"], L["The number of buttons in each row."], 5, nil, 1, 12, nil, 1, function()
+                        return AB.config["actionBar" .. id].buttonsPerRow
+                    end, function(value)
+                        AB.config["actionBar" .. id].buttonsPerRow = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    lineBreak2 = { type = "description", name = "", order = 6 },
+                    columnSpacing = R:CreateRangeOption(L["Column Spacing"], L["The spacing between each column."], 7, nil, 1, 12, nil, 1, function()
+                        return AB.config["actionBar" .. id].columnSpacing
+                    end, function(value)
+                        AB.config["actionBar" .. id].columnSpacing = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    columnDirection = R:CreateSelectOption(L["Column Growth Direction"], L["The direction in which columns grow."], 8, nil, AB.COLUMN_DIRECTIONS, function()
+                        return AB.config["actionBar" .. id].columnDirection
+                    end, function(value)
+                        AB.config["actionBar" .. id].columnDirection = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak3 = { type = "description", name = "", order = 9 },
+                    rowSpacing = R:CreateRangeOption(L["Row Spacing"], L["The spacing between each row."], 10, nil, 1, 12, nil, 1, function()
+                        return AB.config["actionBar" .. id].rowSpacing
+                    end, function(value)
+                        AB.config["actionBar" .. id].rowSpacing = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    rowDirection = R:CreateSelectOption(L["Row Growth Direction"], L["The direction in which rows grow."], 11, nil, AB.ROW_DIRECTIONS, function()
+                        return AB.config["actionBar" .. id].rowDirection
+                    end, function(value)
+                        AB.config["actionBar" .. id].rowDirection = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            },
+            styling = {
+                type = "group",
+                name = L["Styling"],
+                order = 3,
+                inline = true,
+                disabled = function()
+                    return not AB.config["actionBar" .. id].enabled
+                end,
+                args = {
+                    fade = R:CreateToggleOption(L["Mouseover Fade"], nil, 13, nil, nil, function()
+                        return AB.config["actionBar" .. id].fader == R.config.faders.mouseOver
+                    end, function(value)
+                        AB.config["actionBar" .. id].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak5 = { type = "description", name = "", order = 14 },
+                    backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 15, nil, nil, function()
+                        return AB.config["actionBar" .. id].backdrop
+                    end, function(value)
+                        AB.config["actionBar" .. id].backdrop = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    border = R:CreateToggleOption(L["Show Border"], nil, 16, nil, nil, function()
+                        return AB.config["actionBar" .. id].border
+                    end, function(value)
+                        AB.config["actionBar" .. id].border = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    shadow = R:CreateToggleOption(L["Shadow"], nil, 17, nil, nil, function()
+                        return AB.config["actionBar" .. id].shadow
+                    end, function(value)
+                        AB.config["actionBar" .. id].shadow = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            }
         }
     }
 end

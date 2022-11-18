@@ -337,6 +337,7 @@ function AB:ConfigureActionBar(bar)
     bar.Border:SetShown(bar.config.border)
     bar.Shadow:SetShown(bar.config.shadow)
     bar.Mover:Unlock()
+    bar:CreateFader(bar.config.fader, bar.buttons)
 
     if bar.Update then
         bar:Update()
