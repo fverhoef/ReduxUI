@@ -325,10 +325,6 @@ function AB:ConfigureActionBar(bar)
         end
     end
 
-    if bar.id == 7 then
-        R:Print("Column count: " .. column .. ", row count: " .. row)
-    end
-
     if not bar.visibility then
         bar:SetShown(bar.config.enabled)
     end
