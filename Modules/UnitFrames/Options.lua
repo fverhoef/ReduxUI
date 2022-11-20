@@ -152,6 +152,7 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
             end, function(value)
                 UF:UnitConfig(unit).enabled = value
             end, ReloadUI, L["Disabling this unit requires a UI reload. Proceed?"]),
+            desc = { order = 2, type = "description", name = L["NOTE: This unit is currently using a non-custom style preset. Some options may be disabled."], hidden = IsCustomStyled(unit) },
             general = {
                 type = "group",
                 name = L["General"],
@@ -1155,34 +1156,52 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end, function(value)
                 UF:UnitConfig(unit).castbar.showSpark = value
             end),
-            showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 7, nil, nil, function()
+            lineBreakShield = { type = "description", name = "", order = 7 },
+            showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 8, nil, nil, function()
                 return UF:UnitConfig(unit).castbar.showShield
             end, function(value)
                 UF:UnitConfig(unit).castbar.showShield = value
             end),
-            lineBreakDetached = { type = "description", name = "", order = 8 },
-            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 9, nil, not canDetach, function()
+            shieldSize = UF:CreateRangeOption(unit, L["Shield Size"], L["The size of the shield icon."], 9, function()
+                return not UF:UnitConfig(unit).castbar.showShield
+            end, 10, 60, nil, 1, function()
+                return UF:UnitConfig(unit).castbar.shieldSize[1]
+            end, function(value)
+                UF:UnitConfig(unit).castbar.shieldSize[1] = value
+                UF:UnitConfig(unit).castbar.shieldSize[2] = value
+            end),
+            lineBreakDetached = { type = "description", name = "", order = 10 },
+            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 11, nil, not canDetach, function()
                 return UF:UnitConfig(unit).castbar.detached
             end, function(value)
                 UF:UnitConfig(unit).castbar.detached = value;
                 UF:UnitConfig(unit).castbar.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 150 } or { "TOPLEFT", "BOTTOMLEFT", 0, -5 }
             end),
-            lineBreakSize = { type = "description", name = L["Size"], order = 10 },
-            width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 11, not canDetach, 10, nil, 400, 1, function()
-                return UF:UnitConfig(unit).castbar.size[1]
-            end, function(value)
-                UF:UnitConfig(unit).castbar.size[1] = value
-            end),
-            height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 12, nil, 4, nil, 400, 1, function()
-                return UF:UnitConfig(unit).castbar.size[2]
-            end, function(value)
-                UF:UnitConfig(unit).castbar.size[2] = value
-            end),
+            size = {
+                type = "group",
+                name = L["Size"],
+                inline = true,
+                order = 11,
+                disabled = IsBlizzardStyled(unit),
+                args = {
+                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 1, not canDetach, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).castbar.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.size[1] = value
+                    end),
+                    height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 2, nil, 4, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).castbar.size[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.size[2] = value
+                    end)
+                }
+            },
             position = {
                 type = "group",
                 name = L["Position"],
                 inline = true,
                 order = 12,
+                disabled = IsBlizzardStyled(unit),
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
                         return UF:UnitConfig(unit).castbar.point[1]
