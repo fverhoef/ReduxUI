@@ -38,4 +38,5 @@ oUF:RegisterMetaFunction("ConfigureDiminishingReturnsTracker", UF.ConfigureDimin
 
 function UF:DiminishingReturnsTracker_PostCreateTimer(timer)
     timer:CreateBorder()
+    timer.Border:SetInside(nil, 0, 0)
 end

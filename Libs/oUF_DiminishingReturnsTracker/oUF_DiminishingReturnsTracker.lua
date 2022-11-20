@@ -13,6 +13,12 @@ local DR_STATE_COLORS = {
     { r = 1, g = 0, b = 0, a = 1 } -- applied 3, red
 }
 
+local COUNT_STRINGS = {}
+COUNT_STRINGS[1] = "100%"
+COUNT_STRINGS[2] = "50%"
+COUNT_STRINGS[3] = "25%"
+COUNT_STRINGS[4] = "Immune"
+
 local trackers = {}
 local trackerCount = 0
 
@@ -60,6 +66,12 @@ local CreateTimer = function(self, category)
     timer.Icon:SetAllPoints()
     timer.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
+    timer.CountText = timer:CreateFontString(nil, "OVERLAY")
+    timer.CountText:SetPoint("BOTTOMLEFT", timer, "TOPLEFT")
+    timer.CountText:SetPoint("BOTTOMRIGHT", timer, "TOPRIGHT")
+    timer.CountText:SetHeight(20)
+    timer.CountText:SetJustifyH("CENTER")
+
     timer.IsExpired = function(self)
         return self.Expiration < GetTime()
     end
@@ -97,6 +109,7 @@ local UpdateTimer = function(self, unit, category, spellID)
 
     local textColor = (self.StateColors or DR_STATE_COLORS)[timer.Count]
     timer.Cooldown.Text:SetTextColor(textColor.r, textColor.g, textColor.b, textColor.a or 1)
+    timer.CountText.Text:SetText(COUNT_STRINGS[timer.Count] or "")
 
     timer:SetSize(self.iconSize or 24, self.iconSize or 24)
 
