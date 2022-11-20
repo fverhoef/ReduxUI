@@ -5,6 +5,8 @@ local oUF = ns.oUF or oUF
 
 UF.Styles = { Blizzard = "Blizzard", Custom = "Custom" }
 
+local DEFAULT_STYLE = UF.Styles.Custom
+
 local AURA_FILTER_WHITELIST = {
     Boss = false,
     MyPet = false,
@@ -322,7 +324,7 @@ R:RegisterModuleConfig(UF, {
     },
     buffFrame = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, buffs = { iconSize = 36 }, debuffs = { iconSize = 36 }, tempEnchants = { iconSize = 36 } },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
@@ -330,7 +332,7 @@ R:RegisterModuleConfig(UF, {
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         largeHealth = true,
         point = { "TOPLEFT", "UIParent", "BOTTOM", 150, 350 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
@@ -347,7 +349,7 @@ R:RegisterModuleConfig(UF, {
         highlight = { target = false }
     }),
     targettarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         size = { 95, 24 },
         point = { "TOPLEFT", addonName .. "Target", "TOPRIGHT", 10, 0 },
         health = { value = { enabled = false }, percent = { enabled = false } },
@@ -358,7 +360,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     pet = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         size = { 120, 28 },
         point = { "TOPLEFT", addonName .. "Player", "BOTTOMLEFT", 5, -10 },
         health = { value = { enabled = false, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
@@ -369,7 +371,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         largeHealth = true,
         point = { "TOP", "UIParent", "TOP", 0, -250 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
@@ -384,7 +386,7 @@ R:RegisterModuleConfig(UF, {
         highlight = { target = false }
     }),
     focustarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         size = { 95, 24 },
         point = { "TOPLEFT", addonName .. "Focus", "TOPRIGHT", 10, 0 },
         health = { value = { enabled = false }, percent = { enabled = false } },
@@ -395,7 +397,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false }
     }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
-        style = UF.Styles.Blizzard,
+        style = DEFAULT_STYLE,
         size = { 180, 30 },
         point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 },
         portrait = { size = { 28, 28 } },
