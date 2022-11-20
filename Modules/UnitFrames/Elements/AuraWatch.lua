@@ -10,6 +10,7 @@ function UF:CreateAuraWatch()
 
     self.AuraWatch = CreateFrame("Frame", "$parentAuraWatch", self)
     self.AuraWatch:SetParent(self.Overlay)
+    self.AuraWatch:SetInside(self)
     self.AuraWatch.presentAlpha = 1
     self.AuraWatch.missingAlpha = 0
     self.AuraWatch.strictMatching = true
@@ -17,7 +18,6 @@ function UF:CreateAuraWatch()
     self.AuraWatch.showDebuffType = true
     self.AuraWatch.PostCreateIcon = UF.AuraWatch_PostCreateIcon
     self.AuraWatch.PostUpdateIcon = UF.AuraWatch_PostUpdateIcon
-    self.AuraWatch:SetInside(self.Health)
 
     return self.AuraWatch
 end
