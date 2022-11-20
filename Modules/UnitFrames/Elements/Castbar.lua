@@ -138,6 +138,8 @@ function UF:ConfigureCastbar()
     end
 
     self.Castbar.Shield:SetAlpha(config.showShield and 1 or 0)
+    self.Castbar.Shield:SetNormalizedSize(config.shieldSize)
+    self.Castbar.Shield:SetPoint("RIGHT", self.CastbarHolder, "LEFT", -2, 0)
 end
 
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)

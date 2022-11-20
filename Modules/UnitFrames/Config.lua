@@ -3,10 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.Styles = {
-    Blizzard = "Blizzard",
-    Custom = "Custom"
-}
+UF.Styles = { Blizzard = "Blizzard", Custom = "Custom" }
 
 local AURA_FILTER_WHITELIST = {
     Boss = false,
@@ -201,12 +198,25 @@ local DEFAULT_UNIT_CONFIG = {
         showIconOutside = false,
         showSpark = true,
         showShield = true,
+        shieldSize = { 24, 24 },
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
         fontShadow = true
     },
-    highlight = { enabled = true, animate = false, colorShadow = true, colorBorder = true, debuffs = true, onlyDispellableDebuffs = false, threat = true, target = true, resting = false, combat = false, targetClassColor = false },
+    highlight = {
+        enabled = true,
+        animate = false,
+        colorShadow = true,
+        colorBorder = true,
+        debuffs = true,
+        onlyDispellableDebuffs = false,
+        threat = true,
+        target = true,
+        resting = false,
+        combat = false,
+        targetClassColor = false
+    },
     assistantIndicator = { enabled = true, size = { 16, 16 }, point = { "CENTER", "TOPLEFT", 0, 0 } },
     combatIndicator = { enabled = true, size = { 24, 24 }, point = { "CENTER", "RIGHT", 0, 0 } },
     groupRoleIndicator = { enabled = true, size = { 20, 20 }, point = { "CENTER", "TOPRIGHT", 0, 0 } },
@@ -316,7 +326,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true },
+        castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
