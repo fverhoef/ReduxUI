@@ -35,11 +35,11 @@ function AM:Enable()
 end
 
 function AM:Update()
-    SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
+    AM:SetMaxZoomLevel()
 end
 
 function AM:PLAYER_ENTERING_WORLD()
-    SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
+    AM:SetMaxZoomLevel()
 end
 
 function AM:COMBAT_LOG_EVENT_UNFILTERED()
@@ -49,8 +49,8 @@ function AM:COMBAT_LOG_EVENT_UNFILTERED()
 
     local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, extraSpellID,
           extraSpellName, extraSchool = CombatLogGetCurrentEventInfo()
-    local announce = string.match(subEvent, "_INTERRUPT") and (sourceGUID == UnitGUID(R.PlayerInfo.guid) or sourceGUID == UnitGUID("pet")) and destGUID ~= R.PlayerInfo.guid
-    if not announce then
+    local interrupted = string.match(subEvent, "_INTERRUPT") and (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID ~= UnitGUID("player")
+    if not interrupted then
         return
     end
 
@@ -168,6 +168,10 @@ function AM:CHAT_MSG_BN_WHISPER(event, text, playerName, languageName, channelNa
             end
         end
     end
+end
+
+function AM:SetMaxZoomLevel()
+    SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
 end
 
 function AM:TextMatchesAutoInvitePassword(text)
