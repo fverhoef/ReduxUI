@@ -42,16 +42,12 @@ end
 oUF:RegisterMetaFunction("ConfigureTrinket", UF.ConfigureTrinket)
 
 function UF:Trinket_PostTrinketUp(unit)
-    R:Print("Trinket ready: " .. UnitName(unit))
-
     if not self.trinketUpAnnounce then return end
 
     R:Announce(L["Trinket ready: "] .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
 end
 
 function UF:Trinket_PostTrinketUsed(unit, isWotF)
-    R:Print("Trinket used: " .. UnitName(unit))
-
     if not self.trinketUseAnnounce then return end
 
     R:Announce((isWotF and L["WotF used:"] or L["Trinket used: "]) .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
