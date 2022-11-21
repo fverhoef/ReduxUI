@@ -108,30 +108,13 @@ function R:Announce(message, channel)
     end
 
     if channel == "GROUP" and IsInGroup() then
-        local isInRaid, isInLFG = IsInRaid(), IsPartyLFG()
-    
-        local instanceType = select(2, GetInstanceInfo())
-        if instanceType == "arena" then
-            local skirmish = IsArenaSkirmish()
-            local _, isRegistered = IsActiveBattlefieldArena()
-            if skirmish or not isRegistered then
-                isInLFG = true
-            end
-    
-            isInRaid = false
-        end
-
-        SendChatMessage(message, isInLFG and "INSTANCE_CHAT" or (isInRaid and "RAID" or "PARTY"))
+        SendChatMessage(message, IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT" or (IsInRaid() and "RAID" or "PARTY"))
     elseif channel == "SAY" and instanceType ~= "none" then
         SendChatMessage(message, "SAY")
     elseif channel == "YELL" and instanceType ~= "none" then
         SendChatMessage(message, "YELL")
     elseif channel == "EMOTE" then
         SendChatMessage(message, "EMOTE")
-    end
-
-    if R.debug then
-        R:Print(message)
     end
 end
 

@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
+local L = R.L
+
 function UF:CreateTrinket()
     if not self.config.trinket.enabled then
         return
@@ -44,11 +46,11 @@ oUF:RegisterMetaFunction("ConfigureTrinket", UF.ConfigureTrinket)
 function UF:Trinket_PostTrinketUp(unit)
     if not self.trinketUpAnnounce then return end
 
-    R:Announce(L["Trinket ready: "] .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
+    R:Announce(L["TRINKET READY: "] .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
 end
 
 function UF:Trinket_PostTrinketUsed(unit, isWotF)
     if not self.trinketUseAnnounce then return end
 
-    R:Announce((isWotF and L["WotF used:"] or L["Trinket used: "]) .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
+    R:Announce((isWotF and L["WOTF USED: "] or L["TRINKET USED: "]) .. UnitName(unit) .. " (" .. UnitClass(unit) .. ")", self.announceChannel or "PARTY")
 end

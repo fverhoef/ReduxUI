@@ -22,7 +22,7 @@ end
 local TrinketUsed = function(self, time)
     CooldownFrame_Set(self.Cooldown, GetTime(), time, 1)
     if self.PostTrinketUsed then
-        self:PostTrinketUsed(self.__owner.unit, time > 100)
+        self:PostTrinketUsed(self.__owner.unit, time <= 45)
     end
     self.endTime = GetTime() + time
     self:SetScript("OnUpdate", TrinketUpdate)
