@@ -49,7 +49,7 @@ function UF:Trinket_PostTrinketUp(unit)
     R:Announce(L["Trinket ready: "] .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
 end
 
-function UF:Trinket_PostTrinketUse(unit, isWotF)
+function UF:Trinket_PostTrinketUsed(unit, isWotF)
     R:Print("Trinket used: " .. UnitName(unit))
 
     if not self.trinketUseAnnounce then return end
