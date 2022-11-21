@@ -71,6 +71,7 @@ local CreateTimer = function(self, category)
     timer.CountText:SetPoint("BOTTOMRIGHT", timer, "TOPRIGHT")
     timer.CountText:SetHeight(20)
     timer.CountText:SetJustifyH("CENTER")
+    timer.CountText:SetFont(STANDARD_TEXT_FONT, 10)
 
     timer.IsExpired = function(self)
         return self.Expiration < GetTime()
@@ -109,7 +110,7 @@ local UpdateTimer = function(self, unit, category, spellID)
 
     local textColor = (self.StateColors or DR_STATE_COLORS)[timer.Count]
     timer.Cooldown.Text:SetTextColor(textColor.r, textColor.g, textColor.b, textColor.a or 1)
-    timer.CountText.Text:SetText(COUNT_STRINGS[timer.Count] or "")
+    timer.CountText:SetText(COUNT_STRINGS[timer.Count] or "")
 
     timer:SetSize(self.iconSize or 24, self.iconSize or 24)
 
