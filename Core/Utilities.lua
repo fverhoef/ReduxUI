@@ -103,19 +103,15 @@ function R:PrintError(value, ...)
 end
 
 function R:Announce(message, channel)
-    if not IsInGroup() then
-        return
-    end
-
     if channel == "GROUP" and not IsInGroup() then
         channel = "EMOTE"
     end
 
     if channel == "GROUP" and IsInGroup() then
-        local isInRaid, isInLFG = IsInRaid(), R.isRetail and IsPartyLFG()
+        local isInRaid, isInLFG = IsInRaid(), IsPartyLFG()
     
         local instanceType = select(2, GetInstanceInfo())
-        if R.isRetail and instanceType == "arena" then
+        if instanceType == "arena" then
             local skirmish = IsArenaSkirmish()
             local _, isRegistered = IsActiveBattlefieldArena()
             if skirmish or not isRegistered then
@@ -125,13 +121,17 @@ function R:Announce(message, channel)
             isInRaid = false
         end
 
-        SendChatMessage(msg, isInLFG and "INSTANCE_CHAT" or (isInRaid and "RAID" or "PARTY"))
+        SendChatMessage(message, isInLFG and "INSTANCE_CHAT" or (isInRaid and "RAID" or "PARTY"))
     elseif channel == "SAY" and instanceType ~= "none" then
-        SendChatMessage(msg, "SAY")
+        SendChatMessage(message, "SAY")
     elseif channel == "YELL" and instanceType ~= "none" then
-        SendChatMessage(msg, "YELL")
+        SendChatMessage(message, "YELL")
     elseif channel == "EMOTE" then
-        SendChatMessage(msg, "EMOTE")
+        SendChatMessage(message, "EMOTE")
+    end
+
+    if R.debug then
+        R:Print(message)
     end
 end
 

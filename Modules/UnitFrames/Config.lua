@@ -403,7 +403,8 @@ R:RegisterModuleConfig(UF, {
         portrait = { size = { 28, 28 } },
         auras = {
             enabled = true,
-            buffsAndDebuffs = { point = { "TOPLEFT", "TOPRIGHT", 0, 0 }, growthX = "RIGHT", growthY = "DOWN" },
+            buffsAndDebuffs = { point = { "TOPLEFT", "TOPRIGHT", 5, 0 }, growthX = "RIGHT", growthY = "DOWN", 
+            numColumns = 32 },
             buffs = { filter = { whitelist = { PlayerBuffs = true, TurtleBuffs = true } } },
             debuffs = { filter = { whitelist = { Dispellable = true, CrowdControl = true } } }
         },
@@ -464,7 +465,8 @@ R:RegisterModuleConfig(UF, {
         portrait = { point = "RIGHT", size = { 28, 28 } },
         auras = {
             enabled = true,
-            buffsAndDebuffs = { point = { "TOPRIGHT", "TOPLEFT", 0, 0 }, growthX = "LEFT", growthY = "DOWN" },
+            buffsAndDebuffs = { point = { "TOPRIGHT", "TOPLEFT", -5, 0 }, growthX = "LEFT", growthY = "DOWN", 
+            numColumns = 32, },
             buffs = { filter = { whitelist = { Personal = true, Dispellable = true, PlayerBuffs = true, TurtleBuffs = true } } },
             debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true } } }
         },
