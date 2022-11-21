@@ -44,11 +44,9 @@ local function ForceUpdate(element)
 end
 
 local Enable = function(self, unit)
-    local element = self.TargetIndicator
-
-    if element then
-        element.__owner = self
-        element.ForceUpdate = ForceUpdate
+    if self.TargetIndicator then
+        self.TargetIndicator.__owner = self
+        self.TargetIndicator.ForceUpdate = ForceUpdate
 
         self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
 
@@ -57,9 +55,7 @@ local Enable = function(self, unit)
 end
 
 local Disable = function(self)
-    local element = self.TargetIndicator
-
-    if element then
+    if self.TargetIndicator then
         self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)
         self.TargetIndicator:Hide()
 

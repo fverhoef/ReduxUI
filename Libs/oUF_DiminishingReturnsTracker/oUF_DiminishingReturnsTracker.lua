@@ -235,6 +235,9 @@ frame:RegisterEvent("ARENA_OPPONENT_UPDATE")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:SetScript("OnEvent", Update)
 
+local Path = function(self)
+end
+
 local Enable = function(self)
     if self.DiminishingReturnsTracker then
         AddTracker(self.unit, self.DiminishingReturnsTracker)
@@ -262,9 +265,7 @@ local Disable = function(self)
     end
 end
 
-oUF:AddElement("DiminishingReturnsTracker", function()
-    return
-end, Enable, Disable)
+oUF:AddElement("DiminishingReturnsTracker", Path, Enable, Disable)
 
 -- incapacitate
 -- stun

@@ -2,23 +2,6 @@ local _, ns = ...
 local oUF = ns.oUF
 assert(oUF, "oUF not loaded")
 
-local arenaFrame = {}
-local arenaGUID = {}
-local usedTrinkets = {}
-local trinketFrame = {}
-
-local TrinketUpdate = function(self, elapsed)
-    if self.endTime < GetTime() then
-        usedTrinkets[self.guid] = false
-        local unit = arenaGUID[self.guid]
-        local frame = arenaFrame[unit]
-        if unit and frame and frame.Trinket.PostTrinketUp then
-            frame.Trinket:PostTrinketUsed(unit)
-        end
-        self:SetScript("OnUpdate", nil)
-    end
-end
-
 local GetTrinketIcon = function(unit)
     if UnitFactionGroup(unit) == "Horde" then
         return "Interface\\Icons\\INV_Jewelry_TrinketPVP_02"
@@ -27,90 +10,65 @@ local GetTrinketIcon = function(unit)
     end
 end
 
-local TrinketUsed = function(guid, time)
-    local frame = arenaFrame[unit]
-    local message
-    local unit = arenaGUID[guid]
-    if unit and frame then
-        CooldownFrame_Set(frame.Trinket.Cooldown, GetTime(), time, 1)
-        if frame.Trinket.PostTrinketUsed then
-            frame.Trinket:PostTrinketUsed(unit, time > 100)
+local TrinketUpdate = function(self, elapsed)
+    if self.endTime < GetTime() then
+        if self.PostTrinketUp then
+            self:PostTrinketUp(self.__owner.unit)
         end
+        self:SetScript("OnUpdate", nil)
     end
-    usedTrinkets[guid] = true
-    if not trinketFrame[guid] then
-        trinketFrame[guid] = CreateFrame("Frame")
+end
+
+local TrinketUsed = function(self, time)
+    CooldownFrame_Set(self.Cooldown, GetTime(), time, 1)
+    if self.PostTrinketUsed then
+        self:PostTrinketUsed(self.__owner.unit, time > 100)
     end
-    trinketFrame[guid].endTime = GetTime() + time
-    trinketFrame[guid].guid = guid
-    trinketFrame[guid]:SetScript("OnUpdate", TrinketUpdate)
+    self.endTime = GetTime() + time
+    self:SetScript("OnUpdate", TrinketUpdate)
 end
 
 local Update = function(self, event, ...)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-        local timestamp, eventType, _, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellID, spellName = ...
-        if eventType == "SPELL_CAST_SUCCESS" then
+        local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID = CombatLogGetCurrentEventInfo()
+        if subEvent == "SPELL_CAST_SUCCESS" and UnitGUID(self.unit) == sourceGUID then
             if spellID == 42292 or spellID == 59752 then
-                TrinketUsed(sourceGUID, 120)
+                TrinketUsed(self.Trinket, 120)
             elseif spellID == 7744 then
-                TrinketUsed(sourceGUID, 45)
+                TrinketUsed(self.Trinket, 45)
             end
         end
-    elseif event == "ARENA_OPPONENT_UPDATE" then
-        local unit, type = ...
-        if type == "seen" then
-            local frame = arenaFrame[unit]
-            if UnitExists(unit) and UnitIsPlayer(unit) and frame then
-                arenaGUID[UnitGUID(unit)] = unit
-                frame.Trinket.Icon:SetTexture(GetTrinketIcon(unit))
-            end
-        end
-    elseif event == "PLAYER_ENTERING_WORLD" then
-        for k, v in pairs(trinketFrame) do
-            v:SetScript("OnUpdate", nil)
-        end
-        for k, v in pairs(arenaFrame) do
-            CooldownFrame_Set(v.Trinket.Cooldown, 1, 1, 1)
-        end
-        arenaGUID = {}
-        usedTrinkets = {}
-        trinketFrame = {}
     end
 end
 
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-frame:RegisterEvent("ARENA_OPPONENT_UPDATE")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:SetScript("OnEvent", Update)
-
-oUF.Tags["[trinket]"] = function(unit)
-    if usedTrinkets[UnitGUID(unit)] or not UnitIsPlayer(unit) then
-        return
-    end
-    return string.format("|T%s:20:20:0:0|t", GetTrinketIcon(unit))
+local Path = function(self, ...)
+    return (self.Trinket.Override or Update)(self, ...)
 end
 
 local Enable = function(self)
     if self.Trinket then
+        self.Trinket.__owner = self
         self.Trinket.Cooldown = CreateFrame("Cooldown", nil, self.Trinket)
         self.Trinket.Cooldown:SetInside(self.Trinket, 3, 3)
+        self.Trinket.Cooldown:SetSwipeColor(0, 0, 0)
 
         self.Trinket.Icon = self.Trinket:CreateTexture(nil, "BACKGROUND")
         self.Trinket.Icon:SetTexture(GetTrinketIcon(self.unit))
         self.Trinket.Icon:SetInside(self.Trinket, 4, 4)
         self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
-        arenaFrame[self.unit] = self
+        self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Path, true)
+
+        return true
     end
 end
 
 local Disable = function(self)
     if self.Trinket then
-        arenaFrame[self.unit] = nil
+        self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Path)
+
+        return false
     end
 end
 
-oUF:AddElement("Trinket", function()
-    return
-end, Enable, Disable)
+oUF:AddElement("Trinket", Path, Enable, Disable)

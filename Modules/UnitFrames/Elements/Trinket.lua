@@ -34,20 +34,24 @@ function UF:ConfigureTrinket()
     self.Trinket:SetSize(unpack(config.size))
     self.Trinket:ClearAllPoints()
     self.Trinket:SetNormalizedPoint(unpack(config.point))
-    self.Trinket.trinketUseAnnounce = config.trinketUseAnnounce
     self.Trinket.trinketUpAnnounce = config.trinketUpAnnounce
+    self.Trinket.trinketUseAnnounce = config.trinketUseAnnounce
     self.Trinket.announceChannel = config.announceChannel
 end
 
 oUF:RegisterMetaFunction("ConfigureTrinket", UF.ConfigureTrinket)
 
 function UF:Trinket_PostTrinketUp(unit)
+    R:Print("Trinket ready: " .. UnitName(unit))
+
     if not self.trinketUpAnnounce then return end
 
     R:Announce(L["Trinket ready: "] .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")
 end
 
 function UF:Trinket_PostTrinketUse(unit, isWotF)
+    R:Print("Trinket used: " .. UnitName(unit))
+
     if not self.trinketUseAnnounce then return end
 
     R:Announce((isWotF and L["WotF used:"] or L["Trinket used: "]) .. UnitName(unit) .. " " .. UnitClass(unit), self.announceChannel or "PARTY")

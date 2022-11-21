@@ -47,23 +47,23 @@ function AM:COMBAT_LOG_EVENT_UNFILTERED()
         return
     end
 
-    local _, event, _, sourceGUID, _, _, _, destGUID, _, _, _, _, _, _, _, _, _, extraSpellID, extraSpellName = CombatLogGetCurrentEventInfo()
-    local announce = string.match(event, "_INTERRUPT") and (sourceGUID == UnitGUID(DF.PlayerInfo.Guid) or sourceGUID == UnitGUID("pet")) and destGUID ~= DF.PlayerInfo.Guid
+    local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, spellSchool, extraSpellID,
+          extraSpellName, extraSchool = CombatLogGetCurrentEventInfo()
+    local announce = string.match(subEvent, "_INTERRUPT") and (sourceGUID == UnitGUID(R.PlayerInfo.guid) or sourceGUID == UnitGUID("pet")) and destGUID ~= R.PlayerInfo.guid
     if not announce then
         return
     end
 
-    R:Announce(format("%c %s's %s", INTERRUPTED, destName or UNKNOWN, extraSpellID and GetSpellLink(extraSpellID) or extraSpellName), AM.config.announceInterruptChannel)
+    R:Announce(string.format("%c %s's %s%s", INTERRUPTED, destName or UNKNOWN, extraSpellID and GetSpellLink(extraSpellID) or extraSpellName), extraSchool and (" (" .. extraSchool .. ")") or UNKNOWN,
+               AM.config.announceInterruptChannel)
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)
     if AM.config.standDismount then
-        if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg ==
-            ERR_TAXINOTSTANDING then
+        if msg == SPELL_FAILED_NOT_STANDING or msg == ERR_CANTATTACK_NOTSTANDING or msg == ERR_LOOT_NOTSTANDING or msg == ERR_TAXINOTSTANDING then
             DoEmote("stand")
             UIErrorsFrame:Clear()
-        elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg ==
-            ERR_TAXIPLAYERALREADYMOUNTED or msg == SPELL_FAILED_NOT_MOUNTED then
+        elseif msg == ERR_ATTACK_MOUNTED or msg == ERR_MOUNT_ALREADYMOUNTED or msg == ERR_NOT_WHILE_MOUNTED or msg == ERR_TAXIPLAYERALREADYMOUNTED or msg == SPELL_FAILED_NOT_MOUNTED then
             if IsMounted() then
                 Dismount()
                 UIErrorsFrame:Clear()
@@ -140,9 +140,8 @@ function AM:MAIL_LOCK_SEND_ITEMS(event, attachSlot, itemLink)
     end
 end
 
-function AM:CHAT_MSG_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID,
-                             channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile, isSubtitle,
-                             hideSenderInLetterbox, supressRaidIcons)
+function AM:CHAT_MSG_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile,
+                             isSubtitle, hideSenderInLetterbox, supressRaidIcons)
     if not AM.config.autoInvite then
         return
     end
@@ -152,9 +151,8 @@ function AM:CHAT_MSG_WHISPER(event, text, playerName, languageName, channelName,
     end
 end
 
-function AM:CHAT_MSG_BN_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID,
-                                channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile, isSubtitle,
-                                hideSenderInLetterbox, supressRaidIcons)
+function AM:CHAT_MSG_BN_WHISPER(event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, unused, lineID, guid, bnSenderID, isMobile,
+                                isSubtitle, hideSenderInLetterbox, supressRaidIcons)
     if not AM.config.autoInvite then
         return
     end
