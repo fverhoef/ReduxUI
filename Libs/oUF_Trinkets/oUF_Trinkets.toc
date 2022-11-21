@@ -1,9 +1,0 @@
-## Interface: 40100
-## Title: oUF Trinkets
-## Notes: Adds PvP trinket status to oUF frames.
-## Author: Allez
-## Version: 40100.1-Beta
-## X-Category: oUF
-## Dependencies: oUF
-
-oUF_Trinkets.lua

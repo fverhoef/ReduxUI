@@ -21,7 +21,7 @@ function UF:ConfigureDiminishingReturnsTracker()
     if not config.enabled then
         self:DisableElement("DiminishingReturnsTracker")
         return
-    elseif not self.Trinket then
+    elseif not self.DiminishingReturnsTracker then
         self:CreateDiminishingReturnsTracker()
     end
 
@@ -39,4 +39,5 @@ oUF:RegisterMetaFunction("ConfigureDiminishingReturnsTracker", UF.ConfigureDimin
 function UF:DiminishingReturnsTracker_PostCreateTimer(timer)
     timer:CreateBorder()
     timer.Border:SetInside(nil, 0, 0)
+    timer.Icon:SetInside(nil, 3, 3)
 end

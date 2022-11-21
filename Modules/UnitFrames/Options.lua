@@ -66,6 +66,12 @@ function UF:CreateSelectOption(unit, name, desc, order, hidden, values, get, set
     end, disabled)
 end
 
+function UF:CreateInputOption(unit, name, desc, order, hidden, get, set, disabled)
+    return R:CreateInputOption(name, desc, order, hidden, get, set, function()
+        UF:UpdateUnit(unit)
+    end, disabled)
+end
+
 function UF:CreatePointOption(unit, order, get, set)
     return R:CreateSelectOption(L["Point"], L["The anchor point on this element."], order, nil, R.ANCHOR_POINTS, get, set, function()
         UF:UpdateUnit(unit)
@@ -172,7 +178,9 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
                     health = UF:CreateUnitHealthOption(unit, 1),
                     power = UF:CreateUnitPowerOption(unit, 2),
                     castbar = UF:CreateUnitCastbarOption(unit, 3, unit == "player"),
-                    portrait = UF:CreateUnitPortraitOption(unit, 4)
+                    portrait = UF:CreateUnitPortraitOption(unit, 4),
+                    trinket = UF:CreateUnitTrinketOption(unit, 5),
+                    diminishingReturnsTracker = UF:CreateUnitDRTrackerOption(unit, 6)
                 }
             },
             texts = {
@@ -1122,6 +1130,164 @@ function UF:CreateUnitPortraitOption(unit, order)
     }
 end
 
+function UF:CreateUnitTrinketOption(unit, order)
+    return {
+        type = "group",
+        name = L["PvP Trinket"],
+        order = order,
+        args = {
+            enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
+                return UF:UnitConfig(unit).trinket.enabled
+            end, function(value)
+                UF:UnitConfig(unit).trinket.enabled = value
+            end),
+            announce = {
+                type = "group",
+                name = L["Announcements"],
+                order = 2,
+                inline = true,
+                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                args = {
+                    trinketUseAnnounce = UF:CreateToggleOption(unit, L["Announce Trinket Use"], L["Whether to send an announcement when this unit uses their PvP trinket."], 3, nil, nil, function()
+                        return UF:UnitConfig(unit).trinket.trinketUseAnnounce
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.trinketUseAnnounce = value
+                    end),
+                    trinketUpAnnounce = UF:CreateToggleOption(unit, L["Announce Trinket Ready"], L["Whether to send an announcement when this unit's PvP trinket comes off cooldown."], 4, nil, nil, function()
+                        return UF:UnitConfig(unit).trinket.trinketUpAnnounce
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.trinketUpAnnounce = value
+                    end),
+                    announceChannel = UF:CreateSelectOption(unit, L["Announce Channel"], L["The channel to make announcements in."], 5, nil, R.ANNOUNCE_CHANNELS, function()
+                        return UF:UnitConfig(unit).trinket.announceChannel
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.announceChannel = value
+                    end),
+                }
+            },
+            size = {
+                type = "group",
+                name = L["Size"],
+                order = 3,
+                inline = true,
+                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                args = {
+                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the trinket icon."], 1, function()
+                        return not UF:UnitConfig(unit).trinket.size[1]
+                    end, 10, 60, nil, 1, function()
+                        return UF:UnitConfig(unit).trinket.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.size[1] = value
+                    end),
+                    width = UF:CreateRangeOption(unit, L["Height"], L["The height of the trinket icon."], 2, function()
+                        return not UF:UnitConfig(unit).trinket.size[2]
+                    end, 10, 60, nil, 1, function()
+                        return UF:UnitConfig(unit).trinket.size[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.size[2] = value
+                    end)
+                }
+            },
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 4,
+                inline = true,
+                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).trinket.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).trinket.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).trinket.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).trinket.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).trinket.point[4] = value
+                    end)
+                }
+            }
+        }
+    }
+end
+
+function UF:CreateUnitDRTrackerOption(unit, order)
+    return {
+        type = "group",
+        name = L["DR Tracker"],
+        order = order,
+        args = {
+            enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
+                return UF:UnitConfig(unit).diminishingReturnsTracker.enabled
+            end, function(value)
+                UF:UnitConfig(unit).diminishingReturnsTracker.enabled = value
+            end),
+            size = {
+                type = "group",
+                name = L["Position"],
+                order = 2,
+                inline = true,
+                disabled = function() return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled end,
+                args = {
+                    iconSize = UF:CreateRangeOption(unit, L["Icon Size"], L["The size of the DR icons."], 1, function()
+                        return not UF:UnitConfig(unit).diminishingReturnsTracker.iconSize
+                    end, 10, 60, nil, 1, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.iconSize
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.iconSize = value
+                    end),
+                    iconSpacing = UF:CreateRangeOption(unit, L["Icon Spacing"], L["The spacing between each of the DR icons."], 2, function()
+                        return not UF:UnitConfig(unit).diminishingReturnsTracker.iconSpacing
+                    end, -50, 50, nil, 1, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.iconSpacing
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.iconSpacing = value
+                    end)
+                }
+            },
+            position = {
+                type = "group",
+                name = L["Position"],
+                order = 3,
+                inline = true,
+                disabled = function() return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled end,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.point[1] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 2, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.point[2] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 3, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.point[3]
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.point[3] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 4, function()
+                        return UF:UnitConfig(unit).diminishingReturnsTracker.point[4]
+                    end, function(value)
+                        UF:UnitConfig(unit).diminishingReturnsTracker.point[4] = value
+                    end)
+                }
+            }
+        }
+    }
+end
+
 function UF:CreateUnitCastbarOption(unit, order, canDetach)
     return {
         type = "group",
@@ -1279,7 +1445,7 @@ function UF:CreateUnitIndicatorOption(unit, indicatorName, order, title, hidden)
             position = {
                 type = "group",
                 name = L["Position"],
-                order = order,
+                order = 2,
                 disabled = IsBlizzardStyled(unit),
                 inline = true,
                 args = {
@@ -1308,7 +1474,7 @@ function UF:CreateUnitIndicatorOption(unit, indicatorName, order, title, hidden)
             size = {
                 type = "group",
                 name = L["Size"],
-                order = order,
+                order = 3,
                 inline = true,
                 disabled = IsBlizzardStyled(unit),
                 args = {

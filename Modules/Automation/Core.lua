@@ -16,7 +16,9 @@ function AM:Enable()
         return
     end
 
+    AM:RegisterEvent("PLAYER_ENTERING_WORLD")
     AM:RegisterEvent("UI_ERROR_MESSAGE")
+    AM:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     AM:RegisterEvent("LOOT_READY")
     AM:RegisterEvent("MERCHANT_SHOW")
     AM:RegisterEvent("MERCHANT_CLOSED")
@@ -28,7 +30,6 @@ function AM:Enable()
     AM:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
     AM:RegisterEvent("CHAT_MSG_WHISPER")
     AM:RegisterEvent("CHAT_MSG_BN_WHISPER")
-    AM:RegisterEvent("PLAYER_ENTERING_WORLD")
 
     AM:Update()
 end
@@ -39,6 +40,20 @@ end
 
 function AM:PLAYER_ENTERING_WORLD()
     SetCVar("cameraDistanceMaxZoomFactor", AM.config.cameraDistanceMaxZoomFactor)
+end
+
+function AM:COMBAT_LOG_EVENT_UNFILTERED()
+    if not AM.announceInterrupt then
+        return
+    end
+
+    local _, event, _, sourceGUID, _, _, _, destGUID, _, _, _, _, _, _, _, _, _, extraSpellID, extraSpellName = CombatLogGetCurrentEventInfo()
+    local announce = string.match(event, "_INTERRUPT") and (sourceGUID == UnitGUID(DF.PlayerInfo.Guid) or sourceGUID == UnitGUID("pet")) and destGUID ~= DF.PlayerInfo.Guid
+    if not announce then
+        return
+    end
+
+    R:Announce(format("%c %s's %s", INTERRUPTED, destName or UNKNOWN, extraSpellID and GetSpellLink(extraSpellID) or extraSpellName), AM.config.announceInterruptChannel)
 end
 
 function AM:UI_ERROR_MESSAGE(event, errorType, msg)

@@ -124,7 +124,7 @@ local function Update(self, event, unit, powerType)
 			cur = cur - cur % 1
 		end
 
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
+		if(PlayerClass == 'ROGUE') then
 			chargedPoints = GetUnitChargedPowerPoints(unit)
 
 			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
@@ -162,10 +162,10 @@ local function Update(self, event, unit, powerType)
 	* max           - the maximum amount of power (number)
 	* hasMaxChanged - indicates whether the maximum amount has changed since the last update (boolean)
 	* powerType     - the active power type (string)
-	* chargedTable  - current chargedPoints table
+	* ...           - the indices of currently charged power points, if any
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(cur, max, oldMax ~= max, powerType, chargedPoints)  -- ElvUI uses chargedPoints as table
+		return element:PostUpdate(cur, max, oldMax ~= max, powerType, unpack(chargedPoints or {}))
 	end
 end
 
@@ -263,7 +263,7 @@ do
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
+		if(PlayerClass == 'ROGUE') then
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
 
@@ -279,10 +279,9 @@ do
 	function ClassPowerDisable(self)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-		else
+		if not oUF.isRetail then
 			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 

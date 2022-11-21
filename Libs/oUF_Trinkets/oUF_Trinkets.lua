@@ -11,10 +11,9 @@ local TrinketUpdate = function(self, elapsed)
     if self.endTime < GetTime() then
         usedTrinkets[self.guid] = false
         local unit = arenaGUID[self.guid]
-        if unit and arenaFrame[unit] then
-            if arenaFrame[unit].Trinket.trinketUpAnnounce then
-                SendChatMessage("Trinket ready: " .. UnitName(unit) .. " " .. UnitClass(unit), "PARTY")
-            end
+        local frame = arenaFrame[unit]
+        if unit and frame and frame.Trinket.PostTrinketUp then
+            frame.Trinket:PostTrinketUsed(unit)
         end
         self:SetScript("OnUpdate", nil)
     end
@@ -29,13 +28,13 @@ local GetTrinketIcon = function(unit)
 end
 
 local TrinketUsed = function(guid, time)
+    local frame = arenaFrame[unit]
     local message
     local unit = arenaGUID[guid]
-    if unit and arenaFrame[unit] then
-        CooldownFrame_Set(arenaFrame[unit].Trinket.Cooldown, GetTime(), time, 1)
-        if arenaFrame[unit].Trinket.trinketUseAnnounce then
-            message = time == 120 and "Trinket used: " or "WotF used: "
-            SendChatMessage(message .. UnitName(unit) .. " " .. UnitClass(unit), "PARTY")
+    if unit and frame then
+        CooldownFrame_Set(frame.Trinket.Cooldown, GetTime(), time, 1)
+        if frame.Trinket.PostTrinketUsed then
+            frame.Trinket:PostTrinketUsed(unit, time > 100)
         end
     end
     usedTrinkets[guid] = true
@@ -60,9 +59,10 @@ local Update = function(self, event, ...)
     elseif event == "ARENA_OPPONENT_UPDATE" then
         local unit, type = ...
         if type == "seen" then
-            if UnitExists(unit) and UnitIsPlayer(unit) and arenaFrame[unit] then
+            local frame = arenaFrame[unit]
+            if UnitExists(unit) and UnitIsPlayer(unit) and frame then
                 arenaGUID[UnitGUID(unit)] = unit
-                arenaFrame[unit].Trinket.Icon:SetTexture(GetTrinketIcon(unit))
+                frame.Trinket.Icon:SetTexture(GetTrinketIcon(unit))
             end
         end
     elseif event == "PLAYER_ENTERING_WORLD" then

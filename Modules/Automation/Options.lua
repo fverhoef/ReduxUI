@@ -7,12 +7,12 @@ R:RegisterModuleOptions(AM, {
     type = "group",
     name = "Automation",
     args = {
-        header = {type = "header", name = R.title .. " > Automation", order = 0},
+        header = { type = "header", name = R.title .. " > Automation", order = 0 },
         enabled = R:CreateModuleEnabledOption(1, nil, "Automation"),
-        lineBreak = {type = "header", name = "", order = 2},
+        lineBreak = { type = "header", name = "", order = 2 },
         fastLoot = {
             type = "toggle",
-            name = "Faster Auto-Loot",
+            name = L["Faster Auto-Loot"],
             hidden = R.isRetail,
             order = 10,
             width = "full",
@@ -25,7 +25,7 @@ R:RegisterModuleOptions(AM, {
         },
         standDismount = {
             type = "toggle",
-            name = "Auto Stand/Dismount",
+            name = L["Auto Stand/Dismount"],
             order = 11,
             width = "full",
             get = function()
@@ -37,7 +37,7 @@ R:RegisterModuleOptions(AM, {
         },
         vendorGrays = {
             type = "toggle",
-            name = "Vendor Trash",
+            name = L["Vendor Trash"],
             order = 12,
             width = "full",
             get = function()
@@ -49,7 +49,7 @@ R:RegisterModuleOptions(AM, {
         },
         repair = {
             type = "toggle",
-            name = "Auto Repair",
+            name = L["Auto Repair"],
             order = 13,
             width = "full",
             get = function()
@@ -61,7 +61,7 @@ R:RegisterModuleOptions(AM, {
         },
         acceptSummon = {
             type = "toggle",
-            name = "Accept Summons",
+            name = L["Accept Summons"],
             order = 14,
             width = "full",
             get = function()
@@ -73,7 +73,7 @@ R:RegisterModuleOptions(AM, {
         },
         acceptResurrection = {
             type = "toggle",
-            name = "Accept Resurrection",
+            name = L["Accept Resurrection"],
             order = 15,
             width = "full",
             get = function()
@@ -85,7 +85,7 @@ R:RegisterModuleOptions(AM, {
         },
         disableLootBindConfirmation = {
             type = "toggle",
-            name = "Disable Bind on Pickup Confirmation",
+            name = L["Disable Bind on Pickup Confirmation"],
             order = 16,
             width = "full",
             get = function()
@@ -97,7 +97,7 @@ R:RegisterModuleOptions(AM, {
         },
         disableLootRollConfirmation = {
             type = "toggle",
-            name = "Disable Loot Roll Confirmation",
+            name = L["Disable Loot Roll Confirmation"],
             order = 17,
             width = "full",
             get = function()
@@ -109,7 +109,7 @@ R:RegisterModuleOptions(AM, {
         },
         disableVendorRefundWarning = {
             type = "toggle",
-            name = "Disable Vendor Refund Warning",
+            name = L["Disable Vendor Refund Warning"],
             order = 18,
             width = "full",
             get = function()
@@ -121,7 +121,7 @@ R:RegisterModuleOptions(AM, {
         },
         disableMailRefundWarning = {
             type = "toggle",
-            name = "Disable Mail Refund Warning",
+            name = L["Disable Mail Refund Warning"],
             order = 19,
             width = "full",
             get = function()
@@ -131,10 +131,10 @@ R:RegisterModuleOptions(AM, {
                 AM.config.disableMailRefundWarning = val
             end
         },
-        lineBreak2 = {type = "description", name = "", order = 20},
+        lineBreak2 = { type = "description", name = "", order = 20 },
         autoInvite = {
             type = "toggle",
-            name = "Auto Invite",
+            name = L["Auto Invite"],
             order = 21,
             get = function()
                 return AM.config.autoInvite
@@ -145,7 +145,7 @@ R:RegisterModuleOptions(AM, {
         },
         autoInvitePassword = {
             type = "input",
-            name = "Auto Invite Password",
+            name = L["Auto Invite Password"],
             order = 22,
             disabled = function()
                 return not AM.config.autoInvite
@@ -157,8 +157,31 @@ R:RegisterModuleOptions(AM, {
                 AM.config.autoInvitePassword = val
             end
         },
-        lineBreak2 = {type = "header", name = "Tweaks", order = 30},
-        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 31, nil, 1, 4, 4, 0.1,
-                                                          function() return AM.config.cameraDistanceMaxZoomFactor end, function(value) AM.config.cameraDistanceMaxZoomFactor = value end, AM.Update)
+        lineBreak2 = { type = "header", name = "Announcer", order = 30 },
+        announceInterrupt = {
+            type = "toggle",
+            name = L["Announce Interrupts"],
+            desc = L["Whether to announce when you successfully interrupt an enemy's spell."],
+            order = 31,
+            get = function()
+                return AM.config.announceInterrupt
+            end,
+            set = function(_, val)
+                AM.config.announceInterrupt = val
+            end
+        },
+        announceInterruptChannel = R:CreateSelectOption(L["Announce Interrupt Channel"], L["The channel to announce interrupts on"], 32, function()
+            return not AM.config.announceInterrupt
+        end, R.ANNOUNCE_CHANNELS, function()
+            return AM.config.announceInterruptChannel
+        end, function(value)
+            AM.config.announceInterruptChannel = value
+        end),
+        lineBreak3 = { type = "header", name = L["Tweaks"], order = 40 },
+        cameraDistanceMaxZoomFactor = R:CreateRangeOption(L["Max Camera Distance"], L["Maximum Camera Distance Zoom Factor"], 41, nil, 1, 4, 4, 0.1, function()
+            return AM.config.cameraDistanceMaxZoomFactor
+        end, function(value)
+            AM.config.cameraDistanceMaxZoomFactor = value
+        end, AM.Update)
     }
 })

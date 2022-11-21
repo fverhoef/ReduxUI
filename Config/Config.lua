@@ -8,6 +8,13 @@ R.RED_FONT_COLOR = {255 / 255, 25 / 255, 25 / 255}
 R.GRAY_FONT_COLOR = {127 / 255, 127 / 255, 127 / 255}
 R.DARK_GRAY_FONT_COLOR = {89 / 255, 89 / 255, 89 / 255}
 
+R.ANNOUNCE_CHANNELS = {
+    "GROUP",
+    "SAY",
+    "YELL",
+    "EMOTE"
+}
+
 R.config = {}
 R.config.defaults = {
     profile = {

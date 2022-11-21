@@ -111,6 +111,7 @@ local UpdateTimer = function(self, unit, category, spellID)
     local textColor = (self.StateColors or DR_STATE_COLORS)[timer.Count]
     timer.Cooldown.Text:SetTextColor(textColor.r, textColor.g, textColor.b, textColor.a or 1)
     timer.CountText:SetText(COUNT_STRINGS[timer.Count] or "")
+    timer.CountText:SetTextColor(textColor.r, textColor.g, textColor.b, textColor.a or 1)
 
     timer:SetSize(self.iconSize or 24, self.iconSize or 24)
 
@@ -133,7 +134,7 @@ local LayoutTimers = function(self)
         if not timer:IsExpired() then
             timer:Show()
             timer:ClearAllPoints()
-            timer:SetPoint("LEFT", lastTimer or self, lastTimer and "RIGHT" or "LEFT", (lastTimer and (self.iconSpacing or 5)) or 0)
+            timer:SetPoint("LEFT", lastTimer or self, lastTimer and "RIGHT" or "LEFT", (lastTimer and (-self.iconSpacing or -5)) or 0)
 
             lastTimer = timer
         else

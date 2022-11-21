@@ -234,7 +234,7 @@ local DEFAULT_UNIT_CONFIG = {
     restingIndicator = { enabled = true, size = { 24, 24 }, point = { "BOTTOMLEFT", "TOPRIGHT", 0, 0 } },
     resurrectIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
     summonIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
-    trinket = { enabled = false, size = { 40, 40 }, point = { "LEFT", "RIGHT", 5, 0 } },
+    trinket = { enabled = false, size = { 40, 40 }, point = { "LEFT", "RIGHT", 5, 0 }, trinketUseAnnounce = true, trinketUpAnnounce = true, announceChannel = "GROUP" },
     diminishingReturnsTracker = { enabled = false, iconSize = 24, iconSpacing = 10, point = { "LEFT", "RIGHT", 50, 0 } }
 }
 
@@ -401,7 +401,14 @@ R:RegisterModuleConfig(UF, {
         size = { 180, 30 },
         point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 },
         portrait = { size = { 28, 28 } },
+        auras = {
+            enabled = true,
+            buffsAndDebuffs = { point = { "TOPLEFT", "TOPRIGHT", 0, 0 }, growthX = "RIGHT", growthY = "DOWN" },
+            buffs = { filter = { whitelist = { PlayerBuffs = true, TurtleBuffs = true } } },
+            debuffs = { filter = { whitelist = { Dispellable = true, CrowdControl = true } } }
+        },
         pvpIndicator = { enabled = false },
+        trinket = { enabled = true, point = { "RIGHT", "LEFT", -5, 0 } },
         unitAnchorPoint = "BOTTOM",
         groupAnchorPoint = "BOTTOM"
     }),
@@ -457,6 +464,7 @@ R:RegisterModuleConfig(UF, {
         portrait = { point = "RIGHT", size = { 28, 28 } },
         auras = {
             enabled = true,
+            buffsAndDebuffs = { point = { "TOPRIGHT", "TOPLEFT", 0, 0 }, growthX = "LEFT", growthY = "DOWN" },
             buffs = { filter = { whitelist = { Personal = true, Dispellable = true, PlayerBuffs = true, TurtleBuffs = true } } },
             debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true } } }
         },
