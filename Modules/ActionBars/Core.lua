@@ -231,10 +231,6 @@ function AB:ConfigureActionBars()
         totemBar.Border:SetShown(false)
         totemBar.Shadow:SetShown(false)
         totemBar.Mover:Lock(true)
-
-        AB.vehicleExitBar:ClearAllPoints()
-        AB.vehicleExitBar:SetPoint("BOTTOMRIGHT", multiBarBottomRight.buttons[12], "TOPRIGHT", -18, 5)
-        AB.vehicleExitBar.Mover:Lock(true)
     end
 end
 
