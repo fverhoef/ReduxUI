@@ -38,6 +38,9 @@ local Update = function(self, event, ...)
                 TrinketUsed(self.Trinket, 45)
             end
         end
+    else
+        self.Trinket.endTime = nil
+        self.Trinket:SetScript("OnUpdate", nil)
     end
 end
 
@@ -57,6 +60,7 @@ local Enable = function(self)
         self.Trinket.Icon:SetInside(self.Trinket, 4, 4)
         self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
+        self:RegisterEvent("PLAYER_ENTERING_WORLD", Path, true)
         self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Path, true)
 
         return true
@@ -65,6 +69,7 @@ end
 
 local Disable = function(self)
     if self.Trinket then
+        self:UnregisterEvent("PLAYER_ENTERING_WORLD", Path)
         self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Path)
 
         return false
