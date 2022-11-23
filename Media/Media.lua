@@ -32,7 +32,11 @@ R.media = {
             separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
-        frames = { paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame" },
+        frames = {
+            dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\DualPaneFrame-Left",
+            dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\DualPaneFrame-Right",
+            paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame"
+        },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
             border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Border",

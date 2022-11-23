@@ -7,8 +7,10 @@ function S:Initialize()
 end
 
 function S:Enable()
-    if not S.config.enabled then return end
-    
+    if not S.config.enabled then
+        return
+    end
+
     S:StyleDurabilityFrame()
     S:StyleWatchFrame()
     S:StyleQuestWatchFrame()
@@ -23,6 +25,17 @@ function S:Enable()
         S:StyleGuildFrame()
         S:StyleWhoFrame()
     end
-    
+
     S:StyleWorldMapFrame()
+
+    S:RegisterEvent("ADDON_LOADED")
+    if IsAddOnLoaded("Blizzard_TradeSkillUI") then
+        S:StyleTradeSkillFrame()
+    end
+end
+
+function S:ADDON_LOADED(event, addon)
+    if addon == "Blizzard_TradeSkillUI" then
+        S:StyleTradeSkillFrame()
+    end
 end

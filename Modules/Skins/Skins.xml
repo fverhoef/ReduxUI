@@ -16,5 +16,6 @@
     <Script file="CharacterFrame.lua"/>
     <Script file="FriendsFrame.lua"/>
     <Script file="GuildFrame.lua"/>
+    <Script file="TradeSkillFrame.lua"/>
     <Script file="WhoFrame.lua"/>
 </Ui>

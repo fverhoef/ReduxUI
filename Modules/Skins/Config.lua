@@ -19,6 +19,7 @@ R:RegisterModuleConfig(S, {
     guild = {enabled = true},
     objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}},
     ticketStatus = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -228, -240}},
+    tradeSkill = {enabled = true},
     vehicleSeat = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
     widgets = {enabled = true, top = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -10}}, belowMinimap = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -60}}},
     who = {enabled = true},
