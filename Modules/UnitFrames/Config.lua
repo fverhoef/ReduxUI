@@ -398,12 +398,13 @@ R:RegisterModuleConfig(UF, {
     }),
     party = R:CopyTable(DEFAULT_HEADER_UNIT_CONFIG, {
         style = DEFAULT_STYLE,
+        largeHealth = true,
         size = { 180, 30 },
         point = { "BOTTOMRIGHT", "UIParent", "BOTTOM", -350, 450 },
         portrait = { size = { 28, 28 } },
         auras = {
             enabled = true,
-            buffsAndDebuffs = { point = { "TOPLEFT", "TOPRIGHT", 5, 0 }, growthX = "RIGHT", growthY = "DOWN", numColumns = 32 },
+            buffsAndDebuffs = { point = { "LEFT", "RIGHT", 5, 0 }, growthX = "RIGHT", growthY = "DOWN", numColumns = 32 },
             buffs = { filter = { whitelist = { PlayerBuffs = true, TurtleBuffs = true } } },
             debuffs = { filter = { whitelist = { Dispellable = true, CrowdControl = true } } }
         },
@@ -464,7 +465,7 @@ R:RegisterModuleConfig(UF, {
         portrait = { point = "RIGHT", size = { 28, 28 } },
         auras = {
             enabled = true,
-            buffsAndDebuffs = { point = { "TOPRIGHT", "TOPLEFT", -5, 0 }, growthX = "LEFT", growthY = "DOWN", initialAnchor = "BOTTOMRIGHT", numColumns = 32 },
+            buffsAndDebuffs = { point = { "RIGHT", "LEFT", -5, 0 }, growthX = "LEFT", growthY = "DOWN", initialAnchor = "BOTTOMRIGHT", numColumns = 32 },
             buffs = { filter = { whitelist = { Personal = true, Dispellable = true, PlayerBuffs = true, TurtleBuffs = true } } },
             debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true, RaidDebuffs = true } } }
         },

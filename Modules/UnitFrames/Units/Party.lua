@@ -19,19 +19,19 @@ function PartyMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetTexture(R.media.textures.unitFrames.partyFrame)
             self.Artwork:SetTexCoord(0, 240 / 256, 0, 98 / 128)
             self.Artwork:SetAllPoints()
         end
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.partyFrame_LargeHealth or R.media.textures.unitFrames.partyFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
-            self.Flash:SetTexture(R.media.textures.unitFrames.partyFrame_Flash)
             self.Flash:SetTexCoord(0, 1, 0, 1)
             self.Flash:SetPoint("CENTER", self, "CENTER", 0, -4)
             self.Flash:SetSize(128, 64)
         end
+        self.Flash:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.partyFrame_LargeHealth_Flash or R.media.textures.unitFrames.partyFrame_Flash)
         self.Flash:Hide()
 
         self.Name:Show()
@@ -58,15 +58,24 @@ function PartyMixin:PostConfigure()
 
         self.Health:ClearAllPoints()
         self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -11)
-        self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 31)
+        if self.config.largeHealth then
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 21)
+        else
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 31)
+        end
 
         self.Health.Value:Hide()
         self.Health.Percent:Hide()
 
         self:EnableElement("Power")
         self.Power:ClearAllPoints()
-        self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -19)
-        self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 23)
+        if self.config.largeHealth then
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 44, -28)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 12)
+        else
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -19)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 23)
+        end
 
         self.Power.Border:Hide()
         self.Power.Separator:Hide()
