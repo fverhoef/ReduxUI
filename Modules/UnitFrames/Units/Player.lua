@@ -73,8 +73,9 @@ function PlayerMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetAllPoints()
         end
+        self.Artwork:ClearAllPoints()
+        self.Artwork:SetAllPoints()
         self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
         self.Artwork:SetTexCoord(438 / 512, 50 / 512, 17 / 256, 169 / 256)
         self.Artwork:Show()
@@ -128,7 +129,6 @@ function PlayerMixin:PostConfigure()
         self.PortraitHolder:SetSize(60, 60)
         self.PortraitHolder:ClearAllPoints()
         self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -5)
-        self.PortraitHolder.PortraitMaskedCornerIcon:Hide()
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
@@ -257,8 +257,9 @@ function PlayerMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetAllPoints()
         end
+        self.Artwork:ClearAllPoints()
+        self.Artwork:SetAllPoints()
         self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
         self.Artwork:SetTexCoord(0, 0.375, 0, 0.26171875)
         self.Artwork:Show()
@@ -439,6 +440,5 @@ function PlayerMixin:PostConfigure()
             end
             self.AdditionalPower.Border:Show()
         end
-        self.PortraitHolder.PortraitMaskedCornerIcon:Hide()
     end
 end
