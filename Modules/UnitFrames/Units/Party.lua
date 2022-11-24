@@ -64,8 +64,10 @@ function PartyMixin:PostConfigure()
             self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 31)
         end
 
-        self.Health.Value:Hide()
-        self.Health.Percent:Hide()
+        if not self.config.largeHealth then
+            self.Health.Value:Hide()
+            self.Health.Percent:Hide()
+        end
 
         self:EnableElement("Power")
         self.Power:ClearAllPoints()
