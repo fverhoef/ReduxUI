@@ -352,9 +352,9 @@ R:RegisterModuleConfig(UF, {
         style = DEFAULT_STYLE,
         size = { 95, 24 },
         point = { "TOPLEFT", addonName .. "Target", "TOPRIGHT", 10, 0 },
-        health = { value = { enabled = false }, percent = { enabled = false } },
-        power = { enabled = false },
-        name = { size = { 95, 10 }, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 11, fontShadow = false, justifyH = "CENTER", tag = "[name]" },
+        health = { value = { enabled = false, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
+        power = { size = { 120, 6 }, value = { enabled = false } },
+        name = { size = { 95, 10 }, point = { "CENTER", "CENTER", 0, 4 }, fontSize = 11, fontShadow = false, justifyH = "CENTER", tag = "[name]" },
         portrait = { enabled = false },
         castbar = { enabled = false },
         pvpIndicator = { enabled = false }
@@ -364,8 +364,8 @@ R:RegisterModuleConfig(UF, {
         size = { 120, 28 },
         point = { "TOPLEFT", addonName .. "Player", "BOTTOMLEFT", 5, -10 },
         health = { value = { enabled = false, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 12 }, percent = { enabled = false } },
-        power = { enabled = false },
-        name = { size = { 95, 10 }, point = { "CENTER", "CENTER", 0, 0 }, fontSize = 11, justifyH = "CENTER", tag = "[name]" },
+        power = { size = { 120, 6 }, value = { enabled = false } },
+        name = { size = { 95, 10 }, point = { "CENTER", "CENTER", 0, 4 }, fontSize = 11, justifyH = "CENTER", tag = "[name]" },
         portrait = { enabled = false },
         castbar = { enabled = false },
         pvpIndicator = { enabled = false }
