@@ -44,7 +44,7 @@ function UF:UpdateHighlight()
     if self.Shadow then
         self.Shadow:SetBackdropBorderColor(unpack(config.colorShadow and color or R.DEFAULT_SHADOW_COLOR))
     end
-    if self.Flash and self.config.style == UF.Styles.Blizzard then
+    if self.Flash and not self:IsCustomStyled() then
         self.Flash:SetShown(color ~= nil)
         if color then
             self.Flash:SetVertexColor(unpack(color))
@@ -56,7 +56,7 @@ function UF:UpdateHighlight()
     elseif not color or not animate and self.highlightAnimationTimer then
         UF:CancelTimer(self.highlightAnimationTimer)
         self.highlightAnimationTimer = nil
-        if self.Flash and self.config.style == UF.Styles.Blizzard then
+        if self.Flash and not self:IsCustomStyled() then
             self.Flash:SetShown(color ~= nil)
         end
         self:UpdateHighlightAnimation()
@@ -88,13 +88,13 @@ function UF:UpdateHighlightAnimation()
         end
     end
 
-    if self.Border and self.config.style ~= UF.Styles.Blizzard then
+    if self.Border and self:IsCustomStyled() then
         self.Border:SetAlpha(config.colorBorder and alpha or 1)
     end
-    if self.Shadow and self.config.style ~= UF.Styles.Blizzard then
+    if self.Shadow and self:IsCustomStyled() then
         self.Shadow:SetAlpha(config.colorShadow and alpha or 1)
     end
-    if self.Flash and self.config.style == UF.Styles.Blizzard then
+    if self.Flash and not self:IsCustomStyled() then
         self.Flash:SetAlpha(alpha)
     end
 end

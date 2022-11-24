@@ -10,7 +10,7 @@ end
 PetMixin = {}
 
 function PetMixin:PostConfigure()
-    if self.config.style == UF.Styles.Blizzard then
+    if self.config.style == UF.Styles.Vanilla then
         self:SetSize(93, 45)
         self:ClearAllPoints()
         self:SetPoint("TOPLEFT", UF.frames.player, "BOTTOMLEFT", 50, 10)
@@ -21,7 +21,7 @@ function PetMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetTexture(R.media.textures.unitFrames.targetOfTargetFrame)
+            self.Artwork:SetTexture(R.media.textures.unitFrames.vanilla.targetOfTargetFrame)
             self.Artwork:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
             self.Artwork:SetAllPoints()
         end

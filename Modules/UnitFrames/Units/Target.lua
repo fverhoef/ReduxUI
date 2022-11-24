@@ -14,7 +14,7 @@ function TargetMixin:PostInitialize()
 end
 
 function TargetMixin:PostConfigure()
-    if self.config.style == UF.Styles.Blizzard then
+    if self.config.style == UF.Styles.Vanilla then
         self:SetSize(194, 76)
 
         self.Border:Hide()
@@ -27,12 +27,12 @@ function TargetMixin:PostConfigure()
             self.Artwork:SetPoint("TOPLEFT", 0, 8.5)
             self.Artwork:SetPoint("BOTTOMRIGHT", 37, -15.5)
         end
-        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
             self.Flash:SetTexCoord(0, 1, 0, 205 / 256)
             self.Flash:SetPoint("CENTER", self, "CENTER", 6, -4.5)
             self.Flash:SetSize(256, 103)
@@ -202,20 +202,20 @@ function TargetMixin:PostUpdate()
 end
 
 function TargetMixin:UpdateArtwork()
-    if self.config.style == UF.Styles.Blizzard then
+    if self.config.style == UF.Styles.Vanilla then
         local classification = UnitClassification("target")
         if classification == "rare" then
-            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_Rare or R.media.textures.unitFrames.targetingFrame_Rare)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth_Rare or R.media.textures.unitFrames.vanilla.targetingFrame_Rare)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
         elseif classification == "rareelite" then
-            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_RareElite or R.media.textures.unitFrames.targetingFrame_RareElite)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Elite_Flash)
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth_RareElite or R.media.textures.unitFrames.vanilla.targetingFrame_RareElite)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Elite_Flash)
         elseif classification == "elite" then
-            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth_Elite or R.media.textures.unitFrames.targetingFrame_Elite)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Elite_Flash)
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth_Elite or R.media.textures.unitFrames.vanilla.targetingFrame_Elite)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Elite_Flash)
         else
-            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
+            self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
         end
     elseif self.Artwork then
         self.Artwork:Hide()

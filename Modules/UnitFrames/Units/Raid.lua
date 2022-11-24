@@ -11,9 +11,9 @@ function UF:SpawnRaidHeader()
 			_G.CompactRaidFrameContainer:UnregisterAllEvents()
 		end
 
-        --CompactRaidFrameManager_SetSetting("IsShown", "0")
         --_G.CompactRaidFrameManager:UnregisterAllEvents()
-        --_G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
+        CompactRaidFrameManager_SetSetting("IsShown", "0")
+        _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
     end
 
     return UF:SpawnHeader("Raid", NUM_RAID_GROUPS, RaidMixin, UF.config.raid, UF.defaults.raid)

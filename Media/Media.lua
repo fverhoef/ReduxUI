@@ -57,27 +57,29 @@ R.media = {
             melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark"
         },
         unitFrames = {
-            additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\AdditionalPowerBorder",
-            focusFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame",
-            focusFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame-Flash",
-            focusFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\FocusFrame-LargeHealth",
-            partyFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\PartyFrame",
-            partyFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\PartyFrame-Flash",
-            partyFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\PartyFrame-LargeHealth",
-            partyFrame_LargeHealth_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\PartyFrame-LargeHealth-Flash",
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
-            targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame",
-            targetingFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Flash",
-            targetingFrame_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite",
-            targetingFrame_Elite_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Elite-Flash",
-            targetingFrame_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare",
-            targetingFrame_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-Rare-Elite",
-            targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth",
-            targetingFrame_LargeHealth_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Elite",
-            targetingFrame_LargeHealth_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Rare",
-            targetingFrame_LargeHealth_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetingFrame-LargeHealth-Rare-Elite",
-            targetOfTargetFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\TargetOfTargetFrame"
+            vanilla = {
+                additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\AdditionalPowerBorder",
+                focusFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\FocusFrame",
+                focusFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\FocusFrame-Flash",
+                focusFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\FocusFrame-LargeHealth",
+                partyFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\PartyFrame",
+                partyFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\PartyFrame-Flash",
+                partyFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\PartyFrame-LargeHealth",
+                partyFrame_LargeHealth_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\PartyFrame-LargeHealth-Flash",
+                targetingFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame",
+                targetingFrame_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-Flash",
+                targetingFrame_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-Elite",
+                targetingFrame_Elite_Flash = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-Elite-Flash",
+                targetingFrame_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-Rare",
+                targetingFrame_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-Rare-Elite",
+                targetingFrame_LargeHealth = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-LargeHealth",
+                targetingFrame_LargeHealth_Elite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-LargeHealth-Elite",
+                targetingFrame_LargeHealth_Rare = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-LargeHealth-Rare",
+                targetingFrame_LargeHealth_RareElite = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetingFrame-LargeHealth-Rare-Elite",
+                targetOfTargetFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\TargetOfTargetFrame"
+            }
         }
     }
 }

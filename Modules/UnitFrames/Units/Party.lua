@@ -10,8 +10,9 @@ end
 PartyMixin = {}
 
 function PartyMixin:PostConfigure()
-    if self.config.style == UF.Styles.Blizzard then
-        self:SetSize(120, 49)
+    if self.config.style == UF.Styles.Vanilla then
+        local scale = 1.3
+        self:SetSize(scale * 120, scale * 49)
 
         self.Border:Hide()
         self.Inlay:Hide()
@@ -22,16 +23,16 @@ function PartyMixin:PostConfigure()
             self.Artwork:SetTexCoord(0, 240 / 256, 0, 98 / 128)
             self.Artwork:SetAllPoints()
         end
-        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.partyFrame_LargeHealth or R.media.textures.unitFrames.partyFrame)
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.partyFrame_LargeHealth or R.media.textures.unitFrames.vanilla.partyFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
             self.Flash:SetTexCoord(0, 1, 0, 1)
             self.Flash:SetPoint("CENTER", self, "CENTER", 0, -4)
-            self.Flash:SetSize(128, 64)
+            self.Flash:SetSize(scale * 128, scale * 64)
         end
-        self.Flash:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.partyFrame_LargeHealth_Flash or R.media.textures.unitFrames.partyFrame_Flash)
+        self.Flash:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.partyFrame_LargeHealth_Flash or R.media.textures.unitFrames.vanilla.partyFrame_Flash)
         self.Flash:Hide()
 
         self.Name:Show()
@@ -40,8 +41,8 @@ function PartyMixin:PostConfigure()
         self.Name:SetShadowOffset(0, 0)
 
         self.Name:ClearAllPoints()
-        self.Name:SetSize(74, 13)
-        self.Name:SetPoint("TOPLEFT", self, "TOPLEFT", 42, 3)
+        self.Name:SetSize(scale * 74, 13)
+        self.Name:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 42, scale * 3)
         self:Tag(self.Name, "[name:sub(15)]")
 
         self.Level:Hide()
@@ -51,20 +52,30 @@ function PartyMixin:PostConfigure()
             self.PortraitHolder:Hide()
         end
         self.Portrait = self.PortraitRound
-        self.Portrait:SetSize(35, 35)
+        self.Portrait:SetSize(scale * 35, scale * 35)
         self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 7, -7)
+        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 7, scale * -7)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
-        self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -11)
+        self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 46, scale * -11)
         if self.config.largeHealth then
-            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 21)
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 21)
         else
-            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 31)
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 31)
         end
 
-        if not self.config.largeHealth then
+        if self.config.largeHealth then
+            self.Health.Value:SetFont(self.config.health.value.font, 11, "OUTLINE")
+            self.Health.Value:SetJustifyH("RIGHT")
+            self.Health.Value:ClearAllPoints()
+            self.Health.Value:SetPoint("RIGHT", self.Health, "RIGHT", -2, 0)
+    
+            self.Health.Percent:SetFont(self.config.health.percent.font, 11, "OUTLINE")
+            self.Health.Percent:SetJustifyH("LEFT")
+            self.Health.Percent:ClearAllPoints()
+            self.Health.Percent:SetPoint("LEFT", self.Health, "LEFT", 2, 0)
+        else
             self.Health.Value:Hide()
             self.Health.Percent:Hide()
         end
@@ -72,11 +83,11 @@ function PartyMixin:PostConfigure()
         self:EnableElement("Power")
         self.Power:ClearAllPoints()
         if self.config.largeHealth then
-            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 44, -28)
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 12)
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 44, scale * -28)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 12)
         else
-            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -19)
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 23)
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 46, scale * -19)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 23)
         end
 
         self.Power.Border:Hide()

@@ -64,7 +64,7 @@ function PlayerMixin:PostConfigure()
         self.CastbarHolder.Mover:Lock(true)
     end
 
-    if self.config.style == UF.Styles.Blizzard then
+    if self.config.style == UF.Styles.Vanilla then
         self:SetSize(194, 76)
 
         self.Border:Hide()
@@ -76,12 +76,12 @@ function PlayerMixin:PostConfigure()
             self.Artwork:SetTexCoord(438 / 512, 50 / 512, 17 / 256, 169 / 256)
             self.Artwork:SetAllPoints()
         end
-        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.targetingFrame_LargeHealth or R.media.textures.unitFrames.targetingFrame)
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
-            self.Flash:SetTexture(R.media.textures.unitFrames.targetingFrame_Flash)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
             self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
             self.Flash:SetPoint("CENTER", self, "CENTER", -6, -4.5)
             self.Flash:SetSize(256, 103)
@@ -175,7 +175,7 @@ function PlayerMixin:PostConfigure()
 
             if not self.AdditionalPower.Background then
                 self.AdditionalPower.Background = self.AdditionalPower:CreateTexture("$parentAdditionalPowerBorder", "OVERLAY", nil, 6)
-                self.AdditionalPower.Background:SetTexture(R.media.textures.unitFrames.additionalPowerBorder)
+                self.AdditionalPower.Background:SetTexture(R.media.textures.unitFrames.vanilla.additionalPowerBorder)
                 self.AdditionalPower.Background:SetTexCoord(0, 232 / 256, 1, 0)
                 self.AdditionalPower.Background:SetPoint("TOPLEFT", -6, 0)
                 self.AdditionalPower.Background:SetPoint("BOTTOMRIGHT", 6, -6)

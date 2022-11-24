@@ -224,3 +224,7 @@ function UnitFrameMixin:UnforceShow()
         pet:UnforceShow()
     end
 end
+
+function UnitFrameMixin:IsCustomStyled()
+    return self.config.style == nil or self.config.style == UF.Styles.Custom
+end
