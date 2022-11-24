@@ -72,15 +72,13 @@ function TargetMixin:PostConfigure()
         self.Level:SetPoint("CENTER", self, "BOTTOMRIGHT", -15, 19)
         self:Tag(self.Level, "[difficultycolor][level]|r")
 
-        if self.PortraitHolder then
-            self.PortraitHolder:Hide()
-        end
+        self.PortraitHolder.Separator:Hide()
 
         self:DisableElement("Portrait")
-        self.Portrait = self.PortraitRound
-        self.Portrait:SetSize(60, 60)
-        self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPRIGHT", self, "TOPRIGHT", -6, -5)
+        self.Portrait = self.PortraitHolder.PortraitRound
+        self.PortraitHolder:SetSize(60, 60)
+        self.PortraitHolder:ClearAllPoints()
+        self.PortraitHolder:SetPoint("TOPRIGHT", self, "TOPRIGHT", -6, -5)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()

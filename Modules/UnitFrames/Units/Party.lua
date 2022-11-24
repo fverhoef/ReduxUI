@@ -47,14 +47,13 @@ function PartyMixin:PostConfigure()
 
         self.Level:Hide()
 
+        self.PortraitHolder.Separator:Hide()
+
         self:DisableElement("Portrait")
-        if self.PortraitHolder then
-            self.PortraitHolder:Hide()
-        end
-        self.Portrait = self.PortraitRound
-        self.Portrait:SetSize(scale * 35, scale * 35)
-        self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 7, scale * -7)
+        self.Portrait = self.PortraitHolder.PortraitRound
+        self.PortraitHolder:SetSize(scale * 35, scale * 35)
+        self.PortraitHolder:ClearAllPoints()
+        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 7, scale * -7)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()

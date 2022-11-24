@@ -1,0 +1,32 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="Portrait.lua" />
+
+    <Frame name="PortraitHolderTemplate" virtual="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentPortrait2D" parentKey="Portrait2D" setAllPoints="true" />
+                <Texture name="$parentPortraitRound" parentKey="PortraitRound" setAllPoints="true" />
+                <Texture name="$parentPortraitMasked" parentKey="PortraitMasked" setAllPoints="true">
+                    <TexCoords left="0" right="0.92" top="0" bottom="0.92" />
+                </Texture>
+                <MaskTexture parentKey="PortraitMask" setAllPoints="true" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\PlayerPortraitMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                    <MaskedTextures>
+                        <MaskedTexture childKey="PortraitMasked" />
+                    </MaskedTextures>
+                </MaskTexture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture name="$parentPortraitMaskedCornerIcon" parentKey="PortraitMaskedCornerIcon" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\UnitFrame" hidden="true">
+                    <Size x="12" y="12" />
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT" x="-3.5" y="3" />
+                    </Anchors>
+                    <TexCoords left="0" right="0.03125" top="0.9375" bottom="1" />
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <PlayerModel name="$parentPortrait3D" parentKey="Portrait3D" setAllPoints="true" />
+        </Frames>
+    </Frame>
+</Ui>

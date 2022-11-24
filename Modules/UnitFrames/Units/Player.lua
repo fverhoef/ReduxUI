@@ -73,19 +73,20 @@ function PlayerMixin:PostConfigure()
 
         if not self.Artwork then
             self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
-            self.Artwork:SetTexCoord(438 / 512, 50 / 512, 17 / 256, 169 / 256)
             self.Artwork:SetAllPoints()
         end
         self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
+        self.Artwork:SetTexCoord(438 / 512, 50 / 512, 17 / 256, 169 / 256)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
-            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
-            self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
-            self.Flash:SetPoint("CENTER", self, "CENTER", -6, -4.5)
-            self.Flash:SetSize(256, 103)
         end
+        self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
+        self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
+        self.Flash:ClearAllPoints()
+        self.Flash:SetPoint("CENTER", self, "CENTER", -6, -4.5)
+        self.Flash:SetSize(256, 103)
         self.Flash:Hide()
 
         self.Name:Show()
@@ -120,15 +121,14 @@ function PlayerMixin:PostConfigure()
         self.Level:SetPoint("CENTER", self, "BOTTOMLEFT", 18, 19)
         self:Tag(self.Level, "[difficultycolor][level]|r")
 
-        if self.PortraitHolder then
-            self.PortraitHolder:Hide()
-        end
+        self.PortraitHolder.Separator:Hide()
 
         self:DisableElement("Portrait")
-        self.Portrait = self.PortraitRound
-        self.Portrait:SetSize(60, 60)
-        self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -5)
+        self.Portrait = self.PortraitHolder.PortraitRound
+        self.PortraitHolder:SetSize(60, 60)
+        self.PortraitHolder:ClearAllPoints()
+        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -5)
+        self.PortraitHolder.PortraitMaskedCornerIcon:Hide()
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
@@ -248,6 +248,181 @@ function PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
+    elseif self.config.style == UF.Styles.Dragonflight then
+        self:SetSize(192, 67)
+
+        self.Border:Hide()
+        self.Inlay:Hide()
+        self.Shadow:Hide()
+
+        if not self.Artwork then
+            self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork:SetAllPoints()
+        end
+        self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Artwork:SetTexCoord(0, 0.375, 0, 0.26171875)
+        self.Artwork:Show()
+
+        if not self.Flash then
+            self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
+        end
+        self.Flash:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625) -- Flash
+        --self.Flash:SetTexCoord(0, 0.375, 0.26171875, 0.5234375) -- Status 
+        self.Flash:ClearAllPoints()
+        self.Flash:SetAllPoints()
+        self.Flash:Hide()
+
+        self.Name:Show()
+        self.Name:SetFont(self.config.name.font, 13, "OUTLINE")
+        self.Name:SetJustifyH("LEFT")
+        self.Name:SetShadowOffset(0, 0)
+
+        self.Name:ClearAllPoints()
+        self.Name:SetPoint("TOPLEFT", 63, -11)
+        self.Name:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -23, -22)
+        self:Tag(self.Name, "[name:sub(20)]")
+
+        if self.NameBackground then
+            self.NameBackground:Hide()
+        end
+
+        self.Level:Show()
+        self.Level:SetFont(self.config.level.font, 13, "OUTLINE")
+        self.Level:SetJustifyH("CENTER")
+        self.Level:SetShadowOffset(0, 0)
+
+        self.Level:ClearAllPoints()
+        self.Level:SetPoint("TOPLEFT", 165, -11)
+        self.Level:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -6, -22)
+        self:Tag(self.Level, "[difficultycolor][level]|r")
+
+        self.PortraitHolder.Separator:Hide()
+
+        self:DisableElement("Portrait")
+        self.Portrait = self.PortraitHolder.PortraitMasked
+        self.PortraitHolder:SetSize(60, 60)
+        self.PortraitHolder:ClearAllPoints()
+        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 4, -2)
+        self.PortraitHolder.PortraitMaskedCornerIcon:Show()
+        self:EnableElement("Portrait")
+
+        self.Health:ClearAllPoints()
+        self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", 61, -24)
+        self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, 22)
+
+        self.Health.Value:SetFont(self.config.health.value.font, 11, "OUTLINE")
+        self.Health.Value:SetJustifyH("RIGHT")
+        self.Health.Value:ClearAllPoints()
+        self.Health.Value:SetPoint("RIGHT", self.Health, "RIGHT", -2, 0)
+
+        self.Health.Percent:SetFont(self.config.health.percent.font, 11, "OUTLINE")
+        self.Health.Percent:SetJustifyH("LEFT")
+        self.Health.Percent:ClearAllPoints()
+        self.Health.Percent:SetPoint("LEFT", self.Health, "LEFT", 2, 0)
+
+        self:EnableElement("Power")
+        self.Power:ClearAllPoints()
+        self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 61, -45)
+        self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, 11)
+
+        self.Power.Value:SetFont(self.config.power.value.font, 11, "OUTLINE")
+        self.Power.Value:SetJustifyH("RIGHT")
+        self.Power.Value:ClearAllPoints()
+        self.Power.Value:SetPoint("RIGHT", self.Power, "RIGHT", -2, 0)
+
+        self.Power.Percent:SetFont(self.config.power.percent.font, 11, "OUTLINE")
+        self.Power.Percent:SetJustifyH("LEFT")
+        self.Power.Percent:ClearAllPoints()
+        self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
+
+        self.Power.Border:Hide()
+        self.Power.Separator:Hide()
+
+        if self.AdditionalPower then
+            -- TODO: Style for Dragonflight frames
+            self.AdditionalPower:ClearAllPoints()
+            self.AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -2)
+            self.AdditionalPower:SetSize(104, 10)
+            self.AdditionalPower.Border:Hide()
+
+            if not self.AdditionalPower.Background then
+                self.AdditionalPower.Background = self.AdditionalPower:CreateTexture("$parentAdditionalPowerBorder", "OVERLAY", nil, 6)
+                self.AdditionalPower.Background:SetTexture(R.media.textures.unitFrames.vanilla.additionalPowerBorder)
+                self.AdditionalPower.Background:SetTexCoord(0, 232 / 256, 1, 0)
+                self.AdditionalPower.Background:SetPoint("TOPLEFT", -6, 0)
+                self.AdditionalPower.Background:SetPoint("BOTTOMRIGHT", 6, -6)
+            end
+            self.AdditionalPower.Background:Show()
+        end
+
+        if self.PvPIndicator then
+            self.PvPIndicator:SetSize(32, 32)
+            self.PvPIndicator:ClearAllPoints()
+            self.PvPIndicator:SetPoint("CENTER", self.Portrait, "LEFT", -2, 0)
+        end
+
+        if self.LeaderIndicator then
+            self.LeaderIndicator:SetSize(16, 16)
+            self.LeaderIndicator:ClearAllPoints()
+            self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -6)
+        end
+
+        if self.AssistantIndicator then
+            self.AssistantIndicator:SetSize(16, 16)
+            self.AssistantIndicator:ClearAllPoints()
+            self.AssistantIndicator:SetPoint("CENTER", self.Portrait, "TOP", -22, -6)
+        end
+
+        if self.MasterLooterIndicator then
+            self.MasterLooterIndicator:SetSize(16, 16)
+            self.MasterLooterIndicator:ClearAllPoints()
+            self.MasterLooterIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM", 0, 0)
+        end
+
+        if self.RaidTargetIndicator then
+            self.RaidTargetIndicator:SetSize(24, 24)
+            self.RaidTargetIndicator:ClearAllPoints()
+            self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
+        end
+
+        if self.GroupRoleIndicator then
+            self.GroupRoleIndicator:SetSize(16, 16)
+            self.GroupRoleIndicator:ClearAllPoints()
+            self.GroupRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
+        end
+
+        if self.RaidRoleIndicator then
+            self.RaidRoleIndicator:SetSize(16, 16)
+            self.RaidRoleIndicator:ClearAllPoints()
+            self.RaidRoleIndicator:SetPoint("CENTER", self.Portrait, "TOP", 22, -6)
+        end
+
+        if self.ReadyCheckIndicator then
+            self.ReadyCheckIndicator:SetSize(32, 32)
+            self.ReadyCheckIndicator:ClearAllPoints()
+            self.ReadyCheckIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        end
+
+        if self.SummonIndicator then
+            self.SummonIndicator:SetSize(32, 32)
+            self.SummonIndicator:ClearAllPoints()
+            self.SummonIndicator:SetPoint("CENTER", self.Portrait, "CENTER", 0, 0)
+        end
+
+        if self.ResurrectIndicator then
+            self.ResurrectIndicator:SetSize(32, 32)
+            self.ResurrectIndicator:ClearAllPoints()
+            self.ResurrectIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
+        end
+
+        if self.RestingIndicator then
+            self.RestingIndicator:ClearAllPoints()
+            self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
+            self.RestingIndicator:SetSize(32, 32)
+        end
+
+        -- TODO: Style castbar
     else
         if self.Artwork then
             self.Artwork:Hide()
@@ -264,5 +439,6 @@ function PlayerMixin:PostConfigure()
             end
             self.AdditionalPower.Border:Show()
         end
+        self.PortraitHolder.PortraitMaskedCornerIcon:Hide()
     end
 end

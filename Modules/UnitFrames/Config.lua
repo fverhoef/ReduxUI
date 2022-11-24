@@ -3,7 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.Styles = { Vanilla = "Blizzard - Vanilla", DragonFlight = "Blizzard - DragonFlight", Custom = "Custom" }
+UF.Styles = { Vanilla = "Blizzard - Vanilla", Dragonflight = "Blizzard - Dragonflight", Custom = "Custom" }
 
 local DEFAULT_STYLE = UF.Styles.Custom
 

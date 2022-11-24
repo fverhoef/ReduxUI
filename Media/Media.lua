@@ -59,6 +59,12 @@ R.media = {
         unitFrames = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
+            dragonflight = {
+                playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\PlayerPortraitMask",
+                separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorHorizontal",
+                separatorVertical = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorVertical",
+                unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\UnitFrame"
+            },
             vanilla = {
                 additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\AdditionalPowerBorder",
                 focusFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\FocusFrame",

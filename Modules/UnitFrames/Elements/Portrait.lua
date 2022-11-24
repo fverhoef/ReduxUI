@@ -4,24 +4,20 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreatePortrait()
-    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self)
+    self.PortraitHolder = CreateFrame("Frame", "$parentPortraitHolder", self, "PortraitHolderTemplate")
     self.PortraitHolder:SetFrameLevel(self:GetFrameLevel())
 
-    self.Portrait2D = self:CreateTexture("$parentPortrait2D", "BACKGROUND")
-    self.Portrait2D.PostUpdate = function()
+    self.PortraitHolder.Portrait2D.PostUpdate = function()
         self:UpdatePortraitTexture()
     end
-    self.Portrait2D:SetAllPoints(self.PortraitHolder)
-
-    self.Portrait3D = CreateFrame("PlayerModel", "$parentPortrait3D", self)
-    self.Portrait3D:SetAllPoints(self.PortraitHolder)
-
-    self.PortraitRound = self:CreateTexture("$parentPortraitRound", "BACKGROUND")
-    self.PortraitRound.PostUpdate = function()
+    self.PortraitHolder.PortraitRound.PostUpdate = function()
+        self:UpdatePortraitTexture()
+    end
+    self.PortraitHolder.PortraitMasked.PostUpdate = function()
         self:UpdatePortraitTexture()
     end
 
-    self.Portrait = self.Portrait2D
+    self.Portrait = self.PortraitHolder.Portrait2D
 end
 
 oUF:RegisterMetaFunction("CreatePortrait", UF.CreatePortrait)
@@ -49,15 +45,16 @@ function UF:ConfigurePortrait()
         config.model = false
     end
 
-    if config.model and self.Portrait ~= self.Portrait3D then
+    if config.model and self.PortraitHolder.Portrait ~= self.PortraitHolder.Portrait3D then
         self:DisableElement("Portrait")
-        self.Portrait = self.Portrait3D
-    elseif not config.model and self.Portrait ~= self.Portrait2D then
+        self.Portrait = self.PortraitHolder.Portrait3D
+    elseif not config.model and self.Portrait ~= self.PortraitHolder.Portrait2D then
         self:DisableElement("Portrait")
-        self.Portrait = self.Portrait2D
+        self.Portrait = self.PortraitHolder.Portrait2D
     end
-    self.Portrait2D.showClass = config.class
-    self.PortraitRound.showClass = config.class
+    self.PortraitHolder.Portrait2D.showClass = config.class
+    self.PortraitHolder.PortraitRound.showClass = config.class
+    self.PortraitHolder.PortraitMasked.showClass = config.class
     self:EnableElement("Portrait")
 
     self.PortraitHolder:Show()
@@ -102,6 +99,11 @@ function UF:UpdatePortraitTexture()
         r = r - 0.15 * width
         t = t + 0.15 * height
         b = b - 0.15 * height
+    elseif self.config.style == UF.Styles.Dragonflight then
+        l = l
+        r = r - 0.08 * width
+        t = t
+        b = b - 0.08 * height
     end
 
     self.Portrait:SetTexCoord(l, r, t, b)

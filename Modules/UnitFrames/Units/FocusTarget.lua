@@ -39,14 +39,13 @@ function FocusTargetMixin:PostConfigure()
 
         self.Level:Hide()
 
+        self.PortraitHolder.Separator:Hide()
+
         self:DisableElement("Portrait")
-        if self.PortraitHolder then
-            self.PortraitHolder:Hide()
-        end
-        self.Portrait = self.PortraitRound
-        self.Portrait:SetSize(35, 35)
-        self.Portrait:ClearAllPoints()
-        self.Portrait:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -6)
+        self.Portrait = self.PortraitHolder.PortraitRound
+        self.PortraitHolder:SetSize(35, 35)
+        self.PortraitHolder:ClearAllPoints()
+        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -6)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
