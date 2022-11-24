@@ -10,7 +10,7 @@ end
 FocusMixin = {}
 
 function FocusMixin:PostConfigure()
-    if self.config.style == UF.Styles.Blizzard then
+    if self.config.style == UF.Styles.Vanilla then
         self:SetSize(194, 76)
 
         self.Border:Hide()
@@ -23,12 +23,12 @@ function FocusMixin:PostConfigure()
             self.Artwork:SetPoint("TOPLEFT", 0, 8.5)
             self.Artwork:SetPoint("BOTTOMRIGHT", 37, -15.5)
         end
-        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.focusFrame_LargeHealth or R.media.textures.unitFrames.focusFrame)
+        self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.focusFrame_LargeHealth or R.media.textures.unitFrames.vanilla.focusFrame)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
-            self.Flash:SetTexture(R.media.textures.unitFrames.focusFrame_Flash)
+            self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.focusFrame_Flash)
             self.Flash:SetTexCoord(0, 1, 0, 205 / 256)
             self.Flash:SetPoint("CENTER", self, "CENTER", 6, -4.5)
             self.Flash:SetSize(256, 103)
