@@ -29,7 +29,7 @@ function PlayerMixin:PostInitialize()
     end
 
     self.Power:CreateMover("PlayerPower", self.defaults.power.point)
-    self.CastbarHolder:CreateMover("PlayerCastbar", self.defaults.castbar.point)
+    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
 
     self.isResting = false
     self.inCombat = false
@@ -56,13 +56,11 @@ function PlayerMixin:PostConfigure()
         self.Power.Mover:Unlock()
     else
         self.Power.Mover:Lock(true)
-    end
-
-    self.Castbar = self.CastbarCustom
+    end    
     if self.config.castbar.detached then
-        self.CastbarHolder.Mover:Unlock()
+        self.Castbar.Mover:Unlock()
     else
-        self.CastbarHolder.Mover:Lock(true)
+        self.Castbar.Mover:Lock(true)
     end
 
     if self.config.style == UF.Styles.Vanilla then
@@ -423,14 +421,6 @@ function PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
-
-        self:DisableElement("Castbar")
-        self.Castbar = self.CastbarDF
-        self.Castbar:SetSize(209, 11)
-        self.Castbar:SetNormalizedPoint(self.config.castbar.point)
-        self:EnableElement("Castbar")
-
-        -- TODO: Style castbar
     else
         if self.Artwork then
             self.Artwork:Hide()
@@ -447,7 +437,5 @@ function PlayerMixin:PostConfigure()
             end
             self.AdditionalPower.Border:Show()
         end
-
-        self.Castbar = self.CastbarCustom
     end
 end

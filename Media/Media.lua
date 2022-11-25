@@ -39,11 +39,15 @@ R.media = {
         },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
-            border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Border",
-            zoneBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\ZoneBorder",
-            round = {
-                buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Round\\ButtonFrameToggle",
-                buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Round\\ButtonFrameToggle-Highlight"
+            dragonflight = {
+                atlas = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Atlas",
+                buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle",
+                buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle-Highlight",
+                mask = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Mask"
+            },
+            vanilla = {
+                border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\Border",
+                zoneBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\ZoneBorder",
             }
         },
         statusBars = {
@@ -67,8 +71,6 @@ R.media = {
                 castingBarFullMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFullMask",
                 castingBarFx = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFx",
                 playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\PlayerPortraitMask",
-                separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorHorizontal",
-                separatorVertical = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorVertical",
                 unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\UnitFrame"
             },
             vanilla = {

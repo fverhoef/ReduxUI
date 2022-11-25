@@ -194,10 +194,10 @@ local DEFAULT_UNIT_CONFIG = {
     auraWatch = { enabled = false, iconSize = 12, countFontSize = 9 },
     castbar = {
         enabled = true,
-        size = { 200, 18 },
+        size = { 209, 11 },
         point = { "TOPLEFT", "BOTTOMLEFT", 0, -5 },
+        attachedPoint = "BOTTOM",
         showIcon = true,
-        showIconOutside = false,
         showSpark = true,
         showShield = true,
         shieldSize = { 24, 24 },
@@ -328,7 +328,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 250, 28 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
+        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {

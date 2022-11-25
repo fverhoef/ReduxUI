@@ -179,11 +179,9 @@ function TargetMixin:PostConfigure()
             self.ResurrectIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
         end
 
-        if self.CastbarHolder then
-            self.CastbarHolder:SetSize(121, 18)
-            self.CastbarHolder:ClearAllPoints()
-            self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
-        end
+        self.Castbar:ClearAllPoints()
+        self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
+        self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
     elseif self.config.style == UF.Styles.Dragonflight then
         self:SetSize(192, 67)
 
@@ -334,13 +332,9 @@ function TargetMixin:PostConfigure()
             self.ResurrectIndicator:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
         end
 
-        if self.CastbarHolder then
-            self.CastbarHolder:SetSize(121, 18)
-            self.CastbarHolder:ClearAllPoints()
-            self.CastbarHolder:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 4, 12)
-        end
-
-        -- TODO: Style castbar
+        self.Castbar:ClearAllPoints()
+        self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
+        self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
     else
         if self.Artwork then
             self.Artwork:Hide()

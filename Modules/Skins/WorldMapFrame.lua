@@ -20,6 +20,7 @@ function S:StyleWorldMapFrame()
         end
         WorldMapFrame:EnableKeyboard(false)
         WorldMapFrame:EnableMouse(false)
+        WorldMapFrame:CreateFader(R.config.faders.onShow)
 
         WorldMapFrame.ScrollContainer:HookScript("OnMouseWheel", function(self, delta)
             local zoomOut, zoomIn = self:GetCurrentZoomRange()

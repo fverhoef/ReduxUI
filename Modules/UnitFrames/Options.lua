@@ -1305,22 +1305,15 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end, function(value)
                 UF:UnitConfig(unit).castbar.showIcon = value
             end),
-            showIconOutside = UF:CreateToggleOption(unit, L["Show Icon Outside"], L["Whether to show the icon outside the castbar."], 4, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showIconOutside
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showIconOutside = value
-            end, nil, function()
-                return not UF:UnitConfig(unit).castbar.showIcon
-            end),
-            showSafeZone = UF:CreateToggleOption(unit, L["Show Latency"], L["Whether to show a latency indicator."], 5, nil, unit ~= "player", function()
-                return UF:UnitConfig(unit).castbar.showSafeZone
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showSafeZone = value
-            end),
-            showSpark = UF:CreateToggleOption(unit, L["Show Spark"], L["Whether to show the spark at the end of the castbar."], 6, nil, nil, function()
+            showSpark = UF:CreateToggleOption(unit, L["Show Spark"], L["Whether to show the spark at the end of the castbar."], 5, nil, nil, function()
                 return UF:UnitConfig(unit).castbar.showSpark
             end, function(value)
                 UF:UnitConfig(unit).castbar.showSpark = value
+            end),
+            showSafeZone = UF:CreateToggleOption(unit, L["Show Latency"], L["Whether to show a latency indicator."], 6, nil, unit ~= "player", function()
+                return UF:UnitConfig(unit).castbar.showSafeZone
+            end, function(value)
+                UF:UnitConfig(unit).castbar.showSafeZone = value
             end),
             lineBreakShield = { type = "description", name = "", order = 7 },
             showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 8, nil, nil, function()

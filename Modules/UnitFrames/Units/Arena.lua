@@ -100,6 +100,10 @@ function ArenaMixin:PostConfigure()
             self.RaidTargetIndicator:ClearAllPoints()
             self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
         end
+
+        self.Castbar:ClearAllPoints()
+        self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
+        self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
     elseif self.config.style == UF.Styles.Dragonflight then
         self:SetSize(138, 53)
 
@@ -175,6 +179,10 @@ function ArenaMixin:PostConfigure()
             self.RaidTargetIndicator:ClearAllPoints()
             self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
         end
+
+        self.Castbar:ClearAllPoints()
+        self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
+        self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
     else
         if self.Artwork then
             self.Artwork:Hide()

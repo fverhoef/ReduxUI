@@ -10,10 +10,23 @@ R:RegisterModuleOptions(MM, {
         header = { type = "header", name = R.title .. " > Minimap", order = 0 },
         enabled = R:CreateModuleEnabledOption(1, nil, "Minimap"),
         lineBreak1 = { type = "header", name = "", order = 2 },
+        styling = {
+            type = "group",
+            name = L["Styling"],
+            order = 3,
+            inline = true,
+            args = {
+                style = R:CreateSelectOption(L["Style"], L["The style preset for the minimap."], 1, nil, MM.Styles, function()
+                    return MM.config.style
+                end, function(value)
+                    MM.config.style = value
+                end, MM.UpdateMinimap)
+            }
+        },
         elements = {
             type = "group",
             name = L["Elements"],
-            order = 3,
+            order = 4,
             inline = true,
             args = {
                 showNorthTag = R:CreateToggleOption(L["Show North Tag"], nil, 3, nil, nil, function()
@@ -26,7 +39,7 @@ R:RegisterModuleOptions(MM, {
         zoneText = {
             type = "group",
             name = L["Zone Text"],
-            order = 4,
+            order = 5,
             inline = true,
             args = {
                 enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function()
