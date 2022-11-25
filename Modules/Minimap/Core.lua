@@ -106,22 +106,25 @@ function MM:UpdateMinimap()
     if MM.config.style == MM.Styles.Vanilla then
         MinimapCluster:ClearAllPoints()
         MinimapCluster:SetPoint(unpack(MM.config.point))
-        MinimapCluster:SetSize(width, height + 25)
+        MinimapCluster:SetSize(width, height + 35)
 
         Minimap:ClearAllPoints()
         Minimap:SetPoint("TOPLEFT", 0, -35)
         Minimap:SetPoint("BOTTOMRIGHT", 0, 0)
         Minimap:SetSize(width, height)
-        Minimap:SetMaskTexture([[Interface\Masks\CircleMaskScalable]])
+        Minimap:SetMaskTexture(R.media.textures.minimap.vanilla.mask)
+
+        MinimapBackdrop:ClearAllPoints()
+        MinimapBackdrop:SetOutside(Minimap, 5, 5)
 
         MinimapBorder:ClearAllPoints()
-        MinimapBorder:SetOutside(Minimap, 5, 5)
+        MinimapBorder:SetAllPoints()
         MinimapBorder:SetTexture(R.media.textures.minimap.vanilla.border)
         MinimapBorder:SetTexCoord(0, 1, 0, 1)
     elseif MM.config.style == MM.Styles.Dragonflight then
         MinimapCluster:ClearAllPoints()
         MinimapCluster:SetPoint(unpack(MM.config.point))
-        MinimapCluster:SetSize(width, height + 26)
+        MinimapCluster:SetSize(width, height + 25)
 
         Minimap:ClearAllPoints()
         Minimap:SetPoint("TOPLEFT", 0, -25)
@@ -129,9 +132,12 @@ function MM:UpdateMinimap()
         Minimap:SetSize(width, height + (height / 220) * 6)
         Minimap:SetMaskTexture(R.media.textures.minimap.dragonflight.mask)
 
+        MinimapBackdrop:ClearAllPoints()
+        MinimapBackdrop:SetPoint("TOPLEFT", -3, 5)
+        MinimapBackdrop:SetPoint("BOTTOMRIGHT", 6, -6)
+        
         MinimapBorder:ClearAllPoints()
-        MinimapBorder:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -5, 5)
-        MinimapBorder:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 8, -6)
+        MinimapBorder:SetAllPoints()
         MinimapBorder:SetTexture(R.media.textures.minimap.dragonflight.atlas)
         MinimapBorder:SetTexCoord(0, 440 / 512, 57 / 1024, 509 / 1024)
     end
@@ -315,7 +321,8 @@ function MM:UpdateZonePanel(width, height)
         MinimapZoneTextButton:ClearAllPoints()
         MinimapZoneTextButton:SetPoint("CENTER", MinimapZonePanel, "CENTER", 0, 0)
 
-        MinimapZonePanel:SetPoint("TOP", 0, -2)
+        MinimapZonePanel:ClearAllPoints()
+        MinimapZonePanel:SetPoint("TOPLEFT", 0, -2)
         MinimapZonePanel:SetSize(width, 24)
         MinimapZonePanel.Background:Show()
         MinimapZonePanel.BackgroundLeft:Hide()
@@ -326,6 +333,7 @@ function MM:UpdateZonePanel(width, height)
         MinimapZoneTextButton:ClearAllPoints()
         MinimapZoneTextButton:SetPoint("TOPLEFT", MinimapZonePanel, "TOPLEFT", 5, -2)
 
+        MinimapZonePanel:ClearAllPoints()
         MinimapZonePanel:SetPoint("TOP", 0, 0)
         MinimapZonePanel:SetSize(188, 18)
         MinimapZonePanel.Background:Hide()
@@ -335,13 +343,6 @@ function MM:UpdateZonePanel(width, height)
     end
 
     MinimapZoneText:SetShown(MM.config.zonePanel.enabled and MM.config.zonePanel.zoneText.enabled)
-    if MM.config.zonePanel.enabled then
-        MinimapCluster:SetSize(width, height + 35)
-        Minimap:SetPoint("TOP", 0, -35)
-    else
-        MinimapCluster:SetSize(width, height)
-        Minimap:SetPoint("TOP", 0, 0)
-    end
     MinimapZoneText:SetFont(MM.config.zonePanel.zoneText.font, MM.config.zonePanel.zoneText.fontSize, MM.config.zonePanel.zoneText.fontOutline)
     MinimapZoneText:SetJustifyH(MM.config.zonePanel.zoneText.justifyH)
     MinimapZoneText:SetShadowOffset(MM.config.zonePanel.zoneText.fontShadow and 1 or 0, MM.config.zonePanel.zoneText.fontShadow and -2 or 0)
