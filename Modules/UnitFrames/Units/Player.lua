@@ -58,6 +58,7 @@ function PlayerMixin:PostConfigure()
         self.Power.Mover:Lock(true)
     end
 
+    self.Castbar = self.CastbarCustom
     if self.config.castbar.detached then
         self.CastbarHolder.Mover:Unlock()
     else
@@ -423,6 +424,12 @@ function PlayerMixin:PostConfigure()
             self.RestingIndicator:SetSize(32, 32)
         end
 
+        self:DisableElement("Castbar")
+        self.Castbar = self.CastbarDF
+        self.Castbar:SetSize(209, 11)
+        self.Castbar:SetNormalizedPoint(self.config.castbar.point)
+        self:EnableElement("Castbar")
+
         -- TODO: Style castbar
     else
         if self.Artwork then
@@ -440,5 +447,7 @@ function PlayerMixin:PostConfigure()
             end
             self.AdditionalPower.Border:Show()
         end
+
+        self.Castbar = self.CastbarCustom
     end
 end

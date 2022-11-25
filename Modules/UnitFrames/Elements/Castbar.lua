@@ -57,6 +57,12 @@ function UF:CreateCastbar()
     self.Castbar.Shield:SetSize(32, 32)
     self.Castbar.Shield:SetPoint("RIGHT", self.CastbarHolder, "LEFT", -2, 0)
 
+    self.CastbarDF = CreateFrame("StatusBar", "$parentCastbarDF", self, "DragonflightCastbarTemplate")
+    self.CastbarDF.Spark:SetPoint("CENTER", self.CastbarDF.Texture, "RIGHT")
+    self.CastbarDF:Hide()
+
+    self.CastbarCustom = self.Castbar
+
     return self.Castbar
 end
 

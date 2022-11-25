@@ -1,0 +1,89 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file="Castbar.lua" />
+    <StatusBar name="DragonflightCastbarTemplate" drawLayer="BORDER" virtual="true">
+        <Size x="209" y="11" />
+        <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Castbar" />
+        <Layers>
+            <Layer level="BACKGROUND" textureSubLevel="0">
+                <Texture parentKey="TextBorder" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="0" y="0" />
+                        <Anchor point="BOTTOMRIGHT" x="0" y="-12" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.41015625" top="0.001953125" bottom="0.11328125" />
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND" textureSubLevel="2">
+                <Texture parentKey="Background" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="1" y="-1" />
+                        <Anchor point="BOTTOMRIGHT" x="-1" y="1" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.4111328125" top="0.001953125" bottom="0.107421875" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="4">
+                <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar" hidden="true">
+                    <Size x="29" y="33" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-31" y="6" />
+                    </Anchors>
+                    <TexCoords left="0.001953125" right="0.0751953125" top="0.794921875" bottom="0.96875" />
+                </Texture>
+                <!--<Texture parentKey="Icon">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0" />
+                    </Anchors>
+                </Texture>-->
+                <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-1" y="2" />
+                        <Anchor point="BOTTOMRIGHT" x="1" y="-2" />
+                    </Anchors>
+                    <TexCoords left="0.4111328125" right="0.8291015625" top="0" bottom="0.0625" />
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="1">
+                <Texture parentKey="Spark" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                    <Size x="6" y="30" />
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.Texture" relativePoint="RIGHT" />
+                    </Anchors>
+                    <TexCoords left="0.0751953125" right="0.0869140625" top="0.794921875" bottom="0.912109375" />
+                </Texture>
+                <FontString parentKey="Text" inherits="GameFontHighlightSmall" justifyH="LEFT" maxLines="1">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="2" y="-10" />
+                        <Anchor point="BOTTOMRIGHT" x="-15" y="-10" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="Time" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT" x="-2" y="-10" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="3">
+                <Texture parentKey="SafeZone" alpha="0.4" />
+                <Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBarFx">
+                    <Size x="37" y="12" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="2" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.79296875" right="0.8671875" top="0.341796875" bottom="0.392578125" />
+                </Texture>
+                <MaskTexture parentKey="BorderMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBarFullMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                    <Size x="256" y="13" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0" />
+                    </Anchors>
+                    <MaskedTextures>
+                        <MaskedTexture childKey="SafeZone" />
+                        <MaskedTexture childKey="StandardGlow" />
+                    </MaskedTextures>
+                </MaskTexture>
+            </Layer>
+        </Layers>
+    </StatusBar>
+</Ui>

@@ -4,7 +4,7 @@
     <Script file="AuraHighlight.lua"/>
     <Script file="AuraWatch.lua"/>
     <Script file="Auras.lua"/>
-    <Script file="Castbar.lua"/>
+    <Include file="Castbar.xml"/>
     <Script file="ClassPower.lua"/>
     <Script file="CombatIndicator.lua"/>
     <Script file="DiminishingReturnsTracker.lua"/>    

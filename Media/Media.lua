@@ -47,6 +47,9 @@ R.media = {
             }
         },
         statusBars = {
+            castbar = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Castbar",
+            castbarMana = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarMana",
+            castbarSteel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarSteel",
             redux = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Redux",
             onePixel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\OnePixel",
             empty = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Empty",
@@ -60,6 +63,9 @@ R.media = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             dragonflight = {
+                castingBar = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBar",
+                castingBarFullMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFullMask",
+                castingBarFx = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFx",
                 playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\PlayerPortraitMask",
                 separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorHorizontal",
                 separatorVertical = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\SeparatorVertical",
