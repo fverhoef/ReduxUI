@@ -5,7 +5,7 @@ local L = R.L
 
 R:RegisterModuleOptions(MM, {
     type = "group",
-    name = "Minimap",
+    name = L["Minimap"],
     args = {
         header = { type = "header", name = R.title .. " > Minimap", order = 0 },
         enabled = R:CreateModuleEnabledOption(1, nil, "Minimap"),
@@ -29,68 +29,74 @@ R:RegisterModuleOptions(MM, {
             order = 4,
             inline = true,
             args = {
-                showNorthTag = R:CreateToggleOption(L["Show North Tag"], nil, 3, nil, nil, function()
+                showNorthTag = R:CreateToggleOption(L["Show North Tag"], nil, 1, nil, nil, function()
                     return MM.config.showNorthTag
                 end, function(value)
                     MM.config.showNorthTag = value
+                end, MM.UpdateMinimap),
+                showWorldMap = R:CreateToggleOption(L["Show World Map Toggle"], nil, 2, nil, nil, function()
+                    return MM.config.showWorldMap
+                end, function(value)
+                    MM.config.showWorldMap = value
                 end, MM.UpdateMinimap)
             }
         },
-        zoneText = {
+        zonePanel = {
             type = "group",
-            name = L["Zone Text"],
+            name = L["Zone Panel"],
             order = 5,
             inline = true,
             args = {
                 enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function()
-                    return MM.config.zoneText.enabled
+                    return MM.config.zonePanel.enabled
                 end, function(value)
-                    MM.config.zoneText.enabled = value
+                    MM.config.zonePanel.enabled = value
                 end, MM.UpdateMinimap),
                 lineBreak1 = { type = "description", name = "", order = 10 },
                 font = {
                     type = "group",
-                    name = L["Font"],
+                    name = L["Zone Font"],
                     inline = true,
                     order = 21,
                     args = {
                         font = R:CreateFontOption(L["Font"], L["The font to use for zone text."], 1, nil, function()
-                            return MM.config.zoneText.font
+                            return MM.config.zonePanel.zoneText.font
                         end, function(value)
-                            MM.config.zoneText.font = value
+                            MM.config.zonePanel.zoneText.font = value
                         end, MM.UpdateMinimap),
                         size = R:CreateRangeOption(L["Font Size"], L["The size of zone text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
-                            return MM.config.zoneText.fontSize
+                            return MM.config.zonePanel.zoneText.fontSize
                         end, function(value)
-                            MM.config.zoneText.fontSize = value
+                            MM.config.zonePanel.zoneText.fontSize = value
                         end, MM.UpdateMinimap),
                         outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of zone text."], 3, nil, R.FONT_OUTLINES, function()
-                            return MM.config.zoneText.fontOutline
+                            return MM.config.zonePanel.zoneText.fontOutline
                         end, function(value)
-                            MM.config.zoneText.fontOutline = value
+                            MM.config.zonePanel.zoneText.fontOutline = value
                         end, MM.UpdateMinimap),
                         justifyH = R:CreateSelectOption(L["Horizontal Justification"], L["The horizontal alignment of zone text."], 4, nil, R.JUSTIFY_H, function()
-                            return MM.config.zoneText.justifyH
+                            return MM.config.zonePanel.zoneText.justifyH
                         end, function(value)
-                            MM.config.zoneText.justifyH = value
+                            MM.config.zonePanel.zoneText.justifyH = value
                         end, MM.UpdateMinimap),
                         shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for zone text."], 5, nil, nil, function()
-                            return MM.config.zoneText.fontShadow
+                            return MM.config.zonePanel.zoneText.fontShadow
                         end, function(value)
-                            MM.config.zoneText.fontShadow = value
+                            MM.config.zonePanel.zoneText.fontShadow = value
                         end, MM.UpdateMinimap),
-                        showBorder = R:CreateToggleOption(L["Show Border"], L["Whether to show the zone text frame's border."], 6, nil, nil, function()
-                            return MM.config.zoneText.showBorder
-                        end, function(value)
-                            MM.config.zoneText.showBorder = value
-                        end, MM.UpdateMinimap)
+                        lineBreak1 = { type = "description", name = "", order = 10 }
                     }
-                }
+                },
+                showBorder = R:CreateToggleOption(L["Show Border"], L["Whether to show the zone panel's border."], 31, nil, nil, function()
+                    return MM.config.zonePanel.showBorder
+                end, function(value)
+                    MM.config.zonePanel.showBorder = value
+                end, MM.UpdateMinimap)
             }
         },
         buttonFrame = {
             type = "group",
-            name = "Button Frame",
+            name = L["Button Frame"],
             order = 6,
             inline = true,
             args = {

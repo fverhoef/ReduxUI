@@ -11,16 +11,34 @@ R:RegisterModuleConfig(MM, {
     size = { 220, 220 },
     style = MM.Styles.Dragonflight,
     showNorthTag = true,
-    zoneText = {
+    showWorldMap = false,
+    calendarText = {
         enabled = true,
-        showBackground = true,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-        fontSize = 14,
-        fontOutline = "OUTLINE",
+        fontSize = 10,
+        fontOutline = "NORMAL",
         fontShadow = true,
-        justifyH = "CENTER",
-        showBorder = true
+        justifyH = "CENTER"
     },
-    infoPanel = { enabled = true, showBackground = true, showTime = true },
+    timeText = {
+        enabled = true,
+        font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+        fontSize = 12,
+        fontOutline = "NORMAL",
+        fontShadow = true,
+        justifyH = "CENTER"
+    },
+    zonePanel = {
+        enabled = true,
+        showBorder = true,
+        zoneText = {
+            enabled = true,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 12,
+            fontOutline = "NORMAL",
+            fontShadow = true,
+            justifyH = "LEFT"
+        }
+    },
     buttonFrame = { enabled = true, iconSize = 28, buttonSpacing = 3, collapsed = true, showBorder = true, fader = R.config.faders.onShow }
 })

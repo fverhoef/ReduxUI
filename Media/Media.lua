@@ -43,10 +43,14 @@ R.media = {
                 atlas = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Atlas",
                 buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle",
                 buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle-Highlight",
+                calendarBlank = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\CalendarBlank",
                 mask = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Mask"
             },
             vanilla = {
                 border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\Border",
+                minimapButtonHighlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\MinimapButton-Highlight",
+                starButton_Down = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Up",
+                starButton_Up = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Down",
                 zoneBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\ZoneBorder",
             }
         },

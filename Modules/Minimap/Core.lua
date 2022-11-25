@@ -37,25 +37,40 @@ function MM:StyleMinimap()
     MinimapButtonFrame:ClearAllPoints()
     MinimapButtonFrame:SetPoint("TOPRIGHT", MinimapButtonFrameToggleButton, "BOTTOMLEFT", 5, 5)
 
-    MinimapZoneText:SetSize(190, 10)
-    MinimapZoneText:SetPoint("TOP", MinimapCluster, "TOP", 0, -8)
-    MinimapZoneText:SetFont(STANDARD_TEXT_FONT, 14, "OUTLINE")
-    MinimapZoneText:SetJustifyH("CENTER")
-    MinimapZoneText:SetShadowColor(0, 0, 0, 0.25)
-    MinimapZoneText:SetShadowOffset(1, -2)
+    MinimapZonePanel = CreateFrame("Frame", "MinimapZonePanel", MinimapCluster)
+    MinimapZonePanel:SetSize(140, 12)
+    MinimapZonePanel:SetPoint("TOP", 0, -2)
+    MinimapZonePanel.Background = MinimapCluster:CreateTexture("BACKGROUND")
+    MinimapZonePanel.Background:SetTexture(R.media.textures.minimap.vanilla.zoneBorder)
+    MinimapZonePanel.Background:SetTexCoord(0, 1, 0, 78 / 128)
+    MinimapZonePanel.Background:SetPoint("TOPLEFT", MinimapZonePanel, "TOPLEFT", 0, 2)
+    MinimapZonePanel.Background:SetPoint("BOTTOMRIGHT", MinimapZonePanel, "BOTTOMRIGHT", 0, -2)
+    MinimapZonePanel.BackgroundLeft = MinimapZonePanel:CreateTexture("$parentBackgroundLeft", "BACKGROUND")
+    MinimapZonePanel.BackgroundLeft:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+    MinimapZonePanel.BackgroundLeft:SetTexCoord(443 / 512, 451 / 512, 404 / 1024, 440 / 1024)
+    MinimapZonePanel.BackgroundLeft:SetWidth(4)
+    MinimapZonePanel.BackgroundLeft:SetPoint("TOPLEFT", MinimapZonePanel, "TOPLEFT", 0, 0)
+    MinimapZonePanel.BackgroundLeft:SetPoint("BOTTOMLEFT", MinimapZonePanel, "BOTTOMLEFT", 0, 0)
+    MinimapZonePanel.BackgroundMiddle = MinimapZonePanel:CreateTexture("$parentBackgroundMiddle", "BACKGROUND")
+    MinimapZonePanel.BackgroundMiddle:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+    MinimapZonePanel.BackgroundMiddle:SetTexCoord(452 / 512, 470 / 512, 404 / 1024, 440 / 1024)
+    MinimapZonePanel.BackgroundMiddle:SetPoint("TOPLEFT", MinimapZonePanel, "TOPLEFT", 4, 0)
+    MinimapZonePanel.BackgroundMiddle:SetPoint("BOTTOMRIGHT", MinimapZonePanel, "BOTTOMRIGHT", -4, 0)
+    MinimapZonePanel.BackgroundRight = MinimapZonePanel:CreateTexture("$parentBackgroundRight", "BACKGROUND")
+    MinimapZonePanel.BackgroundRight:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+    MinimapZonePanel.BackgroundRight:SetTexCoord(471 / 512, 479 / 512, 404 / 1024, 440 / 1024)
+    MinimapZonePanel.BackgroundRight:SetWidth(4)
+    MinimapZonePanel.BackgroundRight:SetPoint("TOPRIGHT", MinimapZonePanel, "TOPRIGHT", 0, 0)
+    MinimapZonePanel.BackgroundRight:SetPoint("BOTTOMRIGHT", MinimapZonePanel, "BOTTOMRIGHT", 0, 0)
 
-    MinimapCluster.ZoneBackground = MinimapCluster:CreateTexture("BACKGROUND")
-    MinimapCluster.ZoneBackground:SetTexture(R.media.textures.minimap.vanilla.zoneBorder)
-    MinimapCluster.ZoneBackground:SetTexCoord(0, 1, 0, 78 / 128)
-    MinimapCluster.ZoneBackground:SetHeight(30)
-    MinimapCluster.ZoneBackground:SetPoint("TOPLEFT", MinimapCluster, "TOPLEFT")
-    MinimapCluster.ZoneBackground:SetPoint("TOPRIGHT", MinimapCluster, "TOPRIGHT")
+    MinimapZoneText:ClearAllPoints()
+    MinimapZoneText:SetAllPoints()
 
     MinimapBorderTop:Hide()
 
     MinimapZoomHitArea = CreateFrame("Frame", "MinimapZoomHitArea", Minimap)
     MinimapZoomHitArea:EnableMouse(true)
-    MinimapZoomHitArea:SetPoint("TOPRIGHT", MinimapZoomIn, "TOPRIGHT")    
+    MinimapZoomHitArea:SetPoint("TOPRIGHT", MinimapZoomIn, "TOPRIGHT")
     MinimapZoomHitArea:SetPoint("BOTTOMLEFT", MinimapZoomOut, "BOTTOMLEFT")
 
     MinimapZoomIn:CreateFader(R.config.faders.onShow)
@@ -71,7 +86,7 @@ function MM:StyleMinimap()
     MM:SecureHookScript(Minimap, "OnLeave", MM.Minimap_OnLeave)
     MM:Minimap_OnLeave()
 
-    MM.OnLeaveTimer = MM:ScheduleRepeatingTimer(MM.Minimap_OnLeave, 0.5)    
+    MM.OnLeaveTimer = MM:ScheduleRepeatingTimer(MM.Minimap_OnLeave, 0.5)
     MM:SecureHookScript(GameTimeFrame, "OnLeave", MM.Minimap_OnLeave)
     MM:SecureHookScript(MiniMapWorldMapButton, "OnLeave", MM.Minimap_OnLeave)
     MM:SecureHookScript(MiniMapMailFrame, "OnLeave", MM.Minimap_OnLeave)
@@ -86,21 +101,80 @@ end
 
 function MM:UpdateMinimap()
     local width, height = unpack(MM.config.size)
-    MinimapCluster:ClearAllPoints()
-    MinimapCluster:SetPoint(unpack(MM.config.point))
 
     local radius = width / 2 - 5
     local x, y
 
     if MM.config.style == MM.Styles.Vanilla then
-        Minimap:SetMaskTexture([[Interface\Masks\CircleMaskScalable]])
+        MinimapCluster:ClearAllPoints()
+        MinimapCluster:SetPoint(unpack(MM.config.point))
+        MinimapCluster:SetSize(width, height + 25)
+
+        Minimap:ClearAllPoints()
+        Minimap:SetPoint("TOPLEFT", 0, -35)
+        Minimap:SetPoint("BOTTOMRIGHT", 0, 0)
         Minimap:SetSize(width, height)
+        Minimap:SetMaskTexture([[Interface\Masks\CircleMaskScalable]])
 
         MinimapBorder:ClearAllPoints()
         MinimapBorder:SetOutside(Minimap, 5, 5)
         MinimapBorder:SetTexture(R.media.textures.minimap.vanilla.border)
         MinimapBorder:SetTexCoord(0, 1, 0, 1)
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        MinimapCluster:ClearAllPoints()
+        MinimapCluster:SetPoint(unpack(MM.config.point))
+        MinimapCluster:SetSize(width, height + 26)
 
+        Minimap:ClearAllPoints()
+        Minimap:SetPoint("TOPLEFT", 0, -25)
+        Minimap:SetPoint("BOTTOMRIGHT", 0, 0)
+        Minimap:SetSize(width, height + (height / 220) * 6)
+        Minimap:SetMaskTexture(R.media.textures.minimap.dragonflight.mask)
+
+        MinimapBorder:ClearAllPoints()
+        MinimapBorder:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -5, 5)
+        MinimapBorder:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 8, -6)
+        MinimapBorder:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+        MinimapBorder:SetTexCoord(0, 440 / 512, 57 / 1024, 509 / 1024)
+    end
+
+    MinimapNorthTag:SetTexture(MM.config.showNorthTag and MinimapNorthTag.__texture or nil)
+
+    MM:UpdateZoom(radius)
+    MM:UpdateTracking(radius)
+    MM:UpdateTimeManager(radius)
+    MM:UpdateZonePanel(width, height)
+    MM:UpdateCalendar(radius)
+    MM:UpdateMail(radius)
+    MM:UpdateButtonFrame(radius, width)
+
+    x, y = R:PolarToXY(55, radius)
+    if not MM.config.showWorldMap then
+        MiniMapWorldMapButton:SetParent(R.HiddenFrame)
+    else
+        MiniMapWorldMapButton:SetParent(MinimapBackdrop)
+        MiniMapWorldMapButton:SetScale(MinimapBackdrop:GetScale())
+        MiniMapWorldMapButton:ClearAllPoints()
+        MiniMapWorldMapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
+        MiniMapWorldMapButton:Show()
+    end
+
+    x, y = R:PolarToXY(-35, radius)
+    MiniMapInstanceDifficulty:ClearAllPoints()
+    MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-72, radius)
+    MiniMapBattlefieldFrame:ClearAllPoints()
+    MiniMapBattlefieldFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+
+    x, y = R:PolarToXY(-72, radius)
+    MiniMapLFGFrame:ClearAllPoints()
+    MiniMapLFGFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+end
+
+function MM:UpdateZoom(radius)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
         x, y = R:PolarToXY(127, radius)
         MinimapZoomIn:SetSize(32, 32)
         MinimapZoomIn:ClearAllPoints()
@@ -113,7 +187,7 @@ function MM:UpdateMinimap()
         MinimapZoomIn:GetHighlightTexture():SetTexCoord(0, 1, 0, 1)
         MinimapZoomIn:SetDisabledTexture([[Interface\Minimap\UI-Minimap-ZoomInButton-Disabled]])
         MinimapZoomIn:GetDisabledTexture():SetTexCoord(0, 1, 0, 1)
-    
+
         x, y = R:PolarToXY(143, radius)
         MinimapZoomOut:SetSize(32, 32)
         MinimapZoomOut:ClearAllPoints()
@@ -127,16 +201,6 @@ function MM:UpdateMinimap()
         MinimapZoomOut:SetDisabledTexture([[Interface\Minimap\UI-Minimap-ZoomOutButton-Disabled]])
         MinimapZoomOut:GetDisabledTexture():SetTexCoord(0, 1, 0, 1)
     elseif MM.config.style == MM.Styles.Dragonflight then
-        Minimap:SetMaskTexture(R.media.textures.minimap.dragonflight.mask)
-        Minimap:SetSize(width, height + (height / 220) * 6)
-    
-        MinimapBackdrop:ClearAllPoints()
-        MinimapBackdrop:SetPoint("TOPLEFT", -5, 5)
-        MinimapBackdrop:SetPoint("BOTTOMRIGHT", 8, -6)
-        
-        MinimapBorder:SetTexture(R.media.textures.minimap.dragonflight.atlas)
-        MinimapBorder:SetTexCoord(0, 440 / 512, 57 / 1024, 509 / 1024)
-
         x, y = R:PolarToXY(129, radius + 15)
         MinimapZoomIn:SetSize(24, 24)
         MinimapZoomIn:ClearAllPoints()
@@ -163,62 +227,238 @@ function MM:UpdateMinimap()
         MinimapZoomOut:SetDisabledTexture(R.media.textures.minimap.dragonflight.atlas)
         MinimapZoomOut:GetDisabledTexture():SetTexCoord(288 / 512, 324 / 512, 511 / 1024, 547 / 1024)
     end
+end
 
-    MinimapNorthTag:SetTexture(MM.config.showNorthTag and MinimapNorthTag.__texture or nil)
+function MM:UpdateTracking(radius)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
+        x, y = R:PolarToXY(-55, radius)
+        MiniMapTracking:ClearAllPoints()
+        MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
+        MiniMapTracking:SetSize(32, 32)
 
-    MinimapZoneText:SetShown(MM.config.zoneText.enabled)
-    if MM.config.zoneText.enabled then
+        if MiniMapTracking.Background then
+            MiniMapTracking.Background:Hide()
+        end
+
+        MiniMapTrackingButton:SetSize(32, 32)
+
+        if MiniMapTrackingButton.HighlightTexture then
+            MiniMapTrackingButton:SetHighlightTexture(MiniMapTrackingButton.HighlightTexture)
+        end
+
+        MiniMapTrackingBackground:Show()
+        MiniMapTrackingButtonBorder:Show()
+
+        MM:TrackingButton_OnMouseUpDown()
+        if MiniMapTrackingIconOverlay.Texture then
+            MiniMapTrackingIconOverlay:SetTexture(MiniMapTrackingIconOverlay.Texture)
+        end
+    elseif MM.config.style == MM.Styles.Dragonflight then
+
+        MiniMapTracking:ClearAllPoints()
+        MiniMapTracking:SetPoint("TOPRIGHT", MinimapZonePanel, "TOPLEFT", -2, -1)
+        MiniMapTracking:SetSize(16, 15)
+
+        MiniMapTracking.Background = MiniMapTracking.Background or MiniMapTracking:CreateTexture("$parentBackground", "BACKGROUND")
+        MiniMapTracking.Background:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+        MiniMapTracking.Background:SetTexCoord(443 / 512, 479 / 512, 404 / 1024, 440 / 1024)
+        MiniMapTracking.Background:SetPoint("TOPLEFT", -1, 1)
+        MiniMapTracking.Background:SetPoint("BOTTOMRIGHT", 1, -2)
+
+        MiniMapTrackingButton:SetSize(14, 14)
+        MiniMapTrackingButton.HighlightTexture = MiniMapTrackingButton.HighlightTexture or MiniMapTrackingButton:GetHighlightTexture()
+        MiniMapTrackingButton:SetHighlightTexture(nil)
+        if not MM:IsHooked(MiniMapTrackingButton, "OnMouseDown") then
+            MM:SecureHookScript(MiniMapTrackingButton, "OnMouseDown", MM.TrackingButton_OnMouseUpDown)
+        end
+        if not MM:IsHooked(MiniMapTrackingButton, "OnMouseUp") then
+            MM:SecureHookScript(MiniMapTrackingButton, "OnMouseUp", MM.TrackingButton_OnMouseUpDown)
+        end
+
+        MiniMapTrackingBackground:Hide()
+        MiniMapTrackingButtonBorder:Hide()
+
+        MM:TrackingButton_OnMouseUpDown()
+        MiniMapTrackingIconOverlay.Texture = MiniMapTrackingIconOverlay.Texture or MiniMapTrackingIconOverlay:GetTexture()
+        MiniMapTrackingIconOverlay:SetTexture(nil)
+    end
+end
+
+function MM:UpdateTimeManager(radius)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
+        LoadAddOn("Blizzard_TimeManager")
+        TimeManagerClockButton:ClearAllPoints()
+        TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 23)
+        TimeManagerClockButton:SetSize(1.1 * 60, 1.1 * 28)
+        TimeManagerClockButton:GetRegions():Show()
+        TimeManagerClockTicker:ClearAllPoints()
+        TimeManagerClockTicker:SetPoint("CENTER", 1, 0)
+        TimeManagerClockTicker:SetJustifyH("CENTER")
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        LoadAddOn("Blizzard_TimeManager")
+        TimeManagerClockButton:GetRegions():Hide()
+        TimeManagerClockButton:ClearAllPoints()
+        TimeManagerClockButton:SetSize(45, 12)
+        TimeManagerClockButton:SetPoint("TOPRIGHT", MinimapZonePanel, "TOPRIGHT", -5, -2)
+        TimeManagerClockTicker:ClearAllPoints()
+        TimeManagerClockTicker:SetPoint("RIGHT")
+        TimeManagerClockTicker:SetFont(MM.config.timeText.font, MM.config.timeText.fontSize, MM.config.timeText.fontOutline)
+        TimeManagerClockTicker:SetShadowColor(0, 0, 0, 0.25)
+        TimeManagerClockTicker:SetShadowOffset(1, -2)
+        TimeManagerClockTicker:SetJustifyH("RIGHT")
+    end
+end
+
+function MM:UpdateZonePanel(width, height)
+    if MM.config.style == MM.Styles.Vanilla then
+        MinimapZoneTextButton:SetSize(190, 10)
+        MinimapZoneTextButton:ClearAllPoints()
+        MinimapZoneTextButton:SetPoint("CENTER", MinimapZonePanel, "CENTER", 0, 0)
+
+        MinimapZonePanel:SetPoint("TOP", 0, -2)
+        MinimapZonePanel:SetSize(width, 24)
+        MinimapZonePanel.Background:Show()
+        MinimapZonePanel.BackgroundLeft:Hide()
+        MinimapZonePanel.BackgroundMiddle:Hide()
+        MinimapZonePanel.BackgroundRight:Hide()
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        MinimapZoneTextButton:SetSize(135, 12)
+        MinimapZoneTextButton:ClearAllPoints()
+        MinimapZoneTextButton:SetPoint("TOPLEFT", MinimapZonePanel, "TOPLEFT", 5, -2)
+
+        MinimapZonePanel:SetPoint("TOP", 0, 0)
+        MinimapZonePanel:SetSize(188, 18)
+        MinimapZonePanel.Background:Hide()
+        MinimapZonePanel.BackgroundLeft:Show()
+        MinimapZonePanel.BackgroundMiddle:Show()
+        MinimapZonePanel.BackgroundRight:Show()
+    end
+
+    MinimapZoneText:SetShown(MM.config.zonePanel.enabled and MM.config.zonePanel.zoneText.enabled)
+    if MM.config.zonePanel.enabled then
         MinimapCluster:SetSize(width, height + 35)
         Minimap:SetPoint("TOP", 0, -35)
     else
         MinimapCluster:SetSize(width, height)
         Minimap:SetPoint("TOP", 0, 0)
     end
-    MinimapZoneText:SetFont(MM.config.zoneText.font, MM.config.zoneText.fontSize, MM.config.zoneText.fontOutline)
-    MinimapZoneText:SetJustifyH(MM.config.zoneText.justifyH)
-    MinimapZoneText:SetShadowOffset(MM.config.zoneText.fontShadow and 1 or 0, MM.config.zoneText.fontShadow and -2 or 0)
-    
-    MinimapCluster.ZoneBackground:SetShown(MM.config.zoneText.enabled and MM.config.zoneText.showBorder)
+    MinimapZoneText:SetFont(MM.config.zonePanel.zoneText.font, MM.config.zonePanel.zoneText.fontSize, MM.config.zonePanel.zoneText.fontOutline)
+    MinimapZoneText:SetJustifyH(MM.config.zonePanel.zoneText.justifyH)
+    MinimapZoneText:SetShadowOffset(MM.config.zonePanel.zoneText.fontShadow and 1 or 0, MM.config.zonePanel.zoneText.fontShadow and -2 or 0)
 
-    LoadAddOn("Blizzard_TimeManager")
-    TimeManagerClockButton:ClearAllPoints()
-    TimeManagerClockButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 23)
-    TimeManagerClockButton:SetSize(1.1 * 60, 1.1 * 28)
+    MinimapZonePanel:SetShown(MM.config.zonePanel.enabled and MM.config.zonePanel.showBorder)
+end
+
+function MM:UpdateCalendar(radius)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
+        x, y = R:PolarToXY(35, radius)
+        GameTimeFrame:ClearAllPoints()
+        GameTimeFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+        GameTimeFrame:SetSize(40, 40)
+        GameTimeFrame:SetHitRectInsets(6, 0, 5, 10)
+        GameTimeFrame:SetNormalFontObject(GameFontBlack)
+
+        if GameTimeFrame.NormalTexture then
+            GameTimeFrame:SetNormalTexture([[Interface\Calendar\UI-Calendar-Button]])
+            GameTimeFrame:GetNormalTexture():SetTexCoord(0, 0.390625, 0, 0.78125)
+        end
+        if GameTimeFrame.PushedTexture then
+            GameTimeFrame:SetPushedTexture([[Interface\Calendar\UI-Calendar-Button]])
+            GameTimeFrame:GetPushedTexture():SetTexCoord(0.5, 0.890625, 0, 0.78125)
+        end
+        if GameTimeFrame.HighlightTexture then
+            GameTimeFrame:SetHighlightTexture([[Interface\Minimap\UI-Minimap-ZoomButton-Highlight]])
+            GameTimeFrame:GetHighlightTexture():SetTexCoord(0, 1, 0, 1)
+        end
+        if GameTimeFrame.Background then
+            GameTimeFrame.Background:Hide()
+        end
+        if GameTimeCalendarInvitesGlow.Texture then
+            GameTimeCalendarInvitesGlow:SetTexture(GameTimeCalendarInvitesGlow.Texture)
+        end
+        if GameTimeCalendarEventAlarmTexture.Texture then
+            GameTimeCalendarEventAlarmTexture:SetTexture(GameTimeCalendarEventAlarmTexture.Texture)
+        end
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        GameTimeFrame:ClearAllPoints()
+        GameTimeFrame:SetPoint("TOPLEFT", MinimapZonePanel, "TOPRIGHT", 2, -1)
+        GameTimeFrame:SetSize(16, 15)
+        GameTimeFrame:SetHitRectInsets(0, 0, 0, 0)
+        GameTimeFrame.NormalTexture = GameTimeFrame.NormalTexture or GameTimeFrame:GetNormalTexture()
+        GameTimeFrame:SetNormalTexture(R.media.textures.minimap.dragonflight.calendarBlank)
+        GameTimeFrame:GetNormalTexture():SetTexCoord(30 / 64, 45 / 64, 0, 16 / 64)
+        GameTimeFrame.PushedTexture = GameTimeFrame.PushedTexture or GameTimeFrame:GetPushedTexture()
+        GameTimeFrame:SetPushedTexture(R.media.textures.minimap.dragonflight.calendarBlank)
+        GameTimeFrame:GetPushedTexture():SetTexCoord(30 / 64, 45 / 64, 0, 16 / 64)
+        GameTimeFrame.HighlightTexture = GameTimeFrame.HighlightTexture or GameTimeFrame:GetHighlightTexture()
+        GameTimeFrame:SetHighlightTexture(nil)
+        GameTimeFrame:GetFontString():SetFont(MM.config.calendarText.font, MM.config.calendarText.fontSize, MM.config.calendarText.fontOutline)
+        GameTimeFrame:GetFontString():SetPoint("CENTER", 0.5, 0)
+
+        -- TODO: figure out how to properly center/justify calendar button text
+        -- GameTimeFrame:SetJustifyH("CENTER")
+        GameTimeFrame.Background = GameTimeFrame.Background or GameTimeFrame:CreateTexture("$parentBackground", "BACKGROUND")
+        GameTimeFrame.Background:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+        GameTimeFrame.Background:SetTexCoord(443 / 512, 479 / 512, 404 / 1024, 440 / 1024)
+        GameTimeFrame.Background:SetPoint("TOPLEFT", -1, 1)
+        GameTimeFrame.Background:SetPoint("BOTTOMRIGHT", 1, -2)
+        GameTimeFrame.Background:Show()
+
+        GameTimeCalendarInvitesGlow.Texture = GameTimeCalendarInvitesGlow.Texture or GameTimeCalendarInvitesGlow:GetTexture()
+        GameTimeCalendarInvitesGlow:SetTexture()
+        GameTimeCalendarEventAlarmTexture.Texture = GameTimeCalendarEventAlarmTexture.Texture or GameTimeCalendarEventAlarmTexture:GetTexture()
+        GameTimeCalendarEventAlarmTexture:SetTexture()
+    end
+end
+
+function MM:UpdateMail(radius)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
+        x, y = R:PolarToXY(72, radius)
+        MiniMapMailFrame:ClearAllPoints()
+        MiniMapMailFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+        MiniMapMailFrame:SetSize(33, 33)
+        MiniMapMailBorder:Show()
+        MiniMapMailIcon:ClearAllPoints()
+        MiniMapMailIcon:SetPoint("TOPLEFT", 7, -6)
+        MiniMapMailIcon:SetSize(18, 18)
+        MiniMapMailIcon:SetTexture([[Interface\Icons\INV_Letter_15]])
+        MiniMapMailIcon:SetTexCoord(0, 1, 0, 1)
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        MiniMapMailFrame:SetFrameLevel(MiniMapTracking:GetFrameLevel() + 1)
+        MiniMapMailFrame:ClearAllPoints()
+        MiniMapMailFrame:SetPoint("TOP", MiniMapTracking, "BOTTOM", 0, -5)
+        MiniMapMailFrame:SetSize(20, 15)
+        MiniMapMailBorder:Hide()
+        MiniMapMailIcon:ClearAllPoints()
+        MiniMapMailIcon:SetAllPoints()
+        MiniMapMailIcon:SetTexture(R.media.textures.minimap.dragonflight.atlas)
+        MiniMapMailIcon:SetTexCoord(41 / 512, 82 / 512, 519 / 1024, 551 / 1024)
+    end
+end
+
+function MM:UpdateButtonFrame(radius, width)
+    local x, y
+    if MM.config.style == MM.Styles.Vanilla then
+        x, y = R:PolarToXY(225, radius)
+        MinimapButtonFrameToggleButton:ClearAllPoints()
+        MinimapButtonFrameToggleButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
+        MinimapButtonFrameToggleButton:SetNormalTexture(R.media.textures.minimap.vanilla.buttonFrameToggle)
+        MinimapButtonFrameToggleButton:SetPushedTexture(R.media.textures.minimap.vanilla.buttonFrameToggle)
+        MinimapButtonFrameToggleButton:SetHighlightTexture(R.media.textures.minimap.vanilla.minimapButtonHighlight)
+    elseif MM.config.style == MM.Styles.Dragonflight then
+        MinimapButtonFrameToggleButton:ClearAllPoints()
+        MinimapButtonFrameToggleButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 20)
+        MinimapButtonFrameToggleButton:SetNormalTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle)
+        MinimapButtonFrameToggleButton:SetPushedTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle)
+        MinimapButtonFrameToggleButton:SetHighlightTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle_Highlight)
+    end
 
     MinimapButtonFrame:SetWidth(width)
     MinimapButtonFrame:Update()
-
-    x, y = R:PolarToXY(35, radius)
-    GameTimeFrame:ClearAllPoints()
-    GameTimeFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(55, radius)
-    MiniMapWorldMapButton:ClearAllPoints()
-    MiniMapWorldMapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(72, radius)
-    MiniMapMailFrame:ClearAllPoints()
-    MiniMapMailFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(225, radius)
-    MinimapButtonFrameToggleButton:ClearAllPoints()
-    MinimapButtonFrameToggleButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(-35, radius)
-    MiniMapInstanceDifficulty:ClearAllPoints()
-    MiniMapInstanceDifficulty:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(-55, radius)
-    MiniMapTracking:ClearAllPoints()
-    MiniMapTracking:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(-72, radius)
-    MiniMapBattlefieldFrame:ClearAllPoints()
-    MiniMapBattlefieldFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
-
-    x, y = R:PolarToXY(-72, radius)
-    MiniMapLFGFrame:ClearAllPoints()
-    MiniMapLFGFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
 function MM:Minimap_OnMouseWheel(direction)
@@ -253,5 +493,16 @@ function MM:Minimap_OnLeave()
     if MM.OnLeaveTimer then
         MM:CancelTimer(MM.OnLeaveTimer)
         MM.OnLeaveTimer = nil
+    end
+end
+
+function MM:TrackingButton_OnMouseUpDown()
+    MiniMapTrackingIcon:ClearAllPoints()
+    if MM.config.style == MM.Styles.Dragonflight then
+        MiniMapTrackingIcon:SetPoint("CENTER")
+        MiniMapTrackingIcon:SetSize(14, 14)
+    else
+        MiniMapTrackingIcon:SetPoint("TOPLEFT", 6, -6)
+        MiniMapTrackingIcon:SetSize(20, 20)
     end
 end

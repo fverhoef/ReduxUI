@@ -6,9 +6,9 @@
         <Anchors>
             <Anchor point="TOP" relativePoint="BOTTOM" y="10" />
         </Anchors>
-        <NormalTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Up" />
-        <PushedTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\StarButton-Down" />
-        <HighlightTexture alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\Minimap\MinimapButton-Highlight" />
+        <NormalTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\Vanilla\StarButton-Up" />
+        <PushedTexture file="Interface\Addons\ReduxUI\Media\Textures\Minimap\Vanilla\StarButton-Down" />
+        <HighlightTexture alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\Minimap\Vanilla\MinimapButton-Highlight" />
         <Scripts>
             <OnEnter method="OnEnter" />
             <OnLeave method="OnLeave" />

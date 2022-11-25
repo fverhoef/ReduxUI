@@ -73,7 +73,7 @@ function PetMixin:PostConfigure()
     elseif self.config.style == UF.Styles.Dragonflight then
         self:SetSize(115, 44)
         self:ClearAllPoints()
-        self:SetPoint("LEFT", UF.frames.target, "RIGHT", 5, 0)
+        self:SetPoint("TOPLEFT", UF.frames.player, "BOTTOMLEFT", 50, 10)
 
         self.Border:Hide()
         self.Inlay:Hide()
