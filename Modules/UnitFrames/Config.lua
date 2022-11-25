@@ -458,6 +458,7 @@ R:RegisterModuleConfig(UF, {
         showRaid = true
     }),
     arena = R:CopyTable(DEFAULT_GROUP_UNIT_CONFIG, {
+        style = DEFAULT_STYLE,
         size = { 180, 30 },
         point = { "BOTTOMLEFT", "UIParent", "BOTTOM", 350, 450 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
