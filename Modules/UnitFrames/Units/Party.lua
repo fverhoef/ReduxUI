@@ -11,8 +11,7 @@ PartyMixin = {}
 
 function PartyMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
-        local scale = 1
-        self:SetSize(scale * 120, scale * 49)
+        self:SetSize(120, 49)
 
         self.Border:Hide()
         self.Inlay:Hide()
@@ -34,7 +33,7 @@ function PartyMixin:PostConfigure()
         self.Flash:SetTexCoord(0, 1, 0, 1)
         self.Flash:ClearAllPoints()
         self.Flash:SetPoint("CENTER", self, "CENTER", 0, -4)
-        self.Flash:SetSize(scale * 128, scale * 64)
+        self.Flash:SetSize(128, 64)
         self.Flash:Hide()
 
         self.Name:Show()
@@ -43,8 +42,8 @@ function PartyMixin:PostConfigure()
         self.Name:SetShadowOffset(0, 0)
 
         self.Name:ClearAllPoints()
-        self.Name:SetSize(scale * 74, 13)
-        self.Name:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 42, scale * 3)
+        self.Name:SetSize(74, 13)
+        self.Name:SetPoint("TOPLEFT", self, "TOPLEFT", 42, 3)
         self:Tag(self.Name, "[name:sub(15)]")
 
         self.Level:Hide()
@@ -53,17 +52,17 @@ function PartyMixin:PostConfigure()
 
         self:DisableElement("Portrait")
         self.Portrait = self.PortraitHolder.PortraitRound
-        self.PortraitHolder:SetSize(scale * 35, scale * 35)
+        self.PortraitHolder:SetSize(35, 35)
         self.PortraitHolder:ClearAllPoints()
-        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 7, scale * -7)
+        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 7, -7)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
-        self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 46, scale * -11)
+        self.Health:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -11)
         if self.config.largeHealth then
-            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 21)
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 21)
         else
-            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 31)
+            self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 31)
         end
 
         if self.config.largeHealth then
@@ -84,11 +83,11 @@ function PartyMixin:PostConfigure()
         self:EnableElement("Power")
         self.Power:ClearAllPoints()
         if self.config.largeHealth then
-            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 44, scale * -28)
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 12)
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 44, -28)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 12)
         else
-            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", scale * 46, scale * -19)
-            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", scale * -4, scale * 23)
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 46, -19)
+            self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -4, 23)
         end
 
         self.Power.Border:Hide()
