@@ -32,7 +32,7 @@
                 <Texture parentKey="Icon">
                     <Size x="24" y="24" />
                     <Anchors>
-                        <Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0" />
+                        <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="-5" y="2" />
                     </Anchors>
                 </Texture>
                 <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">

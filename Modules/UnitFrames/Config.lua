@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 UF.Styles = { Vanilla = "Blizzard - Vanilla", Dragonflight = "Blizzard - Dragonflight", Custom = "Custom" }
 
-local DEFAULT_STYLE = UF.Styles.Custom
+local DEFAULT_STYLE = UF.Styles.Dragonflight
 
 local AURA_FILTER_WHITELIST = {
     Boss = false,
