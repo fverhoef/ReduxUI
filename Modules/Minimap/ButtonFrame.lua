@@ -7,7 +7,7 @@ local Buttons = {}
 local IgnoreButton = {
     "MinimapButtonFrameToggleButton", "HelpOpenWebTicketButton", "MiniMapVoiceChatFrame", "TimeManagerClockButton", "BattlefieldMinimap", "ButtonCollectFrame", "GameTimeFrame",
     "QueueStatusMinimapButton", "GarrisonLandingPageMinimapButton", "MiniMapMailFrame", "MinimapZoneTextButton", "MinimapToggleButton", "MiniMapTracking", "MinimapZoomIn", "MinimapZoomOut",
-    "RecipeRadarMinimapButtonFrame"
+    "RecipeRadarMinimapButtonFrame", "MinimapZoomHitArea"
 }
 local GenericIgnore = {
     "Archy", "GatherMatePin", "GatherNote", "GuildInstance", "HandyNotesPin", "MiniMap", "Spy_MapNoteList_mini", "ZGVMarker", "poiMinimap", "GuildMap3Mini", "LibRockConfig-1.0_MinimapButton",
@@ -92,6 +92,10 @@ local function GrabMinimapButtons()
     if grabbedAnyButtons then
         MinimapButtonFrame:Update()
     end
+end
+
+function MM:UpdateMinimapButtonFrame()
+    MinimapButtonFrame:Update()
 end
 
 ButtonFrameMixin = {}

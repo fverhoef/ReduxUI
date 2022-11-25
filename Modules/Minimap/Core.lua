@@ -34,8 +34,6 @@ function MM:StyleMinimap()
     MinimapButtonFrame = CreateFrame("Frame", "MinimapButtonFrame", Minimap, "MinimapButtonFrameTemplate")
     MinimapButtonFrame:SetShown(not MM.config.buttonFrame.collapsed)
     MinimapButtonFrame:CreateFader(MM.config.buttonFrame.fader, MinimapButtonFrame.Buttons)
-    MinimapButtonFrame:ClearAllPoints()
-    MinimapButtonFrame:SetPoint("TOPRIGHT", MinimapButtonFrameToggleButton, "BOTTOMLEFT", 5, 5)
 
     MinimapZonePanel = CreateFrame("Frame", "MinimapZonePanel", MinimapCluster)
     MinimapZonePanel:SetSize(140, 12)
@@ -213,7 +211,7 @@ function MM:UpdateZoom(radius)
         MinimapZoomIn:GetHighlightTexture():SetTexCoord(0, 36 / 512, 623 / 1024, 659 / 1024)
         MinimapZoomIn:SetDisabledTexture(R.media.textures.minimap.dragonflight.atlas)
         MinimapZoomIn:GetDisabledTexture():SetTexCoord(0, 36 / 512, 659 / 1024, 695 / 1024)
-    
+
         x, y = R:PolarToXY(141, radius + 15)
         MinimapZoomOut:SetSize(24, 24)
         MinimapZoomOut:ClearAllPoints()
@@ -443,6 +441,10 @@ end
 function MM:UpdateButtonFrame(radius, width)
     local x, y
     if MM.config.style == MM.Styles.Vanilla then
+        MinimapButtonFrame:SetWidth(width)
+        MinimapButtonFrame:ClearAllPoints()
+        MinimapButtonFrame:SetPoint("TOPRIGHT", MinimapButtonFrameToggleButton, "BOTTOMLEFT", 5, 5)
+
         x, y = R:PolarToXY(225, radius)
         MinimapButtonFrameToggleButton:ClearAllPoints()
         MinimapButtonFrameToggleButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
@@ -450,14 +452,16 @@ function MM:UpdateButtonFrame(radius, width)
         MinimapButtonFrameToggleButton:SetPushedTexture(R.media.textures.minimap.vanilla.buttonFrameToggle)
         MinimapButtonFrameToggleButton:SetHighlightTexture(R.media.textures.minimap.vanilla.minimapButtonHighlight)
     elseif MM.config.style == MM.Styles.Dragonflight then
+        MinimapButtonFrame:SetWidth(width - 30)
+        MinimapButtonFrame:ClearAllPoints()
+        MinimapButtonFrame:SetPoint("TOP", MinimapButtonFrameToggleButton, "BOTTOM", 0, 5)
+
         MinimapButtonFrameToggleButton:ClearAllPoints()
         MinimapButtonFrameToggleButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 20)
         MinimapButtonFrameToggleButton:SetNormalTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle)
         MinimapButtonFrameToggleButton:SetPushedTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle)
         MinimapButtonFrameToggleButton:SetHighlightTexture(R.media.textures.minimap.dragonflight.buttonFrameToggle_Highlight)
     end
-
-    MinimapButtonFrame:SetWidth(width)
     MinimapButtonFrame:Update()
 end
 
