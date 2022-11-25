@@ -11,7 +11,7 @@ PartyMixin = {}
 
 function PartyMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
-        local scale = 1.3
+        local scale = 1
         self:SetSize(scale * 120, scale * 49)
 
         self.Border:Hide()
