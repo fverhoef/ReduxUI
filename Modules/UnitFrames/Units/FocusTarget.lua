@@ -20,7 +20,7 @@ function FocusTargetMixin:PostConfigure()
         self.Shadow:Hide()
 
         if not self.Artwork then
-            self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
             self.Artwork:SetTexture(R.media.textures.unitFrames.vanilla.targetOfTargetFrame)
             self.Artwork:SetTexCoord(0.015625, 0.7265625, 0, 0.703125)
             self.Artwork:SetAllPoints()
@@ -78,7 +78,7 @@ function FocusTargetMixin:PostConfigure()
         self.Shadow:Hide()
 
         if not self.Artwork then
-            self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
         self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
         self.Artwork:SetTexCoord(0.75, 0.9794921875, 0, 0.173828125)

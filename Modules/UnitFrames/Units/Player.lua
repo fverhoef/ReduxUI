@@ -71,7 +71,7 @@ function PlayerMixin:PostConfigure()
         self.Shadow:Hide()
 
         if not self.Artwork then
-            self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
@@ -80,7 +80,7 @@ function PlayerMixin:PostConfigure()
         self.Artwork:Show()
 
         if not self.Flash then
-            self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
+            self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
         self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
         self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
@@ -255,7 +255,7 @@ function PlayerMixin:PostConfigure()
         self.Shadow:Hide()
 
         if not self.Artwork then
-            self.Artwork = self:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
@@ -264,7 +264,7 @@ function PlayerMixin:PostConfigure()
         self.Artwork:Show()
 
         if not self.Flash then
-            self.Flash = self:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
+            self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
         self.Flash:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
         self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625) -- Flash
