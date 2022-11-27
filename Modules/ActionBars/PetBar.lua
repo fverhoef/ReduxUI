@@ -9,8 +9,8 @@ function AB:CreatePetBar()
     bar.defaults = AB.defaults.petBar
     bar.buttons = {}
     bar:SetFrameStrata("LOW")
-    _G.Mixin(bar, ActionBarMixin)
-    _G.Mixin(bar, PetBarMixin)
+    _G.Mixin(bar, AB.ActionBarMixin)
+    _G.Mixin(bar, AB.PetBarMixin)
 
     for id = 1, 10 do
         bar.buttons[id] = AB:CreatePetButton(id, bar, bar.config.keyBoundTarget .. id)
@@ -21,7 +21,7 @@ function AB:CreatePetBar()
     bar.visibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
     RegisterStateDriver(bar, "visibility", bar.visibility)
 
-    bar:SetScript("OnEvent", PetBarMixin.OnEvent)
+    bar:SetScript("OnEvent", bar.OnEvent)
 
     bar:RegisterEvent("PLAYER_REGEN_ENABLED")
     bar:RegisterEvent("PLAYER_CONTROL_LOST")
@@ -51,9 +51,9 @@ function AB:CreatePetBar()
     return bar
 end
 
-PetBarMixin = {}
+AB.PetBarMixin = {}
 
-function PetBarMixin:OnEvent(event, arg1, ...)
+function AB.PetBarMixin:OnEvent(event, arg1, ...)
     if event == "UNIT_PET" and arg1 ~= "player" then
         return
     elseif (event == "UNIT_FLAGS" or event == "UNIT_AURA") and arg1 ~= "pet" then
@@ -75,7 +75,7 @@ function AB:CreatePetButton(id, parent, keyBoundTarget)
     local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "PetActionButtonTemplate")
     button:SetID(id)
     button.config = parent.config
-    _G.Mixin(button, PetButtonMixin)
+    _G.Mixin(button, AB.PetButtonMixin)
     button:SetScript("OnEvent", nil)
     button:UnregisterAllEvents()
 
@@ -85,7 +85,7 @@ function AB:CreatePetButton(id, parent, keyBoundTarget)
     button.shine = _G[button:GetName() .. "Shine"]
 
     if keyBoundTarget then
-        _G.Mixin(button, KeyBoundButtonMixin)
+        _G.Mixin(button, AB.KeyBoundButtonMixin)
 
         button.keyBoundTarget = keyBoundTarget
         AB:SecureHookScript(button, "OnEnter", function(self)
@@ -98,9 +98,9 @@ function AB:CreatePetButton(id, parent, keyBoundTarget)
     return button
 end
 
-PetButtonMixin = {}
+AB.PetButtonMixin = {}
 
-function PetButtonMixin:Update()
+function AB.PetButtonMixin:Update()
     local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(self.id)
 
     self.tooltipName = isToken and _G[name] or name
@@ -157,7 +157,7 @@ function PetButtonMixin:Update()
     self:UpdateCooldown()
 end
 
-function PetButtonMixin:UpdateCooldown()
+function AB.PetButtonMixin:UpdateCooldown()
     local start, duration, enable = GetPetActionCooldown(self.id)
     CooldownFrame_Set(self.cooldown, start, duration, enable)
 
@@ -166,7 +166,7 @@ function PetButtonMixin:UpdateCooldown()
     end
 end
 
-function PetButtonMixin:Configure()
+function AB.PetButtonMixin:Configure()
     self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 
     self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))

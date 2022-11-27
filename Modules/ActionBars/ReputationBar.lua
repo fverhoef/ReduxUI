@@ -7,9 +7,10 @@ function AB:CreateReputationBar()
     return CreateFrame("StatusBar", addonName .. "_ReputationBar", UIParent, "ReputationBarTemplate_")
 end
 
-ReputationBarMixin = {}
+AB.ReputationBarMixin = {}
+ReduxReputationBarMixin = AB.ReputationBarMixin
 
-function ReputationBarMixin:OnLoad()
+function AB.ReputationBarMixin:OnLoad()
     self.config = AB.config.reputationBar
     self.defaults = AB.defaults.reputationBar
     self:SetNormalizedSize(AB.config.reputationBar.size)
@@ -20,15 +21,15 @@ function ReputationBarMixin:OnLoad()
     self.Backdrop:SetBackdropBorderColor(BACKDROP_BORDER_COLOR.r, BACKDROP_BORDER_COLOR.g, BACKDROP_BORDER_COLOR.b, BACKDROP_BORDER_COLOR.a)
 end
 
-function ReputationBarMixin:OnEnter()
+function AB.ReputationBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function ReputationBarMixin:OnLeave()
+function AB.ReputationBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-function ReputationBarMixin:Update()
+function AB.ReputationBarMixin:Update()
     local watchedFactionName = GetWatchedFactionInfo()
     local showRep = watchedFactionName ~= nil
     local repMin, repMax = ReputationWatchBar.StatusBar:GetMinMaxValues()

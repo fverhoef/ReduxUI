@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="ReputationBar.lua" />
-    <StatusBar name="ReputationBarTemplate_" mixin="ReputationBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
+    <StatusBar name="ReputationBarTemplate_" mixin="ReduxReputationBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
         <Anchors>
             <Anchor point="BOTTOM" x="0" y="35" />
         </Anchors>

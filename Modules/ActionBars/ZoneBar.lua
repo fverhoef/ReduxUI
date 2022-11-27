@@ -3,13 +3,15 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 
 function AB:CreateZoneBar()
-    if not R.isRetail then return end
+    if not R.isRetail then
+        return
+    end
 
     local bar = CreateFrame("Frame", addonName .. "ZoneAbilityBar", UIParent)
     bar.config = AB.config.zoneBar
 
     bar.Update = function(self)
-         ZoneAbilityFrame:SetParent(bar)
+        ZoneAbilityFrame:SetParent(bar)
     end
 
     ZoneAbilityFrame:SetParent(bar)
@@ -17,33 +19,9 @@ function AB:CreateZoneBar()
     ZoneAbilityFrame:SetAllPoints()
     ZoneAbilityFrame.ignoreInLayout = true
 
-    bar:SetScript("OnEvent", function(self, event)
-        if event == "PLAYER_REGEN_ENABLED" then
-            bar:Update()
-            bar.needsUpdate = false
-            bar:UnregisterEvent("PLAYER_REGEN_ENABLED")
-        end
-    end)
-    AB:SecureHook(ZoneAbilityFrame, "SetParent", function(self, parent)
-        if parent == bar then return end
-
-        if InCombatLockdown() then
-            bar.needsUpdate = true
-            bar:RegisterEvent("PLAYER_REGEN_ENABLED")
-            return
-        end
-
-        bar:Update()
-    end)
-    AB:SecureHook(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(self)
-        for button in self.SpellButtonContainer:EnumerateActive() do
-            -- R.Modules.ButtonStyles:StyleActionButton(button)
-        end
-    end)
-    AB:SecureHook(ZoneAbilityFrame.SpellButtonContainer, "SetSize", function(self)
-        local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
-        bar:SetSize(width + 4, height + 4)
-    end)
+    bar:SetScript("OnEvent", bar.OnEvent)
+    AB:SecureHook(ZoneAbilityFrame, "SetParent", AB.ZoneAbilityFrame_SetParent)
+    AB:SecureHook(ZoneAbilityFrame.SpellButtonContainer, "SetSize", AB.ZoneAbilityFrame_SpellButtonContainer_SetSize)
 
     -- R:Disable(ZoneAbilityFrame.Style)
     bar:CreateMover("ZoneBar", AB.defaults.zoneBar.point)
@@ -53,4 +31,33 @@ function AB:CreateZoneBar()
     bar:Update()
 
     return bar
+end
+
+function AB:ZoneAbilityFrame_SetParent(parent)
+    if parent == AB.zoneBar then
+        return
+    end
+
+    if InCombatLockdown() then
+        AB.zoneBar.needsUpdate = true
+        AB.zoneBar:RegisterEvent("PLAYER_REGEN_ENABLED")
+        return
+    end
+
+    AB.zoneBar:Update()
+end
+
+function AB:ZoneAbilityFrame_SpellButtonContainer_SetSize()
+    local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
+    AB.zoneBar:SetSize(width + 4, height + 4)
+end
+
+AB.ZoneBarMixin = {}
+
+function AB.ZoneBarMixin:OnEvent(event)
+    if event == "PLAYER_REGEN_ENABLED" then
+        self:Update()
+        self.needsUpdate = false
+        self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+    end
 end

@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="SettingsMicroButton.lua"/>
 
-    <Button name="SettingsMicroButton" parent="MainMenuBarArtFrame" inherits="MainMenuBarMicroButton" mixin="SettingsMicroButtonMixin">
+    <Button name="SettingsMicroButton" parent="MainMenuBarArtFrame" inherits="MainMenuBarMicroButton" mixin="ReduxSettingsMicroButtonMixin">
 		<Size x="29" y="58"/>
         <Scripts>
             <OnLoad method="OnLoad" />

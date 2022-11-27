@@ -14,7 +14,7 @@ function AB:CreateTotemBar()
     bar:Show()
     bar.config = AB.config.totemBar
     bar.defaults = AB.defaults.totemBar
-    _G.Mixin(bar, TotemBarMixin)
+    _G.Mixin(bar, AB.TotemBarMixin)
 
     bar:SetScript("OnShow", nil)
     bar:SetScript("OnHide", nil)
@@ -44,9 +44,9 @@ function AB:CreateTotemBar()
     return bar
 end
 
-TotemBarMixin = {}
+AB.TotemBarMixin = {}
 
-function TotemBarMixin:Configure()
+function AB.TotemBarMixin:Configure()
     self:ClearAllPoints()
     self:SetNormalizedPoint(self.config.point)
 

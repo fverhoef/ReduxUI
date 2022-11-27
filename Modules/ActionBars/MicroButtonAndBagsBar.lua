@@ -5,9 +5,10 @@ local L = R.L
 
 function AB:CreateMicroButtonAndBagsBar() AB.MicroButtonAndBagsBar = CreateFrame("Frame", addonName .. "MicroButtonAndBagsBar", UIParent, "MicroButtonAndBagsBarTemplate") end
 
-MicroButtonAndBagsBarMixin = {}
+AB.MicroButtonAndBagsBarMixin = {}
+ReduxMicroButtonAndBagsBarMixin = AB.MicroButtonAndBagsBarMixin
 
-function MicroButtonAndBagsBarMixin:OnLoad()
+function AB.MicroButtonAndBagsBarMixin:OnLoad()
     self:HideBlizzard()
     self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
     self:SetWidth(R.isRetail and 298 or 283)
@@ -75,11 +76,11 @@ function MicroButtonAndBagsBarMixin:OnLoad()
     end
 end
 
-function MicroButtonAndBagsBarMixin:HideBlizzard() if MicroButtonAndBagsBar then MicroButtonAndBagsBar:SetParent(R.HiddenFrame) end end
+function AB.MicroButtonAndBagsBarMixin:HideBlizzard() if MicroButtonAndBagsBar then MicroButtonAndBagsBar:SetParent(R.HiddenFrame) end end
 
-function MicroButtonAndBagsBarMixin:UpdateMicroButtonsParent() for i, button in ipairs(self.buttonList) do button:SetParent(self) end end
+function AB.MicroButtonAndBagsBarMixin:UpdateMicroButtonsParent() for i, button in ipairs(self.buttonList) do button:SetParent(self) end end
 
-function MicroButtonAndBagsBarMixin:UpdateMainMenuButton()
+function AB.MicroButtonAndBagsBarMixin:UpdateMainMenuButton()
     if R.isRetail then return end
 
     R.SystemInfo:Update(false)

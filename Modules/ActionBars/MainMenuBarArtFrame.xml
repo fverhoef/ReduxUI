@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="MainMenuBarArtFrame.lua"/>
     
-    <Frame name="MainMenuBarArtFrameTemplate" enableMouse="true" parent="UIParent" mixin="MainMenuBarArtFrameMixin" virtual="true">
+    <Frame name="MainMenuBarArtFrameTemplate" enableMouse="true" parent="UIParent" mixin="ReduxMainMenuBarArtFrameMixin" virtual="true">
         <Anchors>
             <Anchor point="BOTTOM"/>
         </Anchors>
@@ -82,7 +82,7 @@
             </Layer>
         </Layers>
         <Frames>
-            <StatusBar parentKey="ExperienceBar" mixin="MainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
+            <StatusBar parentKey="ExperienceBar" mixin="ReduxMainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
                 <Anchors>
                     <Anchor point="BOTTOMLEFT"/>
                     <Anchor point="BOTTOMRIGHT"/>
@@ -135,7 +135,7 @@
                     <OnLeave method="ExperienceBar_OnLeave"/>
                 </Scripts>
             </StatusBar>
-            <StatusBar parentKey="ReputationBar" mixin="MainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
+            <StatusBar parentKey="ReputationBar" mixin="ReduxMainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
                 <Anchors>
                     <Anchor point="BOTTOMLEFT"/>
                     <Anchor point="BOTTOMRIGHT"/>

@@ -1,19 +1,21 @@
+local addonName, ns = ...
 local R = _G.ReduxUI
+local AB = R.Modules.ActionBars
 
-KeyBoundButtonMixin = {}
+AB.KeyBoundButtonMixin = {}
 
-function KeyBoundButtonMixin:GetBindingAction()
+function AB.KeyBoundButtonMixin:GetBindingAction()
     return self.keyBoundTarget
 end
 
-function KeyBoundButtonMixin:GetHotkey()
+function AB.KeyBoundButtonMixin:GetHotkey()
     local key = GetBindingKey(self.keyBoundTarget)
     if key then
         return R.Libs.KeyBound:ToShortKey(key) or key
     end
 end
 
-function KeyBoundButtonMixin:GetBindings()
+function AB.KeyBoundButtonMixin:GetBindings()
     local keys = ""
     for i = 1, select("#", GetBindingKey(self.keyBoundTarget)) do
         local hotKey = select(i, GetBindingKey(self.keyBoundTarget))
@@ -25,11 +27,11 @@ function KeyBoundButtonMixin:GetBindings()
     return keys
 end
 
-function KeyBoundButtonMixin:SetKey(key)
+function AB.KeyBoundButtonMixin:SetKey(key)
     SetBinding(key, self.keyBoundTarget)
 end
 
-function KeyBoundButtonMixin:ClearBindings()
+function AB.KeyBoundButtonMixin:ClearBindings()
     while GetBindingKey(self.keyBoundTarget) do
         SetBinding(GetBindingKey(self.keyBoundTarget), nil)
     end

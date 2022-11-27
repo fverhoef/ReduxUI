@@ -7,9 +7,10 @@ function AB:CreateMainMenuBarArtFrame()
     AB.MainMenuBarArtFrame = CreateFrame("Frame", addonName .. "MainMenuBarArtFrame", UIParent, "MainMenuBarArtFrameTemplate")
 end
 
-MainMenuBarArtFrameMixin = {}
+AB.MainMenuBarArtFrameMixin = {}
+ReduxMainMenuBarArtFrameMixin = AB.MainMenuBarArtFrameMixin
 
-function MainMenuBarArtFrameMixin:OnLoad()
+function AB.MainMenuBarArtFrameMixin:OnLoad()
     if R.isRetail then
         StatusTrackingBarManager:SetParent(self)
         StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ReputationStatusBarTemplate");
@@ -48,7 +49,7 @@ function MainMenuBarArtFrameMixin:OnLoad()
     self:Update()
 end
 
-function MainMenuBarArtFrameMixin:OnEvent(event, ...)
+function AB.MainMenuBarArtFrameMixin:OnEvent(event, ...)
     if event == "ACTIONBAR_PAGE_CHANGED" then
         self.PageNumber:SetText(GetActionBarPage())
     elseif event == "PLAYER_REGEN_ENABLED" then
@@ -61,11 +62,11 @@ function MainMenuBarArtFrameMixin:OnEvent(event, ...)
     end
 end
 
-function MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
+function AB.MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
     self:Update()
 end
 
-function MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
+function AB.MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
     if R.isRetail then
         return StatusTrackingBarManager:GetNumberVisibleBars()
     else
@@ -73,7 +74,7 @@ function MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
     end
 end
 
-function MainMenuBarArtFrameMixin:UpdateRested()
+function AB.MainMenuBarArtFrameMixin:UpdateRested()
     if self.ExperienceBar:IsShown() then
         local exhaustionThreshold = GetXPExhaustion()
 
@@ -95,7 +96,7 @@ function MainMenuBarArtFrameMixin:UpdateRested()
     end
 end
 
-function MainMenuBarArtFrameMixin:Update()
+function AB.MainMenuBarArtFrameMixin:Update()
     if InCombatLockdown() then
         self.needsUpdate = true
         self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -204,18 +205,18 @@ function MainMenuBarArtFrameMixin:Update()
     end
 end
 
-function MainMenuBarArtFrameMixin:ExperienceBar_OnEnter()
+function AB.MainMenuBarArtFrameMixin:ExperienceBar_OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function MainMenuBarArtFrameMixin:ExperienceBar_OnLeave()
+function AB.MainMenuBarArtFrameMixin:ExperienceBar_OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-function MainMenuBarArtFrameMixin:ReputationBar_OnEnter()
+function AB.MainMenuBarArtFrameMixin:ReputationBar_OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function MainMenuBarArtFrameMixin:ReputationBar_OnLeave()
+function AB.MainMenuBarArtFrameMixin:ReputationBar_OnLeave()
     self.OverlayFrame.Text:Hide()
 end

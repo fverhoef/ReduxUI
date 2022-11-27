@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="ExperienceBar.lua" />
-    <StatusBar name="ExperienceBarTemplate" mixin="ExperienceBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
+    <StatusBar name="ExperienceBarTemplate" mixin="ReduxExperienceBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
         <Anchors>
             <Anchor point="BOTTOM" x="0" y="10" />
         </Anchors>

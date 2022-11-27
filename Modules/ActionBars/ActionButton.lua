@@ -8,12 +8,12 @@ function AB:CreateActionButton(name, parent, actionFunc, icon, tooltip)
     button.config = parent.config
     button.tooltip = tooltip
     button:SetFrameStrata("MEDIUM")
-    _G.Mixin(button, ActionButtonMixin)
+    _G.Mixin(button, AB.ActionButtonMixin)
     button:EnableMouse(true)
     button:SetScript("OnClick", actionFunc)
-    button:SetScript("PostClick", ActionButtonMixin.PostClick)
-    button:SetScript("OnEnter", ActionButtonMixin.OnEnter)
-    button:SetScript("OnLeave", ActionButtonMixin.OnLeave)
+    button:SetScript("PostClick", button.PostClick)
+    button:SetScript("OnEnter", button.OnEnter)
+    button:SetScript("OnLeave", button.OnLeave)
     button.icon:SetTexture(icon)
 
     button:Configure()
@@ -22,13 +22,13 @@ function AB:CreateActionButton(name, parent, actionFunc, icon, tooltip)
     return button
 end
 
-ActionButtonMixin = {}
+AB.ActionButtonMixin = {}
 
-function ActionButtonMixin:Configure()
+function AB.ActionButtonMixin:Configure()
     self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
-function ActionButtonMixin:OnEnter()
+function AB.ActionButtonMixin:OnEnter()
     if GameTooltip:IsForbidden() then
         return
     end
@@ -42,7 +42,7 @@ function ActionButtonMixin:OnEnter()
     GameTooltip:SetText(self.tooltip)
 end
 
-function ActionButtonMixin:OnLeave()
+function AB.ActionButtonMixin:OnLeave()
     if GameTooltip:IsForbidden() then
         return
     end
@@ -50,6 +50,6 @@ function ActionButtonMixin:OnLeave()
     GameTooltip:Hide()
 end
 
-function ActionButtonMixin:PostClick()
+function AB.ActionButtonMixin:PostClick()
     self:SetChecked(false)
 end

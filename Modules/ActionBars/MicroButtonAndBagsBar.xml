@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="MicroButtonAndBagsBar.lua"/>
 
-    <Frame name="MicroButtonAndBagsBarTemplate" mixin="MicroButtonAndBagsBarMixin" frameLevel="10" virtual="true">
+    <Frame name="MicroButtonAndBagsBarTemplate" mixin="ReduxMicroButtonAndBagsBarMixin" frameLevel="10" virtual="true">
         <Size x="265" y="88"/>
         <Layers>
             <Layer level="BACKGROUND">

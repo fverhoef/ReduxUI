@@ -7,16 +7,16 @@ function AB:CreateVehicleExitBar()
     local bar = CreateFrame("Frame", addonName .. "_VehicleExitBar", UIParent)
     bar.buttons = {}
     bar.config = AB.config.vehicleExitBar
-    _G.Mixin(bar, ActionBarMixin)
+    _G.Mixin(bar, AB.ActionBarMixin)
 
     local button = CreateFrame("Button", "$parent_Button", bar)
-    _G.Mixin(bar, VehicleExitButtonMixin)
+    _G.Mixin(bar, AB.VehicleExitButtonMixin)
     button:SetPoint("TOPLEFT")
     button:SetPoint("BOTTOMRIGHT")
-    button:SetScript("OnClick", VehicleExitButtonMixin.OnClick)
-    button:SetScript("OnEvent", VehicleExitButtonMixin.OnEvent)
-    button:SetScript("OnEnter", VehicleExitButtonMixin.OnEnter)
-    button:SetScript("OnLeave", VehicleExitButtonMixin.OnLeave)
+    button:SetScript("OnClick", button.OnClick)
+    button:SetScript("OnEvent", button.OnEvent)
+    button:SetScript("OnEnter", button.OnEnter)
+    button:SetScript("OnLeave", button.OnLeave)
     button:RegisterEvent("UNIT_ENTERED_VEHICLE")
     button:RegisterEvent("UNIT_EXITED_VEHICLE")
     button:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
@@ -45,13 +45,13 @@ function AB:CreateVehicleExitBar()
     return bar
 end
 
-VehicleExitButtonMixin = {}
+AB.VehicleExitButtonMixin = {}
 
-function VehicleExitButtonMixin:Configure()
+function AB.VehicleExitButtonMixin:Configure()
     self:OnEvent()
 end
 
-function VehicleExitButtonMixin:OnEvent()
+function AB.VehicleExitButtonMixin:OnEvent()
     if UnitOnTaxi("player") or (_G.CanExitVehicle and CanExitVehicle()) then
         self:Show()
         self:GetNormalTexture():SetDesaturated(false)
@@ -61,7 +61,7 @@ function VehicleExitButtonMixin:OnEvent()
     end
 end
 
-function VehicleExitButtonMixin:OnEnter()
+function AB.VehicleExitButtonMixin:OnEnter()
     if UnitOnTaxi("player") then
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(TAXI_CANCEL, 1, 1, 1)
@@ -72,11 +72,11 @@ function VehicleExitButtonMixin:OnEnter()
     end
 end
 
-function VehicleExitButtonMixin:OnLeave()
+function AB.VehicleExitButtonMixin:OnLeave()
     GameTooltip:Hide()
 end
 
-function VehicleExitButtonMixin:OnClick()
+function AB.VehicleExitButtonMixin:OnClick()
     if UnitOnTaxi("player") then
         TaxiRequestEarlyLanding()
 

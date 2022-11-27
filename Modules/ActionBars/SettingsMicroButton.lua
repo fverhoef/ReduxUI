@@ -3,9 +3,10 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-SettingsMicroButtonMixin = {}
+AB.SettingsMicroButtonMixin = {}
+ReduxSettingsMicroButtonMixin = AB.SettingsMicroButtonMixin
 
-function SettingsMicroButtonMixin:OnLoad()
+function AB.SettingsMicroButtonMixin:OnLoad()
     self.tooltipText = R.title
     self.newbieText = L["Click to open config dialog. Shift-click to reload UI. Alt-click to lock/unlock frames."]
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -15,7 +16,7 @@ function SettingsMicroButtonMixin:OnLoad()
     self:SetPoint("BOTTOMLEFT", R.isRetail and MainMenuMicroButton or HelpMicroButton, "BOTTOMRIGHT", -2, 0)
 end
 
-function SettingsMicroButtonMixin:OnClick()
+function AB.SettingsMicroButtonMixin:OnClick()
     if IsShiftKeyDown() then
         ReloadUI()
     elseif IsAltKeyDown() then
@@ -25,7 +26,7 @@ function SettingsMicroButtonMixin:OnClick()
     end
 end
 
-function SettingsMicroButtonMixin:OnEnter()
+function AB.SettingsMicroButtonMixin:OnEnter()
     GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
     GameTooltip:ClearLines()
     GameTooltip:AddLine(R.title)
@@ -43,11 +44,11 @@ function SettingsMicroButtonMixin:OnEnter()
     GameTooltip:Show()
 end
 
-function SettingsMicroButtonMixin:OnLeave()
+function AB.SettingsMicroButtonMixin:OnLeave()
     _G.GameTooltip:Hide()
 end
 
-function SettingsMicroButtonMixin:AddSystemInfo(tooltip)
+function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
     R.SystemInfo:Update(true)
 
     local ipTypes = {"IPv4", "IPv6"}

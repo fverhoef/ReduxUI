@@ -9,8 +9,8 @@ function AB:CreateStanceBar()
     bar.defaults = AB.defaults.stanceBar
     bar.buttons = {}
     bar:SetFrameStrata("LOW")
-    _G.Mixin(bar, ActionBarMixin)
-    _G.Mixin(bar, StanceBarMixin)
+    _G.Mixin(bar, AB.ActionBarMixin)
+    _G.Mixin(bar, AB.StanceBarMixin)
 
     for id = 1, 10 do
         bar.buttons[id] = AB:CreateStanceButton(id, bar, bar.config.keyBoundTarget .. id)
@@ -19,7 +19,7 @@ function AB:CreateStanceBar()
     bar.visibility = "[overridebar][vehicleui][possessbar] hide; show"
     RegisterStateDriver(bar, "visibility", bar.visibility)
 
-    bar:SetScript("OnEvent", StanceBarMixin.OnEvent)
+    bar:SetScript("OnEvent", bar.OnEvent)
 
     bar:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     bar:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -44,13 +44,13 @@ function AB:CreateStanceBar()
     return bar
 end
 
-StanceBarMixin = {}
+AB.StanceBarMixin = {}
 
-function StanceBarMixin:OnEvent(event)
+function AB.StanceBarMixin:OnEvent(event)
     self:Update()
 end
 
-function StanceBarMixin:Update()
+function AB.StanceBarMixin:Update()
     if InCombatLockdown() then
         self.needsUpdate = true
     else
@@ -70,12 +70,12 @@ function AB:CreateStanceButton(id, parent, keyBoundTarget)
     local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "StanceButtonTemplate")
     button:SetID(id)
     button.config = parent.config
-    _G.Mixin(button, StanceButtonMixin)
+    _G.Mixin(button, AB.StanceButtonMixin)
 
     button.id = id
 
     if keyBoundTarget then
-        _G.Mixin(button, KeyBoundButtonMixin)
+        _G.Mixin(button, AB.KeyBoundButtonMixin)
 
         button.keyBoundTarget = keyBoundTarget
         AB:SecureHookScript(button, "OnEnter", function(self)
@@ -88,9 +88,9 @@ function AB:CreateStanceButton(id, parent, keyBoundTarget)
     return button
 end
 
-StanceButtonMixin = {}
+AB.StanceButtonMixin = {}
 
-function StanceButtonMixin:Update()
+function AB.StanceButtonMixin:Update()
     if not self:IsShown() then
         return
     end
@@ -110,7 +110,7 @@ function StanceButtonMixin:Update()
     self:Configure()
 end
 
-function StanceButtonMixin:Configure()
+function AB.StanceButtonMixin:Configure()
     self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 
     self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))

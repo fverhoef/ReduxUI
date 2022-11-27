@@ -3,25 +3,13 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 
 function AB:CreateExtraActionBar()
-    if not R.isRetail then return end
+    if not R.isRetail then
+        return
+    end
 
     local bar = CreateFrame("Frame", addonName .. "ExtraActionBar", UIParent)
     bar.config = AB.config.extraActionBar
-
-    bar.Update = function(self)
-        if InCombatLockdown() then
-            bar.needsUpdate = true
-            bar:RegisterEvent("PLAYER_REGEN_ENABLED")
-            return
-        end 
-        
-        local width, height = ExtraActionBarFrame.button:GetSize()
-        bar:SetSize(width + 4, height + 4)
-
-        bar.needsUpdate = false
-        bar:UnregisterEvent("PLAYER_REGEN_ENABLED")
-        ExtraActionBarFrame:SetParent(bar)
-    end
+    _G.Mixin(bar, AB.ExtraActionBarMixin)
 
     _G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
     ExtraAbilityContainer.SetSize = R.EmptyFunction
@@ -31,21 +19,12 @@ function AB:CreateExtraActionBar()
     ExtraActionBarFrame:SetAllPoints()
     ExtraActionBarFrame.ignoreInLayout = true
 
-    bar:SetScript("OnEvent", function(self, event)
-        if event == "PLAYER_REGEN_ENABLED" and bar.needsUpdate then
-            bar:Update()
-        end
-    end)
-    AB:SecureHook(ExtraActionBarFrame, "SetParent", function(self, parent)
-        if parent == bar then return end
-        bar:Update()
-    end)
-    AB:SecureHook(ExtraAbilityContainer, "AddFrame", function(self, frame)
-        bar:Update()       
-    end)
-    
-	local width, height = ExtraActionBarFrame.button:GetSize()
-	bar:SetSize(width + 4, height + 4)
+    bar:SetScript("OnEvent", bar.OnEvent)
+    AB:SecureHook(ExtraActionBarFrame, "SetParent", AB.ExtraActionBarFrame_SetParent)
+    AB:SecureHook(ExtraAbilityContainer, "AddFrame", AB.ExtraAbilityContainer_AddFrame)
+
+    local width, height = ExtraActionBarFrame.button:GetSize()
+    bar:SetSize(width + 4, height + 4)
 
     bar:CreateMover("ExtraActionBar", AB.defaults.extraActionBar.point)
     bar:CreateFader(bar.config.fader)
@@ -54,4 +33,38 @@ function AB:CreateExtraActionBar()
     bar:Update()
 
     return bar
+end
+
+function AB:ExtraActionBarFrame_SetParent(parent)
+    if parent == AB.extraActionBar then
+        return
+    end
+    AB.extraActionBar:Update()
+end
+
+function AB:ExtraAbilityContainer_AddFrame(frame)
+    AB.extraActionBar:Update()
+end
+
+AB.ExtraActionBarMixin = {}
+
+function AB.ExtraActionBarMixin:Update()
+    if InCombatLockdown() then
+        self.needsUpdate = true
+        self:RegisterEvent("PLAYER_REGEN_ENABLED")
+        return
+    end
+
+    local width, height = ExtraActionBarFrame.button:GetSize()
+    self:SetSize(width + 4, height + 4)
+
+    self.needsUpdate = false
+    self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+    ExtraActionBarFrame:SetParent(self)
+end
+
+function AB.ExtraActionBarMixin:OnEvent(event)
+    if event == "PLAYER_REGEN_ENABLED" and self.needsUpdate then
+        self:Update()
+    end
 end

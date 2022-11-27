@@ -9,7 +9,7 @@ function AB:CreateActionBar(id)
     bar.config = AB.config["actionBar" .. id]
     bar.defaults = AB.defaults["actionBar" .. id]
     bar.id = id
-    _G.Mixin(bar, ActionBarMixin)
+    _G.Mixin(bar, AB.ActionBarMixin)
 
     bar.buttons = {}
     for id = 1, 12 do
@@ -57,9 +57,9 @@ function AB:CreateActionBar(id)
     return bar
 end
 
-ActionBarMixin = {}
+AB.ActionBarMixin = {}
 
-function ActionBarMixin:Configure()
+function AB.ActionBarMixin:Configure()
     local visibleButtons = self.visibleButtons or self.config.buttons
     local buttonsPerRow = self.config.buttonsPerRow
     local width = self.config.buttonSize
@@ -168,12 +168,13 @@ function AB:CreateActionBarButton(id, parent, keyBoundTarget)
     local button = CreateFrame("CheckButton", "$parent_Button", parent, "ActionBarButtonTemplate")
     button:SetID(id)
     button.config = parent.config
-    _G.Mixin(button, ActionBarButtonMixin)
-    button:SetScript("OnUpdate", ActionBarButtonMixin.OnUpdate)
+    button.id = id
+    _G.Mixin(button, AB.ActionBarButtonMixin)
+    button:SetScript("OnUpdate", AB.ActionBarButtonMixin.OnUpdate)
     button.IsFlashing = button.IsFlashing or ActionButton_IsFlashing
 
     if keyBoundTarget then
-        _G.Mixin(button, KeyBoundButtonMixin)
+        _G.Mixin(button, AB.KeyBoundButtonMixin)
 
         button.keyBoundTarget = keyBoundTarget
         AB:SecureHookScript(button, "OnEnter", function(self)
@@ -182,20 +183,19 @@ function AB:CreateActionBarButton(id, parent, keyBoundTarget)
     end
 
     button:Configure()
-    R.Modules.ButtonStyles:StyleActionButton(button)
 
     return button
 end
 
-ActionBarButtonMixin = {}
+AB.ActionBarButtonMixin = {}
 
-function ActionBarButtonMixin:Configure()
-    local id = self:GetID()
-
+function AB.ActionBarButtonMixin:Configure()
     self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
 end
 
-function ActionBarButtonMixin:OnUpdate(elapsed)
+function AB.ActionBarButtonMixin:OnUpdate(elapsed)
     if self.stateDirty then
         self:UpdateState()
         self.stateDirty = nil
@@ -242,7 +242,7 @@ function ActionBarButtonMixin:OnUpdate(elapsed)
     end
 end
 
-function ActionBarButtonMixin:UpdateUsable()
+function AB.ActionBarButtonMixin:UpdateUsable()
     if self.checksRange and not self.inRange then
         self.icon.SetVertexColor(0.8, 0.1, 0.1)
     else

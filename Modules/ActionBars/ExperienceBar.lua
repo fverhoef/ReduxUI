@@ -7,9 +7,10 @@ function AB:CreateExperienceBar()
     return CreateFrame("StatusBar", addonName .. "_ExperienceBar", UIParent, "ExperienceBarTemplate")
 end
 
-ExperienceBarMixin = {}
+AB.ExperienceBarMixin = {}
+ReduxExperienceBarMixin = AB.ExperienceBarMixin
 
-function ExperienceBarMixin:OnLoad()
+function AB.ExperienceBarMixin:OnLoad()
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("PLAYER_LEVEL_UP")
     self:RegisterEvent("PLAYER_UPDATE_RESTING")
@@ -26,19 +27,19 @@ function ExperienceBarMixin:OnLoad()
     self.Backdrop:SetBackdropBorderColor(BACKDROP_BORDER_COLOR.r, BACKDROP_BORDER_COLOR.g, BACKDROP_BORDER_COLOR.b, BACKDROP_BORDER_COLOR.a)
 end
 
-function ExperienceBarMixin:OnEvent(event, ...)
+function AB.ExperienceBarMixin:OnEvent(event, ...)
     self:Update()
 end
 
-function ExperienceBarMixin:OnEnter()
+function AB.ExperienceBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function ExperienceBarMixin:OnLeave()
+function AB.ExperienceBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-function ExperienceBarMixin:Update()    
+function AB.ExperienceBarMixin:Update()    
     local showXP = UnitLevel("player") < GetMaxPlayerLevel()
     local expMin, expMax = MainMenuExpBar:GetMinMaxValues()
     local expValue = MainMenuExpBar:GetValue()
@@ -58,7 +59,7 @@ function ExperienceBarMixin:Update()
     self:UpdateRested()
 end
 
-function ExperienceBarMixin:UpdateRested()
+function AB.ExperienceBarMixin:UpdateRested()
     if self:IsShown() then
         local exhaustionThreshold = GetXPExhaustion()
 
