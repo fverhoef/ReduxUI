@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Canvas.lua"/>
 
-    <Frame name="ScreenSaverCanvas" mixin="ScreenSaverCanvasMixin" topLevel="true" setAllPoints="true" alpha="0" hidden="true">
+    <Frame name="ScreenSaverCanvas" mixin="ReduxScreenSaverCanvasMixin" topLevel="true" setAllPoints="true" alpha="0" hidden="true">
         <Frames>
             <Frame name="$parentBottom" parentKey="Bottom" inherits="BackdropTemplate">
                 <Size x="384" y="120" />

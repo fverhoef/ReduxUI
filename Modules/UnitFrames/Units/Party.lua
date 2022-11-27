@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPartyHeader()
-    return UF:SpawnHeader("Party", 1, PartyMixin, UF.config.party, UF.defaults.party)
+    return UF:SpawnHeader("Party", 1, UF.PartyMixin, UF.config.party, UF.defaults.party)
 end
 
-PartyMixin = {}
+UF.PartyMixin = {}
 
-function PartyMixin:PostConfigure()
+function UF.PartyMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(120, 49)
 

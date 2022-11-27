@@ -3,9 +3,10 @@ local R = _G.ReduxUI
 local SS = R.Modules.ScreenSaver
 local L = R.L
 
-ScreenSaverCanvasMixin = {}
+SS.ScreenSaverCanvasMixin = {}
+ReduxScreenSaverCanvasMixin = SS.ScreenSaverCanvasMixin
 
-function ScreenSaverCanvasMixin:Initialize()
+function SS.ScreenSaverCanvasMixin:Initialize()
     self:SetScale(_G.UIParent:GetScale())
     self:SetAllPoints(_G.UIParent)
     -- self.Bottom:SetHeight(GetScreenHeight() * (1 / 10))
@@ -23,7 +24,7 @@ function ScreenSaverCanvasMixin:Initialize()
     self.ModelHolder.Model:Initialize()
 end
 
-function ScreenSaverCanvasMixin:Configure()
+function SS.ScreenSaverCanvasMixin:Configure()
     local config = SS.config
 
     self.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], R.PlayerInfo.faction))
@@ -47,10 +48,10 @@ function ScreenSaverCanvasMixin:Configure()
     self.ModelHolder.Model:Initialize()
 end
 
-function ScreenSaverCanvasMixin:Enable()
+function SS.ScreenSaverCanvasMixin:Enable()
     self:Show()
     self:EnableKeyboard(true)
-    self:SetScript("OnKeyDown", ScreenSaverCanvasMixin.OnKeyDown)
+    self:SetScript("OnKeyDown", SS.ScreenSaverCanvasMixin.OnKeyDown)
 
     if IsInGuild() then
         local guildName, guildRankName = GetGuildInfo("player")
@@ -65,7 +66,7 @@ function ScreenSaverCanvasMixin:Enable()
     UIFrameFadeIn(self, 1, 0, 1)
 end
 
-function ScreenSaverCanvasMixin:Disable()
+function SS.ScreenSaverCanvasMixin:Disable()
     self:Hide()
     self:EnableKeyboard(false)
     self:SetScript("OnKeyDown", nil)
@@ -73,7 +74,7 @@ function ScreenSaverCanvasMixin:Disable()
     UIFrameFadeOut(self, 0.2, 1, 0)
 end
 
-function ScreenSaverCanvasMixin:UpdateTimer()
+function SS.ScreenSaverCanvasMixin:UpdateTimer()
     local time = GetTime() - SS.startTime
     self.Bottom.Time:SetFormattedText("AFK for %02d:%02d", math.floor(time / 60), time % 60)
 end
@@ -83,7 +84,7 @@ local printKeys = {PRINTSCREEN = true}
 
 if IsMacClient() then printKeys[_G.KEY_PRINTSCREEN_MAC] = true end
 
-function ScreenSaverCanvasMixin:OnKeyDown(key)
+function SS.ScreenSaverCanvasMixin:OnKeyDown(key)
     if ignoreKeys[key] then return end
 
     if printKeys[key] then

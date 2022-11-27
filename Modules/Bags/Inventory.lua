@@ -5,9 +5,10 @@ local L = R.L
 
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
-InventoryMixin = {}
+B.InventoryMixin = {}
+ReduxInventoryMixin = B.InventoryMixin
 
-function InventoryMixin:OnLoad()
+function B.InventoryMixin:OnLoad()
     self.config = B.config.inventory
     self.BagIDs = {0, 1, 2, 3, 4}
     if not R.isRetail then table.insert(self.BagIDs, KEYRING_CONTAINER) end
@@ -45,15 +46,16 @@ function InventoryMixin:OnLoad()
     end
 end
 
-function InventoryMixin:OnHide()
+function B.InventoryMixin:OnHide()
     CloseBackpack()
     for i = 1, NUM_BAG_FRAMES do CloseBag(i) end
     B:UpdateBagBarCheckedState()
 end
 
-InventoryMoneyMixin = {}
+B.InventoryMoneyMixin = {}
+ReduxInventoryMoneyMixin = B.InventoryMoneyMixin
 
-function InventoryMoneyMixin:Money_OnEnter()   
+function B.InventoryMoneyMixin:Money_OnEnter()   
     local ID = R.Modules.InventoryDatabase
      
     _G.GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")

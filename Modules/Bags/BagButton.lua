@@ -2,9 +2,10 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
 
-BagButtonMixin = {}
+B.BagButtonMixin = {}
+ReduxBagButtonMixin = B.BagButtonMixin
 
-function BagButtonMixin:Initialize(bagID, slot)
+function B.BagButtonMixin:Initialize(bagID, slot)
     self:SetID(slot)
     self.bagID = bagID
     self.slot = slot
@@ -17,7 +18,7 @@ function BagButtonMixin:Initialize(bagID, slot)
     self.Cooldown = self.Cooldown or _G[self:GetName() .. "Cooldown"]
 end
 
-function BagButtonMixin:Update()
+function B.BagButtonMixin:Update()
     local texture, itemCount, locked, quality, readable, _, _, _, _, itemId = GetContainerItemInfo(self.bagID, self.slot)
     self.readable = readable
 
@@ -65,7 +66,7 @@ function BagButtonMixin:Update()
     R.Modules.ButtonStyles:StyleItemButton(self)
 end
 
-function BagButtonMixin:UpdateCooldown()
+function B.BagButtonMixin:UpdateCooldown()
     if self.hasItem then
         local start, duration, enable = GetContainerItemCooldown(self.bagID, self.slot)
         CooldownFrame_Set(self.Cooldown, start, duration, enable)
@@ -80,7 +81,7 @@ function BagButtonMixin:UpdateCooldown()
     end
 end
 
-function BagButtonMixin:UpdateContainerButtonLockedState(bagID, slot)
+function B.BagButtonMixin:UpdateContainerButtonLockedState(bagID, slot)
     if not self then
         return
     end

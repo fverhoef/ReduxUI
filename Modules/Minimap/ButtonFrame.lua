@@ -98,9 +98,10 @@ function MM:UpdateMinimapButtonFrame()
     MinimapButtonFrame:Update()
 end
 
-ButtonFrameMixin = {}
+MM.ButtonFrameMixin = {}
+ReduxButtonFrameMixin = MM.ButtonFrameMixin
 
-function ButtonFrameMixin:OnLoad()
+function MM.ButtonFrameMixin:OnLoad()
     self:CreateBackdrop({ bgFile = R.media.textures.blank })
     self:CreateBorder()
     self.Buttons = Buttons
@@ -108,7 +109,7 @@ function ButtonFrameMixin:OnLoad()
     MM:ScheduleRepeatingTimer(GrabMinimapButtons, 1)
 end
 
-function ButtonFrameMixin:Update()
+function MM.ButtonFrameMixin:Update()
     local spacing = MM.config.buttonFrame.buttonSpacing or 2
     local iconSize = MM.config.buttonFrame.iconSize or 27
 
@@ -165,7 +166,7 @@ function ButtonFrameMixin:Update()
     end
 end
 
-function ButtonFrameMixin:Toggle()
+function MM.ButtonFrameMixin:Toggle()
     if self.Faded then
         self:FadeIn()
         MM.config.buttonFrame.collapsed = false

@@ -77,9 +77,10 @@ function BagSlot_OnLeave(self)
     ResetCursor()
 end
 
-BagSlotMixin = {}
+B.BagSlotMixin = {}
+ReduxBagSlotMixin = B.BagSlotMixin
 
-function BagSlotMixin:Initialize(frame, bagID)
+function B.BagSlotMixin:Initialize(frame, bagID)
     self.frame = frame
     self.bagID = bagID
     self.isBank = bagID == BANK_CONTAINER or bagID > 4
@@ -107,7 +108,7 @@ function BagSlotMixin:Initialize(frame, bagID)
     end
 end
 
-function BagSlotMixin:Update()
+function B.BagSlotMixin:Update()
     if self.bagID ~= KEYRING_CONTAINER then
         self.freeSlots = GetContainerNumFreeSlots(self.bagID)
         if self.SlotCount and self.freeSlots ~= nil then self.SlotCount:SetText(format("(%d)", self.freeSlots)) end

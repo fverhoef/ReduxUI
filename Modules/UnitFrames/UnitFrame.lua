@@ -28,15 +28,15 @@ function UF:InitializeFrame(frame, mixin, config, defaultConfig, isGroupUnit)
     frame.defaults = defaultConfig
     frame.isGroupUnit = isGroupUnit
 
-    _G.Mixin(frame, UnitFrameMixin)
+    _G.Mixin(frame, UF.UnitFrameMixin)
     _G.Mixin(frame, mixin)
 
     frame:Initialize()
 end
 
-UnitFrameMixin = {}
+UF.UnitFrameMixin = {}
 
-function UnitFrameMixin:Initialize()
+function UF.UnitFrameMixin:Initialize()
     self:SetFrameStrata(self.isNameplate and "BACKGROUND" or "LOW")
 
     if not self.isNameplate then
@@ -95,7 +95,7 @@ function UnitFrameMixin:Initialize()
     end
 end
 
-function UnitFrameMixin:Configure()
+function UF.UnitFrameMixin:Configure()
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
 
@@ -156,7 +156,7 @@ function UnitFrameMixin:Configure()
     self:UpdateAllElements("RefreshUnit")
 end
 
-function UnitFrameMixin:ForceShow()
+function UF.UnitFrameMixin:ForceShow()
     if not self or InCombatLockdown() then
         return
     end
@@ -191,7 +191,7 @@ function UnitFrameMixin:ForceShow()
     end
 end
 
-function UnitFrameMixin:UnforceShow()
+function UF.UnitFrameMixin:UnforceShow()
     if not self or not self.isForced or InCombatLockdown() then
         return
     end
@@ -225,6 +225,6 @@ function UnitFrameMixin:UnforceShow()
     end
 end
 
-function UnitFrameMixin:IsCustomStyled()
+function UF.UnitFrameMixin:IsCustomStyled()
     return self.config.style == nil or self.config.style == UF.Styles.Custom
 end

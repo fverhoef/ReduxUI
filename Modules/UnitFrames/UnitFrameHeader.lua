@@ -29,12 +29,12 @@ function UF:SpawnHeader(name, count, mixin, config, defaultConfig, index)
         group:SetFrameStrata("LOW")
         group:CreateFader(config.fader)
         group.config = config
-        _G.Mixin(group, UnitFrameHeaderMixin)
+        _G.Mixin(group, UF.UnitFrameHeaderMixin)
 
         parent.groups[i] = group
     end
 
-    _G.Mixin(parent, UnitFrameHeaderParentMixin)
+    _G.Mixin(parent, UF.UnitFrameHeaderParentMixin)
     parent:Configure()
 
     parent:CreateMover(name, defaultConfig.point)
@@ -42,9 +42,9 @@ function UF:SpawnHeader(name, count, mixin, config, defaultConfig, index)
     return parent
 end
 
-UnitFrameHeaderParentMixin = {}
+UF.UnitFrameHeaderParentMixin = {}
 
-function UnitFrameHeaderParentMixin:Configure()
+function UF.UnitFrameHeaderParentMixin:Configure()
     local config = self.config
     self:ClearAllPoints()
     self:SetNormalizedPoint(unpack(config.point))
@@ -144,7 +144,7 @@ function UnitFrameHeaderParentMixin:Configure()
     end
 end
 
-function UnitFrameHeaderParentMixin:ForceShow()
+function UF.UnitFrameHeaderParentMixin:ForceShow()
     if self.isForced then
         return
     end
@@ -163,7 +163,7 @@ function UnitFrameHeaderParentMixin:ForceShow()
     self:Configure()
 end
 
-function UnitFrameHeaderParentMixin:UnforceShow()
+function UF.UnitFrameHeaderParentMixin:UnforceShow()
     if not self.isForced then
         return
     end
@@ -182,7 +182,7 @@ function UnitFrameHeaderParentMixin:UnforceShow()
     self:Configure()
 end
 
-UnitFrameHeaderMixin = {}
+UF.UnitFrameHeaderMixin = {}
 
 local CONDITIONS = {
     raid40 = "[@raid26,exists] show;",
@@ -210,7 +210,7 @@ local function GetCondition(...)
     return cond .. "hide"
 end
 
-function UnitFrameHeaderMixin:UpdateVisibility(visibility)
+function UF.UnitFrameHeaderMixin:UpdateVisibility(visibility)
     local type, list = string.split(" ", visibility, 2)
     if list and type == "custom" then
         RegisterAttributeDriver(self, "state-visibility", list)

@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnFocus()
-    return UF:SpawnFrame("Focus", "focus", FocusMixin, UF.config.focus, UF.defaults.focus)
+    return UF:SpawnFrame("Focus", "focus", UF.FocusMixin, UF.config.focus, UF.defaults.focus)
 end
 
-FocusMixin = {}
+UF.FocusMixin = {}
 
-function FocusMixin:PostConfigure()
+function UF.FocusMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(194, 76)
 

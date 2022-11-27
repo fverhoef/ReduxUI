@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="BagSlot.lua" />
 
-    <Button name="BagSlotTemplate" mixin="BagSlotMixin" virtual="true">
+    <Button name="BagSlotTemplate" mixin="ReduxBagSlotMixin" virtual="true">
         <Size x="34" y="34" />
 
         <Layers>

@@ -6,12 +6,12 @@ local oUF = ns.oUF or oUF
 local STATUS_REFRESH_RATE = 0.05
 
 function UF:SpawnPlayer()
-    return UF:SpawnFrame("Player", "player", PlayerMixin, UF.config.player, UF.defaults.player)
+    return UF:SpawnFrame("Player", "player", UF.PlayerMixin, UF.config.player, UF.defaults.player)
 end
 
-PlayerMixin = {}
+UF.PlayerMixin = {}
 
-function PlayerMixin:PostInitialize()
+function UF.PlayerMixin:PostInitialize()
     self:CreateAdditionalPower()
     self:CreatePowerPrediction()
     self:CreateCombatIndicator()
@@ -35,7 +35,7 @@ function PlayerMixin:PostInitialize()
     self.inCombat = false
 end
 
-function PlayerMixin:PostConfigure()
+function UF.PlayerMixin:PostConfigure()
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()

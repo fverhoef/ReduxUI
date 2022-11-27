@@ -16,7 +16,7 @@
         </Scripts>
     </CheckButton>
 
-    <Frame name="MinimapButtonFrameTemplate" parent="Minimap" mixin="ButtonFrameMixin" frameStrata="MEDIUM" frameLevel="1" enableMouse="true" virtual="true">
+    <Frame name="MinimapButtonFrameTemplate" parent="Minimap" mixin="ReduxButtonFrameMixin" frameStrata="MEDIUM" frameLevel="1" enableMouse="true" virtual="true">
         <Size x="176" y="176" />
         <Anchors>
             <Anchor point="TOP" relativePoint="BOTTOM" x="0" y="-10" />

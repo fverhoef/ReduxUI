@@ -15,9 +15,10 @@ if R.isRetail then BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButt
 function Bag_OnLoad()
 end
 
-BagMixin = {}
+B.BagMixin = {}
+ReduxBagMixin = B.BagMixin
 
-function BagMixin:Initialize(bagID)
+function B.BagMixin:Initialize(bagID)
     self:SetID(bagID)
     self.Buttons = {}
     self.Hidden = bagID == KEYRING_CONTAINER
@@ -30,19 +31,19 @@ function BagMixin:Initialize(bagID)
     end
 end
 
-function BagMixin:Update()
+function B.BagMixin:Update()
     for _, button in ipairs(self.Buttons) do
         button:Update()
     end
 end
 
-function BagMixin:UpdateCooldowns()
+function B.BagMixin:UpdateCooldowns()
     for _, button in ipairs(self.Buttons) do
         button:UpdateCooldown()
     end
 end
 
-function BagMixin:Layout(config, row, column)
+function B.BagMixin:Layout(config, row, column)
     local parent = self:GetParent()
     local bagID = self:GetID()
     local slots = GetContainerNumSlots(bagID)

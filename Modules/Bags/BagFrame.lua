@@ -39,9 +39,10 @@ function BagFrame_SearchBox_OnTextChanged(self)
     self:GetParent():SetItemSearch(self:GetText())
 end
 
-BagFrameMixin = {}
+B.BagFrameMixin = {}
+ReduxBagFrameMixin = B.BagFrameMixin
 
-function BagFrameMixin:Update()
+function B.BagFrameMixin:Update()
     local config = self.isBank and B.config.bank or B.config.inventory
     local column = 1
     local row = 1
@@ -53,13 +54,13 @@ function BagFrameMixin:Update()
     self:SetSize(width, height)
 end
 
-function BagFrameMixin:UpdateCooldowns()
+function B.BagFrameMixin:UpdateCooldowns()
     for _, bag in ipairs(self.Bags) do
         bag:UpdateCooldowns()
     end
 end
 
-function BagFrameMixin:HighlightBagButtons(highlightID)
+function B.BagFrameMixin:HighlightBagButtons(highlightID)
     for _, bag in ipairs(self.Bags) do
         local bagID = bag:GetID()
         local slots = GetContainerNumSlots(bagID)
@@ -75,11 +76,11 @@ function BagFrameMixin:HighlightBagButtons(highlightID)
     end
 end
 
-function BagFrameMixin:UnhighlightBagButtons()
+function B.BagFrameMixin:UnhighlightBagButtons()
     self:HighlightBagButtons(nil)
 end
 
-function BagFrameMixin:SetItemSearch(query)
+function B.BagFrameMixin:SetItemSearch(query)
     local empty = #(query:gsub(" ", "")) == 0
     local method = R.Libs.ItemSearch.Matches
     if R.Libs.ItemSearch.Filters.tipPhrases.keywords[query] then

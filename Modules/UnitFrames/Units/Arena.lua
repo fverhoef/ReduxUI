@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnArenaHeader()
-    return UF:SpawnUnitFrameGroup("Arena", "arena", 5, ArenaMixin, UF.config.arena, UF.defaults.arena)
+    return UF:SpawnUnitFrameGroup("Arena", "arena", 5, UF.ArenaMixin, UF.config.arena, UF.defaults.arena)
 end
 
-ArenaMixin = {}
+UF.ArenaMixin = {}
 
-function ArenaMixin:PostConfigure()
+function UF.ArenaMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(120, 49)
 

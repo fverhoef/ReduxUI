@@ -12,8 +12,8 @@ function UF:SpawnNamePlates()
             frame.defaults = UF.defaults.nameplates[configKey]
             frame.isNameplate = true
 
-            _G.Mixin(frame, UnitFrameMixin)
-            _G.Mixin(frame, NameplateMixin)
+            _G.Mixin(frame, UF.UnitFrameMixin)
+            _G.Mixin(frame, UF.NameplateMixin)
 
             table.insert(UF.nameplates, frame)
 
@@ -21,7 +21,7 @@ function UF:SpawnNamePlates()
             frame:SetPoint("CENTER")
         end)
         oUF:SetActiveStyle(addonName .. "Nameplate")
-        oUF:SpawnNamePlates(addonName, NameplateMixin.Callback, config.cvars)
+        oUF:SpawnNamePlates(addonName, UF.NameplateMixin.Callback, config.cvars)
     end
 end
 
@@ -31,9 +31,9 @@ function UF:UpdateNamePlates()
     end
 end
 
-NameplateMixin = {}
+UF.NameplateMixin = {}
 
-function NameplateMixin:PostConfigure()
+function UF.NameplateMixin:PostConfigure()
     local configKey = (UnitIsFriend("player", self.unit) and "friendly" or "enemy") .. (UnitIsPlayer(self.unit) and "Player" or "Npc")
     self.config = UF.config.nameplates[configKey]
     self.defaults = UF.defaults.nameplates[configKey]
@@ -43,7 +43,7 @@ function NameplateMixin:PostConfigure()
     self:SetPoint("CENTER")
 end
 
-function NameplateMixin:Callback(event, unit)
+function UF.NameplateMixin:Callback(event, unit)
     if self then
         if self.TargetIndicator then
             self.TargetIndicator:ForceUpdate()

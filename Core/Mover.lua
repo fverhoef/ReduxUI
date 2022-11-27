@@ -4,9 +4,9 @@ R.movers = {}
 
 local FADED_MOVER_ALPHA = 0.3
 
-MoverMixin = {}
+R.MoverMixin = {}
 
-function MoverMixin:OnMouseWheel(offset)
+function R.MoverMixin:OnMouseWheel(offset)
     if IsShiftKeyDown() then
         local point = self.frame:GetNormalizedPoint()
         point[5] = point[5] + offset
@@ -26,7 +26,7 @@ function MoverMixin:OnMouseWheel(offset)
     end
 end
 
-function MoverMixin:OnDragStart(button)
+function R.MoverMixin:OnDragStart(button)
     if self.isLocked then
         return
     end
@@ -41,14 +41,14 @@ function MoverMixin:OnDragStart(button)
     end
 end
 
-function MoverMixin:OnDragStop()
+function R.MoverMixin:OnDragStop()
     self.frame:StopMovingOrSizing()
     if self.frame.config and self.frame.config.point then
         self.frame.config.point = self.frame:GetNormalizedPoint()
     end
 end
 
-function MoverMixin:OnEnter()
+function R.MoverMixin:OnEnter()
     local point = self.frame:GetNormalizedPoint()
 
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
@@ -63,12 +63,12 @@ function MoverMixin:OnEnter()
     self:FadeIn(0.3, self:GetAlpha(), 1)
 end
 
-function MoverMixin:OnLeave()
+function R.MoverMixin:OnLeave()
     GameTooltip:Hide()
     self:FadeOut(0.3, self:GetAlpha(), FADED_MOVER_ALPHA)
 end
 
-function MoverMixin:OnShow()
+function R.MoverMixin:OnShow()
     if self.isLocked and self.hideWhenLocked then
         self:Hide()
         return
@@ -83,7 +83,7 @@ function MoverMixin:OnShow()
     end
 end
 
-function MoverMixin:OnHide()
+function R.MoverMixin:OnHide()
     if self.frame.visibility then
         RegisterStateDriver(self.frame, "visibility", self.frame.visibility)
     end
@@ -92,14 +92,14 @@ function MoverMixin:OnHide()
     end
 end
 
-function MoverMixin:OnMouseDown(button)
+function R.MoverMixin:OnMouseDown(button)
     if IsShiftKeyDown() and button == "RightButton" then
         self:ResetPoint()
         self:ResetSize()
     end
 end
 
-function MoverMixin:ResetSize()
+function R.MoverMixin:ResetSize()
     if not self.frame or not self.frame.defaultSize or InCombatLockdown() then
         return
     end
@@ -109,7 +109,7 @@ function MoverMixin:ResetSize()
     end
 end
 
-function MoverMixin:ResetPoint()
+function R.MoverMixin:ResetPoint()
     if not self.frame or not self.frame.defaultPoint or InCombatLockdown() then
         return
     end
@@ -120,7 +120,7 @@ function MoverMixin:ResetPoint()
     end
 end
 
-function MoverMixin:Lock(hideWhenLocked)
+function R.MoverMixin:Lock(hideWhenLocked)
     if not self.frame then
         return
     end
@@ -134,7 +134,7 @@ function MoverMixin:Lock(hideWhenLocked)
     end
 end
 
-function MoverMixin:Unlock()
+function R.MoverMixin:Unlock()
     if not self.frame or self.isDisabled then
         return
     end
@@ -155,7 +155,7 @@ function R:CreateMover(displayName, defaultPoint, width, height, point)
     self.defaultPoint = defaultPoint or self:GetNormalizedPoint()
 
     local name = self:GetName()
-    local mover = Mixin(CreateFrame("Frame", name and name .. "Mover" or nil), MoverMixin)
+    local mover = Mixin(CreateFrame("Frame", name and name .. "Mover" or nil), R.MoverMixin)
     mover.frame = self
     mover.displayName = displayName or name
 

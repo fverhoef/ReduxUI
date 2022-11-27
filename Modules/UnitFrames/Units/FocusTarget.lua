@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnFocusTarget()
-    return UF:SpawnFrame("FocusTarget", "focustarget", FocusTargetMixin, UF.config.focustarget, UF.defaults.focustarget)
+    return UF:SpawnFrame("FocusTarget", "focustarget", UF.FocusTargetMixin, UF.config.focustarget, UF.defaults.focustarget)
 end
 
-FocusTargetMixin = {}
+UF.FocusTargetMixin = {}
 
-function FocusTargetMixin:PostConfigure()
+function UF.FocusTargetMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(93, 45)
         self:ClearAllPoints()

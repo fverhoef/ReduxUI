@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTargetTarget()
-    return UF:SpawnFrame("TargetTarget", "targettarget", TargetTargetMixin, UF.config.targettarget, UF.defaults.targettarget)
+    return UF:SpawnFrame("TargetTarget", "targettarget", UF.TargetTargetMixin, UF.config.targettarget, UF.defaults.targettarget)
 end
 
-TargetTargetMixin = {}
+UF.TargetTargetMixin = {}
 
-function TargetTargetMixin:PostConfigure()
+function UF.TargetTargetMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(93, 45)
         self:ClearAllPoints()

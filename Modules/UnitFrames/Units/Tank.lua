@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTankHeader()
-    return UF:SpawnHeader("Tank", 1, TankMixin, UF.config.tank, UF.defaults.tank, "MAINTANK")
+    return UF:SpawnHeader("Tank", 1, UF.TankMixin, UF.config.tank, UF.defaults.tank, "MAINTANK")
 end
 
-TankMixin = {}
+UF.TankMixin = {}

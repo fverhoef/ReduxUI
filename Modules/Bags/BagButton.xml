@@ -1,15 +1,15 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="BagButton.lua" />
 
-    <Button name="BankBagButtonTemplate" mixin="BagButtonMixin" inherits="BankItemButtonGenericTemplate" virtual="true">
+    <Button name="BankBagButtonTemplate" mixin="ReduxBagButtonMixin" inherits="BankItemButtonGenericTemplate" virtual="true">
         <Size x="37" y="37" />
     </Button>
 
-    <Button name="ReagentBankBagButtonTemplate" mixin="BagButtonMixin" inherits="ReagentBankItemButtonGenericTemplate" virtual="true">
+    <Button name="ReagentBankBagButtonTemplate" mixin="ReduxBagButtonMixin" inherits="ReagentBankItemButtonGenericTemplate" virtual="true">
         <Size x="37" y="37" />
     </Button>
 
-    <Button name="InventoryBagButtonTemplate" mixin="BagButtonMixin" inherits="ContainerFrameItemButtonTemplate" virtual="true">
+    <Button name="InventoryBagButtonTemplate" mixin="ReduxBagButtonMixin" inherits="ContainerFrameItemButtonTemplate" virtual="true">
         <Size x="37" y="37" />
     </Button>
 </Ui>

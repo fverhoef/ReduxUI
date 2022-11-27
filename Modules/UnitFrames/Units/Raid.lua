@@ -16,7 +16,7 @@ function UF:SpawnRaidHeader()
         _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
     end
 
-    return UF:SpawnHeader("Raid", NUM_RAID_GROUPS, RaidMixin, UF.config.raid, UF.defaults.raid)
+    return UF:SpawnHeader("Raid", NUM_RAID_GROUPS, UF.RaidMixin, UF.config.raid, UF.defaults.raid)
 end
 
-RaidMixin = {}
+UF.RaidMixin = {}

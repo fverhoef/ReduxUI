@@ -4,16 +4,16 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
-    return UF:SpawnFrame("Target", "target", TargetMixin, UF.config.target, UF.defaults.target)
+    return UF:SpawnFrame("Target", "target", UF.TargetMixin, UF.config.target, UF.defaults.target)
 end
 
-TargetMixin = {}
+UF.TargetMixin = {}
 
-function TargetMixin:PostInitialize()
-    self:RegisterEvent("PLAYER_TARGET_CHANGED", TargetMixin.UpdateArtwork, true)
+function UF.TargetMixin:PostInitialize()
+    self:RegisterEvent("PLAYER_TARGET_CHANGED", UF.TargetMixin.UpdateArtwork, true)
 end
 
-function TargetMixin:PostConfigure()
+function UF.TargetMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(194, 76)
 
@@ -348,11 +348,11 @@ function TargetMixin:PostConfigure()
     end
 end
 
-function TargetMixin:PostUpdate()
+function UF.TargetMixin:PostUpdate()
     self:UpdateArtwork()
 end
 
-function TargetMixin:UpdateArtwork()
+function UF.TargetMixin:UpdateArtwork()
     if self.config.style == UF.Styles.Vanilla then
         local classification = UnitClassification("target")
         if classification == "rare" then

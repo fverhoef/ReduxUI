@@ -24,15 +24,15 @@ function UF:SpawnUnitFrameGroup(name, unit, count, mixin, config, defaultConfig)
 
     parent:CreateMover(name, defaultConfig.point)
 
-    _G.Mixin(parent, UnitFrameGroupMixin)
+    _G.Mixin(parent, UF.UnitFrameGroupMixin)
     parent:Configure()
 
     return parent
 end
 
-UnitFrameGroupMixin = {}
+UF.UnitFrameGroupMixin = {}
 
-function UnitFrameGroupMixin:Configure()
+function UF.UnitFrameGroupMixin:Configure()
     local count = #self.frames
     local width, height = 0, 0
     if self.config.unitAnchorPoint == "TOP" or self.config.unitAnchorPoint == "BOTTOM" then
@@ -70,7 +70,7 @@ function UnitFrameGroupMixin:Configure()
     end
 end
 
-function UnitFrameGroupMixin:ForceShow()
+function UF.UnitFrameGroupMixin:ForceShow()
     if self.isForced then
         return
     end
@@ -81,7 +81,7 @@ function UnitFrameGroupMixin:ForceShow()
     end
 end
 
-function UnitFrameGroupMixin:UnforceShow()
+function UF.UnitFrameGroupMixin:UnforceShow()
     if not self.isForced then
         return
     end

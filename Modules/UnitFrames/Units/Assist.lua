@@ -4,7 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnAssistHeader()
-    return UF:SpawnHeader("Assist", 1, AssistMixin, UF.config.assist, UF.defaults.assist, "MAINASSIST")
+    return UF:SpawnHeader("Assist", 1, UF.AssistMixin, UF.config.assist, UF.defaults.assist, "MAINASSIST")
 end
 
-AssistMixin = {}
+UF.AssistMixin = {}

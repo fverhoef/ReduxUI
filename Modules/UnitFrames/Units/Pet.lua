@@ -4,12 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPet()
-    return UF:SpawnFrame("Pet", "pet", PetMixin, UF.config.pet, UF.defaults.pet)
+    return UF:SpawnFrame("Pet", "pet", UF.PetMixin, UF.config.pet, UF.defaults.pet)
 end
 
-PetMixin = {}
+UF.PetMixin = {}
 
-function PetMixin:PostConfigure()
+function UF.PetMixin:PostConfigure()
     if self.config.style == UF.Styles.Vanilla then
         self:SetSize(93, 45)
         self:ClearAllPoints()

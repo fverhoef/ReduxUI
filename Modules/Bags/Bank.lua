@@ -6,9 +6,10 @@ local L = R.L
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local REAGENTBANK_SIZE = 98
 
-BankMixin = {}
+B.BankMixin = {}
+ReduxBankMixin = B.BankMixin
 
-function BankMixin:OnLoad()
+function B.BankMixin:OnLoad()
     self.config = B.config.bank
     self.isBank = true
     self.BagIDs = {-1, 5, 6, 7, 8, 9, 10}
@@ -42,11 +43,12 @@ function BankMixin:OnLoad()
     self:CreateMover(L["Bank"], B.defaults.bank.point)
 end
 
-function BankMixin:OnHide() CloseBankFrame() end
+function B.BankMixin:OnHide() CloseBankFrame() end
 
-BankTabMixin = {}
+B.BankTabMixin = {}
+ReduxBankTabMixin = B.BankTabMixin
 
-function BankTabMixin:OnClick()
+function B.BankTabMixin:OnClick()
     local frame = self:GetParent()
     local tabID = self:GetID()
     PanelTemplates_SetTab(frame, tabID)
