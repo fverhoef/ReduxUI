@@ -9,49 +9,17 @@ function AB:CreateStanceBar()
     bar.defaults = AB.defaults.stanceBar
     bar.buttons = {}
     bar:SetFrameStrata("LOW")
+    _G.Mixin(bar, ActionBarMixin)
     _G.Mixin(bar, StanceBarMixin)
 
-    for i = 1, 10 do
-        local button = CreateFrame("CheckButton", "$parent_Button" .. i, bar, "StanceButtonTemplate")
-        button:SetID(i)
-        button:SetScript("OnEvent", nil)
-        button:SetScript("OnUpdate", nil)
-        button:UnregisterAllEvents()
-
-        _G.Mixin(button, StanceButtonMixin)
-        _G.Mixin(button, KeyBoundButtonMixin)
-
-        button.keyBoundTarget = bar.config.keyBoundTarget .. i
-        AB:SecureHookScript(button, "OnEnter", function(self)
-            R.Libs.KeyBound:Set(self)
-        end)
-
-        button:Update()
-        bar.buttons[i] = button
-
-        R.Modules.ButtonStyles:StyleActionButton(button)
+    for id = 1, 10 do
+        bar.buttons[id] = AB:CreateStanceButton(id, bar, bar.config.keyBoundTarget .. id)
     end
 
     bar.visibility = "[overridebar][vehicleui][possessbar] hide; show"
     RegisterStateDriver(bar, "visibility", bar.visibility)
 
-    bar:SetScript("OnEvent", function(self, event)
-        if event == "UPDATE_SHAPESHIFT_COOLDOWN" then
-            self:Update()
-        elseif event == "PLAYER_REGEN_ENABLED" then
-            if self.needsUpdate and not InCombatLockdown() then
-                self.needsUpdate = nil
-                self:UpdateStanceButtonVisibility()
-            end
-        else
-            if InCombatLockdown() then
-                self.needsUpdate = true
-                self:Update()
-            else
-                self:UpdateStanceButtonVisibility()
-            end
-        end
-    end)
+    bar:SetScript("OnEvent", StanceBarMixin.OnEvent)
 
     bar:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     bar:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -78,18 +46,46 @@ end
 
 StanceBarMixin = {}
 
+function StanceBarMixin:OnEvent(event)
+    self:Update()
+end
+
 function StanceBarMixin:Update()
-    for _, button in ipairs(self.buttons) do
+    if InCombatLockdown() then
+        self.needsUpdate = true
+    else
+        self.needsUpdate = nil
+        local numForms = GetNumShapeshiftForms()
+        for i, button in ipairs(self.buttons) do
+            button:SetShown(i <= numForms)
+        end
+    end
+
+    for i, button in ipairs(self.buttons) do
         button:Update()
     end
 end
 
-function StanceBarMixin:UpdateStanceButtonVisibility()
-    local numForms = GetNumShapeshiftForms()
-    for i, button in ipairs(self.buttons) do
-        button:SetShown(i <= numForms)
+function AB:CreateStanceButton(id, parent, keyBoundTarget)
+    local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "StanceButtonTemplate")
+    button:SetID(id)
+    button.config = parent.config
+    _G.Mixin(button, StanceButtonMixin)
+
+    button.id = id
+
+    if keyBoundTarget then
+        _G.Mixin(button, KeyBoundButtonMixin)
+
+        button.keyBoundTarget = keyBoundTarget
+        AB:SecureHookScript(button, "OnEnter", function(self)
+            R.Libs.KeyBound:Set(self)
+        end)
     end
-    self:Update()
+
+    button:Configure()
+
+    return button
 end
 
 StanceButtonMixin = {}
@@ -99,17 +95,26 @@ function StanceButtonMixin:Update()
         return
     end
 
-    local id = self:GetID()
-    local texture, isActive, isCastable = GetShapeshiftFormInfo(id)
+    local texture, isActive, isCastable = GetShapeshiftFormInfo(self.id)
 
     self.icon:SetTexture(texture)
     self.icon:SetDesaturated(not isCastable)
     self.icon:SetVertexColor(unpack(isCastable and { 1.0, 1.0, 1.0 } or { 0.4, 0.4, 0.4 }))
     self.cooldown:SetShown(texture ~= nil)
 
+    local start, duration, enable = GetShapeshiftFormCooldown(self.id)
+    CooldownFrame_Set(self.cooldown, start, duration, enable)
+
     self:SetChecked(isActive)
 
-    self.HotKey:SetVertexColor(1.0, 1.0, 1.0)
+    self:Configure()
+end
+
+function StanceButtonMixin:Configure()
+    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+
     self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
-    self.HotKey:Show()
+    self.HotKey:SetShown(not self.config.hideHotkey)
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
 end

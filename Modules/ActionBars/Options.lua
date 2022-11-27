@@ -246,7 +246,7 @@ R:RegisterModuleOptions(AB, function()
             actionBar10 = AB:CreateActionBarOptions(10),
             petBar = AB:CreateMiscBarOptions("petBar", L["Pet Bar"], 21),
             stanceBar = AB:CreateMiscBarOptions("stanceBar", L["Stance Bar"], 22),
-            totemBar = AB:CreateMiscBarOptions("totemBar", L["Totem Bar"], 23, R.isRetail)
+            totemBar = AB:CreateMiscBarOptions("totemBar", L["Totem Bar"], 23, R.isRetail or R.PlayerInfo.class ~= "SHAMAN")
         }
     }
 end)

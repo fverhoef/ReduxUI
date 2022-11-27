@@ -24,8 +24,8 @@ function AB:Enable()
 
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
-    AB.vehicleExitBar = AB:CreateVehicleExitBar()
     AB.totemBar = AB:CreateTotemBar()
+    AB.vehicleExitBar = AB:CreateVehicleExitBar()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
@@ -47,7 +47,116 @@ function AB:Update()
     if AB.MainMenuBarArtFrame then
         AB.MainMenuBarArtFrame:Update()
     end
-    AB:ConfigureActionBars()
+    for _, bar in ipairs(AB.bars) do
+        bar:Configure()
+    end
+
+    AB.petBar:Configure()
+    AB.stanceBar:Configure()
+    if AB.totemBar then
+        AB.totemBar:Configure()
+    end
+    AB.vehicleExitBar:Configure()
+    if AB.extraActionBar then
+        AB.extraActionBar:Configure()
+    end
+    if AB.zoneBar then
+        AB.zoneBar:Configure()
+    end
+
+    if AB.config.mainMenuBarArt.enabled then
+        for i, button in ipairs(AB.bars[1].buttons) do
+            button:SetSize(36, 36)
+            button:ClearAllPoints()
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.MainMenuBarArtFrame, "BOTTOMLEFT", 8, 4)
+            else
+                button:SetPoint("LEFT", AB.bars[1].buttons[i - 1], "RIGHT", 6, 0)
+            end
+        end
+        AB.bars[1].Backdrop:SetShown(false)
+        AB.bars[1].Border:SetShown(false)
+        AB.bars[1].Shadow:SetShown(false)
+        AB.bars[1].Mover:Lock(true)
+
+        for i, button in ipairs(AB.bars[2].buttons) do
+            button:SetSize(36, 36)
+            button:ClearAllPoints()
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[1], "TOPLEFT", 0, 10)
+            else
+                button:SetPoint("LEFT", AB.bars[2].buttons[i - 1], "RIGHT", 6, 0)
+            end
+        end
+        AB.bars[2].Backdrop:SetShown(false)
+        AB.bars[2].Border:SetShown(false)
+        AB.bars[2].Shadow:SetShown(false)
+        AB.bars[2].Mover:Lock(true)
+
+        for i, button in ipairs(AB.bars[3].buttons) do
+            button:SetSize(36, 36)
+            button:ClearAllPoints()
+
+            if AB.config.mainMenuBarArt.stackBottomBars then
+                if i == 1 then
+                    button:SetPoint("BOTTOMLEFT", AB.bars[2].buttons[1], "TOPLEFT", 0, 5)
+                else
+                    button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
+                end
+            else
+                if i == 1 then
+                    button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[12], "BOTTOMRIGHT", 45, 0)
+                elseif i == 7 then
+                    button:SetPoint("BOTTOMLEFT", AB.bars[3].buttons[1], "TOPLEFT", 0, 10)
+                else
+                    button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
+                end
+            end
+        end
+        AB.bars[3].Backdrop:SetShown(false)
+        AB.bars[3].Border:SetShown(false)
+        AB.bars[3].Shadow:SetShown(false)
+        AB.bars[3].Mover:Lock(true)
+
+        for i, button in ipairs(AB.petBar.buttons) do
+            button:SetSize(32, 32)
+            button:ClearAllPoints()
+
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+            else
+                button:SetPoint("LEFT", AB.petBar.buttons[i - 1], "RIGHT", 6, 0)
+            end
+        end
+        AB.petBar.Backdrop:SetShown(false)
+        AB.petBar.Border:SetShown(false)
+        AB.petBar.Shadow:SetShown(false)
+        AB.petBar.Mover:Lock(true)
+
+        for i, button in ipairs(AB.stanceBar.buttons) do
+            button:SetSize(32, 32)
+            button:ClearAllPoints()
+
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+            else
+                button:SetPoint("LEFT", AB.stanceBar.buttons[i - 1], "RIGHT", 6, 0)
+            end
+        end
+        AB.stanceBar.Backdrop:SetShown(false)
+        AB.stanceBar.Border:SetShown(false)
+        AB.stanceBar.Shadow:SetShown(false)
+        AB.stanceBar.Mover:Lock(true)
+
+        if AB.totemBar then
+            AB.totemBar:ClearAllPoints()
+            AB.totemBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+            AB.totemBar.Backdrop:SetShown(false)
+            AB.totemBar.Border:SetShown(false)
+            AB.totemBar.Shadow:SetShown(false)
+            AB.totemBar.Mover:Lock(true)
+        end
+    end
 end
 
 function AB:DisableBlizzardBars()
@@ -69,274 +178,6 @@ function AB:DisableBlizzardBars()
 
     if R.isRetail then
         ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
-    end
-end
-
-function AB:CreateActionBar(id)
-    local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerStateTemplate")
-    SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
-    bar.config = AB.config["actionBar" .. id]
-    bar.defaults = AB.defaults["actionBar" .. id]
-    bar.id = id
-
-    bar.buttons = {}
-    for i = 1, 12 do
-        local button = R.Libs.ActionButton:CreateButton(i, "$parent_Button" .. i, bar, nil)
-        button:SetState(0, "action", i)
-        button:SetAttribute("buttonlock", true)
-
-        for k = 1, 14 do
-            button:SetState(k, "action", (k - 1) * 12 + i)
-        end
-        button:UpdateConfig({ keyBoundTarget = bar.config.keyBoundTarget .. i })
-        R.Modules.ButtonStyles:StyleActionButton(button)
-
-        bar.buttons[i] = button
-    end
-
-    bar:SetAttribute("_onstate-page", [[
-        self:SetAttribute("state", newstate)
-        control:ChildUpdate("state", newstate)
-        self:GetFrameRef('MainMenuBarArtFrame'):SetAttribute('actionpage', newstate)
-    ]])
-
-    local page = bar.config.page
-    if id == 1 then
-        page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-        page = page .. " [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;"
-
-        if R.PlayerInfo.class == "DRUID" then
-            page = page .. "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:3] 9; [bonusbar:4] 10;"
-        elseif R.PlayerInfo.class == "ROGUE" then
-            page = page .. "[bonusbar:1] 7;"
-        end
-
-        page = page .. " [form] 1; 1"
-    end
-
-    RegisterStateDriver(bar, "page", page)
-
-    bar:CreateBackdrop({ bgFile = R.media.textures.blank })
-    bar:CreateBorder()
-    bar:CreateShadow()
-    bar:CreateFader(bar.config.fader, bar.buttons)
-    bar:CreateMover(L["Action Bar " .. id], bar.defaults.point)
-
-    return bar
-end
-
-function AB:ConfigureActionBars()
-    for _, bar in ipairs(AB.bars) do
-        AB:ConfigureActionBar(bar)
-    end
-
-    AB:ConfigureActionBar(AB.petBar)
-    AB:ConfigureActionBar(AB.stanceBar)
-    AB:ConfigureActionBar(AB.vehicleExitBar)
-    AB:ConfigureTotemBar()
-
-    if AB.config.mainMenuBarArt.enabled then
-        local mainMenuBar = AB.bars[1]
-        for j, button in ipairs(mainMenuBar.buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-            if j == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.MainMenuBarArtFrame, "BOTTOMLEFT", 8, 4)
-            else
-                button:SetPoint("LEFT", mainMenuBar.buttons[j - 1], "RIGHT", 6, 0)
-            end
-        end
-        mainMenuBar.Backdrop:SetShown(false)
-        mainMenuBar.Border:SetShown(false)
-        mainMenuBar.Shadow:SetShown(false)
-        mainMenuBar.Mover:Lock(true)
-
-        local multiBarBottomLeft = AB.bars[2]
-        for j, button in ipairs(multiBarBottomLeft.buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-            if j == 1 then
-                button:SetPoint("BOTTOMLEFT", mainMenuBar.buttons[1], "TOPLEFT", 0, 10)
-            else
-                button:SetPoint("LEFT", multiBarBottomLeft.buttons[j - 1], "RIGHT", 6, 0)
-            end
-        end
-        multiBarBottomLeft.Backdrop:SetShown(false)
-        multiBarBottomLeft.Border:SetShown(false)
-        multiBarBottomLeft.Shadow:SetShown(false)
-        multiBarBottomLeft.Mover:Lock(true)
-
-        local multiBarBottomRight = AB.bars[3]
-        for j, button in ipairs(multiBarBottomRight.buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-
-            if AB.config.mainMenuBarArt.stackBottomBars then
-                if j == 1 then
-                    button:SetPoint("BOTTOMLEFT", multiBarBottomLeft.buttons[1], "TOPLEFT", 0, 5)
-                else
-                    button:SetPoint("LEFT", multiBarBottomRight.buttons[j - 1], "RIGHT", 6, 0)
-                end
-            else
-                if j == 1 then
-                    button:SetPoint("BOTTOMLEFT", mainMenuBar.buttons[12], "BOTTOMRIGHT", 45, 0)
-                elseif j == 7 then
-                    button:SetPoint("BOTTOMLEFT", multiBarBottomRight.buttons[1], "TOPLEFT", 0, 10)
-                else
-                    button:SetPoint("LEFT", multiBarBottomRight.buttons[j - 1], "RIGHT", 6, 0)
-                end
-            end
-        end
-        multiBarBottomRight.Backdrop:SetShown(false)
-        multiBarBottomRight.Border:SetShown(false)
-        multiBarBottomRight.Shadow:SetShown(false)
-        multiBarBottomRight.Mover:Lock(true)
-
-        local petBar = AB.petBar
-        for j, button in ipairs(petBar.buttons) do
-            button:SetSize(32, 32)
-            button:ClearAllPoints()
-
-            if j == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
-            else
-                button:SetPoint("LEFT", petBar.buttons[j - 1], "RIGHT", 6, 0)
-            end
-        end
-        petBar.Backdrop:SetShown(false)
-        petBar.Border:SetShown(false)
-        petBar.Shadow:SetShown(false)
-        petBar.Mover:Lock(true)
-
-        local stanceBar = AB.stanceBar
-        for j, button in ipairs(stanceBar.buttons) do
-            button:SetSize(32, 32)
-            button:ClearAllPoints()
-
-            if j == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
-            else
-                button:SetPoint("LEFT", stanceBar.buttons[j - 1], "RIGHT", 6, 0)
-            end
-        end
-        stanceBar.Backdrop:SetShown(false)
-        stanceBar.Border:SetShown(false)
-        stanceBar.Shadow:SetShown(false)
-        stanceBar.Mover:Lock(true)
-
-        local totemBar = AB.totemBar
-        totemBar:ClearAllPoints()
-        totemBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and multiBarBottomRight.buttons[1] or multiBarBottomLeft.buttons[1], "TOPLEFT", 18, 5)
-        totemBar.Backdrop:SetShown(false)
-        totemBar.Border:SetShown(false)
-        totemBar.Shadow:SetShown(false)
-        totemBar.Mover:Lock(true)
-    end
-end
-
-function AB:ConfigureActionBar(bar)
-    local visibleButtons = bar.config.buttons
-    local buttonsPerRow = bar.config.buttonsPerRow
-    local width = bar.config.buttonSize
-    local height = bar.config.buttonSize
-    local columnDirection = bar.config.columnDirection
-    local columnSpacing = bar.config.columnSpacing
-    local rowDirection = bar.config.rowDirection
-    local rowSpacing = bar.config.rowSpacing
-
-    local columnMultiplier, columnAnchor, relativeColumnAnchor, rowMultiplier, rowAnchor, relativeRowAnchor
-    if columnDirection == "Right" then
-        columnMultiplier = 1
-        columnAnchor = "TOPLEFT"
-        relativeColumnAnchor = "TOPRIGHT"
-
-        if rowDirection == "Down" then
-            rowMultiplier = -1
-            rowAnchor = "TOPLEFT"
-            relativeRowAnchor = "BOTTOMLEFT"
-        else
-            rowMultiplier = 1
-            rowAnchor = "BOTTOMLEFT"
-            relativeRowAnchor = "TOPLEFT"
-        end
-    elseif columnDirection == "Left" then
-        columnMultiplier = -1
-        columnAnchor = "TOPRIGHT"
-        relativeColumnAnchor = "TOPLEFT"
-
-        if rowDirection == "Down" then
-            rowMultiplier = -1
-            rowAnchor = "TOPRIGHT"
-            relativeRowAnchor = "BOTTOMRIGHT"
-        else
-            rowMultiplier = 1
-            rowAnchor = "BOTTOMRIGHT"
-            relativeRowAnchor = "TOPRIGHT"
-        end
-    end
-
-    local totalWidth, totalHeight = 0, 0
-    local row, column = 0, 0, 0
-    for i, button in ipairs(bar.buttons) do
-        local parent = bar
-
-        if i > visibleButtons then
-            button:Hide()
-        else
-            button:Show()
-
-            local point
-            if i == 1 then
-                point = { columnAnchor, bar, columnAnchor, 0, 0 }
-                row, column = 1, 1
-                totalWidth, totalHeight = width, height
-            elseif column == buttonsPerRow then
-                parent = bar.buttons[(row - 1) * buttonsPerRow + 1]
-                point = { rowAnchor, parent, relativeRowAnchor, 0, rowMultiplier * rowSpacing }
-                row, column = row + 1, 1
-                totalHeight = totalHeight + rowSpacing + height
-            else
-                parent = bar.buttons[i - 1]
-                point = { columnAnchor, parent, relativeColumnAnchor, columnMultiplier * columnSpacing, 0 }
-                column = column + 1
-                if i <= buttonsPerRow then
-                    totalWidth = totalWidth + columnSpacing + width
-                end
-            end
-
-            button:SetSize(width, height)
-            button:ClearAllPoints()
-            button:SetNormalizedPoint(point)
-
-            button:SetAttribute("buttonlock", true)
-            if button.UpdateConfig then
-                button:UpdateConfig({
-                    clickOnDown = bar.config.clickOnDown,
-                    showGrid = bar.config.showGrid,
-                    hideElements = { hotkey = bar.config.hideHotkey, macro = bar.config.hideMacro },
-                    flyoutDirection = bar.config.flyoutDirection or "UP",
-                    keyBoundTarget = bar.config.keyBoundTarget .. i
-                })
-            end
-        end
-    end
-
-    if not bar.visibility then
-        bar:SetShown(bar.config.enabled)
-    end
-    bar:SetSize(totalWidth, totalHeight)
-
-    bar:ClearAllPoints()
-    bar:SetNormalizedPoint(bar.config.point)
-
-    bar.Backdrop:SetShown(bar.config.backdrop)
-    bar.Border:SetShown(bar.config.border)
-    bar.Shadow:SetShown(bar.config.shadow)
-    bar.Mover:Unlock()
-    bar:CreateFader(bar.config.fader, bar.buttons)
-
-    if bar.Update then
-        bar:Update()
     end
 end
 

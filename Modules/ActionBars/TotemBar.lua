@@ -5,7 +5,7 @@ local AB = R.Modules.ActionBars
 local L = R.L
 
 function AB:CreateTotemBar()
-    if R.isRetail then
+    if R.isRetail or R.PlayerInfo.class ~= "SHAMAN" then
         return
     end
 
@@ -14,6 +14,7 @@ function AB:CreateTotemBar()
     bar:Show()
     bar.config = AB.config.totemBar
     bar.defaults = AB.defaults.totemBar
+    _G.Mixin(bar, TotemBarMixin)
 
     bar:SetScript("OnShow", nil)
     bar:SetScript("OnHide", nil)
@@ -37,44 +38,36 @@ function AB:CreateTotemBar()
     bar:CreateMover(L["Totem Bar"], bar.defaults.point)
     bar:CreateFader(bar.config.fader, bar.buttons)
 
-    AB:RegisterEvent("PLAYER_ENTERING_WORLD", AB.PositionTotemBarButtons)
-    AB:SecureHook("MultiCastActionBarFrame_Update", AB.PositionTotemBarButtons)
+    AB:RegisterEvent("PLAYER_ENTERING_WORLD", function() _G.MultiCastActionBarFrame:Configure() end)
+    AB:SecureHook("MultiCastActionBarFrame_Update", function() _G.MultiCastActionBarFrame:Configure() end)
 
     return bar
 end
 
-function AB:ConfigureTotemBar()
-    if R.isRetail then
-        return
-    end
+TotemBarMixin = {}
 
-    local bar = _G.MultiCastActionBarFrame
+function TotemBarMixin:Configure()
+    self:ClearAllPoints()
+    self:SetNormalizedPoint(self.config.point)
 
-    bar:ClearAllPoints()
-    bar:SetNormalizedPoint(bar.config.point)
-
-    bar.Backdrop:SetShown(bar.config.backdrop)
-    bar.Border:SetShown(bar.config.border)
-    bar.Shadow:SetShown(bar.config.shadow)
-    bar.Mover:Unlock()
+    self.Backdrop:SetShown(self.config.backdrop)
+    self.Border:SetShown(self.config.border)
+    self.Shadow:SetShown(self.config.shadow)
+    self.Mover:Unlock()
 
     -- TODO: KeyBound support
-end
-
-function AB:PositionTotemBarButtons()
-    local bar = _G.MultiCastActionBarFrame
 
     MultiCastSummonSpellButton:ClearAllPoints()
     MultiCastSummonSpellButton:SetPoint("BOTTOMLEFT", MultiCastActionBarFrame, "BOTTOMLEFT", 0, 0)
 
     MultiCastSlotButton1:ClearAllPoints()
-    MultiCastSlotButton1:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", bar.config.columnSpacing, 0)
-    MultiCastSlotButton2:SetPoint("LEFT", MultiCastSlotButton1, "RIGHT", bar.config.columnSpacing, 0)
-    MultiCastSlotButton3:SetPoint("LEFT", MultiCastSlotButton2, "RIGHT", bar.config.columnSpacing, 0)
-    MultiCastSlotButton4:SetPoint("LEFT", MultiCastSlotButton3, "RIGHT", bar.config.columnSpacing, 0)
+    MultiCastSlotButton1:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", self.config.columnSpacing, 0)
+    MultiCastSlotButton2:SetPoint("LEFT", MultiCastSlotButton1, "RIGHT", self.config.columnSpacing, 0)
+    MultiCastSlotButton3:SetPoint("LEFT", MultiCastSlotButton2, "RIGHT", self.config.columnSpacing, 0)
+    MultiCastSlotButton4:SetPoint("LEFT", MultiCastSlotButton3, "RIGHT", self.config.columnSpacing, 0)
 
     MultiCastRecallSpellButton:ClearAllPoints()
-    MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastSlotButton4, "RIGHT", bar.config.columnSpacing, 0)
+    MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastSlotButton4, "RIGHT", self.config.columnSpacing, 0)
 
     for i = 1, 3 do
         for j = 1, 4 do
@@ -85,7 +78,7 @@ function AB:PositionTotemBarButtons()
         end
     end
 
-    for _, button in ipairs(bar.buttons) do
-        button:SetNormalizedSize(bar.config.buttonSize)
+    for _, button in ipairs(self.buttons) do
+        button:SetNormalizedSize(self.config.buttonSize)
     end
 end

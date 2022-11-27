@@ -249,7 +249,7 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
-        showGrid = true,
+        showGrid = false,
         hideHotkey = false
     },
     petBar = {
@@ -267,7 +267,7 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
-        showGrid = true,
+        showGrid = false,
         hideHotkey = false
     },
     vehicleExitBar = {
