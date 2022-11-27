@@ -8,8 +8,6 @@ R:RegisterModuleConfig(S, {
     fonts = {
         enabled = true,
         damage = R.Libs.SharedMedia:Fetch("font", "Adventure"),
-        normal = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-        number = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free")
     },

@@ -30,16 +30,6 @@ R:RegisterModuleOptions(S, {
             args = {
                 enabled = S:CreateEnabledOption(L["Replace Blizzard Fonts"], nil, 1, nil, "fonts", true),
                 lineBreak1 = { type = "header", name = "", order = 2 },
-                normal = R:CreateFontOption(L["Standard Text"], nil, 3, nil, function()
-                    return S.config.fonts.normal
-                end, function(value)
-                    S.config.fonts.normal = value
-                end, S.UpdateBlizzardFonts),
-                number = R:CreateFontOption(L["Numbers"], nil, 4, nil, function()
-                    return S.config.fonts.number
-                end, function(value)
-                    S.config.fonts.number = value
-                end, S.UpdateBlizzardFonts),
                 damage = R:CreateFontOption(L["Damage"], nil, 5, nil, function()
                     return S.config.fonts.damage
                 end, function(value)
