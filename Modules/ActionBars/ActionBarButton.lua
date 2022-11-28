@@ -206,6 +206,8 @@ function AB.ActionBarButtonMixin:Update()
     end
 
     self.feedback_action = action
+
+    R.Modules.ButtonStyles:UpdateActionButton(self)
 end
 
 function AB.ActionBarButtonMixin:UpdateHighlightMark()

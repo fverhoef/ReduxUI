@@ -23,7 +23,6 @@ function BS:StyleActionButton(button)
 
     if not button.__styled then
         button.__styled = true
-        button.LBFSkinned = true
         BS.actionButtons[button] = true
 
         local overlay = CreateFrame("Frame", nil, button)
