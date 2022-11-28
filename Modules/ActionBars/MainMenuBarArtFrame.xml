@@ -1,129 +1,129 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="MainMenuBarArtFrame.lua"/>
-    
+    <Script file="MainMenuBarArtFrame.lua" />
+
     <Frame name="MainMenuBarArtFrameTemplate" enableMouse="true" parent="UIParent" mixin="ReduxMainMenuBarArtFrameMixin" virtual="true">
         <Anchors>
-            <Anchor point="BOTTOM"/>
+            <Anchor point="BOTTOM" />
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture parentKey="Background0" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-left">
-                    <Size x="512" y="64"/>
-                    <TexCoords left="0" right="1" top="0" bottom="1"/>
+                    <Size x="512" y="64" />
+                    <TexCoords left="0" right="1" top="0" bottom="1" />
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" x="0" y="0"/>
+                        <Anchor point="BOTTOMLEFT" x="0" y="0" />
                     </Anchors>
                 </Texture>
                 <Texture parentKey="Background1" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-right">
-                    <Size x="38" y="64"/>
-                    <TexCoords left="0" right="0.07421875" top="0" bottom="1"/>
+                    <Size x="38" y="64" />
+                    <TexCoords left="0" right="0.07421875" top="0" bottom="1" />
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background0" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background0" relativePoint="BOTTOMRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
                 <Texture parentKey="Background2" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-background-right">
-                    <Size x="254" y="64"/>
-                    <TexCoords left="0.07421875" right="0.5703125" top="0" bottom="1"/>
+                    <Size x="254" y="64" />
+                    <TexCoords left="0.07421875" right="0.5703125" top="0" bottom="1" />
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background1" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                        <Anchor point="BOTTOMLEFT" relativeKey="$parent.Background1" relativePoint="BOTTOMRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="5">
                 <Texture parentKey="TrackingBarLarge" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
                     <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0" />
                     </Anchors>
-                    <Size x="804" y="14"/>
-                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875"/>
+                    <Size x="804" y="14" />
+                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875" />
                 </Texture>
                 <Texture parentKey="TrackingBarLargeUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
                     <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9" />
                     </Anchors>
-                    <Size x="804" y="14"/>
-                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875"/>
+                    <Size x="804" y="14" />
+                    <TexCoords left="0.00146484375" right="0.78662109375" top="0.0234375" bottom="0.2421875" />
                 </Texture>
                 <Texture parentKey="TrackingBarSmall" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
                     <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0"/>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="0" />
                     </Anchors>
-                    <Size x="550" y="14"/>
-                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875"/>
+                    <Size x="550" y="14" />
+                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875" />
                 </Texture>
                 <Texture parentKey="TrackingBarSmallUpper" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-trackingbar">
                     <Anchors>
-                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9"/>
+                        <Anchor point="BOTTOM" relativeTo="UIParent" relativePoint="BOTTOM" x="0" y="9" />
                     </Anchors>
-                    <Size x="550" y="14"/>
-                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875"/>
+                    <Size x="550" y="14" />
+                    <TexCoords left="0.00146484375" right="0.53857421875" top="0.7734375" bottom="0.9921875" />
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="6">
                 <Texture parentKey="LeftEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap">
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" x="-98" y="-10"/>
+                        <Anchor point="BOTTOMLEFT" x="-98" y="-10" />
                     </Anchors>
-                    <Size x="128" y="128"/>
+                    <Size x="128" y="128" />
                 </Texture>
                 <Texture parentKey="RightEndCap" file="interface/addons/reduxui/media/textures/actionbars/mainmenubar-endcap">
                     <Anchors>
-                        <Anchor point="BOTTOMRIGHT" x="98" y="-10"/>
+                        <Anchor point="BOTTOMRIGHT" x="98" y="-10" />
                     </Anchors>
-                    <Size x="128" y="128"/>
-                    <TexCoords left="1" right="0"/>
+                    <Size x="128" y="128" />
+                    <TexCoords left="1" right="0" />
                 </Texture>
                 <FontString parentKey="PageNumber" inherits="GameFontNormalSmall">
                     <Anchors>
-                        <Anchor point="LEFT" relativePoint="LEFT" x="529" y="-9"/>
+                        <Anchor point="LEFT" relativePoint="LEFT" x="529" y="-9" />
                     </Anchors>
-                    <Size x="24" y="14"/>
+                    <Size x="24" y="14" />
                 </FontString>
             </Layer>
         </Layers>
         <Frames>
-            <StatusBar parentKey="ExperienceBar" mixin="ReduxMainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
+            <StatusBar parentKey="ExperienceBar" mixin="ReduxMainMenuBarArtFrameExperienceBarMixin" frameStrata="LOW" inherits="TextStatusBar">
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT"/>
-                    <Anchor point="BOTTOMRIGHT"/>
+                    <Anchor point="BOTTOMLEFT" />
+                    <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
-                <Size x="804" y="14"/>
-				<HitRectInsets left="0" right="0" top="-3" bottom="-3"/>
+                <Size x="804" y="14" />
+                <HitRectInsets left="0" right="0" top="-3" bottom="-3" />
                 <Layers>
                     <Layer level="BORDER">
                         <Texture parentKey="RestedFillBar">
                             <Size>
-                                <AbsDimension x="0" y="13"/>
+                                <AbsDimension x="0" y="13" />
                             </Size>
                             <Anchors>
                                 <Anchor point="TOPLEFT" />
                             </Anchors>
-                            <Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+                            <Color r="1.0" g="1.0" b="1.0" a="1.0" />
                         </Texture>
                     </Layer>
                     <Layer level="BACKGROUND" textureSubLevel="-2">
                         <Texture>
-                            <Color r="0.0" g="0.0" b="0.0" a="0.5"/>
+                            <Color r="0.0" g="0.0" b="0.0" a="0.5" />
                         </Texture>
                     </Layer>
                 </Layers>
                 <Frames>
                     <Button parentKey="RestedTick" hidden="false" frameStrata="MEDIUM">
                         <Size>
-                            <AbsDimension x="32" y="32"/>
+                            <AbsDimension x="32" y="32" />
                         </Size>
                         <Anchors>
                             <Anchor point="CENTER" />
                         </Anchors>
-                        <NormalTexture file="Interface\MainMenuBar\UI-ExhaustionTickNormal"/>
-                        <HighlightTexture file="Interface\MainMenuBar\UI-ExhaustionTickHighlight" alphaMode="ADD"/>
+                        <NormalTexture file="Interface\MainMenuBar\UI-ExhaustionTickNormal" />
+                        <HighlightTexture file="Interface\MainMenuBar\UI-ExhaustionTickHighlight" alphaMode="ADD" />
                     </Button>
                     <Frame parentKey="OverlayFrame" frameStrata="DIALOG" setAllPoints="true">
                         <Layers>
                             <Layer level="ARTWORK">
                                 <FontString parentKey="Text" inherits="TextStatusBarText" hidden="true">
                                     <Anchors>
-                                        <Anchor point="CENTER" x="0" y="1"/>
+                                        <Anchor point="CENTER" x="0" y="1" />
                                     </Anchors>
                                 </FontString>
                             </Layer>
@@ -131,21 +131,21 @@
                     </Frame>
                 </Frames>
                 <Scripts>
-                    <OnEnter method="ExperienceBar_OnEnter"/>
-                    <OnLeave method="ExperienceBar_OnLeave"/>
+                    <OnEnter method="OnEnter" />
+                    <OnLeave method="OnLeave" />
                 </Scripts>
             </StatusBar>
-            <StatusBar parentKey="ReputationBar" mixin="ReduxMainMenuBarArtFrameMixin" frameStrata="LOW" inherits="TextStatusBar">
+            <StatusBar parentKey="ReputationBar" mixin="ReduxMainMenuBarArtFrameReputationBarMixin" frameStrata="LOW" inherits="TextStatusBar">
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT"/>
-                    <Anchor point="BOTTOMRIGHT"/>
+                    <Anchor point="BOTTOMLEFT" />
+                    <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
-                <Size x="804" y="14"/>
-				<HitRectInsets left="0" right="0" top="-3" bottom="-3"/>
+                <Size x="804" y="14" />
+                <HitRectInsets left="0" right="0" top="-3" bottom="-3" />
                 <Layers>
                     <Layer level="BACKGROUND" textureSubLevel="-2">
                         <Texture>
-                            <Color r="0.0" g="0.0" b="0.0" a="0.5"/>
+                            <Color r="0.0" g="0.0" b="0.0" a="0.5" />
                         </Texture>
                     </Layer>
                 </Layers>
@@ -155,7 +155,7 @@
                             <Layer level="ARTWORK">
                                 <FontString parentKey="Text" inherits="TextStatusBarText" hidden="true">
                                     <Anchors>
-                                        <Anchor point="CENTER" x="0" y="1"/>
+                                        <Anchor point="CENTER" x="0" y="1" />
                                     </Anchors>
                                 </FontString>
                             </Layer>
@@ -163,14 +163,14 @@
                     </Frame>
                 </Frames>
                 <Scripts>
-                    <OnEnter method="ReputationBar_OnEnter"/>
-                    <OnLeave method="ReputationBar_OnLeave"/>
+                    <OnEnter method="OnEnter" />
+                    <OnLeave method="OnLeave" />
                 </Scripts>
             </StatusBar>
         </Frames>
         <Scripts>
-            <OnLoad method="OnLoad"/>
-            <OnEvent method="OnEvent"/>
+            <OnLoad method="OnLoad" />
+            <OnEvent method="OnEvent" />
         </Scripts>
     </Frame>
 </Ui>

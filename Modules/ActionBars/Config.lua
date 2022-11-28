@@ -17,7 +17,8 @@ R:RegisterModuleConfig(AB, {
     microButtonAndBags = {enabled = true, point = {"BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0}, fader = R.config.faders.mouseOver},
     actionBar1 = {
         enabled = true,
-        keyBoundTarget = "ACTIONBUTTON",
+        buttonType = "ACTIONBUTTON",
+        page = 1,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 50},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -32,13 +33,11 @@ R:RegisterModuleConfig(AB, {
         shadow = true,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
     actionBar2 = {
         enabled = true,
-        keyBoundTarget = "MULTIACTIONBAR1BUTTON",
+        buttonType = "MULTIACTIONBAR1BUTTON",
         page = 6,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 90},
         fader = R.config.faders.onShow,
@@ -54,13 +53,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
     actionBar3 = {
         enabled = true,
-        keyBoundTarget = "MULTIACTIONBAR2BUTTON",
+        buttonType = "MULTIACTIONBAR2BUTTON",
         page = 5,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 128},
         fader = R.config.faders.onShow,
@@ -76,13 +73,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
     actionBar4 = {
         enabled = true,
-        keyBoundTarget = "MULTIACTIONBAR3BUTTON",
+        buttonType = "MULTIACTIONBAR3BUTTON",
         page = 3,
         point = {"RIGHT", "UIParent", "RIGHT", -5, 0},
         fader = R.config.faders.mouseOver,
@@ -98,13 +93,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "LEFT"
     },
     actionBar5 = {
         enabled = true,
-        keyBoundTarget = "MULTIACTIONBAR4BUTTON",
+        buttonType = "MULTIACTIONBAR4BUTTON",
         page = 4,
         point = {"RIGHT", "UIParent", "RIGHT", -43, 0},
         fader = R.config.faders.mouseOver,
@@ -120,35 +113,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "LEFT"
     },
     actionBar6 = {
         enabled = false,
-        keyBoundTarget = "REDUXUIBAR6BUTTON",
-        page = 4,
-        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
-        fader = R.config.faders.onShow,
-        columnDirection = "Right",
-        rowDirection = "Down",
-        buttons = 12,
-        buttonsPerRow = 6,
-        buttonSize = 36,
-        columnSpacing = 2,
-        rowSpacing = 2,
-        backdrop = false,
-        border = false,
-        shadow = false,
-        clickOnDown = true,
-        showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
-        flyoutDirection = "UP"
-    },
-    actionBar7 = {
-        enabled = false,
-        keyBoundTarget = "REDUXUIBAR7BUTTON",
+        buttonType = "REDUXUIBAR6BUTTON",
         page = 7,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
@@ -164,13 +133,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
-    actionBar8 = {
+    actionBar7 = {
         enabled = false,
-        keyBoundTarget = "REDUXUIBAR8BUTTON",
+        buttonType = "REDUXUIBAR7BUTTON",
         page = 8,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
@@ -186,13 +153,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
-    actionBar9 = {
+    actionBar8 = {
         enabled = false,
-        keyBoundTarget = "REDUXUIBAR9BUTTON",
+        buttonType = "REDUXUIBAR8BUTTON",
         page = 9,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
@@ -208,13 +173,11 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
         flyoutDirection = "UP"
     },
-    actionBar10 = {
+    actionBar9 = {
         enabled = false,
-        keyBoundTarget = "REDUXUIBAR10BUTTON",
+        buttonType = "REDUXUIBAR9BUTTON",
         page = 10,
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
         fader = R.config.faders.onShow,
@@ -230,13 +193,31 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         clickOnDown = true,
         showGrid = true,
-        hideHotkey = false,
-        hideMacro = true,
+        flyoutDirection = "UP"
+    },
+    actionBar10 = {
+        enabled = false,
+        buttonType = "REDUXUIBAR10BUTTON",
+        page = 11,
+        point = {"BOTTOM", "UIParent", "BOTTOM", 0, 5},
+        fader = R.config.faders.onShow,
+        columnDirection = "Right",
+        rowDirection = "Down",
+        buttons = 12,
+        buttonsPerRow = 6,
+        buttonSize = 36,
+        columnSpacing = 2,
+        rowSpacing = 2,
+        backdrop = false,
+        border = false,
+        shadow = false,
+        clickOnDown = true,
+        showGrid = true,
         flyoutDirection = "UP"
     },
     stanceBar = {
         enabled = true,
-        keyBoundTarget = "SHAPESHIFTBUTTON",
+        buttonType = "SHAPESHIFTBUTTON",
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 166},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -249,12 +230,11 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
-        showGrid = false,
-        hideHotkey = false
+        showGrid = false
     },
     petBar = {
         enabled = true,
-        keyBoundTarget = "BONUSACTIONBUTTON",
+        buttonType = "BONUSACTIONBUTTON",
         point = {"BOTTOM", "UIParent", "BOTTOM", 0, 166},
         fader = R.config.faders.onShow,
         columnDirection = "Right",
@@ -267,8 +247,7 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
-        showGrid = false,
-        hideHotkey = false
+        showGrid = false
     },
     vehicleExitBar = {
         enabled = true,

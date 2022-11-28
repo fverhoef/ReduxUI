@@ -22,17 +22,6 @@ function AB.MainMenuBarArtFrameMixin:OnLoad()
 
     self.PageNumber:SetText(GetActionBarPage())
     self.PageNumber:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
-    ActionBarUpButton:SetParent(self)
-    ActionBarUpButton:ClearAllPoints()
-    ActionBarDownButton:SetParent(self)
-    ActionBarDownButton:ClearAllPoints()
-    if R.isRetail then
-        ActionBarUpButton:SetPoint("BOTTOMRIGHT", self.PageNumber, "TOPLEFT", 2, -7)
-        ActionBarDownButton:SetPoint("TOPRIGHT", self.PageNumber, "BOTTOMLEFT", 2, 7)
-    else
-        ActionBarUpButton:SetPoint("BOTTOMRIGHT", self.PageNumber, "TOPLEFT", 8, -14)
-        ActionBarDownButton:SetPoint("TOPRIGHT", self.PageNumber, "BOTTOMLEFT", 8, 13)
-    end
 
     self:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -205,18 +194,24 @@ function AB.MainMenuBarArtFrameMixin:Update()
     end
 end
 
-function AB.MainMenuBarArtFrameMixin:ExperienceBar_OnEnter()
+AB.MainMenuBarArtFrameExperienceBarMixin = {}
+ReduxMainMenuBarArtFrameExperienceBarMixin = AB.MainMenuBarArtFrameExperienceBarMixin
+
+function AB.MainMenuBarArtFrameExperienceBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function AB.MainMenuBarArtFrameMixin:ExperienceBar_OnLeave()
+function AB.MainMenuBarArtFrameExperienceBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-function AB.MainMenuBarArtFrameMixin:ReputationBar_OnEnter()
+AB.MainMenuBarArtFrameReputationBarMixin = {}
+ReduxMainMenuBarArtFrameReputationBarMixin = AB.MainMenuBarArtFrameReputationBarMixin
+
+function AB.MainMenuBarArtFrameReputationBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function AB.MainMenuBarArtFrameMixin:ReputationBar_OnLeave()
+function AB.MainMenuBarArtFrameReputationBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end

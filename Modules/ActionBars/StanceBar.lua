@@ -13,7 +13,7 @@ function AB:CreateStanceBar()
     _G.Mixin(bar, AB.StanceBarMixin)
 
     for id = 1, 10 do
-        bar.buttons[id] = AB:CreateStanceButton(id, bar, bar.config.keyBoundTarget .. id)
+        bar.buttons[id] = AB:CreateStanceButton(id, bar, bar.config.buttonType)
     end
 
     bar.visibility = "[overridebar][vehicleui][possessbar] hide; show"
@@ -66,22 +66,21 @@ function AB.StanceBarMixin:Update()
     end
 end
 
-function AB:CreateStanceButton(id, parent, keyBoundTarget)
+function AB:CreateStanceButton(id, parent, buttonType)
     local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "StanceButtonTemplate")
     button:SetID(id)
     button.config = parent.config
     _G.Mixin(button, AB.StanceButtonMixin)
+    _G.Mixin(button, AB.KeyBoundButtonMixin)
 
     button.id = id
+    button.buttonType = buttonType
+    button.keyBoundTarget = buttonType .. id
+    
+    button.cooldown = _G[button:GetName() .. "Cooldown"]
 
-    if keyBoundTarget then
-        _G.Mixin(button, AB.KeyBoundButtonMixin)
-
-        button.keyBoundTarget = keyBoundTarget
-        AB:SecureHookScript(button, "OnEnter", function(self)
-            R.Libs.KeyBound:Set(self)
-        end)
-    end
+    AB:SecureHookScript(button, "OnEnter", button.PostOnEnter)
+    AB:SecureHookScript(button, "OnEvent", button.PostOnEvent)
 
     button:Configure()
 
@@ -89,6 +88,15 @@ function AB:CreateStanceButton(id, parent, keyBoundTarget)
 end
 
 AB.StanceButtonMixin = {}
+
+function AB.StanceButtonMixin:Configure()
+    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+
+    self:SetAttribute("showgrid", self.config.showGrid and 1 or 0)
+    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
+end
 
 function AB.StanceButtonMixin:Update()
     if not self:IsShown() then
@@ -110,11 +118,12 @@ function AB.StanceButtonMixin:Update()
     self:Configure()
 end
 
-function AB.StanceButtonMixin:Configure()
-    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+function AB.StanceButtonMixin:PostOnEnter()
+    R.Libs.KeyBound:Set(self)
+end
 
-    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
-    self.HotKey:SetShown(not self.config.hideHotkey)
-
-    R.Modules.ButtonStyles:StyleActionButton(self)
+function AB.StanceButtonMixin:PostOnEvent(event)
+    if event == "UPDATE_BINDINGS" then
+        self:Configure()
+    end
 end

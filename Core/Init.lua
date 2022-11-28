@@ -28,8 +28,6 @@ R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 R:AddLib("CallbackHandler", "CallbackHandler-1.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
-R:AddLib("ActionButton", "LibActionButton-1.0")
-R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
 R:AddLib("Dispel", "LibDispel-1.0")
 R:AddLib("DRList", "DRList-1.0")
 R:AddLib("ItemSearch", "LibItemSearch-1.2")

@@ -11,6 +11,16 @@ function AB:Enable()
         return
     end
 
+    if not ActionBarActionEventsFrame.RegisterFrame then
+        ActionBarActionEventsFrame.RegisterFrame = ActionBarActionEventsFrame_RegisterFrame
+    end
+    if not ActionBarActionEventsFrame.UnregisterFrame then
+        ActionBarActionEventsFrame.UnregisterFrame = ActionBarActionEventsFrame_UnregisterFrame
+    end
+    if not ActionBarButtonEventsFrame.RegisterFrame then
+        ActionBarButtonEventsFrame.RegisterFrame = ActionBarButtonEventsFrame_RegisterFrame
+    end
+
     AB:DisableBlizzardBars()
     if AB.config.mainMenuBarArt.enabled then
         AB:CreateMainMenuBarArtFrame()
@@ -21,6 +31,9 @@ function AB:Enable()
     for i = 1, 10 do
         AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
     end
+
+    AB.pageUpButton = AB:CreatePageUpButton()
+    AB.pageDownButton = AB:CreatePageDownButton()
 
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
@@ -44,9 +57,6 @@ function AB:Update()
     if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then
         AB:CreateMainMenuBarArtFrame()
     end
-    if AB.MainMenuBarArtFrame then
-        AB.MainMenuBarArtFrame:Update()
-    end
     for _, bar in ipairs(AB.bars) do
         bar:Configure()
     end
@@ -65,6 +75,8 @@ function AB:Update()
     end
 
     if AB.config.mainMenuBarArt.enabled then
+        AB.MainMenuBarArtFrame:Update()
+        
         for i, button in ipairs(AB.bars[1].buttons) do
             button:SetSize(36, 36)
             button:ClearAllPoints()
@@ -78,6 +90,11 @@ function AB:Update()
         AB.bars[1].Border:SetShown(false)
         AB.bars[1].Shadow:SetShown(false)
         AB.bars[1].Mover:Lock(true)
+
+        AB.pageUpButton:ClearAllPoints()
+        AB.pageUpButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, 8.5)
+        AB.pageDownButton:ClearAllPoints()
+        AB.pageDownButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, -9.5)
 
         for i, button in ipairs(AB.bars[2].buttons) do
             button:SetSize(36, 36)
@@ -189,7 +206,7 @@ function AB:ReassignBindings()
         ClearOverrideBindings(bar)
 
         for i, button in next, bar.buttons do
-            for _, key in next, { GetBindingKey(bar.config.keyBoundTarget .. i) } do
+            for _, key in next, { GetBindingKey(bar.config.buttonType .. i) } do
                 if key and key ~= "" then
                     SetOverrideBindingClick(bar, false, key, button:GetName())
                 end

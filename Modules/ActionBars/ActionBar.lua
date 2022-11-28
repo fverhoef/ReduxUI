@@ -4,8 +4,7 @@ local AB = R.Modules.ActionBars
 local L = R.L
 
 function AB:CreateActionBar(id)
-    local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerStateTemplate")
-    SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
+    local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerAttributeTemplate")
     bar.config = AB.config["actionBar" .. id]
     bar.defaults = AB.defaults["actionBar" .. id]
     bar.id = id
@@ -13,40 +12,57 @@ function AB:CreateActionBar(id)
 
     bar.buttons = {}
     for id = 1, 12 do
-        local button = R.Libs.ActionButton:CreateButton(i, "$parent_Button" .. id, bar, nil)
-        button:SetState(0, "action", id)
-        button:SetAttribute("buttonlock", true)
-
-        for k = 1, 14 do
-            button:SetState(k, "action", (k - 1) * 12 + id)
-        end
-        button:UpdateConfig({ keyBoundTarget = bar.config.keyBoundTarget .. id })
-        R.Modules.ButtonStyles:StyleActionButton(button)
-
-        bar.buttons[id] = button
+        bar.buttons[id] = AB:CreateActionBarButton(id, bar, bar.config.buttonType)
     end
 
-    bar:SetAttribute("_onstate-page", [[
-        self:SetAttribute("state", newstate)
-        control:ChildUpdate("state", newstate)
-        self:GetFrameRef('MainMenuBarArtFrame'):SetAttribute('actionpage', newstate)
+    bar:SetAttribute("_onattributechanged", [[
+        if name == "actionpage" then
+            control:ChildUpdate("actionpage", value)
+        end
     ]])
 
-    local page = bar.config.page
-    if id == 1 then
-        page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-        page = page .. " [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;"
-
-        if R.PlayerInfo.class == "DRUID" then
-            page = page .. "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:3] 9; [bonusbar:4] 10;"
-        elseif R.PlayerInfo.class == "ROGUE" then
-            page = page .. "[bonusbar:1] 7;"
-        end
-
-        page = page .. " [form] 1; 1"
+    bar:RegisterEvent("PLAYER_ENTERING_WORLD")
+    bar:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
+    bar:RegisterEvent("UPDATE_BINDINGS")
+    bar:RegisterEvent("GAME_PAD_ACTIVE_CHANGED")
+    bar:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+    bar:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+    bar:RegisterEvent("PET_BAR_UPDATE")
+    bar:RegisterUnitEvent("UNIT_FLAGS", "pet")
+    bar:RegisterUnitEvent("UNIT_AURA", "pet")
+    bar:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
+    bar:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
+    bar:RegisterEvent("SPELL_UPDATE_CHARGES")
+    bar:RegisterEvent("UPDATE_INVENTORY_ALERTS")
+    bar:RegisterEvent("PLAYER_TARGET_CHANGED")
+    bar:RegisterEvent("TRADE_SKILL_SHOW")
+    bar:RegisterEvent("TRADE_SKILL_CLOSE")
+    if R.isRetail then
+        bar:RegisterEvent("ARCHAEOLOGY_CLOSED")
     end
+    bar:RegisterEvent("PLAYER_ENTER_COMBAT")
+    bar:RegisterEvent("PLAYER_LEAVE_COMBAT")
+    if R.isRetail then
+        bar:RegisterEvent("START_AUTOREPEAT_SPELL")
+        bar:RegisterEvent("STOP_AUTOREPEAT_SPELL")
+    end
+    bar:RegisterEvent("UNIT_ENTERED_VEHICLE")
+    bar:RegisterEvent("UNIT_EXITED_VEHICLE")
+    bar:RegisterEvent("COMPANION_UPDATE")
+    bar:RegisterEvent("UNIT_INVENTORY_CHANGED")
+    bar:RegisterEvent("LEARNED_SPELL_IN_TAB")
+    bar:RegisterEvent("PET_STABLE_UPDATE")
+    bar:RegisterEvent("PET_STABLE_SHOW")
+    bar:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+    bar:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+    if R.isRetail then
+        bar:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
+    end
+    bar:RegisterEvent("LOSS_OF_CONTROL_ADDED")
+    bar:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
+    bar:RegisterEvent("SPELL_UPDATE_ICON")
 
-    RegisterStateDriver(bar, "page", page)
+    bar:SetScript("OnEvent", bar.OnEvent)
 
     bar:CreateBackdrop({ bgFile = R.media.textures.blank })
     bar:CreateBorder()
@@ -134,18 +150,7 @@ function AB.ActionBarMixin:Configure()
             button:SetNormalizedPoint(point)
 
             button:SetAttribute("buttonlock", true)
-            if button.Configure then
-                button:Configure()
-            end
-            if button.UpdateConfig then
-                button:UpdateConfig({
-                    clickOnDown = self.config.clickOnDown,
-                    showGrid = self.config.showGrid,
-                    hideElements = { hotkey = self.config.hideHotkey, macro = self.config.hideMacro },
-                    flyoutDirection = self.config.flyoutDirection or "UP",
-                    keyBoundTarget = self.config.keyBoundTarget .. i
-                })
-            end
+            button:Configure()
         end
     end
 
@@ -162,127 +167,41 @@ function AB.ActionBarMixin:Configure()
     self.Shadow:SetShown(self.config.shadow)
     self.Mover:Unlock()
     self:CreateFader(self.config.fader, self.buttons)
-end
 
-function AB:CreateActionBarButton(id, parent, keyBoundTarget)
-    local button = CreateFrame("CheckButton", "$parent_Button", parent, "ActionBarButtonTemplate")
-    button:SetID(id)
-    button.config = parent.config
-    button.id = id
-    _G.Mixin(button, AB.ActionBarButtonMixin)
-    button:SetScript("OnUpdate", AB.ActionBarButtonMixin.OnUpdate)
-    button.IsFlashing = button.IsFlashing or ActionButton_IsFlashing
-
-    if keyBoundTarget then
-        _G.Mixin(button, AB.KeyBoundButtonMixin)
-
-        button.keyBoundTarget = keyBoundTarget
-        AB:SecureHookScript(button, "OnEnter", function(self)
-            R.Libs.KeyBound:Set(self)
-        end)
-    end
-
-    button:Configure()
-
-    return button
-end
-
-AB.ActionBarButtonMixin = {}
-
-function AB.ActionBarButtonMixin:Configure()
-    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-
-    R.Modules.ButtonStyles:StyleActionButton(self)
-end
-
-function AB.ActionBarButtonMixin:OnUpdate(elapsed)
-    if self.stateDirty then
-        self:UpdateState()
-        self.stateDirty = nil
-    end
-
-    if self.flashDirty then
-        self:UpdateFlash()
-        self.flashDirty = nil
-    end
-
-    if self:IsFlashing() then
-        local flashtime = self.flashtime
-        flashtime = flashtime - elapsed
-
-        if flashtime <= 0 then
-            local overtime = -flashtime
-            if overtime >= ATTACK_BUTTON_FLASH_TIME then
-                overtime = 0
+    local page = self.config.page
+    if page then
+        if self.id == 1 then
+            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
+            page = page .. " [shapeshift] 13; [bar:2] 2;"
+            for pageNumber = 3, 6 do
+                if AB:IsPageEnabled(pageNumber) then
+                    page = page .. " [bar:" .. pageNumber .. "] " .. pageNumber .. ";"
+                end
             end
-            flashtime = ATTACK_BUTTON_FLASH_TIME - overtime
 
-            local flashTexture = self.Flash
-            if flashTexture:IsShown() then
-                flashTexture:Hide()
-            else
-                flashTexture:Show()
+            if R.PlayerInfo.class == "DRUID" then
+                page = page .. "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:3] 9; [bonusbar:4] 10;"
+            elseif R.PlayerInfo.class == "ROGUE" then
+                page = page .. "[bonusbar:1] 7;"
             end
+
+            page = page .. " [form] 1; 1"
         end
-
-        self.flashtime = flashtime
-    end
-
-    if self.rangeTimer then
-        self.rangeTimer = self.rangeTimer - elapsed
-
-        if rangeTimer <= 0 then
-            local valid = IsActionInRange(self.action)
-            local checksRange = (valid ~= nil)
-            self.checksRange = (valid ~= nil)
-            self.inRange = self.checksRange and valid
-            self:UpdateUsable()
-            self.rangeTimer = TOOLTIP_UPDATE_TIME
-        end
+        RegisterAttributeDriver(self, "actionpage", page)
     end
 end
 
-function AB.ActionBarButtonMixin:UpdateUsable()
-    if self.checksRange and not self.inRange then
-        self.icon.SetVertexColor(0.8, 0.1, 0.1)
-    else
-        local isUsable, notEnoughMana = IsUsableAction(self.action);
-        if isUsable then
-            self.icon:SetVertexColor(1.0, 1.0, 1.0)
-        elseif notEnoughMana then
-            self.icon:SetVertexColor(0.5, 0.5, 1.0)
-        else
-            self.icon:SetVertexColor(0.4, 0.4, 0.4)
-        end
-    end
-
-    if R.isRetail then
-        local isLevelLinkLocked = C_LevelLink.IsActionLocked(self.action)
-        if not self.icon:IsDesaturated() then
-            self.icon:SetDesaturated(isLevelLinkLocked);
-        end
-
-        if self.LevelLinkLockIcon then
-            self.LevelLinkLockIcon:SetShown(isLevelLinkLocked);
-        end
-    end
-
-    if self.HotKey:GetText() == RANGE_INDICATOR then
-        if self.checksRange then
-            self.HotKey:Show()
-            if self.inRange then
-                self.HotKey:SetVertexColor(LIGHTGRAY_FONT_COLOR:GetRGB())
-            else
-                self.HotKey:SetVertexColor(RED_FONT_COLOR:GetRGB())
-            end
-        else
-            self.HotKey:Hide()
+function AB.ActionBarMixin:OnEvent(event, ...)
+    if event == "UNIT_INVENTORY_CHANGED" then
+        local unit = ...
+        if unit == "player" and self.tooltipOwner and GameTooltip:GetOwner() == self.tooltipOwner then
+            self.tooltipOwner:SetTooltip()
         end
     else
-        if self.checksRange and not self.inRange then
-            self.HotKey:SetVertexColor(RED_FONT_COLOR:GetRGB())
-        else
-            self.HotKey:SetVertexColor(LIGHTGRAY_FONT_COLOR:GetRGB())
+        for _, button in pairs(self.buttons) do
+            if HasAction(button.action) then
+                button:OnEvent(event, ...)
+            end
         end
     end
 end

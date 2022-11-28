@@ -13,7 +13,7 @@ function AB:CreatePetBar()
     _G.Mixin(bar, AB.PetBarMixin)
 
     for id = 1, 10 do
-        bar.buttons[id] = AB:CreatePetButton(id, bar, bar.config.keyBoundTarget .. id)
+        bar.buttons[id] = AB:CreatePetButton(id, bar, bar.config.buttonType)
     end
 
     bar.buttons[11] = AB:CreateActionButton("$parent_Button11", bar, _G.PetDismiss, [[Interface\Icons\Spell_Shadow_SacrificialShield]], _G.PET_DISMISS)
@@ -71,27 +71,25 @@ function AB.PetBarMixin:OnEvent(event, arg1, ...)
     end
 end
 
-function AB:CreatePetButton(id, parent, keyBoundTarget)
+function AB:CreatePetButton(id, parent, buttonType)
     local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "PetActionButtonTemplate")
     button:SetID(id)
     button.config = parent.config
     _G.Mixin(button, AB.PetButtonMixin)
+    _G.Mixin(button, AB.KeyBoundButtonMixin)
     button:SetScript("OnEvent", nil)
     button:UnregisterAllEvents()
 
     button.id = id
+    button.buttonType = buttonType
+    button.keyBoundTarget = buttonType .. id
+    
     button.cooldown = _G[button:GetName() .. "Cooldown"]
     button.autoCastable = _G[button:GetName() .. "AutoCastable"]
     button.shine = _G[button:GetName() .. "Shine"]
 
-    if keyBoundTarget then
-        _G.Mixin(button, AB.KeyBoundButtonMixin)
-
-        button.keyBoundTarget = keyBoundTarget
-        AB:SecureHookScript(button, "OnEnter", function(self)
-            R.Libs.KeyBound:Set(self)
-        end)
-    end
+    AB:SecureHookScript(button, "OnEnter", button.PostOnEnter)
+    AB:SecureHookScript(button, "OnEvent", button.PostOnEvent)
 
     button:Configure()
 
@@ -99,6 +97,15 @@ function AB:CreatePetButton(id, parent, keyBoundTarget)
 end
 
 AB.PetButtonMixin = {}
+
+function AB.PetButtonMixin:Configure()
+    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+
+    self:SetAttribute("showgrid", self.config.showGrid and 1 or 0)
+    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
+end
 
 function AB.PetButtonMixin:Update()
     local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(self.id)
@@ -136,10 +143,6 @@ function AB.PetButtonMixin:Update()
         AutoCastShine_AutoCastStop(self.AutoCastShine)
     end
 
-    if not InCombatLockdown() then
-        self:SetShown(name or self.config.showGrid)
-    end
-
     if texture then
         self.icon:SetTexture(isToken and _G[texture] or texture)
         if GetPetActionSlotUsable(self.id) then
@@ -166,11 +169,12 @@ function AB.PetButtonMixin:UpdateCooldown()
     end
 end
 
-function AB.PetButtonMixin:Configure()
-    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+function AB.PetButtonMixin:PostOnEnter()
+    R.Libs.KeyBound:Set(self)
+end
 
-    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
-    self.HotKey:SetShown(not self.config.hideHotkey)
-
-    R.Modules.ButtonStyles:StyleActionButton(self)
+function AB.PetButtonMixin:PostOnEvent(event)
+    if event == "UPDATE_BINDINGS" then
+        self:Configure()
+    end
 end

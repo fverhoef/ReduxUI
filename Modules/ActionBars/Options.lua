@@ -98,32 +98,40 @@ function AB:CreateActionBarOptions(id)
                     return not AB.config["actionBar" .. id].enabled
                 end,
                 args = {
-                    fade = R:CreateToggleOption(L["Mouseover Fade"], nil, 13, nil, nil, function()
+                    fade = R:CreateToggleOption(L["Mouseover Fade"], L["Whether to only show this bar when the mouse is over it"], 1, nil, nil, function()
                         return AB.config["actionBar" .. id].fader == R.config.faders.mouseOver
                     end, function(value)
                         AB.config["actionBar" .. id].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
                     end, function()
                         AB:Update()
                     end),
-                    linebreak5 = { type = "description", name = "", order = 14 },
-                    backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 15, nil, nil, function()
+                    linebreak1 = { type = "description", name = "", order = 2 },
+                    backdrop = R:CreateToggleOption(L["Show Backdrop"], L["Whether or not to show a backdrop behind this bar"], 3, nil, nil, function()
                         return AB.config["actionBar" .. id].backdrop
                     end, function(value)
                         AB.config["actionBar" .. id].backdrop = value
                     end, function()
                         AB:Update()
                     end),
-                    border = R:CreateToggleOption(L["Show Border"], nil, 16, nil, nil, function()
+                    border = R:CreateToggleOption(L["Show Border"], L["Whether or not to show a border around this bar"], 4, nil, nil, function()
                         return AB.config["actionBar" .. id].border
                     end, function(value)
                         AB.config["actionBar" .. id].border = value
                     end, function()
                         AB:Update()
                     end),
-                    shadow = R:CreateToggleOption(L["Shadow"], nil, 17, nil, nil, function()
+                    shadow = R:CreateToggleOption(L["Shadow"], L["Whether or not to show a shadow behind this bar"], 5, nil, nil, function()
                         return AB.config["actionBar" .. id].shadow
                     end, function(value)
                         AB.config["actionBar" .. id].shadow = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak2 = { type = "description", name = "", order = 6 },
+                    showGrid = R:CreateToggleOption(L["Show Grid"], L["Whether to show buttons when unassigned an action"], 7, nil, nil, function()
+                        return AB.config["actionBar" .. id].showGrid
+                    end, function(value)
+                        AB.config["actionBar" .. id].showGrid = value
                     end, function()
                         AB:Update()
                     end)
@@ -148,51 +156,79 @@ function AB:CreateMiscBarOptions(name, title, order, hidden)
             end, function()
                 AB:Update()
             end),
-            lineBreak = { type = "header", name = "", order = 2 },
-            buttonSize = R:CreateRangeOption(L["Button Size"], L["The size of the buttons on this bar."], 4, nil, 10, 50, nil, 1, function()
-                return AB.config[name].buttonSize
-            end, function(value)
-                AB.config[name].buttonSize = value
-            end, function()
-                AB:Update()
-            end),
-            columnSpacing = R:CreateRangeOption(L["Button Spacing"], L["The spacing between each button."], 5, nil, 1, 12, nil, 1, function()
-                return AB.config[name].columnSpacing
-            end, function(value)
-                AB.config[name].columnSpacing = value
-            end, function()
-                AB:Update()
-            end),
-            lineBreak2 = { type = "description", name = "", order = 6 },
-            fade = R:CreateToggleOption(L["Mouseover Fade"], nil, 13, nil, nil, function()
-                return AB.config[name].fader == R.config.faders.mouseOver
-            end, function(value)
-                AB.config[name].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
-            end, function()
-                AB:Update()
-            end),
-            linebreak5 = { type = "description", name = "", order = 14 },
-            backdrop = R:CreateToggleOption(L["Show Backdrop"], nil, 15, nil, nil, function()
-                return AB.config[name].backdrop
-            end, function(value)
-                AB.config[name].backdrop = value
-            end, function()
-                AB:Update()
-            end),
-            border = R:CreateToggleOption(L["Show Border"], nil, 16, nil, nil, function()
-                return AB.config[name].border
-            end, function(value)
-                AB.config[name].border = value
-            end, function()
-                AB:Update()
-            end),
-            shadow = R:CreateToggleOption(L["Shadow"], nil, 17, nil, nil, function()
-                return AB.config[name].shadow
-            end, function(value)
-                AB.config[name].shadow = value
-            end, function()
-                AB:Update()
-            end)
+            layout = {
+                type = "group",
+                name = L["Layout"],
+                order = 2,
+                inline = true,
+                disabled = function()
+                    return not AB.config[name].enabled
+                end,
+                args = {
+                    buttonSize = R:CreateRangeOption(L["Button Size"], L["The size of the buttons on this bar."], 1, nil, 10, 50, nil, 1, function()
+                        return AB.config[name].buttonSize
+                    end, function(value)
+                        AB.config[name].buttonSize = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    columnSpacing = R:CreateRangeOption(L["Button Spacing"], L["The spacing between each button."], 2, nil, 1, 12, nil, 1, function()
+                        return AB.config[name].columnSpacing
+                    end, function(value)
+                        AB.config[name].columnSpacing = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            },
+            styling = {
+                type = "group",
+                name = L["Styling"],
+                order = 3,
+                inline = true,
+                disabled = function()
+                    return not AB.config[name].enabled
+                end,
+                args = {
+                    fade = R:CreateToggleOption(L["Mouseover Fade"], L["Whether or not to show a backdrop behind this bar"], 1, nil, nil, function()
+                        return AB.config[name].fader == R.config.faders.mouseOver
+                    end, function(value)
+                        AB.config[name].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak1 = { type = "description", name = "", order = 2 },
+                    backdrop = R:CreateToggleOption(L["Show Backdrop"], L["Whether or not to show a backdrop behind this bar"], 3, nil, nil, function()
+                        return AB.config[name].backdrop
+                    end, function(value)
+                        AB.config[name].backdrop = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    border = R:CreateToggleOption(L["Show Border"], L["Whether or not to show a border around this bar"], 4, nil, nil, function()
+                        return AB.config[name].border
+                    end, function(value)
+                        AB.config[name].border = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    shadow = R:CreateToggleOption(L["Shadow"], L["Whether or not to show a shadow behind this bar"], 5, nil, nil, function()
+                        return AB.config[name].shadow
+                    end, function(value)
+                        AB.config[name].shadow = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak2 = { type = "description", name = "", order = 6 },
+                    showGrid = R:CreateToggleOption(L["Show Grid"], L["Whether to show buttons when unassigned an action"], 7, nil, nil, function()
+                        return AB.config[name].showGrid
+                    end, function(value)
+                        AB.config[name].showGrid = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            }
         }
     }
 end

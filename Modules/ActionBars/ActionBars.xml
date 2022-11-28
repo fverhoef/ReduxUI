@@ -3,11 +3,13 @@
     <Script file="Config.lua" />
     <Script file="Options.lua" />
     <Script file="ActionBar.lua" />
+    <Script file="ActionBarButton.lua" />
     <Script file="ActionButton.lua" />
     <Script file="KeyBoundButton.lua" />
     <Include file="MainMenuBarArtFrame.xml" />
     <Include file="MicroButtonAndBagsBar.xml" />
     <Include file="SettingsMicroButton.xml" />
+    <Script file="Paging.lua" />
     <Script file="PetBar.lua" />
     <Script file="StanceBar.lua" />
     <Script file="TotemBar.lua" />

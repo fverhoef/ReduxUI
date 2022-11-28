@@ -131,4 +131,4 @@ function BS:UpdateAllActionButtons()
     _G.MainMenuBarVehicleLeaveButton.Border:SetBackdropBorderColor(unpack(BS.config.colors.border))
 end
 
-R.Libs.ActionButton:RegisterCallback("OnButtonEquippedUpdate", BS.UpdateActionButton)
+--R.Libs.ActionButton:RegisterCallback("OnButtonEquippedUpdate", BS.UpdateActionButton)
