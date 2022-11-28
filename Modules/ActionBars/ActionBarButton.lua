@@ -29,6 +29,12 @@ function AB:CreateActionBarButton(id, parent, buttonType)
     button:SetScript("OnDragStart", button.OnDragStart)
     button:SetScript("OnReceiveDrag", button.OnReceiveDrag)
 
+    button.EnableGlow = ActionButton_ShowOverlayGlow
+    button.DisableGlow = ActionButton_HideOverlayGlow
+    if HookActionButton_Update then
+        HookActionButton_Update(button)
+    end
+
     button:OnLoad()
     button:Configure()
 
@@ -36,6 +42,16 @@ function AB:CreateActionBarButton(id, parent, buttonType)
 end
 
 AB.ActionBarButtonMixin = {}
+
+function AB.ActionBarButtonMixin:Configure()
+    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+
+    self:SetAttribute("showgrid", self.config.showGrid and 1 or 0)
+    self:SetAttribute("flyoutDirection", self.config.flyoutDirection)
+    self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
+end
 
 function AB.ActionBarButtonMixin:Configure()
     self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")

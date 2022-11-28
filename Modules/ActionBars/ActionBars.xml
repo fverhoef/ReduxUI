@@ -6,7 +6,7 @@
     <Script file="ActionBarButton.lua" />
     <Script file="ActionButton.lua" />
     <Script file="KeyBoundButton.lua" />
-    <Include file="MainMenuBarArtFrame.xml" />
+    <Include file="VanillaArtFrame.xml" />
     <Include file="MicroButtonAndBagsBar.xml" />
     <Include file="SettingsMicroButton.xml" />
     <Script file="Paging.lua" />

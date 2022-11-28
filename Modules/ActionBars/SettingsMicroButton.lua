@@ -10,8 +10,8 @@ function AB.SettingsMicroButtonMixin:OnLoad()
     self.tooltipText = R.title
     self.newbieText = L["Click to open config dialog. Shift-click to reload UI. Alt-click to lock/unlock frames."]
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    self:SetNormalTexture(R.media.textures.actionBars.microButtonSettings_Up)
-    self:SetPushedTexture(R.media.textures.actionBars.microButtonSettings_Down)
+    self:SetNormalTexture(R.media.textures.actionBars.vanilla.microButtonSettings_Up)
+    self:SetPushedTexture(R.media.textures.actionBars.vanilla.microButtonSettings_Down)
     self:SetHighlightTexture("Interface\\Buttons\\UI-MicroButton-Hilight")
     self:SetPoint("BOTTOMLEFT", R.isRetail and MainMenuMicroButton or HelpMicroButton, "BOTTOMRIGHT", -2, 0)
 end

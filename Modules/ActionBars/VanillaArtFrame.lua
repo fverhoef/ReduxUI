@@ -3,14 +3,14 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-function AB:CreateMainMenuBarArtFrame()
-    AB.MainMenuBarArtFrame = CreateFrame("Frame", addonName .. "MainMenuBarArtFrame", UIParent, "MainMenuBarArtFrameTemplate")
+function AB:CreateVanillaArtFrame()
+    AB.VanillaArtFrame = CreateFrame("Frame", addonName .. "VanillaArtFrame", UIParent, "VanillaArtFrameTemplate")
 end
 
-AB.MainMenuBarArtFrameMixin = {}
-ReduxMainMenuBarArtFrameMixin = AB.MainMenuBarArtFrameMixin
+AB.VanillaArtFrameMixin = {}
+ReduxVanillaArtFrameMixin = AB.VanillaArtFrameMixin
 
-function AB.MainMenuBarArtFrameMixin:OnLoad()
+function AB.VanillaArtFrameMixin:OnLoad()
     if R.isRetail then
         StatusTrackingBarManager:SetParent(self)
         StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ReputationStatusBarTemplate");
@@ -20,10 +20,6 @@ function AB.MainMenuBarArtFrameMixin:OnLoad()
         StatusTrackingBarManager:AddBarFromTemplate("FRAME", "AzeriteBarTemplate");
     end
 
-    self.PageNumber:SetText(GetActionBarPage())
-    self.PageNumber:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
-
-    self:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("PLAYER_LEVEL_UP")
     self:RegisterEvent("PLAYER_UPDATE_RESTING")
@@ -35,13 +31,13 @@ function AB.MainMenuBarArtFrameMixin:OnLoad()
         end)
     end
 
+    self.config = AB.config.actionBar1.vanillaArt
+
     self:Update()
 end
 
-function AB.MainMenuBarArtFrameMixin:OnEvent(event, ...)
-    if event == "ACTIONBAR_PAGE_CHANGED" then
-        self.PageNumber:SetText(GetActionBarPage())
-    elseif event == "PLAYER_REGEN_ENABLED" then
+function AB.VanillaArtFrameMixin:OnEvent(event, ...)
+    if event == "PLAYER_REGEN_ENABLED" then
         if self.needsUpdate then
             self:UnregisterEvent("PLAYER_REGEN_ENABLED")
             self:Update()
@@ -51,11 +47,11 @@ function AB.MainMenuBarArtFrameMixin:OnEvent(event, ...)
     end
 end
 
-function AB.MainMenuBarArtFrameMixin:OnStatusBarsUpdated()
+function AB.VanillaArtFrameMixin:OnStatusBarsUpdated()
     self:Update()
 end
 
-function AB.MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
+function AB.VanillaArtFrameMixin:GetNumberOfVisibleTrackingBars()
     if R.isRetail then
         return StatusTrackingBarManager:GetNumberVisibleBars()
     else
@@ -63,7 +59,7 @@ function AB.MainMenuBarArtFrameMixin:GetNumberOfVisibleTrackingBars()
     end
 end
 
-function AB.MainMenuBarArtFrameMixin:UpdateRested()
+function AB.VanillaArtFrameMixin:UpdateRested()
     if self.ExperienceBar:IsShown() then
         local exhaustionThreshold = GetXPExhaustion()
 
@@ -85,14 +81,14 @@ function AB.MainMenuBarArtFrameMixin:UpdateRested()
     end
 end
 
-function AB.MainMenuBarArtFrameMixin:Update()
+function AB.VanillaArtFrameMixin:Update()
     if InCombatLockdown() then
         self.needsUpdate = true
         self:RegisterEvent("PLAYER_REGEN_ENABLED")
         return
     end
 
-    if not AB.config.mainMenuBarArt.enabled then
+    if not self.config.enabled then
         self:Hide()
         return
     else
@@ -137,7 +133,7 @@ function AB.MainMenuBarArtFrameMixin:Update()
         self.ReputationBar:SetPoint("BOTTOMRIGHT", 0, showXP and -8 or -13)
     end
 
-    local isLarge = not AB.config.mainMenuBarArt.stackBottomBars and AB.config.actionBar4.enabled
+    local isLarge = not self.config.stackBottomBars and AB.config.actionBar4.enabled
     local numBars = self:GetNumberOfVisibleTrackingBars()
     local isDouble = numBars >= 2
 
@@ -192,26 +188,133 @@ function AB.MainMenuBarArtFrameMixin:Update()
         StatusTrackingBarManager.SingleBarSmallUpper:Hide()
         StatusTrackingBarManager.SingleBarLargeUpper:Hide()
     end
+     
+    for i, button in ipairs(AB.bars[1].buttons) do
+        button:SetSize(36, 36)
+        button:ClearAllPoints()
+        if i == 1 then
+            button:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 8, 4)
+        else
+            button:SetPoint("LEFT", AB.bars[1].buttons[i - 1], "RIGHT", 6, 0)
+        end
+    end
+    AB.bars[1].Backdrop:SetShown(false)
+    AB.bars[1].Border:SetShown(false)
+    AB.bars[1].Shadow:SetShown(false)
+    AB.bars[1].Mover:Lock(true)
+
+    AB.pageUpButton:ClearAllPoints()
+    AB.pageUpButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, 8.5)
+    AB.pageUpButton.style = AB.Styles.Vanilla
+    AB.pageUpButton:Update()
+
+    AB.pageDownButton:ClearAllPoints()
+    AB.pageDownButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, -9.5)
+    AB.pageDownButton.style = AB.Styles.Vanilla
+    AB.pageDownButton:Update()
+
+    AB.pageNumber:ClearAllPoints()
+    AB.pageNumber:SetPoint("LEFT", self, "LEFT", 530, -9)
+    AB.pageNumber:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    AB.pageNumber:SetTextColor(1, 0.82, 0)
+
+    for i, button in ipairs(AB.bars[2].buttons) do
+        button:SetSize(36, 36)
+        button:ClearAllPoints()
+        if i == 1 then
+            button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[1], "TOPLEFT", 0, 10)
+        else
+            button:SetPoint("LEFT", AB.bars[2].buttons[i - 1], "RIGHT", 6, 0)
+        end
+    end
+    AB.bars[2].Backdrop:SetShown(false)
+    AB.bars[2].Border:SetShown(false)
+    AB.bars[2].Shadow:SetShown(false)
+    AB.bars[2].Mover:Lock(true)
+
+    for i, button in ipairs(AB.bars[3].buttons) do
+        button:SetSize(36, 36)
+        button:ClearAllPoints()
+
+        if self.config.stackBottomBars then
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.bars[2].buttons[1], "TOPLEFT", 0, 5)
+            else
+                button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
+            end
+        else
+            if i == 1 then
+                button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[12], "BOTTOMRIGHT", 45, 0)
+            elseif i == 7 then
+                button:SetPoint("BOTTOMLEFT", AB.bars[3].buttons[1], "TOPLEFT", 0, 10)
+            else
+                button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
+            end
+        end
+    end
+    AB.bars[3].Backdrop:SetShown(false)
+    AB.bars[3].Border:SetShown(false)
+    AB.bars[3].Shadow:SetShown(false)
+    AB.bars[3].Mover:Lock(true)
+
+    for i, button in ipairs(AB.petBar.buttons) do
+        button:SetSize(32, 32)
+        button:ClearAllPoints()
+
+        if i == 1 then
+            button:SetPoint("BOTTOMLEFT", self.config.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+        else
+            button:SetPoint("LEFT", AB.petBar.buttons[i - 1], "RIGHT", 6, 0)
+        end
+    end
+    AB.petBar.Backdrop:SetShown(false)
+    AB.petBar.Border:SetShown(false)
+    AB.petBar.Shadow:SetShown(false)
+    AB.petBar.Mover:Lock(true)
+
+    for i, button in ipairs(AB.stanceBar.buttons) do
+        button:SetSize(32, 32)
+        button:ClearAllPoints()
+
+        if i == 1 then
+            button:SetPoint("BOTTOMLEFT", self.config.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+        else
+            button:SetPoint("LEFT", AB.stanceBar.buttons[i - 1], "RIGHT", 6, 0)
+        end
+    end
+    AB.stanceBar.Backdrop:SetShown(false)
+    AB.stanceBar.Border:SetShown(false)
+    AB.stanceBar.Shadow:SetShown(false)
+    AB.stanceBar.Mover:Lock(true)
+
+    if AB.totemBar then
+        AB.totemBar:ClearAllPoints()
+        AB.totemBar:SetPoint("BOTTOMLEFT", self.config.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
+        AB.totemBar.Backdrop:SetShown(false)
+        AB.totemBar.Border:SetShown(false)
+        AB.totemBar.Shadow:SetShown(false)
+        AB.totemBar.Mover:Lock(true)
+    end
 end
 
-AB.MainMenuBarArtFrameExperienceBarMixin = {}
-ReduxMainMenuBarArtFrameExperienceBarMixin = AB.MainMenuBarArtFrameExperienceBarMixin
+AB.VanillaArtFrameExperienceBarMixin = {}
+ReduxVanillaArtFrameExperienceBarMixin = AB.VanillaArtFrameExperienceBarMixin
 
-function AB.MainMenuBarArtFrameExperienceBarMixin:OnEnter()
+function AB.VanillaArtFrameExperienceBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function AB.MainMenuBarArtFrameExperienceBarMixin:OnLeave()
+function AB.VanillaArtFrameExperienceBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-AB.MainMenuBarArtFrameReputationBarMixin = {}
-ReduxMainMenuBarArtFrameReputationBarMixin = AB.MainMenuBarArtFrameReputationBarMixin
+AB.VanillaArtFrameReputationBarMixin = {}
+ReduxVanillaArtFrameReputationBarMixin = AB.VanillaArtFrameReputationBarMixin
 
-function AB.MainMenuBarArtFrameReputationBarMixin:OnEnter()
+function AB.VanillaArtFrameReputationBarMixin:OnEnter()
     self.OverlayFrame.Text:Show()
 end
 
-function AB.MainMenuBarArtFrameReputationBarMixin:OnLeave()
+function AB.VanillaArtFrameReputationBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end

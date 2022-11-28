@@ -9,7 +9,6 @@ function AB:CreatePetBar()
     bar.defaults = AB.defaults.petBar
     bar.buttons = {}
     bar:SetFrameStrata("LOW")
-    _G.Mixin(bar, AB.ActionBarMixin)
     _G.Mixin(bar, AB.PetBarMixin)
 
     for id = 1, 10 do
@@ -19,7 +18,6 @@ function AB:CreatePetBar()
     bar.buttons[11] = AB:CreateActionButton("$parent_Button11", bar, _G.PetDismiss, [[Interface\Icons\Spell_Shadow_SacrificialShield]], _G.PET_DISMISS)
 
     bar.visibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
-    RegisterStateDriver(bar, "visibility", bar.visibility)
 
     bar:SetScript("OnEvent", bar.OnEvent)
 
@@ -52,6 +50,34 @@ function AB:CreatePetBar()
 end
 
 AB.PetBarMixin = {}
+
+function AB.PetBarMixin:Configure()
+    for i, button in ipairs(self.buttons) do
+        button:SetSize(self.config.buttonSize, self.config.buttonSize)
+        button:ClearAllPoints()
+        if i == 1 then
+            button:SetPoint("LEFT", self, "LEFT")
+        else
+            button:SetPoint("LEFT", self.buttons[i - 1], "RIGHT", self.config.columnSpacing, 0)
+        end
+    end
+
+    if self.visibility then
+        RegisterStateDriver(self, "visibility", self.visibility)
+    else
+        self:SetShown(self.config.enabled)
+    end
+    self:SetSize(#self.buttons * self.config.buttonSize + (#self.buttons - 1) * self.config.columnSpacing, self.config.buttonSize)
+
+    self:ClearAllPoints()
+    self:SetNormalizedPoint(self.config.point)
+
+    self.Backdrop:SetShown(self.config.backdrop)
+    self.Border:SetShown(self.config.border)
+    self.Shadow:SetShown(self.config.shadow)
+    self.Mover:Unlock()
+    self:CreateFader(self.config.fader, self.buttons)
+end
 
 function AB.PetBarMixin:OnEvent(event, arg1, ...)
     if event == "UNIT_PET" and arg1 ~= "player" then

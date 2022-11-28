@@ -154,7 +154,9 @@ function AB.ActionBarMixin:Configure()
         end
     end
 
-    if not self.visibility then
+    if self.visibility then
+        RegisterStateDriver(self, "visibility", self.visibility)
+    else
         self:SetShown(self.config.enabled)
     end
     self:SetSize(totalWidth, totalHeight)

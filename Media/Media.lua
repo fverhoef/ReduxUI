@@ -10,13 +10,21 @@ R.media = {
         arrow1 = MEDIA_PREFIX .. "\\Textures\\Arrow1",
         logo = MEDIA_PREFIX .. "\\Textures\\Logo",
         actionBars = {
-            mainMenuBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MainMenuBar-Background",
-            mainMenuBarEndCap = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MainMenuBar-EndCap",
-            mainMenuBarTrackingBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MainMenuBar-TrackingBar",
-            microButtonAndBagsBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonAndBagsBar",
-            microButtonSettings_Up = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Up",
-            microButtonSettings_Down = MEDIA_PREFIX .. "\\Textures\\ActionBars\\MicroButtonSettings-Down",
-            performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\PerformanceBar"
+            dragonflight = {
+                actionBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\ActionBar",
+                actionBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\ActionBarBackground",
+                bagSlots = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\BagSlots",
+                microMenu = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\MicroMenu"
+            },
+            vanilla = {
+                mainMenuBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MainMenuBar-Background",
+                mainMenuBarEndCap = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MainMenuBar-EndCap",
+                mainMenuBarTrackingBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MainMenuBar-TrackingBar",
+                microButtonAndBagsBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MicroButtonAndBagsBar",
+                microButtonSettings_Up = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MicroButtonSettings-Up",
+                microButtonSettings_Down = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MicroButtonSettings-Down",
+                performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\PerformanceBar"
+            }
         },
         buttons = {
             backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop",

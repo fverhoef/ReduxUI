@@ -22,18 +22,15 @@ function AB:Enable()
     end
 
     AB:DisableBlizzardBars()
-    if AB.config.mainMenuBarArt.enabled then
-        AB:CreateMainMenuBarArtFrame()
-    end
-    AB:CreateMicroButtonAndBagsBar()
 
     AB.bars = {}
     for i = 1, 10 do
         AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
     end
 
-    AB.pageUpButton = AB:CreatePageUpButton()
-    AB.pageDownButton = AB:CreatePageDownButton()
+    AB.pageUpButton = AB:CreatePageUpButton(AB.bars[1])
+    AB.pageDownButton = AB:CreatePageDownButton(AB.bars[1])
+    AB.pageNumber = AB:CreatePageNumber()
 
     AB.petBar = AB:CreatePetBar()
     AB.stanceBar = AB:CreateStanceBar()
@@ -42,24 +39,32 @@ function AB:Enable()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
+    if AB.config.actionBar1.vanillaArt.enabled then
+        AB:CreateVanillaArtFrame()
+    end
+    AB:CreateMicroButtonAndBagsBar()
+
     -- AB.experienceBar = AB:CreateExperienceBar()
     -- AB.reputationBar = AB:CreateReputationBar()
 
     AB:ReassignBindings()
     AB:Update()
 
+    AB:RegisterEvent("ACTIONBAR_PAGE_CHANGED", AB.UpdatePageNumber)
     AB:RegisterEvent("PET_BATTLE_CLOSE", AB.ReassignBindings)
     AB:RegisterEvent("PET_BATTLE_OPENING_DONE", AB.ClearBindings)
     AB:RegisterEvent("UPDATE_BINDINGS", AB.ReassignBindings)
 end
 
 function AB:Update()
-    if AB.config.mainMenuBarArt.enabled and not AB.MainMenuBarArtFrame then
-        AB:CreateMainMenuBarArtFrame()
+    if AB.config.actionBar1.vanillaArt.enabled and not AB.VanillaArtFrame then
+        AB:CreateVanillaArtFrame()
     end
     for _, bar in ipairs(AB.bars) do
         bar:Configure()
     end
+
+    AB:UpdateAllowedPages()
 
     AB.petBar:Configure()
     AB.stanceBar:Configure()
@@ -74,106 +79,24 @@ function AB:Update()
         AB.zoneBar:Configure()
     end
 
-    if AB.config.mainMenuBarArt.enabled then
-        AB.MainMenuBarArtFrame:Update()
-        
-        for i, button in ipairs(AB.bars[1].buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-            if i == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.MainMenuBarArtFrame, "BOTTOMLEFT", 8, 4)
-            else
-                button:SetPoint("LEFT", AB.bars[1].buttons[i - 1], "RIGHT", 6, 0)
-            end
-        end
-        AB.bars[1].Backdrop:SetShown(false)
-        AB.bars[1].Border:SetShown(false)
-        AB.bars[1].Shadow:SetShown(false)
-        AB.bars[1].Mover:Lock(true)
+    AB.pageUpButton:ClearAllPoints()
+    AB.pageUpButton:SetPoint("RIGHT", AB.bars[1], "LEFT", -5, 10)
+    AB.pageUpButton.style = AB.config.actionBar1.pageButtonStyle
+    AB.pageUpButton:Update()
 
-        AB.pageUpButton:ClearAllPoints()
-        AB.pageUpButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, 8.5)
-        AB.pageDownButton:ClearAllPoints()
-        AB.pageDownButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, -9.5)
+    AB.pageDownButton:ClearAllPoints()
+    AB.pageDownButton:SetPoint("RIGHT", AB.bars[1], "LEFT", -5, -10)
+    AB.pageDownButton.style = AB.config.actionBar1.pageButtonStyle
+    AB.pageDownButton:Update()
 
-        for i, button in ipairs(AB.bars[2].buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-            if i == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[1], "TOPLEFT", 0, 10)
-            else
-                button:SetPoint("LEFT", AB.bars[2].buttons[i - 1], "RIGHT", 6, 0)
-            end
-        end
-        AB.bars[2].Backdrop:SetShown(false)
-        AB.bars[2].Border:SetShown(false)
-        AB.bars[2].Shadow:SetShown(false)
-        AB.bars[2].Mover:Lock(true)
+    AB.pageNumber:ClearAllPoints()
+    AB.pageNumber:SetPoint("RIGHT", AB.bars[1], "LEFT", -2, 0)
+    AB.pageNumber:SetFont(STANDARD_TEXT_FONT, 13, "OUTLINE")
+    AB.pageNumber:SetTextColor(1, 1, 1)
 
-        for i, button in ipairs(AB.bars[3].buttons) do
-            button:SetSize(36, 36)
-            button:ClearAllPoints()
-
-            if AB.config.mainMenuBarArt.stackBottomBars then
-                if i == 1 then
-                    button:SetPoint("BOTTOMLEFT", AB.bars[2].buttons[1], "TOPLEFT", 0, 5)
-                else
-                    button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
-                end
-            else
-                if i == 1 then
-                    button:SetPoint("BOTTOMLEFT", AB.bars[1].buttons[12], "BOTTOMRIGHT", 45, 0)
-                elseif i == 7 then
-                    button:SetPoint("BOTTOMLEFT", AB.bars[3].buttons[1], "TOPLEFT", 0, 10)
-                else
-                    button:SetPoint("LEFT", AB.bars[3].buttons[i - 1], "RIGHT", 6, 0)
-                end
-            end
-        end
-        AB.bars[3].Backdrop:SetShown(false)
-        AB.bars[3].Border:SetShown(false)
-        AB.bars[3].Shadow:SetShown(false)
-        AB.bars[3].Mover:Lock(true)
-
-        for i, button in ipairs(AB.petBar.buttons) do
-            button:SetSize(32, 32)
-            button:ClearAllPoints()
-
-            if i == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
-            else
-                button:SetPoint("LEFT", AB.petBar.buttons[i - 1], "RIGHT", 6, 0)
-            end
-        end
-        AB.petBar.Backdrop:SetShown(false)
-        AB.petBar.Border:SetShown(false)
-        AB.petBar.Shadow:SetShown(false)
-        AB.petBar.Mover:Lock(true)
-
-        for i, button in ipairs(AB.stanceBar.buttons) do
-            button:SetSize(32, 32)
-            button:ClearAllPoints()
-
-            if i == 1 then
-                button:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
-            else
-                button:SetPoint("LEFT", AB.stanceBar.buttons[i - 1], "RIGHT", 6, 0)
-            end
-        end
-        AB.stanceBar.Backdrop:SetShown(false)
-        AB.stanceBar.Border:SetShown(false)
-        AB.stanceBar.Shadow:SetShown(false)
-        AB.stanceBar.Mover:Lock(true)
-
-        if AB.totemBar then
-            AB.totemBar:ClearAllPoints()
-            AB.totemBar:SetPoint("BOTTOMLEFT", AB.config.mainMenuBarArt.stackBottomBars and AB.bars[3].buttons[1] or AB.bars[2].buttons[1], "TOPLEFT", 18, 5)
-            AB.totemBar.Backdrop:SetShown(false)
-            AB.totemBar.Border:SetShown(false)
-            AB.totemBar.Shadow:SetShown(false)
-            AB.totemBar.Mover:Lock(true)
-        end
-    end
+    if AB.VanillaArtFrame then
+        AB.VanillaArtFrame:Update()
+    end    
 end
 
 function AB:DisableBlizzardBars()
