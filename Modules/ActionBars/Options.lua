@@ -29,7 +29,7 @@ function AB:CreateActionBarOptions(id, disabledFunc)
             end),
             disabledNote = {
                 type = "description",
-                name = L["NOTE: When using Vanilla style main action bars, some options are disabled."],
+                name = string.format(L["%sNOTE:|r When using Vanilla style main action bars, some options are disabled."], R:Hex(1, 0, 0)),
                 order = 2,
                 hidden = function()
                     return not AB.config["actionBar" .. id].enabled or not (disabledFunc and disabledFunc())
@@ -42,7 +42,9 @@ function AB:CreateActionBarOptions(id, disabledFunc)
                 inline = true,
                 hidden = id ~= 1,
                 args = {
-                    enableDragonflightArt = R:CreateToggleOption(L["Enable Dragonflight Art"], nil, 1, "full", nil, function()
+                    enableDragonflightArt = R:CreateToggleOption(L["Enable Dragonflight Art"],
+                                                                 L["Whether or not the Dragonflight artwork for the main action bar (Gryphons/Wyverns, depending on faction) is shown."], 1, "full",
+                                                                 nil, function()
                         return AB.config.actionBar1.dragonflightArt.enabled
                     end, function(value)
                         AB.config.actionBar1.dragonflightArt.enabled = value
@@ -50,7 +52,9 @@ function AB:CreateActionBarOptions(id, disabledFunc)
                             AB.config.actionBar1.vanillaArt.enabled = false
                         end
                     end, AB.Update),
-                    enableVanillaArt = R:CreateToggleOption(L["Enable Vanilla Art"], nil, 2, "full", nil, function()
+                    enableVanillaArt = R:CreateToggleOption(L["Enable Vanilla Art"], string.format(
+                                                                L["Whether or not the Vanilla artwork for the main action bar is shown.\n\n%sNOTE:|r When using this option, you will not be able to adjust button layout and styling for the action bars 1-5."],
+                                                                R:Hex(1, 0, 0)), 2, "full", nil, function()
                         return AB.config.actionBar1.vanillaArt.enabled
                     end, function(value)
                         AB.config.actionBar1.vanillaArt.enabled = value
@@ -198,7 +202,7 @@ function AB:CreateMiscBarOptions(name, title, order, hidden, disabledFunc)
             end),
             disabledNote = {
                 type = "description",
-                name = L["NOTE: When using Vanilla style main action bars, some options are disabled."],
+                name = string.format(L["%sNOTE:|r When using Vanilla style main action bars, some options are disabled."], R:Hex(1, 0, 0)),
                 order = 2,
                 hidden = function()
                     return not AB.config[name].enabled or not (disabledFunc and disabledFunc())

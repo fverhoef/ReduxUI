@@ -158,7 +158,12 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
             end, function(value)
                 UF:UnitConfig(unit).enabled = value
             end, ReloadUI, L["Disabling this unit requires a UI reload. Proceed?"]),
-            desc = { order = 2, type = "description", name = L["NOTE: This unit is currently using a non-custom style preset. Some options may be disabled."], hidden = IsCustomStyled(unit) },
+            desc = {
+                order = 2,
+                type = "description",
+                name = string.format(L["%sNOTE:|r This unit is currently using a non-custom style preset. Some options may be disabled."], R:Hex(1, 0, 0)),
+                hidden = IsCustomStyled(unit)
+            },
             general = {
                 type = "group",
                 name = L["General"],
@@ -395,7 +400,13 @@ function UF:CreateUnitHealthOption(unit, order)
         type = "group",
         name = L["Health Bar"],
         order = order,
-        args = { desc = { order = 1, type = "description", name = L["NOTE: The size of the health bar for a unit always matches the frame size; to resize it, adjust the size of the frame."] } }
+        args = {
+            desc = {
+                order = 1,
+                type = "description",
+                name = string.format(L["%sNOTE:|r The size of the health bar for a unit always matches the frame size; to resize it, adjust the size of the frame."], R:Hex(1, 0, 0))
+            }
+        }
     }
 end
 
@@ -1146,14 +1157,17 @@ function UF:CreateUnitTrinketOption(unit, order)
                 name = L["Announcements"],
                 order = 2,
                 inline = true,
-                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                disabled = function()
+                    return not UF:UnitConfig(unit).trinket.enabled
+                end,
                 args = {
                     trinketUseAnnounce = UF:CreateToggleOption(unit, L["Announce Trinket Use"], L["Whether to send an announcement when this unit uses their PvP trinket."], 3, nil, nil, function()
                         return UF:UnitConfig(unit).trinket.trinketUseAnnounce
                     end, function(value)
                         UF:UnitConfig(unit).trinket.trinketUseAnnounce = value
                     end),
-                    trinketUpAnnounce = UF:CreateToggleOption(unit, L["Announce Trinket Ready"], L["Whether to send an announcement when this unit's PvP trinket comes off cooldown."], 4, nil, nil, function()
+                    trinketUpAnnounce = UF:CreateToggleOption(unit, L["Announce Trinket Ready"], L["Whether to send an announcement when this unit's PvP trinket comes off cooldown."], 4, nil, nil,
+                                                              function()
                         return UF:UnitConfig(unit).trinket.trinketUpAnnounce
                     end, function(value)
                         UF:UnitConfig(unit).trinket.trinketUpAnnounce = value
@@ -1162,7 +1176,7 @@ function UF:CreateUnitTrinketOption(unit, order)
                         return UF:UnitConfig(unit).trinket.announceChannel
                     end, function(value)
                         UF:UnitConfig(unit).trinket.announceChannel = value
-                    end),
+                    end)
                 }
             },
             size = {
@@ -1170,7 +1184,9 @@ function UF:CreateUnitTrinketOption(unit, order)
                 name = L["Size"],
                 order = 3,
                 inline = true,
-                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                disabled = function()
+                    return not UF:UnitConfig(unit).trinket.enabled
+                end,
                 args = {
                     width = UF:CreateRangeOption(unit, L["Width"], L["The width of the trinket icon."], 1, function()
                         return not UF:UnitConfig(unit).trinket.size[1]
@@ -1193,7 +1209,9 @@ function UF:CreateUnitTrinketOption(unit, order)
                 name = L["Position"],
                 order = 4,
                 inline = true,
-                disabled = function() return not UF:UnitConfig(unit).trinket.enabled end,
+                disabled = function()
+                    return not UF:UnitConfig(unit).trinket.enabled
+                end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
                         return UF:UnitConfig(unit).trinket.point[1]
@@ -1237,7 +1255,9 @@ function UF:CreateUnitDRTrackerOption(unit, order)
                 name = L["Position"],
                 order = 2,
                 inline = true,
-                disabled = function() return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled end,
+                disabled = function()
+                    return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled
+                end,
                 args = {
                     iconSize = UF:CreateRangeOption(unit, L["Icon Size"], L["The size of the DR icons."], 1, function()
                         return not UF:UnitConfig(unit).diminishingReturnsTracker.iconSize
@@ -1260,7 +1280,9 @@ function UF:CreateUnitDRTrackerOption(unit, order)
                 name = L["Position"],
                 order = 3,
                 inline = true,
-                disabled = function() return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled end,
+                disabled = function()
+                    return not UF:UnitConfig(unit).diminishingReturnsTracker.enabled
+                end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
                         return UF:UnitConfig(unit).diminishingReturnsTracker.point[1]
