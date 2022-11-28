@@ -125,7 +125,7 @@ local function Update(self, event, unit, powerType)
 		end
 
 		if(PlayerClass == 'ROGUE') then
-			chargedPoints = GetUnitChargedPowerPoints(unit)
+			chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
 			powerType = powerType or ClassPowerType
@@ -263,7 +263,7 @@ do
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if(PlayerClass == 'ROGUE') then
+		if(PlayerClass == 'ROGUE' and oUF.isRetail) then
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
 
