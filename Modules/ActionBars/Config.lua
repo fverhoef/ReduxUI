@@ -244,10 +244,9 @@ R:RegisterModuleConfig(AB, {
     },
     vehicleExitBar = {
         enabled = true,
-        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 166 },
+        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 },
         fader = R.config.faders.onShow,
         buttonSize = 32,
-        columnSpacing = 2,
         backdrop = false,
         border = false,
         shadow = false

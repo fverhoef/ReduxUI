@@ -7,10 +7,10 @@ function AB:CreateVehicleExitBar()
     local bar = CreateFrame("Frame", addonName .. "_VehicleExitBar", UIParent)
     bar.buttons = {}
     bar.config = AB.config.vehicleExitBar
-    _G.Mixin(bar, AB.ActionBarMixin)
+    _G.Mixin(bar, AB.VehicleExitBarMixin)
 
     local button = CreateFrame("Button", "$parent_Button", bar)
-    _G.Mixin(bar, AB.VehicleExitButtonMixin)
+    _G.Mixin(button, AB.VehicleExitButtonMixin)
     button:SetPoint("TOPLEFT")
     button:SetPoint("BOTTOMRIGHT")
     button:SetScript("OnClick", button.OnClick)
@@ -45,13 +45,35 @@ function AB:CreateVehicleExitBar()
     return bar
 end
 
+AB.VehicleExitBarMixin = {}
+
+function AB.VehicleExitBarMixin:Configure()
+    self.buttons[1]:Configure()
+
+    self:SetSize(self.config.buttonSize, self.config.buttonSize)
+    self:ClearAllPoints()
+    self:SetNormalizedPoint(self.config.point)
+
+    if self.visibility then
+        RegisterStateDriver(self, "visibility", self.visibility)
+    else
+        self:SetShown(self.config.enabled)
+    end
+
+    self.Backdrop:SetShown(self.config.backdrop)
+    self.Border:SetShown(self.config.border)
+    self.Shadow:SetShown(self.config.shadow)
+    self.Mover:Unlock()
+    self:CreateFader(self.config.fader, self.buttons)
+end
+
 AB.VehicleExitButtonMixin = {}
 
 function AB.VehicleExitButtonMixin:Configure()
-    self:OnEvent()
+    self:Update()
 end
 
-function AB.VehicleExitButtonMixin:OnEvent()
+function AB.VehicleExitButtonMixin:Update()
     if UnitOnTaxi("player") or (_G.CanExitVehicle and CanExitVehicle()) then
         self:Show()
         self:GetNormalTexture():SetDesaturated(false)
@@ -59,6 +81,10 @@ function AB.VehicleExitButtonMixin:OnEvent()
     else
         self:Hide()
     end
+end
+
+function AB.VehicleExitButtonMixin:OnEvent(event)
+    self:Update()
 end
 
 function AB.VehicleExitButtonMixin:OnEnter()

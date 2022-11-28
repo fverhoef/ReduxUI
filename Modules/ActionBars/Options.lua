@@ -224,7 +224,7 @@ function AB:CreateMiscBarOptions(name, title, order, hidden, disabledFunc)
                     end, function()
                         AB:Update()
                     end),
-                    columnSpacing = R:CreateRangeOption(L["Button Spacing"], L["The spacing between each button."], 2, nil, 1, 12, nil, 1, function()
+                    columnSpacing = R:CreateRangeOption(L["Button Spacing"], L["The spacing between each button."], 2, AB.config[name].columnSpacing == nil, 1, 12, nil, 1, function()
                         return AB.config[name].columnSpacing
                     end, function(value)
                         AB.config[name].columnSpacing = value
@@ -329,6 +329,9 @@ R:RegisterModuleOptions(AB, function()
                 return AB.config.actionBar1.vanillaArt.enabled
             end),
             totemBar = AB:CreateMiscBarOptions("totemBar", L["Totem Bar"], 23, R.isRetail or R.PlayerInfo.class ~= "SHAMAN", function()
+                return AB.config.actionBar1.vanillaArt.enabled
+            end),
+            vehicleExitBar = AB:CreateMiscBarOptions("vehicleExitBar", L["Vehicle Exit Bar"], 24, nil, function()
                 return AB.config.actionBar1.vanillaArt.enabled
             end)
         }
