@@ -31,9 +31,6 @@ function AB:CreateActionBarButton(id, parent, buttonType)
 
     button.EnableGlow = ActionButton_ShowOverlayGlow
     button.DisableGlow = ActionButton_HideOverlayGlow
-    if HookActionButton_Update then
-        HookActionButton_Update(button)
-    end
 
     button:OnLoad()
     button:Configure()
@@ -224,6 +221,11 @@ function AB.ActionBarButtonMixin:Update()
     self.feedback_action = action
 
     R.Modules.ButtonStyles:UpdateActionButton(self)
+
+    -- SpellActivationOverlay integration
+    if HookActionButton_Update then
+        HookActionButton_Update(self)
+    end
 end
 
 function AB.ActionBarButtonMixin:UpdateHighlightMark()
