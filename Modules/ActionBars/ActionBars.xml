@@ -6,6 +6,7 @@
     <Script file="ActionBarButton.lua" />
     <Script file="ActionButton.lua" />
     <Script file="KeyBoundButton.lua" />
+    <Script file="DragonflightArt.lua" />
     <Include file="VanillaArtFrame.xml" />
     <Include file="MicroButtonAndBagsBar.xml" />
     <Include file="SettingsMicroButton.xml" />

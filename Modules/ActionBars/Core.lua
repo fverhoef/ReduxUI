@@ -28,6 +28,8 @@ function AB:Enable()
         AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
     end
 
+    AB:CreateDragonflightArt()
+
     AB.pageUpButton = AB:CreatePageUpButton(AB.bars[1])
     AB.pageDownButton = AB:CreatePageDownButton(AB.bars[1])
     AB.pageNumber = AB:CreatePageNumber()
@@ -78,6 +80,9 @@ function AB:Update()
     if AB.zoneBar then
         AB.zoneBar:Configure()
     end
+    
+    AB.bars[1].ArtLeft:SetShown(AB.bars[1].config.dragonflightArt.enabled)
+    AB.bars[1].ArtRight:SetShown(AB.bars[1].config.dragonflightArt.enabled)
 
     AB.pageUpButton:ClearAllPoints()
     AB.pageUpButton:SetPoint("RIGHT", AB.bars[1], "LEFT", -5, 10)

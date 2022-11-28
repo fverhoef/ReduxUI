@@ -35,7 +35,8 @@ R:RegisterModuleConfig(AB, {
         showGrid = true,
         flyoutDirection = "UP",
         pageButtonStyle = AB.Styles.Dragonflight,
-        vanillaArt = { enabled = true, fader = R.config.faders.onShow, style = "Default - Gryphon", stackBottomBars = false }
+        dragonflightArt = { enabled = true },
+        vanillaArt = { enabled = false, stackBottomBars = false }
     },
     actionBar2 = {
         enabled = true,

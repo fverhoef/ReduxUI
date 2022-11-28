@@ -42,12 +42,23 @@ function AB:CreateActionBarOptions(id, disabledFunc)
                 inline = true,
                 hidden = id ~= 1,
                 args = {
-                    enableVanillaArt = R:CreateToggleOption(L["Enable Vanilla Art"], nil, 1, "full", nil, function()
+                    enableDragonflightArt = R:CreateToggleOption(L["Enable Dragonflight Art"], nil, 1, "full", nil, function()
+                        return AB.config.actionBar1.dragonflightArt.enabled
+                    end, function(value)
+                        AB.config.actionBar1.dragonflightArt.enabled = value
+                        if value then
+                            AB.config.actionBar1.vanillaArt.enabled = false
+                        end
+                    end, AB.Update),
+                    enableVanillaArt = R:CreateToggleOption(L["Enable Vanilla Art"], nil, 2, "full", nil, function()
                         return AB.config.actionBar1.vanillaArt.enabled
                     end, function(value)
                         AB.config.actionBar1.vanillaArt.enabled = value
+                        if value then
+                            AB.config.actionBar1.dragonflightArt.enabled = false
+                        end
                     end, AB.Update),
-                    stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 2, nil, function()
+                    stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 3, nil, function()
                         return id ~= 1 or not AB.config.actionBar1.vanillaArt.enabled
                     end, function()
                         return AB.config.actionBar1.vanillaArt.stackBottomBars

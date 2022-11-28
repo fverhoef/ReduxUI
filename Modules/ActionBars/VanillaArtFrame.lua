@@ -203,6 +203,9 @@ function AB.VanillaArtFrameMixin:Update()
     AB.bars[1].Shadow:SetShown(false)
     AB.bars[1].Mover:Lock(true)
 
+    AB.bars[1].ArtLeft:Hide()
+    AB.bars[1].ArtRight:Hide()
+
     AB.pageUpButton:ClearAllPoints()
     AB.pageUpButton:SetPoint("LEFT", AB.bars[1].buttons[12], "RIGHT", -1, 8.5)
     AB.pageUpButton.style = AB.Styles.Vanilla
