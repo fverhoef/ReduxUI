@@ -15,7 +15,7 @@ function AB:CreateDragonflightArt()
     bar.ArtRight:SetSize(88, 79)
     bar.ArtRight:SetPoint("LEFT", bar, "RIGHT", -5, 5)
 
-    if R.PlayerInfo.Faction == "Alliance" then
+    if R.PlayerInfo.faction == "Alliance" then
         bar.ArtLeft:SetTexCoord(0 / 512, 351 / 512, 208 / 2048, 525 / 2048)
         bar.ArtRight:SetTexCoord(0 / 512, 351 / 512, 555 / 2048, 861 / 2048)
     else
