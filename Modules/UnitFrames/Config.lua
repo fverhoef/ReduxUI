@@ -328,7 +328,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 200 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
+        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
