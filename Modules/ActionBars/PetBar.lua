@@ -60,6 +60,8 @@ function AB.PetBarMixin:Configure()
         else
             button:SetPoint("LEFT", self.buttons[i - 1], "RIGHT", self.config.columnSpacing, 0)
         end
+
+        button:Configure()
     end
 
     if self.visibility then

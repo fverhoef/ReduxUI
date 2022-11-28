@@ -55,6 +55,8 @@ function AB.StanceBarMixin:Configure()
         else
             button:SetPoint("LEFT", self.buttons[i - 1], "RIGHT", self.config.columnSpacing, 0)
         end
+
+        button:Configure()
     end
 
     if self.visibility then
@@ -142,8 +144,6 @@ function AB.StanceButtonMixin:Update()
     CooldownFrame_Set(self.cooldown, start, duration, enable)
 
     self:SetChecked(isActive)
-
-    self:Configure()
 end
 
 function AB.StanceButtonMixin:PostOnEnter()
