@@ -455,7 +455,7 @@ function MM:UpdateButtonFrame(radius, width)
     elseif MM.config.style == MM.Styles.Dragonflight then
         MinimapButtonFrame:SetWidth(width - 30)
         MinimapButtonFrame:ClearAllPoints()
-        MinimapButtonFrame:SetPoint("TOP", MinimapButtonFrameToggleButton, "BOTTOM", 0, 5)
+        MinimapButtonFrame:SetPoint("TOP", MinimapButtonFrameToggleButton, "BOTTOM", 0, 0)
 
         MinimapButtonFrameToggleButton:ClearAllPoints()
         MinimapButtonFrameToggleButton:SetPoint("TOP", Minimap, "BOTTOM", 0, 20)
