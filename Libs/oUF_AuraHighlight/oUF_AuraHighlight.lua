@@ -76,7 +76,7 @@ local function GetAuraType(unit, check, list)
     end
 end
 
-local function Update(self, event, unit, isFullUpdate, updatedAuras)
+local function Update(self, event, unit)
     if not unit or self.unit ~= unit then
         return
     end
