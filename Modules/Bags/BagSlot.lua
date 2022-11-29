@@ -87,16 +87,16 @@ function B.BagSlotMixin:Initialize(frame, bagID)
 
     if bagID == BACKPACK_CONTAINER then
         self:SetSize(36, 36)
-        self.Background:SetPoint("TOPRIGHT", self, "TOPRIGHT", 2, 12)
-        self.Background:SetSize(72, 72)
+        self.Background:SetPoint("TOPRIGHT", self, "TOPRIGHT", 3, 11)
+        self.Background:SetSize(72, 70)
 
         SetItemButtonTexture(self, "Interface\\Buttons\\Button-Backpack-Up")
     elseif bagID == KEYRING_CONTAINER then
         SetItemButtonTexture(self, "Interface\\ContainerFrame\\KeyRing-Bag-Icon")
     elseif bagID == BANK_CONTAINER then
         self:SetSize(36, 36)
-        self.Background:SetPoint("TOPRIGHT", self, "TOPRIGHT", 2, 12)
-        self.Background:SetSize(72, 72)
+        self.Background:SetPoint("TOPRIGHT", self, "TOPRIGHT", 3, 11)
+        self.Background:SetSize(72, 70)
 
         SetItemButtonTexture(self, "Interface\\ICONS\\INV_Misc_EngGizmos_17")
     elseif self.isBank then
@@ -106,6 +106,8 @@ function B.BagSlotMixin:Initialize(frame, bagID)
         self:SetID(GetInventorySlotInfo(string.format("BAG%dSLOT", bagID - 1)))
         self.slotID = ContainerIDToInventoryID(bagID)
     end
+    
+    R.Modules.ButtonStyles:StyleItemButton(self)
 end
 
 function B.BagSlotMixin:Update()
