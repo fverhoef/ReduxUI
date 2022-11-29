@@ -50,10 +50,10 @@ function S:StyleTradeSkillFrame()
 
     local regions = { TradeSkillFrame:GetRegions() }
 
-    regions[3]:SetTexture(R.media.textures.frames.dualPaneFrame_Left)
+    regions[3]:SetTexture(S.config.tradeSkill.style == S.Styles.Dragonflight and R.media.textures.frames.dragonflight.dualPaneFrame_Left or R.media.textures.frames.vanilla.dualPaneFrame_Left)
     regions[3]:SetTexCoord(0, 1, 0, 1)
     regions[3]:SetSize(512, 512)
-    regions[4]:SetTexture(R.media.textures.frames.dualPaneFrame_Right)
+    regions[4]:SetTexture(S.config.tradeSkill.style == S.Styles.Dragonflight and R.media.textures.frames.dragonflight.dualPaneFrame_Right or R.media.textures.frames.vanilla.dualPaneFrame_Right)
     regions[4]:SetTexCoord(0, 1, 0, 1)
     regions[4]:SetSize(256, 512)
     regions[4]:ClearAllPoints()

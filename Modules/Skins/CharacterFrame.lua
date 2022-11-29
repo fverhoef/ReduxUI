@@ -125,7 +125,7 @@ end
 
 function S:StylePaperDollFrame()
     local regions = { PaperDollFrame:GetRegions() }
-    regions[1]:SetTexture(R.media.textures.frames.paperDollInfoFrame)
+    regions[1]:SetTexture(S.config.character.style == S.Styles.Dragonflight and R.media.textures.frames.dragonflight.paperDollInfoFrame or R.media.textures.frames.vanilla.paperDollInfoFrame)
     regions[1]:ClearAllPoints()
     regions[1]:SetPoint("TOPLEFT", 0, -1)
     regions[1]:SetSize(512, 512)

@@ -41,9 +41,16 @@ R.media = {
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
         frames = {
-            dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\DualPaneFrame-Left",
-            dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\DualPaneFrame-Right",
-            paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\PaperDollInfoFrame"
+            dragonflight = {
+                dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\DualPaneFrame-Left",
+                dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\DualPaneFrame-Right",
+                paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\PaperDollInfoFrame"
+            },
+            vanilla = {
+                dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrame-Left",
+                dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrame-Right",
+                paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\PaperDollInfoFrame"
+            }
         },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
