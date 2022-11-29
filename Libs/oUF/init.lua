@@ -71,6 +71,7 @@ if not ns.oUF.isRetail then
 
     if not _G.TotemFrame then
         _G.TotemFrame = CreateFrame("Frame", "TotemFrame")
+        _G.TotemFrame:Hide()
     end
 
     if not _G.GetThreatStatusColor then
@@ -95,5 +96,64 @@ if not ns.oUF.isRetail then
 
     if not _G.PowerBarColor.RUNES then
         _G.PowerBarColor.RUNES = { r = 0.50, g = 0.50, b = 0.50 }
+    end
+
+    if not _G.UnitAuraSlots then
+        _G.UnitAuraSlots = function(unit, filter)
+            local slots = { false }
+            
+            local i = 1
+            local name = UnitAura(unit, i, filter)
+            while name do
+                table.insert(slots, i)
+                i = i + 1
+                name = UnitAura(unit, i, filter)
+            end
+
+            return unpack(slots)
+        end
+    end
+    if not _G.C_UnitAuras then
+        _G.C_UnitAuras = {}
+    end
+    if not _G.C_UnitAuras.GetAuraDataBySlot then
+        _G.C_UnitAuras.GetAuraDataBySlot = function(unit, slot, filter)
+            --print("GetAuraDataBySlot(" .. unit .. "," .. slot .. "," .. filter .. ")")
+            local name, icon, applications, debuffType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll,
+                  timeMod = UnitAura(unit, slot, filter)
+
+            return {
+                slot = slot,
+                name = name,
+                icon = icon,
+                applications = applications,
+                duration = duration,
+                expirationTime = expirationTime,
+                sourceUnit = sourceUnit,
+                isStealable = isStealable,
+                nameplateShowPersonal = nameplateShowPersonal,
+                spellId = spellId,
+                canApplyAura = canApplyAura,
+                isBossAura = isBossDebuff,
+                isFromPlayerOrPlayerPet = castByPlayer or sourceUnit == "pet",
+                nameplateShowAll = nameplateShowAll,
+                timeMod = timeMod,
+                auraInstanceID = spellId, -- TODO: generate a unique number?
+                dispelName = debuffType,
+                isHarmful = string.match(filter, "HARMFUL"),
+                isHelpful = string.match(filter, "HELPFUL"),
+                isNameplateOnly = false,
+                isRaid = true,
+                charges = 0,
+                maxCharges = 0,
+                points = nil
+            }
+        end
+    end
+
+    if not _G.HasLFGRestrictions then
+        _G.HasLFGRestrictions = function()
+            return false
+        end
     end
 end

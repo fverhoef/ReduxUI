@@ -107,6 +107,7 @@ function BS:StyleAuraButton(button)
     if cooldown then
         local cdInset = (button:GetWidth() or 36) / 18
         cooldown:SetInside(button, cdInset, cdInset)
+        cooldown:SetHideCountdownNumbers(not config.showDuration or button:GetWidth() < (config.minSizeToShowDuration or 0))
     end
 end
 

@@ -5,30 +5,32 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:CreateAuras()
-    if not self.config.auras.enabled then
+    local config = self.config.auras
+    if not config.enabled then
         return
     end
 
     self.Auras = CreateFrame("Frame", "$parentAuras", self)
-    self.Auras.config = self.config.auras.buffsAndDebuffs
-    self.Auras.buffFilterConfig = self.config.auras.buffs.filter
-    self.Auras.debuffFilterConfig = self.config.auras.debuffs.filter
-    self.Auras.PostCreateIcon = UF.PostCreateAura
-    self.Auras.PostUpdateIcon = UF.PostUpdateAura
-    self.Auras.PostUpdateGapIcon = UF.PostUpdateGap
-    self.Auras.CustomFilter = UF.AuraFilter
+    self.Auras.config = config.buffsAndDebuffs
+    self.Auras.parentConfig = config
+    self.Auras.PostCreateButton = UF.PostCreateAura
+    self.Auras.PostUpdateButton = UF.PostUpdateAura
+    self.Auras.PostUpdateGapButton = UF.PostUpdateGap
+    self.Auras.FilterAura = UF.AuraFilter
 
     self.Buffs = CreateFrame("Frame", "$parentBuffs", self)
-    self.Buffs.config = self.config.auras.buffs
-    self.Buffs.PostCreateIcon = UF.PostCreateAura
-    self.Buffs.PostUpdateIcon = UF.PostUpdateAura
-    self.Buffs.CustomFilter = UF.AuraFilter
+    self.Buffs.config = config.buffs
+    self.Buffs.parentConfig = config
+    self.Buffs.PostCreateButton = UF.PostCreateAura
+    self.Buffs.PostUpdateButton = UF.PostUpdateAura
+    self.Buffs.FilterAura = UF.AuraFilter
 
     self.Debuffs = CreateFrame("Frame", "$parentDebuffs", self)
-    self.Debuffs.config = self.config.auras.debuffs
-    self.Debuffs.PostCreateIcon = UF.PostCreateAura
-    self.Debuffs.PostUpdateIcon = UF.PostUpdateAura
-    self.Debuffs.CustomFilter = UF.AuraFilter
+    self.Debuffs.config = config.debuffs
+    self.Debuffs.parentConfig = config
+    self.Debuffs.PostCreateButton = UF.PostCreateAura
+    self.Debuffs.PostUpdateButton = UF.PostUpdateAura
+    self.Debuffs.FilterAura = UF.AuraFilter
 end
 
 oUF:RegisterMetaFunction("CreateAuras", UF.CreateAuras)
@@ -38,145 +40,154 @@ function UF:ConfigureAuras()
     if not config.enabled then
         self:DisableElement("Auras")
         return
-    elseif not self.Auras then
-        self:CreateAuras()
+    end
+
+    self:DisableElement("Auras")
+
+    if config.separateBuffsAndDebuffs or not self.Auras.config.enabled then
+        self._Auras = self.Auras
+        self.Auras = nil
+    else
+        self.Auras = self.Auras or self._Auras
+    end
+
+    if not config.separateBuffsAndDebuffs or not self.Buffs.config.enabled then
+        self._Buffs = self.Buffs
+        self.Buffs = nil
+    else
+        self.Buffs = self.Buffs or self._Buffs
+    end
+
+    if not config.separateBuffsAndDebuffs or not self.Debuffs.config.enabled then
+        self._Debuffs = self.Debuffs
+        self.Debuffs = nil
+    else
+        self.Debuffs = self.Debuffs or self._Debuffs
     end
 
     self:EnableElement("Auras")
 
-    self.Auras.size = config.buffsAndDebuffs.iconSize or 25
-    self.Auras:SetHeight(self.Auras.size * (math.ceil((config.buffsAndDebuffs.numBuffs + config.buffsAndDebuffs.numDebuffs) / (config.buffsAndDebuffs.numColumns or 5))))
-    self.Auras:SetWidth(self.Auras.size * (config.buffsAndDebuffs.numColumns or 5))
-    self.Auras:ClearAllPoints()
-    self.Auras:SetNormalizedPoint(unpack(config.buffsAndDebuffs.point))
-    self.Auras.initialAnchor = config.buffsAndDebuffs.initialAnchor
-    self.Auras["growth-x"] = config.buffsAndDebuffs.growthX
-    self.Auras["growth-y"] = config.buffsAndDebuffs.growthY
-    self.Auras.numBuffs = config.buffsAndDebuffs.numBuffs
-    self.Auras.numDebuffs = config.buffsAndDebuffs.numDebuffs
-    self.Auras.spacing = config.buffsAndDebuffs.spacing
-    self.Auras.showStealableBuffs = config.buffsAndDebuffs.showStealableBuffs
-    self.Auras.showBuffType = config.buffsAndDebuffs.showBuffType
-    self.Auras.showDebuffType = config.buffsAndDebuffs.showDebuffType
-    self.Auras.gap = config.buffsAndDebuffs.gap
-    self.Auras:SetShown(not config.separateBuffsAndDebuffs and config.buffsAndDebuffs.enabled)
-    self.Auras:ForceUpdate()
+    if self.Auras then
+        self.Auras.size = self.Auras.config.iconSize or 25
+        self.Auras:SetHeight(self.Auras.size * (math.ceil((self.Auras.config.numBuffs + self.Auras.config.numDebuffs) / (self.Auras.config.numColumns or 5))))
+        self.Auras:SetWidth(self.Auras.size * (self.Auras.config.numColumns or 5))
+        self.Auras:ClearAllPoints()
+        self.Auras:SetNormalizedPoint(unpack(self.Auras.config.point))
+        self.Auras.initialAnchor = self.Auras.config.initialAnchor
+        self.Auras["growth-x"] = self.Auras.config.growthX
+        self.Auras["growth-y"] = self.Auras.config.growthY
+        self.Auras.numBuffs = self.Auras.config.numBuffs
+        self.Auras.numDebuffs = self.Auras.config.numDebuffs
+        self.Auras.spacing = self.Auras.config.spacing
+        self.Auras.showStealableBuffs = self.Auras.config.showStealableBuffs
+        self.Auras.showBuffType = self.Auras.config.showBuffType
+        self.Auras.showDebuffType = self.Auras.config.showDebuffType
+        self.Auras.gap = self.Auras.config.gapButton
+        self.Auras:ForceUpdate()
+    end
 
-    self.Buffs.size = config.buffs.iconSize or 25
-    self.Buffs:SetHeight(self.Buffs.size * (math.ceil(config.buffs.num / (config.buffs.numColumns or 5))))
-    self.Buffs:SetWidth(self.Buffs.size * (config.buffs.numColumns or 5))
-    self.Buffs:ClearAllPoints()
-    self.Buffs:SetNormalizedPoint(unpack(config.buffs.point))
-    self.Buffs.initialAnchor = config.buffs.initialAnchor
-    self.Buffs["growth-x"] = config.buffs.growthX
-    self.Buffs["growth-y"] = config.buffs.growthY
-    self.Buffs.num = config.buffs.num
-    self.Buffs.spacing = config.buffs.spacing
-    self.Buffs.showStealableBuffs = config.buffs.showStealableBuffs
-    self.Buffs.showBuffType = config.buffs.showBuffType
-    self.Buffs:SetShown(config.separateBuffsAndDebuffs and config.buffs.enabled)
-    self.Buffs:ForceUpdate()
+    if self.Buffs then
+        self.Buffs.size = self.Buffs.config.iconSize or 25
+        self.Buffs:SetHeight(self.Buffs.size * (math.ceil(self.Buffs.config.num / (self.Buffs.config.numColumns or 5))))
+        self.Buffs:SetWidth(self.Buffs.size * (self.Buffs.config.numColumns or 5))
+        self.Buffs:ClearAllPoints()
+        self.Buffs:SetNormalizedPoint(unpack(self.Buffs.config.point))
+        self.Buffs.initialAnchor = self.Buffs.config.initialAnchor
+        self.Buffs["growth-x"] = self.Buffs.config.growthX
+        self.Buffs["growth-y"] = self.Buffs.config.growthY
+        self.Buffs.num = self.Buffs.config.num
+        self.Buffs.spacing = self.Buffs.config.spacing
+        self.Buffs.showStealableBuffs = self.Buffs.config.showStealableBuffs
+        self.Buffs.showBuffType = self.Buffs.config.showBuffType
+        self.Buffs:ForceUpdate()
+    end
 
-    self.Debuffs.size = config.debuffs.iconSize or 25
-    self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(config.debuffs.num / (config.debuffs.numColumns or 5))))
-    self.Debuffs:SetWidth(self.Debuffs.size * (config.debuffs.numColumns or 5))
-    self.Debuffs:ClearAllPoints()
-    self.Debuffs:SetNormalizedPoint(unpack(config.debuffs.point))
-    self.Debuffs.initialAnchor = config.debuffs.initialAnchor
-    self.Debuffs["growth-x"] = config.debuffs.growthX
-    self.Debuffs["growth-y"] = config.debuffs.growthY
-    self.Debuffs.num = config.debuffs.num
-    self.Debuffs.spacing = config.debuffs.spacing
-    self.Debuffs.showStealableBuffs = config.debuffs.showStealableBuffs
-    self.Debuffs.showDebuffType = config.debuffs.showDebuffType
-    self.Debuffs:SetShown(config.separateBuffsAndDebuffs and config.debuffs.enabled)
-    self.Debuffs:ForceUpdate()
+    if self.Debuffs then
+        self.Debuffs.size = self.Debuffs.config.iconSize or 25
+        self.Debuffs:SetHeight(self.Debuffs.size * (math.ceil(self.Debuffs.config.num / (self.Debuffs.config.numColumns or 5))))
+        self.Debuffs:SetWidth(self.Debuffs.size * (self.Debuffs.config.numColumns or 5))
+        self.Debuffs:ClearAllPoints()
+        self.Debuffs:SetNormalizedPoint(unpack(self.Debuffs.config.point))
+        self.Debuffs.initialAnchor = self.Debuffs.config.initialAnchor
+        self.Debuffs["growth-x"] = self.Debuffs.config.growthX
+        self.Debuffs["growth-y"] = self.Debuffs.config.growthY
+        self.Debuffs.num = self.Debuffs.config.num
+        self.Debuffs.spacing = self.Debuffs.config.spacing
+        self.Debuffs.showStealableBuffs = self.Debuffs.config.showStealableBuffs
+        self.Debuffs.showDebuffType = self.Debuffs.config.showDebuffType
+        self.Debuffs:ForceUpdate()
+    end
 end
 
 oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
-    button.cd:SetInside(nil, 1, 1)
+    button.Cooldown:SetInside(nil, 1, 1)
     R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
-function UF:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
-    local name, _, _, _, duration, expiration = UnitAura(unit, index, button.filter)
-
-    if button and button.debuffType ~= debuffType then
-        button.debuffType = debuffType
+function UF:PostUpdateAura(button, unit, data, position)
+    if button.debuffType ~= data.dispelName then
+        button.debuffType = data.dispelName
     end
 
-    if button and button.cd then
-        if (duration and duration > 0) then
-            button.cd:SetCooldown(expiration - duration, duration)
-            button.cd:Show()
-        else
-            button.cd:Hide()
-        end
-
-        button.cd:SetHideCountdownNumbers(not self.config.showDuration)
-    end
-
-    button.Border:Show()
     R.Modules.ButtonStyles:StyleAuraButton(button)
 end
 
-function UF:PostUpdateGap(unit, gapButton, visibleBuffs)
+function UF:PostUpdateGap(unit, gapButton, position)
     gapButton.Border:Hide()
 end
 
-function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll)
+function UF:AuraFilter(unit, data)
     local config = self.config
-    if not name then
+    local parentConfig = self.parentConfig
+
+    if not data or not data.name then
         return
     elseif not config then
         return true
     end
 
-    button.canDesaturate = config.desaturate
-    button.texture = texture
-
-    local minDuration = config.minDuration or (button.isDebuff and self:GetParent().config.debuffs.minDuration or self:GetParent().config.buffs.minDuration)
-    local maxDuration = config.maxDuration or (button.isDebuff and self:GetParent().config.debuffs.maxDuration or self:GetParent().config.buffs.maxDuration)
-    local noDuration = (not duration or duration == 0)
+    local minDuration = config.minDuration or (data.isHarmful and parentConfig.debuffs.minDuration or parentConfig.buffs.minDuration)
+    local maxDuration = config.maxDuration or (data.isHarmful and parentConfig.debuffs.maxDuration or parentConfig.buffs.maxDuration)
+    local noDuration = (not data.duration or data.duration == 0)
     local allowDuration = noDuration or
-                              (duration and duration > 0 and (not maxDuration or maxDuration == 0 or duration <= maxDuration) and (not minDuration or minDuration == 0 or duration >= minDuration))
+                              (data.duration and data.duration > 0 and (not maxDuration or maxDuration == 0 or data.duration <= maxDuration) and (not minDuration or minDuration == 0 or data.duration >= minDuration))
 
     if not allowDuration then
         return false
     end
 
-    local filter = config.filter or (button.isDebuff and self.debuffFilterConfig or self.buffFilterConfig)
+    local filter = config.filter or (data.isHarmful and parentConfig.debuffs.filter or parentConfig.buffs.filter)
 
-    if filter.whitelist.CrowdControl and UF.auraFilters.CrowdControl[spellID] then
+    if filter.whitelist.CrowdControl and UF.auraFilters.CrowdControl[data.spellId] then
         return true
-    elseif filter.whitelist.TurtleBuffs and UF.auraFilters.TurtleBuffs[spellID] then
+    elseif filter.whitelist.TurtleBuffs and UF.auraFilters.TurtleBuffs[data.spellId] then
         return true
-    elseif filter.whitelist.PlayerBuffs and UF.auraFilters.PlayerBuffs[spellID] then
+    elseif filter.whitelist.PlayerBuffs and UF.auraFilters.PlayerBuffs[data.spellId] then
         return true
-    elseif filter.whitelist.RaidBuffs and UF.auraFilters.RaidBuffs[spellID] then
+    elseif filter.whitelist.RaidBuffs and UF.auraFilters.RaidBuffs[data.spellId] then
         return true
-    elseif filter.whitelist.RaidDebuffs and UF.auraFilters.RaidDebuffs[spellID] then
+    elseif filter.whitelist.RaidDebuffs and UF.auraFilters.RaidDebuffs[data.spellId] then
         return true
-    elseif UF.auraFilters.Blacklist[spellID] then
+    elseif UF.auraFilters.Blacklist[data.spellId] then
         return false
-    elseif UF.auraFilters.Whitelist[spellID] then
+    elseif UF.auraFilters.Whitelist[data.spellId] then
         return true
     end
 
-    local myPet = caster == "pet"
-    local otherPet = caster and not UnitIsUnit("pet", caster) and string.match(caster, "pet%d+")
-    local isPlayer = caster == "player" or caster == "vehicle"
-    local unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
-    local canDispel = (self.type == "debuffs" and R.Libs.Dispel:IsDispellableByMe(debuffType)) or (self.type == "buffs" and isStealable)
+    local myPet = data.sourceUnit == "pet"
+    local otherPet = data.sourceUnit and not UnitIsUnit("pet", data.sourceUnit) and string.match(data.sourceUnit, "pet%d+")
+    local isPlayer = data.sourceUnit == "player" or data.sourceUnit == "vehicle"
+    local unitIsCaster = unit and data.sourceUnit and UnitIsUnit(unit, data.sourceUnit)
+    local canDispel = (self.type == "debuffs" and R.Libs.Dispel:IsDispellableByMe(data.dispelName)) or (self.type == "buffs" and data.isStealable)
 
     local isWhiteListed =
-        (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and isBossDebuff) or (filter.whitelist.MyPet and myPet) or
+        (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and data.isBossAura) or (filter.whitelist.MyPet and myPet) or
             (filter.whitelist.OtherPet and otherPet) or (filter.whitelist.CastByUnit and unitIsCaster) or (filter.whitelist.NotCastByUnit and not unitIsCaster) or
-            (filter.whitelist.Dispellable and canDispel) or (filter.whitelist.NotDispellable and not canDispel) or (filter.whitelist.CastByNPC and not casterIsPlayer) or
-            (filter.whitelist.CastByPlayers and casterIsPlayer) or (filter.whitelist.Nameplate and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))
-    local isBlackListed = (filter.blacklist.BlockCastByPlayers and casterIsPlayer) or (filter.blacklist.BlockNoDuration and noDuration) or (filter.blacklist.BlockNonPersonal and not isPlayer) or
+            (filter.whitelist.Dispellable and canDispel) or (filter.whitelist.NotDispellable and not canDispel) or (filter.whitelist.CastByNPC and not data.isFromPlayerOrPlayerPet) or
+            (filter.whitelist.CastByPlayers and data.isFromPlayerOrPlayerPet) or (filter.whitelist.Nameplate and (data.nameplateShowAll or (data.nameplateShowPersonal and (isPlayer or myPet))))
+    local isBlackListed = (filter.blacklist.BlockCastByPlayers and data.isFromPlayerOrPlayerPet) or (filter.blacklist.BlockNoDuration and noDuration) or (filter.blacklist.BlockNonPersonal and not isPlayer) or
                               (filter.blacklist.BlockDispellable and canDispel) or (filter.blacklist.BlockNotDispellable and not canDispel)
 
     return isWhiteListed and not isBlackListed

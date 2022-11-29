@@ -238,6 +238,8 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
                         return UF:UnitConfig(unit).auras.separateBuffsAndDebuffs
                     end, function(value)
                         UF:UnitConfig(unit).auras.separateBuffsAndDebuffs = value
+                    end, nil, function()
+                        return not UF:UnitConfig(unit).auras.enabled
                     end),
                     buffsAndDebuffs = UF:CreateUnitAurasOption(unit, 4, L["Buffs & Debuffs"], "buffsAndDebuffs", function()
                         return UF:UnitConfig(unit).auras.separateBuffsAndDebuffs
@@ -1516,54 +1518,64 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
         order = order,
         inline = true,
         hidden = hidden,
+        disabled = function()
+            return not UF:UnitConfig(unit).auras.enabled
+        end,
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
                 return UF:UnitConfig(unit).auras[setting].enabled
             end, function(value)
                 UF:UnitConfig(unit).auras[setting].enabled = value
             end),
-            lineBreak0 = { type = "description", name = "", order = 2 },
-            iconSize = UF:CreateRangeOption(unit, L["Icon Size"], L["The size of the aura icons."], 3, nil, 10, nil, 50, 1, function()
-                return UF:UnitConfig(unit).auras[setting].iconSize
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].iconSize = value
-            end),
-            spacing = UF:CreateRangeOption(unit, L["Spacing"], L["The spacing between aura icons."], 4, nil, -10, nil, 30, 1, function()
-                return UF:UnitConfig(unit).auras[setting].spacing
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].spacing = value
-            end),
-            numColumns = UF:CreateRangeOption(unit, L["Number of Columns"], L["The number of columns."], 5, nil, 1, nil, 32, 1, function()
-                return UF:UnitConfig(unit).auras[setting].numColumns
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].numColumns = value
-            end),
-            num = UF:CreateRangeOption(unit, L["Number of " .. name], L["The number of auras to show."], 6, setting == "buffsAndDebuffs", 1, nil, 32, 1, function()
-                return UF:UnitConfig(unit).auras[setting].num
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].num = value
-            end),
-            numBuffs = UF:CreateRangeOption(unit, L["Number of Buffs"], L["The number of buffs to show."], 7, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
-                return UF:UnitConfig(unit).auras[setting].numBuffs
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].numBuffs = value
-            end),
-            numDebuffs = UF:CreateRangeOption(unit, L["Number of Debuffs"], L["The number of debuffs to show."], 8, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
-                return UF:UnitConfig(unit).auras[setting].numDebuffs
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].numDebuffs = value
-            end),
-            lineBreak1 = { type = "description", name = "", order = 10 },
-            showDuration = UF:CreateToggleOption(unit, L["Show Duration"], nil, 11, nil, nil, function()
-                return UF:UnitConfig(unit).auras[setting].showDuration
-            end, function(value)
-                UF:UnitConfig(unit).auras[setting].showDuration = value
-            end),
+            layout = {
+                type = "group",
+                name = L["Layout"],
+                order = 2,
+                inline = true,
+                disabled = function()
+                    return not UF:UnitConfig(unit).auras[setting].enabled
+                end,
+                args = {
+                    iconSize = UF:CreateRangeOption(unit, L["Icon Size"], L["The size of the aura icons."], 1, nil, 10, nil, 50, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].iconSize
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].iconSize = value
+                    end),
+                    spacing = UF:CreateRangeOption(unit, L["Spacing"], L["The spacing between aura icons."], 2, nil, -10, nil, 30, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].spacing
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].spacing = value
+                    end),
+                    numColumns = UF:CreateRangeOption(unit, L["Number of Columns"], L["The number of columns."], 3, nil, 1, nil, 32, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].numColumns
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].numColumns = value
+                    end),
+                    num = UF:CreateRangeOption(unit, L["Number of " .. name], L["The number of auras to show."], 4, setting == "buffsAndDebuffs", 1, nil, 32, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].num
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].num = value
+                    end),
+                    numBuffs = UF:CreateRangeOption(unit, L["Number of Buffs"], L["The number of buffs to show."], 5, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].numBuffs
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].numBuffs = value
+                    end),
+                    numDebuffs = UF:CreateRangeOption(unit, L["Number of Debuffs"], L["The number of debuffs to show."], 6, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
+                        return UF:UnitConfig(unit).auras[setting].numDebuffs
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].numDebuffs = value
+                    end)
+                }
+            },
             position = {
                 type = "group",
                 name = L["Position"],
-                order = 13,
+                order = 3,
                 inline = true,
+                disabled = function()
+                    return not UF:UnitConfig(unit).auras[setting].enabled
+                end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
                         return UF:UnitConfig(unit).auras[setting].point[1]
@@ -1597,6 +1609,9 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
         name = name or L["Filter"],
         order = order,
         inline = true,
+        disabled = function()
+            return not UF:UnitConfig(unit).auras.enabled
+        end,
         args = {
             minDuration = UF:CreateRangeOption(unit, L["Minimum Duration"], L["The minimum duration an aura needs to have to be shown. Set to 0 to disable."], 1, nil, 0, nil, 120, 1, function()
                 return UF:UnitConfig(unit).auras[setting].minDuration
