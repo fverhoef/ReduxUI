@@ -36,6 +36,22 @@ end
 
 function AM:Update()
     AM:SetMaxZoomLevel()
+    AM:SetUIScale()
+end
+
+function AM:SetUIScale()
+    if not AM.config.interfaceScale.enabled then
+        return
+    end
+
+    if InCombatLockdown() then
+        AM:RegisterEvent("PLAYER_REGEN_ENABLED", AM.SetUIScale)
+    else
+        UIParent:SetScale(AM.config.interfaceScale.scale)
+        AM:UnregisterEvent("PLAYER_REGEN_ENABLED")
+    end
+
+    AM:RegisterEvent("UI_SCALE_CHANGED", AM.SetUIScale)
 end
 
 function AM:PLAYER_ENTERING_WORLD()

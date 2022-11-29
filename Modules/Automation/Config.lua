@@ -18,5 +18,6 @@ R:RegisterModuleConfig(AM, {
     autoInvitePassword = "inv",
     cameraDistanceMaxZoomFactor = 4.0,
     announceInterrupt = true,
-    announceInterruptChannel = "SAY"
+    announceInterruptChannel = "SAY", 
+    interfaceScale = { enabled = true, scale = 0.6666666666666666 }
 })
