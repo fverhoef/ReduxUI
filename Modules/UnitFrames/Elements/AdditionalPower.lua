@@ -46,6 +46,7 @@ function UF:ConfigureAdditionalPower()
 
     self.AdditionalPower:SetStatusBarTexture(UF.config.statusbars.additionalPower)
     self.AdditionalPower:SetStatusBarColor(unpack(UF.config.colors.mana))
+    self.AdditionalPower:SetFrequentUpdates(config.frequentUpdates)
 
     if config.value.enabled then
         self.AdditionalPower.Value:Show()

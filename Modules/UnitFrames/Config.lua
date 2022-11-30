@@ -71,8 +71,7 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 10,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[curpp:shortvalue]",
-            frequentUpdates = true
+            tag = "[curpp:shortvalue]"
         },
         percent = {
             enabled = false,
@@ -84,6 +83,7 @@ local DEFAULT_UNIT_CONFIG = {
             tag = "[perpp]%"
         },
         smooth = true,
+        frequentUpdates = true,
         powerPrediction = false,
         showSeparator = false,
         inset = false,
@@ -102,7 +102,8 @@ local DEFAULT_UNIT_CONFIG = {
             fontShadow = true,
             tag = "[curmana]"
         },
-        smooth = true
+        smooth = true,
+        frequentUpdates = true
     },
     classPower = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
     runes = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
