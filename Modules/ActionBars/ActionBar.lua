@@ -65,8 +65,8 @@ function AB:CreateActionBar(id)
     bar:SetScript("OnEvent", bar.OnEvent)
 
     bar:CreateBackdrop({ bgFile = R.media.textures.blank })
-    bar:CreateBorder()
-    bar:CreateShadow()
+    bar:CreateBorder(nil, 12, 3)
+    bar:CreateShadow(nil, 12, 6)
     bar:CreateFader(bar.config.fader, bar.buttons)
     bar:CreateMover(L["Action Bar " .. id], bar.defaults.point)
 
