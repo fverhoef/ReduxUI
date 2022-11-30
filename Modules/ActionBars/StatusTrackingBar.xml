@@ -1,20 +1,11 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="ReputationBar.lua" />
-    <StatusBar name="ReputationBarTemplate_" mixin="ReduxReputationBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
+    <Script file="StatusTrackingBar.lua" />
+    <StatusBar name="StatusTrackingBarTemplate_" mixin="ReduxStatusTrackingBarMixin" parent="UIParent" frameStrata="LOW" inherits="TextStatusBar" virtual="true">
         <Anchors>
             <Anchor point="BOTTOM" x="0" y="35" />
         </Anchors>
-        <Size x="454" y="14"/>
+        <Size x="454" y="12"/>
         <Frames>
-            <Frame parentKey="Backdrop" inherits="BackdropTemplate">
-                <KeyValues>
-                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global"/>
-                </KeyValues>
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="-5" y="5" />
-                    <Anchor point="BOTTOMRIGHT" x="5" y="-5" />
-                </Anchors>
-            </Frame>
             <Frame parentKey="OverlayFrame" frameStrata="DIALOG" setAllPoints="true">
                 <Layers>
                     <Layer level="ARTWORK">

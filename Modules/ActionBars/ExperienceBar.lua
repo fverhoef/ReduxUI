@@ -19,12 +19,14 @@ function AB.ExperienceBarMixin:OnLoad()
 
     self.config = AB.config.experienceBar
     self.defaults = AB.defaults.experienceBar
-    self:SetNormalizedSize(AB.config.experienceBar.size)
-    self:SetNormalizedPoint(AB.config.experienceBar.point)
-    self:CreateMover(L["Experience Bar"], AB.defaults.experienceBar.point)
+    
+    self:CreateBackdrop({ bgFile = R.media.textures.blank })
+    self:CreateBorder(nil, 4)
+    self:CreateShadow()
+    self:CreateFader(self.config.fader)
+    self:CreateMover(L["Experience Bar"], self.defaults.point)
 
-    self.Backdrop:SetBackdropColor(BACKDROP_COLOR.r, BACKDROP_COLOR.g, BACKDROP_COLOR.b, BACKDROP_COLOR.a)
-    self.Backdrop:SetBackdropBorderColor(BACKDROP_BORDER_COLOR.r, BACKDROP_BORDER_COLOR.g, BACKDROP_BORDER_COLOR.b, BACKDROP_BORDER_COLOR.a)
+    self:Update()
 end
 
 function AB.ExperienceBarMixin:OnEvent(event, ...)
@@ -39,7 +41,21 @@ function AB.ExperienceBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
-function AB.ExperienceBarMixin:Update()    
+function AB.ExperienceBarMixin:Update()
+    if not self.config.enabled then
+        self:Hide()
+        return
+    end
+
+    self:ClearAllPoints()
+    self:SetNormalizedPoint(self.config.point)
+    self:SetNormalizedSize(self.config.size)
+    self.Backdrop:SetShown(self.config.backdrop)
+    self.Border:SetShown(self.config.border)
+    self.Shadow:SetShown(self.config.shadow)
+    self.Mover:Unlock()
+    self:CreateFader(self.config.fader)
+
     local showXP = UnitLevel("player") < GetMaxPlayerLevel()
     local expMin, expMax = MainMenuExpBar:GetMinMaxValues()
     local expValue = MainMenuExpBar:GetValue()
@@ -48,8 +64,8 @@ function AB.ExperienceBarMixin:Update()
     if exhaustionThreshold and exhaustionThreshold > 0 then
         expText = string.format("%s (%i rested)", expText, GetXPExhaustion())
     end
-    self:SetStatusBarTexture(R.Media.Textures.StatusBars.Redux)
-    self:SetStatusBarColor(unpack({MainMenuExpBar:GetStatusBarColor()}))
+    self:SetStatusBarTexture(R.media.textures.statusBars.redux)
+    self:SetStatusBarColor(unpack({ MainMenuExpBar:GetStatusBarColor() }))
     self:SetMinMaxValues(expMin, expMax)
     self:SetValue(expValue)
     self:SetShown(showXP)

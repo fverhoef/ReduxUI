@@ -4,7 +4,7 @@
         <Anchors>
             <Anchor point="BOTTOM" x="0" y="10" />
         </Anchors>
-        <Size x="454" y="14" />
+        <Size x="454" y="12" />
         <Layers>
             <Layer level="BORDER">
                 <Texture parentKey="RestedFillBar">
@@ -17,15 +17,6 @@
             </Layer>
         </Layers>
         <Frames>
-            <Frame parentKey="Backdrop" inherits="BackdropTemplate">
-                <KeyValues>
-                    <KeyValue key="backdropInfo" value="BACKDROP_10" type="global"/>
-                </KeyValues>
-                <Anchors>
-                    <Anchor point="TOPLEFT" x="-5" y="5" />
-                    <Anchor point="BOTTOMRIGHT" x="5" y="-5" />
-                </Anchors>
-            </Frame>
             <Button parentKey="RestedTick" hidden="false" frameStrata="MEDIUM">
                 <Size>
                     <AbsDimension x="32" y="32" />

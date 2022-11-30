@@ -28,6 +28,9 @@ function AB:Enable()
         AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
     end
 
+    AB.experienceBar = AB:CreateExperienceBar()
+    AB.statusTrackingBar = AB:CreateStatusTrackingBar()
+
     AB:CreateModernArt()
 
     AB.pageUpButton = AB:CreatePageUpButton(AB.bars[1])
@@ -46,9 +49,6 @@ function AB:Enable()
     end
     AB:CreateMicroButtonAndBagsBar()
 
-    -- AB.experienceBar = AB:CreateExperienceBar()
-    -- AB.reputationBar = AB:CreateReputationBar()
-
     AB:ReassignBindings()
     AB:Update()
 
@@ -56,6 +56,10 @@ function AB:Enable()
     AB:RegisterEvent("PET_BATTLE_CLOSE", AB.ReassignBindings)
     AB:RegisterEvent("PET_BATTLE_OPENING_DONE", AB.ClearBindings)
     AB:RegisterEvent("UPDATE_BINDINGS", AB.ReassignBindings)
+
+    if not R.isRetail then
+        AB:SecureHook("MainMenuBar_UpdateExperienceBars", AB.UpdateExperienceBars)
+    end
 end
 
 function AB:Update()
@@ -80,7 +84,7 @@ function AB:Update()
     if AB.zoneBar then
         AB.zoneBar:Configure()
     end
-    
+
     AB.bars[1].ArtLeft:SetShown(AB.bars[1].config.modernArt.enabled)
     AB.bars[1].ArtRight:SetShown(AB.bars[1].config.modernArt.enabled)
 
@@ -99,9 +103,20 @@ function AB:Update()
     AB.pageNumber:SetFont(STANDARD_TEXT_FONT, 13, "OUTLINE")
     AB.pageNumber:SetTextColor(1, 1, 1)
 
+    AB:UpdateExperienceBars()
+
     if AB.VanillaArtFrame then
         AB.VanillaArtFrame:Update()
-    end    
+    end
+end
+
+function AB:UpdateExperienceBars()
+    AB.experienceBar:Update()
+    AB.statusTrackingBar:Update()
+
+    if AB.VanillaArtFrame then
+        AB.VanillaArtFrame:Update()
+    end
 end
 
 function AB:DisableBlizzardBars()

@@ -242,15 +242,7 @@ R:RegisterModuleConfig(AB, {
         shadow = false,
         showGrid = false
     },
-    vehicleExitBar = {
-        enabled = true,
-        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 },
-        fader = R.config.faders.onShow,
-        buttonSize = 32,
-        backdrop = false,
-        border = false,
-        shadow = false
-    },
+    vehicleExitBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, fader = R.config.faders.onShow, buttonSize = 32, backdrop = false, border = false, shadow = false },
     totemBar = {
         enabled = true,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 225 },
@@ -263,8 +255,8 @@ R:RegisterModuleConfig(AB, {
     },
     extraActionBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 305 }, fader = R.config.faders.onShow },
     zoneBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 225 }, fader = R.config.faders.onShow },
-    experienceBar = { Enabled = true, Point = { "BOTTOM", "UIParent", "BOTTOM", 0, 25 }, Size = { 452, 14 } },
-    reputationBar = { Enabled = true, Point = { "BOTTOM", "UIParent", "BOTTOM", 0, 8 }, Size = { 452, 11 } },
+    experienceBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 25 }, size = { 452, 12 }, backdrop = true, border = true, shadow = false },
+    reputationBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 8 }, size = { 452, 12 }, backdrop = true, border = true, shadow = false },
     systemInfo = {
         enabled = true,
         lowLatencyTreshold = 70,

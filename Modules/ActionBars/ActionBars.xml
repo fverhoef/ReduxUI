@@ -17,5 +17,5 @@
     <Script file="ExtraActionBar.lua" />
     <Script file="ZoneBar.lua" />
     <Include file="ExperienceBar.xml" />
-    <Include file="ReputationBar.xml" />
+    <Include file="StatusTrackingBar.xml" />
 </Ui>
