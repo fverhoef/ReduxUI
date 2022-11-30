@@ -257,6 +257,9 @@ function R:ResetMovers()
         mover:ResetPoint()
         mover:ResetSize()
 
+        if mover.frame.Configure then
+            mover.frame:Configure()
+        end
         if mover.frame.Update then
             mover.frame:Update()
         end
@@ -343,11 +346,6 @@ function R:CreateMoverSettingsFrame()
             end
 
             self.highlightIndex = self.highlightIndex + 1
-        else
-            for _, mover in next, R.movers do
-                mover:FadeIn(0.3, mover:GetAlpha(), 1)
-            end
-            self.mover = nil
         end
     end
     settings:SetScript("OnKeyDown", function(self, key)
