@@ -116,7 +116,7 @@ local function Update(self, event, unit, powerType)
 		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints('player', 'target') or UnitPower(unit, powerID, true)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
-		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit) or 0
+		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit) or {}
 
 		-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
 		powerType = powerType or ClassPowerType
