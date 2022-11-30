@@ -163,6 +163,8 @@ function UF.PlayerMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
 
+        self.Power.Mover:Lock(true)
+
         self.Power.Border:Hide()
         self.Power.Separator:Hide()
 
@@ -336,6 +338,8 @@ function UF.PlayerMixin:PostConfigure()
         self.Power.Percent:ClearAllPoints()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
 
+        self.Power.Mover:Lock(true)
+        
         self.Power.Border:Hide()
         self.Power.Separator:Hide()
 
