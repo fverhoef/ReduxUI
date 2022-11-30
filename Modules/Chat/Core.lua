@@ -70,23 +70,21 @@ function C:Enable()
     BNToastFrame:SetClampRectInsets(-15, 15, 15, -15)
 
     for i = 1, NUM_CHAT_WINDOWS do
-        local chatframe = _G["ChatFrame" .. i]
-        chatframe:SetNormalizedSize(C.config.size)
+        local frame = _G["ChatFrame" .. i]
 
         if (i ~= 2) then
-            chatframe:ClearAllPoints()
-            chatframe.AddMessage_Base = chatframe.AddMessage
-            chatframe.AddMessage = C.ChatFrame_AddMessage
+            frame.AddMessage_Base = frame.AddMessage
+            frame.AddMessage = C.ChatFrame_AddMessage
         end
 
-        chatframe:SetNormalizedPoint(C.config.point)
-        
-        C:LoadChatHistory(chatframe)
+        C:LoadChatHistory(frame)
     end
+
+    C:RegisterEvent("UPDATE_CHAT_WINDOWS", C.UpdateChatFrames)
+    C:RegisterEvent("UPDATE_FLOATING_CHAT_WINDOWS", C.UpdateChatFrames)
 
     C:SecureHook("FCF_OpenTemporaryWindow", C.FloatingChatFrame_OpenTemporaryWindow)
     C:SecureHook("FloatingChatFrame_UpdateBackgroundAnchors", C.FloatingChatFrame_UpdateBackgroundAnchors)
-
     FloatingChatFrame_OnMouseScroll = C.FloatingChatFrame_OnMouseScroll
 
     C:UpdateChatFrames()
@@ -227,7 +225,7 @@ function C:UpdateChatFrames()
 
     for _, name in next, CHAT_FRAMES do
         local chatframe = _G[name]
-        if (chatframe.isTemporary) then
+        if chatframe.isTemporary then
             C:SkinChatFrame(chatframe)
         end
     end
@@ -248,7 +246,7 @@ function C:SkinChatFrame(frame)
         frame:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)
     end
 
-    frame:SetFading(true)
+    frame:SetFading(C.config.fade)
 
     local buttonFrame = _G[name .. "ButtonFrame"]
     buttonFrame:HookScript("OnShow", buttonFrame.Hide)
@@ -278,6 +276,16 @@ function C:SkinChatFrame(frame)
         C:HookScript(frame, "OnMouseWheel")
 
         frame.scriptsSet = true
+    end
+
+    C:PositionChatFrame(frame)
+end
+
+function C:PositionChatFrame(frame)
+    if not frame:IsUserPlaced() and not frame.isDocked or frame == _G.GeneralDockManager.primary then
+        frame:ClearAllPoints()
+        frame:SetNormalizedSize(C.config.size)
+        frame:SetNormalizedPoint(C.config.point)
     end
 end
 

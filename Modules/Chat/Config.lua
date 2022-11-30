@@ -12,6 +12,7 @@ R:RegisterModuleConfig(C, {
     fontShadow = false,
     maxMessageCount = 1500,
     maxHistoryCount = 500,
+    fade = true,
     showClassColors = true,
     hideMenuButton = true,
     hideChannelButton = true,
