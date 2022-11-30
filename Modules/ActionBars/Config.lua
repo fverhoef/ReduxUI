@@ -8,7 +8,7 @@ AB.COLUMN_DIRECTIONS = { "Right", "Left" }
 AB.ROW_DIRECTIONS = { "Up", "Down" }
 AB.DEFAULT_COOLDOWN_LABELS = { 5, 15, 30, 60, 120, 180, 300 }
 AB.COOLDOWN_FILTERS = { NONE = "NONE" }
-AB.Styles = { Vanilla = "Vanilla", Dragonflight = "Dragonflight" }
+AB.Styles = { Vanilla = "Vanilla", Modern = "Modern" }
 
 R:RegisterModuleConfig(AB, {
     enabled = true,
@@ -34,8 +34,8 @@ R:RegisterModuleConfig(AB, {
         clickOnDown = true,
         showGrid = true,
         flyoutDirection = "UP",
-        pageButtonStyle = AB.Styles.Dragonflight,
-        dragonflightArt = { enabled = true },
+        pageButtonStyle = AB.Styles.Modern,
+        modernArt = { enabled = true },
         vanillaArt = { enabled = false, stackBottomBars = false }
     },
     actionBar2 = {

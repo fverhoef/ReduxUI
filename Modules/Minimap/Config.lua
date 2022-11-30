@@ -3,13 +3,13 @@ local R = _G.ReduxUI
 local MM = R.Modules.Minimap
 local L = R.L
 
-MM.Styles = { Vanilla = "Blizzard - Vanilla", Dragonflight = "Blizzard - Dragonflight" }
+MM.Styles = { Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern" }
 
 R:RegisterModuleConfig(MM, {
     enabled = true,
     point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -13, -13 },
     size = { 220, 220 },
-    style = MM.Styles.Dragonflight,
+    style = MM.Styles.Modern,
     showNorthTag = true,
     showWorldMap = false,
     calendarText = {

@@ -10,11 +10,11 @@ R.media = {
         arrow1 = MEDIA_PREFIX .. "\\Textures\\Arrow1",
         logo = MEDIA_PREFIX .. "\\Textures\\Logo",
         actionBars = {
-            dragonflight = {
-                actionBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\ActionBar",
-                actionBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\ActionBarBackground",
-                bagSlots = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\BagSlots",
-                microMenu = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Dragonflight\\MicroMenu"
+            modern = {
+                actionBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Modern\\ActionBar",
+                actionBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Modern\\ActionBarBackground",
+                bagSlots = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Modern\\BagSlots",
+                microMenu = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Modern\\MicroMenu"
             },
             vanilla = {
                 mainMenuBarBackground = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\MainMenuBar-Background",
@@ -41,10 +41,10 @@ R.media = {
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },
         frames = {
-            dragonflight = {
-                dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\DualPaneFrame-Left",
-                dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\DualPaneFrame-Right",
-                paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Dragonflight\\PaperDollInfoFrame"
+            modern = {
+                dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrame-Left",
+                dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrame-Right",
+                paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\PaperDollInfoFrame"
             },
             vanilla = {
                 dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrame-Left",
@@ -54,13 +54,13 @@ R.media = {
         },
         icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
         minimap = {
-            dragonflight = {
-                atlas = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Atlas",
-                border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Border",
-                buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle",
-                buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\ButtonFrameToggle-Highlight",
-                calendarBlank = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\CalendarBlank",
-                mask = MEDIA_PREFIX .. "\\Textures\\Minimap\\Dragonflight\\Mask"
+            modern = {
+                atlas = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\Atlas",
+                border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\Border",
+                buttonFrameToggle = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\ButtonFrameToggle",
+                buttonFrameToggle_Highlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\ButtonFrameToggle-Highlight",
+                calendarBlank = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\CalendarBlank",
+                mask = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\Mask"
             },
             vanilla = {
                 border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\Border",
@@ -87,12 +87,12 @@ R.media = {
         unitFrames = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
-            dragonflight = {
-                castingBar = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBar",
-                castingBarFullMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFullMask",
-                castingBarFx = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\CastingBarFx",
-                playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\PlayerPortraitMask",
-                unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Dragonflight\\UnitFrame"
+            modern = {
+                castingBar = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBar",
+                castingBarFullMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarFullMask",
+                castingBarFx = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarFx",
+                playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\PlayerPortraitMask",
+                unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\UnitFrame"
             },
             vanilla = {
                 additionalPowerBorder = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Vanilla\\AdditionalPowerBorder",

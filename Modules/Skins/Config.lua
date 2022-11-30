@@ -4,7 +4,7 @@ local S = R.Modules.Skins
 
 S.Styles = {
     Vanilla = "Vanilla",
-    Dragonflight = "Dragonflight"
+    Modern = "Modern"
 }
 
 R:RegisterModuleConfig(S, {
@@ -16,13 +16,13 @@ R:RegisterModuleConfig(S, {
         unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free")
     },
-    character = {enabled = true, style = S.Styles.Dragonflight },
+    character = {enabled = true, style = S.Styles.Modern },
     durability = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
     friends = {enabled = true},
     guild = {enabled = true},
     objectiveTracker = {enabled = true, point = {"TOPLEFT", "UIParent", "TOPLEFT", 40, -20}},
     ticketStatus = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -228, -240}},
-    tradeSkill = {enabled = true, style = S.Styles.Dragonflight},
+    tradeSkill = {enabled = true, style = S.Styles.Modern},
     vehicleSeat = {enabled = true, point = {"TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260}},
     widgets = {enabled = true, top = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -10}}, belowMinimap = {enabled = true, point = {"TOP", "UIParent", "TOP", 0, -60}}},
     who = {enabled = true},

@@ -68,7 +68,7 @@ function UF.FocusTargetMixin:PostConfigure()
             self.RaidTargetIndicator:ClearAllPoints()
             self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP")
         end
-    elseif self.config.style == UF.Styles.Dragonflight then
+    elseif self.config.style == UF.Styles.Modern then
         self:SetSize(115, 44)
         self:ClearAllPoints()
         self:SetPoint("LEFT", UF.frames.focus, "RIGHT", 5, 0)
@@ -80,7 +80,7 @@ function UF.FocusTargetMixin:PostConfigure()
         if not self.Artwork then
             self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
-        self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Artwork:SetTexCoord(0.75, 0.9794921875, 0, 0.173828125)
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()

@@ -100,7 +100,7 @@ function UF:UpdatePortraitTexture()
         r = r - 0.15 * width
         t = t + 0.15 * height
         b = b - 0.15 * height
-    elseif self.config.style == UF.Styles.Dragonflight and self.unit == "player" then
+    elseif self.config.style == UF.Styles.Modern and self.unit == "player" then
         l = l
         r = r - 0.08 * width
         t = t

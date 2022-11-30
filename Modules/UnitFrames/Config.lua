@@ -3,9 +3,9 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.Styles = { Vanilla = "Blizzard - Vanilla", Dragonflight = "Blizzard - Dragonflight", Custom = "Custom" }
+UF.Styles = { Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern", Custom = "Custom" }
 
-local DEFAULT_STYLE = UF.Styles.Dragonflight
+local DEFAULT_STYLE = UF.Styles.Modern
 
 local AURA_FILTER_WHITELIST = {
     Boss = false,

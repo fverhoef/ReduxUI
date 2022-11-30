@@ -40,14 +40,14 @@ end
 AB.PageUpButtonMixin = {}
 
 function AB.PageUpButtonMixin:Update()
-    if self.style == AB.Styles.Dragonflight then
+    if self.style == AB.Styles.Modern then
         self:SetSize(16, 11)
         self:SetHitRectInsets(0, 0, 0, 0)
-        self:SetNormalTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetNormalTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetNormalTexture():SetTexCoord(454 / 512, 486 / 512, 713 / 2048, 735 / 2048)
-        self:SetPushedTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetPushedTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetPushedTexture():SetTexCoord(454 / 512, 486 / 512, 683 / 2048, 705 / 2048)
-        self:SetHighlightTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetHighlightTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetHighlightTexture():SetTexCoord(454 / 512, 486 / 512, 713 / 2048, 735 / 2048)
     else
         self:SetSize(32, 32)
@@ -103,14 +103,14 @@ end
 AB.PageDownButtonMixin = {}
 
 function AB.PageDownButtonMixin:Update()
-    if self.style == AB.Styles.Dragonflight then
+    if self.style == AB.Styles.Modern then
         self:SetSize(16, 11)
         self:SetHitRectInsets(0, 0, 0, 0)
-        self:SetNormalTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetNormalTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetNormalTexture():SetTexCoord(462 / 512, 494 / 512, 578 / 2048, 600 / 2048)
-        self:SetPushedTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetPushedTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetPushedTexture():SetTexCoord(462 / 512, 494 / 512, 548 / 2048, 570 / 2048)
-        self:SetHighlightTexture(R.media.textures.actionBars.dragonflight.actionBar)
+        self:SetHighlightTexture(R.media.textures.actionBars.modern.actionBar)
         self:GetHighlightTexture():SetTexCoord(462 / 512, 494 / 512, 578 / 2048, 600 / 2048)
     else
         self:SetSize(32, 32)

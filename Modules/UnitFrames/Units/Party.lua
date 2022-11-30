@@ -104,7 +104,7 @@ function UF.PartyMixin:PostConfigure()
         self.Castbar:ClearAllPoints()
         self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
         self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
-    elseif self.config.style == UF.Styles.Dragonflight then
+    elseif self.config.style == UF.Styles.Modern then
         self:SetSize(138, 53)
 
         self.Border:Hide()
@@ -114,7 +114,7 @@ function UF.PartyMixin:PostConfigure()
         if not self.Artwork then
             self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
-        self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Artwork:SetTexCoord(0.75, 0.9794921875, 0, 0.173828125)
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
@@ -123,7 +123,7 @@ function UF.PartyMixin:PostConfigure()
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
-        self.Flash:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Flash:SetTexCoord(0.75, 0.9794921875, 0.173828125, 0.34765625)
         self.Flash:ClearAllPoints()
         self.Flash:SetAllPoints()

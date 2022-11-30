@@ -247,7 +247,7 @@ function UF.PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
-    elseif self.config.style == UF.Styles.Dragonflight then
+    elseif self.config.style == UF.Styles.Modern then
         self:SetSize(192, 67)
 
         self.Border:Hide()
@@ -259,14 +259,14 @@ function UF.PlayerMixin:PostConfigure()
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
-        self.Artwork:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Artwork:SetTexCoord(0, 0.375, 0, 0.26171875)
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
-        self.Flash:SetTexture(R.media.textures.unitFrames.dragonflight.unitFrame)
+        self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625) -- Flash
         --self.Flash:SetTexCoord(0, 0.375, 0.26171875, 0.5234375) -- Status 
         self.Flash:ClearAllPoints()
@@ -340,7 +340,7 @@ function UF.PlayerMixin:PostConfigure()
         self.Power.Separator:Hide()
 
         if self.AdditionalPower then
-            -- TODO: Style for Dragonflight frames
+            -- TODO: Style for Modern frames
             self.AdditionalPower:ClearAllPoints()
             self.AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -2)
             self.AdditionalPower:SetSize(104, 10)

@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="VanillaArtFrame.lua" />
+    <Script file="Art.lua" />
 
     <Frame name="VanillaArtFrameTemplate" enableMouse="true" parent="UIParent" mixin="ReduxVanillaArtFrameMixin" virtual="true">
         <Anchors>

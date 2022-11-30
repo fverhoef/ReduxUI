@@ -4,7 +4,7 @@
         <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Castbar" />
         <Layers>
             <Layer level="BACKGROUND" textureSubLevel="0">
-                <Texture parentKey="TextBorder" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                <Texture parentKey="TextBorder" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="0" y="0" />
                         <Anchor point="BOTTOMRIGHT" x="0" y="-12" />
@@ -13,7 +13,7 @@
                 </Texture>
             </Layer>
             <Layer level="BACKGROUND" textureSubLevel="2">
-                <Texture parentKey="Background" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                <Texture parentKey="Background" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="1" y="-1" />
                         <Anchor point="BOTTOMRIGHT" x="-1" y="1" />
@@ -22,7 +22,7 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK" textureSubLevel="4">
-                <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar" hidden="true">
+                <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar" hidden="true">
                     <Size x="29" y="33" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="-31" y="6" />
@@ -35,7 +35,7 @@
                         <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="-5" y="2" />
                     </Anchors>
                 </Texture>
-                <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="-1" y="2" />
                         <Anchor point="BOTTOMRIGHT" x="1" y="-2" />
@@ -44,7 +44,7 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="1">
-                <Texture parentKey="Spark" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBar">
+                <Texture parentKey="Spark" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
                     <Size x="6" y="30" />
                     <Anchors>
                         <Anchor point="CENTER" relativeKey="$parent.Texture" relativePoint="RIGHT" />
@@ -65,14 +65,14 @@
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="2">
                 <Texture parentKey="SafeZone" alpha="0.4" />
-                <Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBarFx">
+                <Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx">
                     <Size x="37" y="12" />
                     <Anchors>
                         <Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="2" y="0" />
                     </Anchors>
                     <TexCoords left="0.79296875" right="0.8671875" top="0.341796875" bottom="0.392578125" />
                 </Texture>
-                <MaskTexture parentKey="BorderMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Dragonflight\CastingBarFullMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" setAllPoints="true">
+                <MaskTexture parentKey="BorderMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFullMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" setAllPoints="true">
                     <MaskedTextures>
                         <MaskedTexture childKey="SafeZone" />
                         <MaskedTexture childKey="StandardGlow" />

@@ -192,7 +192,7 @@ if Lib.gameExpansion == "retail" then
 --      [287712]  = "knockback",        -- Haywire (Kul'Tiran Racial)
     }
 
-    if GetSpellInfo(372245) and GetSpellInfo(372245) ~= "" then -- is Dragonflight Beta (quick temporary fix)
+    if GetSpellInfo(372245) and GetSpellInfo(372245) ~= "" then -- is Modern Beta (quick temporary fix)
         Lib.spellList[391622]  = "incapacitate"    -- Polymorph (Duck)
         Lib.spellList[355689]  = "root"            -- Landslide
         Lib.spellList[372245]  = "stun"            -- Terror of the Skies

@@ -42,24 +42,24 @@ function AB:CreateActionBarOptions(id, disabledFunc)
                 inline = true,
                 hidden = id ~= 1,
                 args = {
-                    enableDragonflightArt = R:CreateToggleOption(L["Enable Dragonflight Art"],
-                                                                 L["Whether or not the Dragonflight artwork for the main action bar (Gryphons/Wyverns, depending on faction) is shown."], 1, "full",
+                    enableModernArt = R:CreateToggleOption(L["Enable Modern Art"],
+                                                                 L["Whether or not the Modern Blizzard artwork for the main action bar (Gryphons/Wyverns, depending on faction) is shown."], 1, "full",
                                                                  nil, function()
-                        return AB.config.actionBar1.dragonflightArt.enabled
+                        return AB.config.actionBar1.modernArt.enabled
                     end, function(value)
-                        AB.config.actionBar1.dragonflightArt.enabled = value
+                        AB.config.actionBar1.modernArt.enabled = value
                         if value then
                             AB.config.actionBar1.vanillaArt.enabled = false
                         end
                     end, AB.Update),
                     enableVanillaArt = R:CreateToggleOption(L["Enable Vanilla Art"], string.format(
-                                                                L["Whether or not the Vanilla artwork for the main action bar is shown.\n\n%sNOTE:|r When using this option, you will not be able to adjust button layout and styling for the action bars 1-5."],
+                                                                L["Whether or not the Vanilla Blizzard artwork for the main action bar is shown.\n\n%sNOTE:|r When using this option, you will not be able to adjust button layout and styling for the action bars 1-5."],
                                                                 R:Hex(1, 0, 0)), 2, "full", nil, function()
                         return AB.config.actionBar1.vanillaArt.enabled
                     end, function(value)
                         AB.config.actionBar1.vanillaArt.enabled = value
                         if value then
-                            AB.config.actionBar1.dragonflightArt.enabled = false
+                            AB.config.actionBar1.modernArt.enabled = false
                         end
                     end, AB.Update),
                     stackBottomBars = R:CreateToggleOption(L["Stack Bottom Bars"], nil, 3, nil, function()
