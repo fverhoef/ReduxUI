@@ -21,11 +21,13 @@ function C:Initialize()
 end
 
 function C:Enable()
-    if not C.config.enabled then return end
+    if not C.config.enabled then
+        return
+    end
 
     C.chatMessages = C.charConfig.chatMessages
 
-    CHAT_FONT_HEIGHTS = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+    CHAT_FONT_HEIGHTS = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }
 
     CHAT_TAB_HIDE_DELAY = 1
     CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
@@ -69,14 +71,16 @@ function C:Enable()
 
     for i = 1, NUM_CHAT_WINDOWS do
         local chatframe = _G["ChatFrame" .. i]
-        chatframe:SetSize(unpack(C.config.size))
-        chatframe:SetPoint(unpack(C.config.point))
+        chatframe:SetNormalizedSize(C.config.size)
 
         if (i ~= 2) then
+            chatframe:ClearAllPoints()
             chatframe.AddMessage_Base = chatframe.AddMessage
             chatframe.AddMessage = C.ChatFrame_AddMessage
         end
 
+        chatframe:SetNormalizedPoint(C.config.point)
+        
         C:LoadChatHistory(chatframe)
     end
 
@@ -100,7 +104,9 @@ local function FormatChannelNames(text)
         else
             -- abbreviate channel names using only their uppercased letters
             local abbr = ""
-            for letter in string.gmatch(channel, "%u") do abbr = abbr .. letter end
+            for letter in string.gmatch(channel, "%u") do
+                abbr = abbr .. letter
+            end
             if abbr ~= "" then
                 channel = abbr
             else
@@ -112,7 +118,9 @@ local function FormatChannelNames(text)
     end)
 end
 
-local function FormatUrls(text) return text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r") end
+local function FormatUrls(text)
+    return text:gsub("([wWhH][wWtT][wWtT][%.pP]%S+[^%p%s])", "|cffffffff|Hurl:%1|h[%1]|h|r")
+end
 
 function C:ChatFrame_AddMessage(text, ...)
     C:StoreChatMessage(self, text, ...)
@@ -139,11 +147,15 @@ end
 function C:FloatingChatFrame_OpenTemporaryWindow()
     for _, name in next, CHAT_FRAMES do
         local chatframe = _G[name]
-        if (chatframe.isTemporary) then C:SkinChatFrame(chatframe) end
+        if (chatframe.isTemporary) then
+            C:SkinChatFrame(chatframe)
+        end
     end
 end
 
-function C:FloatingChatFrame_UpdateBackgroundAnchors() self:SetClampRectInsets(0, 0, 0, 0) end
+function C:FloatingChatFrame_UpdateBackgroundAnchors()
+    self:SetClampRectInsets(0, 0, 0, 0)
+end
 
 function C:FloatingChatFrame_OnMouseScroll(dir)
     if (dir > 0) then
@@ -163,16 +175,26 @@ end
 
 function C:UpdateChatFrames()
     ChatFontNormal:SetFont(C.config.font, C.config.fontSize or 13, C.config.fontOutline or "OUTLINE")
-    if ChatFontNormal.SetShadowOffset then ChatFontNormal:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0) end
+    if ChatFontNormal.SetShadowOffset then
+        ChatFontNormal:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)
+    end
 
-    ChatFrameMenuButton:HookScript("OnShow", function() if C.config.hideMenuButton then ChatFrameMenuButton:Hide() end end)
+    ChatFrameMenuButton:HookScript("OnShow", function()
+        if C.config.hideMenuButton then
+            ChatFrameMenuButton:Hide()
+        end
+    end)
     if C.config.hideMenuButton then
         ChatFrameMenuButton:Hide()
     else
         ChatFrameMenuButton:Show()
     end
 
-    ChatFrameChannelButton:HookScript("OnShow", function() if C.config.hideChannelButton then ChatFrameChannelButton:Hide() end end)
+    ChatFrameChannelButton:HookScript("OnShow", function()
+        if C.config.hideChannelButton then
+            ChatFrameChannelButton:Hide()
+        end
+    end)
     if C.config.hideChannelButton then
         ChatFrameChannelButton:Hide()
     else
@@ -180,7 +202,11 @@ function C:UpdateChatFrames()
     end
 
     if QuickJoinToastButton then
-        QuickJoinToastButton:HookScript("OnShow", function() if C.config.hideSocialButton then QuickJoinToastButton:Hide() end end)
+        QuickJoinToastButton:HookScript("OnShow", function()
+            if C.config.hideSocialButton then
+                QuickJoinToastButton:Hide()
+            end
+        end)
         if C.config.hideSocialButton then
             QuickJoinToastButton:Hide()
         else
@@ -201,12 +227,16 @@ function C:UpdateChatFrames()
 
     for _, name in next, CHAT_FRAMES do
         local chatframe = _G[name]
-        if (chatframe.isTemporary) then C:SkinChatFrame(chatframe) end
+        if (chatframe.isTemporary) then
+            C:SkinChatFrame(chatframe)
+        end
     end
 end
 
 function C:SkinChatFrame(frame)
-    if not frame then return end
+    if not frame then
+        return
+    end
 
     local name = frame:GetName()
 
@@ -214,7 +244,9 @@ function C:SkinChatFrame(frame)
     frame:SetMaxResize(UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
     frame:SetMinResize(100, 50)
     frame:SetFont(C.config.font, C.config.fontSize or 13, C.config.fontOutline or "OUTLINE")
-    if frame.SetShadowOffset then frame:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0) end
+    if frame.SetShadowOffset then
+        frame:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)
+    end
 
     frame:SetFading(true)
 
@@ -251,7 +283,9 @@ end
 
 function C:GetFrameHistory(frame)
     local frameName = frame:GetName()
-    if not C.chatMessages[frameName] then C.chatMessages[frameName] = {} end
+    if not C.chatMessages[frameName] then
+        C.chatMessages[frameName] = {}
+    end
 
     return C.chatMessages[frameName]
 end
@@ -261,7 +295,11 @@ function C:LoadChatHistory(frame)
 
     if db and #db > 0 then
         frame.isLoadingHistory = true
-        for i, message in next, db do if message.text then frame.AddMessage(frame, message.text, unpack(message.args)) end end
+        for i, message in next, db do
+            if message.text then
+                frame.AddMessage(frame, message.text, unpack(message.args))
+            end
+        end
         frame.isLoadingHistory = false
     end
 end
@@ -272,7 +310,9 @@ function C:ClearChatHistory()
 end
 
 function C:StoreChatMessage(frame, text, ...)
-    if frame.isLoadingHistory then return end
+    if frame.isLoadingHistory then
+        return
+    end
 
     local patterns = {
         "|Hplayer:", -- Say/Yell/Whisper
@@ -287,19 +327,27 @@ function C:StoreChatMessage(frame, text, ...)
         end
     end
 
-    if not matchesPattern then return end
+    if not matchesPattern then
+        return
+    end
 
-    local message = {text = text, time = time(), args = {...}}
+    local message = { text = text, time = time(), args = { ... } }
     local db = C:GetFrameHistory(frame)
     table.insert(db, message)
 
     local count = #db
     local countOverMax = count - C.config.maxHistoryCount
-    if countOverMax > 0 then for i = 1, countOverMax do table.remove(db, 1) end end
+    if countOverMax > 0 then
+        for i = 1, countOverMax do
+            table.remove(db, 1)
+        end
+    end
 end
 
 function C:OnHyperlinkEnter(frame, refString)
-    if InCombatLockdown() then return end
+    if InCombatLockdown() then
+        return
+    end
 
     local linkToken = strmatch(refString, "^([^:]+)")
     if C.HyperlinkTypes[linkToken] then
@@ -330,7 +378,9 @@ function C:OnMouseWheel(self, delta)
         elseif IsAltKeyDown() then
             self:ScrollDown()
         else
-            for _ = 1, numScrollMessages do self:ScrollDown() end
+            for _ = 1, numScrollMessages do
+                self:ScrollDown()
+            end
         end
     elseif delta > 0 then
         if IsShiftKeyDown() then
@@ -338,16 +388,22 @@ function C:OnMouseWheel(self, delta)
         elseif IsAltKeyDown() then
             self:ScrollUp()
         else
-            for _ = 1, numScrollMessages do self:ScrollUp() end
+            for _ = 1, numScrollMessages do
+                self:ScrollUp()
+            end
         end
     end
 end
 
 function C:SetEditBoxMessage(message)
     local editBox = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
-    if not editBox then return end
+    if not editBox then
+        return
+    end
     editBox:SetText(message)
     editBox:SetFocus()
     editBox:HighlightText()
-    if not editBox:IsShown() then editBox:Show() end
+    if not editBox:IsShown() then
+        editBox:Show()
+    end
 end
