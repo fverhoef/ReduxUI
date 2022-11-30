@@ -58,7 +58,7 @@ function R:CreateBorder(color, size, offset, frameLevel, texture)
     self.Border = border
 end
 
-function R:CreateShadow(size, color, offset)
+function R:CreateShadow(color, size, offset)
     local shadow = self.Shadow
     if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
 

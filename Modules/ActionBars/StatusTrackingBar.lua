@@ -22,12 +22,12 @@ AB.StatusTrackingBarMixin = {}
 ReduxStatusTrackingBarMixin = AB.StatusTrackingBarMixin
 
 function AB.StatusTrackingBarMixin:OnLoad()
-    self.config = AB.config.reputationBar
-    self.defaults = AB.defaults.reputationBar
-    
+    self.config = AB.config.statusTrackingBar
+    self.defaults = AB.defaults.statusTrackingBar
+
     self:CreateBackdrop({ bgFile = R.media.textures.blank })
     self:CreateBorder(nil, 8, 2)
-    self:CreateShadow()
+    self:CreateShadow(nil, 10, 4)
     self:CreateFader(self.config.fader)
     self:CreateMover(L["Reputation/Tracking Bar"], self.defaults.point)
 

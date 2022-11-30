@@ -43,8 +43,8 @@ function AB:CreateActionBarOptions(id, disabledFunc)
                 hidden = id ~= 1,
                 args = {
                     enableModernArt = R:CreateToggleOption(L["Enable Modern Art"],
-                                                                 L["Whether or not the Modern Blizzard artwork for the main action bar (Gryphons/Wyverns, depending on faction) is shown."], 1, "full",
-                                                                 nil, function()
+                                                           L["Whether or not the Modern Blizzard artwork for the main action bar (Gryphons/Wyverns, depending on faction) is shown."], 1, "full", nil,
+                                                           function()
                         return AB.config.actionBar1.modernArt.enabled
                     end, function(value)
                         AB.config.actionBar1.modernArt.enabled = value
@@ -285,6 +285,97 @@ function AB:CreateMiscBarOptions(name, title, order, hidden, disabledFunc)
     }
 end
 
+function AB:CreateTrackingBarOptions(name, title, order, disabledFunc)
+    return {
+        type = "group",
+        name = title,
+        order = order,
+        args = {
+            header = { type = "header", name = R.title .. " > Action Bars > " .. title, order = 0 },
+            enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function()
+                return AB.config[name].enabled
+            end, function(value)
+                AB.config[name].enabled = value
+            end, function()
+                AB:Update()
+            end),
+            disabledNote = {
+                type = "description",
+                name = string.format(L["%sNOTE:|r When using Vanilla style main action bars, some options are disabled."], R:Hex(1, 0, 0)),
+                order = 2,
+                hidden = function()
+                    return not AB.config[name].enabled or not (disabledFunc and disabledFunc())
+                end
+            },
+            size = {
+                type = "group",
+                name = L["Size"],
+                order = 3,
+                inline = true,
+                disabled = function()
+                    return not AB.config[name].enabled or (disabledFunc and disabledFunc())
+                end,
+                args = {
+                    width = R:CreateRangeOption(L["Width"], L["The width of this bar."], 1, nil, 100, 800, nil, 1, function()
+                        return AB.config[name].size[1]
+                    end, function(value)
+                        AB.config[name].size[1] = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    height = R:CreateRangeOption(L["Height"], L["The height of this bar."], 1, nil, 10, 50, nil, 1, function()
+                        return AB.config[name].size[2]
+                    end, function(value)
+                        AB.config[name].size[2] = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            },
+            styling = {
+                type = "group",
+                name = L["Styling"],
+                order = 4,
+                inline = true,
+                disabled = function()
+                    return not AB.config[name].enabled or (disabledFunc and disabledFunc())
+                end,
+                args = {
+                    fade = R:CreateToggleOption(L["Mouseover Fade"], L["Whether or not to show a backdrop behind this bar"], 1, nil, nil, function()
+                        return AB.config[name].fader == R.config.faders.mouseOver
+                    end, function(value)
+                        AB.config[name].fader = value and R.config.faders.mouseOver or R.config.faders.onShow
+                    end, function()
+                        AB:Update()
+                    end),
+                    linebreak1 = { type = "description", name = "", order = 2 },
+                    backdrop = R:CreateToggleOption(L["Show Backdrop"], L["Whether or not to show a backdrop behind this bar"], 3, nil, nil, function()
+                        return AB.config[name].backdrop
+                    end, function(value)
+                        AB.config[name].backdrop = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    border = R:CreateToggleOption(L["Show Border"], L["Whether or not to show a border around this bar"], 4, nil, nil, function()
+                        return AB.config[name].border
+                    end, function(value)
+                        AB.config[name].border = value
+                    end, function()
+                        AB:Update()
+                    end),
+                    shadow = R:CreateToggleOption(L["Shadow"], L["Whether or not to show a shadow behind this bar"], 5, nil, nil, function()
+                        return AB.config[name].shadow
+                    end, function(value)
+                        AB.config[name].shadow = value
+                    end, function()
+                        AB:Update()
+                    end)
+                }
+            }
+        }
+    }
+end
+
 R:RegisterModuleOptions(AB, function()
     return {
         type = "group",
@@ -332,6 +423,12 @@ R:RegisterModuleOptions(AB, function()
                 return AB.config.actionBar1.vanillaArt.enabled
             end),
             vehicleExitBar = AB:CreateMiscBarOptions("vehicleExitBar", L["Vehicle Exit Bar"], 24, nil, function()
+                return AB.config.actionBar1.vanillaArt.enabled
+            end),
+            experienceBar = AB:CreateTrackingBarOptions("experienceBar", L["Experience Bar"], 25, function()
+                return AB.config.actionBar1.vanillaArt.enabled
+            end),
+            statusTrackingBar = AB:CreateTrackingBarOptions("statusTrackingBar", L["Reputation/Tracking Bar"], 26, function()
                 return AB.config.actionBar1.vanillaArt.enabled
             end)
         }

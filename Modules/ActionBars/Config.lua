@@ -255,8 +255,8 @@ R:RegisterModuleConfig(AB, {
     },
     extraActionBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 305 }, fader = R.config.faders.onShow },
     zoneBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 225 }, fader = R.config.faders.onShow },
-    experienceBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 25 }, size = { 452, 12 }, backdrop = true, border = true, shadow = false },
-    reputationBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 8 }, size = { 452, 12 }, backdrop = true, border = true, shadow = false },
+    experienceBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 25 }, size = { 452, 12 }, backdrop = true, border = true, shadow = true },
+    statusTrackingBar = { enabled = true, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 8 }, size = { 452, 12 }, backdrop = true, border = true, shadow = true },
     systemInfo = {
         enabled = true,
         lowLatencyTreshold = 70,

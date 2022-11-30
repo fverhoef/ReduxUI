@@ -19,10 +19,10 @@ function AB.ExperienceBarMixin:OnLoad()
 
     self.config = AB.config.experienceBar
     self.defaults = AB.defaults.experienceBar
-    
+
     self:CreateBackdrop({ bgFile = R.media.textures.blank })
-    self:CreateBorder(nil, 4)
-    self:CreateShadow()
+    self:CreateBorder(nil, 8, 2)
+    self:CreateShadow(nil, 10, 4)
     self:CreateFader(self.config.fader)
     self:CreateMover(L["Experience Bar"], self.defaults.point)
 
