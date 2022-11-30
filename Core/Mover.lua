@@ -61,11 +61,19 @@ function R.MoverMixin:OnEnter()
     GameTooltip:Show()
 
     self:FadeIn(0.3, self:GetAlpha(), 1)
+    self:UpdateArtwork(true)
 end
 
 function R.MoverMixin:OnLeave()
     GameTooltip:Hide()
     self:FadeOut(0.3, self:GetAlpha(), FADED_MOVER_ALPHA)
+    self:UpdateArtwork(false)
+end
+
+function R.MoverMixin:UpdateArtwork(selected)
+    self:CreateBorder(nil, 8, 2, nil, selected and R.media.textures.edgeFiles.moverSelected or R.media.textures.edgeFiles.moverHighlight)
+    self:CreateBackdrop({ bgFile = selected and R.media.textures.backdrops.moverSelectedBackground or R.media.textures.backdrops.moverHighlightBackground }, { 1, 1, 1 })
+    self.Backdrop:SetInside(self, 2, 2)
 end
 
 function R.MoverMixin:OnShow()
@@ -74,7 +82,7 @@ function R.MoverMixin:OnShow()
         return
     end
 
-    self.displayNameText:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
+    self.Label:SetFont(STANDARD_TEXT_FONT, 9, "OUTLINE")
     if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then
         RegisterStateDriver(self.frame, "visibility", "show")
     end
@@ -127,7 +135,8 @@ function R.MoverMixin:Lock(hideWhenLocked)
 
     self.isLocked = true
     self.hideWhenLocked = hideWhenLocked
-    self.texture:SetVertexColor(1, 0, 0)
+    -- TODO: apply locked texture
+    -- self.texture:SetVertexColor(1, 0, 0)
 
     if not R.framesLocked then
         self:Hide()
@@ -140,7 +149,8 @@ function R.MoverMixin:Unlock()
     end
 
     self.isLocked = false
-    self.texture:SetVertexColor(0, 1, 0)
+    -- TODO: apply unlocked texture
+    -- self.texture:SetVertexColor(0, 1, 0)
 
     if not R.framesLocked then
         self:Show()
@@ -185,16 +195,12 @@ function R:CreateMover(displayName, defaultPoint, width, height, point)
     mover:SetScript("OnMouseDown", mover.OnMouseDown)
     mover:Hide()
 
-    mover.texture = mover:CreateTexture(nil, "OVERLAY", nil, 6)
-    mover.texture:SetAllPoints(mover)
-    mover.texture:SetColorTexture(1, 1, 1)
-    mover.texture:SetVertexColor(0, 1, 0)
-    mover.texture:SetAlpha(0.3)
+    mover.Label = mover:CreateFontString(nil, "OVERLAY")
+    mover.Label:SetAllPoints(mover)
+    mover.Label:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    mover.Label:SetText(mover.displayName)
 
-    mover.displayNameText = mover:CreateFontString(nil, "OVERLAY")
-    mover.displayNameText:SetAllPoints(mover)
-    mover.displayNameText:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
-    mover.displayNameText:SetText(mover.displayName)
+    mover:UpdateArtwork(false)
 
     table.insert(R.movers, mover)
 
@@ -289,10 +295,9 @@ function R:CreateMoverSettingsFrame()
     settings.usageText:SetPoint("BOTTOMRIGHT", -4, 26)
     settings.usageText:SetJustifyH("LEFT")
     settings.usageText:SetJustifyV("MIDDLE")
-    settings.usageText:SetText(string.format(
-                                   R.L["Hold %sShift|r to enable dragging."] .. "\n\n" .. R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
-                                       R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" .. R.L["Press the %sAlt|r key to cycle through frames under the cursor."],
-                                       R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
+    settings.usageText:SetText(string.format(R.L["Hold %sShift|r to enable dragging."] .. "\n\n" .. R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
+                                                 R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" .. R.L["Press the %sAlt|r key to cycle through frames under the cursor."],
+                                             R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
 
     settings.lockButton = CreateFrame("Button", "$parentLockButton", settings, "UIPanelButtonTemplate")
     settings.lockButton:SetSize(80, 21)

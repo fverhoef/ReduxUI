@@ -26,6 +26,10 @@ R.media = {
                 performanceBar = MEDIA_PREFIX .. "\\Textures\\ActionBars\\Vanilla\\PerformanceBar"
             }
         },
+        backdrops = {
+            moverHighlightBackground = MEDIA_PREFIX .. "\\Textures\\Backdrops\\MoverHighlightBackground",
+            moverSelectedBackground = MEDIA_PREFIX .. "\\Textures\\Backdrops\\MoverSelectedBackground"
+        },
         buttons = {
             backdrop = MEDIA_PREFIX .. "\\Textures\\Buttons\\Backdrop",
             border = MEDIA_PREFIX .. "\\Textures\\Buttons\\Border",
@@ -37,6 +41,8 @@ R.media = {
             border = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Border",
             glow = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Glow",
             inlay = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\Inlay",
+            moverHighlight = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\MoverHighlight",
+            moverSelected = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\MoverSelected",
             separatorHorizontal = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorHorizontal",
             separatorVertical = MEDIA_PREFIX .. "\\Textures\\EdgeFiles\\SeparatorVertical"
         },

@@ -1,27 +1,29 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
-R.BACKDROP_PIECES = {"TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center"}
+R.BACKDROP_PIECES = { "TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner", "TopEdge", "BottomEdge", "LeftEdge", "RightEdge", "Center" }
 
-R.DEFAULT_BACKDROP_COLOR = {0.1, 0.1, 0.1, 0.8}
-R.DEFAULT_BORDER_COLOR = {1, 1, 1, 1}
+R.DEFAULT_BACKDROP_COLOR = { 0.1, 0.1, 0.1, 0.8 }
+R.DEFAULT_BORDER_COLOR = { 1, 1, 1, 1 }
 R.DEFAULT_BORDER_SIZE = 8
 R.DEFAULT_BORDER_OFFSET = 2
-R.DEFAULT_SHADOW_COLOR = {0, 0, 0, 0.5}
+R.DEFAULT_SHADOW_COLOR = { 0, 0, 0, 0.5 }
 R.DEFAULT_SHADOW_SIZE = 10
 R.DEFAULT_SHADOW_OFFSET = 4
-R.DEFAULT_INLAY_COLOR = {1, 1, 1, 0.7}
+R.DEFAULT_INLAY_COLOR = { 1, 1, 1, 0.7 }
 R.DEFAULT_INLAY_SIZE = 10
 R.DEFAULT_INLAY_OFFSET = 5
-R.DEFAULT_SEPARATOR_COLOR = {1, 1, 1, 1}
+R.DEFAULT_SEPARATOR_COLOR = { 1, 1, 1, 1 }
 R.DEFAULT_SEPARATOR_SIZE = 4
 R.DEFAULT_SEPARATOR_OFFSET = 2
 R.DEFAULT_SEPARATOR_POSITION = "TOP"
-R.VALID_SEPARATOR_POSITIONS = {["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true}
+R.VALID_SEPARATOR_POSITIONS = { ["TOP"] = true, ["BOTTOM"] = true, ["LEFT"] = true, ["RIGHT"] = true }
 
 function R:CreateBackdrop(backdropInfo, color, borderColor)
     local backdrop = self.Backdrop
-    if not backdrop then backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
+    if not backdrop then
+        backdrop = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
+    end
 
     color = color or R.DEFAULT_BACKDROP_COLOR
     borderColor = borderColor or R.DEFAULT_BORDER_COLOR
@@ -38,70 +40,98 @@ end
 
 function R:CreateBorder(color, size, offset, frameLevel, texture)
     local border = self.Border
-    if not border then border = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
+    if not border then
+        border = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
+    end
 
     color = color or R.DEFAULT_BORDER_COLOR
-    if not color[4] then color[4] = R.DEFAULT_BORDER_COLOR[4] end
+    if not color[4] then
+        color[4] = R.DEFAULT_BORDER_COLOR[4]
+    end
     size = size or R.DEFAULT_BORDER_SIZE
     offset = offset or R.DEFAULT_BORDER_OFFSET
     frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 1)
     texture = texture or R.media.textures.edgeFiles.border
 
-    border:SetBackdrop({edgeFile = texture, edgeSize = size})
+    border:SetBackdrop({ edgeFile = texture, edgeSize = size })
     border:SetBackdropBorderColor(unpack(color))
     border:SetFrameLevel(frameLevel)
     border:SetFrameStrata(self:GetFrameStrata())
     border:SetOutside(self, offset, offset)
 
-    border.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
+    if not border.SetVertexColor then
+        border.SetVertexColor = function(self, r, g, b, a)
+            self:SetBackdropBorderColor(r, g, b, a or 1)
+        end
+    end
 
     self.Border = border
 end
 
 function R:CreateShadow(color, size, offset)
     local shadow = self.Shadow
-    if not shadow then shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
+    if not shadow then
+        shadow = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
+    end
 
     color = color or R.DEFAULT_SHADOW_COLOR
-    if not color[4] then color[4] = R.DEFAULT_SHADOW_COLOR[4] end
+    if not color[4] then
+        color[4] = R.DEFAULT_SHADOW_COLOR[4]
+    end
     size = size or R.DEFAULT_SHADOW_SIZE
     offset = offset or R.DEFAULT_SHADOW_OFFSET
 
-    shadow:SetBackdrop({edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size, insets = {left = size, right = size, top = size, bottom = size}})
+    shadow:SetBackdrop({ edgeFile = R.media.textures.edgeFiles.glow, edgeSize = size, insets = { left = size, right = size, top = size, bottom = size } })
     shadow:SetBackdropBorderColor(unpack(color))
     shadow:SetFrameLevel(1)
     shadow:SetFrameStrata(self:GetFrameStrata())
     shadow:SetOutside(self, offset, offset)
 
-    shadow.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
+    if not shadow.SetVertexColor then
+        shadow.SetVertexColor = function(self, r, g, b, a)
+            self:SetBackdropBorderColor(r, g, b, a or 1)
+        end
+    end
 
     self.Shadow = shadow
 end
 
 function R:CreateInlay(color, size, offset, frameLevel)
     local inlay = self.Inlay
-    if not inlay then inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate") end
+    if not inlay then
+        inlay = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
+    end
 
     color = color or R.DEFAULT_INLAY_COLOR
-    if not color[4] then color[4] = R.DEFAULT_INLAY_COLOR[4] end
+    if not color[4] then
+        color[4] = R.DEFAULT_INLAY_COLOR[4]
+    end
     size = size or R.DEFAULT_INLAY_SIZE
     offset = offset or R.DEFAULT_INLAY_OFFSET
     frameLevel = frameLevel or math.max(1, self:GetFrameLevel() + 2)
 
-    inlay:SetBackdrop({edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = size})
+    inlay:SetBackdrop({ edgeFile = R.media.textures.edgeFiles.inlay, edgeSize = size })
     inlay:SetBackdropBorderColor(unpack(color))
     inlay:SetFrameLevel(frameLevel)
     inlay:SetOutside(self, offset, offset)
 
-    inlay.SetVertexColor = function(self, r, g, b, a) self:SetBackdropBorderColor(r, g, b, a or 1) end
+    if not inlay.SetVertexColor then
+        inlay.SetVertexColor = function(self, r, g, b, a)
+            self:SetBackdropBorderColor(r, g, b, a or 1)
+        end
+    end
 
     self.Inlay = inlay
 end
 
 function R:CreateSeparator(color, size, offset, frameLevel, position)
     local separator = self.Separator
-    if not separator then separator = CreateFrame("Frame", nil, self) end
-    if not separator.Texture then separator.Texture = separator:CreateTexture("BORDER") end
+    if not separator then
+        separator = CreateFrame("Frame", nil, self)
+    end
+    if not separator.Texture then
+        separator.Texture = separator:CreateTexture("BORDER")
+    end
 
     color = color or R.DEFAULT_SEPARATOR_COLOR
     size = size or R.DEFAULT_SEPARATOR_SIZE
