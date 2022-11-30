@@ -22,7 +22,6 @@ function UF:CreateClassPower()
         classPower:SetBackdropColor(0, 0, 0, 0.70)
 
         classPower:CreateBorder(nil, 8, 2, classPower:GetFrameLevel() + 2)
-        classPower:CreateInlay()
 
         self.ClassPower[i] = classPower
     end
