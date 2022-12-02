@@ -82,6 +82,7 @@ function UF.PlayerMixin:PostConfigure()
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
+        self.Flash:SetDrawLayer("BACKGROUND")
         self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
         self.Flash:SetTexCoord(1, 0, 0, 205 / 256)
         self.Flash:ClearAllPoints()
@@ -266,8 +267,10 @@ function UF.PlayerMixin:PostConfigure()
         self.Artwork:Show()
 
         if not self.Flash then
-            self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
+            self.Flash = self.Overlay:CreateTexture("$parentFlash", "OVERLAY", nil, 1)
         end
+
+        self.Flash:SetDrawLayer("OVERLAY")
         self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625) -- Flash
         --self.Flash:SetTexCoord(0, 0.375, 0.26171875, 0.5234375) -- Status 

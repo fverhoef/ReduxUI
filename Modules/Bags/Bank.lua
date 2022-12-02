@@ -38,9 +38,6 @@ function B.BankMixin:OnLoad()
         self.Tabs = { self.BankTab, self.ReagentsTab }
         PanelTemplates_SetNumTabs(self, #self.Tabs)
         PanelTemplates_SetTab(self, 1)
-    else
-        self.BankTab:Hide()
-        self.ReagentsTab:Hide()
     end
 
     self.portrait = self.portrait or self.PortraitContainer.portrait

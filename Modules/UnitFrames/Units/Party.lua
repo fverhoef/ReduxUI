@@ -29,6 +29,7 @@ function UF.PartyMixin:PostConfigure()
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
+        self.Flash:SetDrawLayer("BACKGROUND")
         self.Flash:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.partyFrame_LargeHealth_Flash or R.media.textures.unitFrames.vanilla.partyFrame_Flash)
         self.Flash:SetTexCoord(0, 1, 0, 1)
         self.Flash:ClearAllPoints()
@@ -121,8 +122,9 @@ function UF.PartyMixin:PostConfigure()
         self.Artwork:Show()
 
         if not self.Flash then
-            self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
+            self.Flash = self.Overlay:CreateTexture("$parentFlash", "OVERLAY", nil, 1)
         end
+        self.Flash:SetDrawLayer("OVERLAY")
         self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Flash:SetTexCoord(0.75, 0.9794921875, 0.173828125, 0.34765625)
         self.Flash:ClearAllPoints()
