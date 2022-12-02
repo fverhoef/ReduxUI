@@ -3,10 +3,11 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-AB.statusTrackingBarManager = CreateFrame("Frame", addonName .. "_StatusTrackingBarManager", UIParent)
-
 function AB:CreateStatusTrackingBar()
     if R.isRetail then
+        AB.statusTrackingBarManager = CreateFrame("Frame", addonName .. "_StatusTrackingBarManager", UIParent)
+        AB.statusTrackingBarManager:Hide()
+
         StatusTrackingBarManager:SetParent(AB.statusTrackingBarManager)
         StatusTrackingBarManager:AddBarFromTemplate("FRAME", "ReputationStatusBarTemplate")
         StatusTrackingBarManager:AddBarFromTemplate("FRAME", "HonorStatusBarTemplate")
@@ -42,6 +43,11 @@ function AB.StatusTrackingBarMixin:OnLeave()
     self.OverlayFrame.Text:Hide()
 end
 
+local REACTION_TEXTURES = {
+    R.media.textures.statusBars.reputationRed, R.media.textures.statusBars.reputationRed, R.media.textures.statusBars.reputationOrange, R.media.textures.statusBars.reputationYellow,
+    R.media.textures.statusBars.reputationGreen, R.media.textures.statusBars.reputationGreen, R.media.textures.statusBars.reputationGreen, R.media.textures.statusBars.reputationGreen
+}
+
 function AB.StatusTrackingBarMixin:Update()
     if not self.config.enabled then
         self:Hide()
@@ -57,16 +63,15 @@ function AB.StatusTrackingBarMixin:Update()
     self.Mover:Unlock()
     self:CreateFader(self.config.fader)
 
-    local watchedFactionName = GetWatchedFactionInfo()
+    local watchedFactionName, reaction, repMin, repMax, repValue, factionID = GetWatchedFactionInfo()
     local showRep = watchedFactionName ~= nil
-    local repMin, repMax = ReputationWatchBar.StatusBar:GetMinMaxValues()
-    local repValue = ReputationWatchBar.StatusBar:GetValue()
-    local repText = string.format("%s %i / %i", watchedFactionName or "None", repValue, repMax)
-    self:SetStatusBarTexture(R.media.textures.statusBars.redux)
-    self:SetStatusBarColor(unpack({ ReputationWatchBar.StatusBar:GetStatusBarColor() }))
-    self:SetMinMaxValues(repMin, repMax)
-    self:SetValue(repValue)
     self:SetShown(showRep)
-    self.OverlayFrame.Text:SetText(repText)
-    self.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    if showRep then
+        local repText = string.format("%s %i / %i", watchedFactionName or "None", repValue, repMax)
+        self:SetStatusBarTexture(REACTION_TEXTURES[reaction])
+        self:SetMinMaxValues(repMin, repMax)
+        self:SetValue(repValue)
+        self.OverlayFrame.Text:SetText(repText)
+        self.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    end
 end

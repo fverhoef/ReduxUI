@@ -13,7 +13,6 @@ AB.Styles = { Vanilla = "Vanilla", Modern = "Modern" }
 R:RegisterModuleConfig(AB, {
     enabled = true,
     statusbars = { experience = R.Libs.SharedMedia:Fetch("statusbar", "Redux"), reputation = R.Libs.SharedMedia:Fetch("statusbar", "Redux") },
-    colors = {},
     microButtonAndBags = { enabled = true, point = { "BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0 }, fader = R.config.faders.mouseOver },
     actionBar1 = {
         enabled = true,
@@ -31,9 +30,13 @@ R:RegisterModuleConfig(AB, {
         backdrop = true,
         border = true,
         shadow = true,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
         flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true,
         pageButtonStyle = AB.Styles.Modern,
         modernArt = { enabled = true },
         vanillaArt = { enabled = false, stackBottomBars = false }
@@ -54,9 +57,13 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar3 = {
         enabled = true,
@@ -74,9 +81,13 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar4 = {
         enabled = true,
@@ -94,9 +105,13 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "LEFT"
+        flyoutDirection = "LEFT",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar5 = {
         enabled = true,
@@ -114,13 +129,17 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "LEFT"
+        flyoutDirection = "LEFT",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar6 = {
         enabled = false,
-        buttonType = "REDUXUIBAR6BUTTON",
+        buttonType = "MULTIACTIONBAR5BUTTON",
         page = 7,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 5 },
         fader = R.config.faders.onShow,
@@ -134,13 +153,17 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar7 = {
         enabled = false,
-        buttonType = "REDUXUIBAR7BUTTON",
+        buttonType = "MULTIACTIONBAR6BUTTON",
         page = 8,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 5 },
         fader = R.config.faders.onShow,
@@ -154,13 +177,17 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar8 = {
         enabled = false,
-        buttonType = "REDUXUIBAR8BUTTON",
+        buttonType = "MULTIACTIONBAR7BUTTON",
         page = 9,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 5 },
         fader = R.config.faders.onShow,
@@ -174,13 +201,17 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar9 = {
         enabled = false,
-        buttonType = "REDUXUIBAR9BUTTON",
+        buttonType = "MULTIACTIONBAR8BUTTON",
         page = 10,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 5 },
         fader = R.config.faders.onShow,
@@ -194,13 +225,17 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     actionBar10 = {
         enabled = false,
-        buttonType = "REDUXUIBAR10BUTTON",
+        buttonType = "MULTIACTIONBAR9BUTTON",
         page = 11,
         point = { "BOTTOM", "UIParent", "BOTTOM", 0, 5 },
         fader = R.config.faders.onShow,
@@ -214,9 +249,13 @@ R:RegisterModuleConfig(AB, {
         backdrop = false,
         border = false,
         shadow = false,
+        locked = true,
         clickOnDown = true,
         showGrid = true,
-        flyoutDirection = "UP"
+        flyoutDirection = "UP",
+        checkSelfCast = true,
+        checkFocusCast = true,
+        checkMouseoverCast = true
     },
     stanceBar = {
         enabled = true,

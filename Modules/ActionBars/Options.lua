@@ -411,8 +411,6 @@ R:RegisterModuleOptions(AB, function()
             actionBar6 = AB:CreateActionBarOptions(6),
             actionBar7 = AB:CreateActionBarOptions(7),
             actionBar8 = AB:CreateActionBarOptions(8),
-            actionBar9 = AB:CreateActionBarOptions(9),
-            actionBar10 = AB:CreateActionBarOptions(10),
             petBar = AB:CreateMiscBarOptions("petBar", L["Pet Bar"], 21, nil, function()
                 return AB.config.actionBar1.vanillaArt.enabled
             end),

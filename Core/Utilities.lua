@@ -46,7 +46,9 @@ function R:Disable(frame, skipEvents, skipSetEmpty)
         if frame:GetName() then
             frame.ignoreFramePositionManager = true
             frame:SetAttribute("ignoreFramePositionManager", true)
-            UIPARENT_MANAGED_FRAME_POSITIONS[frame:GetName()] = nil
+            if not R.isRetail then
+                UIPARENT_MANAGED_FRAME_POSITIONS[frame:GetName()] = nil
+            end
         end
     end
 

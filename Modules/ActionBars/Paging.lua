@@ -16,7 +16,7 @@ function AB:CreatePageUpButton(parent)
 
 	parent:WrapScript(button, "OnClick", [[
         local bar = self:GetFrameRef("ActionBar1")
-        local currentPage = bar:GetAttribute("actionpage")
+        local currentPage = bar:GetAttribute("state")
         local nextPage = 1
         for i = currentPage + 1, 6 do
             if bar:GetAttribute("allowPage" .. i) == 1 then
@@ -74,7 +74,7 @@ function AB:CreatePageDownButton(parent)
 
 	parent:WrapScript(button, "OnClick", [[
         local bar = self:GetFrameRef("ActionBar1")
-        local currentPage = bar:GetAttribute("actionpage")
+        local currentPage = bar:GetAttribute("state")
         local prevPage
         for i = currentPage - 1, 1, -1 do
             if bar:GetAttribute("allowPage" .. i) == 1 then

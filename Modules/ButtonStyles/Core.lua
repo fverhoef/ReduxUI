@@ -30,7 +30,9 @@ function BS:Enable()
     BS:StyleAllTotemBarButtons()
 
     if not BS.masque then
-        BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
+        if BuffFrame_Update then
+            BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
+        end
         BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)
     end

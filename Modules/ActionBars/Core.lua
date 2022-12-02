@@ -11,16 +11,6 @@ function AB:Enable()
         return
     end
 
-    if not ActionBarActionEventsFrame.RegisterFrame then
-        ActionBarActionEventsFrame.RegisterFrame = ActionBarActionEventsFrame_RegisterFrame
-    end
-    if not ActionBarActionEventsFrame.UnregisterFrame then
-        ActionBarActionEventsFrame.UnregisterFrame = ActionBarActionEventsFrame_UnregisterFrame
-    end
-    if not ActionBarButtonEventsFrame.RegisterFrame then
-        ActionBarButtonEventsFrame.RegisterFrame = ActionBarButtonEventsFrame_RegisterFrame
-    end
-
     AB:DisableBlizzardBars()
 
     AB.bars = {}
@@ -127,17 +117,24 @@ function AB:DisableBlizzardBars()
     R:Disable(MultiBarBottomRight)
     R:Disable(MultiBarLeft)
     R:Disable(MultiBarRight)
-    R:Disable(PetActionBarFrame)
-    R:Disable(PossessBarFrame)
-    R:Disable(StanceBarFrame)
+    R:Disable(MultiBar5)
+    R:Disable(MultiBar6)
+    R:Disable(MultiBar7)
+    R:Disable(PetActionBarFrame or PetActionBar)
+    R:Disable(PossessBarFrame or PossessBar)
+    R:Disable(StanceBarFrame or StanceBar)
     R:Disable(MainMenuBarVehicleLeaveButton)
     R:Disable(VerticalMultiBarsContainer)
-
+    
     ActionBarActionEventsFrame:UnregisterAllEvents()
-    ActionBarController:UnregisterAllEvents()
-
+    ActionBarButtonEventsFrame:UnregisterAllEvents()
     if R.isRetail then
+        PetActionBar.UpdateGridLayout = nop
+        StatusTrackingBarManager:UnregisterAllEvents()
+        ActionBarController:RegisterEvent("SETTINGS_LOADED")
         ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
+    else
+        ActionBarController:UnregisterAllEvents()
     end
 end
 

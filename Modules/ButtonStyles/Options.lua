@@ -138,22 +138,14 @@ R:RegisterModuleOptions(BS, {
             name = L["Buffs & Debuffs"],
             order = 40,
             inline = true,
-            args = {
-                fontFamily = BS:CreateFontFamilyOption("auras", 1),
-                fontSize = BS:CreateFontSizeOption("auras", 2),
-                fontOutline = BS:CreateFontOutlineOption("auras", 3)
-            }
+            args = { fontFamily = BS:CreateFontFamilyOption("auras", 1), fontSize = BS:CreateFontSizeOption("auras", 2), fontOutline = BS:CreateFontOutlineOption("auras", 3) }
         },
         items = {
             type = "group",
             name = L["Items"],
             order = 50,
             inline = true,
-            args = {
-                fontFamily = BS:CreateFontFamilyOption("items", 1),
-                fontSize = BS:CreateFontSizeOption("items", 2),
-                fontOutline = BS:CreateFontOutlineOption("items", 3)
-            }
+            args = { fontFamily = BS:CreateFontFamilyOption("items", 1), fontSize = BS:CreateFontSizeOption("items", 2), fontOutline = BS:CreateFontOutlineOption("items", 3) }
         }
     }
 })

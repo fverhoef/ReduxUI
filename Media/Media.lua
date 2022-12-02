@@ -78,9 +78,13 @@ R.media = {
             }
         },
         statusBars = {
+            artifactPower = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ArtifactPower",
             castbar = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Castbar",
             castbarMana = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarMana",
             castbarSteel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarSteel",
+            experienceNormal = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ExperienceNormal",
+            experienceRested = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ExperienceRested",
+            honor = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Honor",
             redux = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Redux",
             onePixel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\OnePixel",
             empty = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Empty",
@@ -88,7 +92,11 @@ R.media = {
             kait1 = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Kait1",
             kait2 = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Kait2",
             melli = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Melli",
-            melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark"
+            melliDark = MEDIA_PREFIX .. "\\Textures\\StatusBars\\MelliDark",
+            reputationGreen = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ReputationGreen",
+            reputationOrange = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ReputationOrange",
+            reputationRed = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ReputationRed",
+            reputationYellow = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ReputationYellow"
         },
         unitFrames = {
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",

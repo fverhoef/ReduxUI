@@ -2,6 +2,9 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
 
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
+
 local BANK_CONTAINER = _G.BANK_CONTAINER
 local REAGENTBANK_CONTAINER = _G.REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = _G.KEYRING_CONTAINER or -2
@@ -10,13 +13,15 @@ local REAGENTBANK_SIZE = 98
 
 local BUTTON_TEMPLATES = {}
 BUTTON_TEMPLATES[BANK_CONTAINER] = "BankBagButtonTemplate"
-if R.isRetail then BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate" end
-
-function Bag_OnLoad()
+if R.isRetail then
+    BUTTON_TEMPLATES[REAGENTBANK_CONTAINER] = "ReagentBankBagButtonTemplate"
 end
 
 B.BagMixin = {}
 ReduxBagMixin = B.BagMixin
+
+function B.BagMixin:OnLoad()
+end
 
 function B.BagMixin:Initialize(bagID)
     self:SetID(bagID)

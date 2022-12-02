@@ -4,10 +4,10 @@ local AB = R.Modules.ActionBars
 local L = R.L
 
 function AB:CreateActionBar(id)
-    local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerAttributeTemplate")
+    local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerStateTemplate", id)
+    bar.id = id
     bar.config = AB.config["actionBar" .. id]
     bar.defaults = AB.defaults["actionBar" .. id]
-    bar.id = id
     _G.Mixin(bar, AB.ActionBarMixin)
 
     bar.buttons = {}
@@ -15,54 +15,24 @@ function AB:CreateActionBar(id)
         bar.buttons[id] = AB:CreateActionBarButton(id, bar, bar.config.buttonType)
     end
 
-    bar:SetAttribute("_onattributechanged", [[
-        if name == "actionpage" then
-            control:ChildUpdate("actionpage", value)
+    bar:SetAttribute("_onstate-page", [[
+        if newstate == "possess" or newstate == "11" then
+            if HasVehicleActionBar() then
+                newstate = GetVehicleBarIndex()
+            elseif HasOverrideActionBar() then
+                newstate = GetOverrideBarIndex()
+            elseif HasTempShapeshiftActionBar() then
+                newstate = GetTempShapeshiftBarIndex()
+            elseif HasBonusActionBar() then
+                newstate = GetBonusBarIndex()
+            else
+                newstate = 12
+            end
         end
-    ]])
 
-    bar:RegisterEvent("PLAYER_ENTERING_WORLD")
-    bar:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
-    bar:RegisterEvent("UPDATE_BINDINGS")
-    bar:RegisterEvent("GAME_PAD_ACTIVE_CHANGED")
-    bar:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-    bar:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
-    bar:RegisterEvent("PET_BAR_UPDATE")
-    bar:RegisterUnitEvent("UNIT_FLAGS", "pet")
-    bar:RegisterUnitEvent("UNIT_AURA", "pet")
-    bar:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
-    bar:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
-    bar:RegisterEvent("SPELL_UPDATE_CHARGES")
-    bar:RegisterEvent("UPDATE_INVENTORY_ALERTS")
-    bar:RegisterEvent("PLAYER_TARGET_CHANGED")
-    bar:RegisterEvent("TRADE_SKILL_SHOW")
-    bar:RegisterEvent("TRADE_SKILL_CLOSE")
-    if R.isRetail then
-        bar:RegisterEvent("ARCHAEOLOGY_CLOSED")
-    end
-    bar:RegisterEvent("PLAYER_ENTER_COMBAT")
-    bar:RegisterEvent("PLAYER_LEAVE_COMBAT")
-    if R.isRetail then
-        bar:RegisterEvent("START_AUTOREPEAT_SPELL")
-        bar:RegisterEvent("STOP_AUTOREPEAT_SPELL")
-    end
-    bar:RegisterEvent("UNIT_ENTERED_VEHICLE")
-    bar:RegisterEvent("UNIT_EXITED_VEHICLE")
-    bar:RegisterEvent("COMPANION_UPDATE")
-    bar:RegisterEvent("UNIT_INVENTORY_CHANGED")
-    bar:RegisterEvent("LEARNED_SPELL_IN_TAB")
-    bar:RegisterEvent("PET_STABLE_UPDATE")
-    bar:RegisterEvent("PET_STABLE_SHOW")
-    bar:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
-    bar:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-    if R.isRetail then
-        bar:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
-    end
-    bar:RegisterEvent("LOSS_OF_CONTROL_ADDED")
-    bar:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
-    bar:RegisterEvent("SPELL_UPDATE_ICON")
-
-    bar:SetScript("OnEvent", bar.OnEvent)
+        self:SetAttribute("state", newstate)
+        control:ChildUpdate("state", newstate)
+	]])
 
     bar:CreateBackdrop({ bgFile = R.media.textures.blank })
     bar:CreateBorder(nil, 12, 3)
@@ -149,7 +119,6 @@ function AB.ActionBarMixin:Configure()
             button:ClearAllPoints()
             button:SetNormalizedPoint(point)
 
-            button:SetAttribute("buttonlock", true)
             button:Configure()
         end
     end
@@ -188,22 +157,38 @@ function AB.ActionBarMixin:Configure()
             end
 
             page = page .. " [form] 1; 1"
+
+            R:Print(page)
         end
-        RegisterAttributeDriver(self, "actionpage", page)
+        RegisterStateDriver(self, "page", page)
     end
 end
 
-function AB.ActionBarMixin:OnEvent(event, ...)
-    if event == "UNIT_INVENTORY_CHANGED" then
-        local unit = ...
-        if unit == "player" and self.tooltipOwner and GameTooltip:GetOwner() == self.tooltipOwner then
-            self.tooltipOwner:SetTooltip()
-        end
-    else
-        for _, button in pairs(self.buttons) do
-            if HasAction(button.action) then
-                button:OnEvent(event, ...)
-            end
-        end
+function AB:CreateActionBarButton(id, parent, buttonType)
+    local button = R.Libs.ActionButton:CreateButton(id, "$parentButton" .. id, parent)
+    button.buttonType = buttonType
+    _G.Mixin(button, AB.ActionBarButtonMixin)
+
+    button:SetState(0, "action", id)
+    for page = 1, 18 do
+        button:SetState(page, "action", (page - 1) * 12 + id)
     end
+
+    button:Configure()
+
+    return button
+end
+
+AB.ActionBarButtonMixin = {}
+
+function AB.ActionBarButtonMixin:Configure()
+    local config = self.header.config
+    self:UpdateConfig({ clickOnDown = config.clickOnDown, flyoutDirection = config.flyoutDirection, keyBoundTarget = self.buttonType .. self.id, showGrid = config.showGrid })
+
+    self:SetAttribute("buttonlock", config.locked)
+    self:SetAttribute("checkselfcast", config.checkSelfCast)
+    self:SetAttribute("checkfocuscast", config.checkFocusCast)
+    self:SetAttribute("checkmouseovercast", config.checkMouseoverCast)
+
+    R.Modules.ButtonStyles:StyleActionButton(self)
 end

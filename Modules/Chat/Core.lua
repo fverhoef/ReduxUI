@@ -239,8 +239,10 @@ function C:SkinChatFrame(frame)
     local name = frame:GetName()
 
     frame:SetClampRectInsets(0, 0, 0, 0)
-    frame:SetMaxResize(UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
-    frame:SetMinResize(100, 50)
+    if not R.isRetail then
+        frame:SetMaxResize(UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)
+        frame:SetMinResize(100, 50)
+    end
     frame:SetFont(C.config.font, C.config.fontSize or 13, C.config.fontOutline or "OUTLINE")
     if frame.SetShadowOffset then
         frame:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)

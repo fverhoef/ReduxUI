@@ -3,7 +3,6 @@
     <Script file="Config.lua" />
     <Script file="Options.lua" />
     <Script file="ActionBar.lua" />
-    <Script file="ActionBarButton.lua" />
     <Script file="ActionButton.lua" />
     <Script file="KeyBoundButton.lua" />
     <Include file="Art.xml" />

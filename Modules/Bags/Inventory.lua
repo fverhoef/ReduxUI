@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local B = R.Modules.Bags
 local L = R.L
 
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+
 local KEYRING_CONTAINER = KEYRING_CONTAINER or -2
 
 B.InventoryMixin = {}
@@ -10,18 +12,23 @@ ReduxInventoryMixin = B.InventoryMixin
 
 function B.InventoryMixin:OnLoad()
     self.config = B.config.inventory
-    self.BagIDs = {0, 1, 2, 3, 4}
-    if not R.isRetail then table.insert(self.BagIDs, KEYRING_CONTAINER) end
+    self.BagIDs = { 0, 1, 2, 3, 4 }
+    if not R.isRetail then
+        table.insert(self.BagIDs, KEYRING_CONTAINER)
+    end
 
-    BagFrame_OnLoad(self)
+    B.BagFrameMixin.OnLoad(self)
 
     self.Title:SetText(BACKPACK_TOOLTIP)
     self.Money:SetScale(0.8)
 
+    self.portrait = self.portrait or self.PortraitContainer.portrait
     self.portrait:SetTexture(R.media.textures.icons.backpack)
 
     table.insert(_G.UISpecialFrames, self:GetName())
-    for i = 1, NUM_CONTAINER_FRAMES do _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame) end
+    for i = 1, NUM_CONTAINER_FRAMES do
+        _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame)
+    end
 
     self:SetNormalizedPoint(self.config.point)
     self:CreateMover(L["Inventory"], B.defaults.inventory.point)
@@ -31,7 +38,7 @@ function B.InventoryMixin:OnLoad()
     B:SecureHook("ToggleBag", "ToggleBag")
     B:SecureHook("ToggleAllBags", B.ToggleBackpack)
     B:SecureHook("ToggleBackpack", B.ToggleBackpack)
-    if BackpackTokenFrame then
+    if BackpackTokenFrame and ManageBackpackTokenFrame then
         B:SecureHook("ManageBackpackTokenFrame", function(backpack)
             if BackpackTokenFrame_IsShown() then
                 BackpackTokenFrame:SetParent(self)
@@ -48,16 +55,18 @@ end
 
 function B.InventoryMixin:OnHide()
     CloseBackpack()
-    for i = 1, NUM_BAG_FRAMES do CloseBag(i) end
+    for i = 1, NUM_BAG_FRAMES do
+        CloseBag(i)
+    end
     B:UpdateBagBarCheckedState()
 end
 
 B.InventoryMoneyMixin = {}
 ReduxInventoryMoneyMixin = B.InventoryMoneyMixin
 
-function B.InventoryMoneyMixin:Money_OnEnter()   
+function B.InventoryMoneyMixin:Money_OnEnter()
     local ID = R.Modules.InventoryDatabase
-     
+
     _G.GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
     _G.GameTooltip:AddLine("Money")
     local total = 0
@@ -94,7 +103,9 @@ function B:UpdateBagBarCheckedState()
         _G.CharacterBag1Slot:SetChecked(state)
         _G.CharacterBag2Slot:SetChecked(state)
         _G.CharacterBag3Slot:SetChecked(state)
-        if _G.KeyRingButton then _G.KeyRingButton:SetChecked(state) end
+        if _G.KeyRingButton then
+            _G.KeyRingButton:SetChecked(state)
+        end
     end
 end
 
@@ -128,7 +139,9 @@ function B:ToggleInventory()
 end
 
 function B:ToggleBackpack()
-    if IsOptionFrameOpen() then return end
+    if IsOptionFrameOpen() then
+        return
+    end
 
     if IsBagOpen(0) then
         B:ShowInventory()
@@ -138,7 +151,9 @@ function B:ToggleBackpack()
 end
 
 function B:ToggleBag(id)
-    if (id and (GetContainerNumSlots(id) == 0)) or id == 0 then return end
+    if (id and (GetContainerNumSlots(id) == 0)) or id == 0 then
+        return
+    end
 
     B:ToggleInventory()
 end

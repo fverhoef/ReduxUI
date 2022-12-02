@@ -1,8 +1,9 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local ID = R:AddModule("InventoryDatabase", "AceEvent-3.0")
-ID.earned = 0
-ID.spent = 0
+
+local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
 
 local bagIDs = { bags = { 0, 1, 2, 3, 4, -2 }, bank = { -1, 5, 6, 7, 8, 9, 10 }, reagentBank = {} }
 if R.isRetail then
@@ -11,6 +12,9 @@ if R.isRetail then
 end
 
 function ID:Initialize()
+    ID.earned = 0
+    ID.spent = 0
+    ID.profit = 0
 end
 
 function ID:Enable()

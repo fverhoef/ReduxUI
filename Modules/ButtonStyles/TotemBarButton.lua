@@ -41,7 +41,7 @@ function BS:StyleTotemBarButton(button, element)
             button.overlayTex:SetTexture(R.media.textures.buttons.border)
             button.overlayTex:SetOutside(button, 3, 3)
         end
-        
+
         local highlight = _G[buttonName .. "Highlight"]
         if highlight then
             highlight:SetTexture(R.media.textures.buttons.border)

@@ -2,18 +2,28 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
 
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or C_Container.GetContainerNumFreeSlots
+local ContainerIDToInventoryID = ContainerIDToInventoryID or C_Container.ContainerIDToInventoryID
+
 local BACKPACK_CONTAINER = _G.BACKPACK_CONTAINER
 local BANK_CONTAINER = _G.BANK_CONTAINER
 local KEYRING_CONTAINER = _G.KEYRING_CONTAINER or -2
 
-function BagSlot_OnLoad(self)
+B.BagSlotMixin = {}
+ReduxBagSlotMixin = B.BagSlotMixin
+
+function B.BagSlotMixin:OnLoad()
     self:RegisterForDrag("LeftButton")
     self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 end
 
-function BagSlot_OnDragStart(self) if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then PickupBagFromSlot(self.slotID) end end
+function B.BagSlotMixin:OnDragStart()
+    if self.bagID ~= BACKPACK_CONTAINER and self.bagID ~= BANK_CONTAINER and self.bagID ~= KEYRING_CONTAINER then
+        PickupBagFromSlot(self.slotID)
+    end
+end
 
-function BagSlot_OnReceiveDrag(self)
+function B.BagSlotMixin:OnReceiveDrag()
     if CursorHasItem() then
         if self.bagID == BACKPACK_CONTAINER then
             PutItemInBackpack()
@@ -24,7 +34,7 @@ function BagSlot_OnReceiveDrag(self)
     self:Update()
 end
 
-function BagSlot_OnClick(self)
+function B.BagSlotMixin:OnClick()
     if not CursorHasItem() and self.purchaseCost then
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
         BankFrame.nextSlotCost = self.purchaseCost
@@ -38,7 +48,7 @@ function BagSlot_OnClick(self)
     self.frame:Update()
 end
 
-function BagSlot_OnEnter(self)
+function B.BagSlotMixin:OnEnter()
     self:Update()
     self.frame:HighlightBagButtons(self.bagID)
 
@@ -70,15 +80,12 @@ function BagSlot_OnEnter(self)
     _G.GameTooltip:Show()
 end
 
-function BagSlot_OnLeave(self)
+function B.BagSlotMixin:OnLeave()
     self.frame:UnhighlightBagButtons()
 
     _G.GameTooltip:Hide()
     ResetCursor()
 end
-
-B.BagSlotMixin = {}
-ReduxBagSlotMixin = B.BagSlotMixin
 
 function B.BagSlotMixin:Initialize(frame, bagID)
     self.frame = frame
@@ -106,17 +113,21 @@ function B.BagSlotMixin:Initialize(frame, bagID)
         self:SetID(GetInventorySlotInfo(string.format("BAG%dSLOT", bagID - 1)))
         self.slotID = ContainerIDToInventoryID(bagID)
     end
-    
+
     R.Modules.ButtonStyles:StyleItemButton(self)
 end
 
 function B.BagSlotMixin:Update()
     if self.bagID ~= KEYRING_CONTAINER then
         self.freeSlots = GetContainerNumFreeSlots(self.bagID)
-        if self.SlotCount and self.freeSlots ~= nil then self.SlotCount:SetText(format("(%d)", self.freeSlots)) end
+        if self.SlotCount and self.freeSlots ~= nil then
+            self.SlotCount:SetText(format("(%d)", self.freeSlots))
+        end
     end
 
-    if self.bagID == BACKPACK_CONTAINER or self.bagID == BANK_CONTAINER or self.bagID == KEYRING_CONTAINER then return end
+    if self.bagID == BACKPACK_CONTAINER or self.bagID == BANK_CONTAINER or self.bagID == KEYRING_CONTAINER then
+        return
+    end
 
     local numBankSlots, bankFull = GetNumBankSlots()
     local buyBankSlot = numBankSlots + ITEM_INVENTORY_BANK_BAG_OFFSET + 1

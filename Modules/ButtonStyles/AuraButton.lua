@@ -64,7 +64,7 @@ function BS:StyleAuraButton(button)
             button.Border = nil
         end
 
-        local border = overlay:CreateTexture("OVERLAY", "$parentBorder", nil, 7)
+        local border = overlay:CreateTexture("$parentBorder", "OVERLAY", nil, 7)
         border:SetTexture(R.media.textures.buttons.border)
         button.Border = border
     end

@@ -3,7 +3,15 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
-function AB:CreateMicroButtonAndBagsBar() AB.MicroButtonAndBagsBar = CreateFrame("Frame", addonName .. "MicroButtonAndBagsBar", UIParent, "MicroButtonAndBagsBarTemplate") end
+local MICRO_BUTTONS = MICRO_BUTTONS or {
+    "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "AchievementMicroButton", "QuestLogMicroButton", "GuildMicroButton", "LFDMicroButton", "EJMicroButton",
+    "CollectionsMicroButton", "MainMenuMicroButton", "HelpMicroButton", "StoreMicroButton"
+}
+
+function AB:CreateMicroButtonAndBagsBar()
+    AB.SettingsMicroButton = CreateFrame("Button", "SettingsMicroButton", UIParent, "SettingsMicroButtonTemplate")
+    AB.MicroButtonAndBagsBar = CreateFrame("Frame", addonName .. "MicroButtonAndBagsBar", UIParent, "MicroButtonAndBagsBarTemplate")
+end
 
 AB.MicroButtonAndBagsBarMixin = {}
 ReduxMicroButtonAndBagsBarMixin = AB.MicroButtonAndBagsBarMixin
@@ -13,9 +21,13 @@ function AB.MicroButtonAndBagsBarMixin:OnLoad()
     self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
     self:SetWidth(R.isRetail and 298 or 283)
 
-    self.buttonList = {MainMenuBarBackpackButton, CharacterBag0Slot, CharacterBag1Slot, CharacterBag2Slot, CharacterBag3Slot, SettingsMicroButton}
-    if not R.isRetail then table.insert(self.buttonList, KeyRingButton) end
-    for i = 1, #MICRO_BUTTONS do table.insert(self.buttonList, _G[MICRO_BUTTONS[i]]) end
+    self.buttonList = { MainMenuBarBackpackButton, CharacterBag0Slot, CharacterBag1Slot, CharacterBag2Slot, CharacterBag3Slot, SettingsMicroButton }
+    if not R.isRetail then
+        table.insert(self.buttonList, KeyRingButton)
+    end
+    for i = 1, #MICRO_BUTTONS do
+        table.insert(self.buttonList, _G[MICRO_BUTTONS[i]])
+    end
     self:UpdateMicroButtonsParent()
     self:CreateFader(AB.config.microButtonAndBags.fader, self.buttonList)
 
@@ -66,7 +78,9 @@ function AB.MicroButtonAndBagsBarMixin:OnLoad()
         self:UpdateMainMenuButton()
     end
 
-    AB:SecureHook("UpdateMicroButtonsParent", function() self:UpdateMicroButtonsParent() end)
+    AB:SecureHook("UpdateMicroButtonsParent", function()
+        self:UpdateMicroButtonsParent()
+    end)
 
     -- prevent other bars from calling MoveMicroButtons without tainting
     MainMenuBar:SetScript("OnShow", R.EmptyFunction)
@@ -76,12 +90,22 @@ function AB.MicroButtonAndBagsBarMixin:OnLoad()
     end
 end
 
-function AB.MicroButtonAndBagsBarMixin:HideBlizzard() if MicroButtonAndBagsBar then MicroButtonAndBagsBar:SetParent(R.HiddenFrame) end end
+function AB.MicroButtonAndBagsBarMixin:HideBlizzard()
+    if MicroButtonAndBagsBar then
+        MicroButtonAndBagsBar:SetParent(R.HiddenFrame)
+    end
+end
 
-function AB.MicroButtonAndBagsBarMixin:UpdateMicroButtonsParent() for i, button in ipairs(self.buttonList) do button:SetParent(self) end end
+function AB.MicroButtonAndBagsBarMixin:UpdateMicroButtonsParent()
+    for i, button in ipairs(self.buttonList) do
+        button:SetParent(self)
+    end
+end
 
 function AB.MicroButtonAndBagsBarMixin:UpdateMainMenuButton()
-    if R.isRetail then return end
+    if R.isRetail then
+        return
+    end
 
     R.SystemInfo:Update(false)
 

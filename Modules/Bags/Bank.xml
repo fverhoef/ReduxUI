@@ -5,22 +5,6 @@
     <Frame name="BankFrameTemplate" mixin="ReduxBankMixin" parent="UIParent" inherits="BagFrameTemplate" virtual="true">
         <Size x="384" y="512" />
         <Frames>
-            <Button name="$parentTab1" parentKey="BankTab" mixin="ReduxBankTabMixin" inherits="CharacterFrameTabButtonTemplate" id="1" text="BANK">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="11" y ="2"/>
-                </Anchors>
-                <Scripts>
-                    <OnClick method="OnClick"/>
-                </Scripts>
-            </Button>
-            <Button name="$parentTab2" parentKey="ReagentsTab" mixin="ReduxBankTabMixin" inherits="CharacterFrameTabButtonTemplate" id="2" text="REAGENT_BANK">
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT" x="-15" y="0"/>
-                </Anchors>
-                <Scripts>
-                    <OnClick method="OnClick"/>
-                </Scripts>
-            </Button>
             <Button parentKey="DespositButton" inherits="UIPanelButtonTemplate" virtual="true" text="REAGENTBANK_DEPOSIT" hidden="true">
                 <Size x="166" y="20"/>
                 <Anchors>

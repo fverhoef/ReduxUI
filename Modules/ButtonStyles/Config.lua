@@ -9,7 +9,7 @@ R:RegisterModuleConfig(BS, {
     border = R.media.textures.buttons.border,
     outOfRangeColoring = BS.OUT_OF_RANGE_MODES.Button,
     colors = {
-        border = {0.7, 0.7, 0.7, 1},
+        border = { 0.7, 0.7, 0.7, 1 },
         pushed = { 1, 200 / 255, 0, 1 },
         equipped = { 0, 0.8, 0, 1 },
         outOfRange = { 0.8, 0.1, 0.1 },
@@ -25,8 +25,10 @@ R:RegisterModuleConfig(BS, {
         hideKeybindText = false,
         hideMacroText = true
     },
-    auras = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", showDuration = true , minSizeToShowDuration = 20 },
+    auras = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 20 },
     items = { backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE" },
     microMenu = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE" },
-    totemBarButtons = { colors = { EARTH = { 0.16, 0.47, 0, 1 }, FIRE = { 0.65, 0.21, 0, 1 }, WATER = { 0.13, 0.49, 0.67, 1 }, AIR = { 0.45, 0, 0.74, 1 }, SUMMON = { 0.33, 0.2, 0, 1 }, RECALL = { 0.33, 0.2, 0, 1 } } }
+    totemBarButtons = {
+        colors = { EARTH = { 0.16, 0.47, 0, 1 }, FIRE = { 0.65, 0.21, 0, 1 }, WATER = { 0.13, 0.49, 0.67, 1 }, AIR = { 0.45, 0, 0.74, 1 }, SUMMON = { 0.33, 0.2, 0, 1 }, RECALL = { 0.33, 0.2, 0, 1 } }
+    }
 })

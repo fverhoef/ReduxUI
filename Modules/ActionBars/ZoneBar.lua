@@ -9,12 +9,8 @@ function AB:CreateZoneBar()
 
     local bar = CreateFrame("Frame", addonName .. "ZoneAbilityBar", UIParent)
     bar.config = AB.config.zoneBar
+    _G.Mixin(bar, AB.ZoneBarMixin)
 
-    bar.Update = function(self)
-        ZoneAbilityFrame:SetParent(bar)
-    end
-
-    ZoneAbilityFrame:SetParent(bar)
     ZoneAbilityFrame:ClearAllPoints()
     ZoneAbilityFrame:SetAllPoints()
     ZoneAbilityFrame.ignoreInLayout = true
@@ -34,7 +30,7 @@ function AB:CreateZoneBar()
 end
 
 function AB:ZoneAbilityFrame_SetParent(parent)
-    if parent == AB.zoneBar then
+    if parent == AB.zoneBar or not AB.zoneBar then
         return
     end
 
@@ -48,11 +44,25 @@ function AB:ZoneAbilityFrame_SetParent(parent)
 end
 
 function AB:ZoneAbilityFrame_SpellButtonContainer_SetSize()
-    local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
-    AB.zoneBar:SetSize(width + 4, height + 4)
+    if not AB.zoneBar then
+        return
+    end
+
+    AB.zoneBar:Update()
 end
 
 AB.ZoneBarMixin = {}
+
+function AB.ZoneBarMixin:Configure()
+    self:Update()
+end
+
+function AB.ZoneBarMixin:Update()
+    ZoneAbilityFrame:SetParent(self)
+
+    local width, height = ZoneAbilityFrame.SpellButtonContainer:GetSize()
+    self:SetSize(width + 4, height + 4)
+end
 
 function AB.ZoneBarMixin:OnEvent(event)
     if event == "PLAYER_REGEN_ENABLED" then

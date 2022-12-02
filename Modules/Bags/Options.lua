@@ -6,9 +6,9 @@ R:RegisterModuleOptions(B, {
     type = "group",
     name = "Bags",
     args = {
-        header = {type = "header", name = R.title .. " > Bags", order = 0},
+        header = { type = "header", name = R.title .. " > Bags", order = 0 },
         enabled = R:CreateModuleEnabledOption(1, nil, "Bags"),
-        lineBreak = {type = "header", name = "", order = 2},
+        lineBreak = { type = "header", name = "", order = 2 },
         inventory = {
             type = "group",
             name = "Inventory",

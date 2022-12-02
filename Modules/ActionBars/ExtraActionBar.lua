@@ -11,7 +11,7 @@ function AB:CreateExtraActionBar()
     bar.config = AB.config.extraActionBar
     _G.Mixin(bar, AB.ExtraActionBarMixin)
 
-    _G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
+    --_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
     ExtraAbilityContainer.SetSize = R.EmptyFunction
 
     ExtraActionBarFrame:SetParent(bar)
@@ -36,17 +36,24 @@ function AB:CreateExtraActionBar()
 end
 
 function AB:ExtraActionBarFrame_SetParent(parent)
-    if parent == AB.extraActionBar then
+    if parent == AB.extraActionBar or not AB.extraActionBar then
         return
     end
     AB.extraActionBar:Update()
 end
 
 function AB:ExtraAbilityContainer_AddFrame(frame)
+    if not AB.extraActionBar then
+        return
+    end
     AB.extraActionBar:Update()
 end
 
 AB.ExtraActionBarMixin = {}
+
+function AB.ExtraActionBarMixin:Configure()
+    self:Update()
+end
 
 function AB.ExtraActionBarMixin:Update()
     if InCombatLockdown() then

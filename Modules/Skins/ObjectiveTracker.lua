@@ -51,9 +51,12 @@ function S:StyleObjectiveTrackerFrame()
     ObjectiveTrackerFrame.defaults = S.defaults.objectiveTracker
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
     ObjectiveTrackerFrame:ClearAllPoints()
+    ObjectiveTrackerFrame:SetParent(UIParent)
     ObjectiveTrackerFrame:SetNormalizedPoint(unpack(ObjectiveTrackerFrame.config.point))
     ObjectiveTrackerFrame:SetMovable(true)
     ObjectiveTrackerFrame:SetUserPlaced(true)
 	ObjectiveTrackerFrame:SetHeight(objectiveFrameHeight)
     ObjectiveTrackerFrame:CreateMover("Objective Tracker", ObjectiveTrackerFrame.defaults.point)
+
+    ObjectiveTrackerFrame.IsInDefaultPosition = nop
 end

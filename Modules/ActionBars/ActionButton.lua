@@ -5,7 +5,7 @@ local L = R.L
 
 function AB:CreateActionButton(name, parent, actionFunc, icon, tooltip)
     local button = CreateFrame("CheckButton", "$parent_Button", parent, "ActionButtonTemplate")
-    button.config = parent.config
+    button.header = parent
     button.tooltip = tooltip
     button:SetFrameStrata("MEDIUM")
     _G.Mixin(button, AB.ActionButtonMixin)
@@ -25,7 +25,7 @@ end
 AB.ActionButtonMixin = {}
 
 function AB.ActionButtonMixin:Configure()
-    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+    self:RegisterForClicks(self.header.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
 function AB.ActionButtonMixin:OnEnter()

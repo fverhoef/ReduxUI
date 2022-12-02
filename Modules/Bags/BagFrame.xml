@@ -11,9 +11,6 @@
                     <Anchor point="LEFT" relativePoint="TOPLEFT" x="70" y="-42" />
                     <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-15" y="-42" />
                 </Anchors>
-                <Scripts>
-                    <OnTextChanged function="BagFrame_SearchBox_OnTextChanged" />
-                </Scripts>
             </EditBox>
         </Frames>
 
@@ -28,7 +25,7 @@
         </Layers>
 
         <Scripts>
-            <OnLoad function="BagFrame_OnLoad" />
+            <OnLoad method="OnLoad" />
         </Scripts>
     </Frame>
 </Ui>

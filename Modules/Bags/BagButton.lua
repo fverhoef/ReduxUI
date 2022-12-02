@@ -2,6 +2,9 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local B = R.Modules.Bags
 
+local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
+local GetContainerItemCooldown = GetContainerItemCooldown or (C_Container and C_Container.GetContainerItemCooldown)
+
 B.BagButtonMixin = {}
 ReduxBagButtonMixin = B.BagButtonMixin
 

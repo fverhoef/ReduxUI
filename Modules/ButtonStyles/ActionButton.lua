@@ -92,11 +92,14 @@ function BS:StyleActionButton(button)
     pushedTexture:SetOutside(button, 4, 4)
     pushedTexture:SetVertexColor(unpack(BS.config.colors.pushed))
 
+    button:GetCheckedTexture():SetOutside(button, 2, 2)
+    button:GetHighlightTexture():SetOutside(button, 2, 2)
+
     BS:UpdateActionButton(button)
 end
 
 function BS:UpdateActionButton(button)
-    if button.equippedBorderShown then
+    if button.Border:IsShown() then
         button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.equipped))
     else
         button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.border))
@@ -115,7 +118,7 @@ function BS:StyleAllActionButtons()
     for i = 1, _G.NUM_PET_ACTION_SLOTS do
         BS:StyleActionButton(_G["PetActionButton" .. i])
     end
-    for i = 1, _G.NUM_STANCE_SLOTS do
+    for i = 1, (_G.NUM_STANCE_SLOTS or 10) do
         BS:StyleActionButton(_G["StanceButton" .. i])
     end
 
@@ -130,4 +133,4 @@ function BS:UpdateAllActionButtons()
     _G.MainMenuBarVehicleLeaveButton.Border:SetBackdropBorderColor(unpack(BS.config.colors.border))
 end
 
---R.Libs.ActionButton:RegisterCallback("OnButtonEquippedUpdate", BS.UpdateActionButton)
+R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", BS.UpdateActionButton)

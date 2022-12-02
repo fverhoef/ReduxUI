@@ -2,6 +2,11 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local BS = R.Modules.ButtonStyles
 
+local MICRO_BUTTONS = MICRO_BUTTONS or {
+    "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "AchievementMicroButton", "QuestLogMicroButton", "GuildMicroButton", "LFDMicroButton", "EJMicroButton",
+    "CollectionsMicroButton", "MainMenuMicroButton", "HelpMicroButton", "StoreMicroButton"
+}
+
 BS.microButtons = {}
 
 function BS:StyleMicroButton(button)
@@ -19,7 +24,7 @@ function BS:StyleMicroButton(button)
 end
 
 function BS:StyleAllMicroButtons()
-    for _, buttonName in next, _G.MICRO_BUTTONS do
+    for _, buttonName in next, MICRO_BUTTONS do
         BS:StyleMicroButton(_G[buttonName])
     end
     BS:StyleMicroButton(_G["SettingsMicroButton"])

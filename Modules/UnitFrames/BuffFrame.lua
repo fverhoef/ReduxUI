@@ -8,9 +8,11 @@ function UF:StyleBuffFrame()
     _G.BuffFrame.defaults = UF.defaults.buffFrame
     _G.BuffFrame:ClearAllPoints()
     _G.BuffFrame:SetNormalizedPoint(unpack(UF.config.buffFrame.point))
-    _G.BuffFrame:CreateMover("Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, {"TOPRIGHT", _G.BuffFrame, "TOPRIGHT"})
+    _G.BuffFrame:CreateMover("Buffs & Debuffs", UF.defaults.buffFrame.point, 400, 200, { "TOPRIGHT", _G.BuffFrame, "TOPRIGHT" })
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
-    UF:SecureHook("BuffFrame_Update", UF.BuffFrame_Update)
+    if BuffFrame_Update then
+        UF:SecureHook("BuffFrame_Update", UF.BuffFrame_Update)
+    end
 end
 
 function UF:UIParent_UpdateTopFramePositions()

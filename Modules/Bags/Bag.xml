@@ -3,7 +3,7 @@
 
     <Frame name="BagTemplate" mixin="ReduxBagMixin" virtual="true">
         <Scripts>
-            <OnLoad function="Bag_OnLoad" />
+            <OnLoad method="OnLoad" />
         </Scripts>
     </Frame>
 </Ui>

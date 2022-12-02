@@ -91,7 +91,7 @@ function LibKeyBound:Initialize()
 		desc:SetText(format(L.BindingsHelp, GetBindingText('ESCAPE')))
 
 		-- Per character bindings checkbox
-		local perChar = CreateFrame('CheckButton', 'KeyboundDialogCheck', f, 'OptionsCheckButtonTemplate')
+		local perChar = CreateFrame('CheckButton', 'KeyboundDialogCheck', f, 'UICheckButtonTemplate')
 		_G[perChar:GetName() .. 'Text']:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 
 		perChar:SetScript('OnShow', function(self)
@@ -105,7 +105,8 @@ function LibKeyBound:Initialize()
 		end)
 
 		-- Okay bindings checkbox
-		local okayBindings = CreateFrame('CheckButton', 'KeyboundDialogOkay', f, 'OptionsButtonTemplate')
+		local okayBindings = CreateFrame('CheckButton', 'KeyboundDialogOkay', f, 'UIPanelButtonTemplate')
+		okayBindings:SetWidth(90)
 		getglobal(okayBindings:GetName() .. 'Text'):SetText(OKAY)
 
 		okayBindings:SetScript('OnClick', function(self)
@@ -134,7 +135,8 @@ function LibKeyBound:Initialize()
 		end)
 
 		-- Cancel bindings checkbox
-		local cancelBindings = CreateFrame('CheckButton', 'KeyboundDialogCancel', f, 'OptionsButtonTemplate')
+		local cancelBindings = CreateFrame('CheckButton', 'KeyboundDialogCancel', f, 'UIPanelButtonTemplate')
+		cancelBindings:SetWidth(90)
 		getglobal(cancelBindings:GetName() .. 'Text'):SetText(CANCEL)
 
 		cancelBindings:SetScript('OnClick', function(self)

@@ -28,9 +28,10 @@ R:AddLib("AceConfigRegistry", "AceConfigRegistry-3.0")
 R:AddLib("CallbackHandler", "CallbackHandler-1.0")
 R:AddLib("SharedMedia", "LibSharedMedia-3.0")
 
+R:AddLib("ActionButton", "LibActionButton-1.0")
+R:AddLib("ButtonGlow", "LibButtonGlow-1.0")
 R:AddLib("Dispel", "LibDispel-1.0")
 R:AddLib("DRList", "DRList-1.0")
-R:AddLib("ItemSearch", "LibItemSearch-1.2")
 R:AddLib("KeyBound", "LibKeyBound-1.0")
 R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
 
@@ -81,7 +82,7 @@ function R:OnInitialize()
 
     R.framesLocked = true
 
-    SetCVar("scriptErrors", R.debug)
+    SetCVar("scriptErrors", R.debug and 1 or 0)
     if R.debug then
         R:RegisterEvent("ADDON_ACTION_BLOCKED", R.LogTaintError)
         R:RegisterEvent("ADDON_ACTION_FORBIDDEN", R.LogTaintError)
