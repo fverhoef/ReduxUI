@@ -4,6 +4,12 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnPartyHeader()
+    if UF.config.party.enabled then
+        if EditModeManagerFrame then
+            EditModeManagerFrame.AccountSettings.RefreshPartyFrames = nop
+            EditModeManagerFrame.AccountSettings.ResetPartyFrames = nop
+        end
+    end
     return UF:SpawnHeader("Party", 1, UF.PartyMixin, UF.config.party, UF.defaults.party)
 end
 

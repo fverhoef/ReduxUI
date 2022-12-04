@@ -317,7 +317,7 @@ R:RegisterModuleConfig(UF, {
         colorPowerSmooth = false,
         colorPowerDisconnected = true
     },
-    buffFrame = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, buffs = { iconSize = 36 }, debuffs = { iconSize = 36 }, tempEnchants = { iconSize = 36 } },
+    buffFrame = { enabled = true, point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, buffs = { iconSize = 36 }, debuffs = { iconSize = 36 }, tempEnchants = { iconSize = 36 } },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = DEFAULT_STYLE,
         largeHealth = true,

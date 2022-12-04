@@ -6,6 +6,11 @@ local oUF = ns.oUF or oUF
 local STATUS_REFRESH_RATE = 0.05
 
 function UF:SpawnPlayer()
+    if UF.config.player.enabled and UF.config.player.castbar.enabled then
+        if EditModeManagerFrame then
+            EditModeManagerFrame.AccountSettings.RefreshCastBar = nop
+        end
+    end
     return UF:SpawnFrame("Player", "player", UF.PlayerMixin, UF.config.player, UF.defaults.player)
 end
 

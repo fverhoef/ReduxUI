@@ -110,9 +110,9 @@ function AB:UpdateExperienceBars()
 end
 
 function AB:DisableBlizzardBars()
-    R:Disable(MainMenuBarArtFrame, true)
-    R:Disable(MainMenuBarArtFrameBackground)
-    R:Disable(MainMenuBar)
+    R:Disable(MainMenuBarArtFrame, true, nil, true)
+    R:Disable(MainMenuBarArtFrameBackground, nil, true)
+    R:Disable(MainMenuBar, nil, nil, true)
     R:Disable(MultiBarBottomLeft)
     R:Disable(MultiBarBottomRight)
     R:Disable(MultiBarLeft)
@@ -124,8 +124,8 @@ function AB:DisableBlizzardBars()
     R:Disable(PossessBarFrame or PossessBar)
     R:Disable(StanceBarFrame or StanceBar)
     R:Disable(MainMenuBarVehicleLeaveButton)
-    R:Disable(VerticalMultiBarsContainer)
-    
+    R:Disable(VerticalMultiBarsContainer, nil, nil, true)
+
     ActionBarActionEventsFrame:UnregisterAllEvents()
     ActionBarButtonEventsFrame:UnregisterAllEvents()
     if R.isRetail then
@@ -135,6 +135,12 @@ function AB:DisableBlizzardBars()
         ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
     else
         ActionBarController:UnregisterAllEvents()
+    end
+
+    if EditModeManagerFrame then
+        EditModeManagerFrame.AccountSettings.RefreshVehicleLeaveButton = nop
+        EditModeManagerFrame.AccountSettings.RefreshActionBarShown = nop
+        EditModeManagerFrame.AccountSettings.RefreshEncounterBar = nop
     end
 end
 

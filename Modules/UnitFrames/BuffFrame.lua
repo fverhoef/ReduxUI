@@ -4,6 +4,10 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:StyleBuffFrame()
+    if not UF.config.buffFrame.enabled then
+        return
+    end
+
     _G.BuffFrame.config = UF.config.buffFrame
     _G.BuffFrame.defaults = UF.defaults.buffFrame
     _G.BuffFrame:ClearAllPoints()
@@ -12,6 +16,10 @@ function UF:StyleBuffFrame()
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
     if BuffFrame_Update then
         UF:SecureHook("BuffFrame_Update", UF.BuffFrame_Update)
+    end
+
+    if EditModeManagerFrame then
+        EditModeManagerFrame.AccountSettings.RefreshAuraFrame = nop
     end
 end
 

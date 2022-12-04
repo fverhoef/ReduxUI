@@ -4,6 +4,13 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
+    if UF.config.target.enabled then
+        if EditModeManagerFrame then
+            EditModeManagerFrame.AccountSettings.RefreshTargetAndFocus = nop
+            EditModeManagerFrame.AccountSettings.ResetTargetAndFocus = nop
+        end
+    end
+
     return UF:SpawnFrame("Target", "target", UF.TargetMixin, UF.config.target, UF.defaults.target)
 end
 
