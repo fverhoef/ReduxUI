@@ -32,4 +32,20 @@ function S:StyleWidgets()
             self:SetNormalizedPoint(self.config.point)
         end
     end)
+
+    if UIWidgetPowerBarContainerFrame then
+        UIWidgetPowerBarContainerFrame.config = S.config.widgets.powerbar
+        UIWidgetPowerBarContainerFrame.defaults = S.defaults.widgets.powerbar
+        UIWidgetPowerBarContainerFrame:SetMovable(true)
+        UIWidgetPowerBarContainerFrame:SetUserPlaced(true)
+        UIWidgetPowerBarContainerFrame:ClearAllPoints()
+        UIWidgetPowerBarContainerFrame:SetNormalizedPoint(UIWidgetPowerBarContainerFrame.config.point)
+        UIWidgetPowerBarContainerFrame:CreateMover("Powerbar Widgets Frame", UIWidgetPowerBarContainerFrame.defaults.point, 200, 20)
+        R:SecureHook(UIWidgetPowerBarContainerFrame, "SetPoint", function(self, point, anchor, relativePoint, x, y)
+            if point ~= self.config.point[1] or anchor ~= self.config.point[2] or relativePoint ~= self.config.point[3] then
+                self:ClearAllPoints()
+                self:SetNormalizedPoint(self.config.point)
+            end
+        end)
+    end
 end
