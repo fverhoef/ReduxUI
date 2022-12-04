@@ -33,7 +33,9 @@ end
 R.EmptyFunction = function()
 end
 
-function R:Disable(frame, skipEvents, skipSetEmpty)
+local EDIT_MODE_METHODS = { "OnEditModeEnter", "OnEditModeExit", "HasActiveChanges", "HighlightSystem", "SelectSystem" }
+
+function R:Disable(frame, skipEvents, skipSetEmpty, skipEditMode)
     if not frame then
         return
     end
@@ -79,6 +81,16 @@ function R:Disable(frame, skipEvents, skipSetEmpty)
         if frame.GetBottom then
             frame.GetBottom = function()
                 return 0
+            end
+        end
+    end    
+
+    if not skipEditMode and EditModeManagerFrame then
+        for _, registeredFrame in ipairs(EditModeManagerFrame.registeredSystemFrames) do
+            if frame == registeredFrame then
+                for _, method in ipairs(EDIT_MODE_METHODS) do
+                    frame[method] = nop
+                end
             end
         end
     end
