@@ -107,6 +107,7 @@ function MM:StyleMinimap()
         MM:SecureHookScript(MiniMapLFGFrame, "OnLeave", MM.Minimap_OnLeave)
     end
 
+    R:DisableEditMode(MinimapCluster)
     MM:UpdateMinimap()
 end
 

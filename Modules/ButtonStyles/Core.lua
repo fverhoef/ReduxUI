@@ -32,6 +32,13 @@ function BS:Enable()
     if not BS.masque then
         if BuffFrame_Update then
             BS:SecureHook("BuffFrame_Update", BS.BuffFrame_Update)
+        else
+            if BuffFrame and BuffFrame.Update then
+                BS:SecureHook(BuffFrame, "Update", BS.BuffFrame_Update)
+            end
+            if DebuffFrame and DebuffFrame.Update then
+                BS:SecureHook(DebuffFrame, "Update", BS.BuffFrame_Update)
+            end
         end
         BS:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         _G.CharacterFrame:HookScript("OnShow", BS.CharacterFrame_OnShow)

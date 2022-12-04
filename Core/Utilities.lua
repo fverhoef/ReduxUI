@@ -33,9 +33,7 @@ end
 R.EmptyFunction = function()
 end
 
-local EDIT_MODE_METHODS = { "OnEditModeEnter", "OnEditModeExit", "HasActiveChanges", "HighlightSystem", "SelectSystem" }
-
-function R:Disable(frame, skipEvents, skipSetEmpty, skipEditMode)
+function R:Disable(frame, skipEvents, skipSetEmpty)
     if not frame then
         return
     end
@@ -83,7 +81,18 @@ function R:Disable(frame, skipEvents, skipSetEmpty, skipEditMode)
                 return 0
             end
         end
-    end    
+    end
+
+    frame:Hide()
+    frame:SetParent(R.HiddenFrame)
+end
+
+local EDIT_MODE_METHODS = { "OnEditModeEnter", "OnEditModeExit", "HasActiveChanges", "HighlightSystem", "SelectSystem" }
+
+function R:DisableEditMode(frame, isBar)
+    if not frame then
+        return
+    end
 
     if not skipEditMode and EditModeManagerFrame then
         for _, registeredFrame in ipairs(EditModeManagerFrame.registeredSystemFrames) do
@@ -91,12 +100,18 @@ function R:Disable(frame, skipEvents, skipSetEmpty, skipEditMode)
                 for _, method in ipairs(EDIT_MODE_METHODS) do
                     frame[method] = nop
                 end
+
+                if frame.config and frame.config.point then
+                    if not R:IsHooked(frame, "UpdateSystem") then
+                        R:SecureHook(frame, "UpdateSystem", function()
+                            frame:ClearAllPoints()
+                            frame:SetNormalizedPoint(frame.config.point)
+                        end)
+                    end
+                end
             end
         end
     end
-
-    frame:Hide()
-    frame:SetParent(R.HiddenFrame)
 end
 
 function R:UnlocalizedClassName(className)

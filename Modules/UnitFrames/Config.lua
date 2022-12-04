@@ -317,7 +317,13 @@ R:RegisterModuleConfig(UF, {
         colorPowerSmooth = false,
         colorPowerDisconnected = true
     },
-    buffFrame = { enabled = true, point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, buffs = { iconSize = 36 }, debuffs = { iconSize = 36 }, tempEnchants = { iconSize = 36 } },
+    auraFrames = {
+        enabled = true,
+        buffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, iconSize = 36 },
+        debuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -113 }, iconSize = 36 },
+        deadlyDebuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -163 }, iconSize = 36 },
+        tempEnchants = { iconSize = 36 }
+    },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = DEFAULT_STYLE,
         largeHealth = true,

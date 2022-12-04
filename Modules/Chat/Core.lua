@@ -1,6 +1,7 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 local C = R:AddEarlyLoadModule("Chat", "AceEvent-3.0", "AceHook-3.0")
+local L = R.L
 
 C.HyperlinkTypes = {
     achievement = true,
@@ -79,6 +80,10 @@ function C:Enable()
 
         C:LoadChatHistory(frame)
     end
+       
+    ChatFrame1.config = C.config
+    ChatFrame1:CreateMover(L["Chat"], C.defaults.point)
+    R:DisableEditMode(ChatFrame1)
 
     C:RegisterEvent("UPDATE_CHAT_WINDOWS", C.UpdateChatFrames)
     C:RegisterEvent("UPDATE_FLOATING_CHAT_WINDOWS", C.UpdateChatFrames)
@@ -238,6 +243,7 @@ function C:SkinChatFrame(frame)
 
     local name = frame:GetName()
 
+	frame:SetClampedToScreen(false)
     frame:SetClampRectInsets(0, 0, 0, 0)
     if not R.isRetail then
         frame:SetMaxResize(UIParent:GetWidth() / 2, UIParent:GetHeight() / 2)

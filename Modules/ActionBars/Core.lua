@@ -110,9 +110,9 @@ function AB:UpdateExperienceBars()
 end
 
 function AB:DisableBlizzardBars()
-    R:Disable(MainMenuBarArtFrame, true, nil, true)
+    R:Disable(MainMenuBarArtFrame, true)
     R:Disable(MainMenuBarArtFrameBackground, nil, true)
-    R:Disable(MainMenuBar, nil, nil, true)
+    R:Disable(MainMenuBar)
     R:Disable(MultiBarBottomLeft)
     R:Disable(MultiBarBottomRight)
     R:Disable(MultiBarLeft)
@@ -124,7 +124,7 @@ function AB:DisableBlizzardBars()
     R:Disable(PossessBarFrame or PossessBar)
     R:Disable(StanceBarFrame or StanceBar)
     R:Disable(MainMenuBarVehicleLeaveButton)
-    R:Disable(VerticalMultiBarsContainer, nil, nil, true)
+    R:Disable(VerticalMultiBarsContainer)
 
     ActionBarActionEventsFrame:UnregisterAllEvents()
     ActionBarButtonEventsFrame:UnregisterAllEvents()
@@ -138,6 +138,19 @@ function AB:DisableBlizzardBars()
     end
 
     if EditModeManagerFrame then
+        R:DisableEditMode(MainMenuBar, true)
+        R:DisableEditMode(MultiBarBottomLeft, true)
+        R:DisableEditMode(MultiBarBottomRight, true)
+        R:DisableEditMode(MultiBarLeft, true)
+        R:DisableEditMode(MultiBarRight, true)
+        R:DisableEditMode(MultiBar5, true)
+        R:DisableEditMode(MultiBar6, true)
+        R:DisableEditMode(MultiBar7, true)
+        R:DisableEditMode(PetActionBarFrame, true)
+        R:DisableEditMode(PossessBarFrame, true)
+        R:DisableEditMode(StanceBarFrame, true)
+        R:DisableEditMode(MainMenuBarVehicleLeaveButton, true)
+
         EditModeManagerFrame.AccountSettings.RefreshVehicleLeaveButton = nop
         EditModeManagerFrame.AccountSettings.RefreshActionBarShown = nop
         EditModeManagerFrame.AccountSettings.RefreshEncounterBar = nop

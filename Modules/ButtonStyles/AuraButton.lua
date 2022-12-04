@@ -118,26 +118,33 @@ function BS:UpdateAllAuraButtons()
 end
 
 function BS:BuffFrame_Update()
-    local button
-    for i = 1, _G.BUFF_MAX_DISPLAY do
-        button = _G["BuffButton" .. i]
-        if button then
-            button.isBuff = true
-            button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
+    if R.isRetail then
+        for _, aura in ipairs(self.auraFrames) do
+            aura.isDebuff = self == DebuffFrame
+            BS:StyleAuraButton(aura)
+        end
+    else
+        local button
+        for i = 1, _G.BUFF_MAX_DISPLAY do
+            button = _G["BuffButton" .. i]
+            if button then
+                button.isBuff = true
+                button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
+                BS:StyleAuraButton(button)
+            end
+        end
+        for i = 1, _G.DEBUFF_MAX_DISPLAY do
+            button = _G["DebuffButton" .. i]
+            if button then
+                button.isDebuff = true
+                button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
+                BS:StyleAuraButton(button)
+            end
+        end
+        for i = 1, _G.NUM_TEMP_ENCHANT_FRAMES do
+            button = _G["TempEnchant" .. i]
+            button.isTempEnchant = true
             BS:StyleAuraButton(button)
         end
-    end
-    for i = 1, _G.DEBUFF_MAX_DISPLAY do
-        button = _G["DebuffButton" .. i]
-        if button then
-            button.isDebuff = true
-            button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
-            BS:StyleAuraButton(button)
-        end
-    end
-    for i = 1, _G.NUM_TEMP_ENCHANT_FRAMES do
-        button = _G["TempEnchant" .. i]
-        button.isTempEnchant = true
-        BS:StyleAuraButton(button)
     end
 end

@@ -14,7 +14,7 @@ function UF:Enable()
     if not UF.config.enabled then return end
 
     UF:UpdateColors()
-    UF:StyleBuffFrame()
+    UF:StyleAuraFrames()
 
     UF.frames.player = UF:SpawnPlayer()
     UF.frames.target = UF:SpawnTarget()
