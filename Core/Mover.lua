@@ -32,12 +32,7 @@ function R.MoverMixin:OnDragStart(button)
     end
 
     if IsShiftKeyDown() then
-        if button == "LeftButton" then
-            self.frame:StartMoving()
-        end
-        if button == "RightButton" then
-            self.frame:StartSizing()
-        end
+        self.frame:StartMoving()
     end
 end
 
@@ -206,11 +201,6 @@ function R:CreateMover(displayName, defaultPoint, width, height, point)
 
     self.Mover = mover
     self:SetMovable(true)
-
-    if self:IsResizable() then
-        self.defaultSize = { self.GetSize() }
-        self.Mover:RegisterForDrag("LeftButton", "RightButton")
-    end
 end
 
 function R:HideMovers()
