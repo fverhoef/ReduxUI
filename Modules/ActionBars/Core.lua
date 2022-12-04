@@ -126,6 +126,7 @@ function AB:DisableBlizzardBars()
     R:Disable(MainMenuBarVehicleLeaveButton)
     R:Disable(VerticalMultiBarsContainer)
 
+    ActionBarController:UnregisterAllEvents()
     ActionBarActionEventsFrame:UnregisterAllEvents()
     ActionBarButtonEventsFrame:UnregisterAllEvents()
     if R.isRetail then
@@ -133,8 +134,6 @@ function AB:DisableBlizzardBars()
         StatusTrackingBarManager:UnregisterAllEvents()
         ActionBarController:RegisterEvent("SETTINGS_LOADED")
         ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
-    else
-        ActionBarController:UnregisterAllEvents()
     end
 
     if EditModeManagerFrame then
