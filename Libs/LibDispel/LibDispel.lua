@@ -102,7 +102,6 @@ do
 			DispelList.Curse = cauterizingFlame
 			DispelList.Poison = naturalize or expunge or cauterizingFlame
 			DispelList.Disease = cauterizingFlame
-			end
 		end
 
 		if undoRanks then
