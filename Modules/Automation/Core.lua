@@ -3,6 +3,10 @@ local R = _G.ReduxUI
 local AM = R:AddModule("Automation", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = R.L
 
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
+local UseContainerItem = UseContainerItem or (C_Container and C_Container.UseContainerItem)
+
 local fastLootDelay = 0
 local stopVendoring = true
 local vendorList = {}

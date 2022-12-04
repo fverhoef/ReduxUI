@@ -157,8 +157,6 @@ function AB.ActionBarMixin:Configure()
             end
 
             page = page .. " [form] 1; 1"
-
-            R:Print(page)
         end
         RegisterStateDriver(self, "page", page)
     end
