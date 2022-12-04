@@ -93,6 +93,16 @@ do
 			DispelList.Curse = cleanse
 			DispelList.Poison = not Retail and (cleanse or toxins)
 			DispelList.Disease = not Retail and (cleanse or toxins)
+		elseif myClass == 'EVOKER' then
+			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
+			local expunge = CheckSpell(365585) -- Expunge (Devastation)
+			local cauterizingFlame = CheckSpell(374251) -- Cauterizing Flame
+		
+			DispelList.Magic = naturalize
+			DispelList.Curse = cauterizingFlame
+			DispelList.Poison = naturalize or expunge or cauterizingFlame
+			DispelList.Disease = cauterizingFlame
+			end
 		end
 
 		if undoRanks then
