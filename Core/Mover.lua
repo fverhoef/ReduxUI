@@ -258,43 +258,54 @@ function R:ResetMovers()
 end
 
 function R:CreateMoverSettingsFrame()
-    local settings = CreateFrame("Frame", addonName .. "MoverSettings", UIParent)
-    settings:SetSize(320, 160)
-    settings:SetPoint("CENTER")
+    local settings = CreateFrame("Frame", addonName .. "MoverSettings", UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+    settings:SetFrameStrata("DIALOG")
+    settings:SetToplevel(true)
+    settings:EnableMouse(true)
     settings:SetMovable(true)
     settings:SetClampedToScreen(true)
-    settings:EnableMouse(true)
+    settings:SetWidth(360)
+    settings:SetHeight(180)
+    settings:SetBackdrop{
+        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+        tile = true,
+        insets = { left = 11, right = 12, top = 12, bottom = 11 },
+        tileSize = 32,
+        edgeSize = 32
+    }
+    settings:SetPoint("TOP", 0, -64)
     settings:RegisterForDrag("LeftButton")
     settings:SetScript("OnDragStart", settings.StartMoving)
     settings:SetScript("OnDragStop", settings.StopMovingOrSizing)
 
-    settings.bg = settings:CreateTexture(nil, "BACKGROUND", nil, -7)
-    settings.bg:SetAllPoints()
-    settings.bg:SetTexture([[Interface\HELPFRAME\DarkSandstone-Tile]], "REPEAT", "REPEAT")
-    settings.bg:SetHorizTile(true)
-    settings.bg:SetVertTile(true)
+    settings.header = settings:CreateTexture(nil, "ARTWORK")
+    settings.header:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Header")
+    settings.header:SetWidth(286);
+    settings.header:SetHeight(64)
+    settings.header:SetPoint("TOP", 0, 12)
 
-    settings.title = settings:CreateFontString(nil, "OVERLAY")
+    settings.title = settings:CreateFontString(nil, "ARTWORK")
     settings.title:SetFont(STANDARD_TEXT_FONT, 14)
-    settings.title:SetPoint("TOPLEFT", 4, -4)
-    settings.title:SetPoint("TOPRIGHT", -4, -4)
-    settings.title:SetJustifyH("MIDDLE")
     settings.title:SetJustifyV("TOP")
-    settings.title:SetText(R.title .. ": " .. R.L["Moving Frames"])
+    settings.title:SetJustifyH("CENTER")
+    settings.title:SetPoint("TOP", settings.header, "TOP", 0, -13)
+    settings.title:SetText(R.title .. ": " .. R.L["Edit Mode"])
 
-    settings.usageText = settings:CreateFontString(nil, "OVERLAY")
-    settings.usageText:SetFont(STANDARD_TEXT_FONT, 12)
-    settings.usageText:SetPoint("TOPLEFT", 4, -24)
-    settings.usageText:SetPoint("BOTTOMRIGHT", -4, 26)
-    settings.usageText:SetJustifyH("LEFT")
-    settings.usageText:SetJustifyV("MIDDLE")
-    settings.usageText:SetText(string.format(R.L["Hold %sShift|r to enable dragging."] .. "\n\n" .. R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
-                                                 R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" .. R.L["Press the %sAlt|r key to cycle through frames under the cursor."],
-                                             R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
+    settings.description = settings:CreateFontString(nil, "OVERLAY")
+    settings.description:SetFont(STANDARD_TEXT_FONT, 12)
+    settings.description:SetJustifyV("TOP")
+    settings.description:SetJustifyH("LEFT")
+    settings.description:SetPoint("TOPLEFT", 18, -32)
+    settings.description:SetPoint("BOTTOMRIGHT", -18, 48)
+    settings.description:SetText(string.format(R.L["Hold %sShift|r to enable dragging."] .. "\n\n" .. R.L["Use %sShift/Ctrl + Mouse Wheel|r or %sArrow keys|r for 1px adjustments."] .. "\n\n" ..
+                                                   R.L["%sShift + Right Click|r to reset the position of the frame."] .. "\n\n" ..
+                                                   R.L["Press the %sAlt|r key to cycle through frames under the cursor."], R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR),
+                                               R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR), R:Hex(R.NORMAL_FONT_COLOR)))
 
     settings.lockButton = CreateFrame("Button", "$parentLockButton", settings, "UIPanelButtonTemplate")
     settings.lockButton:SetSize(80, 21)
-    settings.lockButton:SetPoint("BOTTOMRIGHT", -4, 4)
+    settings.lockButton:SetPoint("BOTTOMRIGHT", -14, 14)
     settings.lockButton:SetScript("OnClick", R.HideMovers)
     settings.lockButton.Text:SetText(R.L["Lock"])
 
@@ -303,9 +314,6 @@ function R:CreateMoverSettingsFrame()
     settings.resetButton:SetPoint("BOTTOMRIGHT", settings.lockButton, "BOTTOMLEFT", -4, 0)
     settings.resetButton:SetScript("OnClick", R.ResetMovers)
     settings.resetButton.Text:SetText(R.L["Reset All Frames"])
-
-    settings:CreateBorder()
-    settings:CreateShadow()
 
     settings.highlightIndex = 1
     settings.HighlightMovers = function(self)
