@@ -11,7 +11,9 @@ function UF:Initialize()
 end
 
 function UF:Enable()
-    if not UF.config.enabled then return end
+    if not UF.config.enabled then
+        return
+    end
 
     UF:UpdateColors()
     UF:StyleAuraFrames()
@@ -36,13 +38,29 @@ function UF:Enable()
 end
 
 oUF:RegisterInitCallback(function(object)
-    if object.Configure then object:Configure() end
+    if object.Configure then
+        object:Configure()
+    end
 end)
 
 function UF:UpdateAll()
-    for _, frame in pairs(UF.frames) do frame:Configure() end
-    for _, header in pairs(UF.headers) do header:Configure() end
-    for _, nameplate in pairs(UF.nameplates) do nameplate:Configure() end
+    for _, frame in pairs(UF.frames) do
+        frame:Configure()
+    end
+    for _, header in pairs(UF.headers) do
+        header:Configure()
+    end
+    UF:UpdateNamePlates()
+end
+
+function UF:UpdateNamePlates()
+    for cvar, value in pairs(UF.config.nameplates.cvars) do
+        SetCVar(cvar, value)
+    end
+
+    for _, nameplate in ipairs(UF.nameplates) do
+        nameplate:Configure()
+    end
 end
 
 function UF:UpdateUnit(unit)
@@ -50,8 +68,8 @@ function UF:UpdateUnit(unit)
         UF.frames[unit]:Configure()
     elseif UF.headers[unit] then
         UF.headers[unit]:Configure()
-    elseif unit == "nameplates" then
-        for _, nameplate in pairs(UF.nameplates) do nameplate:Configure() end
+    elseif unit == "nameplates" or unit == "friendlyPlayer" or unit == "friendlyNpc" or unit == "enemyPlayer" or unit == "enemyNpc" then
+        UF:UpdateNamePlates()
     end
 end
 
@@ -70,5 +88,9 @@ function UF:UpdateColors()
 end
 
 function UF:PLAYER_REGEN_DISABLED()
-    for _, header in pairs(UF.headers) do if header and header.UnforceShow then header:UnforceShow() end end
+    for _, header in pairs(UF.headers) do
+        if header and header.UnforceShow then
+            header:UnforceShow()
+        end
+    end
 end

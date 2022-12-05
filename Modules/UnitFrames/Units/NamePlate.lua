@@ -25,19 +25,15 @@ function UF:SpawnNamePlates()
     end
 end
 
-function UF:UpdateNamePlates()
-    for i, nameplate in ipairs(UF.nameplates) do
-        nameplate:Configure()
-    end
-end
-
 UF.NameplateMixin = {}
 
-function UF.NameplateMixin:PostConfigure()
+function UF.NameplateMixin:PreConfigure()
     local configKey = (UnitIsFriend("player", self.unit) and "friendly" or "enemy") .. (UnitIsPlayer(self.unit) and "Player" or "Npc")
     self.config = UF.config.nameplates[configKey]
     self.defaults = UF.defaults.nameplates[configKey]
+end
 
+function UF.NameplateMixin:PostConfigure()
     self:SetScale((self.config.scale or 1) * UIParent:GetScale())
     self:ClearAllPoints()
     self:SetPoint("CENTER")

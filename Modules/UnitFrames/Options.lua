@@ -1371,10 +1371,9 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                     shieldSize = UF:CreateRangeOption(unit, L["Shield Size"], L["The size of the shield icon."], 11, function()
                         return not UF:UnitConfig(unit).castbar.showShield
                     end, 10, 60, nil, 1, function()
-                        return UF:UnitConfig(unit).castbar.shieldSize[1]
+                        return UF:UnitConfig(unit).castbar.shieldSize
                     end, function(value)
-                        UF:UnitConfig(unit).castbar.shieldSize[1] = value
-                        UF:UnitConfig(unit).castbar.shieldSize[2] = value
+                        UF:UnitConfig(unit).castbar.shieldSize = value
                     end),
                     lineBreakDetached = { type = "description", name = "", order = 12 },
                     detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 13, nil, not canDetach, function()
@@ -1892,6 +1891,22 @@ function UF:CreateUnitHighlightOption(unit, order)
     return highlight
 end
 
+function UF:CreateNamePlateCVarToggleOption(cvar, name, desc, order)
+    return R:CreateToggleOption(name, desc, order, nil, nil, function()
+        return UF:UnitConfig("nameplates").cvars[cvar] == 1
+    end, function(value)
+        UF:UnitConfig("nameplates").cvars[cvar] = value and 1 or 0
+    end, UF.UpdateNamePlates)
+end
+
+function UF:CreateNamePlateCVarRangeOption(cvar, name, desc, order, min, max, step)
+    return R:CreateRangeOption(name, desc, order, nil, min, max, max, step, function()
+        return UF:UnitConfig("nameplates").cvars[cvar]
+    end, function(value)
+        UF:UnitConfig("nameplates").cvars[cvar] = value
+    end, UF.UpdateNamePlates)
+end
+
 R:RegisterModuleOptions(UF, {
     type = "group",
     name = L["Unit Frames"],
@@ -2031,11 +2046,54 @@ R:RegisterModuleOptions(UF, {
                 end, function(value)
                     UF:UnitConfig("nameplates").enabled = value
                 end, ReloadUI, L["Disabling nameplates requires a UI reload. Proceed?"]),
-                description = { type = "description", name = L["To configure nameplates, select friendly/enemy player/NPC from the tree on the left."], order = 2 },
-                friendlyPlayer = UF:CreateUnitOptions("friendlyPlayer", 3, L["Friendly Player Nameplates"], nil, true),
-                enemyPlayer = UF:CreateUnitOptions("enemyPlayer", 4, L["Enemy Player Nameplates"], nil, true),
-                friendlyNpc = UF:CreateUnitOptions("friendlyNpc", 5, L["Friendly NPC Nameplates"], nil, true),
-                enemyNpc = UF:CreateUnitOptions("enemyNpc", 6, L["Enemy NPC Nameplates"], nil, true)
+                description = { type = "description", name = L["To configure nameplate unit frames, select friendly/enemy player/NPC from the tree on the left."], order = 2 },
+                cvarsScale = {
+                    type = "group",
+                    name = L["Scale"],
+                    order = 3,
+                    inline = true,
+                    args = {
+                        nameplateMinScale = UF:CreateNamePlateCVarRangeOption("nameplateMinScale", L["Minimum Scale"], L["The minimum scale nameplates should have."], 1, 0.5, 2.0, 0.01),
+                        nameplateMinScaleDistance = UF:CreateNamePlateCVarRangeOption("nameplateMinScaleDistance", L["Minimum Scale Distance"],
+                                                                                      L["The distance from the max distance that nameplates will reach their minimum scale."], 2, 0, 41, 1),
+                        lineBreak1 = { type = "description", name = "", order = 3 },
+                        nameplateMaxScale = UF:CreateNamePlateCVarRangeOption("nameplateMaxScale", L["Maximum Scale"],
+                                                                              L["The maximum Scale (the higher, the more transparent) nameplates should have."], 4, 0.5, 2.0, 0.01),
+                        nameplateMaxScaleDistance = UF:CreateNamePlateCVarRangeOption("nameplateMaxScaleDistance", L["Maximum Scale Distance"],
+                                                                                      L["The distance from the max distance that nameplates will reach their maximum scale."], 5, 0, 41, 1),
+                        lineBreak2 = { type = "description", name = "", order = 6 },
+                        nameplateSelectedScale = UF:CreateNamePlateCVarRangeOption("nameplateSelectedScale", L["Selected Target Scale"], L["The scale of the nameplate of your current target."], 7, 0.5, 2.0,
+                                                                                   0.01),
+                        lineBreak3 = { type = "description", name = "", order = 8 },
+                        nameplateLargerScale = UF:CreateNamePlateCVarRangeOption("nameplateLargerScale", L["Important Enemy Scale"], L["The scale of the nameplates of important targets."], 9, 0.5, 2.0, 0.01)
+                    }
+                },
+                cvarsTransparency = {
+                    type = "group",
+                    name = L["Transparency"],
+                    order = 4,
+                    inline = true,
+                    args = {
+                        nameplateMinAlpha = UF:CreateNamePlateCVarRangeOption("nameplateMinAlpha", L["Minimum Alpha"], L["The minimum alpha (the lower, the more transparent) nameplates should have."],
+                                                                              1, 0.1, 1.0, 0.01),
+                        nameplateMinAlphaDistance = UF:CreateNamePlateCVarRangeOption("nameplateMinAlphaDistance", L["Minimum Alpha Distance"],
+                                                                                      L["The distance from the max distance that nameplates will reach their minimum alpha (most transparent)."], 2, 0,
+                                                                                      41, 1),
+                        lineBreak1 = { type = "description", name = "", order = 3 },
+                        nameplateMaxAlpha = UF:CreateNamePlateCVarRangeOption("nameplateMaxAlpha", L["Maximum Alpha"],
+                                                                              L["The maximum alpha (the higher, the more transparent) nameplates should have."], 4, 0.1, 1.0, 0.01),
+                        nameplateMaxAlphaDistance = UF:CreateNamePlateCVarRangeOption("nameplateMaxAlphaDistance", L["Maximum Alpha Distance"],
+                                                                                      L["The distance from the max distance that nameplates will reach their maximum alpha (least transparent)."], 5, 0,
+                                                                                      41, 1),
+                        lineBreak2 = { type = "description", name = "", order = 6 },
+                        nameplateSelectedAlpha = UF:CreateNamePlateCVarRangeOption("nameplateSelectedAlpha", L["Selected Target Alpha"],
+                                                                                   L["The alpha (the higher, the more transparent) of the nameplate of your current target."], 7, 0.1, 1.0, 0.01)
+                    }
+                },
+                friendlyPlayer = UF:CreateUnitOptions("friendlyPlayer", 5, L["Friendly Player Nameplates"], nil, true),
+                enemyPlayer = UF:CreateUnitOptions("enemyPlayer", 6, L["Enemy Player Nameplates"], nil, true),
+                friendlyNpc = UF:CreateUnitOptions("friendlyNpc", 7, L["Friendly NPC Nameplates"], nil, true),
+                enemyNpc = UF:CreateUnitOptions("enemyNpc", 8, L["Enemy NPC Nameplates"], nil, true)
             }
         }
     }

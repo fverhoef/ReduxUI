@@ -113,7 +113,8 @@ function UF:ConfigureCastbar()
 
     self.Castbar.Shield:SetAlpha(config.showShield and 1 or 0)
     self.Castbar.Shield:SetNormalizedSize(config.shieldSize)
-    self.Castbar.Shield:SetPoint("RIGHT", self.Castbar, "LEFT", -2, 0)
+    self.Castbar.Shield:ClearAllPoints()
+    self.Castbar.Shield:SetPoint("RIGHT", self.Castbar, "LEFT", -2, -4)
 end
 
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)
@@ -194,6 +195,12 @@ end
 
 ModernCastbarMixin = {}
 
+function ModernCastbarMixin:StopAnimations()
+    self.Flakes01:Hide()
+    self.Flakes02:Hide()
+    self.Flakes03:Hide()
+end
+
 function ModernCastbarMixin:PostCastStart(unit)
     CastbarMixin.PostCastStart(self, unit)
 
@@ -246,7 +253,7 @@ end
 AnimatedModernCastbarMixin = {}
 
 function AnimatedModernCastbarMixin:StopAnimations()
-    CastbarMixin.StopAnimations(self)
+    ModernCastbarMixin.StopAnimations(self)
 
     self.FlashLoopingAnim:Stop()
     self.FlashAnim:Stop()
@@ -264,6 +271,9 @@ function AnimatedModernCastbarMixin:PostCastStop(unit)
     elseif (self.crafting or self.applyingTalents) and self.CraftingFinish then
         self.CraftingFinish:Play()
     elseif not self.empowering and not self.notInterruptible and self.StandardFinish then
+        self.Flakes01:Show()
+        self.Flakes02:Show()
+        self.Flakes03:Show()
         self.StandardFinish:Play()
     end
 end

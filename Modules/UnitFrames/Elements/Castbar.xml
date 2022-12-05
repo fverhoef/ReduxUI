@@ -20,12 +20,11 @@
         <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Redux" />
         <Layers>
             <Layer level="ARTWORK" textureSubLevel="4">
-                <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar" hidden="true">
-                    <Size x="29" y="33" />
+                <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Shield" hidden="true">
+                    <Size x="33" y="33" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="-31" y="6" />
                     </Anchors>
-                    <TexCoords left="0.001953125" right="0.0751953125" top="0.794921875" bottom="0.96875" />
                 </Texture>
                 <Texture parentKey="Icon">
                     <Size x="24" y="24" />

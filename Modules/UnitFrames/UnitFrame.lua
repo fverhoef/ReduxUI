@@ -96,6 +96,10 @@ function UF.UnitFrameMixin:Initialize()
 end
 
 function UF.UnitFrameMixin:Configure()
+    if self.PreConfigure then
+        self:PreConfigure()
+    end
+
     self:SetSize(unpack(self.config.size))
     self:SetScale(self.config.scale)
 

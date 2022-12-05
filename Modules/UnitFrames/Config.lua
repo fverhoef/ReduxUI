@@ -192,13 +192,13 @@ local DEFAULT_UNIT_CONFIG = {
         enabled = true,
         style = UF.CastbarStyles.Modern,
         size = { 209, 11 },
-        point = { "TOPLEFT", "BOTTOMLEFT", 0, -5 },
+        point = { "TOPLEFT", "BOTTOMLEFT", 0, -7 },
         attachedPoint = "BOTTOM",
         showGlow = true,
         showIcon = true,
         showSpark = true,
         showShield = true,
-        shieldSize = { 24, 24 },
+        shieldSize = 24,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
@@ -341,7 +341,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 }, style = UF.CastbarStyles.ModernAnimated },
+        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = 32, style = UF.CastbarStyles.ModernAnimated },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
@@ -574,32 +574,17 @@ R:RegisterModuleConfig(UF, {
             pvpIndicator = { enabled = false }
         }),
         cvars = {
-            nameplateMaxDistance = 41,
-            nameplateMinScale = 1,
+            nameplateMinScale = 0.8,
+            nameplateMinScaleDistance = 10,
             nameplateMaxScale = 1,
-            nameplateMinScaleDistance = 0,
-            nameplateMaxScaleDistance = 80,
-            nameplateGlobalScale = 1,
-            NamePlateHorizontalScale = 1,
-            NamePlateVerticalScale = 1,
-            nameplateSelfScale = 1,
+            nameplateMaxScaleDistance = 41,
             nameplateSelectedScale = 1.2,
             nameplateLargerScale = 1.2,
             nameplateMinAlpha = 0.3,
+            nameplateMinAlphaDistance = 10,
             nameplateMaxAlpha = 0.8,
-            nameplateMinAlphaDistance = 0,
-            nameplateMaxAlphaDistance = 40,
-            nameplateSelectedAlpha = 1,
-            nameplateShowAll = 1,
-            nameplateShowEnemyMinions = 0,
-            nameplateShowEnemyGuardians = 0,
-            nameplateShowEnemyMinus = 0,
-            nameplateShowEnemyPets = 0,
-            nameplateShowFriendlyMinions = 0,
-            nameplateShowFriendlyGuardians = 0,
-            nameplateShowFriendlyNPCs = 1,
-            nameplateShowFriendlyPets = 0,
-            nameplateShowFriendlyTotems = 0
+            nameplateMaxAlphaDistance = 30,
+            nameplateSelectedAlpha = 1
         }
     }
 })
