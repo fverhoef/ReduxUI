@@ -80,8 +80,14 @@ R.media = {
         statusBars = {
             artifactPower = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ArtifactPower",
             castbar = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Castbar",
-            castbarMana = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarMana",
-            castbarSteel = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarSteel",
+            castbarGlow = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarGlow",
+            castbarChanneling = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarChanneling",
+            castbarChannelingGlow = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarChannelingGlow",
+            castbarCrafting = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarCrafting",
+            castbarCraftingGlow = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarCraftingGlow",
+            castbarEmpowering = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarEmpowering",
+            castbarInterrupted = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarInterrupted",
+            castbarUninterruptable = MEDIA_PREFIX .. "\\Textures\\StatusBars\\CastbarUninterruptable",
             experienceNormal = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ExperienceNormal",
             experienceRested = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ExperienceRested",
             honor = MEDIA_PREFIX .. "\\Textures\\StatusBars\\Honor",
@@ -144,3 +150,9 @@ R.Libs.SharedMedia:Register("statusbar", "Kait1", R.media.textures.statusBars.ka
 R.Libs.SharedMedia:Register("statusbar", "Kait2", R.media.textures.statusBars.kait2)
 R.Libs.SharedMedia:Register("statusbar", "Melli", R.media.textures.statusBars.melli)
 R.Libs.SharedMedia:Register("statusbar", "MelliDark", R.media.textures.statusBars.melliDark)
+R.Libs.SharedMedia:Register("statusbar", "Castbar", R.media.textures.statusBars.castbar)
+R.Libs.SharedMedia:Register("statusbar", "Castbar - Channeling", R.media.textures.statusBars.castbarChanneling)
+R.Libs.SharedMedia:Register("statusbar", "Castbar - Crafting", R.media.textures.statusBars.castbarCrafting)
+R.Libs.SharedMedia:Register("statusbar", "Castbar - Empowering", R.media.textures.statusBars.castbarEmpowering)
+R.Libs.SharedMedia:Register("statusbar", "Castbar - Interrupted", R.media.textures.statusBars.castbarInterrupted)
+R.Libs.SharedMedia:Register("statusbar", "Castbar - Uninterruptabl", R.media.textures.statusBars.castbarUninterruptable)

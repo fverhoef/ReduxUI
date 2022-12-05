@@ -44,12 +44,21 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="1">
+                <Texture parentKey="SafeZone" alpha="0.4" />
+                <Texture parentKey="Flash" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\CastbarGlow" alphaMode="ADD">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-1" y="1" />
+                        <Anchor point="BOTTOMRIGHT" x="1" y="-1" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="2">
                 <Texture parentKey="Spark" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
-                    <Size x="6" y="30" />
+                    <Size x="5" y="30" />
                     <Anchors>
                         <Anchor point="CENTER" relativeKey="$parent.Texture" relativePoint="RIGHT" />
                     </Anchors>
-                    <TexCoords left="0.0751953125" right="0.0869140625" top="0.794921875" bottom="0.912109375" />
+                    <TexCoords left="0.076171875" right="0.0859375" top="0.796875" bottom="0.9140625" />
                 </Texture>
                 <FontString parentKey="Text" inherits="GameFontHighlightSmall" justifyH="LEFT" maxLines="1">
                     <Anchors>
@@ -63,8 +72,7 @@
                     </Anchors>
                 </FontString>
             </Layer>
-            <Layer level="OVERLAY" textureSubLevel="2">
-                <Texture parentKey="SafeZone" alpha="0.4" />
+            <Layer level="OVERLAY" textureSubLevel="3">
                 <Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx">
                     <Size x="37" y="12" />
                     <Anchors>
@@ -72,13 +80,124 @@
                     </Anchors>
                     <TexCoords left="0.79296875" right="0.8671875" top="0.341796875" bottom="0.392578125" />
                 </Texture>
+                <Texture parentKey="CraftGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" hidden="true">
+                    <Size x="37" y="12" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="2" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.8974609375" right="0.9697265625" top="0.27734375" bottom="0.32421875" />
+                </Texture>
+                <Texture parentKey="ChannelShadow" alpha="1" alphaMode="BLEND" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" hidden="true">
+                    <Size x="11" y="11" />
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" relativeKey="$parent.Spark" x="1" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.9775390625" right="0.9990234375" top="0.001953125" bottom="0.044921875" />
+                </Texture>
                 <MaskTexture parentKey="BorderMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFullMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" setAllPoints="true">
                     <MaskedTextures>
                         <MaskedTexture childKey="SafeZone" />
                         <MaskedTexture childKey="StandardGlow" />
+                        <MaskedTexture childKey="CraftGlow" />
+                        <MaskedTexture childKey="ChannelShadow" />
                     </MaskedTextures>
                 </MaskTexture>
             </Layer>
         </Layers>
+    </StatusBar>
+    <StatusBar name="AnimatedCastbarTemplate" drawLayer="BORDER" virtual="true" inherits="CastbarTemplate">
+        <Animations>
+            <AnimationGroup parentKey="FadeOutAnim" setToFinalAlpha="true">
+                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" startDelay="0.2" />
+                <Scripts>
+                    <OnFinished function="CastbarAnimation_OnFadeOutFinish" />
+                </Scripts>
+            </AnimationGroup>
+            <AnimationGroup parentKey="HoldFadeOutAnim" setToFinalAlpha="true">
+                <Alpha fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
+                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" order="2" />
+                <Scripts>
+                    <OnFinished function="CastbarAnimation_OnFadeOutFinish" />
+                </Scripts>
+            </AnimationGroup>
+            <AnimationGroup parentKey="FlashLoopingAnim" looping="NONE" setToFinalAlpha="true">
+                <Alpha childKey="Flash" fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
+                <Alpha childKey="Flash" fromAlpha="1" toAlpha="0" duration="0.2" order="2" />
+                <Alpha childKey="Flash" fromAlpha="0" toAlpha="1" duration="0.2" order="3" />
+                <Alpha childKey="Flash" fromAlpha="1" toAlpha="0" duration="0.15" order="4" />
+                <Alpha childKey="Flash" fromAlpha="0" toAlpha="1" duration="0.15" order="5" />
+                <Alpha childKey="Flash" fromAlpha="1" toAlpha="0" duration="0.1" order="6" />
+                <Alpha childKey="Flash" fromAlpha="0" toAlpha="1" duration="0.1" order="7" />
+                <Alpha childKey="Flash" fromAlpha="1" toAlpha="0" duration="0.1" order="8" />
+                <Alpha childKey="Flash" fromAlpha="0" toAlpha="1" duration="0.1" order="9" />
+                <Alpha childKey="ChargeGlow" fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
+                <Alpha childKey="ChargeGlow" fromAlpha="1" toAlpha="0" duration="0.2" order="2" />
+                <Alpha childKey="ChargeGlow" fromAlpha="0" toAlpha="1" duration="0.2" order="3" />
+                <Alpha childKey="ChargeGlow" fromAlpha="1" toAlpha="0" duration="0.15" order="4" />
+                <Alpha childKey="ChargeGlow" fromAlpha="0" toAlpha="1" duration="0.15" order="5" />
+                <Alpha childKey="ChargeGlow" fromAlpha="1" toAlpha="0" duration="0.1" order="6" />
+                <Alpha childKey="ChargeGlow" fromAlpha="0" toAlpha="1" duration="0.1" order="7" />
+                <Alpha childKey="ChargeGlow" fromAlpha="1" toAlpha="0" duration="0.1" order="8" />
+                <Alpha childKey="ChargeGlow" fromAlpha="0" toAlpha="1" duration="0.1" order="9" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="FlashAnim" setToFinalAlpha="true">
+                <Alpha childKey="Flash" fromAlpha="0" toAlpha="1" duration="0.2" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="StageFlash" setToFinalAlpha="true">
+                <Alpha childKey="ChargeFlash" fromAlpha="0" toAlpha="1" duration="0.0" />
+                <Alpha childKey="ChargeFlash" fromAlpha="1" toAlpha="0" duration="0.3" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="StageFinish" setToFinalAlpha="true">
+                <Alpha childKey="ChargeFlash" fromAlpha="0" toAlpha="1" duration="0.1" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="StandardFinish" inherits="TargetsVisibleWhilePlayingAnimationTemplate" looping="REPEAT" setToFinalAlpha="true">
+                <Translation childKey="EnergyGlow" duration="0.5" order="1" offsetX="0" offsetY="220" smoothing="NONE" />
+                <Translation childKey="Flakes01" duration="0.5" order="1" offsetX="0" offsetY="100" startDelay="0" smoothing="IN" />
+                <Translation childKey="Flakes02" duration="0.5" order="1" offsetX="0" offsetY="90" smoothing="OUT" />
+                <Translation childKey="Flakes03" duration="0.5" order="1" offsetX="0" offsetY="25" startDelay="0.25" smoothing="IN" />
+                <Alpha childKey="EnergyGlow" fromAlpha="0" toAlpha="1" duration="0.0" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="CraftingFinish" looping="NONE" setToFinalAlpha="true">
+                <Translation childKey="Shine" duration="0.5" order="1" offsetX="0" offsetY="180" smoothing="NONE" />
+                <Alpha childKey="Shine" fromAlpha="0" toAlpha="1" duration="0.0" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="ChannelFinish" looping="NONE" setToFinalAlpha="true">
+                <Translation childKey="WispMask" duration="0.5" order="1" offsetX="50" offsetY="0" smoothing="NONE" />
+                <Translation childKey="Sparkles01" duration="0.5" order="1" offsetX="40" offsetY="0" smoothing="IN" />
+                <Translation childKey="Sparkles02" duration="0.5" order="1" offsetX="20" offsetY="0" startDelay="0.1" smoothing="IN_OUT" />
+                <Rotation childKey="Sparkles01" duration="0.5" order="1" degrees="45" smoothing="NONE">
+                    <Origin point="CENTER" />
+                </Rotation>
+                <Rotation childKey="Sparkles02" duration="0.5" order="1" degrees="-45" startDelay="0.1" smoothing="NONE">
+                    <Origin point="CENTER" />
+                </Rotation>
+                <Alpha childKey="BaseGlow" duration="0.3" order="1" fromAlpha="0" toAlpha="0.5" smoothing="NONE" />
+                <Alpha childKey="WispGlow" duration="0.0" order="1" fromAlpha="0" toAlpha="1" smoothing="NONE" />
+                <Alpha childKey="Sparkles01" duration="0.0" order="1" fromAlpha="0" toAlpha="1" smoothing="NONE" />
+                <Alpha childKey="Sparkles02" duration="0.0" order="1" fromAlpha="0" toAlpha="1" smoothing="NONE" />
+                <Alpha childKey="BaseGlow" duration="0.2" order="2" fromAlpha="0.5" toAlpha="0" smoothing="NONE" />
+                <Alpha childKey="WispGlow" duration="0.5" order="2" fromAlpha="1" toAlpha="0" smoothing="NONE" />
+                <Alpha childKey="Sparkles01" duration="0.5" order="2" fromAlpha="1" toAlpha="0" smoothing="NONE" />
+                <Alpha childKey="Sparkles02" duration="0.5" order="2" fromAlpha="1" toAlpha="0" smoothing="NONE" />
+                <Scale childKey="BaseGlow" duration="0.5" order="1" fromScaleX="1" fromScaleY="1" toScaleX="4" toScaleY="1" smoothing="NONE" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="InterruptGlowAnim" looping="NONE" setToFinalAlpha="true">
+                <Alpha childKey="InterruptGlow" duration="0.0" order="1" fromAlpha="0" toAlpha="1" smoothing="NONE" />
+                <Alpha childKey="InterruptGlow" duration="1.0" order="2" fromAlpha="1" toAlpha="0" smoothing="NONE" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="InterruptShakeAnim" looping="NONE" setToFinalAlpha="true">
+                <Translation duration="0.1" order="1" offsetX="0" offsetY="0" smoothing="NONE" />
+                <Translation duration="0.0" order="2" offsetX="-1" offsetY="1" startDelay="0.05" smoothing="NONE" />
+                <Translation duration="0.0" order="3" offsetX="1" offsetY="-2" startDelay="0.05" smoothing="NONE" />
+                <Translation duration="0.0" order="4" offsetX="1" offsetY="2" startDelay="0.05" smoothing="NONE" />
+                <Translation duration="0.0" order="5" offsetX="-1" offsetY="-1" startDelay="0.05" smoothing="NONE" />
+            </AnimationGroup>
+            <AnimationGroup parentKey="InterruptSparkAnim" looping="NONE" setToFinalAlpha="true">
+                <Alpha childKey="Spark" duration="0.1" order="1" fromAlpha="1" toAlpha="1" smoothing="NONE" />
+                <Scripts>
+                    <OnFinished function="CastbarAnimation_OnInterruptSparkAnimFinish" />
+                </Scripts>
+            </AnimationGroup>
+        </Animations>
     </StatusBar>
 </Ui>

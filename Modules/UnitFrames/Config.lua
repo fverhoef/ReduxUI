@@ -192,10 +192,12 @@ local DEFAULT_UNIT_CONFIG = {
         size = { 209, 11 },
         point = { "TOPLEFT", "BOTTOMLEFT", 0, -5 },
         attachedPoint = "BOTTOM",
+        showGlow = true,
         showIcon = true,
         showSpark = true,
         showShield = true,
         shieldSize = { 24, 24 },
+        playAnimations = false,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
@@ -280,7 +282,12 @@ R:RegisterModuleConfig(UF, {
         additionalPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
         additionalPowerPrediction = R.Libs.SharedMedia:Fetch("statusbar", "Kait1"),
         classPower = R.Libs.SharedMedia:Fetch("statusbar", "Redux"),
-        castbar = R.Libs.SharedMedia:Fetch("statusbar", "Redux")
+        castbar = R.Libs.SharedMedia:Fetch("statusbar", "Castbar"),
+        castbarChanneling = R.Libs.SharedMedia:Fetch("statusbar", "Castbar - Channeling"),
+        castbarCrafting = R.Libs.SharedMedia:Fetch("statusbar", "Castbar - Crafting"),
+        castbarEmpowering = R.Libs.SharedMedia:Fetch("statusbar", "Castbar - Empowering"),
+        castbarInterrupted = R.Libs.SharedMedia:Fetch("statusbar", "Castbar - Interrupted"),
+        castbarUninterruptable = R.Libs.SharedMedia:Fetch("statusbar", "Castbar - Uninterruptable")
     },
     colors = {
         health = { 49 / 255, 207 / 255, 37 / 255 },
@@ -290,8 +297,12 @@ R:RegisterModuleConfig(UF, {
         focus = oUF.colors.power["FOCUS"],
         runicPower = oUF.colors.power["RUNIC_POWER"],
         comboPoints = oUF.colors.power["COMBO_POINTS"],
-        castbar = { 255 / 255, 175 / 255, 0 / 255 },
-        castbar_Shielded = { 175 / 255, 175 / 255, 175 / 255 },
+        castbar = { 1, 1, 1 },
+        castbarChanneling = { 1, 1, 1 },
+        castbarCrafting = { 1, 1, 1 },
+        castbarEmpowering = { 1, 1, 1 },
+        castbarInterrupted = { 1, 1, 1 },
+        castbarUninterruptable = { 1, 1, 1 },
         class = {
             ["DEATHKNIGHT"] = oUF.colors.class["DEATHKNIGHT"],
             ["DEMONHUNTER"] = oUF.colors.class["DEMONHUNTER"],
@@ -329,7 +340,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 } },
+        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 }, playAnimations = true },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {
