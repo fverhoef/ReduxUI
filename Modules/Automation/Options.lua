@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local L = R.L
 local AM = R.Modules.Automation
 
+local scale
+
 R:RegisterModuleOptions(AM, {
     type = "group",
     name = "Automation",
@@ -182,6 +184,49 @@ R:RegisterModuleOptions(AM, {
             return AM.config.cameraDistanceMaxZoomFactor
         end, function(value)
             AM.config.cameraDistanceMaxZoomFactor = value
-        end, AM.Update)
+        end, AM.Update),
+        interfaceScaleEnabled = {
+            type = "toggle",
+            name = L["Override UI Scale"],
+            desc = L["Whether or not to override the built-in UI scaling."],
+            order = 42,
+            width = "full",
+            get = function()
+                return AM.config.interfaceScale.enabled
+            end,
+            set = function(_, val)
+                AM.config.interfaceScale.enabled = val
+                if not val then
+                    ReloadUI()
+                else
+                    AM:Update()
+                end
+            end,
+            confirm = function()
+                return AM.config.interfaceScale.enabled and L["Disabling UI scaling override requires a UI reload. Proceed?"]
+            end
+        },
+        interfaceScale = R:CreateRangeOption(L["Scale"], L["The UI scale to use"], 43, function()
+            return not AM.config.interfaceScale.enabled
+        end, 0.6, 1.1, 1.1, 0.01, function()
+            return scale or AM.config.interfaceScale.scale
+        end, function(value)
+            if not scale then
+                scale = AM.config.interfaceScale.scale
+            end
+            scale = value
+        end),
+        applyInterfaceScale = {
+            order = 44,
+            type = "execute",
+            name = L["Apply UI Scale"],
+            desc = L["Apply the changes to UI scale."],
+            disabled = function() return scale == nil end,
+            func = function()
+                AM.config.interfaceScale.scale = scale
+                scale = nil
+                AM:Update()
+            end
+        }
     }
 })
