@@ -8,46 +8,14 @@ function UF:CreateCastbar()
         return
     end
 
-    self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self, "AnimatedCastbarTemplate")
+    self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self, "AnimatedModernCastbarTemplate")
     self.Castbar.config = self.config.castbar
     self.Castbar.holdTime = 1.0
-    self.Castbar.PostCastStart = UF.Castbar_PostCastStart
-    self.Castbar.PostCastStop = UF.Castbar_PostCastStop
-    self.Castbar.PostCastFail = UF.Castbar_PostCastFail
-    self.Castbar.PostCastInterruptible = UF.Castbar_PostCastInterruptible
     self.Castbar.Spark:SetPoint("CENTER", self.Castbar.Texture, "RIGHT")
     self.Castbar.HideBase = self.Castbar.Hide
     self.Castbar.Hide = UF.Castbar_Hide
 
     return self.Castbar
-end
-
-function UF:Castbar_OnShow()
-    self.Holder:Show()
-end
-
-function UF:Castbar_OnHide()
-    self.Holder:Hide()
-end
-
-function UF:Castbar_Hide()
-    if self.FlashLoopingAnim then
-        self.FlashLoopingAnim:Stop()
-    end
-
-    if self.FlashAnim then
-        self.Flash:SetAlpha(0.0)
-        self.Flash:Show()
-        self.FlashAnim:Play()
-    end
-
-    if self.FadeOutAnim and self:GetAlpha() > 0 and self:IsVisible() then
-        if self.reverseChanneling and self.CurrSpellStage < self.NumStages then
-            self.HoldFadeOutAnim:Play()
-        else
-            self.FadeOutAnim:Play()
-        end
-    end
 end
 
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
@@ -70,8 +38,8 @@ function UF:ConfigureCastbar()
     self.Castbar:ClearAllPoints()
     self.Castbar:SetNormalizedPoint(config.point)
 
-    self.Castbar:SetStatusBarTexture(UF.config.statusbars.castbar)
-    self.Castbar:SetStatusBarColor(unpack(UF.config.colors.castbar))
+    self.Castbar.Texture:SetTexture(UF.config.statusbars.castbar)
+    self.Castbar.Texture:SetVertexColor(unpack(UF.config.colors.castbar))
 
     self.Castbar.Spark:SetAlpha(config.showSpark and 1 or 0)
 
@@ -91,54 +59,120 @@ end
 
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)
 
-function UF:Castbar_PostCastStart(unit)
-    local isChanneling, isEmpowering = false, false
-    local name, _, _, _, _, isCrafting, _, uninterruptable = UnitCastingInfo(unit)
-    if not name then
-        _, _, _, _, _, isCrafting, uninterruptable, _, _, numStages = UnitChannelInfo(unit)
-        isEmpowering = numStages and numStages > 0
-        isChanneling = not isEmpowering
+function UF:Castbar_Hide()
+    if self.FlashLoopingAnim then
+        self.FlashLoopingAnim:Stop()
     end
 
+    if self.FlashAnim then
+        self.Flash:SetAlpha(0.0)
+        self.Flash:Show()
+        self.FlashAnim:Play()
+    end
+
+    if self.FadeOutAnim and self:GetAlpha() > 0 and self:IsVisible() then
+        if self.reverseChanneling and self.CurrSpellStage < self.NumStages then
+            self.HoldFadeOutAnim:Play()
+        else
+            self.FadeOutAnim:Play()
+        end
+    end
+end
+
+CastbarMixin = {}
+
+function CastbarMixin:OnShow()
+    if self.Holder then
+        self.Holder:Show()
+    end
+end
+
+function CastbarMixin:OnHide()
+    if self.Holder then
+        self.Holder:Hide()
+    end
+end
+
+function CastbarMixin:PostCastFail(unit, spellID)
+    self.Texture:SetTexture(UF.config.statusbars.castbarInterrupted)
+    self.Texture:SetVertexColor(unpack(UF.config.colors.castbarInterrupted))
+end
+
+function CastbarMixin:PostCastInterruptible(unit, spellID)
+    if self.notInterruptible then
+        self.Texture:SetTexture(UF.config.statusbars.castbarUninterruptable)
+        self.Texture:SetVertexColor(unpack(UF.config.colors.castbarUninterruptable))
+
+        self.Icon:SetShown(self.config.showIcon and not self.notInterruptible)
+    end
+end
+
+CastbarFadeOutAnimationMixin = {}
+
+function CastbarFadeOutAnimationMixin:OnFinished()
+    self:GetParent():HideBase()
+end
+
+ModernCastbarMixin = {}
+
+function ModernCastbarMixin:PostCastStart(unit)
+    local name, _, _, _, _, crafting = UnitCastingInfo(unit)
+    if not name and not self.channeling and not self.empowering then
+        crafting = select(6, UnitChannelInfo(unit))
+    end
+    self.crafting = crafting
+
     local texture, color = UF.config.statusbars.castbar, UF.config.colors.castbar
-    if isCrafting then
+    if self.crafting then
         texture, color = UF.config.statusbars.castbarCrafting, UF.config.colors.castbarCrafting
-    elseif uninterruptable then
+    elseif self.notInterruptible then
         texture, color = UF.config.statusbars.castbarUninterruptable, UF.config.colors.castbarUninterruptable
-    elseif isChanneling then
+    elseif self.channeling then
         texture, color = UF.config.statusbars.castbarChanneling, UF.config.colors.castbarChanneling
-    elseif isEmpowering then
+    elseif self.empowering then
         texture, color = UF.config.statusbars.castbarEmpowering, UF.config.colors.castbarEmpowering
     end
 
-    self.isChanneling = isChanneling
-    self.isCrafting = isCrafting
-    self.isEmpowering = isEmpowering
-
     self.Texture:SetTexture(texture)
-    self.Texture:SetVertexColor(unpack(UF.config.colors.castbar))
+    self.Texture:SetVertexColor(unpack(color))
 
     self.Spark:SetTexture(R.media.textures.unitFrames.modern.castingBar)
     self.Spark:SetTexCoord(78 / 1024, 88 / 1024, 408 / 512, 468 / 512)
 
-    self.Icon:SetShown(self.config.showIcon and not uninterruptable)
+    self.Icon:SetShown(self.config.showIcon and not self.notInterruptible)
 
-    local isStandard = not isCrafting and not uninterruptable and not isChanneling and not isEmpowering
+    local isStandard = not self.crafting and not self.notInterruptible and not self.channeling and not self.empowering
     self.StandardGlow:SetShown(self.config.showGlow and isStandard)
-    self.CraftGlow:SetShown(self.config.showGlow and isCrafting)
-    self.ChannelShadow:SetShown(self.config.showGlow and isChanneling)
+    self.CraftGlow:SetShown(self.config.showGlow and self.crafting)
+    self.ChannelShadow:SetShown(self.config.showGlow and self.channeling)
 
     if self.config.showGlow and isStandard then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarGlow)
-    elseif self.config.showGlow and isCrafting then
+    elseif self.config.showGlow and self.crafting then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarCraftingGlow)
-    elseif self.config.showGlow and isChanneling then
+    elseif self.config.showGlow and self.channeling then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarChannelingGlow)
     else
         self.Flash:SetTexture(nil)
     end
     self.Flash:Hide()
-    
+
+    self:SetAlpha(1.0)
+    self.Spark:Show()
+end
+
+function ModernCastbarMixin:PostCastFail(unit, spellID)
+    CastbarMixin.PostCastFail(self, unit, spellID)
+
+    self.Spark:SetTexture(R.media.textures.unitFrames.modern.castingBarFx)
+    self.Spark:SetTexCoord(933 / 1024, 943 / 1024, 176 / 512, 236 / 512)
+end
+
+AnimatedModernCastbarMixin = {}
+
+function AnimatedModernCastbarMixin:PostCastStart(unit)
+    ModernCastbarMixin.PostCastStart(self, unit)
+
     self.FadeOutAnim:Stop()
     self.HoldFadeOutAnim:Stop()
     self.FlashLoopingAnim:Stop()
@@ -149,55 +183,34 @@ function UF:Castbar_PostCastStart(unit)
     self.InterruptShakeAnim:Stop()
     self.InterruptGlowAnim:Stop()
     self.InterruptSparkAnim:Stop()
-
-    self:SetAlpha(1.0)
-    self.Spark:Show()
 end
 
-function UF:Castbar_PostCastStop(unit)
-    if self.config.playAnimations then
-        if self.isChanneling and self.ChannelFinish then
-            self.ChannelFinish:Play()
-        elseif self.isCrafting and self.CraftingFinish then
-            self.CraftingFinish:Play()
-        elseif not self.isEmpowering and not self.notInterruptible and self.StandardFinish then
-            self.StandardFinish:Play()
-        end
+function AnimatedModernCastbarMixin:PostCastStop(unit)
+    if self.channeling and self.ChannelFinish then
+        self.ChannelFinish:Play()
+    elseif self.crafting and self.CraftingFinish then
+        self.CraftingFinish:Play()
+    elseif not self.empowering and not self.notInterruptible and self.StandardFinish then
+        self.StandardFinish:Play()
     end
 end
 
-function UF:Castbar_PostCastFail(unit, spellID)
-    self.Texture:SetTexture(UF.config.statusbars.castbarInterrupted)
-    self.Texture:SetVertexColor(unpack(UF.config.colors.castbarInterrupted))
+function AnimatedModernCastbarMixin:PostCastFail(unit, spellID)
+    ModernCastbarMixin.PostCastFail(self, unit)
 
-    self.Spark:SetTexture(R.media.textures.unitFrames.modern.castingBarFx)
-    self.Spark:SetTexCoord(933 / 1024, 943 / 1024, 176 / 512, 236 / 512)
-
-	if self.InterruptShakeAnim then
-		self.InterruptShakeAnim:Play()
-	end
-	if self.InterruptGlowAnim then
-		self.InterruptGlowAnim:Play()
-	end
-	if self.InterruptSparkAnim then
-		self.InterruptSparkAnim:Play()
-	end
-end
-
-function UF:Castbar_PostCastInterruptible(unit)
-    if self.notInterruptible then
-        self.Texture:SetTexture(UF.config.statusbars.castbarUninterruptable)
-        self.Texture:SetVertexColor(unpack(UF.config.colors.castbarUninterruptable))
-
-        self.Icon:SetShown(self.config.showIcon and not self.notInterruptible)
+    if self.InterruptShakeAnim then
+        self.InterruptShakeAnim:Play()
+    end
+    if self.InterruptGlowAnim then
+        self.InterruptGlowAnim:Play()
+    end
+    if self.InterruptSparkAnim then
+        self.InterruptSparkAnim:Play()
     end
 end
 
-function CastbarAnimation_OnInterruptSparkAnimFinish(self)
-    local bar = self:GetParent()
-    bar.Spark:Hide()
-end
+CastbarInterruptAnimationMixin = {}
 
-function CastbarAnimation_OnFadeOutFinish(self)
-    self:GetParent():HideBase()
+function CastbarInterruptAnimationMixin:OnFinished()
+    self:GetParent().Spark:Hide()
 end

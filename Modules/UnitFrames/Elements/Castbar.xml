@@ -1,26 +1,24 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Castbar.lua" />
-    <StatusBar name="CastbarTemplate" drawLayer="BORDER" virtual="true">
-        <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Castbar" />
+
+    <StatusBar name="CastbarTemplate" mixin="CastbarMixin" drawLayer="BORDER" virtual="true">
+        <Animations>
+            <AnimationGroup parentKey="FadeOutAnim" mixin="CastbarFadeOutAnimationMixin" setToFinalAlpha="true">
+                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" startDelay="0.2" />
+                <Scripts>
+                    <OnFinished method="OnFinished" />
+                </Scripts>
+            </AnimationGroup>
+            <AnimationGroup parentKey="HoldFadeOutAnim" mixin="CastbarFadeOutAnimationMixin" setToFinalAlpha="true">
+                <Alpha fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
+                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" order="2" />
+                <Scripts>
+                    <OnFinished method="OnFinished" />
+                </Scripts>
+            </AnimationGroup>
+        </Animations>
+        <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Redux" />
         <Layers>
-            <Layer level="BACKGROUND" textureSubLevel="0">
-                <Texture parentKey="TextBorder" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" x="0" y="0" />
-                        <Anchor point="BOTTOMRIGHT" x="0" y="-12" />
-                    </Anchors>
-                    <TexCoords left="0.0009765625" right="0.41015625" top="0.001953125" bottom="0.11328125" />
-                </Texture>
-            </Layer>
-            <Layer level="BACKGROUND" textureSubLevel="2">
-                <Texture parentKey="Background" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" x="1" y="-1" />
-                        <Anchor point="BOTTOMRIGHT" x="-1" y="1" />
-                    </Anchors>
-                    <TexCoords left="0.0009765625" right="0.4111328125" top="0.001953125" bottom="0.107421875" />
-                </Texture>
-            </Layer>
             <Layer level="ARTWORK" textureSubLevel="4">
                 <Texture parentKey="Shield" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar" hidden="true">
                     <Size x="29" y="33" />
@@ -35,22 +33,9 @@
                         <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="-5" y="2" />
                     </Anchors>
                 </Texture>
-                <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" x="-1" y="2" />
-                        <Anchor point="BOTTOMRIGHT" x="1" y="-2" />
-                    </Anchors>
-                    <TexCoords left="0.4111328125" right="0.8291015625" top="0" bottom="0.0625" />
-                </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="1">
                 <Texture parentKey="SafeZone" alpha="0.4" />
-                <Texture parentKey="Flash" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\CastbarGlow" alphaMode="ADD">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" x="-1" y="1" />
-                        <Anchor point="BOTTOMRIGHT" x="1" y="-1" />
-                    </Anchors>
-                </Texture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="2">
                 <Texture parentKey="Spark" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
@@ -71,6 +56,164 @@
                         <Anchor point="BOTTOMRIGHT" x="-2" y="-10" />
                     </Anchors>
                 </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnHide method="OnHide" />
+            <OnShow method="OnShow" />
+        </Scripts>
+    </StatusBar>
+
+    <StatusBar name="ModernCastbarTemplate" mixin="ModernCastbarMixin" drawLayer="BORDER" virtual="true" inherits="CastbarTemplate">
+        <BarTexture parentKey="Texture" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\Castbar" />
+        <Layers>
+            <Layer level="BACKGROUND" textureSubLevel="0">
+                <Texture parentKey="TextBorder" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="0" y="0" />
+                        <Anchor point="BOTTOMRIGHT" x="0" y="-12" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.41015625" top="0.001953125" bottom="0.11328125" />
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND" textureSubLevel="1">
+                <Texture parentKey="InterruptGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.5">
+                    <Size x="444" y="50" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.5419921875" right="0.9755859375" top="0.103515625" bottom="0.201171875" />
+                </Texture>
+                <Texture parentKey="ChargeGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" hidden="true" scale="0.5">
+                    <Size x="444" y="50" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.5419921875" right="0.9755859375" top="0.001953125" bottom="0.099609375" />
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND" textureSubLevel="2">
+                <Texture parentKey="Background" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="1" y="-1" />
+                        <Anchor point="BOTTOMRIGHT" x="-1" y="1" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.4111328125" top="0.001953125" bottom="0.107421875" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <Texture parentKey="EnergyGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.51">
+                    <Size x="483" y="244" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="-100" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.47265625" top="0.47265625" bottom="0.94921875" />
+                </Texture>
+                <MaskTexture parentKey="EnergyMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarEnergyMask" alpha="1" alphaMode="BLEND" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+                    <Size x="512" y="32" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.4111328125" top="0.001953125" bottom="0.107421875" />
+                    <MaskedTextures>
+                        <MaskedTexture childKey="EnergyGlow" />
+                    </MaskedTextures>
+                </MaskTexture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="4">
+                <Texture parentKey="Border" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBar">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-1" y="2" />
+                        <Anchor point="BOTTOMRIGHT" x="1" y="-2" />
+                    </Anchors>
+                    <TexCoords left="0.4111328125" right="0.8291015625" top="0" bottom="0.0625" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="5">
+                <Texture parentKey="Flakes01" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alphaMode="ADD" scale="0.5">
+                    <Size x="219" y="46" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="-25" />
+                    </Anchors>
+                    <TexCoords left="0.5419921875" right="0.755859375" top="0.353515625" bottom="0.443359375" />
+                </Texture>
+                <Texture parentKey="Flakes02" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alphaMode="ADD" scale="0.5">
+                    <Size x="256" y="74" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="-45" />
+                    </Anchors>
+                    <TexCoords left="0.5419921875" right="0.7919921875" top="0.205078125" bottom="0.349609375" />
+                </Texture>
+                <Texture parentKey="Flakes03" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alphaMode="ADD" scale="0.5">
+                    <Size x="205" y="35" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="-25" />
+                    </Anchors>
+                    <TexCoords left="0.7939453125" right="0.994140625" top="0.205078125" bottom="0.2734375" />
+                </Texture>
+                <Texture parentKey="BaseGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.5">
+                    <Size x="42" y="22" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="0" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.8681640625" right="0.9091796875" top="0.34375" bottom="0.38671875" />
+                </Texture>
+                <Texture parentKey="WispGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.5">
+                    <Size x="104" y="32" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="25" y="0" />
+                    </Anchors>
+                    <TexCoords left="0.7939453125" right="0.8955078125" top="0.27734375" bottom="0.33984375" />
+                </Texture>
+                <MaskTexture parentKey="WispMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarChannelMask" alpha="1" alphaMode="BLEND" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+                    <Size x="128" y="128" />
+                    <Anchors>
+                        <Anchor point="LEFT" x="-90" y="-2" />
+                    </Anchors>
+                    <MaskedTextures>
+                        <MaskedTexture childKey="WispGlow" />
+                    </MaskedTextures>
+                </MaskTexture>
+                <Texture parentKey="Sparkles01" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="BLEND" scale="0.5">
+                    <Size x="48" y="15" />
+                    <Anchors>
+                        <Anchor point="LEFT" />
+                    </Anchors>
+                    <TexCoords left="0.7939453125" right="0.8408203125" top="0.431640625" bottom="0.4609375" />
+                </Texture>
+                <Texture parentKey="Sparkles02" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="BLEND" scale="0.5">
+                    <Size x="65" y="17" />
+                    <Anchors>
+                        <Anchor point="LEFT" />
+                    </Anchors>
+                    <TexCoords left="0.7939453125" right="0.857421875" top="0.39453125" bottom="0.427734375" />
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="1">
+                <Texture parentKey="Flash" file="Interface\Addons\ReduxUI\Media\Textures\StatusBars\CastbarGlow" alphaMode="ADD">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-1" y="1" />
+                        <Anchor point="BOTTOMRIGHT" x="1" y="-1" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="2">
+                <Texture parentKey="Shine" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.5">
+                    <Size x="552" y="239" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="-110" />
+                    </Anchors>
+                    <TexCoords left="0.0009765625" right="0.5400390625" top="0.001953125" bottom="0.46875" />
+                </Texture>
+                <MaskTexture parentKey="CraftingMask" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarCraftMask" alpha="1" alphaMode="BLEND" vWrapMode="CLAMPTOBLACKADDITIVE" hWrapMode="CLAMPTOBLACKADDITIVE" scale="0.5">
+                    <Size x="512" y="32" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                    <MaskedTextures>
+                        <MaskedTexture childKey="Shine" />
+                    </MaskedTextures>
+                </MaskTexture>
             </Layer>
             <Layer level="OVERLAY" textureSubLevel="3">
                 <Texture parentKey="StandardGlow" alpha="1" alphaMode="ADD" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx">
@@ -100,26 +243,23 @@
                         <MaskedTexture childKey="StandardGlow" />
                         <MaskedTexture childKey="CraftGlow" />
                         <MaskedTexture childKey="ChannelShadow" />
+                        <MaskedTexture childKey="EnergyGlow" />
+                        <MaskedTexture childKey="Flakes01" />
+                        <MaskedTexture childKey="Flakes02" />
+                        <MaskedTexture childKey="Flakes03" />
+                        <MaskedTexture childKey="Shine" />
+                        <MaskedTexture childKey="BaseGlow" />
+                        <MaskedTexture childKey="WispGlow" />
+                        <MaskedTexture childKey="Sparkles01" />
+                        <MaskedTexture childKey="Sparkles02" />
                     </MaskedTextures>
                 </MaskTexture>
             </Layer>
         </Layers>
     </StatusBar>
-    <StatusBar name="AnimatedCastbarTemplate" drawLayer="BORDER" virtual="true" inherits="CastbarTemplate">
+
+    <StatusBar name="AnimatedModernCastbarTemplate" mixin="AnimatedModernCastbarMixin" drawLayer="BORDER" virtual="true" inherits="ModernCastbarTemplate">
         <Animations>
-            <AnimationGroup parentKey="FadeOutAnim" setToFinalAlpha="true">
-                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" startDelay="0.2" />
-                <Scripts>
-                    <OnFinished function="CastbarAnimation_OnFadeOutFinish" />
-                </Scripts>
-            </AnimationGroup>
-            <AnimationGroup parentKey="HoldFadeOutAnim" setToFinalAlpha="true">
-                <Alpha fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
-                <Alpha fromAlpha="1" toAlpha="0" duration="0.3" order="2" />
-                <Scripts>
-                    <OnFinished function="CastbarAnimation_OnFadeOutFinish" />
-                </Scripts>
-            </AnimationGroup>
             <AnimationGroup parentKey="FlashLoopingAnim" looping="NONE" setToFinalAlpha="true">
                 <Alpha childKey="Flash" fromAlpha="1" toAlpha="1" duration="1.0" order="1" />
                 <Alpha childKey="Flash" fromAlpha="1" toAlpha="0" duration="0.2" order="2" />
@@ -192,10 +332,10 @@
                 <Translation duration="0.0" order="4" offsetX="1" offsetY="2" startDelay="0.05" smoothing="NONE" />
                 <Translation duration="0.0" order="5" offsetX="-1" offsetY="-1" startDelay="0.05" smoothing="NONE" />
             </AnimationGroup>
-            <AnimationGroup parentKey="InterruptSparkAnim" looping="NONE" setToFinalAlpha="true">
+            <AnimationGroup parentKey="InterruptSparkAnim" mixin="CastbarInterruptAnimationMixin" looping="NONE" setToFinalAlpha="true">
                 <Alpha childKey="Spark" duration="0.1" order="1" fromAlpha="1" toAlpha="1" smoothing="NONE" />
                 <Scripts>
-                    <OnFinished function="CastbarAnimation_OnInterruptSparkAnimFinish" />
+                    <OnFinished method="OnFinished" />
                 </Scripts>
             </AnimationGroup>
         </Animations>
