@@ -262,6 +262,8 @@ function TT:SetDefaultAnchor(owner)
     else
         self:SetOwner(owner, anchor)
     end
+
+    self:SetClampedToScreen(true)
 end
 
 function TT:AddIcon(tooltip, icon)
