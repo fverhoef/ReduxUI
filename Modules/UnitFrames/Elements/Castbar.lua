@@ -60,6 +60,11 @@ end
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)
 
 function UF:Castbar_Hide()
+    if not self:GetParent():IsElementEnabled("Castbar") then
+        self:HideBase()
+        return
+    end
+
     if self.FlashLoopingAnim then
         self.FlashLoopingAnim:Stop()
     end
