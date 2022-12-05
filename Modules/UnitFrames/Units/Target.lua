@@ -38,6 +38,10 @@ function UF.TargetMixin:PostConfigure()
         self.Artwork:SetPoint("BOTTOMRIGHT", 37, -15.5)
         self.Artwork:Show()
 
+        if self.ArtworkChain then
+            self.ArtworkChain:Hide()
+        end
+
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "BACKGROUND", nil, 1)
         end
@@ -198,13 +202,22 @@ function UF.TargetMixin:PostConfigure()
         self.Shadow:Hide()
 
         if not self.Artwork then
-            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
+            self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 6)
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
         self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
         self.Artwork:SetTexCoord(0.375, 0.75, 0, 0.26171875)
         self.Artwork:Show()
+
+        if not self.ArtworkChain then
+            self.ArtworkChain = self.Overlay:CreateTexture("$parentChain", "OVERLAY", nil, 2)
+            self.ArtworkChain:SetSize(100, 82)
+            self.ArtworkChain:SetPoint("RIGHT", 31, 2)
+            self.ArtworkChain:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.ArtworkChain:SetTexCoord(0.375, 0.75, 0, 0.26171875)
+        end
+        self.ArtworkChain:Hide()
 
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "OVERLAY", nil, 1)
@@ -348,6 +361,9 @@ function UF.TargetMixin:PostConfigure()
         if self.Artwork then
             self.Artwork:Hide()
         end
+        if self.ArtworkChain then
+            self.ArtworkChain:Hide()
+        end
         if self.Flash then
             self.Flash:Hide()
         end
@@ -376,6 +392,30 @@ function UF.TargetMixin:UpdateArtwork()
         else
             self.Artwork:SetTexture(self.config.largeHealth and R.media.textures.unitFrames.vanilla.targetingFrame_LargeHealth or R.media.textures.unitFrames.vanilla.targetingFrame)
             self.Flash:SetTexture(R.media.textures.unitFrames.vanilla.targetingFrame_Flash)
+        end
+    elseif self.config.style == UF.Styles.Modern then
+        local classification = UnitClassification("target")
+        if classification == "rare" then
+            self.Artwork:SetTexCoord(0.375, 0.75, 0.26171875, 0.5234375)
+            self.ArtworkChain:SetSize(84, 82)
+            self.ArtworkChain:SetPoint("RIGHT", 14, 2)
+            self.ArtworkChain:SetTexCoord(0.84765625, 0.9296875, 0.34765625, 0.5078125)
+            self.ArtworkChain:Show()
+        elseif classification == "rareelite" then
+            self.Artwork:SetTexCoord(0.375, 0.75, 0.26171875, 0.5234375)
+            self.ArtworkChain:SetSize(100, 82)
+            self.ArtworkChain:SetPoint("RIGHT", 31, 2)
+            self.ArtworkChain:SetTexCoord(0.75, 0.84765625, 0.509765625, 0.669921875)
+            self.ArtworkChain:Show()
+        elseif classification == "elite" then
+            self.Artwork:SetTexCoord(0.375, 0.75, 0, 0.26171875)
+            self.ArtworkChain:SetSize(100, 82)
+            self.ArtworkChain:SetPoint("RIGHT", 31, 2)
+            self.ArtworkChain:SetTexCoord(0.75, 0.84765625, 0.34765625, 0.5078125)
+            self.ArtworkChain:Show()
+        else
+            self.Artwork:SetTexCoord(0.375, 0.75, 0, 0.26171875)
+            self.ArtworkChain:Hide()
         end
     elseif self.Artwork and self:IsCustomStyled() then
         self.Artwork:Hide()
