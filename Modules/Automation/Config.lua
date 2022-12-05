@@ -19,5 +19,5 @@ R:RegisterModuleConfig(AM, {
     cameraDistanceMaxZoomFactor = 4.0,
     announceInterrupt = true,
     announceInterruptChannel = "SAY", 
-    interfaceScale = { enabled = false, scale = 0.6666666666666666 }
+    interfaceScale = { enabled = false, scale = 0.7 }
 })
