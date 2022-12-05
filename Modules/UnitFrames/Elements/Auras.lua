@@ -40,25 +40,27 @@ function UF:ConfigureAuras()
     if not config.enabled then
         self:DisableElement("Auras")
         return
+    elseif not self.Auras and not self.Buffs and not self.Debuffs then
+        self:CreateAuras()
     end
 
     self:DisableElement("Auras")
 
-    if config.separateBuffsAndDebuffs or not self.Auras.config.enabled then
+    if config.separateBuffsAndDebuffs or not config.buffsAndDebuffs.enabled then
         self._Auras = self.Auras
         self.Auras = nil
     else
         self.Auras = self.Auras or self._Auras
     end
 
-    if not config.separateBuffsAndDebuffs or not self.Buffs.config.enabled then
+    if not config.separateBuffsAndDebuffs or not config.buffs.enabled then
         self._Buffs = self.Buffs
         self.Buffs = nil
     else
         self.Buffs = self.Buffs or self._Buffs
     end
 
-    if not config.separateBuffsAndDebuffs or not self.Debuffs.config.enabled then
+    if not config.separateBuffsAndDebuffs or not config.debuffs.enabled then
         self._Debuffs = self.Debuffs
         self.Debuffs = nil
     else

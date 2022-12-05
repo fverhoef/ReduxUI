@@ -380,6 +380,25 @@ R:RegisterModuleConfig(UF, {
         power = { size = { 120, 6 }, value = { enabled = false } },
         name = { size = { 95, 10 }, point = { "CENTER", "CENTER", 0, 4 }, fontSize = 11, justifyH = "CENTER", tag = "[name]" },
         portrait = { enabled = false },
+        auras = {
+            buffsAndDebuffs = { point = { "TOPLEFT", "BOTTOMLEFT", 2, 0 }, iconSize = 24, initialAnchor = "TOPLEFT", growthX = "RIGHT", growthY = "DOWN" },
+            buffs = {
+                point = { "TOPLEFT", "BOTTOMLEFT", 2, 0 },
+                iconSize = 24,
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                filter = { whitelist = { Personal = true, MyPet = true, PlayerBuffs = true, TurtleBuffs = true } }
+            },
+            debuffs = {
+                point = { "TOPLEFT", "BOTTOMLEFT", 2, -50 },
+                iconSize = 24,
+                initialAnchor = "TOPLEFT",
+                growthX = "RIGHT",
+                growthY = "DOWN",
+                filter = { whitelist = { Dispellable = true, CrowdControl = true } }
+            }
+        },
         castbar = { enabled = false },
         pvpIndicator = { enabled = false }
     }),

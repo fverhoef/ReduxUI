@@ -25,7 +25,7 @@ R:RegisterModuleConfig(BS, {
         hideKeybindText = false,
         hideMacroText = true
     },
-    auras = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 20 },
+    auras = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
     items = { backdrop = R.media.textures.buttons.backdrop, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "OUTLINE" },
     microMenu = { font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE" },
     totemBarButtons = {
