@@ -4,6 +4,7 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 UF.Styles = { Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern", Custom = "Custom" }
+UF.CastbarStyles = { Modern = "Blizzard - Modern", ModernAnimated = "Blizzard - Modern (Animated)", Custom = "Custom" }
 
 local DEFAULT_STYLE = UF.Styles.Modern
 
@@ -189,6 +190,7 @@ local DEFAULT_UNIT_CONFIG = {
     auraWatch = { enabled = false, iconSize = 12, countFontSize = 9 },
     castbar = {
         enabled = true,
+        style = UF.CastbarStyles.Modern,
         size = { 209, 11 },
         point = { "TOPLEFT", "BOTTOMLEFT", 0, -5 },
         attachedPoint = "BOTTOM",
@@ -197,7 +199,6 @@ local DEFAULT_UNIT_CONFIG = {
         showSpark = true,
         showShield = true,
         shieldSize = { 24, 24 },
-        playAnimations = false,
         font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         fontSize = 10,
         fontOutline = "NONE",
@@ -340,7 +341,7 @@ R:RegisterModuleConfig(UF, {
         largeHealth = true,
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
-        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 }, playAnimations = true },
+        castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = { 32, 32 }, style = UF.CastbarStyles.ModernAnimated },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {

@@ -41,6 +41,8 @@ function UF.PlayerMixin:PostInitialize()
 end
 
 function UF.PlayerMixin:PostConfigure()
+    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
+    
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()

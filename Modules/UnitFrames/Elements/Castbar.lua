@@ -8,17 +8,65 @@ function UF:CreateCastbar()
         return
     end
 
-    self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self, "AnimatedModernCastbarTemplate")
-    self.Castbar.config = self.config.castbar
-    self.Castbar.holdTime = 1.0
-    self.Castbar.Spark:SetPoint("CENTER", self.Castbar.Texture, "RIGHT")
-    self.Castbar.HideBase = self.Castbar.Hide
-    self.Castbar.Hide = UF.Castbar_Hide
+    if self.config.castbar.style == UF.CastbarStyles.Custom then
+        self.Castbar = self:GetOrCreateCustomCastbar()
+    elseif self.config.castbar.style == UF.CastbarStyles.Modern then
+        self.Castbar = self:GetOrCreateModernCastbar()
+    elseif self.config.castbar.style == UF.CastbarStyles.ModernAnimated then
+        self.Castbar = self:GetOrCreateAnimatedModernCastbar()
+    end
 
     return self.Castbar
 end
 
 oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
+
+local function CreateCastbar(self, template)
+    local castbar = CreateFrame("StatusBar", "$parentCastbar", self, template)
+    castbar.config = self.config.castbar
+    castbar.holdTime = 1.0
+    castbar.Spark:SetPoint("CENTER", castbar.Texture, "RIGHT")
+    castbar:Hide()
+    castbar.HideBase = castbar.Hide
+    castbar.Hide = UF.Castbar_Hide
+    return castbar
+end
+
+function UF:GetOrCreateCustomCastbar()
+    if not self.CustomCastbar then
+        self.CustomCastbar = CreateCastbar(self, "CastbarTemplate")
+        self.CustomCastbar.Holder = CreateFrame("Frame", "$parentHolder", self.CustomCastbar)
+        self.CustomCastbar.Holder:CreateBackdrop({ bgFile = R.media.textures.blank })
+        self.CustomCastbar.Holder:CreateBorder()
+        self.CustomCastbar.Holder:CreateShadow()
+        self.CustomCastbar.Holder:SetPoint("TOPLEFT", self.CustomCastbar, "TOPLEFT")
+        self.CustomCastbar.Holder:SetPoint("BOTTOMRIGHT", self.CustomCastbar, "BOTTOMRIGHT")
+    end
+
+    return self.CustomCastbar
+end
+
+oUF:RegisterMetaFunction("GetOrCreateCustomCastbar", UF.GetOrCreateCustomCastbar)
+
+function UF:GetOrCreateModernCastbar()
+    if not self.ModernCastbar then
+        self.ModernCastbar = CreateCastbar(self, "ModernCastbarTemplate")
+    end
+
+    return self.ModernCastbar
+end
+
+oUF:RegisterMetaFunction("GetOrCreateModernCastbar", UF.GetOrCreateModernCastbar)
+
+function UF:GetOrCreateAnimatedModernCastbar()
+    if not self.AnimatedModernCastbar then
+        self.AnimatedModernCastbar = CreateCastbar(self, "AnimatedModernCastbarTemplate")
+    end
+
+    return self.AnimatedModernCastbar
+end
+
+oUF:RegisterMetaFunction("GetOrCreateAnimatedModernCastbar", UF.GetOrCreateAnimatedModernCastbar)
 
 function UF:ConfigureCastbar()
     local config = self.config.castbar
@@ -27,6 +75,17 @@ function UF:ConfigureCastbar()
         return
     elseif not self.Castbar then
         self:CreateCastbar()
+    end
+
+    if config.style == UF.CastbarStyles.Custom and self.Castbar ~= self.CustomCastbar then
+        self:DisableElement("Castbar")
+        self.Castbar = self:GetOrCreateCustomCastbar()
+    elseif config.style == UF.CastbarStyles.Modern and self.Castbar ~= self.ModernCastbar then
+        self:DisableElement("Castbar")
+        self.Castbar = self:GetOrCreateModernCastbar()
+    elseif config.style == UF.CastbarStyles.ModernAnimated and self.Castbar ~= self.AnimatedModernCastbar then
+        self:DisableElement("Castbar")
+        self.Castbar = self:GetOrCreateAnimatedModernCastbar()
     end
 
     self:EnableElement("Castbar")

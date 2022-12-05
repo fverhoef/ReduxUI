@@ -1323,59 +1323,76 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
             end, function(value)
                 UF:UnitConfig(unit).castbar.enabled = value
             end),
-            lineBreakOptions = { type = "description", name = "", order = 2 },
-            showIcon = UF:CreateToggleOption(unit, L["Show Icon"], L["Whether to show an icon in the castbar."], 3, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showIcon
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showIcon = value
-            end),
-            showSpark = UF:CreateToggleOption(unit, L["Show Spark"], L["Whether to show the spark at the end of the castbar."], 5, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showSpark
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showSpark = value
-            end),
-            showSafeZone = UF:CreateToggleOption(unit, L["Show Latency"], L["Whether to show a latency indicator."], 6, nil, unit ~= "player", function()
-                return UF:UnitConfig(unit).castbar.showSafeZone
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showSafeZone = value
-            end),
-            showGlow = UF:CreateToggleOption(unit, L["Show Decorations"], L["Whether to show border glow and decorations for the castbar."], 7, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showGlow
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showGlow = value
-            end),
-            showGlow = UF:CreateToggleOption(unit, L["Play Animations"], L["Whether to play castbar FX animations."], 8, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showGlow
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showGlow = value
-            end),
-            lineBreakShield = { type = "description", name = "", order = 9 },
-            showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 10, nil, nil, function()
-                return UF:UnitConfig(unit).castbar.showShield
-            end, function(value)
-                UF:UnitConfig(unit).castbar.showShield = value
-            end),
-            shieldSize = UF:CreateRangeOption(unit, L["Shield Size"], L["The size of the shield icon."], 11, function()
-                return not UF:UnitConfig(unit).castbar.showShield
-            end, 10, 60, nil, 1, function()
-                return UF:UnitConfig(unit).castbar.shieldSize[1]
-            end, function(value)
-                UF:UnitConfig(unit).castbar.shieldSize[1] = value
-                UF:UnitConfig(unit).castbar.shieldSize[2] = value
-            end),
-            lineBreakDetached = { type = "description", name = "", order = 12 },
-            detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 13, nil, not canDetach, function()
-                return UF:UnitConfig(unit).castbar.detached
-            end, function(value)
-                UF:UnitConfig(unit).castbar.detached = value;
-                UF:UnitConfig(unit).castbar.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 150 } or { "TOPLEFT", "BOTTOMLEFT", 0, -5 }
-            end),
+            styling = {
+                type = "group",
+                name = L["Size"],
+                inline = true,
+                order = 2,
+                disabled = function()
+                    return not UF:UnitConfig(unit).castbar.enabled
+                end,
+                args = {
+                    style = UF:CreateSelectOption(unit, L["Style"], L["The style of castbar to use."], 2, function()
+                        return UF:UnitConfig(unit).castbar.style == nil
+                    end, UF.CastbarStyles, function()
+                        return UF:UnitConfig(unit).castbar.style
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.style = value
+                    end),
+                    lineBreakToggles = { type = "description", name = "", order = 3 },
+                    showIcon = UF:CreateToggleOption(unit, L["Show Icon"], L["Whether to show an icon in the castbar."], 4, nil, nil, function()
+                        return UF:UnitConfig(unit).castbar.showIcon
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.showIcon = value
+                    end),
+                    showSpark = UF:CreateToggleOption(unit, L["Show Spark"], L["Whether to show the spark at the end of the castbar."], 5, nil, nil, function()
+                        return UF:UnitConfig(unit).castbar.showSpark
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.showSpark = value
+                    end),
+                    showSafeZone = UF:CreateToggleOption(unit, L["Show Latency"], L["Whether to show a latency indicator."], 6, nil, unit ~= "player", function()
+                        return UF:UnitConfig(unit).castbar.showSafeZone
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.showSafeZone = value
+                    end),
+                    showGlow = UF:CreateToggleOption(unit, L["Show Decorations"], L["Whether to show border glow and decorations for the castbar."], 7, nil, function()
+                        return UF:UnitConfig(unit).castbar.style ~= UF.CastbarStyles.Custom
+                    end, function()
+                        return UF:UnitConfig(unit).castbar.showGlow
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.showGlow = value
+                    end),
+                    lineBreakShield = { type = "description", name = "", order = 9 },
+                    showShield = UF:CreateToggleOption(unit, L["Show Shield"], L["Whether to show a shield icon for uninterruptible spells."], 10, nil, nil, function()
+                        return UF:UnitConfig(unit).castbar.showShield
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.showShield = value
+                    end),
+                    shieldSize = UF:CreateRangeOption(unit, L["Shield Size"], L["The size of the shield icon."], 11, function()
+                        return not UF:UnitConfig(unit).castbar.showShield
+                    end, 10, 60, nil, 1, function()
+                        return UF:UnitConfig(unit).castbar.shieldSize[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.shieldSize[1] = value
+                        UF:UnitConfig(unit).castbar.shieldSize[2] = value
+                    end),
+                    lineBreakDetached = { type = "description", name = "", order = 12 },
+                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the castbar is detached from the unit frame."], 13, nil, not canDetach, function()
+                        return UF:UnitConfig(unit).castbar.detached
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.detached = value;
+                        UF:UnitConfig(unit).castbar.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 150 } or { "TOPLEFT", "BOTTOMLEFT", 0, -5 }
+                    end)
+                }
+            },
             size = {
                 type = "group",
                 name = L["Size"],
                 inline = true,
-                order = 14,
-                disabled = IsBlizzardStyled(unit),
+                order = 3,
+                disabled = function()
+                    return not UF:UnitConfig(unit).castbar.enabled or IsBlizzardStyled(unit)
+                end,
                 args = {
                     width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 1, not canDetach, 10, nil, 400, 1, function()
                         return UF:UnitConfig(unit).castbar.size[1]
@@ -1393,8 +1410,10 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 type = "group",
                 name = L["Position"],
                 inline = true,
-                order = 15,
-                disabled = IsBlizzardStyled(unit),
+                order = 4,
+                disabled = function()
+                    return not UF:UnitConfig(unit).castbar.enabled or IsBlizzardStyled(unit)
+                end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
                         return UF:UnitConfig(unit).castbar.point[1]
@@ -1429,7 +1448,10 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 type = "group",
                 name = L["Font"],
                 inline = true,
-                order = 16,
+                order = 5,
+                disabled = function()
+                    return not UF:UnitConfig(unit).castbar.enabled
+                end,
                 args = {
                     font = UF:CreateFontFamilyOption(unit, 1, function()
                         return UF:UnitConfig(unit).castbar.font
@@ -1910,7 +1932,8 @@ R:RegisterModuleOptions(UF, {
                 castbarCrafting = UF:CreateStatusBarTextureOption(L["Castbar (Crafting)"], L["Set the texture to use for cast bars when crafting."], "castbarCrafting", 10),
                 castbarEmpowering = UF:CreateStatusBarTextureOption(L["Castbar (Empowering)"], L["Set the texture to use for cast bars when empowering."], "castbarEmpowering", 11),
                 castbarInterrupted = UF:CreateStatusBarTextureOption(L["Castbar (Interrupted)"], L["Set the texture to use for cast bars when casts are interrupted."], "castbarInterrupted", 12),
-                castbarUninterruptable = UF:CreateStatusBarTextureOption(L["Castbar (Uninterruptable)"], L["Set the texture to use for cast bars when the cast is not interruptable."], "castbarUninterruptable", 13)
+                castbarUninterruptable = UF:CreateStatusBarTextureOption(L["Castbar (Uninterruptable)"], L["Set the texture to use for cast bars when the cast is not interruptable."],
+                                                                         "castbarUninterruptable", 13)
             }
         },
         statusBarColors = {
