@@ -81,6 +81,10 @@ end
 
 CastbarMixin = {}
 
+function CastbarMixin:OnLoad()
+    self:StopAnimations()
+end
+
 function CastbarMixin:OnShow()
     if self.Holder then
         self.Holder:Show()
@@ -91,6 +95,17 @@ function CastbarMixin:OnHide()
     if self.Holder then
         self.Holder:Hide()
     end
+end
+
+function CastbarMixin:StopAnimations()
+    self.FadeOutAnim:Stop()
+    self.HoldFadeOutAnim:Stop()
+end
+
+function CastbarMixin:PostCastStart(unit)
+    self:StopAnimations()
+    self:SetAlpha(1.0)
+    self.Spark:Show()
 end
 
 function CastbarMixin:PostCastFail(unit, spellID)
@@ -116,6 +131,8 @@ end
 ModernCastbarMixin = {}
 
 function ModernCastbarMixin:PostCastStart(unit)
+    CastbarMixin.PostCastStart(self, unit)
+
     local name, _, _, _, _, crafting = UnitCastingInfo(unit)
     if not name and not self.channeling and not self.empowering then
         crafting = select(6, UnitChannelInfo(unit))
@@ -156,9 +173,6 @@ function ModernCastbarMixin:PostCastStart(unit)
         self.Flash:SetTexture(nil)
     end
     self.Flash:Hide()
-
-    self:SetAlpha(1.0)
-    self.Spark:Show()
 end
 
 function ModernCastbarMixin:PostCastFail(unit, spellID)
@@ -170,11 +184,9 @@ end
 
 AnimatedModernCastbarMixin = {}
 
-function AnimatedModernCastbarMixin:PostCastStart(unit)
-    ModernCastbarMixin.PostCastStart(self, unit)
+function AnimatedModernCastbarMixin:StopAnimations()
+    CastbarMixin.StopAnimations(self)
 
-    self.FadeOutAnim:Stop()
-    self.HoldFadeOutAnim:Stop()
     self.FlashLoopingAnim:Stop()
     self.FlashAnim:Stop()
     self.ChannelFinish:Stop()

@@ -59,8 +59,9 @@
             </Layer>
         </Layers>
         <Scripts>
-            <OnHide method="OnHide" />
+            <OnLoad method="OnLoad" />
             <OnShow method="OnShow" />
+            <OnHide method="OnHide" />
         </Scripts>
     </StatusBar>
 
@@ -77,19 +78,17 @@
                 </Texture>
             </Layer>
             <Layer level="BACKGROUND" textureSubLevel="1">
-                <Texture parentKey="InterruptGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" alpha="0" alphaMode="ADD" scale="0.5">
-                    <Size x="444" y="50" />
+                <Texture parentKey="InterruptGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarInterruptGlow" alpha="0" alphaMode="ADD">
                     <Anchors>
-                        <Anchor point="CENTER" x="0" y="0" />
+                        <Anchor point="TOPLEFT" x="-6" y="6" />
+                        <Anchor point="BOTTOMRIGHT" x="6" y="-6" />
                     </Anchors>
-                    <TexCoords left="0.5419921875" right="0.9755859375" top="0.103515625" bottom="0.201171875" />
                 </Texture>
-                <Texture parentKey="ChargeGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarFx" hidden="true" scale="0.5">
-                    <Size x="444" y="50" />
+                <Texture parentKey="ChargeGlow" file="Interface\Addons\ReduxUI\Media\Textures\UnitFrames\Modern\CastingBarChargeGlow" hidden="true">
                     <Anchors>
-                        <Anchor point="CENTER" x="0" y="0" />
+                        <Anchor point="TOPLEFT" x="-6" y="6" />
+                        <Anchor point="BOTTOMRIGHT" x="6" y="-6" />
                     </Anchors>
-                    <TexCoords left="0.5419921875" right="0.9755859375" top="0.001953125" bottom="0.099609375" />
                 </Texture>
             </Layer>
             <Layer level="BACKGROUND" textureSubLevel="2">
