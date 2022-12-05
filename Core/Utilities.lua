@@ -440,3 +440,15 @@ function R:GetUnitMountInfo(unit)
         end
     end
 end
+
+function R:IsTalentActivationSpell(spellID)
+    if spellID and TALENT_ACTIVATION_SPELLS then
+        for _, id in ipairs(TALENT_ACTIVATION_SPELLS) do
+            if id == spellID then
+                return true
+            end
+        end
+    end
+
+    return false
+end

@@ -138,14 +138,11 @@ ModernCastbarMixin = {}
 function ModernCastbarMixin:PostCastStart(unit)
     CastbarMixin.PostCastStart(self, unit)
 
-    local name, _, _, _, _, crafting = UnitCastingInfo(unit)
-    if not name and not self.channeling and not self.empowering then
-        crafting = select(6, UnitChannelInfo(unit))
-    end
-    self.crafting = crafting
+    self.crafting = select(6, UnitCastingInfo(unit))
+    self.applyingTalents = R:IsTalentActivationSpell(self.spellID)
 
     local texture, color = UF.config.statusbars.castbar, UF.config.colors.castbar
-    if self.crafting then
+    if self.crafting or self.applyingTalents then
         texture, color = UF.config.statusbars.castbarCrafting, UF.config.colors.castbarCrafting
     elseif self.notInterruptible then
         texture, color = UF.config.statusbars.castbarUninterruptable, UF.config.colors.castbarUninterruptable
@@ -170,7 +167,7 @@ function ModernCastbarMixin:PostCastStart(unit)
 
     if self.config.showGlow and isStandard then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarGlow)
-    elseif self.config.showGlow and self.crafting then
+    elseif self.config.showGlow and (self.crafting or self.applyingTalents) then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarCraftingGlow)
     elseif self.config.showGlow and self.channeling then
         self.Flash:SetTexture(R.media.textures.statusBars.castbarChannelingGlow)
@@ -205,7 +202,7 @@ end
 function AnimatedModernCastbarMixin:PostCastStop(unit)
     if self.channeling and self.ChannelFinish then
         self.ChannelFinish:Play()
-    elseif self.crafting and self.CraftingFinish then
+    elseif (self.crafting or self.applyingTalents) and self.CraftingFinish then
         self.CraftingFinish:Play()
     elseif not self.empowering and not self.notInterruptible and self.StandardFinish then
         self.StandardFinish:Play()
