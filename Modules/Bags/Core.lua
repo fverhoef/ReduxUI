@@ -30,6 +30,8 @@ function B:Enable()
     B:RegisterEvent("QUEST_REMOVED")
     if R.isRetail then
         B:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+    else
+        B:RegisterEvent("INVENTORY_SEARCH_UPDATE")
     end
 end
 
@@ -130,6 +132,15 @@ end
 function B:PLAYERREAGENTBANKSLOTS_CHANGED(event)
     if B.Bank:IsShown() then
         B:FindBag(REAGENTBANK_CONTAINER):Update()
+    end
+end
+
+function B:INVENTORY_SEARCH_UPDATE()
+    if B.Inventory:IsShown() then
+        B.Inventory:Update()
+    end
+    if B.Bank:IsShown() then
+        B.Bank:Update()
     end
 end
 
