@@ -24,7 +24,6 @@ oUF:RegisterMetaFunction("CreateCastbar", UF.CreateCastbar)
 local function CreateCastbar(self, template)
     local castbar = CreateFrame("StatusBar", "$parentCastbar", self, template)
     castbar.config = self.config.castbar
-    castbar.holdTime = 1.0
     castbar.Spark:SetPoint("CENTER", castbar.Texture, "RIGHT")
     castbar:Hide()
     castbar.HideBase = castbar.Hide
@@ -120,8 +119,14 @@ end
 oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)
 
 function UF:Castbar_Hide()
-    if not self:GetParent():IsElementEnabled("Castbar") then
+    if not self:IsVisible() then
+        return
+    elseif not self:GetParent():IsElementEnabled("Castbar") then
         self:HideBase()
+        return
+    elseif self:IsCasting() then
+        self:SetAlpha(1)
+        self:Show()
         return
     end
 
@@ -135,7 +140,7 @@ function UF:Castbar_Hide()
         self.FlashAnim:Play()
     end
 
-    if self.FadeOutAnim and self:GetAlpha() > 0 and self:IsVisible() then
+    if self.FadeOutAnim and self:GetAlpha() > 0 then
         if self.reverseChanneling and self.CurrSpellStage < self.NumStages then
             self.HoldFadeOutAnim:Play()
         else
@@ -173,6 +178,12 @@ function CastbarMixin:PostCastStart(unit)
     self.Spark:Show()
 end
 
+function CastbarMixin:PostCastUpdate(unit)
+    self:StopAnimations()
+    self:SetAlpha(1.0)
+    self.Spark:Show()
+end
+
 function CastbarMixin:PostCastFail(unit, spellID)
     self.Texture:SetTexture(UF.config.statusbars.castbarInterrupted)
     self.Texture:SetVertexColor(unpack(UF.config.colors.castbarInterrupted))
@@ -187,10 +198,28 @@ function CastbarMixin:PostCastInterruptible(unit, spellID)
     end
 end
 
+function CastbarMixin:IsCasting()
+    return self.casting or self.channeling or self.empowering
+end
+
 CastbarFadeOutAnimationMixin = {}
 
 function CastbarFadeOutAnimationMixin:OnFinished()
-    self:GetParent():HideBase()
+    local bar = self:GetParent()
+    if not bar:IsCasting() then
+        bar:HideBase()
+    else
+        bar:Show()
+        bar:SetAlpha(1)
+    end
+end
+
+function CastbarFadeOutAnimationMixin:OnStop()
+    local bar = self:GetParent()
+    if bar:IsCasting() then
+        bar:Show()
+        bar:SetAlpha(1)
+    end
 end
 
 ModernCastbarMixin = {}
