@@ -144,13 +144,14 @@ function UF:CreateTagOption(unit, order, get, set)
     end)
 end
 
-function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate)
+function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate, disabled)
     local options = {
         type = "group",
         childGroups = "tab",
         name = name,
         order = order,
         hidden = hidden,
+        disabled = disabled,
         args = {
             header = { type = "header", name = R.title .. " > Unit Frames: " .. name, order = 0 },
             enabled = R:CreateToggleOption(L["Enabled"], nil, 1, "double", isNameplate, function()
@@ -2033,10 +2034,14 @@ R:RegisterModuleOptions(UF, {
         },
         player = UF:CreateUnitOptions("player", 11, L["Player"]),
         target = UF:CreateUnitOptions("target", 12, L["Target"]),
-        targettarget = UF:CreateUnitOptions("targettarget", 13, L["Target's Target"]),
+        targettarget = UF:CreateUnitOptions("targettarget", 13, L["Target's Target"], nil, nil, function()
+            return not UF.config.target.enabled
+        end),
         pet = UF:CreateUnitOptions("pet", 14, L["Pet"]),
         focus = UF:CreateUnitOptions("focus", 15, L["Focus"]),
-        focustarget = UF:CreateUnitOptions("focustarget", 16, L["Focus's Target"]),
+        focustarget = UF:CreateUnitOptions("focustarget", 16, L["Focus's Target"], nil, nil, function()
+            return not UF.config.focus.enabled
+        end),
         party = UF:CreateUnitOptions("party", 17, L["Party"]),
         raid = UF:CreateUnitOptions("raid", 18, L["Raid"]),
         tank = UF:CreateUnitOptions("tank", 19, L["Tank"]),
@@ -2068,6 +2073,9 @@ R:RegisterModuleOptions(UF, {
                     name = L["Scale"],
                     order = 3,
                     inline = true,
+                    disabled = function()
+                        return not UF.config.nameplates.enabled
+                    end,
                     args = {
                         nameplateMinScale = UF:CreateNamePlateCVarRangeOption("nameplateMinScale", L["Minimum Scale"], L["The minimum scale nameplates should have."], 1, 0.5, 2.0, 0.01),
                         nameplateMinScaleDistance = UF:CreateNamePlateCVarRangeOption("nameplateMinScaleDistance", L["Minimum Scale Distance"],
@@ -2090,6 +2098,9 @@ R:RegisterModuleOptions(UF, {
                     name = L["Transparency"],
                     order = 4,
                     inline = true,
+                    disabled = function()
+                        return not UF.config.nameplates.enabled
+                    end,
                     args = {
                         nameplateMinAlpha = UF:CreateNamePlateCVarRangeOption("nameplateMinAlpha", L["Minimum Alpha"], L["The minimum alpha (the lower, the more transparent) nameplates should have."],
                                                                               1, 0.1, 1.0, 0.01),
@@ -2107,10 +2118,18 @@ R:RegisterModuleOptions(UF, {
                                                                                    L["The alpha (the higher, the more transparent) of the nameplate of your current target."], 7, 0.1, 1.0, 0.01)
                     }
                 },
-                friendlyPlayer = UF:CreateUnitOptions("friendlyPlayer", 5, L["Friendly Player Nameplates"], nil, true),
-                enemyPlayer = UF:CreateUnitOptions("enemyPlayer", 6, L["Enemy Player Nameplates"], nil, true),
-                friendlyNpc = UF:CreateUnitOptions("friendlyNpc", 7, L["Friendly NPC Nameplates"], nil, true),
-                enemyNpc = UF:CreateUnitOptions("enemyNpc", 8, L["Enemy NPC Nameplates"], nil, true)
+                friendlyPlayer = UF:CreateUnitOptions("friendlyPlayer", 5, L["Friendly Player Nameplates"], nil, true, function()
+                    return not UF.config.nameplates.enabled
+                end),
+                enemyPlayer = UF:CreateUnitOptions("enemyPlayer", 6, L["Enemy Player Nameplates"], nil, true, function()
+                    return not UF.config.nameplates.enabled
+                end),
+                friendlyNpc = UF:CreateUnitOptions("friendlyNpc", 7, L["Friendly NPC Nameplates"], nil, true, function()
+                    return not UF.config.nameplates.enabled
+                end),
+                enemyNpc = UF:CreateUnitOptions("enemyNpc", 8, L["Enemy NPC Nameplates"], nil, true, function()
+                    return not UF.config.nameplates.enabled
+                end)
             }
         }
     }
