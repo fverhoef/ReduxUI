@@ -181,6 +181,9 @@ function CastbarMixin:PostCastStart(unit)
     self.Spark:Show()
 end
 
+function CastbarMixin:PostCastStop(unit)
+end
+
 function CastbarMixin:PostCastUpdate(unit)
     self:StopAnimations()
     self:SetAlpha(1.0)
@@ -208,7 +211,7 @@ end
 CastbarFadeOutAnimationMixin = {}
 
 function CastbarFadeOutAnimationMixin:OnFinished()
-    local bar = self.__owner
+    local bar = self:GetParent()
     if not bar:IsCasting() then
         bar:HideBase()
     else
@@ -218,7 +221,7 @@ function CastbarFadeOutAnimationMixin:OnFinished()
 end
 
 function CastbarFadeOutAnimationMixin:OnStop()
-    local bar = self.__owner
+    local bar = self:GetParent()
     if bar:IsCasting() then
         bar:Show()
         bar:SetAlpha(1)
@@ -228,6 +231,8 @@ end
 ModernCastbarMixin = {}
 
 function ModernCastbarMixin:StopAnimations()
+    CastbarMixin.StopAnimations(self)
+
     self.Flakes01:Hide()
     self.Flakes02:Hide()
     self.Flakes03:Hide()
@@ -275,6 +280,10 @@ function ModernCastbarMixin:PostCastStart(unit)
     self.Flash:Hide()
 end
 
+function ModernCastbarMixin:PostCastStop(unit)
+    CastbarMixin.PostCastStop(self, unit)
+end
+
 function ModernCastbarMixin:PostCastFail(unit, spellID)
     CastbarMixin.PostCastFail(self, unit, spellID)
 
@@ -298,6 +307,8 @@ function AnimatedModernCastbarMixin:StopAnimations()
 end
 
 function AnimatedModernCastbarMixin:PostCastStop(unit)
+    ModernCastbarMixin.PostCastStop(self, unit)
+
     if self.channeling and self.ChannelFinish then
         self.ChannelFinish:Play()
     elseif (self.crafting or self.applyingTalents) and self.CraftingFinish then
@@ -327,5 +338,5 @@ end
 CastbarInterruptAnimationMixin = {}
 
 function CastbarInterruptAnimationMixin:OnFinished()
-    self.__owner.Spark:Hide()
+    self:GetParent().Spark:Hide()
 end
