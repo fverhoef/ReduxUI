@@ -394,9 +394,6 @@ function TT:FormatLevelText(tooltip, unit)
         return
     end
 
-    local level, realLevel = (R.isRetail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
-    local difficultyColor = GetCreatureDifficultyColor(level)
-
     if UnitIsPlayer(unit) then
         local localeClass, class = UnitClass(unit)
         local classColor = RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS["PRIEST"]
@@ -408,13 +405,9 @@ function TT:FormatLevelText(tooltip, unit)
         local gender = (sex == 2 and MALE) or (sex == 3 and FEMALE)
         gender = (gender and gender .. " ") or ""
 
-        if level < realLevel then
-            levelLine:SetFormattedText("%s%s|r |cffFFFFFF(%s)|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", realLevel, gender, race, R:Hex(classColor), localeClass or "")
-        else
-            levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", R:Hex(difficultyColor), level > 0 and level or "??", gender, race, R:Hex(classColor), localeClass or "")
-        end
+        levelLine:SetFormattedText("%s%s|r %s%s%s%s|r", oUF.Tags.Methods["difficultycolor"](unit), oUF.Tags.Methods["smartlevel"](unit), gender, race, R:Hex(classColor), localeClass or "")
     else
-        levelLine:SetFormattedText("%s%s|r %s", R:Hex(difficultyColor), level > 0 and level or "??", UnitCreatureType(unit) or UNKNOWN)
+        levelLine:SetFormattedText("%s%s|r %s", oUF.Tags.Methods["difficultycolor"](unit), oUF.Tags.Methods["smartlevel"](unit), oUF.Tags.Methods["creature"](unit) or UNKNOWN)
     end
 end
 
