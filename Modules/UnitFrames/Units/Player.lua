@@ -286,13 +286,13 @@ function UF.PlayerMixin:PostConfigure()
         self.Flash:Hide()
 
         self.Name:Show()
-        self.Name:SetFont(self.config.name.font, 13, "OUTLINE")
+        self.Name:SetFont(self.config.name.font, 12, "OUTLINE")
         self.Name:SetJustifyH("LEFT")
         self.Name:SetShadowOffset(0, 0)
 
         self.Name:ClearAllPoints()
         self.Name:SetPoint("TOPLEFT", 63, -11)
-        self.Name:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -23, -22)
+        self.Name:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -23, -24)
         self:Tag(self.Name, "[name:sub(20)]")
 
         if self.NameBackground then
@@ -300,13 +300,13 @@ function UF.PlayerMixin:PostConfigure()
         end
 
         self.Level:Show()
-        self.Level:SetFont(self.config.level.font, 13, "OUTLINE")
-        self.Level:SetJustifyH("CENTER")
+        self.Level:SetFont(self.config.level.font, 12, "OUTLINE")
+        self.Level:SetJustifyH("RIGHT")
         self.Level:SetShadowOffset(0, 0)
 
         self.Level:ClearAllPoints()
         self.Level:SetPoint("TOPLEFT", 165, -11)
-        self.Level:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -6, -22)
+        self.Level:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -4, -24)
         self:Tag(self.Level, "[difficultycolor][level]|r")
 
         self.PortraitHolder.Separator:Hide()
