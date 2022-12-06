@@ -89,7 +89,10 @@ function UF:ConfigureCastbar()
 
     self:EnableElement("Castbar")
 
-    if not config.detached then
+    if config.detached then
+        self.Castbar:SetParent(UIParent)
+    else
+        self.Castbar:SetParent(self)
         config.point[5] = nil
     end
     self.Castbar:SetSize(config.detached and config.size[1] or self:GetWidth(), config.size[2])
@@ -121,7 +124,7 @@ oUF:RegisterMetaFunction("ConfigureCastbar", UF.ConfigureCastbar)
 function UF:Castbar_Hide()
     if not self:IsVisible() then
         return
-    elseif not self:GetParent():IsElementEnabled("Castbar") then
+    elseif not self.__owner:IsElementEnabled("Castbar") then
         self:HideBase()
         return
     elseif self:IsCasting() then
@@ -205,7 +208,7 @@ end
 CastbarFadeOutAnimationMixin = {}
 
 function CastbarFadeOutAnimationMixin:OnFinished()
-    local bar = self:GetParent()
+    local bar = self.__owner
     if not bar:IsCasting() then
         bar:HideBase()
     else
@@ -215,7 +218,7 @@ function CastbarFadeOutAnimationMixin:OnFinished()
 end
 
 function CastbarFadeOutAnimationMixin:OnStop()
-    local bar = self:GetParent()
+    local bar = self.__owner
     if bar:IsCasting() then
         bar:Show()
         bar:SetAlpha(1)
@@ -324,5 +327,5 @@ end
 CastbarInterruptAnimationMixin = {}
 
 function CastbarInterruptAnimationMixin:OnFinished()
-    self:GetParent().Spark:Hide()
+    self.__owner.Spark:Hide()
 end
