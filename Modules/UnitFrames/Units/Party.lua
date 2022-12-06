@@ -5,6 +5,10 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnPartyHeader()
     if UF.config.party.enabled then
+        if _G.CompactPartyFrame then
+            _G.CompactPartyFrame:UnregisterAllEvents()
+        end
+
         if EditModeManagerFrame then
             EditModeManagerFrame.AccountSettings.RefreshPartyFrames = nop
             EditModeManagerFrame.AccountSettings.ResetPartyFrames = nop

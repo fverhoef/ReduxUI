@@ -7,13 +7,17 @@ function UF:SpawnRaidHeader()
     if UF.config.raid.enabled then
         _G.UIParent:UnregisterEvent("GROUP_ROSTER_UPDATE")
 
-		if _G.CompactRaidFrameContainer then
-			_G.CompactRaidFrameContainer:UnregisterAllEvents()
-		end
+        if _G.CompactRaidFrameContainer then
+            _G.CompactRaidFrameContainer:UnregisterAllEvents()
+        end
 
-        --_G.CompactRaidFrameManager:UnregisterAllEvents()
-        CompactRaidFrameManager_SetSetting("IsShown", "0")
-        _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
+        if CompactRaidFrameManager_SetSetting then
+            CompactRaidFrameManager_SetSetting("IsShown", "0")
+        end
+        if _G.CompactRaidFrameManager then
+            _G.CompactRaidFrameManager:UnregisterAllEvents()
+            _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
+        end
 
         if EditModeManagerFrame then
             EditModeManagerFrame.AccountSettings.RefreshRaidFrames = nop
