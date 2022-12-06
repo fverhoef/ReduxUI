@@ -5,6 +5,8 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnPartyHeader()
     if UF.config.party.enabled then
+        _G.UIParent:UnregisterEvent("GROUP_ROSTER_UPDATE")
+
         if _G.CompactPartyFrame then
             _G.CompactPartyFrame:UnregisterAllEvents()
         end
