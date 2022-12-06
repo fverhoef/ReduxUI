@@ -29,11 +29,11 @@ end
 function AB.SettingsMicroButtonMixin:OnEnter()
     GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
     GameTooltip:ClearLines()
-    GameTooltip:AddLine(R.title)
+    GameTooltip:AddDoubleLine(R.title, L["v"] .. R.version)
     GameTooltip:AddLine(L["Click: show options dialog."], 1, 1, 1)
     GameTooltip:AddLine(L["Shift-click: reload UI."], 1, 1, 1)
     GameTooltip:AddLine(L["Alt-click: lock/unlock frames."], 1, 1, 1)
-    
+
     if IsShiftKeyDown() then
         self:AddSystemInfo(GameTooltip)
     else
@@ -51,8 +51,8 @@ end
 function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
     R.SystemInfo:Update(true)
 
-    local ipTypes = {"IPv4", "IPv6"}
-    local statusColors = {"|cff0CD809", "|cffE8DA0F", "|cffFF9000", "|cffD80909"}
+    local ipTypes = { "IPv4", "IPv6" }
+    local statusColors = { "|cff0CD809", "|cffE8DA0F", "|cffFF9000", "|cffD80909" }
     local fpsString = "%s%d|r"
     local bandwidthString = "%.2f Mbps"
     local percentageString = "%.2f%%"
@@ -75,8 +75,7 @@ function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
         latencyColor = AB.config.systemInfo.lowLatencyColor
     end
 
-    tooltip:AddDoubleLine(L["Latency:"], R.SystemInfo.homePing, labelColor[1], labelColor[2], labelColor[3], latencyColor[1],
-                          latencyColor[2], latencyColor[3])
+    tooltip:AddDoubleLine(L["Latency:"], R.SystemInfo.homePing, labelColor[1], labelColor[2], labelColor[3], latencyColor[1], latencyColor[2], latencyColor[3])
 
     local fpsColor
     if R.SystemInfo.framerate > AB.config.systemInfo.mediumFpsTreshold then
@@ -87,30 +86,23 @@ function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
         fpsColor = AB.config.systemInfo.lowFpsColor
     end
 
-    tooltip:AddDoubleLine(L["Framerate:"], R.SystemInfo.framerate, labelColor[1], labelColor[2], labelColor[3], fpsColor[1], fpsColor[2],
-                          fpsColor[3])
+    tooltip:AddDoubleLine(L["Framerate:"], R.SystemInfo.framerate, labelColor[1], labelColor[2], labelColor[3], fpsColor[1], fpsColor[2], fpsColor[3])
 
     if R.SystemInfo.useIPv6 then
-        tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[R.SystemInfo.ipTypeHome or 0] or UNKNOWN, labelColor[1], labelColor[2],
-                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
-        tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[R.SystemInfo.ipTypeWorld or 0] or UNKNOWN, labelColor[1], labelColor[2],
-                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[R.SystemInfo.ipTypeHome or 0] or UNKNOWN, labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[R.SystemInfo.ipTypeWorld or 0] or UNKNOWN, labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     end
 
     if R.SystemInfo.bandwidth ~= 0 then
-        tooltip:AddDoubleLine(L["Bandwidth"], format(bandwidthString, R.SystemInfo.bandwidth), labelColor[1], labelColor[2],
-                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
-        tooltip:AddDoubleLine(L["Download"], format(percentageString, GetDownloadedPercentage() * 100), labelColor[1], labelColor[2],
-                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine(L["Bandwidth"], format(bandwidthString, R.SystemInfo.bandwidth), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine(L["Download"], format(percentageString, GetDownloadedPercentage() * 100), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
         tooltip:AddLine(" ")
     end
 
-    tooltip:AddDoubleLine(L["Total Memory:"], R.SystemInfo:FormatMemory(R.SystemInfo.totalMemory), labelColor[1], labelColor[2],
-                          labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+    tooltip:AddDoubleLine(L["Total Memory:"], R.SystemInfo:FormatMemory(R.SystemInfo.totalMemory), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     local totalCPU
     if R.SystemInfo.cpuProfiling then
-        tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, R.SystemInfo.totalCPU), labelColor[1], labelColor[2],
-                              labelColor[3], valueColor[1], valueColor[2], valueColor[3])
+        tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, R.SystemInfo.totalCPU), labelColor[1], labelColor[2], labelColor[3], valueColor[1], valueColor[2], valueColor[3])
     end
 
     tooltip:AddLine(" ")
@@ -135,11 +127,9 @@ function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
                     end
                 end
                 if mem then
-                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, addonCpuUsage, R.SystemInfo:FormatMemory(mem)),
-                                          labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
+                    tooltip:AddDoubleLine(cpu[2], format(cpuAndMemoryString, addonCpuUsage, R.SystemInfo:FormatMemory(mem)), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
                 else
-                    tooltip:AddDoubleLine(cpu[2], format(cpuString, addonCpuUsage), labelColor[1], labelColor[2], labelColor[3],
-                                          red, green + .5, 0)
+                    tooltip:AddDoubleLine(cpu[2], format(cpuString, addonCpuUsage), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
                 end
             end
         end
@@ -154,8 +144,7 @@ function AB.SettingsMicroButtonMixin:AddSystemInfo(tooltip)
             if ele and IsAddOnLoaded(ele[1]) then
                 local red = ele[3] / R.SystemInfo.totalMemory
                 local green = 1 - red
-                tooltip:AddDoubleLine(ele[2], R.SystemInfo:FormatMemory(ele[3]), labelColor[1], labelColor[2], labelColor[3], red,
-                                      green + .5, 0)
+                tooltip:AddDoubleLine(ele[2], R.SystemInfo:FormatMemory(ele[3]), labelColor[1], labelColor[2], labelColor[3], red, green + .5, 0)
             end
         end
     end

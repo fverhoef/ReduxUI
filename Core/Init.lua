@@ -8,12 +8,15 @@ R.name = R.name or addonName
 R.title = "|cff00c3ffRedux|r |cffd78219UI|r"
 R.shortcut = "rui"
 R.debug = true
+R.version = GetAddOnMetadata(addonName, "Version")
 
 R.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 R.Libs = {}
 function R:AddLib(name, major, minor)
-    if not name then return end
+    if not name then
+        return
+    end
 
     R.Libs[name] = _G.LibStub(major, minor)
 end
@@ -37,7 +40,9 @@ R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
 
 R.Modules = {}
 function R:AddModule(name, ...)
-    if not name then return end
+    if not name then
+        return
+    end
 
     local module = R.Modules[name]
     if not module then
@@ -58,11 +63,36 @@ function R:AddEarlyLoadModule(name, ...)
 end
 
 R.ChatCommands = {
-    ["unlock"] = {func = function() R:ShowMovers() end, description = "unlock all frames"},
-    ["lock"] = {func = function() R:HideMovers() end, description = "lock all frames"},
-    ["reset"] = {func = function() R:ResetMovers() end, description = "reset all frames"},
-    ["options"] = {func = function() R:ShowOptionsDialog() end, description = "open the config dialog"},
-    ["bind"] = {func = function() R.Libs.KeyBound:Toggle() end, description = "toggle keybind mode"}
+    ["unlock"] = {
+        func = function()
+            R:ShowMovers()
+        end,
+        description = "unlock all frames"
+    },
+    ["lock"] = {
+        func = function()
+            R:HideMovers()
+        end,
+        description = "lock all frames"
+    },
+    ["reset"] = {
+        func = function()
+            R:ResetMovers()
+        end,
+        description = "reset all frames"
+    },
+    ["options"] = {
+        func = function()
+            R:ShowOptionsDialog()
+        end,
+        description = "open the config dialog"
+    },
+    ["bind"] = {
+        func = function()
+            R.Libs.KeyBound:Toggle()
+        end,
+        description = "toggle keybind mode"
+    }
 }
 
 function R:OnInitialize()
@@ -76,7 +106,9 @@ function R:OnInitialize()
             command.func(funcArgs and strsplit(" ", funcArgs))
         else
             R:Print("Command list:")
-            for key, value in pairs(R.ChatCommands) do R:Print("/" .. R.shortcut .. " " .. key .. "|r: " .. value.description) end
+            for key, value in pairs(R.ChatCommands) do
+                R:Print("/" .. R.shortcut .. " " .. key .. "|r: " .. value.description)
+            end
         end
     end)
 
@@ -89,12 +121,14 @@ function R:OnInitialize()
     end
 
     R:RegisterEvent("PLAYER_REGEN_DISABLED", R.CloseOptionsDialog)
-    
+
     for name, module in pairs(R.Modules) do
         module.config = R.config.db.profile.modules[name]
         module.charConfig = R.config.db.char.modules[name]
         module.realmConfig = R.config.db.realm.modules[name]
-        if module.CreateOptions then module:CreateOptions() end
+        if module.CreateOptions then
+            module:CreateOptions()
+        end
     end
 
     for name, module in pairs(R.Modules) do
