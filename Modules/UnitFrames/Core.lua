@@ -3,6 +3,9 @@ local R = _G.ReduxUI
 local UF = R:AddModule("UnitFrames", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local oUF = ns.oUF or oUF
 
+local FRAMES = { player = "SpawnPlayer", target = "SpawnTarget", targettarget = "SpawnTargetTarget", pet = "SpawnPet", focus = "SpawnFocus", focustarget = "SpawnFocusTarget" }
+local HEADERS = { party = "SpawnPartyHeader", raid = "SpawnRaidHeader", assist = "SpawnAssistHeader", tank = "SpawnTankHeader", arena = "SpawnArenaHeader", boss = "SpawnBossHeader" }
+
 UF.frames = {}
 UF.headers = {}
 UF.nameplates = {}
@@ -18,19 +21,12 @@ function UF:Enable()
     UF:UpdateColors()
     UF:StyleAuraFrames()
 
-    UF.frames.player = UF:SpawnPlayer()
-    UF.frames.target = UF:SpawnTarget()
-    UF.frames.targettarget = UF:SpawnTargetTarget()
-    UF.frames.pet = UF:SpawnPet()
-    UF.frames.focus = UF:SpawnFocus()
-    UF.frames.focustarget = UF:SpawnFocusTarget()
-
-    UF.headers.party = UF:SpawnPartyHeader()
-    UF.headers.raid = UF:SpawnRaidHeader()
-    UF.headers.assist = UF:SpawnAssistHeader()
-    UF.headers.tank = UF:SpawnTankHeader()
-    UF.headers.arena = UF:SpawnArenaHeader()
-    UF.headers.boss = UF:SpawnBossHeader()
+    for unit, func in pairs(FRAMES) do
+        UF.frames[unit] = UF[func]()
+    end
+    for unit, func in pairs(HEADERS) do
+        UF.headers[unit] = UF[func]()
+    end
 
     UF:SpawnNamePlates()
 
@@ -44,6 +40,17 @@ oUF:RegisterInitCallback(function(object)
 end)
 
 function UF:UpdateAll()
+    for unit, func in pairs(FRAMES) do
+        if not UF.frames[unit] then
+            UF.frames[unit] = UF[func]()
+        end
+    end
+    for unit, func in pairs(HEADERS) do
+        if not UF.headers[unit] then
+            UF.headers[unit] = UF[func]()
+        end
+    end
+
     for _, frame in pairs(UF.frames) do
         frame:Configure()
     end
@@ -64,6 +71,12 @@ function UF:UpdateNamePlates()
 end
 
 function UF:UpdateUnit(unit)
+    if FRAMES[unit] and not UF.frames[unit] then
+        UF.frames[unit] = UF[FRAMES[unit]]()
+    elseif HEADERS[unit] and not UF.headers[unit] then
+        UF.headers[unit] = UF[HEADERS[unit]]()
+    end
+
     if UF.frames[unit] then
         UF.frames[unit]:Configure()
     elseif UF.headers[unit] then
