@@ -4,6 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnFocusTarget()
+    if not UF.config.focus.enabled then
+        return
+    end
     return UF:SpawnFrame("FocusTarget", "focustarget", UF.FocusTargetMixin, UF.config.focustarget, UF.defaults.focustarget)
 end
 

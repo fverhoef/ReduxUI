@@ -4,6 +4,9 @@ local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
 function UF:SpawnTargetTarget()
+    if not UF.config.target.enabled then
+        return
+    end
     return UF:SpawnFrame("TargetTarget", "targettarget", UF.TargetTargetMixin, UF.config.targettarget, UF.defaults.targettarget)
 end
 

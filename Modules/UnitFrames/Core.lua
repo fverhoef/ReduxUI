@@ -73,6 +73,9 @@ end
 function UF:UpdateUnit(unit)
     if FRAMES[unit] and not UF.frames[unit] then
         UF.frames[unit] = UF[FRAMES[unit]]()
+        if FRAMES[unit .. "target"] then
+            UF:UpdateUnit(unit .. "target")
+        end
     elseif HEADERS[unit] and not UF.headers[unit] then
         UF.headers[unit] = UF[HEADERS[unit]]()
     end
