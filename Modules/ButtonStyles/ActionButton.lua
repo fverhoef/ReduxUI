@@ -19,7 +19,6 @@ function BS:StyleActionButton(button)
     local count = _G[buttonName .. "Count"]
     local hotkey = _G[buttonName .. "HotKey"]
     local name = _G[buttonName .. "Name"]
-    local border = button.Border
 
     if not button.__styled then
         button.__styled = true
@@ -58,10 +57,13 @@ function BS:StyleActionButton(button)
             floatingBG:Hide()
         end
 
+        local border = button.Border
         if border then
             border:ClearAllPoints()
             border:SetAllPoints()
             border:SetTexture(R.media.textures.buttons.equippedOverlay)
+            BS:SecureHook(border, "Show", BS.ActionButtonBorder_OnShow)
+            BS:SecureHook(border, "Hide", BS.ActionButtonBorder_OnHide)
         end
 
         button:CreateBackdrop({ bgFile = config.backdrop, edgeSize = 2, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
@@ -99,7 +101,7 @@ function BS:StyleActionButton(button)
 end
 
 function BS:UpdateActionButton(button)
-    if button.Border:IsShown() then
+    if button.IsEquipped and button:IsEquipped() then
         button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.equipped))
     else
         button:GetNormalTexture():SetVertexColor(unpack(BS.config.colors.border))
@@ -133,4 +135,10 @@ function BS:UpdateAllActionButtons()
     _G.MainMenuBarVehicleLeaveButton.Border:SetBackdropBorderColor(unpack(BS.config.colors.border))
 end
 
-R.Libs.ActionButton:RegisterCallback("OnButtonUpdate", BS.UpdateActionButton)
+function BS:ActionButtonBorder_OnShow()
+    BS:UpdateActionButton(self:GetParent())
+end
+
+function BS:ActionButtonBorder_OnHide()
+    BS:UpdateActionButton(self:GetParent())
+end
