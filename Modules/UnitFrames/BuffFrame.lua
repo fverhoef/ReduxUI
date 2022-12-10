@@ -13,27 +13,25 @@ function UF:StyleAuraFrames()
     BuffFrame:ClearAllPoints()
     BuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.buffs.point))
     BuffFrame:CreateMover(R.isRetail and L["Buffs"] or L["Buffs & Debuffs"], UF.defaults.auraFrames.buffs.point, 400, 50, { "TOPRIGHT", BuffFrame, "TOPRIGHT" })
-    if not BuffFrame.Update then
-        BuffFrame.Update = BuffFrame_Update
-    end
+
     if R.isRetail then
-        UF:SecureHook(BuffFrame, "Update", UF.AuraFrame_Update)
+        UF:SecureHook(BuffFrame, "Update", UF.UpdateAuraFrames)
 
         DebuffFrame.config = UF.config.auraFrames.debuffs
         DebuffFrame.defaults = UF.defaults.auraFrames.debuffs
         DebuffFrame:ClearAllPoints()
         DebuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.debuffs.point))
         DebuffFrame:CreateMover(L["Debuffs"], UF.defaults.auraFrames.debuffs.point, 400, 50, { "TOPRIGHT", DebuffFrame, "TOPRIGHT" })
-        UF:SecureHook(DebuffFrame, "Update", UF.AuraFrame_Update)
+        UF:SecureHook(DebuffFrame, "Update", UF.UpdateAuraFrames)
         
         DeadlyDebuffFrame.config = UF.config.auraFrames.deadlyDebuffs
         DeadlyDebuffFrame.defaults = UF.defaults.auraFrames.deadlyDebuffs
         DeadlyDebuffFrame:ClearAllPoints()
         DeadlyDebuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.deadlyDebuffs.point))
         DeadlyDebuffFrame:CreateMover(L["Debuffs"], UF.defaults.auraFrames.deadlyDebuffs.point, 400, 50, { "TOPRIGHT", DebuffFrame, "TOPRIGHT" })
-        UF:SecureHook(DeadlyDebuffFrame, "Update", UF.AuraFrame_Update)
+        UF:SecureHook(DeadlyDebuffFrame, "Update", UF.UpdateAuraFrames)
     else
-        UF:SecureHook("BuffFrame_Update", UF.AuraFrame_Update)
+        UF:SecureHook("BuffFrame_Update", UF.UpdateAuraFrames)
     end
 
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
@@ -50,7 +48,7 @@ function UF:UIParent_UpdateTopFramePositions()
     BuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.buffs.point))
 end
 
-function UF:AuraFrame_Update()
+function UF:UpdateAuraFrames()
     if R.isRetail then
         for _, aura in ipairs(self.auraFrames) do
             if not aura.ApplyStyle then
@@ -73,6 +71,7 @@ function UF:AuraFrame_Update()
                     _G.Mixin(button, AuraStyleMixin)
                     button.config = UF.config.auraFrames.buffs
                 end
+                button:SetNormalizedSize(button.config.iconSize)
                 button:ApplyStyle()
             end
         end
@@ -88,6 +87,7 @@ function UF:AuraFrame_Update()
                     _G.Mixin(button, AuraStyleMixin)
                     button.config = UF.config.auraFrames.debuffs
                 end
+                button:SetNormalizedSize(button.config.iconSize)
                 button:ApplyStyle()
             end
         end
@@ -103,6 +103,7 @@ function UF:AuraFrame_Update()
                     _G.Mixin(button, AuraStyleMixin)
                     button.config = UF.config.auraFrames.tempEnchants
                 end
+                button:SetNormalizedSize(button.config.iconSize)
                 button:ApplyStyle()
             end
         end

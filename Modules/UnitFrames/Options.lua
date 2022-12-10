@@ -1597,35 +1597,48 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
                 order = 2,
                 inline = true,
                 disabled = function()
-                    return not UF:UnitConfig(unit).auras[setting].enabled
+                    return not UF:UnitConfig(unit).auras.enabled or not UF:UnitConfig(unit).auras[setting].enabled
                 end,
                 args = {
-                    iconSize = UF:CreateRangeOption(unit, L["Icon Size"], L["The size of the aura icons."], 1, nil, 10, nil, 50, 1, function()
+                    iconSize = UF:CreateRangeOption(unit, L["Aura Size"], L["The size of the aura icons."], 1, nil, 10, nil, 50, 1, function()
                         return UF:UnitConfig(unit).auras[setting].iconSize
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].iconSize = value
                     end),
-                    spacing = UF:CreateRangeOption(unit, L["Spacing"], L["The spacing between aura icons."], 2, nil, -10, nil, 30, 1, function()
+                    showDuration = UF:CreateToggleOption(unit, L["Show Duration"], nil, 2, nil, nil, function()
+                        return UF:UnitConfig(unit).auras[setting].showDuration
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].showDuration = value
+                    end),
+                    minSizeToShowDuration = UF:CreateRangeOption(unit, L["Min Size to Show Duration"], L["The minimum size an aura icon should be before duration is shown."], 3, nil, 0, nil, 80, 1,
+                                                                 function()
+                        return UF:UnitConfig(unit).auras[setting].minSizeToShowDuration
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].minSizeToShowDuration = value
+                    end, function()
+                        return not UF:UnitConfig(unit).auras[setting].showDuration
+                    end),
+                    spacing = UF:CreateRangeOption(unit, L["Aura Spacing"], L["The spacing between aura icons."], 4, nil, -10, nil, 30, 1, function()
                         return UF:UnitConfig(unit).auras[setting].spacing
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].spacing = value
                     end),
-                    numColumns = UF:CreateRangeOption(unit, L["Number of Columns"], L["The number of columns."], 3, nil, 1, nil, 32, 1, function()
+                    numColumns = UF:CreateRangeOption(unit, L["Number of Columns"], L["The number of columns."], 5, nil, 1, nil, 32, 1, function()
                         return UF:UnitConfig(unit).auras[setting].numColumns
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].numColumns = value
                     end),
-                    num = UF:CreateRangeOption(unit, L["Number of " .. name], L["The number of auras to show."], 4, setting == "buffsAndDebuffs", 1, nil, 32, 1, function()
+                    num = UF:CreateRangeOption(unit, L["Number of " .. name], L["The number of auras to show."], 6, setting == "buffsAndDebuffs", 1, nil, 32, 1, function()
                         return UF:UnitConfig(unit).auras[setting].num
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].num = value
                     end),
-                    numBuffs = UF:CreateRangeOption(unit, L["Number of Buffs"], L["The number of buffs to show."], 5, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
+                    numBuffs = UF:CreateRangeOption(unit, L["Number of Buffs"], L["The number of buffs to show."], 7, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
                         return UF:UnitConfig(unit).auras[setting].numBuffs
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].numBuffs = value
                     end),
-                    numDebuffs = UF:CreateRangeOption(unit, L["Number of Debuffs"], L["The number of debuffs to show."], 6, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
+                    numDebuffs = UF:CreateRangeOption(unit, L["Number of Debuffs"], L["The number of debuffs to show."], 8, setting ~= "buffsAndDebuffs", 1, nil, 32, 1, function()
                         return UF:UnitConfig(unit).auras[setting].numDebuffs
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].numDebuffs = value
@@ -1638,7 +1651,7 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
                 order = 3,
                 inline = true,
                 disabled = function()
-                    return not UF:UnitConfig(unit).auras[setting].enabled
+                    return not UF:UnitConfig(unit).auras.enabled or not UF:UnitConfig(unit).auras[setting].enabled
                 end,
                 args = {
                     point = UF:CreatePointOption(unit, 1, function()
@@ -1660,6 +1673,68 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
                         return UF:UnitConfig(unit).auras[setting].point[4]
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].point[4] = value
+                    end)
+                }
+            },
+            count = {
+                type = "group",
+                name = L["Count Text"],
+                order = 4,
+                inline = true,
+                disabled = function()
+                    return not UF:UnitConfig(unit).auras.enabled or not UF:UnitConfig(unit).auras[setting].enabled
+                end,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1,  function()
+                        return UF:UnitConfig(unit).auras[setting].countFont
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].countFont = value
+                    end),
+                    size = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).auras[setting].countFontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].countFontSize = value
+                    end),
+                    outline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).auras[setting].countFontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].countFontOutline = value
+                    end),
+                    shadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).auras[setting].countFontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].countFontShadow = value
+                    end)
+                }
+            },
+            duration = {
+                type = "group",
+                name = L["Duration Text"],
+                order = 5, 
+                inline = true,
+                disabled = function()
+                    return not UF:UnitConfig(unit).auras.enabled or not UF:UnitConfig(unit).auras[setting].enabled
+                end,
+                args = {
+                    font = UF:CreateFontFamilyOption(unit, 1,  function()
+                        return UF:UnitConfig(unit).auras[setting].durationFont
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].durationFont = value
+                    end),
+                    size = UF:CreateFontSizeOption(unit, 2, function()
+                        return UF:UnitConfig(unit).auras[setting].durationFontSize
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].durationFontSize = value
+                    end),
+                    outline = UF:CreateFontOutlineOption(unit, 3, function()
+                        return UF:UnitConfig(unit).auras[setting].durationFontOutline
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].durationFontOutline = value
+                    end),
+                    shadow = UF:CreateFontShadowOption(unit, 4, function()
+                        return UF:UnitConfig(unit).auras[setting].durationFontShadow
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].durationFontShadow = value
                     end)
                 }
             }
@@ -2054,6 +2129,282 @@ R:RegisterModuleOptions(UF, {
                 shaman = UF:CreateClassColorOption("SHAMAN", R:LocalizedClassName("Shaman"), 19),
                 warlock = UF:CreateClassColorOption("WARLOCK", R:LocalizedClassName("Warlock"), 20),
                 warrior = UF:CreateClassColorOption("WARRIOR", R:LocalizedClassName("Warrior"), 21)
+            }
+        },
+        auras = {
+            type = "group",
+            name = L["Buffs & Debuffs"],
+            order = 10,
+            args = {
+                header = { type = "header", name = R.title .. " > Unit Frames > Buffs & Debuffs", order = 0 },
+                enabled = R:CreateToggleOption(L["Enabled"], nil, 1, nil, nil, function()
+                    return UF.config.auraFrames.enabled
+                end, function(value)
+                    UF.config.auraFrames.enabled = value
+                end, function()
+                    if UF.config.auraFrames.enabled then
+                        UF:StyleAuraFrames()
+                    else
+                        ReloadUI()
+                    end
+                end, function()
+                    return UF.config.auraFrames.enabled and L["Disabling Aura Frames requires a UI reload. Proceed?"]
+                end),
+                buffs = {
+                    type = "group",
+                    name = L["Buffs"],
+                    order = 2,
+                    inline = true,
+                    disabled = function()
+                        return not UF.config.auraFrames.enabled
+                    end,
+                    args = {
+                        iconSize = R:CreateRangeOption(L["Icon Size"], L["The size of the aura icons."], 1, nil, 10, nil, 80, 1, function()
+                            return UF.config.auraFrames.buffs.iconSize
+                        end, function(value)
+                            UF.config.auraFrames.buffs.iconSize = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        showDuration = R:CreateToggleOption(L["Show Duration"], nil, 2, nil, nil, function()
+                            return UF.config.auraFrames.buffs.showDuration
+                        end, function(value)
+                            UF.config.auraFrames.buffs.showDuration = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        minSizeToShowDuration = R:CreateRangeOption(L["Min Size to Show Duration"], L["The minimum size an aura icon should be before duration is shown."], 3, nil, 0, nil, 80, 1,
+                                                                    function()
+                            return UF.config.auraFrames.buffs.minSizeToShowDuration
+                        end, function(value)
+                            UF.config.auraFrames.buffs.minSizeToShowDuration = value
+                        end, function() UF:UpdateAuraFrames() end, nil, function()
+                            return not UF.config.auraFrames.buffs.showDuration
+                        end),
+                        count = {
+                            type = "group",
+                            name = L["Count Text"],
+                            order = 4,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.buffs.countFont
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.countFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.buffs.countFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.countFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.buffs.countFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.countFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.buffs.countFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.countFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        },
+                        duration = {
+                            type = "group",
+                            name = L["Duration Text"],
+                            order = 5,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.buffs.durationFont
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.durationFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.buffs.durationFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.durationFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.buffs.durationFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.durationFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.buffs.durationFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.buffs.durationFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        }
+                    }
+                },
+                debuffs = {
+                    type = "group",
+                    name = L["Debuffs"],
+                    order = 3,
+                    inline = true,
+                    disabled = function()
+                        return not UF.config.auraFrames.enabled
+                    end,
+                    args = {
+                        iconSize = R:CreateRangeOption(L["Icon Size"], L["The size of the aura icons."], 1, nil, 10, nil, 80, 1, function()
+                            return UF.config.auraFrames.debuffs.iconSize
+                        end, function(value)
+                            UF.config.auraFrames.debuffs.iconSize = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        showDuration = R:CreateToggleOption(L["Show Duration"], nil, 2, nil, nil, function()
+                            return UF.config.auraFrames.debuffs.showDuration
+                        end, function(value)
+                            UF.config.auraFrames.debuffs.showDuration = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        minSizeToShowDuration = R:CreateRangeOption(L["Min Size to Show Duration"], L["The minimum size an aura icon should be before duration is shown."], 3, nil, 0, nil, 80, 1,
+                                                                    function()
+                            return UF.config.auraFrames.debuffs.minSizeToShowDuration
+                        end, function(value)
+                            UF.config.auraFrames.debuffs.minSizeToShowDuration = value
+                        end, function() UF:UpdateAuraFrames() end, nil, function()
+                            return not UF.config.auraFrames.debuffs.showDuration
+                        end),
+                        count = {
+                            type = "group",
+                            name = L["Count Text"],
+                            order = 4,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.debuffs.countFont
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.countFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.debuffs.countFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.countFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.debuffs.countFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.countFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.debuffs.countFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.countFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        },
+                        duration = {
+                            type = "group",
+                            name = L["Duration Text"],
+                            order = 5,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.debuffs.durationFont
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.durationFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.debuffs.durationFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.durationFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.debuffs.durationFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.durationFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.debuffs.durationFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.debuffs.durationFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        }
+                    }
+                },
+                tempEnchants = {
+                    type = "group",
+                    name = L["Weapon Enchants"],
+                    order = 4,
+                    inline = true,
+                    disabled = function()
+                        return not UF.config.auraFrames.enabled
+                    end,
+                    args = {
+                        iconSize = R:CreateRangeOption(L["Icon Size"], L["The size of the aura icons."], 1, nil, 10, nil, 80, 1, function()
+                            return UF.config.auraFrames.tempEnchants.iconSize
+                        end, function(value)
+                            UF.config.auraFrames.tempEnchants.iconSize = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        showDuration = R:CreateToggleOption(L["Show Duration"], nil, 2, nil, nil, function()
+                            return UF.config.auraFrames.tempEnchants.showDuration
+                        end, function(value)
+                            UF.config.auraFrames.tempEnchants.showDuration = value
+                        end, function() UF:UpdateAuraFrames() end),
+                        minSizeToShowDuration = R:CreateRangeOption(L["Min Size to Show Duration"], L["The minimum size an aura icon should be before duration is shown."], 3, nil, 0, nil, 80, 1,
+                                                                    function()
+                            return UF.config.auraFrames.tempEnchants.minSizeToShowDuration
+                        end, function(value)
+                            UF.config.auraFrames.tempEnchants.minSizeToShowDuration = value
+                        end, function() UF:UpdateAuraFrames() end, nil, function()
+                            return not UF.config.auraFrames.tempEnchants.showDuration
+                        end),
+                        count = {
+                            type = "group",
+                            name = L["Count Text"],
+                            order = 4,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.tempEnchants.countFont
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.countFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.tempEnchants.countFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.countFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.tempEnchants.countFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.countFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.tempEnchants.countFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.countFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        },
+                        duration = {
+                            type = "group",
+                            name = L["Duration Text"],
+                            order = 5,
+                            inline = true,
+                            args = {
+                                font = R:CreateFontOption(L["Font"], L["The font to use for aura texts."], 1, nil, function()
+                                    return UF.config.auraFrames.tempEnchants.durationFont
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.durationFont = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                size = R:CreateRangeOption(L["Font Size"], L["The size of aura text."], 2, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, function()
+                                    return UF.config.auraFrames.tempEnchants.durationFontSize
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.durationFontSize = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                outline = R:CreateSelectOption(L["Font Outline"], L["The outline style of aura text."], 3, nil, R.FONT_OUTLINES, function()
+                                    return UF.config.auraFrames.tempEnchants.durationFontOutline
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.durationFontOutline = value
+                                end, function() UF:UpdateAuraFrames() end),
+                                shadow = R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for aura text."], 4, nil, nil, function()
+                                    return UF.config.auraFrames.tempEnchants.durationFontShadow
+                                end, function(value)
+                                    UF.config.auraFrames.tempEnchants.durationFontShadow = value
+                                end, function() UF:UpdateAuraFrames() end)
+                            }
+                        }
+                    }
+                }
             }
         },
         player = UF:CreateUnitOptions("player", 11, L["Player"]),

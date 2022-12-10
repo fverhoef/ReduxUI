@@ -10,10 +10,10 @@ function AuraStyleMixin:ApplyStyle()
     local config = self.config or {}
 
     local icon = _G[name .. "Icon"] or _G[name .. "IconTexture"] or self.icon or self.Icon
-    local count = _G[name .. "Count"]
+    local count = _G[name .. "Count"] or self.Count
     local cooldown = _G[name .. "Cooldown"] or self.Cooldown
+    local cooldownText = cooldown and cooldown:GetRegions()
     local duration = _G[name .. "Duration"]
-    local symbol = self.symbol
 
     if not self.__styled then
         self.__styled = true
@@ -34,6 +34,16 @@ function AuraStyleMixin:ApplyStyle()
         if cooldown then
             cooldown:SetInside(self, 2, 2)
             cooldown:SetSwipeColor(0, 0, 0)
+            cooldown.ShowBase = cooldown.Show
+            cooldown.HideBase = cooldown.Hide
+            cooldown.Show = function()
+                cooldown:ShowBase()
+                cooldownText:Show()
+            end
+            cooldown.Hide = function()
+                cooldown:HideBase()
+                cooldownText:Hide()
+            end
         end
 
         if duration then
@@ -55,20 +65,19 @@ function AuraStyleMixin:ApplyStyle()
         self.Border = border
     end
 
-    if config.iconSize then
-        self:SetNormalizedSize(config.iconSize)
-    end
-
     if count then
-        count:SetFont(config.font, config.fontSize, config.fontOutline)
+        count:SetFont(config.countFont, config.countFontSize, config.countFontOutline)
+        count:SetShadowOffset(config.countFontShadow and 1 or 0, config.countFontShadow and -1 or 0)
     end
 
     if duration then
-        duration:SetFont(config.font, config.fontSize, config.fontOutline)
+        duration:SetFont(config.durationFont, config.durationFontSize, config.durationFontOutline)
+        duration:SetShadowOffset(config.durationFontShadow and 1 or 0, config.durationFontShadow and -1 or 0)
     end
 
-    if symbol then
-        symbol:SetFont(config.font, config.fontSize, config.fontOutline)
+    if cooldownText then
+        cooldownText:SetFont(config.durationFont, config.durationFontSize, config.durationFontOutline)
+        cooldownText:SetShadowOffset(config.durationFontShadow and 1 or 0, config.durationFontShadow and -1 or 0)
     end
 
     local r, g, b = 0.7, 0.7, 0.7

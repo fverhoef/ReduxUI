@@ -195,6 +195,10 @@ function AB.ActionBarButtonMixin:Configure()
         }
     })
 
+    self.HotKey:SetShadowOffset(config.buttonStyle.keybindFontShadow and 1 or 0, config.buttonStyle.keybindFontShadow and -1 or 0)
+    self.Count:SetShadowOffset(config.buttonStyle.countFontShadow and 1 or 0, config.buttonStyle.countFontShadow and -1 or 0)
+    self.Name:SetShadowOffset(config.buttonStyle.macroFontShadow and 1 or 0, config.buttonStyle.macroFontShadow and -1 or 0)
+
     self:SetAttribute("buttonlock", config.locked)
     self:SetAttribute("checkselfcast", config.buttonStyle.checkSelfCast)
     self:SetAttribute("checkfocuscast", config.buttonStyle.checkFocusCast)

@@ -22,13 +22,16 @@ local DEFAULT_BUTTON_CONFIG = {
     keybindFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     keybindFontSize = 11,
     keybindFontOutline = "OUTLINE",
+    keybindFontShadow = false,
     hideKeybindText = false,
     countFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     countFontSize = 11,
     countFontOutline = "OUTLINE",
+    countFontShadow = false,
     macroFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
     macroFontSize = 11,
     macroFontOutline = "OUTLINE",
+    macroFontShadow = false,
     hideMacroText = true
 }
 
