@@ -1,6 +1,5 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
-local BS = R.Modules.ButtonStyles
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
@@ -125,7 +124,8 @@ oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
     button.Cooldown:SetInside(nil, 1, 1)
-    R.Modules.ButtonStyles:StyleAuraButton(button)
+    _G.Mixin(button, AuraStyleMixin)
+    button:ApplyStyle()
 end
 
 function UF:PostUpdateAura(button, unit, data, position)
@@ -133,7 +133,7 @@ function UF:PostUpdateAura(button, unit, data, position)
         button.debuffType = data.dispelName
     end
 
-    R.Modules.ButtonStyles:StyleAuraButton(button)
+    button:ApplyStyle()
 end
 
 function UF:PostUpdateGap(unit, gapButton, position)

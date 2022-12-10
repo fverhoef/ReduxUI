@@ -12,7 +12,7 @@ function AB:CreateActionBar(id)
 
     bar.buttons = {}
     for id = 1, 12 do
-        bar.buttons[id] = AB:CreateActionBarButton(id, bar, bar.config.buttonType)
+        bar.buttons[id] = bar:CreateButton(id)
     end
 
     bar:SetAttribute("_onstate-page", [[
@@ -48,8 +48,8 @@ AB.ActionBarMixin = {}
 function AB.ActionBarMixin:Configure()
     local visibleButtons = self.visibleButtons or self.config.buttons
     local buttonsPerRow = self.config.buttonsPerRow
-    local width = self.config.buttonSize
-    local height = self.config.buttonSize
+    local width = self.config.buttonStyle.size
+    local height = self.config.buttonStyle.size
     local columnDirection = self.config.columnDirection
     local columnSpacing = self.config.columnSpacing
     local rowDirection = self.config.rowDirection
@@ -162,9 +162,9 @@ function AB.ActionBarMixin:Configure()
     end
 end
 
-function AB:CreateActionBarButton(id, parent, buttonType)
-    local button = R.Libs.ActionButton:CreateButton(id, "$parentButton" .. id, parent)
-    button.buttonType = buttonType
+function AB.ActionBarMixin:CreateButton(id)
+    local button = R.Libs.ActionButton:CreateButton(id, "$parentButton" .. id, self)
+    button.header = button.header or self
     _G.Mixin(button, AB.ActionBarButtonMixin)
 
     button:SetState(0, "action", id)
@@ -181,12 +181,81 @@ AB.ActionBarButtonMixin = {}
 
 function AB.ActionBarButtonMixin:Configure()
     local config = self.header.config
-    self:UpdateConfig({ clickOnDown = config.clickOnDown, flyoutDirection = config.flyoutDirection, keyBoundTarget = self.buttonType .. self.id, showGrid = config.showGrid })
+    self:UpdateConfig({
+        clickOnDown = config.buttonStyle.clickOnDown,
+        flyoutDirection = config.buttonStyle.flyoutDirection,
+        keyBoundTarget = config.buttonStyle.type .. self.id,
+        showGrid = config.showGrid,
+        colors = { range = { 0.8, 0.1, 0.1 }, mana = { 0.5, 0.5, 1.0 } },
+        hideElements = { macro = config.buttonStyle.hideMacroText, hotkey = config.buttonStyle.hideKeybindText },
+        text = {
+            hotkey = { font = { font = config.buttonStyle.keybindFont, size = config.buttonStyle.keybindFontSize, flags = config.buttonStyle.keybindFontOutline } },
+            count = { font = { font = config.buttonStyle.countFont, size = config.buttonStyle.countFontSize, flags = config.buttonStyle.countFontOutline } },
+            macro = { font = { font = config.buttonStyle.macroFont, size = config.buttonStyle.macroFontSize, flags = config.buttonStyle.macroFontOutline } }
+        }
+    })
 
     self:SetAttribute("buttonlock", config.locked)
-    self:SetAttribute("checkselfcast", config.checkSelfCast)
-    self:SetAttribute("checkfocuscast", config.checkFocusCast)
-    self:SetAttribute("checkmouseovercast", config.checkMouseoverCast)
+    self:SetAttribute("checkselfcast", config.buttonStyle.checkSelfCast)
+    self:SetAttribute("checkfocuscast", config.buttonStyle.checkFocusCast)
+    self:SetAttribute("checkmouseovercast", config.buttonStyle.checkMouseoverCast)
 
-    R.Modules.ButtonStyles:StyleActionButton(self)
+    self:ApplyStyle()
+end
+
+function AB.ActionBarButtonMixin:ApplyStyle()
+    if not self.__styled then
+        self.__styled = true
+
+        self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        self.icon:SetInside(self, 2, 2)
+
+        self.raisedContainer = CreateFrame("Frame", nil, self)
+        self.raisedContainer:SetAllPoints()
+        self.raisedContainer:SetFrameLevel(self:GetFrameLevel() + 1)
+
+        self.cooldown:SetInside(self, 2, 2)
+        self.cooldown:SetSwipeColor(0, 0, 0)
+
+        self.Count:SetParent(self.raisedContainer)
+        self.HotKey:SetParent(self.raisedContainer)
+        self.Name:SetParent(self.raisedContainer)
+
+        self.Border:ClearAllPoints()
+        self.Border:SetAllPoints()
+        self.Border:SetTexture(R.media.textures.buttons.equippedOverlay)
+        AB:SecureHook(self.Border, "Show", self.Border_OnShow)
+        AB:SecureHook(self.Border, "Hide", self.Border_OnHide)
+
+        self:CreateBackdrop({ bgFile = R.media.textures.buttons.backdrop, edgeSize = 2, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
+    end
+
+    self:SetNormalTexture(R.media.textures.buttons.border)
+    local normalTexture = self:GetNormalTexture()
+    normalTexture:SetOutside(self, 4, 4)
+    normalTexture:SetTexCoord(0, 1, 0, 1)
+    normalTexture:SetVertexColor(0.7, 0.7, 0.7)
+
+    self:SetPushedTexture(R.media.textures.buttons.border)
+    local pushedTexture = self:GetPushedTexture()
+    pushedTexture:SetOutside(self, 4, 4)
+    pushedTexture:SetTexCoord(0, 1, 0, 1)
+    pushedTexture:SetVertexColor(1, 0.78, 0, 1)
+
+    self:GetCheckedTexture():SetOutside(self, 2, 2)
+    self:GetHighlightTexture():SetInside(self, 0, 0)
+
+    if self.IsEquipped and self:IsEquipped() then
+        self:GetNormalTexture():SetVertexColor(0, 0.8, 0)
+    else
+        self:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7)
+    end
+end
+
+function AB.ActionBarButtonMixin:Border_OnShow()
+    self:GetParent():ApplyStyle()
+end
+
+function AB.ActionBarButtonMixin:Border_OnHide()
+    self:GetParent():ApplyStyle()
 end

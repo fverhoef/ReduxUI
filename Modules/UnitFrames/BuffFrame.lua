@@ -41,6 +41,35 @@ function UF:StyleAuraFrames()
     if EditModeManagerFrame then
         EditModeManagerFrame.AccountSettings.RefreshAuraFrame = nop
     end
+    if R.isRetail then
+        for _, aura in ipairs(self.auraFrames) do
+            _G.Mixin(aura, AuraStyleMixin)
+            aura.config = UF.config.auraFrames.buffs
+        end
+    else
+        local button
+        for i = 1, _G.BUFF_MAX_DISPLAY do
+            button = _G["BuffButton" .. i]
+            if button then
+                _G.Mixin(button, AuraStyleMixin)
+                button.config = UF.config.auraFrames.buffs
+            end
+        end
+        for i = 1, _G.DEBUFF_MAX_DISPLAY do
+            button = _G["DebuffButton" .. i]
+            if button then
+                _G.Mixin(button, AuraStyleMixin)
+                button.config = UF.config.auraFrames.debuffs
+            end
+        end
+        for i = 1, _G.NUM_TEMP_ENCHANT_FRAMES do
+            button = _G["TempEnchant" .. i]
+            if button then
+                _G.Mixin(button, AuraStyleMixin)
+                button.config = UF.config.auraFrames.tempEnchants
+            end
+        end
+    end
 end
 
 function UF:UIParent_UpdateTopFramePositions()
@@ -53,26 +82,41 @@ end
 function UF:AuraFrame_Update()
     if R.isRetail then
         for _, aura in ipairs(self.auraFrames) do
-            aura:SetSize(self.config.iconSize, self.config.iconSize)
+            aura:ApplyStyle()
         end
     else
         local button
         for i = 1, _G.BUFF_MAX_DISPLAY do
             button = _G["BuffButton" .. i]
             if button then
-                button:SetSize(UF.config.auraFrames.buffs.iconSize, UF.config.auraFrames.buffs.iconSize)
+                button.isBuff = true
+                button.isDebuff = false
+                button.isTempEnchant = false
+                button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
+                button.debuffType = nil
+                button:ApplyStyle()
             end
         end
         for i = 1, _G.DEBUFF_MAX_DISPLAY do
             button = _G["DebuffButton" .. i]
             if button then
-                button:SetSize(UF.config.auraFrames.debuffs.iconSize, UF.config.auraFrames.debuffs.iconSize)
+                button.isBuff = false
+                button.isDebuff = true
+                button.isTempEnchant = false
+                button.buffType = nil
+                button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
+                button:ApplyStyle()
             end
         end
         for i = 1, _G.NUM_TEMP_ENCHANT_FRAMES do
             button = _G["TempEnchant" .. i]
             if button then
-                button:SetSize(UF.config.auraFrames.tempEnchants.iconSize, UF.config.auraFrames.tempEnchants.iconSize)
+                button.isBuff = false
+                button.isDebuff = false
+                button.isTempEnchant = true
+                button.buffType = nil
+                button.debuffType = nil
+                button:ApplyStyle()
             end
         end
     end

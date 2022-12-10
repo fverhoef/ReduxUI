@@ -2,7 +2,6 @@
     <Include file="ActionBars\ActionBars.xml"/>
     <Include file="Automation\Automation.xml"/>
     <Include file="Bags\Bags.xml"/>
-    <Include file="ButtonStyles\ButtonStyles.xml"/>
     <Include file="Chat\Chat.xml"/>
     <Include file="Installer\Installer.xml"/>
     <Include file="InventoryDatabase\InventoryDatabase.xml"/>

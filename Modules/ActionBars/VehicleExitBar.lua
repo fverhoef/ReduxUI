@@ -50,7 +50,7 @@ AB.VehicleExitBarMixin = {}
 function AB.VehicleExitBarMixin:Configure()
     self.buttons[1]:Configure()
 
-    self:SetSize(self.config.buttonSize, self.config.buttonSize)
+    self:SetSize(self.config.buttonStyle.size, self.config.buttonStyle.size)
     self:ClearAllPoints()
     self:SetNormalizedPoint(self.config.point)
 

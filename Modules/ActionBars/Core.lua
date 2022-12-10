@@ -132,7 +132,6 @@ function AB:DisableBlizzardBars()
     if R.isRetail then
         PetActionBar.UpdateGridLayout = nop
         StatusTrackingBarManager:UnregisterAllEvents()
-        ActionBarController:RegisterEvent("SETTINGS_LOADED")
         ActionBarController:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
     end
 
@@ -164,7 +163,7 @@ function AB:ReassignBindings()
         ClearOverrideBindings(bar)
 
         for i, button in next, bar.buttons do
-            for _, key in next, { GetBindingKey(bar.config.buttonType .. i) } do
+            for _, key in next, { GetBindingKey(bar.config.buttonStyle.type .. i) } do
                 if key and key ~= "" then
                     SetOverrideBindingClick(bar, false, key, button:GetName())
                 end

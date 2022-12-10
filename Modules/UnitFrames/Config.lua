@@ -152,7 +152,12 @@ local DEFAULT_UNIT_CONFIG = {
             showDebuffType = true,
             gap = true,
             minDuration = 0,
-            maxDuration = 0
+            maxDuration = 0,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28
         },
         buffs = {
             enabled = true,
@@ -168,6 +173,11 @@ local DEFAULT_UNIT_CONFIG = {
             showBuffType = false,
             minDuration = 0,
             maxDuration = 0,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28,
             filter = { whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST }
         },
         debuffs = {
@@ -184,6 +194,11 @@ local DEFAULT_UNIT_CONFIG = {
             showDebuffType = true,
             minDuration = 0,
             maxDuration = 0,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28,
             filter = { whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST }
         }
     },
@@ -331,10 +346,10 @@ R:RegisterModuleConfig(UF, {
     },
     auraFrames = {
         enabled = true,
-        buffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, iconSize = 36 },
-        debuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -113 }, iconSize = 36 },
-        deadlyDebuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -163 }, iconSize = 36 },
-        tempEnchants = { iconSize = 36 }
+        buffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
+        debuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -113 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
+        deadlyDebuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -163 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
+        tempEnchants = { iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 }
     },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = DEFAULT_STYLE,

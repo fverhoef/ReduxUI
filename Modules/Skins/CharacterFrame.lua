@@ -429,6 +429,31 @@ function S:UpdateAverageItemLevel()
 end
 
 function S:UpdateEquipmentSlotButton()
+    if not self.__styled then
+        self.__styled = true
+
+        self.icon = _G[self:GetName() .. "IconTexture"]
+        self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        self.icon:SetInside(self, 2, 2)
+
+        self:SetNormalTexture(R.media.textures.buttons.border)
+        local normalTexture = self:GetNormalTexture()
+        normalTexture:SetOutside(self, 4, 4)
+        normalTexture:SetTexCoord(0, 1, 0, 1)
+
+        self:SetPushedTexture(R.media.textures.buttons.border)
+        local pushedTexture = self:GetPushedTexture()
+        pushedTexture:SetOutside(self, 4, 4)
+    end
+
+    local r, g, b = 0.7, 0.7, 0.7
     self.ItemIDOrLink = GetInventoryItemLink("player", self:GetID())
-    R.Modules.ButtonStyles:StyleItemButton(self)
+    if self.ItemIDOrLink then
+        local itemRarity = select(3, GetItemInfo(self.ItemIDOrLink))
+        if itemRarity and itemRarity > 1 then
+            r, g, b = GetItemQualityColor(itemRarity)
+        end
+    end
+
+    self:GetNormalTexture():SetVertexColor(r, g, b, 1)
 end

@@ -3,6 +3,7 @@
     <Script file="Config.lua"/>
     <Script file="Options.lua"/>
     <Script file="Tags.lua"/>
+    <Script file="AuraStyle.lua"/>
     <Script file="BuffFrame.lua"/>
     <Script file="UnitFrame.lua"/>
     <Script file="UnitFrameGroup.lua"/>

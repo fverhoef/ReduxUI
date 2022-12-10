@@ -18,7 +18,12 @@ function B.BagButtonMixin:Initialize(bagID, slot)
         self.IconQuestTexture:SetTexture("Interface\\ContainerFrame\\UI-Icon-QuestBang")
     end
 
-    self.Cooldown = self.Cooldown or _G[self:GetName() .. "Cooldown"]
+    self.cooldown = self.cooldown or self.Cooldown or _G[self:GetName() .. "Cooldown"]
+    self.icon = self.icon or _G[self:GetName() .. "Icon"] or _G[self:GetName() .. "IconTexture"]
+    self.Count = self.Count or _G[self:GetName() .. "Count"]
+    self.Stock = self.Stock or _G[self:GetName() .. "Stock"]
+
+    self:ApplyStyle()
 end
 
 function B.BagButtonMixin:Update()
@@ -65,14 +70,57 @@ function B.BagButtonMixin:Update()
     end
 
     self:UpdateCooldown()
+    self:ApplyStyle()
+end
 
-    R.Modules.ButtonStyles:StyleItemButton(self)
+function B.BagButtonMixin:ApplyStyle()
+    if not self.__styled then
+        self.__styled = true
+
+        self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        self.icon:SetInside(self, 2, 2)
+
+        self.raisedContainer = CreateFrame("Frame", nil, self)
+        self.raisedContainer:SetAllPoints()
+        self.raisedContainer:SetFrameLevel(self:GetFrameLevel() + 1)
+
+        self.cooldown:SetInside(self, 2, 2)
+        self.cooldown:SetSwipeColor(0, 0, 0)
+
+        self.Count:SetParent(self.raisedContainer)
+        self.Stock:SetParent(self.raisedContainer)
+
+        self:SetNormalTexture(R.media.textures.buttons.border)
+        local normalTexture = self:GetNormalTexture()
+        normalTexture:SetOutside(self, 4, 4)
+        normalTexture:SetTexCoord(0, 1, 0, 1)
+
+        self:SetPushedTexture(R.media.textures.buttons.border)
+        local pushedTexture = self:GetPushedTexture()
+        pushedTexture:SetOutside(self, 4, 4)
+    end
+
+    if self:GetParent().config then
+        local style = self:GetParent().config.buttonStyle
+        self.Count:SetFont(style.countFont, style.countFontSize, style.countFontOutline)
+        self.Stock:SetFont(style.stockFont, style.stockFontSize, style.stockFontOutline)
+    end
+
+    local r, g, b = 0.7, 0.7, 0.7
+    if self.ItemIDOrLink then
+        local itemRarity = select(3, GetItemInfo(self.ItemIDOrLink))
+        if itemRarity and itemRarity > 1 then
+            r, g, b = GetItemQualityColor(itemRarity)
+        end
+    end
+
+    self:GetNormalTexture():SetVertexColor(r, g, b, 1)
 end
 
 function B.BagButtonMixin:UpdateCooldown()
     if self.hasItem then
         local start, duration, enable = GetContainerItemCooldown(self.bagID, self.slot)
-        CooldownFrame_Set(self.Cooldown, start, duration, enable)
+        CooldownFrame_Set(self.cooldown, start, duration, enable)
 
         if (duration > 0 and enable == 0) then
             SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
@@ -80,7 +128,7 @@ function B.BagButtonMixin:UpdateCooldown()
             SetItemButtonTextureVertexColor(self, 1, 1, 1)
         end
     else
-        self.Cooldown:Hide();
+        self.cooldown:Hide();
     end
 end
 

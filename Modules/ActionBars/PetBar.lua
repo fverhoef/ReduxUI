@@ -12,15 +12,14 @@ function AB:CreatePetBar()
     _G.Mixin(bar, AB.PetBarMixin)
 
     for id = 1, 10 do
-        bar.buttons[id] = AB:CreatePetButton(id, bar, bar.config.buttonType)
+        bar.buttons[id] = bar:CreateButton(id)
     end
 
     bar.buttons[11] = AB:CreateActionButton("$parent_Button11", bar, _G.PetDismiss, [[Interface\Icons\Spell_Shadow_SacrificialShield]], _G.PET_DISMISS)
 
-    bar.visibility = "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide"
+    RegisterStateDriver(bar, "visibility", "[overridebar][vehicleui][possessbar][shapeshift] hide; [pet] show; hide")
 
     bar:SetScript("OnEvent", bar.OnEvent)
-
     bar:RegisterEvent("PLAYER_REGEN_ENABLED")
     bar:RegisterEvent("PLAYER_CONTROL_LOST")
     bar:RegisterEvent("PLAYER_CONTROL_GAINED")
@@ -35,7 +34,6 @@ function AB:CreatePetBar()
     bar:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
     bar:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
     bar:RegisterUnitEvent("UNIT_AURA", "pet")
-
     if R.isRetail then
         bar:RegisterEvent("PET_SPECIALIZATION_CHANGED")
     end
@@ -53,7 +51,7 @@ AB.PetBarMixin = {}
 
 function AB.PetBarMixin:Configure()
     for i, button in ipairs(self.buttons) do
-        button:SetSize(self.config.buttonSize, self.config.buttonSize)
+        button:SetSize(self.config.buttonStyle.size, self.config.buttonStyle.size)
         button:ClearAllPoints()
         if i == 1 then
             button:SetPoint("LEFT", self, "LEFT")
@@ -64,12 +62,7 @@ function AB.PetBarMixin:Configure()
         button:Configure()
     end
 
-    if self.visibility then
-        RegisterStateDriver(self, "visibility", self.visibility)
-    else
-        self:SetShown(self.config.enabled)
-    end
-    self:SetSize(#self.buttons * self.config.buttonSize + (#self.buttons - 1) * self.config.columnSpacing, self.config.buttonSize)
+    self:SetSize(#self.buttons * self.config.buttonStyle.size + (#self.buttons - 1) * self.config.columnSpacing, self.config.buttonStyle.size)
 
     self:ClearAllPoints()
     self:SetNormalizedPoint(self.config.point)
@@ -99,22 +92,20 @@ function AB.PetBarMixin:OnEvent(event, arg1, ...)
     end
 end
 
-function AB:CreatePetButton(id, parent, buttonType)
-    local button = CreateFrame("CheckButton", "$parent_Button" .. id, parent, "PetActionButtonTemplate")
+function AB.PetBarMixin:CreateButton(id)
+    local button = CreateFrame("CheckButton", "$parent_Button" .. id, self, "PetActionButtonTemplate")
     button:SetID(id)
-    button.config = parent.config
+    button.id = id
+    button.header = self
+    button.keyBoundTarget = self.config.buttonStyle.type .. id
     _G.Mixin(button, AB.PetButtonMixin)
     _G.Mixin(button, AB.KeyBoundButtonMixin)
     button:SetScript("OnEvent", nil)
     button:UnregisterAllEvents()
 
-    button.id = id
-    button.buttonType = buttonType
-    button.keyBoundTarget = buttonType .. id
-    
-    button.cooldown = _G[button:GetName() .. "Cooldown"]
-    button.autoCastable = _G[button:GetName() .. "AutoCastable"]
-    button.shine = _G[button:GetName() .. "Shine"]
+    button.cooldown = button.cooldown or _G[button:GetName() .. "Cooldown"]
+    button.autoCastable = button.autoCastable or _G[button:GetName() .. "AutoCastable"]
+    button.shine = button.shine or _G[button:GetName() .. "Shine"]
 
     AB:SecureHookScript(button, "OnEnter", button.PostOnEnter)
     AB:SecureHookScript(button, "OnEvent", button.PostOnEvent)
@@ -127,12 +118,54 @@ end
 AB.PetButtonMixin = {}
 
 function AB.PetButtonMixin:Configure()
-    self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-
-    self:SetAttribute("showgrid", self.config.showGrid and 1 or 0)
+    self:RegisterForClicks(self.header.config.buttonStyle.clickOnDown and "AnyDown" or "AnyUp")
+    self:SetAttribute("buttonlock", true)
+    self:SetAttribute("checkselfcast", self.header.config.buttonStyle.checkSelfCast)
+    self:SetAttribute("checkfocuscast", self.header.config.buttonStyle.checkFocusCast)
+    self:SetAttribute("checkmouseovercast", self.header.config.buttonStyle.checkMouseoverCast)
+    self:SetAttribute("showgrid", self.header.config.showGrid and 1 or 0)
     self.HotKey:SetText(R.Libs.KeyBound:ToShortKey(GetBindingKey(self.keyBoundTarget)))
+    self.HotKey:SetShown(self.header.config.buttonStyle.hideKeybindText)
+    self.Name:SetShown(self.header.config.buttonStyle.hideMacroText)
 
-    R.Modules.ButtonStyles:StyleActionButton(self)
+    self:ApplyStyle()
+end
+
+function AB.PetButtonMixin:ApplyStyle()
+    if not self.__styled then
+        self.__styled = true
+
+        self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        self.icon:SetInside(self, 2, 2)
+
+        self.raisedContainer = CreateFrame("Frame", nil, self)
+        self.raisedContainer:SetAllPoints()
+        self.raisedContainer:SetFrameLevel(self:GetFrameLevel() + 1)
+
+        self.cooldown:SetInside(self, 2, 2)
+        self.cooldown:SetSwipeColor(0, 0, 0)
+
+        self.Count:SetParent(self.raisedContainer)
+        self.HotKey:SetParent(self.raisedContainer)
+        self.Name:SetParent(self.raisedContainer)
+
+        self:CreateBackdrop({ bgFile = R.media.textures.buttons.backdrop, edgeSize = 2, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
+    end
+
+    self:SetNormalTexture(R.media.textures.buttons.border)
+    local normalTexture = self:GetNormalTexture()
+    normalTexture:SetOutside(self, 4, 4)
+    normalTexture:SetTexCoord(0, 1, 0, 1)
+    normalTexture:SetVertexColor(0.7, 0.7, 0.7)
+
+    self:SetPushedTexture(R.media.textures.buttons.border)
+    local pushedTexture = self:GetPushedTexture()
+    pushedTexture:SetOutside(self, 4, 4)
+    pushedTexture:SetTexCoord(0, 1, 0, 1)
+    pushedTexture:SetVertexColor(1, 0.78, 0, 1)
+
+    self:GetCheckedTexture():SetOutside(self, 2, 2)
+    self:GetHighlightTexture():SetInside(self, 0, 0)
 end
 
 function AB.PetButtonMixin:Update()
