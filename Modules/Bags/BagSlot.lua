@@ -115,8 +115,7 @@ function B.BagSlotMixin:Initialize(frame, bagID)
     end
 
     self.icon = self.icon or _G[self:GetName() .. "Icon"] or _G[self:GetName() .. "IconTexture"]
-    self.Count = self.Count or _G[self:GetName() .. "Count"]
-    self.Stock = self.Stock or _G[self:GetName() .. "Stock"]
+    self.SlotCount = self.SlotCount or _G[self:GetName() .. "SlotCount"]
     
     self:ApplyStyle()
 end
@@ -168,13 +167,6 @@ function B.BagSlotMixin:ApplyStyle()
         self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         self.icon:SetInside(self, 2, 2)
 
-        self.raisedContainer = CreateFrame("Frame", nil, self)
-        self.raisedContainer:SetAllPoints()
-        self.raisedContainer:SetFrameLevel(self:GetFrameLevel() + 1)
-
-        self.Count:SetParent(self.raisedContainer)
-        self.Stock:SetParent(self.raisedContainer)
-
         self:SetNormalTexture(R.media.textures.buttons.border)
         local normalTexture = self:GetNormalTexture()
         normalTexture:SetOutside(self, 4, 4)
@@ -185,10 +177,10 @@ function B.BagSlotMixin:ApplyStyle()
         pushedTexture:SetOutside(self, 4, 4)
     end
 
-    if self:GetParent().config then
-        local style = self:GetParent().config.buttonStyle
-        self.Count:SetFont(style.countFont, style.countFontSize, style.countFontOutline)
-        self.Stock:SetFont(style.stockFont, style.stockFontSize, style.stockFontOutline)
+    local config = self.frame.config
+    if config then
+        self.SlotCount:SetFont(config.slotStyle.font, config.slotStyle.fontSize, config.slotStyle.fontOutline)
+        self.SlotCount:SetShadowOffset(config.slotStyle.fontShadow and 1 or 0, config.slotStyle.fontShadow and -1 or 0)
     end
 
     local r, g, b = 0.7, 0.7, 0.7

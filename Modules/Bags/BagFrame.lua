@@ -23,7 +23,7 @@ function B.BagFrameMixin:OnLoad()
     self.BagSlotsById = {}
     for i, bagID in next, self.BagIDs do
         local bag = CreateFrame("Frame", addonName .. "Bag" .. bagID, self, "BagTemplate")
-        bag:Initialize(bagID)
+        bag:Initialize(self, bagID)
         self.Bags[i] = bag
         self.BagsById[bagID] = bag
 

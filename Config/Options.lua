@@ -42,11 +42,18 @@ function R:SetupOptions()
     R.Libs.AceConfigDialog:SetDefaultSize(R.name, 900, 700)
 end
 
-function R:RegisterModuleOptions(module, options)
+function R:RegisterModuleOptions(module, options, addToGeneral)
     module.CreateOptions = function()
         options = type(options) == "function" and options() or options
-        options.order = 100 + #R.config.options.args
-        R.config.options.args[module.name] = options
+        if addToGeneral then
+            options.order = 10 + #R.config.options.args.general.args
+            options.inline = true
+            R.config.options.args.general.args[module.name] = options
+        else
+            options.order = 10 + #R.config.options.args
+            options.inline = false
+            R.config.options.args[module.name] = options
+        end
         module.options = options
     end
 end

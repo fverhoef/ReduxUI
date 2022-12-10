@@ -9,12 +9,14 @@ R:RegisterModuleConfig(B, {
         slotSize = 40,
         columns = 10,
         buttonStyle = {
-            countFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            countFontSize = 11,
-            countFontOutline = "OUTLINE",
-            stockFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            stockFontSize = 11,
-            stockFontOutline = "OUTLINE"
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "OUTLINE"
+        },
+        slotStyle = {
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "OUTLINE"
         }
     },
     bank = {
@@ -22,12 +24,14 @@ R:RegisterModuleConfig(B, {
         slotSize = 40,
         columns = 12,
         buttonStyle = {
-            countFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            countFontSize = 11,
-            countFontOutline = "OUTLINE",
-            stockFont = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-            stockFontSize = 11,
-            stockFontOutline = "OUTLINE"
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "OUTLINE"
+        },
+        slotStyle = {
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 11,
+            fontOutline = "OUTLINE"
         }
     },
     colors = { questItem = { 1, 1, 0 } }

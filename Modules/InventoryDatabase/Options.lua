@@ -9,8 +9,6 @@ R:RegisterModuleOptions(ID, {
     type = "group",
     name = L["Inventory Database"],
     args = {
-        header = { type = "header", name = R.title .. " > Inventory Database", order = 0 },
-        lineBreak = { type = "header", name = "", order = 2 },
         character = {
             type = "select",
             name = L["Characters"],
@@ -36,4 +34,4 @@ R:RegisterModuleOptions(ID, {
             end
         }
     }
-})
+}, true)

@@ -100,10 +100,12 @@ function B.BagButtonMixin:ApplyStyle()
         pushedTexture:SetOutside(self, 4, 4)
     end
 
-    if self:GetParent().config then
-        local style = self:GetParent().config.buttonStyle
-        self.Count:SetFont(style.countFont, style.countFontSize, style.countFontOutline)
-        self.Stock:SetFont(style.stockFont, style.stockFontSize, style.stockFontOutline)
+    local config = self:GetParent().frame.config
+    if config then
+        self.Count:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, config.buttonStyle.fontOutline)
+        self.Count:SetShadowOffset(config.buttonStyle.fontShadow and 1 or 0, config.buttonStyle.fontShadow and -1 or 0)
+        self.Stock:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, config.buttonStyle.fontOutline)
+        self.Stock:SetShadowOffset(config.buttonStyle.fontShadow and 1 or 0, config.buttonStyle.fontShadow and -1 or 0)
     end
 
     local r, g, b = 0.7, 0.7, 0.7

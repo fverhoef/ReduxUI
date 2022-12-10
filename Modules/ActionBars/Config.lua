@@ -6,6 +6,8 @@ local L = R.L
 AB.UPDATE_DEFAULT_MODE = { [""] = "Never", ANY_CLICK = "Any Click", LEFT_CLICK = "Left Click", RIGHT_CLICK = "Right Click", MIDDLE_CLICK = "Middle Click" }
 AB.COLUMN_DIRECTIONS = { "Right", "Left" }
 AB.ROW_DIRECTIONS = { "Up", "Down" }
+AB.FLYOUT_DIRECTIONS = {"UP", "DOWN", "LEFT", "RIGHT" }
+AB.OUT_OF_RANGE_COLORING = { "button", "hotkey" }
 AB.DEFAULT_COOLDOWN_LABELS = { 5, 15, 30, 60, 120, 180, 300 }
 AB.COOLDOWN_FILTERS = { NONE = "NONE" }
 AB.Styles = { Vanilla = "Vanilla", Modern = "Modern" }

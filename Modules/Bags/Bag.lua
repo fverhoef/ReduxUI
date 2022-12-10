@@ -23,7 +23,8 @@ ReduxBagMixin = B.BagMixin
 function B.BagMixin:OnLoad()
 end
 
-function B.BagMixin:Initialize(bagID)
+function B.BagMixin:Initialize(frame, bagID)
+    self.frame = frame
     self:SetID(bagID)
     self.Buttons = {}
     self.Hidden = bagID == KEYRING_CONTAINER
