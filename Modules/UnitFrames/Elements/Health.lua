@@ -121,6 +121,7 @@ function UF:ConfigureHealth()
 
         self.Health.Value:ClearAllPoints()
         self.Health.Value:SetNormalizedPoint(config.value.point)
+        self.Health.Value:CreateFader(config.value.fader, nil, self)
     else
         self.Health.Value:Hide()
         self:Untag(self.Health.Value)
@@ -139,6 +140,7 @@ function UF:ConfigureHealth()
 
         self.Health.Percent:ClearAllPoints()
         self.Health.Percent:SetNormalizedPoint(config.percent.point)
+        self.Health.Percent:CreateFader(config.percent.fader, nil, self)
     else
         self.Health.Percent:Hide()
         self:Untag(self.Health.Percent)

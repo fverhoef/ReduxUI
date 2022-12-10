@@ -47,7 +47,8 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 14,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[curhp_status:shortvalue]"
+            tag = "[curhp_status:shortvalue]",
+            fader = R.config.faders.onShow
         },
         percent = {
             enabled = true,
@@ -56,7 +57,8 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 11,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[perhp]%"
+            tag = "[perhp]%",
+            fader = R.config.faders.onShow
         },
         smooth = true
     },
@@ -72,7 +74,8 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 10,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[curpp:shortvalue]"
+            tag = "[curpp:shortvalue]",
+            fader = R.config.faders.onShow
         },
         percent = {
             enabled = false,
@@ -81,7 +84,8 @@ local DEFAULT_UNIT_CONFIG = {
             fontSize = 10,
             fontOutline = "OUTLINE",
             fontShadow = false,
-            tag = "[perpp]%"
+            tag = "[perpp]%",
+            fader = R.config.faders.onShow
         },
         smooth = true,
         frequentUpdates = true,
