@@ -43,26 +43,39 @@ function R:FadeOut(timeToFade, startAlpha, endAlpha, finishedFunc, finishedArg1,
     })
 end
 
-function R:CreateFader(faderConfig, children)
+function R:CreateFader(config, children, mouseParent)
     if not self then
         return
     end
 
-    if not self.faderConfig then
-        self.children = {}
-        self.faded = false
+    local fader = self.Fader
+    if not fader then
+        mouseParent = mouseParent or self
+        fader = _G.Mixin({
+            target = self,
+            config = config,
+            mouseParent = mouseParent,
+            children = {}
+        }, FaderMixin)
+        self.Fader = fader
 
-        self:EnableMouse(true)
-        self:HookScript("OnShow", R.Fader_OnShow)
-        self:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
-        self:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
+        mouseParent:EnableMouse(true)
+        mouseParent:HookScript("OnShow", function()
+            fader:OnShow()
+        end)
+        mouseParent:HookScript("OnEnter", function()
+            fader:OnEnterOrLeave()
+        end)
+        mouseParent:HookScript("OnLeave", function()
+            fader:OnEnterOrLeave()
+        end)
     end
 
-    self.faderConfig = faderConfig
-    if self.faderConfig == R.config.faders.mouseOver then
-        R.Fader_OnEnterOrLeave(self)
+    fader.config = config
+    if fader.config == R.config.faders.mouseOver then
+        fader:OnEnterOrLeave()
     elseif self.faded then
-        R.Fader_OnShow(self)
+        fader:OnShow()
     end
 
     if not children then
@@ -70,34 +83,33 @@ function R:CreateFader(faderConfig, children)
     end
 
     for _, child in next, children do
-        if not child.faderParent then
-            child.faderParent = self
+        if not self.Fader.children[child] then
             child:EnableMouse(true)
-            child:HookScript("OnEnter", R.Fader_OnEnterOrLeave)
-            child:HookScript("OnLeave", R.Fader_OnEnterOrLeave)
-            table.insert(self.children, child)
+            child:HookScript("OnEnter", function(self)
+                fader:OnEnterOrLeave()
+            end)
+            child:HookScript("OnLeave", function(self)
+                fader:OnEnterOrLeave()
+            end)
+            fader.children[child] = true
         end
     end
 end
 
-function R:Fader_OnShow()
-    local frame = self.faderParent or self
-    if frame.faderConfig == R.config.faders.onShow then
-        frame:FadeIn(0.3, 0)
+FaderMixin = {}
+
+function FaderMixin:OnShow()
+    if self.config == R.config.faders.onShow then
+        self.target:FadeIn(0.3, 0)
     end
 end
 
-function R:Fader_OnEnterOrLeave()
-    local frame = self.faderParent or self
-    if frame.faderConfig == R.config.faders.mouseOver then
-        if MouseIsOver(frame) or (SpellFlyout and SpellFlyout:IsShown() and MouseIsOver(SpellFlyout) and SpellFlyout:GetParent().faderParent == frame) then
-            frame:FadeIn()
+function FaderMixin:OnEnterOrLeave()
+    if self.config == R.config.faders.mouseOver then
+        if MouseIsOver(self.mouseParent) then
+            self.target:FadeIn()
         else
-            frame:FadeOut()
-            if SpellFlyout and SpellFlyout:IsShown() and not MouseIsOver(SpellFlyout) and SpellFlyout:GetParent().faderParent == frame then
-                SpellFlyout:Hide()
-                ActionButton_UpdateFlyout(self:GetParent())
-            end
+            self.target:FadeOut()
         end
     end
 end

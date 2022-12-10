@@ -81,7 +81,7 @@ function R.MoverMixin:OnShow()
     if self.frame.visibility and (not self.frame.config or self.frame.config.enabled) then
         RegisterStateDriver(self.frame, "visibility", "show")
     end
-    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then
+    if self.frame.Fader and (not self.frame.config or self.frame.config.enabled) then
         self.frame:FadeIn()
     end
 end
@@ -90,8 +90,8 @@ function R.MoverMixin:OnHide()
     if self.frame.visibility then
         RegisterStateDriver(self.frame, "visibility", self.frame.visibility)
     end
-    if self.frame.faderConfig and (not self.frame.config or self.frame.config.enabled) then
-        R.Fader_OnEnterOrLeave(self.frame)
+    if self.frame.Fader and (not self.frame.config or self.frame.config.enabled) then
+        self.frame.Fader:OnEnterOrLeave()
     end
 end
 
