@@ -32,7 +32,8 @@ function AB:CreateVehicleExitBar()
     button:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square")
     button:GetHighlightTexture():SetBlendMode("ADD")
 
-    button:CreateBorder({ 1, 0, 0 }, nil, 2)
+    button:CreateBorder()
+    button.Border:SetInside(button, 0, 0)
 
     bar.buttons[1] = button
 
