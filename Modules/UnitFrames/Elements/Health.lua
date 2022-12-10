@@ -123,6 +123,7 @@ function UF:ConfigureHealth()
         self.Health.Value:SetNormalizedPoint(config.value.point)
         self.Health.Value:CreateFader(config.value.fader, nil, self)
     else
+        self.Health.Value:CreateFader(R.config.faders.onShow, nil, self)
         self.Health.Value:Hide()
         self:Untag(self.Health.Value)
     end
@@ -142,6 +143,7 @@ function UF:ConfigureHealth()
         self.Health.Percent:SetNormalizedPoint(config.percent.point)
         self.Health.Percent:CreateFader(config.percent.fader, nil, self)
     else
+        self.Health.Percent:CreateFader(R.config.faders.onShow, nil, self)
         self.Health.Percent:Hide()
         self:Untag(self.Health.Percent)
     end

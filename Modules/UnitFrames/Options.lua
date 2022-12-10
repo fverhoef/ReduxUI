@@ -494,6 +494,12 @@ function UF:CreateUnitHealthValueOption(unit, order)
                 return UF:UnitConfig(unit).health.value.tag
             end, function(value)
                 UF:UnitConfig(unit).health.value.tag = value
+            end),
+            lineBreakFade = { type = "header", name = "Fading", order = 7 },
+            fade = UF:CreateToggleOption(unit, L["Mouseover Fade"], L["Whether to only show this text when the mouse is over this unit frame"], 8, nil, nil, function()
+                return UF:UnitConfig(unit).health.value.fader == R.config.faders.mouseOver
+            end, function(value)
+                UF:UnitConfig(unit).health.value.fader = value and R.config.faders.mouseOver or R.config.faders.onShow
             end)
         }
     }
@@ -572,6 +578,12 @@ function UF:CreateUnitHealthPercentOption(unit, order)
                 return UF:UnitConfig(unit).health.percent.tag
             end, function(value)
                 UF:UnitConfig(unit).health.percent.tag = value
+            end),
+            lineBreakFade = { type = "header", name = "Fading", order = 7 },
+            fade = UF:CreateToggleOption(unit, L["Mouseover Fade"], L["Whether to only show this text when the mouse is over this unit frame"], 8, nil, nil, function()
+                return UF:UnitConfig(unit).health.percent.fader == R.config.faders.mouseOver
+            end, function(value)
+                UF:UnitConfig(unit).health.percent.fader = value and R.config.faders.mouseOver or R.config.faders.onShow
             end)
         }
     }
@@ -781,6 +793,12 @@ function UF:CreateUnitPowerValueOption(unit, order)
                 return UF:UnitConfig(unit).power.value.tag
             end, function(value)
                 UF:UnitConfig(unit).power.value.tag = value
+            end),
+            lineBreakFade = { type = "header", name = "Fading", order = 7 },
+            fade = UF:CreateToggleOption(unit, L["Mouseover Fade"], L["Whether to only show this text when the mouse is over this unit frame"], 8, nil, nil, function()
+                return UF:UnitConfig(unit).power.value.fader == R.config.faders.mouseOver
+            end, function(value)
+                UF:UnitConfig(unit).power.value.fader = value and R.config.faders.mouseOver or R.config.faders.onShow
             end)
         }
     }
@@ -859,6 +877,12 @@ function UF:CreateUnitPowerPercentOption(unit, order)
                 return UF:UnitConfig(unit).power.percent.tag
             end, function(value)
                 UF:UnitConfig(unit).power.percent.tag = value
+            end),
+            lineBreakFade = { type = "header", name = "Fading", order = 7 },
+            fade = UF:CreateToggleOption(unit, L["Mouseover Fade"], L["Whether to only show this text when the mouse is over this unit frame"], 8, nil, nil, function()
+                return UF:UnitConfig(unit).power.percent.fader == R.config.faders.mouseOver
+            end, function(value)
+                UF:UnitConfig(unit).power.percent.fader = value and R.config.faders.mouseOver or R.config.faders.onShow
             end)
         }
     }

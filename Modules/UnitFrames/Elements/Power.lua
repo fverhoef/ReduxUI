@@ -98,6 +98,7 @@ function UF:ConfigurePower()
         self.Power.Value:SetNormalizedPoint(config.value.point)
         self.Power.Value:CreateFader(config.value.fader, nil, self)
     else
+        self.Power.Value:CreateFader(R.config.faders.onShow, nil, self)
         self.Power.Value:Hide()
         self:Untag(self.Power.Value)
     end
@@ -117,6 +118,7 @@ function UF:ConfigurePower()
         self.Power.Percent:SetNormalizedPoint(config.percent.point)
         self.Power.Percent:CreateFader(config.percent.fader, nil, self)
     else
+        self.Power.Percent:CreateFader(R.config.faders.onShow, nil, self)
         self.Power.Percent:Hide()
         self:Untag(self.Power.Percent)
     end
