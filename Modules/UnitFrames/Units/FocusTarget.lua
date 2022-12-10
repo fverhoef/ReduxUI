@@ -105,13 +105,13 @@ function UF.FocusTargetMixin:PostConfigure()
 
         self:DisableElement("Portrait")
         self.Portrait = self.PortraitHolder.PortraitRound
-        self.PortraitHolder:SetSize(33, 33)
+        self.PortraitHolder:SetSize(35, 35)
         self.PortraitHolder:ClearAllPoints()
-        self.PortraitHolder:SetPoint("TOPLEFT", 7, -6)
+        self.PortraitHolder:SetPoint("TOPLEFT", 5, -4)
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
-        self.Health:SetPoint("TOPLEFT", 42, -14)
+        self.Health:SetPoint("TOPLEFT", 40, -14)
         self.Health:SetPoint("BOTTOMRIGHT", -7, 20)
 
         self.Health.Value:Hide()
