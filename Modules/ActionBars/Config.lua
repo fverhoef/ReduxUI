@@ -221,7 +221,7 @@ R:RegisterModuleConfig(AB, {
     },
     stanceBar = {
         enabled = true,
-        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 166 },
+        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 169 },
         fader = R.config.faders.onShow,
         columnSpacing = 2,
         backdrop = false,
@@ -233,7 +233,7 @@ R:RegisterModuleConfig(AB, {
     },
     petBar = {
         enabled = true,
-        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 166 },
+        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 169 },
         fader = R.config.faders.onShow,
         columnSpacing = 2,
         backdrop = false,
@@ -255,7 +255,7 @@ R:RegisterModuleConfig(AB, {
     },
     totemBar = {
         enabled = true,
-        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 225 },
+        point = { "BOTTOM", "UIParent", "BOTTOM", 0, 169 },
         fader = R.config.faders.onShow,
         columnSpacing = 5,
         backdrop = false,
