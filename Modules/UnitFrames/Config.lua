@@ -153,7 +153,7 @@ local DEFAULT_UNIT_CONFIG = {
             gap = true,
             minDuration = 0,
             maxDuration = 0,
-            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "OUTLINE",
             showDuration = true,
@@ -173,7 +173,7 @@ local DEFAULT_UNIT_CONFIG = {
             showBuffType = false,
             minDuration = 0,
             maxDuration = 0,
-            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "OUTLINE",
             showDuration = true,
@@ -194,7 +194,7 @@ local DEFAULT_UNIT_CONFIG = {
             showDebuffType = true,
             minDuration = 0,
             maxDuration = 0,
-            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), 
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
             fontSize = 10,
             fontOutline = "OUTLINE",
             showDuration = true,
@@ -346,10 +346,34 @@ R:RegisterModuleConfig(UF, {
     },
     auraFrames = {
         enabled = true,
-        buffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
-        debuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -113 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
-        deadlyDebuffs = { point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -163 }, iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 },
-        tempEnchants = { iconSize = 36, fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 }
+        buffs = {
+            point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -13 },
+            iconSize = 36,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28
+        },
+        debuffs = {
+            point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -113 },
+            iconSize = 36,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28
+        },
+        deadlyDebuffs = {
+            point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -240, -163 },
+            iconSize = 36,
+            font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+            fontSize = 10,
+            fontOutline = "OUTLINE",
+            showDuration = true,
+            minSizeToShowDuration = 28
+        },
+        tempEnchants = { iconSize = 36, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "OUTLINE", showDuration = true, minSizeToShowDuration = 28 }
     },
     player = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = DEFAULT_STYLE,

@@ -123,6 +123,7 @@ end
 oUF:RegisterMetaFunction("ConfigureAuras", UF.ConfigureAuras)
 
 function UF:PostCreateAura(button)
+    button.config = button:GetParent().config
     button.Cooldown:SetInside(nil, 1, 1)
     _G.Mixin(button, AuraStyleMixin)
     button:ApplyStyle()

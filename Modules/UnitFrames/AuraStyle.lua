@@ -81,7 +81,7 @@ function AuraStyleMixin:ApplyStyle()
     if self.isTempEnchant then
         local quality = GetInventoryItemQuality("player", self:GetID())
         if quality and quality > 1 then
-            borderColor = { GetItemQualityColor(quality) }
+            r, g, b = GetItemQualityColor(quality)
         end
     end
 
