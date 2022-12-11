@@ -266,7 +266,7 @@ local DEFAULT_UNIT_CONFIG = {
     restingIndicator = { enabled = true, size = { 24, 24 }, point = { "BOTTOMLEFT", "TOPRIGHT", 0, 0 } },
     resurrectIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
     summonIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
-    comboPoints = { enabled = false, attachToPortrait = false, size = 12, spacing = 5 },
+    comboPoints = { enabled = false, size = 12, spacing = 5, point = { "TOP", "BOTTOM", 0, 5 }, attachToPortrait = false },
     trinket = { enabled = false, size = { 40, 40 }, point = { "LEFT", "RIGHT", 5, 0 }, trinketUseAnnounce = true, trinketUpAnnounce = true, announceChannel = "GROUP" },
     diminishingReturnsTracker = { enabled = false, iconSize = 24, iconSpacing = 10, point = { "LEFT", "RIGHT", 50, 0 } }
 }
@@ -643,7 +643,8 @@ R:RegisterModuleConfig(UF, {
                 debuffs = { filter = { whitelist = { Personal = true, CrowdControl = true }, blacklist = { BlockNoDuration = true } } }
             },
             highlight = { animate = false, targetArrows = true },
-            pvpIndicator = { enabled = false }
+            pvpIndicator = { enabled = false },
+            comboPoints = { enabled = false, size = 10, point = { "TOP", "BOTTOM", 0, 1 } }
         }),
         friendlyNpc = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
             size = { 160, 14 },
@@ -677,7 +678,8 @@ R:RegisterModuleConfig(UF, {
                 debuffs = { filter = { whitelist = { Personal = true, Dispellable = true, CrowdControl = true }, blacklist = { BlockNoDuration = true } } }
             },
             highlight = { animate = false, targetArrows = true },
-            pvpIndicator = { enabled = false }
+            pvpIndicator = { enabled = false },
+            comboPoints = { enabled = false, size = 10, point = { "TOP", "BOTTOM", 0, 1 } }
         }),
         cvars = {
             nameplateMinScale = 0.8,

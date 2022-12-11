@@ -41,6 +41,9 @@ end
 
 function UF.NameplateMixin:Callback(event, unit)
     if self then
+        if self.ComboPointBar then
+            self.ComboPointBar:ForceUpdate()
+        end
         if self.TargetIndicator then
             self.TargetIndicator:ForceUpdate()
         end

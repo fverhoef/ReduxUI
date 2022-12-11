@@ -28,7 +28,8 @@ function UF:ConfigureComboPointBar()
 
     self:EnableElement("ComboPointBar")
 
-    self.ComboPointBar:SetPoint("TOP", self, "BOTTOM")
+    self.ComboPointBar:ClearAllPoints()
+    self.ComboPointBar:SetNormalizedPoint(config.point)
     self.ComboPointBar.size = config.size
     self.ComboPointBar.spacing = config.spacing
     self.ComboPointBar:ForceUpdate()
@@ -56,6 +57,7 @@ function UF:ComboPointBar_PostCreateComboPoint(comboPoint)
     comboPoint.Background:SetTexture(R.media.textures.unitFrames.comboPointBackground)
     comboPoint.Background:SetTexCoord(0, 1, 0, 1)
     comboPoint.Background:SetAllPoints()
+
     comboPoint.Fill:SetTexture(R.media.textures.unitFrames.comboPointFill)
     comboPoint.Fill:SetTexCoord(0, 1, 0, 1)
     comboPoint.Fill:SetAllPoints()

@@ -130,7 +130,7 @@ function R:CreateSeparator(color, size, offset, frameLevel, position)
         separator = CreateFrame("Frame", nil, self)
     end
     if not separator.Texture then
-        separator.Texture = separator:CreateTexture("BORDER")
+        separator.Texture = separator:CreateTexture(nil, "BORDER")
     end
 
     color = color or R.DEFAULT_SEPARATOR_COLOR

@@ -1,26 +1,23 @@
 --[[
-# Element: Master Looter Indicator
+# Element: Combo Point Bar
 
-Toggles the visibility of an indicator based on the unit's master looter status.
+Shows combo points.
 
 ## Widget
 
 ComboPointBar - Any UI widget.
 
 ## Notes
-
-A default texture will be applied if the widget is a Texture and doesn't have a texture or a color set.
-
 ## Examples
-
     -- Position and size
-    local ComboPointBar = self:CreateTexture(nil, 'OVERLAY')
-    MasterLooterIndicator:SetSize(16, 16)
-    MasterLooterIndicator:SetPoint('TOPRIGHT', self)
+    local ComboPointBar = CreateFrame("Frame", "$parentComboPoints", self)
+    ComboPointBar.size = 12
+    ComboPointBar.spacing = 5
 
     -- Register it with oUF
-    self.MasterLooterIndicator = MasterLooterIndicator
---]] local _, ns = ...
+    self.ComboPointBar = ComboPointBar
+--]] 
+local _, ns = ...
 local oUF = ns.oUF
 
 if oUF.isRetail then
@@ -47,23 +44,23 @@ local function FillFadeIn(comboPoint)
     UIFrameFade(comboPoint.Fill, { mode = "IN", timeToFade = COMBOFRAME_HIGHLIGHT_FADE_IN, finishedFunc = ShineFadeIn, finishedArg1 = comboPoint })
 end
 
-local function Create(element, index)
+local function CreateComboPoint(element, index)
     local comboPoint = CreateFrame("Frame", "$parentComboPoint" .. index, element)
     comboPoint:SetSize(element.size, element.size)
 
-    comboPoint.Background = comboPoint:CreateTexture("BACKGROUND")
+    comboPoint.Background = comboPoint:CreateTexture("$parentBackground", "BACKGROUND")
     comboPoint.Background:SetSize(12, 16)
     comboPoint.Background:SetPoint("TOPLEFT")
     comboPoint.Background:SetTexture([[Interface\ComboFrame\ComboPoint]])
     comboPoint.Background:SetTexCoord(0, 0.375, 0, 1)
 
-    comboPoint.Fill = comboPoint:CreateTexture("ARTWORK")
+    comboPoint.Fill = comboPoint:CreateTexture("$parentFill", "OVERLAY", nil, 1)
     comboPoint.Fill:SetSize(8, 16)
     comboPoint.Fill:SetPoint("TOPLEFT", 2, 0)
     comboPoint.Fill:SetTexture([[Interface\ComboFrame\ComboPoint]])
     comboPoint.Fill:SetTexCoord(0.375, 0.5625, 0, 1)
 
-    comboPoint.Shine = comboPoint:CreateTexture("OVERLAY")
+    comboPoint.Shine = comboPoint:CreateTexture("$parentShine", "OVERLAY", nil, 2)
     comboPoint.Shine:SetSize(14, 16)
     comboPoint.Shine:SetPoint("TOPLEFT", 0, 4)
     comboPoint.Shine:SetTexture([[Interface\ComboFrame\ComboPoint]])
@@ -99,12 +96,15 @@ local function UpdateMax(element)
     end
 end
 
-local function Update(self, event, unit)
+local function Update(element, event, unit)
     if unit and unit ~= "player" then
         return
     end
 
-    local element = self
+    if not UnitIsUnit(element.__owner.unit, "target") then
+        element:Hide()
+        return
+    end
 
     if event == "UNIT_MAXPOWER" or event == "PLAYER_ENTERING_WORLD" then
         UpdateMax(element)
@@ -113,6 +113,8 @@ local function Update(self, event, unit)
         UpdateMax(element)
     elseif event == "UNIT_EXITED_VEHICLE" then
         element.unit = "player"
+        UpdateMax(element)
+    elseif event == "ForceUpdate" then
         UpdateMax(element)
     end
 
@@ -140,7 +142,7 @@ local function Update(self, event, unit)
 
             comboPoint:Show()
             comboPoint:ClearAllPoints()
-            comboPoint:SetPoint("LEFT", i == 1 and self or element.ComboPoints[i - 1], i == 1 and "LEFT" or "RIGHT", i > 1 and element.spacing or 0, 0)
+            comboPoint:SetPoint("LEFT", i == 1 and element or element.ComboPoints[i - 1], i == 1 and "LEFT" or "RIGHT", i > 1 and element.spacing or 0, 0)
         end
 
         element:SetSize(element.MaxComboPoints * element.size + (element.MaxComboPoints - 1) * element.spacing, element.size)
@@ -175,7 +177,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-    return Path(element.__owner, "ForceUpdate")
+    return Path(element, "ForceUpdate")
 end
 
 local function Enable(self, unit)
@@ -184,14 +186,15 @@ local function Enable(self, unit)
         element.__owner = self
         element.ForceUpdate = ForceUpdate
         element.ComboPoints = {}
-        element.CreateComboPoint = element.CreateComboPoint or Create
+        element.CreateComboPoint = element.CreateComboPoint or CreateComboPoint
         element.unit = "player"
+        element.lastNumPoints = 0
         element.size = element.size or COMBO_POINT_SIZE
         element.spacing = element.spacing or COMBO_POINT_SPACING
 
         element:RegisterEvent("PLAYER_TARGET_CHANGED")
-        element:RegisterEvent("UNIT_POWER_FREQUENT")
-        element:RegisterEvent("UNIT_MAXPOWER")
+        element:RegisterUnitEvent("UNIT_POWER_FREQUENT", "player")
+        element:RegisterUnitEvent("UNIT_MAXPOWER", "player")
         element:RegisterEvent("PLAYER_ENTERING_WORLD")
         element:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
         element:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")

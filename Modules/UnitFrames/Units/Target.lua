@@ -194,6 +194,11 @@ function UF.TargetMixin:PostConfigure()
         self.Castbar:ClearAllPoints()
         self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
         self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
+
+        if self.ComboPointBar then
+            self.ComboPointBar:ClearAllPoints()
+            self.ComboPointBar:SetPoint("TOP", self.Power, "BOTTOM", 0, 5)
+        end
     elseif self.config.style == UF.Styles.Modern then
         self:SetSize(192, 67)
 
@@ -360,7 +365,7 @@ function UF.TargetMixin:PostConfigure()
 
         if self.ComboPointBar then
             self.ComboPointBar:ClearAllPoints()
-            self.ComboPointBar:SetPoint("TOP", self.Power, "BOTTOM", 0, 7)
+            self.ComboPointBar:SetPoint("TOP", self.Power, "BOTTOM", 0, 5)
         end
     else
         if self.Artwork then
