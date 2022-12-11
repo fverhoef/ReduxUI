@@ -7,6 +7,7 @@
     <Include file="Castbar.xml"/>
     <Script file="ClassPower.lua"/>
     <Script file="CombatIndicator.lua"/>
+    <Script file="ComboPoints.lua"/>
     <Script file="DiminishingReturnsTracker.lua"/>    
     <Script file="GroupRoleIndicator.lua"/>
     <Script file="Health.lua"/>

@@ -87,6 +87,7 @@ function UF.UnitFrameMixin:Initialize()
         self:CreateMasterLooterIndicator()
     end
 
+    self:CreateComboPointBar()
     self:CreateTrinket()
     self:CreateDiminishingReturnsTracker()
 
@@ -149,6 +150,7 @@ function UF.UnitFrameMixin:Configure()
         self:ConfigureMasterLooterIndicator()
     end
 
+    self:ConfigureComboPointBar()
     self:ConfigureTrinket()
     self:ConfigureDiminishingReturnsTracker()
 

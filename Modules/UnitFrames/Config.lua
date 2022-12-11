@@ -110,7 +110,7 @@ local DEFAULT_UNIT_CONFIG = {
         smooth = true,
         frequentUpdates = true
     },
-    classPower = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
+    classPower = { enabled = false, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
     runes = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
     stagger = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, smooth = true },
     totems = { enabled = true, size = { 226, 32 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
@@ -266,6 +266,7 @@ local DEFAULT_UNIT_CONFIG = {
     restingIndicator = { enabled = true, size = { 24, 24 }, point = { "BOTTOMLEFT", "TOPRIGHT", 0, 0 } },
     resurrectIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
     summonIndicator = { enabled = true, size = { 32, 32 }, point = { "CENTER", "CENTER", 0, 0 } },
+    comboPoints = { enabled = false, attachToPortrait = false, size = 12, spacing = 5 },
     trinket = { enabled = false, size = { 40, 40 }, point = { "LEFT", "RIGHT", 5, 0 }, trinketUseAnnounce = true, trinketUpAnnounce = true, announceChannel = "GROUP" },
     diminishingReturnsTracker = { enabled = false, iconSize = 24, iconSpacing = 10, point = { "LEFT", "RIGHT", 50, 0 } }
 }
@@ -444,7 +445,8 @@ R:RegisterModuleConfig(UF, {
         },
         combatIndicator = { point = { "CENTER", "LEFT", 0, 0 } },
         pvpIndicator = { point = { "CENTER", "RIGHT", 0, 0 } },
-        highlight = { target = false }
+        highlight = { target = false },
+        comboPoints = { enabled = true }
     }),
     targettarget = R:CopyTable(DEFAULT_UNIT_CONFIG_NO_INDICATORS, {
         style = DEFAULT_STYLE,

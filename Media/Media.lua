@@ -105,6 +105,8 @@ R.media = {
             reputationYellow = MEDIA_PREFIX .. "\\Textures\\StatusBars\\ReputationYellow"
         },
         unitFrames = {
+            comboPointBackground = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\ComboPointBackground",
+            comboPointFill = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\ComboPointFill",
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
             modern = {
