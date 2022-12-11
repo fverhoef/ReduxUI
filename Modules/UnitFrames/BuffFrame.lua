@@ -23,13 +23,6 @@ function UF:StyleAuraFrames()
         DebuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.debuffs.point))
         DebuffFrame:CreateMover(L["Debuffs"], UF.defaults.auraFrames.debuffs.point, 400, 50, { "TOPRIGHT", DebuffFrame, "TOPRIGHT" })
         UF:SecureHook(DebuffFrame, "Update", UF.UpdateAuraFrames)
-        
-        DeadlyDebuffFrame.config = UF.config.auraFrames.deadlyDebuffs
-        DeadlyDebuffFrame.defaults = UF.defaults.auraFrames.deadlyDebuffs
-        DeadlyDebuffFrame:ClearAllPoints()
-        DeadlyDebuffFrame:SetNormalizedPoint(unpack(UF.config.auraFrames.deadlyDebuffs.point))
-        DeadlyDebuffFrame:CreateMover(L["Debuffs"], UF.defaults.auraFrames.deadlyDebuffs.point, 400, 50, { "TOPRIGHT", DebuffFrame, "TOPRIGHT" })
-        UF:SecureHook(DeadlyDebuffFrame, "Update", UF.UpdateAuraFrames)
     else
         UF:SecureHook("BuffFrame_Update", UF.UpdateAuraFrames)
     end
@@ -51,10 +44,16 @@ end
 function UF:UpdateAuraFrames()
     if R.isRetail then
         for _, aura in ipairs(self.auraFrames) do
+            aura.isTempEnchant = aura.buttonInfo.isTempEnchant
+            aura.isBuff = not aura.isTempEnchant and aura:GetFilter() == "HELPFUL"
+            aura.isDebuff = aura.isTempEnchant and not aura.isBuff
+            aura.buffType = aura.isBuff and aura.buttonInfo.debuffType
+            aura.debuffType = aura.isDebuff and aura.buttonInfo.debuffType
             if not aura.ApplyStyle then
-                _G.Mixin(button, AuraStyleMixin)
-                button.config = UF.config.auraFrames.buffs -- TODO: distinguish between buffs/debuffs etc
+                _G.Mixin(aura, AuraStyleMixin)
+                aura.config = UF.config.auraFrames.buffs -- TODO: distinguish between buffs/debuffs etc
             end
+            aura:SetNormalizedSize(aura.config.iconSize)
             aura:ApplyStyle()
         end
     else
@@ -62,9 +61,9 @@ function UF:UpdateAuraFrames()
         for i = 1, _G.BUFF_MAX_DISPLAY do
             button = _G["BuffButton" .. i]
             if button then
+                button.isTempEnchant = false
                 button.isBuff = true
                 button.isDebuff = false
-                button.isTempEnchant = false
                 button.buffType = select(4, UnitAura("player", i, "HELPFUL"))
                 button.debuffType = nil
                 if not button.ApplyStyle then
@@ -78,9 +77,9 @@ function UF:UpdateAuraFrames()
         for i = 1, _G.DEBUFF_MAX_DISPLAY do
             button = _G["DebuffButton" .. i]
             if button then
+                button.isTempEnchant = false
                 button.isBuff = false
                 button.isDebuff = true
-                button.isTempEnchant = false
                 button.buffType = nil
                 button.debuffType = select(4, UnitAura("player", i, "HARMFUL"))
                 if not button.ApplyStyle then
@@ -94,9 +93,9 @@ function UF:UpdateAuraFrames()
         for i = 1, _G.NUM_TEMP_ENCHANT_FRAMES do
             button = _G["TempEnchant" .. i]
             if button then
+                button.isTempEnchant = true
                 button.isBuff = false
                 button.isDebuff = false
-                button.isTempEnchant = true
                 button.buffType = nil
                 button.debuffType = nil
                 if not button.ApplyStyle then

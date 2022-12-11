@@ -4,14 +4,13 @@ local B = R.Modules.Bags
 
 local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
 local GetContainerItemCooldown = GetContainerItemCooldown or (C_Container and C_Container.GetContainerItemCooldown)
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo or (C_Container and C_Container.GetContainerItemQuestInfo)
 
 B.BagButtonMixin = {}
 ReduxBagButtonMixin = B.BagButtonMixin
 
-function B.BagButtonMixin:Initialize(bagID, slot)
-    self:SetID(slot)
-    self.bagID = bagID
-    self.slot = slot
+function B.BagButtonMixin:Initialize(id)
+    self:SetID(id)
 
     self.IconQuestTexture = self.IconQuestTexture or _G[self:GetName() .. "IconQuestTexture"]
     if self.IconQuestTexture then
@@ -27,7 +26,15 @@ function B.BagButtonMixin:Initialize(bagID, slot)
 end
 
 function B.BagButtonMixin:Update()
-    local texture, itemCount, locked, quality, readable, _, _, _, _, itemId = GetContainerItemInfo(self.bagID, self.slot)
+    local texture, itemCount, locked, quality, readable, itemId
+    if R.isRetail then
+        local info = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
+        if info then
+            texture, itemCount, locked, quality, readable, itemId = info.iconFileID, info.stackCount, info.isLocked, info.quality, info.IsReadable, info.itemID
+        end
+    else
+        texture, itemCount, locked, quality, readable, _, _, _, _, itemId = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
+    end
     self.readable = readable
 
     SetItemButtonTexture(self, texture)
@@ -45,8 +52,15 @@ function B.BagButtonMixin:Update()
     end
 
     if self.IconQuestTexture then
-        local itemClassID = itemId and select(12, GetItemInfo(itemId)) or nil
-        self.IconQuestTexture:SetShown(itemClassID == LE_ITEM_CLASS_QUESTITEM)
+        local isQuestItem
+        if R.isRetail then
+            local questInfo = C_Container.GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
+            isQuestItem = questInfo.isQuestItem
+        else
+            isQuestItem = itemId and select(12, GetItemInfo(itemId)) or nil
+        end
+
+        self.IconQuestTexture:SetShown(isQuestItem)
     end
     local battlepayItemTexture = self.BattlepayItemTexture
     if battlepayItemTexture then
@@ -121,7 +135,7 @@ end
 
 function B.BagButtonMixin:UpdateCooldown()
     if self.hasItem then
-        local start, duration, enable = GetContainerItemCooldown(self.bagID, self.slot)
+        local start, duration, enable = GetContainerItemCooldown(self:GetParent():GetID(), self:GetID())
         CooldownFrame_Set(self.cooldown, start, duration, enable)
 
         if (duration > 0 and enable == 0) then

@@ -30,7 +30,7 @@ function B.BankMixin:OnLoad()
         _G.Mixin(self.BankTab, B.BankTabMixin)
 
         local bag = CreateFrame("Frame", addonName .. "ReagentBag", self, "BagTemplate")
-        bag:Initialize(REAGENTBANK_CONTAINER)
+        bag:Initialize(self, REAGENTBANK_CONTAINER)
         bag.Hidden = true
         self.Bags[#self.Bags] = bag
         self.BagsById[REAGENTBANK_CONTAINER] = bag

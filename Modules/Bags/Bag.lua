@@ -32,7 +32,7 @@ function B.BagMixin:Initialize(frame, bagID)
     local numItems = bagID == REAGENTBANK_CONTAINER and REAGENTBANK_SIZE or MAX_CONTAINER_ITEMS
     for slot = 1, numItems do
         local button = CreateFrame(R.isRetail and "ItemButton" or "CheckButton", addonName .. "Bag" .. bagID .. "Button" .. slot, self, BUTTON_TEMPLATES[bagID] or "InventoryBagButtonTemplate")
-        button:Initialize(bagID, slot)
+        button:Initialize(slot)
         self.Buttons[slot] = button
     end
 end

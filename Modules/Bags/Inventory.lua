@@ -30,14 +30,18 @@ function B.InventoryMixin:OnLoad()
         _G["ContainerFrame" .. i]:SetParent(R.HiddenFrame)
     end
 
+    if R.isRetail then
+        _G.ContainerFrameCombinedBags:SetParent(R.HiddenFrame)
+    end
+
     self:SetNormalizedPoint(self.config.point)
     self:CreateMover(L["Inventory"], B.defaults.inventory.point)
 
     B:SecureHook("OpenAllBags", B.ShowInventory)
     B:SecureHook("CloseAllBags", B.HideInventory)
-    B:SecureHook("ToggleBag", "ToggleBag")
-    B:SecureHook("ToggleAllBags", B.ToggleBackpack)
-    B:SecureHook("ToggleBackpack", B.ToggleBackpack)
+    B:SecureHook("ToggleBag", B.ToggleBag)
+    B:SecureHook("ToggleAllBags", B.ToggleInventory)
+    B:SecureHook("ToggleBackpack", B.ToggleInventory)
     if BackpackTokenFrame and ManageBackpackTokenFrame then
         B:SecureHook("ManageBackpackTokenFrame", function(backpack)
             if BackpackTokenFrame_IsShown() then
@@ -138,20 +142,8 @@ function B:ToggleInventory()
     end
 end
 
-function B:ToggleBackpack()
-    if IsOptionFrameOpen() then
-        return
-    end
-
-    if IsBagOpen(0) then
-        B:ShowInventory()
-    else
-        B:HideInventory()
-    end
-end
-
 function B:ToggleBag(id)
-    if (id and (GetContainerNumSlots(id) == 0)) or id == 0 then
+    if id and (GetContainerNumSlots(id) == 0) then
         return
     end
 

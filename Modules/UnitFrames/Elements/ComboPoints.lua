@@ -19,7 +19,7 @@ oUF:RegisterMetaFunction("CreateComboPointBar", UF.CreateComboPointBar)
 
 function UF:ConfigureComboPointBar()
     local config = self.config.comboPoints
-    if not config.enabled then
+    if not config.enabled or R.isRetail then
         self:DisableElement("ComboPointBar")
         return
     elseif not self.ComboPointBar then
