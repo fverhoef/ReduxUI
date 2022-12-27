@@ -113,7 +113,7 @@ local DEFAULT_UNIT_CONFIG = {
     classPower = { enabled = false, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
     runes = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
     stagger = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, smooth = true },
-    totems = { enabled = true, size = { 226, 32 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
+    totems = { enabled = true, iconSize = 32, point = { "BOTTOM", "TOP", 0, 5 }, detached = false, spacing = 10, smooth = true },
     name = {
         enabled = true,
         size = { 170, 10 },
@@ -227,7 +227,6 @@ local DEFAULT_UNIT_CONFIG = {
         style = UF.CastbarStyles.Modern,
         size = { 209, 11 },
         point = { "TOPLEFT", "BOTTOMLEFT", 0, -7 },
-        attachedPoint = "BOTTOM",
         showGlow = true,
         showIcon = true,
         showSpark = true,
@@ -428,6 +427,7 @@ R:RegisterModuleConfig(UF, {
         power = { powerPrediction = true, insetPoint = { "RIGHT", "BOTTOMRIGHT", -10, 0 } },
         portrait = { size = { 36, 36 } },
         castbar = { size = { 209, 11 }, point = { "BOTTOM", "UIParent", "BOTTOM", 0, 220 }, detached = true, showSafeZone = true, shieldSize = 32, style = UF.CastbarStyles.ModernAnimated },
+        totems = { point = { "BOTTOM", "TOP", 0, 5 }, detached = false },
         highlight = { animate = true, target = false, resting = true, combat = true }
     }),
     target = R:CopyTable(DEFAULT_UNIT_CONFIG, {

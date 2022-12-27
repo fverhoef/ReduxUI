@@ -33,15 +33,15 @@ function UF.PlayerMixin:PostInitialize()
         self:CreateStagger()
     end
 
-    self.Power:CreateMover("PlayerPower", self.defaults.power.point)
-    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
+    self.Power:CreateMover("Player Power", self.defaults.power.point)
+    self.Castbar:CreateMover("Player Castbar", self.defaults.castbar.point)
 
     self.isResting = false
     self.inCombat = false
 end
 
 function UF.PlayerMixin:PostConfigure()
-    self.Castbar:CreateMover("PlayerCastbar", self.defaults.castbar.point)
+    self.Castbar:CreateMover("Player Castbar", self.defaults.castbar.point)
     
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
