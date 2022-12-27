@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
+local spellTicks = {}
+
 function UF:CreateCastbar()
     if not self.config.castbar.enabled then
         return
@@ -28,6 +30,7 @@ local function CreateCastbar(self, template)
     castbar:Hide()
     castbar.HideBase = castbar.Hide
     castbar.Hide = UF.Castbar_Hide
+    castbar.Ticks = {}
     return castbar
 end
 
@@ -179,6 +182,9 @@ function CastbarMixin:PostCastStart(unit)
     self:StopAnimations()
     self:SetAlpha(1.0)
     self.Spark:Show()
+    if unit == "player" then
+        self:UpdateTicks()
+    end
 end
 
 function CastbarMixin:PostCastStop(unit)
@@ -206,6 +212,38 @@ end
 
 function CastbarMixin:IsCasting()
     return self.casting or self.channeling or self.empowering
+end
+
+function CastbarMixin:GetOrCreateTick(i)
+    local tick = self.Ticks[i]
+    if not tick then
+        tick = self:CreateTexture("$parentTick" .. i, "OVERLAY", nil, 4)
+        tick:SetTexture(R.media.textures.unitFrames.modern.castingBarTick)
+        tick:SetWidth(4)
+        self.Ticks[i] = tick
+    end
+
+    return tick
+end
+
+function CastbarMixin:UpdateTicks()
+    for i, tick in ipairs(self.Ticks) do
+        tick:Hide()
+    end
+
+    if self.channeling then
+        local ticks = spellTicks[self.spellID] or 1
+        local width = (self:GetWidth()) / ticks
+        local height = self:GetHeight()
+
+        for i = 1, ticks - 1 do
+            local tick = self:GetOrCreateTick(i)
+            tick:ClearAllPoints()
+            tick:SetPoint("CENTER", self, "LEFT", i * width, 0)
+            tick:SetHeight(height)
+            tick:Show()
+        end
+    end
 end
 
 CastbarFadeOutAnimationMixin = {}
@@ -339,4 +377,54 @@ CastbarInterruptAnimationMixin = {}
 
 function CastbarInterruptAnimationMixin:OnFinished()
     self:GetParent().Spark:Hide()
+end
+
+local function AddSpellTicks(ids, ticks)
+    if type(ids) == "table" then
+        for _, id in ipairs(ids) do
+            spellTicks[id] = ticks
+        end
+    else
+        spellTicks[ids] = ticks
+    end
+end
+
+if R.isRetail then
+else
+    -- Death Knight
+    AddSpellTicks(42650, 8)
+
+    -- Druid
+    AddSpellTicks({ 740, 8918, 9862, 9863, 26983, 48446, 48447 }, 4) -- Tranquility
+    AddSpellTicks({ 16914, 17401, 17402, 27012, 48467 }, 10) -- Hurricane
+
+    -- Hunter
+    AddSpellTicks({ 1510, 14294, 14295, 27022, 58431, 58434 }, 6) -- Volley
+
+    -- Mage
+    AddSpellTicks({ 10, 6141, 8427, 10185, 10186, 10187, 27085, 42939, 42940 }, 8) -- Blizzard
+    AddSpellTicks(5143, 3) -- Arcane Missiles (Rank 1)
+    AddSpellTicks(5144, 4) -- Arcane Missiles (Rank 2)
+    AddSpellTicks({ 5145, 5145, 8416, 8417, 10211, 10212, 25345, 27075, 38699, 38704, 42843, 42846 }, 5) -- Arcane Missiles (Rank 3-13)
+    AddSpellTicks(12051, 4) -- Evocation
+
+    -- Priest
+    AddSpellTicks({ 15407, 17311, 17312, 17313, 17314, 18807, 25387, 48155, 48156 }, 3)
+    AddSpellTicks(64843, 4) -- Divine Hymn
+    AddSpellTicks(64901, 4) -- Hymn of Hope -- TODO: Accurate without glyph - with glyph it is 5 ticks
+    AddSpellTicks({ 48045, 53023 }, 3) -- Mind Sear
+    AddSpellTicks({ 47540, 47750, 47757, 47666, 47758, 53005, 52983, 52986, 52998, 53001, 53006, 52984, 52987, 52999, 53002, 53007, 52985, 52988, 53000, 53003 }, 2) -- Penance
+
+    -- Warlock
+    AddSpellTicks({ 1120, 8288, 8289, 11675, 27217, 47855 }, 5) -- Drain Soul
+    AddSpellTicks({ 755, 3698, 3699, 3700, 11693, 11694, 11695, 27259, 47856 }, 10) -- Health Funnel
+    AddSpellTicks({ 689, 699, 709, 7651, 11699, 11700, 27219, 27220, 47857 }, 5) -- Drain Life
+    AddSpellTicks({ 5740, 6219, 11677, 11678, 27212, 47819, 47820 }, 4) -- Rain of Fire
+    AddSpellTicks({ 1949, 11683, 11684, 27213, 47823 }, 15) -- Hellfire
+    AddSpellTicks(5138, 5) -- Drain Mana
+
+    -- First Aid
+    AddSpellTicks({ 746, 1159 }, 6) -- Linen Bandage, Heavy Linen Bandage
+    AddSpellTicks({ 3267, 3268 }, 7) -- Wool Bandage, Heavy Wool Bandage
+    AddSpellTicks({ 45544, 45543, 27031, 27030, 23567, 23696, 24414, 18610, 18608, 10839, 10838, 7927, 7926 }, 8) -- All Other Bandages
 end

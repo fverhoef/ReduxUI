@@ -115,6 +115,7 @@ R.media = {
                 castingBarEnergyMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarEnergyMask",
                 castingBarFullMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarFullMask",
                 castingBarFx = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarFx",
+                castingBarTick = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarTick",
                 playerPortraitMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\PlayerPortraitMask",
                 unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\UnitFrame"
             },
