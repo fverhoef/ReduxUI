@@ -268,6 +268,8 @@ function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate, disabled)
 
     if unit == "player" and R.PlayerInfo.class == "SHAMAN" then
         options.args.elements.args.totemTimers = UF:CreateUnitTotemsOption(unit, 7)
+    elseif unit == "player" and R.PlayerInfo.class == "DEATHKNIGHT" then
+        options.args.elements.args.runes = UF:CreateUnitRunesOption(unit, 7)
     end
 
     if R.GROUP_UNITS[unit] then
@@ -1540,7 +1542,12 @@ function UF:CreateUnitTotemsOption(unit, order)
                     end, function(value)
                         UF:UnitConfig(unit).totems.iconSize = value
                     end),
-                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the totem timer frame is detached from the unit frame."], 2, nil, nil, function()
+                    iconSpacing = UF:CreateRangeOption(unit, L["Icon Spacing"], L["The spacing between each totem timer icon."], 2, nil, 0, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).totems.spacing
+                    end, function(value)
+                        UF:UnitConfig(unit).totems.spacing = value
+                    end),
+                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the totem timer frame is detached from the unit frame."], 3, nil, nil, function()
                         return UF:UnitConfig(unit).totems.detached
                     end, function(value)
                         UF:UnitConfig(unit).totems.detached = value;
@@ -1583,6 +1590,134 @@ function UF:CreateUnitTotemsOption(unit, order)
                         return UF:UnitConfig(unit).totems.point[(not UF:UnitConfig(unit).totems.detached) and 4 or 5]
                     end, function(value)
                         UF:UnitConfig(unit).totems.point[(not UF:UnitConfig(unit).totems.detached) and 4 or 5] = value
+                    end)
+                }
+            }
+        }
+    }
+end
+
+function UF:CreateUnitRunesOption(unit, order)
+    return unit == "player" and {
+        type = "group",
+        name = L["Runes"],
+        order = order,
+        args = {
+            enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
+                return UF:UnitConfig(unit).runes.enabled
+            end, function(value)
+                UF:UnitConfig(unit).runes.enabled = value
+            end),
+            styling = {
+                type = "group",
+                name = L["Styling"],
+                inline = true,
+                order = 2,
+                disabled = function()
+                    return not UF:UnitConfig(unit).runes.enabled
+                end,
+                args = {
+                    style = UF:CreateSelectOption(unit, L["Style"], L["The style preset for this unit's rune frame."], 0, function()
+                        return UF:UnitConfig(unit).runes.style == nil
+                    end, UF.RuneStyles, function()
+                        return UF:UnitConfig(unit).runes.style
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.style = value
+                        UF:UnitConfig(unit).runes.size = value == UF.RuneStyles.Bars and { 32, 12 } or { 24, 24 }
+                    end),
+                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the rune frame is detached from the unit frame."], 6, nil, nil, function()
+                        return UF:UnitConfig(unit).runes.detached
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.detached = value;
+                        UF:UnitConfig(unit).runes.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 450 } or { "BOTTOM", "TOP", 0, 5 }
+                    end),
+                    lineBreak0 = { type = "description", name = "", order = 1 },
+                    iconSize = UF:CreateRangeOption(unit, L["Rune Size"], L["The width of rune bars/icons."], 2, function()
+                        return UF:UnitConfig(unit).runes.style == UF.RuneStyles.Bars
+                    end, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).runes.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.size[1] = value
+                        UF:UnitConfig(unit).runes.size[2] = value
+                    end),
+                    iconWidth = UF:CreateRangeOption(unit, L["Rune Width"], L["The width of rune bars/icons."], 2, function()
+                        return UF:UnitConfig(unit).runes.style == UF.RuneStyles.Icons
+                    end, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).runes.size[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.size[1] = value
+                    end),
+                    iconHeight = UF:CreateRangeOption(unit, L["Rune Height"], L["The height of rune bars/icons."], 3, function()
+                        return UF:UnitConfig(unit).runes.style == UF.RuneStyles.Icons
+                    end, 10, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).runes.size[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.size[2] = value
+                    end),
+                    iconSpacing = UF:CreateRangeOption(unit, L["Rune Spacing"], L["The spacing between each rune bar/icon."], 4, nil, 0, nil, 400, 1, function()
+                        return UF:UnitConfig(unit).runes.spacing
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.spacing = value
+                    end),
+                    lineBreak1 = { type = "description", name = "", order = 5 },
+                    detached = UF:CreateToggleOption(unit, L["Detached"], L["Whether the rune frame is detached from the unit frame."], 6, nil, nil, function()
+                        return UF:UnitConfig(unit).runes.detached
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.detached = value;
+                        UF:UnitConfig(unit).runes.point = value and { "CENTER", "UIParent", "BOTTOM", 0, 450 } or { "BOTTOM", "TOP", 0, 5 }
+                    end),
+                    lineBreak2 = { type = "description", name = "", order = 7 },
+                    showBorder = UF:CreateToggleOption(unit, L["Show Border"], L["Whether each rune has a border around it."], 8, nil, nil, function()
+                        return UF:UnitConfig(unit).runes.border
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.border = value
+                    end, nil, function()
+                        return UF:UnitConfig(unit).runes.style == UF.RuneStyles.Icons
+                    end),
+                    showInlay = UF:CreateToggleOption(unit, L["Show Inlay"], L["Whether each rune has an inlay decoration."], 9, nil, nil, function()
+                        return UF:UnitConfig(unit).runes.inlay
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.inlay = value
+                    end, nil, function()
+                        return UF:UnitConfig(unit).runes.style == UF.RuneStyles.Icons
+                    end)
+                }
+            },
+            position = {
+                type = "group",
+                name = L["Position"],
+                inline = true,
+                order = 3,
+                disabled = function()
+                    return not UF:UnitConfig(unit).runes.enabled
+                end,
+                args = {
+                    point = UF:CreatePointOption(unit, 1, function()
+                        return UF:UnitConfig(unit).runes.point[1]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.point[1] = value
+                    end),
+                    anchor = UF:CreateAnchorOption(unit, 2, function()
+                        return not UF:UnitConfig(unit).runes.detached
+                    end, function()
+                        return UF:UnitConfig(unit).runes.point[2]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.point[2] = value
+                    end),
+                    relativePoint = UF:CreateRelativePointOption(unit, 3, function()
+                        return UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 2 or 3]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 2 or 3] = value
+                    end),
+                    offsetX = UF:CreateOffsetXOption(unit, 4, function()
+                        return UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 3 or 4]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 3 or 4] = value
+                    end),
+                    offsetY = UF:CreateOffsetYOption(unit, 5, function()
+                        return UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 4 or 5]
+                    end, function(value)
+                        UF:UnitConfig(unit).runes.point[(not UF:UnitConfig(unit).runes.detached) and 4 or 5] = value
                     end)
                 }
             }

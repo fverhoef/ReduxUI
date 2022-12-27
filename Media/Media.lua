@@ -58,7 +58,14 @@ R.media = {
                 paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\PaperDollInfoFrame"
             }
         },
-        icons = { backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack", bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank" },
+        icons = {
+            backpack = MEDIA_PREFIX .. "\\Textures\\Icons\\Backpack",
+            bank = MEDIA_PREFIX .. "\\Textures\\Icons\\Bank",
+            deathKnightBlood = MEDIA_PREFIX .. "\\Textures\\Icons\\DeathKnight-Blood",
+            deathKnightFrost = MEDIA_PREFIX .. "\\Textures\\Icons\\DeathKnight-Frost",
+            deathKnightUnholy = MEDIA_PREFIX .. "\\Textures\\Icons\\DeathKnight-Unholy",
+            deathKnightDeath = MEDIA_PREFIX .. "\\Textures\\Icons\\DeathKnight-Death"
+        },
         minimap = {
             modern = {
                 atlas = MEDIA_PREFIX .. "\\Textures\\Minimap\\Modern\\Atlas",

@@ -5,6 +5,7 @@ local oUF = ns.oUF or oUF
 
 UF.Styles = { Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern", Custom = "Custom" }
 UF.CastbarStyles = { Modern = "Blizzard - Modern", ModernAnimated = "Blizzard - Modern (Animated)", Custom = "Custom" }
+UF.RuneStyles = { Icons = "Icons", Bars = "Bars" }
 
 local DEFAULT_STYLE = UF.Styles.Modern
 
@@ -111,7 +112,7 @@ local DEFAULT_UNIT_CONFIG = {
         frequentUpdates = true
     },
     classPower = { enabled = false, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
-    runes = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 10, smooth = true },
+    runes = { enabled = true, size = { 24, 24 }, point = { "BOTTOM", "TOP", 0, 5 }, spacing = 4, smooth = true, style = UF.RuneStyles.Icons, border = true, inlay = true },
     stagger = { enabled = true, size = { 226, 12 }, point = { "BOTTOM", "TOP", 0, 5 }, smooth = true },
     totems = { enabled = true, iconSize = 32, point = { "BOTTOM", "TOP", 0, 5 }, detached = false, spacing = 10, smooth = true },
     name = {

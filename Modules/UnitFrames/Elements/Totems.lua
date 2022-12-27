@@ -3,6 +3,7 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 local L = R.L
+
 local NUM_TOTEMS = R.isRetail and 5 or 4
 
 function UF:CreateTotems()
@@ -12,8 +13,9 @@ function UF:CreateTotems()
 
     self.TotemsHolder = CreateFrame("Frame", "$parentTotemsHolder", self)
     self.TotemsHolder:SetFrameLevel(self.Power:GetFrameLevel())
-    self.TotemsHolder:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 5)
-    self.TotemsHolder:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 5)
+    self.TotemsHolder.config = self.config.totems
+    self.TotemsHolder.defaults = self.defaults.totems
+    self.TotemsHolder:CreateMover(L["Totem Timers"], self.defaults.totems.point)
 
     self.Totems = {}
     for i = 1, NUM_TOTEMS do
@@ -32,8 +34,6 @@ function UF:CreateTotems()
 
         self.Totems[i] = totem
     end
-
-    self.TotemsHolder:CreateMover(L["Totem Timers"], self.defaults.totems.point)
 
     return self.Totems
 end
@@ -54,24 +54,7 @@ function UF:ConfigureTotems()
 
     self:EnableElement("Totems")
 
-    for i, totem in ipairs(self.Totems) do
-        totem:SetSize(config.iconSize, config.iconSize)
-    end
-
-    if R.isRetail then
-        self.Totems[3]:SetPoint("CENTER", self.TotemsHolder, "CENTER")
-        self.Totems[2]:SetPoint("RIGHT", self.Totems[3], "LEFT", -config.spacing, 0)
-        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
-        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
-        self.Totems[5]:SetPoint("LEFT", self.Totems[4], "RIGHT", config.spacing, 0)
-        self.TotemsHolder:SetSize(5 * config.iconSize + 4 * config.spacing, config.iconSize)
-    else
-        self.Totems[2]:SetPoint("RIGHT", self.TotemsHolder, "CENTER", -config.spacing / 2, 0)
-        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
-        self.Totems[3]:SetPoint("LEFT", self.Totems[2], "RIGHT", config.spacing, 0)
-        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
-        self.TotemsHolder:SetSize(4 * config.iconSize + 3 * config.spacing, config.iconSize)
-    end
+    self.TotemsHolder:SetSize(NUM_TOTEMS * config.iconSize + (NUM_TOTEMS - 1) * config.spacing, config.iconSize)
 
     if config.detached then
         self.TotemsHolder:SetParent(UIParent)
@@ -83,6 +66,23 @@ function UF:ConfigureTotems()
     end
     self.TotemsHolder:ClearAllPoints()
     self.TotemsHolder:SetNormalizedPoint(config.point)
+
+    for i, totem in ipairs(self.Totems) do
+        totem:SetSize(config.iconSize, config.iconSize)
+    end
+
+    if R.isRetail then
+        self.Totems[3]:SetPoint("CENTER", self.TotemsHolder, "CENTER")
+        self.Totems[2]:SetPoint("RIGHT", self.Totems[3], "LEFT", -config.spacing, 0)
+        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
+        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
+        self.Totems[5]:SetPoint("LEFT", self.Totems[4], "RIGHT", config.spacing, 0)
+    else
+        self.Totems[2]:SetPoint("RIGHT", self.TotemsHolder, "CENTER", -config.spacing / 2, 0)
+        self.Totems[1]:SetPoint("RIGHT", self.Totems[2], "LEFT", -config.spacing, 0)
+        self.Totems[3]:SetPoint("LEFT", self.Totems[2], "RIGHT", config.spacing, 0)
+        self.Totems[4]:SetPoint("LEFT", self.Totems[3], "RIGHT", config.spacing, 0)
+    end
 end
 
 oUF:RegisterMetaFunction("ConfigureTotems", UF.ConfigureTotems)
