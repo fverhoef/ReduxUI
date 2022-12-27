@@ -39,9 +39,9 @@ function B.InventoryMixin:OnLoad()
 
     B:SecureHook("OpenAllBags", B.ShowInventory)
     B:SecureHook("CloseAllBags", B.HideInventory)
-    B:SecureHook("ToggleBag", B.ToggleBag)
-    B:SecureHook("ToggleAllBags", B.ToggleInventory)
-    B:SecureHook("ToggleBackpack", B.ToggleInventory)
+    B:SecureHook("ToggleBag", "ToggleBag")
+    B:SecureHook("ToggleAllBags", B.ToggleBackpack)
+    B:SecureHook("ToggleBackpack", B.ToggleBackpack)
     if BackpackTokenFrame and ManageBackpackTokenFrame then
         B:SecureHook("ManageBackpackTokenFrame", function(backpack)
             if BackpackTokenFrame_IsShown() then
@@ -135,10 +135,26 @@ function B:HideInventory()
 end
 
 function B:ToggleInventory()
+    if IsOptionFrameOpen() then
+        return
+    end
+
     if B.Inventory:IsShown() then
         B:HideInventory()
     else
         B:ShowInventory()
+    end
+end
+
+function B:ToggleBackpack()
+    if IsOptionFrameOpen() then
+        return
+    end
+
+    if IsBagOpen(0) then
+        B:ShowInventory()
+    else
+        B:HideInventory()
     end
 end
 
