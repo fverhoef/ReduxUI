@@ -57,7 +57,7 @@ function B.BagButtonMixin:Update()
             local questInfo = C_Container.GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
             isQuestItem = questInfo.isQuestItem
         else
-            isQuestItem = itemId and select(12, GetItemInfo(itemId)) or nil
+			isQuestItem = GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
         end
 
         self.IconQuestTexture:SetShown(isQuestItem)
