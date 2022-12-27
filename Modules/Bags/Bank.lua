@@ -12,10 +12,7 @@ ReduxBankMixin = B.BankMixin
 function B.BankMixin:OnLoad()
     self.config = B.config.bank
     self.isBank = true
-    self.BagIDs = { -1, 5, 6, 7, 8, 9, 10 }
-    if R.isRetail then
-        table.insert(self.BagIDs, 11)
-    end
+    self.BagIDs = { -1, 5, 6, 7, 8, 9, 10, 11 }
 
     B.BagFrameMixin.OnLoad(self)
 
