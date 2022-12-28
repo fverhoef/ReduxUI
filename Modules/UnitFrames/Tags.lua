@@ -71,6 +71,36 @@ oUF.Tags.Methods["missinghp_status:shortvalue"] = function(unit, decimalPlaces)
     return R:ShortValue(_TAGS["missinghp_status"](unit), decimalPlaces)
 end
 
+oUF.Tags.Events["missinghp_neg"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_neg"] = function(unit)
+    local current = UnitHealth(unit) - UnitHealthMax(unit)
+    if current < 0 then
+        return current
+    else
+        return ""
+    end
+end
+oUF.Tags.Events["missinghp_neg:shortvalue"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_neg:shortvalue"] = function(unit, decimalPlaces)
+    return R:ShortValue(_TAGS["missinghp_neg"](unit), decimalPlaces)
+end
+oUF.Tags.Events["missinghp_neg_status"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_neg_status"] = function(unit)
+    if UnitIsDead(unit) then
+        return L["Dead"]
+    elseif UnitIsGhost(unit) then
+        return L["Ghost"]
+    elseif not UnitIsConnected(unit) then
+        return L["Offline"]
+    else
+        return _TAGS["missinghp_neg"](unit)
+    end
+end
+oUF.Tags.Events["missinghp_neg_status:shortvalue"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_neg_status:shortvalue"] = function(unit, decimalPlaces)
+    return R:ShortValue(_TAGS["missinghp_neg_status"](unit), decimalPlaces)
+end
+
 oUF.Tags.Events["curmana:shortvalue"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER"
 oUF.Tags.Methods["curmana:shortvalue"] = function(unit, decimalPlaces)
     return R:ShortValue(_TAGS["curmana"](unit), decimalPlaces)
