@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local AB = R:AddModule("ActionBars", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local L = R.L
 
+local NUM_ACTION_BARS = R.isRetail and 10 or 9
+
 function AB:Initialize()
 end
 
@@ -14,7 +16,7 @@ function AB:Enable()
     AB:DisableBlizzardBars()
 
     AB.bars = {}
-    for i = 1, 10 do
+    for i = 1, NUM_ACTION_BARS do
         AB.bars[i] = AB:CreateActionBar(i, AB.config["actionBar" .. i])
     end
 

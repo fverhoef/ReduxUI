@@ -549,7 +549,7 @@ function AB:CreateTrackingBarOptions(name, title, order, disabledFunc)
 end
 
 R:RegisterModuleOptions(AB, function()
-    return {
+    local options = {
         type = "group",
         name = L["Action Bars"],
         args = {
@@ -606,4 +606,8 @@ R:RegisterModuleOptions(AB, function()
             end)
         }
     }
+
+    options.args.actionBar10.hidden = not R.isRetail
+
+    return options
 end)
