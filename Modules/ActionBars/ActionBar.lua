@@ -142,8 +142,7 @@ function AB.ActionBarMixin:Configure()
     local page = self.config.page
     if page then
         if self.id == 1 then
-            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-            page = page .. " [shapeshift] 13; [bar:2] 2;"
+            page = string.format("[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] %d; [bar:2] 2;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex(), GetTempShapeshiftBarIndex())
             for pageNumber = 3, 6 do
                 if AB:IsPageEnabled(pageNumber) then
                     page = page .. " [bar:" .. pageNumber .. "] " .. pageNumber .. ";"
@@ -151,12 +150,24 @@ function AB.ActionBarMixin:Configure()
             end
 
             if R.PlayerInfo.class == "DRUID" then
-                page = page .. "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:3] 9; [bonusbar:4] 10;"
-            elseif R.PlayerInfo.class == "ROGUE" then
+                page = page .. "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;"
+            elseif R.PlayerInfo.class == "EVOKER" then
                 page = page .. "[bonusbar:1] 7;"
+            elseif R.PlayerInfo.class == "PRIEST" then
+                page = page .. "[bonusbar:1] 7;"
+            elseif R.PlayerInfo.class == "ROGUE" then
+                if R.isRetail then
+                    page = page .. "[bonusbar:1] 7;"
+                else
+                    page = page .. "[bonusbar:1] 7; [bonusbar:2] 8;"
+                end
+            elseif R.PlayerInfo.class == "WARLOCK" and not R.isRetail then
+                page = page .. "[form:1] 7;"
+            elseif R.PlayerInfo.class == "WARRIOR" then
+                page = page .. "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9"
             end
 
-            page = page .. " [form] 1; 1"
+            page = page .. " [bonusbar:5] 11; 1"
         end
         RegisterStateDriver(self, "page", page)
     end
