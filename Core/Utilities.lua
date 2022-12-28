@@ -297,6 +297,10 @@ function R:RomanNumeral(number)
 end
 
 function R:ShortValue(value, decimalPlaces)
+    if type(value) ~= "number" then
+        return value
+    end
+
     local absoluteValue = math.abs(value)
     local suffix = ""
 
