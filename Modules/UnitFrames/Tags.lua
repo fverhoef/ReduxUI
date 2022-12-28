@@ -41,9 +41,34 @@ oUF.Tags.Methods["maxhp:shortvalue"] = function(unit, decimalPlaces)
     return R:ShortValue(_TAGS["maxhp"](unit), decimalPlaces)
 end
 
-oUF.Tags.Events["missinghp:shortvalue"] = (R.isRetail and "UNIT_HEALTH" or "UNIT_HEALTH_FREQUENT")
+oUF.Tags.Events["missinghp"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp"] = function(unit)
+    local current = UnitHealthMax(unit) - UnitHealth(unit)
+    if current > 0 then
+        return current
+    else
+        return ""
+    end
+end
+oUF.Tags.Events["missinghp:shortvalue"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
 oUF.Tags.Methods["missinghp:shortvalue"] = function(unit, decimalPlaces)
     return R:ShortValue(_TAGS["missinghp"](unit), decimalPlaces)
+end
+oUF.Tags.Events["missinghp_status"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_status"] = function(unit)
+    if UnitIsDead(unit) then
+        return L["Dead"]
+    elseif UnitIsGhost(unit) then
+        return L["Ghost"]
+    elseif not UnitIsConnected(unit) then
+        return L["Offline"]
+    else
+        return _TAGS["missinghp"](unit)
+    end
+end
+oUF.Tags.Events["missinghp_status:shortvalue"] = (R.isRetail and "UNIT_HEALTH UNIT_MAXHEALTH" or "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH")
+oUF.Tags.Methods["missinghp_status:shortvalue"] = function(unit, decimalPlaces)
+    return R:ShortValue(_TAGS["missinghp_status"](unit), decimalPlaces)
 end
 
 oUF.Tags.Events["curmana:shortvalue"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER"
@@ -134,4 +159,3 @@ oUF.Tags.Methods["afk"] = function(unit)
     return UnitIsAFK(unit) and (R:Hex(R.modules.tooltips.config.colors.afk) .. " <" .. L["AFK"] .. ">|r") or UnitIsDND(unit) and
                (R:Hex(R.modules.tooltips.config.colors.dnd) .. " <" .. L["DND"] .. ">|r") or ""
 end
-
