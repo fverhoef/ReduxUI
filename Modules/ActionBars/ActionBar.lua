@@ -164,7 +164,7 @@ function AB.ActionBarMixin:Configure()
             elseif R.PlayerInfo.class == "WARLOCK" and not R.isRetail then
                 page = page .. "[form:1] 7;"
             elseif R.PlayerInfo.class == "WARRIOR" then
-                page = page .. "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9"
+                page = page .. "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;"
             end
 
             page = page .. " [bonusbar:5] 11; 1"
