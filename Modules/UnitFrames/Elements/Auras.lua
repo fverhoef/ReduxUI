@@ -189,9 +189,9 @@ function UF:AuraFilter(unit, data)
         (filter.whitelist.Personal and isPlayer) or (filter.whitelist.NonPersonal and not isPlayer) or (filter.whitelist.Boss and data.isBossAura) or (filter.whitelist.MyPet and myPet) or
             (filter.whitelist.OtherPet and otherPet) or (filter.whitelist.CastByUnit and unitIsCaster) or (filter.whitelist.NotCastByUnit and not unitIsCaster) or
             (filter.whitelist.Dispellable and canDispel) or (filter.whitelist.NotDispellable and not canDispel) or (filter.whitelist.CastByNPC and not data.isFromPlayerOrPlayerPet) or
-            (filter.whitelist.CastByPlayers and data.isFromPlayerOrPlayerPet) or (filter.whitelist.Nameplate and (data.nameplateShowAll or (data.nameplateShowPersonal and (isPlayer or myPet))))
+            (filter.whitelist.CastByPlayers and data.isFromPlayerOrPlayerPet) or (filter.whitelist.Nameplate and (data.nameplateShowAll or (data.nameplateShowPersonal and (isPlayer or myPet)))) or (filter.whitelist.Spells[data.spellId]) or (filter.whitelist.Spells[data.name])
     local isBlackListed = (filter.blacklist.BlockCastByPlayers and data.isFromPlayerOrPlayerPet) or (filter.blacklist.BlockNoDuration and noDuration) or (filter.blacklist.BlockNonPersonal and not isPlayer) or
-                              (filter.blacklist.BlockDispellable and canDispel) or (filter.blacklist.BlockNotDispellable and not canDispel)
+                              (filter.blacklist.BlockDispellable and canDispel) or (filter.blacklist.BlockNotDispellable and not canDispel) or (filter.blacklist.Spells[data.spellId]) or (filter.whitelist.Spells[data.name])
 
     return isWhiteListed and not isBlackListed
 end

@@ -26,10 +26,11 @@ local AURA_FILTER_WHITELIST = {
     PlayerBuffs = false,
     TurtleBuffs = false,
     RaidBuffs = false,
-    RaidDebuffs = false
+    RaidDebuffs = false,
+    Spells = {}
 }
 
-local AURA_FILTER_BLACKLIST = { BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = false, BlockDispellable = false, BlockNotDispellable = false }
+local AURA_FILTER_BLACKLIST = { BlockNonPersonal = false, BlockCastByPlayers = false, BlockNoDuration = false, BlockDispellable = false, BlockNotDispellable = false, Spells = {} }
 
 local DEFAULT_UNIT_CONFIG = {
     enabled = true,

@@ -20,6 +20,33 @@ local function IsCustomStyled(unit)
     end
 end
 
+local function SafeToNumber(input)
+    local number = tonumber(input)
+    return number and (number < 2147483648 and number > -2147483649) and number or nil
+end
+
+local function GetSpellDisplayName(id)
+    local name, icon, spellId
+    if SafeToNumber(id) then
+        name, _, icon, _, _, _, spellId = GetSpellInfo(id)
+        local subText = GetSpellSubtext(spellId or id)
+        if subText and subText ~= "" then
+            name = name .. " (" .. subText .. ")"
+        end
+
+        name =  string.format("%d : %s", spellId or id, name)
+    else
+        name = id
+        _, _, icon = GetSpellInfo(id)
+    end
+
+    return icon and string.format("|T%s:20:20:0:0:64:64:5:59:5:59:%d|t %s", icon, 40, name) or name
+end
+
+local selectedWhitelistSpells, selectedBlacklistSpells = {}, {}
+local addWhitelistSpellFilter, addBlacklistSpellFilter
+local whitelistSpellToAdd, blacklistSpellToAdd
+
 function UF:UnitConfig(unit)
     return UF.config[unit] or UF.config.nameplates[unit]
 end
@@ -2042,7 +2069,7 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].filter.whitelist.Nameplate = value
                     end),
-                    lineBreak = { type = "header", name = "", order = 13 },
+                    lineBreak1 = { type = "header", name = "", order = 13 },
                     crowdControl = UF:CreateToggleOption(unit, L["Crowd Control"], nil, 15, nil, isBuff, function()
                         return UF:UnitConfig(unit).auras[setting].filter.whitelist.CrowdControl
                     end, function(value)
@@ -2067,7 +2094,139 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
                         return UF:UnitConfig(unit).auras[setting].filter.whitelist.PlayerBuffs
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].filter.whitelist.PlayerBuffs = value
-                    end)
+                    end),
+                    lineBreak2 = { type = "header", name = "", order = 20 },
+                    spellIDs = {
+                        order = 21,
+                        type = "multiselect",
+                        width = 1.75,
+                        name = L["Specific Spell IDs/Names"],
+                        tristate = false,
+                        values = function()
+                            local ids = {}
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                ids[i] = GetSpellDisplayName(id)
+                            end
+                            return ids
+                        end,
+                        get = function(info, key)
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                if i == key then
+                                    return selectedWhitelistSpells[id]
+                                end
+                            end
+                        end,
+                        set = function(info, key)
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                if i == key then
+                                    selectedWhitelistSpells[id] = not selectedWhitelistSpells[id]
+                                end
+                            end
+                        end
+                    },
+                    removeAction = {
+                        order = 22,
+                        type = "execute",
+                        name = L["Remove Selected Spell(s)"],
+                        func = function()
+                            for selectedSpell, _ in pairs(selectedWhitelistSpells) do
+                                for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                    if selectedSpell == id then
+                                        table.remove(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells, i)
+                                        break
+                                    end
+                                end
+                            end
+                            selectedWhitelistSpells = {}
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    addSpellBreak1 = {order = 23, type = "description", name = ""},
+                    findSpellName = {
+                        order = 24,
+                        type = "input",
+                        name = L["Spell ID or Name"],
+                        desc = L["Name or ID of the spell to add."],
+                        get = function(info)
+                            return addWhitelistSpellFilter
+                        end,
+                        set = function(info, value)
+                            addWhitelistSpellFilter = value
+                        end
+                    },
+                    addSpellByName = {
+                        order = 25,
+                        type = "execute",
+                        name = L["Add Spell by Name"],
+                        disabled = function()
+                            return not addWhitelistSpellFilter or addWhitelistSpellFilter == ""
+                        end,
+                        func = function()
+                            if not addWhitelistSpellFilter or addWhitelistSpellFilter == "" then
+                                return
+                            end
+    
+                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                if spell == addWhitelistSpellFilter then
+                                    return
+                                end
+                            end
+    
+                            table.insert(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells, addWhitelistSpellFilter)
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    addSpellBreak2 = {order = 26, type = "description", name = ""},
+                    findSpellResults = {
+                        order = 27,
+                        type = "select",
+                        name = L["Select Spell by ID"],
+                        values = function()
+                            local spells = {}
+                            if addWhitelistSpellFilter then
+                                local ids = R.Libs.SpellCache:GetSpells(addWhitelistSpellFilter)
+                                for _, id in ipairs(ids) do
+                                    spells[id] = GetSpellDisplayName(id)
+                                end
+
+                                if not whitelistSpellToAdd or not spells[whitelistSpellToAdd] then
+                                    whitelistSpellToAdd = ids[1]
+                                end
+                            end
+                            return spells
+                        end,
+                        get = function(info, key)
+                            return whitelistSpellToAdd
+                        end,
+                        set = function(info, key)
+                            whitelistSpellToAdd = key
+                        end
+                    },
+                    addSpellByID = {
+                        order = 28,
+                        type = "execute",
+                        name = L["Add Selected Spell by ID"],
+                        disabled = function()
+                            return not whitelistSpellToAdd or whitelistSpellToAdd == ""
+                        end,
+                        func = function()
+                            if not whitelistSpellToAdd or whitelistSpellToAdd == "" then
+                                return
+                            end
+    
+                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                if spell == whitelistSpellToAdd then
+                                    return
+                                end
+                            end
+    
+                            table.insert(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells, whitelistSpellToAdd)
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    }
                 }
             },
             blacklist = {
@@ -2100,7 +2259,139 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
                         return UF:UnitConfig(unit).auras[setting].filter.blacklist.BlockNotDispellable
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].filter.blacklist.BlockNotDispellable = value
-                    end)
+                    end),
+                    lineBreak = { type = "header", name = "", order = 20 },
+                    spellIDs = {
+                        order = 21,
+                        type = "multiselect",
+                        width = 1.75,
+                        name = L["Specific Spell IDs/Names"],
+                        tristate = false,
+                        values = function()
+                            local ids = {}
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
+                                ids[i] = GetSpellDisplayName(id)
+                            end
+                            return ids
+                        end,
+                        get = function(info, key)
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
+                                if i == key then
+                                    return selectedBlacklistSpells[id]
+                                end
+                            end
+                        end,
+                        set = function(info, key)
+                            for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
+                                if i == key then
+                                    selectedBlacklistSpells[id] = not selectedBlacklistSpells[id]
+                                end
+                            end
+                        end
+                    },
+                    removeAction = {
+                        order = 22,
+                        type = "execute",
+                        name = L["Remove Selected Spell(s)"],
+                        func = function()
+                            for selectedSpell, _ in pairs(selectedBlacklistSpells) do
+                                for i, id in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
+                                    if selectedSpell == id then
+                                        table.remove(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells, i)
+                                        break
+                                    end
+                                end
+                            end
+                            selectedBlacklistSpells = {}
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    addSpellBreak1 = {order = 23, type = "description", name = ""},
+                    findSpellName = {
+                        order = 24,
+                        type = "input",
+                        name = L["Spell ID or Name"],
+                        desc = L["Name or ID of the spell to add."],
+                        get = function(info)
+                            return addBlacklistSpellFilter
+                        end,
+                        set = function(info, value)
+                            addBlacklistSpellFilter = value
+                        end
+                    },
+                    addSpellByName = {
+                        order = 25,
+                        type = "execute",
+                        name = L["Add Spell by Name"],
+                        disabled = function()
+                            return not addBlacklistSpellFilter or addBlacklistSpellFilter == ""
+                        end,
+                        func = function()
+                            if not addBlacklistSpellFilter or addBlacklistSpellFilter == "" then
+                                return
+                            end
+    
+                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                                if spell == addBlacklistSpellFilter then
+                                    return
+                                end
+                            end
+    
+                            table.insert(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells, addBlacklistSpellFilter)
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    },
+                    addSpellBreak2 = {order = 26, type = "description", name = ""},
+                    findSpellResults = {
+                        order = 27,
+                        type = "select",
+                        name = L["Select Spell by ID"],
+                        values = function()
+                            local spells = {}
+                            if addBlacklistSpellFilter then
+                                local ids = R.Libs.SpellCache:GetSpells(addBlacklistSpellFilter)
+                                for _, id in ipairs(ids) do
+                                    spells[id] = GetSpellDisplayName(id)
+                                end
+
+                                if not blacklistSpellToAdd or not spells[blacklistSpellToAdd] then
+                                    blacklistSpellToAdd = ids[1]
+                                end
+                            end
+                            return spells
+                        end,
+                        get = function(info, key)
+                            return blacklistSpellToAdd
+                        end,
+                        set = function(info, key)
+                            blacklistSpellToAdd = key
+                        end
+                    },
+                    addSpellByID = {
+                        order = 28,
+                        type = "execute",
+                        name = L["Add Selected Spell by ID"],
+                        disabled = function()
+                            return not blacklistSpellToAdd or blacklistSpellToAdd == ""
+                        end,
+                        func = function()
+                            if not blacklistSpellToAdd or blacklistSpellToAdd == "" then
+                                return
+                            end
+    
+                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
+                                if spell == blacklistSpellToAdd then
+                                    return
+                                end
+                            end
+    
+                            table.insert(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells, blacklistSpellToAdd)
+    
+                            UF:UpdateUnit(unit)
+                        end
+                    }
                 }
             }
         }

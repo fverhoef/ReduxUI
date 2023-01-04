@@ -37,6 +37,7 @@ R:AddLib("Dispel", "LibDispel-1.0")
 R:AddLib("DRList", "DRList-1.0")
 R:AddLib("KeyBound", "LibKeyBound-1.0")
 R:AddLib("SmoothStatusBar", "LibSmoothStatusBar-1.0")
+R:AddLib("SpellCache", "LibSpellCache-1.0")
 
 R.Modules = {}
 function R:AddModule(name, ...)
