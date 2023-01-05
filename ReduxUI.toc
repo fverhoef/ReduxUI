@@ -1,6 +1,6 @@
 ## Interface: 90205
 ## Author: Neya
-## Version: 0.31
+## Version: 0.32
 ## Title: |cff00c3ffRedux|r |cffd78219UI|r
 ## Notes: Redux UI: A complete user interface replacement.
 ## DefaultState: Enabled
