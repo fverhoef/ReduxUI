@@ -168,6 +168,8 @@ local DEFAULT_UNIT_CONFIG = {
             durationFontOutline = "OUTLINE",
             durationFontShadow = false,
             showDuration = true,
+            showFill = true,
+            reverseFill = false,
             minSizeToShowDuration = 28
         },
         buffs = {
@@ -194,6 +196,8 @@ local DEFAULT_UNIT_CONFIG = {
             durationFontShadow = false,
             showDuration = true,
             minSizeToShowDuration = 28,
+            showFill = true,
+            reverseFill = false,
             filter = { whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST }
         },
         debuffs = {
@@ -220,6 +224,8 @@ local DEFAULT_UNIT_CONFIG = {
             durationFontShadow = false,
             showDuration = true,
             minSizeToShowDuration = 28,
+            showFill = true,
+            reverseFill = false,
             filter = { whitelist = AURA_FILTER_WHITELIST, blacklist = AURA_FILTER_BLACKLIST }
         }
     },

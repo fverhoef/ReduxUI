@@ -1916,7 +1916,7 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
             },
             count = {
                 type = "group",
-                name = L["Count Text"],
+                name = L["Count"],
                 order = 4,
                 inline = true,
                 disabled = function()
@@ -1947,7 +1947,7 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
             },
             duration = {
                 type = "group",
-                name = L["Duration Text"],
+                name = L["Duration"],
                 order = 5,
                 inline = true,
                 disabled = function()
@@ -1973,6 +1973,17 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
                         return UF:UnitConfig(unit).auras[setting].durationFontShadow
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].durationFontShadow = value
+                    end),
+                    lineBreak1 = { type = "description", name = "", order = 5 },
+                    showFill = UF:CreateToggleOption(unit, L["Show Fill"], L["Whether the duration overlay should be shown."], 6, nil, nil, function()
+                        return UF:UnitConfig(unit).auras[setting].showFill
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].showFill = value
+                    end),
+                    reverseFill = UF:CreateToggleOption(unit, L["Reverse Fill"], L["Whether the duration overlay should fill in reverse order."], 7, nil, nil, function()
+                        return UF:UnitConfig(unit).auras[setting].reverseFill
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].reverseFill = value
                     end)
                 }
             }

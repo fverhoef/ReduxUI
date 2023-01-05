@@ -107,5 +107,7 @@ function AuraStyleMixin:ApplyStyle()
         local cdInset = (self:GetWidth() or 36) / 18
         cooldown:SetInside(self, cdInset, cdInset)
         cooldown:SetHideCountdownNumbers(not config.showDuration or self:GetWidth() < (config.minSizeToShowDuration or 0))
+        cooldown:SetSwipeColor(0, 0, 0, config.showFill and 0.7 or 0)
+        cooldown:SetReverse(config.reverseFill)
     end
 end
