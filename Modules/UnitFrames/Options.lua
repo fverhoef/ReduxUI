@@ -2329,13 +2329,13 @@ function UF:CreateUnitAuraFilterOption(unit, order, name, setting, isBuff)
                                 return
                             end
     
-                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells) do
+                            for i, spell in ipairs(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells) do
                                 if spell == addBlacklistSpellFilter then
                                     return
                                 end
                             end
     
-                            table.insert(UF:UnitConfig(unit).auras[setting].filter.whitelist.Spells, addBlacklistSpellFilter)
+                            table.insert(UF:UnitConfig(unit).auras[setting].filter.blacklist.Spells, addBlacklistSpellFilter)
     
                             UF:UpdateUnit(unit)
                         end
