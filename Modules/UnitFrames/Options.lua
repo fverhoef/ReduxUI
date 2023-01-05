@@ -129,46 +129,46 @@ function UF:CreateOffsetYOption(unit, order, get, set)
     end)
 end
 
-function UF:CreateFontFamilyOption(unit, order, get, set)
+function UF:CreateFontFamilyOption(unit, order, get, set, disabled)
     return R:CreateFontOption(L["Font Family"], L["The font family for this text."], order, nil, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, nil, disabled)
 end
 
-function UF:CreateFontSizeOption(unit, order, get, set)
+function UF:CreateFontSizeOption(unit, order, get, set, disabled)
     return R:CreateRangeOption(L["Font Size"], L["The size of the text."], order, nil, R.FONT_MIN_SIZE, R.FONT_MAX_SIZE, nil, 1, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateFontOutlineOption(unit, order, get, set)
+function UF:CreateFontOutlineOption(unit, order, get, set, disabled)
     return R:CreateSelectOption(L["Font Outline"], L["The outline style of this text."], order, nil, R.FONT_OUTLINES, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateFontShadowOption(unit, order, get, set)
+function UF:CreateFontShadowOption(unit, order, get, set, disabled)
     return R:CreateToggleOption(L["Font Shadows"], L["Whether to show shadow for this text."], order, nil, nil, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, nil, disabled)
 end
 
-function UF:CreateFontJustifyHOption(unit, order, get, set)
+function UF:CreateFontJustifyHOption(unit, order, get, set, disabled)
     return R:CreateSelectOption(L["Horizontal Justification"], L["The horizontal justification for this text."], order, nil, R.JUSTIFY_H, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateFontJustifyVOption(unit, order, get, set)
+function UF:CreateFontJustifyVOption(unit, order, get, set, disabled)
     return R:CreateSelectOption(L["Vertical Justification"], L["The vertical justification for this text."], order, nil, R.JUSTIFY_V, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateTagOption(unit, order, get, set)
+function UF:CreateTagOption(unit, order, get, set, disabled)
     return R:CreateInputOption(L["Tag"], L["The tag determines what is displayed in this text string."], order, nil, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
 function UF:CreateUnitOptions(unit, order, name, hidden, isNameplate, disabled)
@@ -926,13 +926,12 @@ function UF:CreateUnitNameOption(unit, order)
         type = "group",
         name = L["Name"],
         order = order,
-        disabled = IsBlizzardStyled(unit),
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
                 return UF:UnitConfig(unit).name.enabled
             end, function(value)
                 UF:UnitConfig(unit).name.enabled = value
-            end),
+            end, nil, IsBlizzardStyled(unit)),
             size = {
                 type = "group",
                 name = L["Size"],
@@ -983,7 +982,7 @@ function UF:CreateUnitNameOption(unit, order)
             },
             font = {
                 type = "group",
-                name = L["Position"],
+                name = L["Font"],
                 order = 4,
                 inline = true,
                 args = {
@@ -996,22 +995,22 @@ function UF:CreateUnitNameOption(unit, order)
                         return UF:UnitConfig(unit).name.fontSize
                     end, function(value)
                         UF:UnitConfig(unit).name.fontSize = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
                         return UF:UnitConfig(unit).name.fontOutline
                     end, function(value)
                         UF:UnitConfig(unit).name.fontOutline = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     fontShadow = UF:CreateFontShadowOption(unit, 4, function()
                         return UF:UnitConfig(unit).name.fontShadow
                     end, function(value)
                         UF:UnitConfig(unit).name.fontShadow = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     justifyH = UF:CreateFontJustifyHOption(unit, 5, function()
                         return UF:UnitConfig(unit).name.justifyH
                     end, function(value)
                         UF:UnitConfig(unit).name.justifyH = value
-                    end)
+                    end, IsBlizzardStyled(unit))
                 }
             },
             lineBreakTag = { type = "header", name = "Tag", order = 5 },
@@ -1019,7 +1018,7 @@ function UF:CreateUnitNameOption(unit, order)
                 return UF:UnitConfig(unit).name.tag
             end, function(value)
                 UF:UnitConfig(unit).name.tag = value
-            end)
+            end, IsBlizzardStyled(unit))
         }
     }
 end
@@ -1029,7 +1028,6 @@ function UF:CreateUnitLevelOption(unit, order)
         type = "group",
         name = L["Level"],
         order = order,
-        disabled = IsBlizzardStyled(unit),
         args = {
             enabled = UF:CreateToggleOption(unit, L["Enabled"], nil, 1, nil, nil, function()
                 return UF:UnitConfig(unit).level.enabled
@@ -1086,9 +1084,8 @@ function UF:CreateUnitLevelOption(unit, order)
             },
             font = {
                 type = "group",
-                name = L["Position"],
+                name = L["Font"],
                 order = 4,
-                disabled = IsBlizzardStyled(unit),
                 inline = true,
                 args = {
                     font = UF:CreateFontFamilyOption(unit, 1, function()
@@ -1100,22 +1097,22 @@ function UF:CreateUnitLevelOption(unit, order)
                         return UF:UnitConfig(unit).level.fontSize
                     end, function(value)
                         UF:UnitConfig(unit).level.fontSize = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     fontOutline = UF:CreateFontOutlineOption(unit, 3, function()
                         return UF:UnitConfig(unit).level.fontOutline
                     end, function(value)
                         UF:UnitConfig(unit).level.fontOutline = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     fontShadow = UF:CreateFontShadowOption(unit, 4, function()
                         return UF:UnitConfig(unit).level.fontShadow
                     end, function(value)
                         UF:UnitConfig(unit).level.fontShadow = value
-                    end),
+                    end, IsBlizzardStyled(unit)),
                     justifyH = UF:CreateFontJustifyHOption(unit, 5, function()
                         return UF:UnitConfig(unit).level.justifyH
                     end, function(value)
                         UF:UnitConfig(unit).level.justifyH = value
-                    end)
+                    end, IsBlizzardStyled(unit))
                 }
             },
             lineBreakTag = { type = "header", name = "Tag", order = 5 },
@@ -1123,7 +1120,7 @@ function UF:CreateUnitLevelOption(unit, order)
                 return UF:UnitConfig(unit).level.tag
             end, function(value)
                 UF:UnitConfig(unit).level.tag = value
-            end)
+            end, IsBlizzardStyled(unit))
         }
     }
 end
