@@ -85,7 +85,7 @@ function UF:ConfigurePower()
 
     if config.value.enabled then
         self.Power.Value:Show()
-        self.Power.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, config.value.fontOutline)
+        self.Power.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, (config.value.fontOutline == "NONE" and "") or config.value.fontOutline)
         self.Power.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
         if config.value.tag then
@@ -105,7 +105,7 @@ function UF:ConfigurePower()
 
     if config.percent.enabled then
         self.Power.Percent:Show()
-        self.Power.Percent:SetFont(config.percent.font or UF.config.font, config.percent.fontSize or 10, config.percent.fontOutline)
+        self.Power.Percent:SetFont(config.percent.font or UF.config.font, config.percent.fontSize or 10, (config.percent.fontOutline == "NONE" and "") or config.percent.fontOutline)
         self.Power.Percent:SetShadowOffset(config.percent.fontShadow and 1 or 0, config.percent.fontShadow and -1 or 0)
 
         if config.percent.tag then

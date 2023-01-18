@@ -50,7 +50,7 @@ function UF:ConfigureAdditionalPower()
 
     if config.value.enabled then
         self.AdditionalPower.Value:Show()
-        self.AdditionalPower.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, config.value.fontOutline)
+        self.AdditionalPower.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 10, (config.value.fontOutline == "NONE" and "") or config.value.fontOutline)
         self.AdditionalPower.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
         if config.value.tag then

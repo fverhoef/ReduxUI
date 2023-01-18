@@ -29,7 +29,7 @@ function UF:ConfigureName()
     end
 
     self.Name:Show()
-    self.Name:SetFont(config.font or UF.config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    self.Name:SetFont(config.font or UF.config.font, config.fontSize or 13, (config.fontOutline == "NONE" and "") or config.fontOutline or "OUTLINE")
     self.Name:SetJustifyH(config.justifyH or "CENTER")
     self.Name:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 

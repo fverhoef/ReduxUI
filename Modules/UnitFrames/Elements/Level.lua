@@ -25,7 +25,7 @@ function UF:ConfigureLevel()
     end
 
     self.Level:Show()
-    self.Level:SetFont(config.font or UF.config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    self.Level:SetFont(config.font or UF.config.font, config.fontSize or 13, (config.fontOutline == "NONE" and "") or config.fontOutline or "OUTLINE")
     self.Level:SetJustifyH(config.justifyH or "CENTER")
     self.Level:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 

@@ -66,17 +66,17 @@ function AuraStyleMixin:ApplyStyle()
     end
 
     if count then
-        count:SetFont(config.countFont, config.countFontSize, config.countFontOutline)
+        count:SetFont(config.countFont, config.countFontSize, (config.countFontOutline == "NONE" and "") or config.countFontOutline)
         count:SetShadowOffset(config.countFontShadow and 1 or 0, config.countFontShadow and -1 or 0)
     end
 
     if duration then
-        duration:SetFont(config.durationFont, config.durationFontSize, config.durationFontOutline)
+        duration:SetFont(config.durationFont, config.durationFontSize, (config.durationFontOutline == "NONE" and "") or config.durationFontOutline)
         duration:SetShadowOffset(config.durationFontShadow and 1 or 0, config.durationFontShadow and -1 or 0)
     end
 
     if cooldownText then
-        cooldownText:SetFont(config.durationFont, config.durationFontSize, config.durationFontOutline)
+        cooldownText:SetFont(config.durationFont, config.durationFontSize, (config.durationFontOutline == "NONE" and "") or config.durationFontOutline)
         cooldownText:SetShadowOffset(config.durationFontShadow and 1 or 0, config.durationFontShadow and -1 or 0)
     end
 

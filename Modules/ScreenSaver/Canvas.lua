@@ -30,17 +30,17 @@ function SS.ScreenSaverCanvasMixin:Configure()
     self.Bottom.Faction:SetTexture(format([[Interface\Timer\%s-Logo]], R.PlayerInfo.faction))
 
     local classColor = _G.RAID_CLASS_COLORS[R.PlayerInfo.class]
-    self.Bottom.Name:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    self.Bottom.Name:SetFont(config.font, config.fontSize or 13, (config.fontOutline == "NONE" and "") or config.fontOutline or "OUTLINE")
     self.Bottom.Name:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     self.Bottom.Name:SetFormattedText("%s-%s", R.PlayerInfo.name, R.PlayerInfo.realm)
     self.Bottom.Name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
-    self.Bottom.Guild:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    self.Bottom.Guild:SetFont(config.font, config.fontSize or 13, (config.fontOutline == "NONE" and "") or config.fontOutline or "OUTLINE")
     self.Bottom.Guild:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     self.Bottom.Guild:SetText(L["No Guild"])
     self.Bottom.Guild:SetTextColor(0.7, 0.7, 0.7)
 
-    self.Bottom.Time:SetFont(config.font, config.fontSize or 13, config.fontOutline or "OUTLINE")
+    self.Bottom.Time:SetFont(config.font, config.fontSize or 13, (config.fontOutline == "NONE" and "") or config.fontOutline or "OUTLINE")
     self.Bottom.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
     self.Bottom.Time:SetText("AFK for 00:00")
     self.Bottom.Time:SetTextColor(0.7, 0.7, 0.7)

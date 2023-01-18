@@ -107,10 +107,10 @@ function UF:ConfigureCastbar()
 
     self.Castbar.Spark:SetAlpha(config.showSpark and 1 or 0)
 
-    self.Castbar.Text:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
+    self.Castbar.Text:SetFont(config.font or UF.config.font, config.fontSize or 10, (config.fontOutline == "NONE" and "") or config.fontOutline)
     self.Castbar.Text:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
-    self.Castbar.Time:SetFont(config.font or UF.config.font, config.fontSize or 10, config.fontOutline)
+    self.Castbar.Time:SetFont(config.font or UF.config.font, config.fontSize or 10, (config.fontOutline == "NONE" and "") or config.fontOutline)
     self.Castbar.Time:SetShadowOffset(config.fontShadow and 1 or 0, config.fontShadow and -1 or 0)
 
     self.Castbar.Icon:SetShown(config.showIcon)

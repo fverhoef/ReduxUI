@@ -330,7 +330,7 @@ function MM:UpdateTimeManager(radius)
         TimeManagerClockButton:SetPoint("TOPRIGHT", Minimap.ZonePanel, "TOPRIGHT", -5, -2)
         TimeManagerClockTicker:ClearAllPoints()
         TimeManagerClockTicker:SetPoint("RIGHT")
-        TimeManagerClockTicker:SetFont(MM.config.timeText.font, MM.config.timeText.fontSize, MM.config.timeText.fontOutline)
+        TimeManagerClockTicker:SetFont(MM.config.timeText.font, MM.config.timeText.fontSize, (MM.config.timeText.fontOutline == "NONE" and "") or MM.config.timeText.fontOutline)
         TimeManagerClockTicker:SetShadowColor(0, 0, 0, 0.25)
         TimeManagerClockTicker:SetShadowOffset(1, -2)
         TimeManagerClockTicker:SetJustifyH("RIGHT")
@@ -365,7 +365,7 @@ function MM:UpdateZonePanel(width, height)
     end
 
     MinimapZoneText:SetShown(MM.config.zonePanel.enabled and MM.config.zonePanel.zoneText.enabled)
-    MinimapZoneText:SetFont(MM.config.zonePanel.zoneText.font, MM.config.zonePanel.zoneText.fontSize, MM.config.zonePanel.zoneText.fontOutline)
+    MinimapZoneText:SetFont(MM.config.zonePanel.zoneText.font, MM.config.zonePanel.zoneText.fontSize, (MM.config.zonePanel.zoneText.fontOutline == "NONE" and "") or MM.config.zonePanel.zoneText.fontOutline)
     MinimapZoneText:SetJustifyH(MM.config.zonePanel.zoneText.justifyH)
     MinimapZoneText:SetShadowOffset(MM.config.zonePanel.zoneText.fontShadow and 1 or 0, MM.config.zonePanel.zoneText.fontShadow and -2 or 0)
 
@@ -419,7 +419,7 @@ function MM:UpdateCalendar(radius)
         if R.isRetail then
             GameTimeFrame:SetNormalFontObject(GameFontHighlightSmall)
         else
-            GameTimeFrame:GetFontString():SetFont(MM.config.calendarText.font, MM.config.calendarText.fontSize, MM.config.calendarText.fontOutline)
+            GameTimeFrame:GetFontString():SetFont(MM.config.calendarText.font, MM.config.calendarText.fontSize, (MM.config.calendarText.fontOutline == "NONE" and "") or MM.config.calendarText.fontOutline)
             GameTimeFrame:GetFontString():SetPoint("CENTER", 0.5, 0)
         end
 

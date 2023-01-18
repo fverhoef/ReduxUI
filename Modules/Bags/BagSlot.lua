@@ -179,7 +179,7 @@ function B.BagSlotMixin:ApplyStyle()
 
     local config = self.frame.config
     if config then
-        self.SlotCount:SetFont(config.slotStyle.font, config.slotStyle.fontSize, config.slotStyle.fontOutline)
+        self.SlotCount:SetFont(config.slotStyle.font, config.slotStyle.fontSize, (config.slotStyle.fontOutline == "NONE" and "") or config.slotStyle.fontOutline)
         self.SlotCount:SetShadowOffset(config.slotStyle.fontShadow and 1 or 0, config.slotStyle.fontShadow and -1 or 0)
     end
 

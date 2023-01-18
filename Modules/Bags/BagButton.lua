@@ -117,9 +117,9 @@ function B.BagButtonMixin:ApplyStyle()
 
     local config = self:GetParent().frame.config
     if config then
-        self.Count:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, config.buttonStyle.fontOutline)
+        self.Count:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, (config.buttonStyle.fontOutline == "NONE" and "") or config.buttonStyle.fontOutline)
         self.Count:SetShadowOffset(config.buttonStyle.fontShadow and 1 or 0, config.buttonStyle.fontShadow and -1 or 0)
-        self.Stock:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, config.buttonStyle.fontOutline)
+        self.Stock:SetFont(config.buttonStyle.font, config.buttonStyle.fontSize, (config.buttonStyle.fontOutline == "NONE" and "") or config.buttonStyle.fontOutline)
         self.Stock:SetShadowOffset(config.buttonStyle.fontShadow and 1 or 0, config.buttonStyle.fontShadow and -1 or 0)
     end
 

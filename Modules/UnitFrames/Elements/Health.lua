@@ -110,7 +110,7 @@ function UF:ConfigureHealth()
 
     if config.value.enabled then
         self.Health.Value:Show()
-        self.Health.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 11, config.value.fontOutline)
+        self.Health.Value:SetFont(config.value.font or UF.config.font, config.value.fontSize or 11, (config.value.fontOutline == "NONE" and "") or config.value.fontOutline)
         self.Health.Value:SetShadowOffset(config.value.fontShadow and 1 or 0, config.value.fontShadow and -1 or 0)
 
         if config.value.tag then
@@ -130,7 +130,7 @@ function UF:ConfigureHealth()
 
     if config.percent and config.percent.enabled then
         self.Health.Percent:Show()
-        self.Health.Percent:SetFont(config.percent.font or UF.config.font, config.percent.fontSize or 11, config.percent.fontOutline)
+        self.Health.Percent:SetFont(config.percent.font or UF.config.font, config.percent.fontSize or 11, (config.value.fontOutline == "NONE" and "") or config.percent.fontOutline)
         self.Health.Percent:SetShadowOffset(config.percent.fontShadow and 1 or 0, config.percent.fontShadow and -1 or 0)
 
         if config.percent.tag then
