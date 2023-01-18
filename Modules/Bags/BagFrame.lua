@@ -62,7 +62,6 @@ function B.BagFrameMixin:Update()
     local width = math.max(0, config.columns * config.slotSize + 20)
     local height = math.max(self.isBank and 500 or 300, config.slotSize * row + 94)
     self:SetSize(width, height)
-    SetItemSearch(self.SearchBox:GetText())
 end
 
 function B.BagFrameMixin:UpdateCooldowns()
