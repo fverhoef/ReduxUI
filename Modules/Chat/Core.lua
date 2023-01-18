@@ -177,7 +177,7 @@ function C:FloatingChatFrame_OnMouseScroll(dir)
 end
 
 function C:UpdateChatFrames()
-    ChatFontNormal:SetFont(C.config.font, C.config.fontSize or 13, C.config.fontOutline or "OUTLINE")
+    ChatFontNormal:SetFont(C.config.font, C.config.fontSize or 13, (C.config.fontOutline == "NONE" and "") or "OUTLINE")
     if ChatFontNormal.SetShadowOffset then
         ChatFontNormal:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)
     end
@@ -245,7 +245,7 @@ function C:SkinChatFrame(frame)
 
 	frame:SetClampedToScreen(false)
     frame:SetClampRectInsets(0, 0, 0, 0)
-    frame:SetFont(C.config.font, C.config.fontSize or 13, C.config.fontOutline or "OUTLINE")
+    frame:SetFont(C.config.font, C.config.fontSize or 13, (C.config.fontOutline == "NONE" and "") or "OUTLINE")
     if frame.SetShadowOffset then
         frame:SetShadowOffset(C.config.fontShadow and 1 or 0, C.config.fontShadow and -1 or 0)
     end
