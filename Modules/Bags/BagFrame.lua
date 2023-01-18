@@ -45,11 +45,7 @@ end
 
 function B.BagFrameMixin:SearchBox_OnTextChanged()
     SearchBoxTemplate_OnTextChanged(self)
-    if R.isRetail then
-        self:GetParent():SetItemSearch(self:GetText())
-    else
-        SetItemSearch(self:GetText())
-    end
+    SetItemSearch(self:GetText())
 end
 
 function B.BagFrameMixin:Update()
@@ -66,7 +62,7 @@ function B.BagFrameMixin:Update()
     local width = math.max(0, config.columns * config.slotSize + 20)
     local height = math.max(self.isBank and 500 or 300, config.slotSize * row + 94)
     self:SetSize(width, height)
-    self:SetItemSearch(self.SearchBox:GetText())
+    SetItemSearch(self.SearchBox:GetText())
 end
 
 function B.BagFrameMixin:UpdateCooldowns()
@@ -93,27 +89,4 @@ end
 
 function B.BagFrameMixin:UnhighlightBagButtons()
     self:HighlightBagButtons(nil)
-end
-
-function B.BagFrameMixin:SetItemSearch(query)
-    local empty = #(query:gsub(" ", "")) == 0
-
-    for _, bag in ipairs(self.Bags) do
-        local bagID = bag:GetID()
-        local slots = GetContainerNumSlots(bagID)
-        for slot, button in ipairs(bag.Buttons) do
-            if slot <= slots then
-                local isFiltered = select(8, GetContainerItemInfo(bagID, slot))
-                if empty or not isFiltered then
-                    SetItemButtonDesaturated(button, button.locked)
-                    button.searchOverlay:Hide()
-                    button:SetAlpha(1)
-                else
-                    SetItemButtonDesaturated(button, 1)
-                    button.searchOverlay:Show()
-                    button:SetAlpha(0.5)
-                end
-            end
-        end
-    end
 end

@@ -23,18 +23,23 @@ function B.BagButtonMixin:Initialize(id)
     self.Stock = self.Stock or _G[self:GetName() .. "Stock"]
 
     self:ApplyStyle()
+    self:SetScript("OnEvent", B.BagButtonMixin.OnEvent)
+end
+
+function B.BagButtonMixin:OnEvent(event)
+    if event == "INVENTORY_SEARCH_UPDATE" then
+        self:UpdateSearchOverlay()
+    end
 end
 
 function B.BagButtonMixin:Update()
     local texture, itemCount, locked, quality, readable, itemId
-    if R.isRetail then
-        local info = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
-        if info then
-            texture, itemCount, locked, quality, readable, itemId = info.iconFileID, info.stackCount, info.isLocked, info.quality, info.IsReadable, info.itemID
-        end
-    else
-        texture, itemCount, locked, quality, readable, _, _, _, _, itemId = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
+
+    local info = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
+    if info then
+        texture, itemCount, locked, quality, readable, itemId = info.iconFileID, info.stackCount, info.isLocked, info.quality, info.IsReadable, info.itemID
     end
+
     self.readable = readable
 
     SetItemButtonTexture(self, texture)
@@ -47,20 +52,15 @@ function B.BagButtonMixin:Update()
 
     if texture then
         self.hasItem = 1
+        self:RegisterEvent("INVENTORY_SEARCH_UPDATE")
     else
         self.hasItem = nil
+        self:UnregisterEvent("INVENTORY_SEARCH_UPDATE")
     end
 
     if self.IconQuestTexture then
-        local isQuestItem
-        if R.isRetail then
-            local questInfo = C_Container.GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
-            isQuestItem = questInfo.isQuestItem
-        else
-			isQuestItem = GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
-        end
-
-        self.IconQuestTexture:SetShown(isQuestItem)
+        local questInfo = GetContainerItemQuestInfo(self:GetParent():GetID(), self:GetID())
+        self.IconQuestTexture:SetShown(questInfo.isQuestItem)
     end
     local battlepayItemTexture = self.BattlepayItemTexture
     if battlepayItemTexture then
@@ -84,6 +84,7 @@ function B.BagButtonMixin:Update()
     end
 
     self:UpdateCooldown()
+    self:UpdateSearchOverlay()
     self:ApplyStyle()
 end
 
@@ -154,4 +155,17 @@ function B.BagButtonMixin:UpdateContainerButtonLockedState(bagID, slot)
     end
 
     SetItemButtonDesaturated(self, select(3, GetContainerItemInfo(bagID, slot)))
+end
+
+function B.BagButtonMixin:UpdateSearchOverlay()
+    local itemInfo = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
+    if itemInfo and itemInfo.isFiltered then
+        SetItemButtonDesaturated(self, 1)
+        self.searchOverlay:Show()
+        self:SetAlpha(0.5)
+    else
+        SetItemButtonDesaturated(self, self.locked)
+        self.searchOverlay:Hide()
+        self:SetAlpha(1)
+    end
 end
