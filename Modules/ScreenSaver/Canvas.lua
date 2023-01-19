@@ -17,7 +17,7 @@ function SS.ScreenSaverCanvasMixin:Initialize()
         tileEdge = false,
         tileSize = 16,
         edgeSize = 16,
-        insets = {left = 0, right = 0, top = 0, bottom = 0}
+        insets = { left = 0, right = 0, top = 0, bottom = 0 }
     })
     self.Bottom:SetBackdropColor(0.08, 0.08, 0.1, 0.92)
 
@@ -79,13 +79,17 @@ function SS.ScreenSaverCanvasMixin:UpdateTimer()
     self.Bottom.Time:SetFormattedText("AFK for %02d:%02d", math.floor(time / 60), time % 60)
 end
 
-local ignoreKeys = {LALT = true, LSHIFT = true, RSHIFT = true}
-local printKeys = {PRINTSCREEN = true}
+local ignoreKeys = { LALT = true, LSHIFT = true, RSHIFT = true }
+local printKeys = { PRINTSCREEN = true }
 
-if IsMacClient() then printKeys[_G.KEY_PRINTSCREEN_MAC] = true end
+if IsMacClient() then
+    printKeys[_G.KEY_PRINTSCREEN_MAC] = true
+end
 
 function SS.ScreenSaverCanvasMixin:OnKeyDown(key)
-    if ignoreKeys[key] then return end
+    if ignoreKeys[key] then
+        return
+    end
 
     if printKeys[key] then
         Screenshot()
@@ -104,6 +108,7 @@ function ScreenSaverCanvasPlayerModelMixin:Initialize()
 end
 
 function ScreenSaverCanvasPlayerModelMixin:Enable()
+    self:Show()
     self.curAnimation = "wave"
     self.startTime = GetTime()
     self.duration = 2.3
@@ -114,7 +119,10 @@ function ScreenSaverCanvasPlayerModelMixin:Enable()
     self:SetScript("OnUpdate", ScreenSaverCanvasPlayerModelMixin.OnUpdate)
 end
 
-function ScreenSaverCanvasPlayerModelMixin:Disable() self:SetScript("OnUpdate", nil) end
+function ScreenSaverCanvasPlayerModelMixin:Disable()
+    self:Hide()
+    self:SetScript("OnUpdate", nil)
+end
 
 function ScreenSaverCanvasPlayerModelMixin:OnUpdate()
     if SS.isActive and not self.isIdle then
