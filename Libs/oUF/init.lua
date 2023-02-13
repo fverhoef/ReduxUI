@@ -138,7 +138,7 @@ if not ns.oUF.isRetail then
                 isFromPlayerOrPlayerPet = castByPlayer or sourceUnit == "pet",
                 nameplateShowAll = nameplateShowAll,
                 timeMod = timeMod,
-                auraInstanceID = spellId, -- TODO: generate a unique number?
+                auraInstanceID = unit .. (sourceUnit or "nounit") .. slot .. spellId, -- TODO: generate a unique number instead of a string?
                 dispelName = debuffType,
                 isHarmful = string.match(filter, "HARMFUL"),
                 isHelpful = string.match(filter, "HELPFUL"),

@@ -274,7 +274,7 @@ end
 local function processData(element, unit, data)
 	if(not data) then return end
 
-	data.isPlayerAura = data.sourceUnit and (UnitIsUnit('player', data.sourceUnit) or UnitIsOwnerOrControllerOfUnit('player', data.sourceUnit))
+	data.isPlayerAura = data.isPlayerAura or data.isFromPlayerOrPlayerPet or (data.sourceUnit and (UnitIsUnit('player', data.sourceUnit) or UnitIsOwnerOrControllerOfUnit('player', data.sourceUnit)))
 
 	--[[ Callback: Auras:PostProcessAuraData(unit, data)
 	Called after the aura data has been processed.
