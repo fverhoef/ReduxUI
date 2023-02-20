@@ -70,7 +70,7 @@ R:RegisterModuleOptions(TT, {
                 end, function(value)
                     TT.config.showHealthValues = value
                 end),
-                showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 4, "double", not R.isRetail, function()
+                showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 4, "double", nil, function()
                     return TT.config.showMount
                 end, function(value)
                     TT.config.showMount = value
