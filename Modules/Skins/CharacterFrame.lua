@@ -6,6 +6,7 @@ local L = R.L
 local CATEGORY_HEADER_HEIGHT = 23
 local CATEGORY_SPACING = 5
 local ITEM_LEVEL_HEIGHT = 27
+local GEAR_SCORE_HEIGHT = 18
 local STAT_HEIGHT = 18
 local ENHANCEMENT_CATEGORIES = { "PLAYERSTAT_MELEE_COMBAT", "PLAYERSTAT_RANGED_COMBAT", "PLAYERSTAT_SPELL_COMBAT", "PLAYERSTAT_DEFENSES" }
 local PAPERDOLL_SIDEBARS = {
@@ -175,6 +176,7 @@ function S:CreateCharacterStatsPane()
     frame.Inset:SetPoint("BOTTOMRIGHT", -5, 0)
 
     frame.ItemLevel = S:CreateCharacterStatsPane_ItemLevel(frame, frame.Inset)
+    frame.GearScore = S:CreateCharacterStatsPane_GearScore(frame, frame.Inset)
     frame.Attributes = S:CreateCharacterStatsPane_Attributes(frame, frame.Inset)
     frame.Enhancements = S:CreateCharacterStatsPane_Enhancements(frame, frame.Inset)
 
@@ -199,8 +201,46 @@ function S:CreateCharacterStatsPane_ItemLevel(parent, anchor)
     frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
     frame.Header.Text:SetText(STAT_AVERAGE_ITEM_LEVEL)
 
-    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelLabel", frame)
+    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneItemLevelValue", frame)
     frame.Value:SetHeight(ITEM_LEVEL_HEIGHT)
+    frame.Value:SetPoint("TOPLEFT", frame.Header, "BOTTOMLEFT")
+    frame.Value:SetPoint("TOPRIGHT", frame.Header, "BOTTOMRIGHT")
+    frame.Value.Text = frame.Value:CreateFontString(nil, "OVERLAY")
+    frame.Value.Text:SetAllPoints()
+    frame.Value.Text:SetJustifyH("CENTER")
+    frame.Value.Text:SetJustifyV("CENTER")
+    frame.Value.Text:SetShadowOffset(1, -1)
+    frame.Value.Text:SetFont(STANDARD_TEXT_FONT, 15)
+    frame.Value.Background = frame.Value:CreateTexture("BACKGROUND")
+    frame.Value.Background:SetAllPoints()
+    frame.Value.Background:SetTexture([[Interface\PaperDollInfoFrame\PaperDollInfoPart1]])
+    frame.Value.Background:SetTexCoord(10 / 1024, 155 / 1024, 758 / 1024, 784 / 1024)
+    frame.Value.Background:SetAlpha(0.3)
+    frame.Value.Background:SetDesaturated(1)
+
+    return frame
+end
+
+function S:CreateCharacterStatsPane_GearScore(parent, anchor)
+    local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneGearScore", parent)
+    frame:SetHeight(CATEGORY_HEADER_HEIGHT + GEAR_SCORE_HEIGHT)
+    frame:SetPoint("TOPLEFT", parent.ItemLevel, "BOTTOMLEFT", 0, 0)
+    frame:SetPoint("TOPRIGHT", parent.ItemLevel, "BOTTOMRIGHT", 0, 0)
+
+    frame.Header = CreateFrame("Frame", addonName .. "CharacterStatsPaneGearScoreLabel", frame)
+    frame.Header:SetHeight(CATEGORY_HEADER_HEIGHT)
+    frame.Header:SetPoint("TOPLEFT")
+    frame.Header:SetPoint("TOPRIGHT")
+    frame.Header.Text = frame.Header:CreateFontString(nil, "OVERLAY")
+    frame.Header.Text:SetAllPoints()
+    frame.Header.Text:SetJustifyH("CENTER")
+    frame.Header.Text:SetJustifyV("CENTER")
+    frame.Header.Text:SetShadowOffset(1, -1)
+    frame.Header.Text:SetFont(STANDARD_TEXT_FONT, 13)
+    frame.Header.Text:SetText(L["Gear Score"])
+
+    frame.Value = CreateFrame("Frame", addonName .. "CharacterStatsPaneGearScoreValue", frame)
+    frame.Value:SetHeight(GEAR_SCORE_HEIGHT)
     frame.Value:SetPoint("TOPLEFT", frame.Header, "BOTTOMLEFT")
     frame.Value:SetPoint("TOPRIGHT", frame.Header, "BOTTOMRIGHT")
     frame.Value.Text = frame.Value:CreateFontString(nil, "OVERLAY")
@@ -387,45 +427,35 @@ function S:UpdateCharacterStatsPane()
     end
 
     S:UpdateAverageItemLevel()
+    S:UpdateGearScore()
     SetCVar("playerStatLeftDropdown", "PLAYERSTAT_BASE_STATS")
     PaperDollFrame_UpdateStats()
 end
 
-local function GetPlayerItemLevelAndQuality()
-    local slots = {
-        "HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "WristSlot", "HandsSlot", "WaistSlot", "LegsSlot", "FeetSlot", "Finger0Slot", "Finger1Slot", "Trinket0Slot", "Trinket1Slot",
-        "MainHandSlot", "SecondaryHandSlot", "RangedSlot"
-    }
-    local minimumItemQuality = 5
-    local totalItemLevel = 0
-    local count = 0
-    local hasTwoHander = false
-    for i, slot in next, slots do
-        local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
-        if link then
-            local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
-            if itemEquipLoc == "INVTYPE_2HWEAPON" then
-                hasTwoHander = true
-            end
-            if itemLevel then
-                totalItemLevel = totalItemLevel + itemLevel
-            end
-            if itemRarity and itemRarity < minimumItemQuality then
-                minimumItemQuality = itemRarity
-            end
-            count = count + 1
-        elseif slot ~= "SecondaryHandSlot" and hasTwoHander then
-            count = count + 1
-        end
-    end
-
-    return math.floor((count and totalItemLevel / count) or 0), minimumItemQuality
-end
-
 function S:UpdateAverageItemLevel()
-    local averageItemLevel, minimumItemQuality = GetPlayerItemLevelAndQuality()
+    local averageItemLevel, minimumItemQuality = R:GetPlayerItemLevelAndQuality()
     local r, g, b = GetItemQualityColor(minimumItemQuality)
     PaperDollFrame.CharacterStatsPane.ItemLevel.Value.Text:SetText(R:Hex(r, g, b) .. averageItemLevel .. "|r")
+end
+
+function S:UpdateGearScore()
+    if S.config.character.showGearScore then
+        PaperDollFrame.CharacterStatsPane.GearScore:Show()
+        PaperDollFrame.CharacterStatsPane.ItemLevel:SetHeight(CATEGORY_HEADER_HEIGHT + GEAR_SCORE_HEIGHT)
+        PaperDollFrame.CharacterStatsPane.ItemLevel.Value:SetHeight(GEAR_SCORE_HEIGHT)
+        PaperDollFrame.CharacterStatsPane.Attributes:SetPoint("TOPLEFT", PaperDollFrame.CharacterStatsPane.ItemLevel, "BOTTOMLEFT", 0, -GEAR_SCORE_HEIGHT - CATEGORY_HEADER_HEIGHT)
+        PaperDollFrame.CharacterStatsPane.Attributes:SetPoint("TOPRIGHT", PaperDollFrame.CharacterStatsPane.ItemLevel, "BOTTOMRIGHT", 0, -GEAR_SCORE_HEIGHT - CATEGORY_HEADER_HEIGHT)
+
+        local gearScore, averageItemLevel = R.GearScore:GetScore("player")
+        r, g, b = R.GearScore:GetQuality(gearScore)
+        PaperDollFrame.CharacterStatsPane.GearScore.Value.Text:SetText(R:Hex(r, g, b) .. gearScore .. "|r")
+    else
+        PaperDollFrame.CharacterStatsPane.GearScore:Hide()
+        PaperDollFrame.CharacterStatsPane.ItemLevel:SetHeight(CATEGORY_HEADER_HEIGHT + ITEM_LEVEL_HEIGHT)
+        PaperDollFrame.CharacterStatsPane.ItemLevel.Value:SetHeight(ITEM_LEVEL_HEIGHT)
+        PaperDollFrame.CharacterStatsPane.Attributes:SetPoint("TOPLEFT", PaperDollFrame.CharacterStatsPane.ItemLevel, "BOTTOMLEFT", 0, -CATEGORY_SPACING)
+        PaperDollFrame.CharacterStatsPane.Attributes:SetPoint("TOPRIGHT", PaperDollFrame.CharacterStatsPane.ItemLevel, "BOTTOMRIGHT", 0, -CATEGORY_SPACING)
+    end
 end
 
 function S:UpdateEquipmentSlotButton()

@@ -5,13 +5,52 @@
         <Size x="384" y="512" />
 
         <Frames>
+            <DropDownToggleButton name="$parentPortraitButton" parentKey="PortraitButton" mixin="ReduxBagFramePortraitButtonMixin">
+                <Size x="40" y="40"/>
+                <Layers>
+                    <Layer level="HIGHLIGHT">
+                        <Texture parentKey="Highlight" atlas="bags-roundhighlight" alphaMode="ADD" setAllPoints="true" hidden="true">
+                            <Anchors>
+                                <Anchor point="CENTER" x="-3" y="3"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnMouseDown method="OnMouseDown"/>
+                </Scripts>
+            </DropDownToggleButton>
+
+			<Frame name="$parentFilterDropDown" parentKey="FilterDropDown" inherits="UIDropDownMenuTemplate"/>
+
             <EditBox name="$parentSearchBox" parentKey="SearchBox" inherits="SearchBoxTemplate">
-                <Size x="158" y="18" />
+                <Size y="18" />
                 <Anchors>
                     <Anchor point="LEFT" relativePoint="TOPLEFT" x="70" y="-42" />
-                    <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-15" y="-42" />
+                    <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-48" y="-42" />
                 </Anchors>
             </EditBox>
+
+            <Button name="$parentSortButton" mixin="ReduxBagFrameSortButtonMixin">
+                <Size x="28" y="26"/>
+                <Anchors>
+                    <Anchor point="RIGHT" relativePoint="TOPRIGHT" x="-15" y="-42" />
+                </Anchors>
+
+                <NormalTexture atlas="bags-button-autosort-up"/>
+                <PushedTexture atlas="bags-button-autosort-down"/>
+                <HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD">
+                    <Size x="24" y="23"/>
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0"/>
+                    </Anchors>
+                </HighlightTexture>
+                <Scripts>
+                    <OnClick method="OnClick" />
+                    <OnEnter method="OnEnter" />
+                    <OnLeave method="OnLeave" />
+                </Scripts>
+            </Button>
         </Frames>
 
         <Layers>

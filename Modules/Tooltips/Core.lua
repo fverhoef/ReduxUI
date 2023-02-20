@@ -155,6 +155,7 @@ function TT:OnTooltipSetUnit()
         TT:FormatGuildText(self, unit)
         TT:FormatPvPText(self)
         TT:AddMountText(self, unit)
+        TT:AddGearScore(self, unit)
     end
     TT:FormatLevelText(self, unit)
     TT:AddStatusBarColor(self)
@@ -349,6 +350,18 @@ function TT:AddMountText(tooltip, unit)
     local mountInfo = R:GetUnitMountInfo(unit)
     if mountInfo then
         tooltip:AddDoubleLine(string.format("%s", MOUNT), mountInfo.name, TT.config.colors.mount[1], TT.config.colors.mount[2], TT.config.colors.mount[3], 1, 1, 1)
+    end
+end
+
+function TT:AddGearScore(tooltip, unit)
+    if not TT.config.showGearScore then
+        return
+    end
+
+    local gearScore, averageItemLevel = R.GearScore:GetScore(unit, callback)
+    local r, g, b = R.GearScore:GetQuality(gearScore)
+    if gearScore > 0 then
+        tooltip:AddLine(R:Hex(1, 1, 1) .. L["Gear Score: "] .. "|r" .. gearScore, r, g, b)
     end
 end
 

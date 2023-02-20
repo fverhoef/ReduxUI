@@ -35,11 +35,12 @@ R:RegisterModuleOptions(TT, {
         showItemId = R:CreateToggleOption(L["Show Item IDs"], nil, 17, "double", nil, function() return TT.config.showItemId end, function(value) TT.config.showItemId = value end),
         showSpellId = R:CreateToggleOption(L["Show Spell IDs"], nil, 18, "double", nil, function() return TT.config.showSpellId end, function(value) TT.config.showSpellId = value end),
         showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", R.isRetail, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
+        showGearScore = R:CreateToggleOption(L["Show Gear Score"], nil, 20, "double", nil, function() return TT.config.showGearScore end, function(value) TT.config.showGearScore = value end),
         font = {
             type = "group",
             name = L["Font"],
             inline = true,
-            order = 20,
+            order = 30,
             args = {
                 font = R:CreateFontOption(L["Font"], L["The font to use for tooltip text."], 1, nil, function() return TT.config.fontFamily end, function(value)
                     TT.config.fontFamily = value
@@ -58,7 +59,7 @@ R:RegisterModuleOptions(TT, {
         layout = {
             type = "group",
             name = L["Layout"],
-            order = 21,
+            order = 31,
             inline = true,
             args = {
                 scale = R:CreateRangeOption(L["Scale"], L["The scale of tooltips."], 1, nil, 0.1, 3, nil, 0.1, function() return TT.config.scale end, function(value)

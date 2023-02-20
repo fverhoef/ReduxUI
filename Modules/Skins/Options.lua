@@ -72,11 +72,20 @@ R:RegisterModuleOptions(S, {
             args = {
                 character = S:CreateEnabledOption(L["Style Character Frame"], L["Style the Character frame, enlarging it and showing attributes in an embedded panel to the right."], 1, R.isRetail,
                                                   "character", true),
-                friends = S:CreateEnabledOption(L["Style Friends Frame"], L["Style the Guild frame, adding class coloring and icons."], 2, R.isRetail, "friends", true),
-                guild = S:CreateEnabledOption(L["Style Guild Frame"], L["Style the Guild frame, adding class coloring and icons."], 3, R.isRetail, "guild", true),
-                tradeSkill = S:CreateEnabledOption(L["Style Trade Skill Frame"], L["Style the professions frame, making it larger and showing more items."], 4, R.isRetail, "worldMap", true),
-                who = S:CreateEnabledOption(L["Style Who Frame"], L["Style the Who frame, adding class coloring and icons."], 5, R.isRetail, "who", true),
-                worldMap = S:CreateEnabledOption(L["Style World Map"], L["Style the world map, no longer making it full screen, fading while moving and adding coordinates."], 6, R.isRetail,
+                showGearScore = R:CreateToggleOption(L["Show Gear Score"], L["Whether to show Gear Score on the Character frame."], 2, "double", function()
+                    return not S.config.character.enabled
+                end, function()
+                    return S.config.character.showGearScore
+                end, function(value)
+                    S.config.character.showGearScore = value
+                end, function()
+                    S:UpdateCharacterStatsPane()
+                end),
+                friends = S:CreateEnabledOption(L["Style Friends Frame"], L["Style the Guild frame, adding class coloring and icons."], 3, R.isRetail, "friends", true),
+                guild = S:CreateEnabledOption(L["Style Guild Frame"], L["Style the Guild frame, adding class coloring and icons."], 4, R.isRetail, "guild", true),
+                tradeSkill = S:CreateEnabledOption(L["Style Trade Skill Frame"], L["Style the professions frame, making it larger and showing more items."], 5, R.isRetail, "worldMap", true),
+                who = S:CreateEnabledOption(L["Style Who Frame"], L["Style the Who frame, adding class coloring and icons."], 6, R.isRetail, "who", true),
+                worldMap = S:CreateEnabledOption(L["Style World Map"], L["Style the world map, no longer making it full screen, fading while moving and adding coordinates."], 7, R.isRetail,
                                                  "worldMap", true)
             }
         }

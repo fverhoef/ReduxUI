@@ -367,6 +367,53 @@ function R:GetPlayerRole()
     return (role == "NONE" and GetSpecializationRole(GetSpecialization())) or role
 end
 
+function R:GetPlayerEquippedItems(includeShirt, includeTabard)
+    local items = {}
+    for _, slot in ipairs(R.EquipmentSlots) do
+        local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
+        if slot == "ShirtSlot" then
+            if includeShirt then
+                items[slot] = link
+            end
+        elseif slot == "TabardSlot" then
+            if includeTabard then
+                items[slot] = link
+            end
+        else
+            items[slot] = link
+        end
+    end
+
+    return items
+end
+
+function R:GetPlayerItemLevelAndQuality()
+    local items = R:GetPlayerEquippedItems()
+    local minimumItemQuality = 5
+    local totalItemLevel = 0
+    local count = 0
+    local hasTwoHander = false
+    for slot, link in pairs(items) do
+        if link then
+            local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
+            if itemEquipLoc == "INVTYPE_2HWEAPON" then
+                hasTwoHander = true
+            end
+            if itemLevel then
+                totalItemLevel = totalItemLevel + itemLevel
+            end
+            if itemRarity and itemRarity < minimumItemQuality then
+                minimumItemQuality = itemRarity
+            end
+            count = count + 1
+        elseif slot ~= "SecondaryHandSlot" and hasTwoHander then
+            count = count + 1
+        end
+    end
+
+    return math.floor((count and totalItemLevel / count) or 0), minimumItemQuality
+end
+
 function R:GetAuraId(spellName, unit)
     local auraName, spellId
     for i = 1, 255 do

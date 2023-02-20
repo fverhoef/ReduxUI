@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Init.lua"/>
+    <Include file="Localization\Localization.xml"/>
     <Include file="Animations.xml"/>
     <Script file="Artwork.lua"/>
     <Script file="Fader.lua"/>
@@ -9,4 +10,5 @@
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
     <Script file="Api.lua"/>
+    <Script file="GearScore.lua"/>
 </Ui>
