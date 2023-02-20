@@ -389,7 +389,7 @@ function TT:AddTalentsItemLevelAndGearScore(tooltip, unit)
     end
 
     if TT.config.showPlayerTalents then
-        local talents = R.Inspect.TalentCache[UnitGUID(unit)]
+        local talents = unit == "player" and R:GetPlayerTalents() or R.Inspect.TalentCache[UnitGUID(unit)]
         if talents then
             tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Primary Talents"], R:Hex(1, 1, 1), talents[1].spec, talents[1][1].count, talents[1][2].count, talents[1][3].count,
                                           talents.activeTalents == 1 and " (active)" or ""))

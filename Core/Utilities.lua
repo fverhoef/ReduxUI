@@ -28,6 +28,19 @@ R.EquipmentSlots = {
     "Trinket0Slot", "Trinket1Slot", "BackSlot", "MainHandSlot", "SecondaryHandSlot", "TabardSlot"
 }
 
+R.SpecNames = {    
+    ["WARRIOR"] = { "Arms", "Fury", "Protection" },
+    ["PALADIN"] = { "Holy", "Protection", "Retribution" },
+    ["HUNTER"] = { "Beast Mastery", "Marksmanship", "Survival" },
+    ["ROGUE"] = { "Assassination", "Combat", "Subtlety" },
+    ["PRIEST"] = { "Discipline", "Holy", "Shadow" },
+    ["DEATHKNIGHT"] = { "Blood", "Frost", "Unholy" },
+    ["SHAMAN"] = { "Elemental", "Enhancement", "Restoration" },
+    ["MAGE"] = { "Arcane", "Fire", "Frost" },
+    ["WARLOCK"] = { "Affliction", "Demonology", "Destruction" },
+    ["DRUID"] = { "Balance", "Feral Combat", "Restoration" }
+}
+
 if not R.isRetail then
     table.insert(R.EquipmentSlots, 18, "RangedSlot")
 end
@@ -414,6 +427,29 @@ function R:GetPlayerItemLevelAndQuality()
     end
 
     return math.floor((count and totalItemLevel / count) or 0), minimumItemQuality
+end
+
+function R:GetPlayerTalents()
+    local talents = { [1] = { [1] = {}, [2] = {}, [3] = {} }, [2] = { [1] = {}, [2] = {}, [3] = {} } }
+    for group = 1, 2 do
+        for tab = 1, 3 do
+            talents[group][tab].name = R.SpecNames[R.PlayerInfo.class][tab]
+            talents[group][tab].count = 0
+
+            for index = 1, GetNumTalents(tab, false, false) do
+                local rank = select(5, GetTalentInfo(tab, index, false, false, group))
+                talents[group][tab][index] = rank
+                talents[group][tab].count = talents[group][tab].count + rank
+            end
+        end
+
+        talents[group].spec = (talents[group][1].count > talents[group][2].count and talents[group][1].count > talents[group][3].count and talents[group][1].name) or
+                                  (talents[group][2].count > talents[group][1].count and talents[group][2].count > talents[group][3].count and talents[group][2].name) or talents[group][3].name
+    end
+
+    talents.activeTalents = GetActiveTalentGroup(false, false)
+    
+    return talents
 end
 
 function R:GetMinimumItemQuality(items)

@@ -17,19 +17,6 @@ R.Inspect.Queue = {}
 
 R.Inspect.Callbacks = {}
 
-local SPEC_NAMES = {
-    ["WARRIOR"] = { "Arms", "Fury", "Protection" },
-    ["PALADIN"] = { "Holy", "Protection", "Retribution" },
-    ["HUNTER"] = { "Beast Mastery", "Marksmanship", "Survival" },
-    ["ROGUE"] = { "Assassination", "Combat", "Subtlety" },
-    ["PRIEST"] = { "Discipline", "Holy", "Shadow" },
-    ["DEATHKNIGHT"] = { "Blood", "Frost", "Unholy" },
-    ["SHAMAN"] = { "Elemental", "Enhancement", "Restoration" },
-    ["MAGE"] = { "Arcane", "Fire", "Frost" },
-    ["WARLOCK"] = { "Affliction", "Demonology", "Destruction" },
-    ["DRUID"] = { "Balance", "Feral Combat", "Restoration" }
-}
-
 local INSPECT_DELAY = 2
 local MAX_QUEUE = 20
 
@@ -72,7 +59,7 @@ function R.Inspect:CacheUserTalents(guid)
     local talents = R.Inspect.TalentCache[guid] or { [1] = { [1] = {}, [2] = {}, [3] = {} }, [2] = { [1] = {}, [2] = {}, [3] = {} } }
     for group = 1, 2 do
         for tab = 1, 3 do
-            talents[group][tab].name = SPEC_NAMES[class][tab]
+            talents[group][tab].name = R.SpecNames[class][tab]
             talents[group][tab].count = 0
 
             for index = 1, GetNumTalents(tab, true, false) do
