@@ -361,7 +361,7 @@ function TT:AddDetails(tooltip, unit)
     end
 
     local gearScore, averageItemLevel, minimumItemQuality, inspecting, loadingCache = R.GearScore:GetScore(unit, function()
-        TT:AddTalentsItemLevelAndGearScore(tooltip, unit)
+        TT:AddDetails(tooltip, unit)
     end)
 
     if inspecting or loadingCache then
