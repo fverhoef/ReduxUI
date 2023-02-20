@@ -203,8 +203,8 @@ function R.GearScore:GetScore(unitOrGuid, callback)
     end
 
     local titanGrip = 1
-    if items["MainHand"] and items["SecondaryHandSlot"] then
-        local itemEquipLoc = select(9, GetItemInfo(items["MainHand"]))
+    if items["MainHandSlot"] and items["SecondaryHandSlot"] then
+        local itemEquipLoc = select(9, GetItemInfo(items["MainHandSlot"]))
         if itemEquipLoc == "INVTYPE_2HWEAPON" then
             titanGrip = 0.5
         end
@@ -229,15 +229,16 @@ function R.GearScore:GetScore(unitOrGuid, callback)
         if slot ~= "ShirtSlot" and slot ~= "TabardSlot" and slot ~= "SecondaryHandSlot" then
             local itemScore, itemLevel = R.GearScore:GetItemScore(itemId)
             if class == "HUNTER" then
-                if slot == "MainHand" then
+                if slot == "MainHandSlot" then
                     itemScore = itemScore * 0.3164
                 elseif slot == "RangedSlot" then
                     itemScore = itemScore * 5.3224
                 end
             end
-            if slot == "MainHand" then
+            if slot == "MainHandSlot" then
                 itemScore = itemScore * titanGrip
             end
+
             gearScore = gearScore + itemScore
             itemCount = itemCount + 1
             totalItemLevel = totalItemLevel + itemLevel

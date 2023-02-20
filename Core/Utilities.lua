@@ -384,8 +384,8 @@ end
 
 function R:GetPlayerEquippedItems(includeShirt, includeTabard)
     local items = {}
-    for _, slot in ipairs(R.EquipmentSlots) do
-        local itemId = GetInventoryItemID("player", GetInventorySlotInfo(slot))
+    for slotId, slot in ipairs(R.EquipmentSlots) do
+        local itemId = GetInventoryItemID("player", slotId)
         if slot == "ShirtSlot" then
             if includeShirt then
                 items[slot] = itemId
