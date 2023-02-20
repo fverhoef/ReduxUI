@@ -155,7 +155,7 @@ function TT:OnTooltipSetUnit()
         TT:FormatGuildText(self, unit)
         TT:FormatPvPText(self)
         TT:AddMountText(self, unit)
-        TT:AddTalentsItemLevelAndGearScore(self, unit)
+        TT:AddDetails(self, unit)
     end
     TT:FormatLevelText(self, unit)
     TT:AddStatusBarColor(self)
@@ -215,6 +215,8 @@ end
 
 function TT:OnStatusBarValueChanged(value)
     if TT.config.showHealthValues then
+        self.Text:Show()
+
         local tooltip = self:GetParent()
         local unit = select(2, tooltip:GetUnit())
         if not unit then
@@ -353,7 +355,7 @@ function TT:AddMountText(tooltip, unit)
     end
 end
 
-function TT:AddTalentsItemLevelAndGearScore(tooltip, unit)
+function TT:AddDetails(tooltip, unit)
     if (not TT.config.showGearScore and not TT.config.showPlayerItemLevel and not TT.config.showPlayerTalents) or (TT.config.showPlayerDetailsModifier == "SHIFT" and not IsShiftKeyDown()) then
         return
     end
