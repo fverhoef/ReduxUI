@@ -217,10 +217,10 @@ function R.GearScore:GetScore(unitOrGuid, callback)
         end
 
         local itemScore, itemLevel = R.GearScore:GetItemScore(items["SecondaryHandSlot"])
-        if R.PlayerInfo.class == "HUNTER" then
+        if class == "HUNTER" then
             itemScore = itemScore * 0.3164
         end
-        gearScore = gearScore + itemScore
+        gearScore = itemScore * titanGrip
         itemCount = itemCount + 1
         totalItemLevel = totalItemLevel + itemLevel
     end
@@ -228,7 +228,7 @@ function R.GearScore:GetScore(unitOrGuid, callback)
     for slot, itemId in pairs(items) do
         if slot ~= "ShirtSlot" and slot ~= "TabardSlot" and slot ~= "SecondaryHandSlot" then
             local itemScore, itemLevel = R.GearScore:GetItemScore(itemId)
-            if R.PlayerInfo.class == "HUNTER" then
+            if class == "HUNTER" then
                 if slot == "MainHand" then
                     itemScore = itemScore * 0.3164
                 elseif slot == "RangedSlot" then
