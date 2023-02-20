@@ -1,6 +1,8 @@
 local addonName, ns = ...
 local R = _G.ReduxUI
 
+local GUIDIsPlayer = C_PlayerInfo.GUIDIsPlayer
+
 R.PlayerInfo = {
     name = UnitName("player"),
     guid = UnitGUID("player"),
@@ -414,6 +416,20 @@ function R:GetPlayerItemLevelAndQuality()
     return math.floor((count and totalItemLevel / count) or 0), minimumItemQuality
 end
 
+function R:GetMinimumItemQuality(items)
+    local minimumItemQuality = 5
+    for slot, link in pairs(items) do
+        if link then
+            local itemRarity = select(3, GetItemInfo(link))
+            if itemRarity and itemRarity < minimumItemQuality then
+                minimumItemQuality = itemRarity
+            end
+        end
+    end
+
+    return minimumItemQuality
+end
+
 function R:GetAuraId(spellName, unit)
     local auraName, spellId
     for i = 1, 255 do
@@ -502,4 +518,55 @@ function R:IsTalentActivationSpell(spellID)
     end
 
     return false
+end
+
+function R:PlayerGUIDToUnitToken(guid)
+    if not guid or not GUIDIsPlayer(guid) then
+        return nil
+    end
+    if UnitGUID("player") == guid then
+        return "player"
+    end
+    if IsInGroup() and IsGUIDInGroup(guid) then
+        if IsInRaid() then
+            for i = 1, 40 do
+                if UnitGUID("raid" .. i) == guid then
+                    return "raid" .. i
+                end
+            end
+        else
+            for i = 1, 4 do
+                if UnitGUID("party" .. i) == guid then
+                    return "party" .. i
+                end
+            end
+        end
+    end
+    if UnitGUID("target") == guid then
+        return "target"
+    end
+    if UnitGUID("focus") == guid then
+        return "focus"
+    end
+    if UnitGUID("mouseover") == guid then
+        return "mouseover"
+    end
+    if GetCVar("nameplateShowFriends") == "1" or GetCVar("nameplateShowEnemies") == "1" then
+        local nameplatesArray = C_NamePlate.GetNamePlates()
+        for i, nameplate in ipairs(nameplatesArray) do
+            if UnitGUID(nameplate.namePlateUnitToken) == guid then
+                return nameplate.namePlateUnitToken
+            end
+        end
+    end
+    if UnitGUID("targettarget") == guid then
+        return "targettarget"
+    end
+    if UnitGUID("focustarget") == guid then
+        return "focustarget"
+    end
+    if UnitGUID("mouseovertarget") == guid then
+        return "mouseovertarget"
+    end
+    return nil
 end

@@ -155,7 +155,7 @@ function TT:OnTooltipSetUnit()
         TT:FormatGuildText(self, unit)
         TT:FormatPvPText(self)
         TT:AddMountText(self, unit)
-        TT:AddGearScore(self, unit)
+        TT:AddItemLevelAndGearScore(self, unit)
     end
     TT:FormatLevelText(self, unit)
     TT:AddStatusBarColor(self)
@@ -353,15 +353,27 @@ function TT:AddMountText(tooltip, unit)
     end
 end
 
-function TT:AddGearScore(tooltip, unit)
-    if not TT.config.showGearScore then
+function TT:AddItemLevelAndGearScore(tooltip, unit)
+    if not TT.config.showGearScore and not TT.config.showPlayerItemLevel then
         return
     end
 
-    local gearScore, averageItemLevel = R.GearScore:GetScore(unit, callback)
-    local r, g, b = R.GearScore:GetQuality(gearScore)
-    if gearScore > 0 then
-        tooltip:AddLine(R:Hex(1, 1, 1) .. L["Gear Score: "] .. "|r" .. gearScore, r, g, b)
+    local gearScore, averageItemLevel, minimumItemQuality = R.GearScore:GetScore(unit)
+
+    if TT.config.showPlayerItemLevel then
+        if averageItemLevel > 0 then
+            local r, g, b = GetItemQualityColor(minimumItemQuality)
+            tooltip:AddDoubleLine(L["Item Level"], R:Hex(r, g, b) .. averageItemLevel .. "|r")
+            tooltip:Show()
+        end
+    end
+
+    if TT.config.showGearScore then
+        if gearScore > 0 then
+            local r, g, b = R.GearScore:GetQuality(gearScore)
+            tooltip:AddDoubleLine(L["Gear Score: "], R:Hex(r, g, b) .. gearScore .. "|r")
+            tooltip:Show()
+        end
     end
 end
 

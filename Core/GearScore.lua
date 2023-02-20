@@ -149,7 +149,7 @@ function GearScore:GetItemScore(itemLink)
     return 0, 0, 0.1, 0.1, 0.1, 0
 end
 
-function GearScore:GetScore(unitOrGuid, callback)
+function GearScore:GetScore(unitOrGuid)
     local guid
     if unitOrGuid then
         if GUIDIsPlayer(unitOrGuid) then
@@ -170,7 +170,19 @@ function GearScore:GetScore(unitOrGuid, callback)
     local itemCount = 0
 
     if guid ~= R.PlayerInfo.guid then
-        return 0, 0 -- TODO: inspect other
+        local inspectItems = R.Inspect.InventoryCache[guid]
+        if not inspectItems then
+            R.Inspect:StartInspect(guid)
+            return 0, 0, 0
+        else
+            items = {}
+            for slot, item in pairs(inspectItems) do
+                if slot ~= "ShirtSlot" and slot ~= "TabardSlot" then
+                    items[slot] = item
+                end
+            end
+            class = select(2, UnitClass(R:PlayerGUIDToUnitToken(guid)))
+        end
     else
         items = R:GetPlayerEquippedItems()
         class = R.PlayerInfo.class
@@ -219,8 +231,8 @@ function GearScore:GetScore(unitOrGuid, callback)
     end
 
     if gearScore > 0 and itemCount > 0 then
-        return math.floor(gearScore), math.floor(totalItemLevel / itemCount)
+        return math.floor(gearScore), math.floor(totalItemLevel / itemCount), R:GetMinimumItemQuality(items)
     end
 
-    return 0, 0
+    return 0, 0, 0
 end

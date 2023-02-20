@@ -35,7 +35,8 @@ R:RegisterModuleOptions(TT, {
         showItemId = R:CreateToggleOption(L["Show Item IDs"], nil, 17, "double", nil, function() return TT.config.showItemId end, function(value) TT.config.showItemId = value end),
         showSpellId = R:CreateToggleOption(L["Show Spell IDs"], nil, 18, "double", nil, function() return TT.config.showSpellId end, function(value) TT.config.showSpellId = value end),
         showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", R.isRetail, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
-        showGearScore = R:CreateToggleOption(L["Show Gear Score"], nil, 20, "double", nil, function() return TT.config.showGearScore end, function(value) TT.config.showGearScore = value end),
+        showGearScore = R:CreateToggleOption(L["Show Player Gear Score"], nil, 20, "double", nil, function() return TT.config.showGearScore end, function(value) TT.config.showGearScore = value end),
+        showPlayerItemLevel = R:CreateToggleOption(L["Show Player Item Level"], nil, 21, "double", nil, function() return TT.config.showPlayerItemLevel end, function(value) TT.config.showPlayerItemLevel = value end),
         font = {
             type = "group",
             name = L["Font"],

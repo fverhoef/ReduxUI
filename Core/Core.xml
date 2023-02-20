@@ -9,6 +9,7 @@
     <Script file="Grid.lua"/>
     <Script file="SystemInfo.lua"/>
     <Script file="Utilities.lua"/>
-    <Script file="Api.lua"/>
     <Script file="GearScore.lua"/>
+    <Script file="Inspect.lua"/>
+    <Script file="Api.lua"/>
 </Ui>
