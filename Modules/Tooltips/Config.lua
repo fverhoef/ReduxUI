@@ -41,6 +41,8 @@ R:RegisterModuleConfig(TT, {
     showItemCount = true,
     showVendorPrice = true,
     showMount = true,
+    showPlayerDetailsModifier = "SHIFT",
     showPlayerItemLevel = true,
-    showGearScore = true
+    showGearScore = true,
+    showPlayerTalents = true
 })

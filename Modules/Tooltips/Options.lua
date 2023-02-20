@@ -37,6 +37,7 @@ R:RegisterModuleOptions(TT, {
         showMount = R:CreateToggleOption(L["Show Mount Info"], nil, 19, "double", R.isRetail, function() return TT.config.showMount end, function(value) TT.config.showMount = value end),
         showGearScore = R:CreateToggleOption(L["Show Player Gear Score"], nil, 20, "double", nil, function() return TT.config.showGearScore end, function(value) TT.config.showGearScore = value end),
         showPlayerItemLevel = R:CreateToggleOption(L["Show Player Item Level"], nil, 21, "double", nil, function() return TT.config.showPlayerItemLevel end, function(value) TT.config.showPlayerItemLevel = value end),
+        showPlayerTalents = R:CreateToggleOption(L["Show Player Talents"], nil, 22, "double", nil, function() return TT.config.showPlayerTalents end, function(value) TT.config.showPlayerTalents = value end),
         font = {
             type = "group",
             name = L["Font"],

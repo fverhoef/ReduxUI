@@ -2,15 +2,17 @@ local addonName, ns = ...
 local R = _G.ReduxUI
 local L = R.L
 
-local GearScore = {}
-R.GearScore = GearScore
+R.GearScore = CreateFrame("Frame")
+R.GearScore:SetScript("OnEvent", function(self, event, ...)
+    return self[event](self, event, ...)
+end)
 
 local GUIDIsPlayer = C_PlayerInfo.GUIDIsPlayer
 
 local BRACKET_SIZE = 1000
 local MAX_SCORE = BRACKET_SIZE * 6 - 1
 
-GearScore.ItemTypes = {
+R.GearScore.ItemTypes = {
     ["INVTYPE_RELIC"] = { ["SlotMOD"] = 0.3164, ["ItemSlot"] = 18, ["Enchantable"] = false },
     ["INVTYPE_TRINKET"] = { ["SlotMOD"] = 0.5625, ["ItemSlot"] = 33, ["Enchantable"] = false },
     ["INVTYPE_2HWEAPON"] = { ["SlotMOD"] = 2.000, ["ItemSlot"] = 16, ["Enchantable"] = true },
@@ -37,9 +39,9 @@ GearScore.ItemTypes = {
     ["INVTYPE_BODY"] = { ["SlotMOD"] = 0, ["ItemSlot"] = 4, ["Enchantable"] = false }
 }
 
-GearScore.Formula = { [4] = { ["A"] = 91.4500, ["B"] = 0.6500 }, [3] = { ["A"] = 81.3750, ["B"] = 0.8125 }, [2] = { ["A"] = 73.0000, ["B"] = 1.0000 } }
+R.GearScore.Formula = { [4] = { ["A"] = 91.4500, ["B"] = 0.6500 }, [3] = { ["A"] = 81.3750, ["B"] = 0.8125 }, [2] = { ["A"] = 73.0000, ["B"] = 1.0000 } }
 
-GearScore.Quality = {
+R.GearScore.Quality = {
     [BRACKET_SIZE * 6] = {
         ["Red"] = { ["A"] = 0.94, ["B"] = BRACKET_SIZE * 5, ["C"] = 0.00006, ["D"] = 1 },
         ["Blue"] = { ["A"] = 0.47, ["B"] = BRACKET_SIZE * 5, ["C"] = 0.00047, ["D"] = -1 },
@@ -78,10 +80,10 @@ GearScore.Quality = {
     }
 }
 
-function GearScore:GetQuality(score)
+function R.GearScore:GetQuality(score)
     score = tonumber(score)
     if not score then
-        return 0, 0, 0, "Trash"
+        return 0, 0, 0, L["Trash"]
     end
     if score > MAX_SCORE then
         score = MAX_SCORE
@@ -94,27 +96,27 @@ function GearScore:GetQuality(score)
 
     for i = 0, 6 do
         if (score > i * BRACKET_SIZE) and (score <= ((i + 1) * BRACKET_SIZE)) then
-            local r = GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["A"] +
-                          (((score - GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["B"]) * GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["C"]) * GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["D"])
-            local g = GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["A"] +
-                          (((score - GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["B"]) * GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["C"]) *
-                              GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["D"])
-            local b = GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["A"] +
-                          (((score - GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["B"]) * GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["C"]) * GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["D"])
-            return r, g, b, GearScore.Quality[(i + 1) * BRACKET_SIZE].Description
+            local r = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["A"] +
+                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["C"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["D"])
+            local g = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["A"] +
+                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["C"]) *
+                              R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["D"])
+            local b = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["A"] +
+                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["C"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["D"])
+            return r, g, b, R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Description
         end
     end
 
     return 0.1, 0.1, 0.1, "Trash"
 end
 
-function GearScore:GetItemScore(itemLink)
+function R.GearScore:GetItemScore(itemLink)
     if not itemLink then
         return 0, 0, 0.1, 0.1, 0.1
     end
 
     local _, itemLink, rarity, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
-    if itemLink and rarity and itemLevel and itemEquipLoc and GearScore.ItemTypes[itemEquipLoc] then
+    if itemLink and rarity and itemLevel and itemEquipLoc and R.GearScore.ItemTypes[itemEquipLoc] then
         local qualityScale = 1
         local score = 0
         local scale = 1.8618
@@ -132,15 +134,15 @@ function GearScore:GetItemScore(itemLink)
             itemLevel = 187.05
         end
 
-        if ((rarity >= 2) and (rarity <= 4)) then
-            local r, g, b = GearScore:GetQuality((floor(((itemLevel - GearScore.Formula[rarity].A) / GearScore.Formula[rarity].B) * 1 * scale)) * 11.25)
-            score = floor(((itemLevel - GearScore.Formula[rarity].A) / GearScore.Formula[rarity].B) * GearScore.ItemTypes[itemEquipLoc].SlotMOD * scale * qualityScale)
+        if rarity >= 2 and rarity <= 4 then
+            local r, g, b = R.GearScore:GetQuality((floor(((itemLevel - R.GearScore.Formula[rarity].A) / R.GearScore.Formula[rarity].B) * 1 * scale)) * 11.25)
+            score = floor(((itemLevel - R.GearScore.Formula[rarity].A) / R.GearScore.Formula[rarity].B) * R.GearScore.ItemTypes[itemEquipLoc].SlotMOD * scale * qualityScale)
             if (itemLevel == 187.05) then
                 itemLevel = 0
             end
             if score < 0 then
                 score = 0
-                r, g, b = GearScore:GetQuality(1)
+                r, g, b = R.GearScore:GetQuality(1)
             end
             return score, itemLevel, r, g, b, itemEquipLoc
         end
@@ -149,7 +151,7 @@ function GearScore:GetItemScore(itemLink)
     return 0, 0, 0.1, 0.1, 0.1, 0
 end
 
-function GearScore:GetScore(unitOrGuid)
+function R.GearScore:GetScore(unitOrGuid, callback)
     local guid
     if unitOrGuid then
         if GUIDIsPlayer(unitOrGuid) then
@@ -172,15 +174,27 @@ function GearScore:GetScore(unitOrGuid)
     if guid ~= R.PlayerInfo.guid then
         local inspectItems = R.Inspect.InventoryCache[guid]
         if not inspectItems then
-            R.Inspect:StartInspect(guid)
-            return 0, 0, 0
+            R.Inspect:StartInspect(guid, callback)
+            return 0, 0, 0, true, false
         else
             items = {}
-            for slot, item in pairs(inspectItems) do
+            local cacheComplete = true
+            for slot, itemId in pairs(inspectItems) do
                 if slot ~= "ShirtSlot" and slot ~= "TabardSlot" then
-                    items[slot] = item
+                    local item = Item:CreateFromItemID(itemId)
+                    if not item:IsItemDataCached() then
+                        item:ContinueOnItemLoad(callback)
+                        cacheComplete = false
+                    end
+
+                    items[slot] = itemId
                 end
             end
+
+            if not cacheComplete then
+                return 0, 0, 0, false, true
+            end
+
             class = select(2, UnitClass(R:PlayerGUIDToUnitToken(guid)))
         end
     else
@@ -202,7 +216,7 @@ function GearScore:GetScore(unitOrGuid)
             titanGrip = 0.5
         end
 
-        local itemScore, itemLevel = GearScore:GetItemScore(items["SecondaryHandSlot"])
+        local itemScore, itemLevel = R.GearScore:GetItemScore(items["SecondaryHandSlot"])
         if R.PlayerInfo.class == "HUNTER" then
             itemScore = itemScore * 0.3164
         end
@@ -211,9 +225,9 @@ function GearScore:GetScore(unitOrGuid)
         totalItemLevel = totalItemLevel + itemLevel
     end
 
-    for slot, itemLink in pairs(items) do
+    for slot, itemId in pairs(items) do
         if slot ~= "ShirtSlot" and slot ~= "TabardSlot" and slot ~= "SecondaryHandSlot" then
-            local itemScore, itemLevel = GearScore:GetItemScore(itemLink)
+            local itemScore, itemLevel = R.GearScore:GetItemScore(itemId)
             if R.PlayerInfo.class == "HUNTER" then
                 if slot == "MainHand" then
                     itemScore = itemScore * 0.3164

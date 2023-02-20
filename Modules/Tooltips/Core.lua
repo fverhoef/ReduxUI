@@ -155,7 +155,7 @@ function TT:OnTooltipSetUnit()
         TT:FormatGuildText(self, unit)
         TT:FormatPvPText(self)
         TT:AddMountText(self, unit)
-        TT:AddItemLevelAndGearScore(self, unit)
+        TT:AddTalentsItemLevelAndGearScore(self, unit)
     end
     TT:FormatLevelText(self, unit)
     TT:AddStatusBarColor(self)
@@ -353,28 +353,52 @@ function TT:AddMountText(tooltip, unit)
     end
 end
 
-function TT:AddItemLevelAndGearScore(tooltip, unit)
-    if not TT.config.showGearScore and not TT.config.showPlayerItemLevel then
+function TT:AddTalentsItemLevelAndGearScore(tooltip, unit)
+    if (not TT.config.showGearScore and not TT.config.showPlayerItemLevel and not TT.config.showPlayerTalents) or (TT.config.showPlayerDetailsModifier == "SHIFT" and not IsShiftKeyDown()) then
         return
     end
 
-    local gearScore, averageItemLevel, minimumItemQuality = R.GearScore:GetScore(unit)
+    local gearScore, averageItemLevel, minimumItemQuality, inspecting, loadingCache = R.GearScore:GetScore(unit, function()
+        TT:AddTalentsItemLevelAndGearScore(tooltip, unit)
+    end)
+
+    if inspecting or loadingCache then
+        return
+    end
+
+    for i = 1, tooltip:NumLines() do
+        local line = _G["GameTooltipTextLeft" .. i]
+        local text = line and line:GetText()
+        if text and (string.find(text, L["Item Level"]) or string.find(text, L["Gear Score"]) or string.find(text, L["Primary Talents"])) then
+            return
+        end
+    end
 
     if TT.config.showPlayerItemLevel then
         if averageItemLevel > 0 then
             local r, g, b = GetItemQualityColor(minimumItemQuality)
-            tooltip:AddDoubleLine(L["Item Level"], R:Hex(r, g, b) .. averageItemLevel .. "|r")
-            tooltip:Show()
+            tooltip:AddLine(L["Item Level"] .. ": " .. R:Hex(r, g, b) .. averageItemLevel .. "|r")
         end
     end
 
     if TT.config.showGearScore then
         if gearScore > 0 then
             local r, g, b = R.GearScore:GetQuality(gearScore)
-            tooltip:AddDoubleLine(L["Gear Score: "], R:Hex(r, g, b) .. gearScore .. "|r")
-            tooltip:Show()
+            tooltip:AddLine(L["Gear Score"] .. ": " .. R:Hex(r, g, b) .. gearScore .. "|r")
         end
     end
+
+    if TT.config.showPlayerTalents then
+        local talents = R.Inspect.TalentCache[UnitGUID(unit)]
+        if talents then
+            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Primary Talents"], R:Hex(1, 1, 1), talents[1].spec, talents[1][1].count, talents[1][2].count, talents[1][3].count,
+                                          talents.activeTalents == 1 and " (active)" or ""))
+            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Secondary Talents"], R:Hex(1, 1, 1), talents[2].spec, talents[2][1].count, talents[2][2].count, talents[2][3].count,
+                                          talents.activeTalents == 2 and " (active)" or ""))
+        end
+    end
+
+    tooltip:Show()
 end
 
 function TT:FormatNameText(tooltip, unit)

@@ -24,12 +24,12 @@ for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do
 end
 
 R.EquipmentSlots = {
-    "HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "ShirtSlot", "TabardSlot", "WristSlot", "HandsSlot", "WaistSlot", "LegsSlot", "FeetSlot", "Finger0Slot", "Finger1Slot",
-    "Trinket0Slot", "Trinket1Slot", "MainHandSlot", "SecondaryHandSlot"
+    "HeadSlot", "NeckSlot", "ShoulderSlot", "ShirtSlot", "ChestSlot", "WaistSlot", "LegsSlot", "FeetSlot", "WristSlot", "HandsSlot", "Finger0Slot", "Finger1Slot",
+    "Trinket0Slot", "Trinket1Slot", "BackSlot", "MainHandSlot", "SecondaryHandSlot", "TabardSlot"
 }
 
 if not R.isRetail then
-    table.insert(R.EquipmentSlots, "RangedSlot")
+    table.insert(R.EquipmentSlots, 18, "RangedSlot")
 end
 
 R.EmptyFunction = function()
@@ -372,17 +372,17 @@ end
 function R:GetPlayerEquippedItems(includeShirt, includeTabard)
     local items = {}
     for _, slot in ipairs(R.EquipmentSlots) do
-        local link = GetInventoryItemLink("player", GetInventorySlotInfo(slot))
+        local itemId = GetInventoryItemID("player", GetInventorySlotInfo(slot))
         if slot == "ShirtSlot" then
             if includeShirt then
-                items[slot] = link
+                items[slot] = itemId
             end
         elseif slot == "TabardSlot" then
             if includeTabard then
-                items[slot] = link
+                items[slot] = itemId
             end
         else
-            items[slot] = link
+            items[slot] = itemId
         end
     end
 
@@ -395,9 +395,9 @@ function R:GetPlayerItemLevelAndQuality()
     local totalItemLevel = 0
     local count = 0
     local hasTwoHander = false
-    for slot, link in pairs(items) do
-        if link then
-            local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(link)
+    for slot, itemId in pairs(items) do
+        if itemId then
+            local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon = GetItemInfo(itemId)
             if itemEquipLoc == "INVTYPE_2HWEAPON" then
                 hasTwoHander = true
             end
@@ -418,9 +418,9 @@ end
 
 function R:GetMinimumItemQuality(items)
     local minimumItemQuality = 5
-    for slot, link in pairs(items) do
-        if link then
-            local itemRarity = select(3, GetItemInfo(link))
+    for slot, itemId in pairs(items) do
+        if itemId then
+            local itemRarity = select(3, GetItemInfo(itemId))
             if itemRarity and itemRarity < minimumItemQuality then
                 minimumItemQuality = itemRarity
             end
