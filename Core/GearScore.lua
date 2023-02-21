@@ -39,7 +39,10 @@ R.GearScore.ItemTypes = {
     ["INVTYPE_BODY"] = { ["SlotMOD"] = 0, ["ItemSlot"] = 4, ["Enchantable"] = false }
 }
 
-R.GearScore.Formula = { [4] = { ["A"] = 91.4500, ["B"] = 0.6500 }, [3] = { ["A"] = 81.3750, ["B"] = 0.8125 }, [2] = { ["A"] = 73.0000, ["B"] = 1.0000 } }
+R.GearScore.Formula = {
+    ["A"] = { [4] = { ["A"] = 91.4500, ["B"] = 0.6500 }, [3] = { ["A"] = 81.3750, ["B"] = 0.8125 }, [2] = { ["A"] = 73.0000, ["B"] = 1.0000 } },
+    ["B"] = { [4] = { ["A"] = 26.0000, ["B"] = 1.2000 }, [3] = { ["A"] = 0.7500, ["B"] = 1.8000 }, [2] = { ["A"] = 8.0000, ["B"] = 2.0000 }, [1] = { ["A"] = 0.0000, ["B"] = 2.2500 } }
+}
 
 R.GearScore.Quality = {
     [BRACKET_SIZE * 6] = {
@@ -97,12 +100,14 @@ function R.GearScore:GetQuality(score)
     for i = 0, 6 do
         if (score > i * BRACKET_SIZE) and (score <= ((i + 1) * BRACKET_SIZE)) then
             local r = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["A"] +
-                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["C"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["D"])
+                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["C"]) *
+                              R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Red["D"])
             local g = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["A"] +
                           (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["C"]) *
                               R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Green["D"])
             local b = R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["A"] +
-                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["C"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["D"])
+                          (((score - R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["B"]) * R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["C"]) *
+                              R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Blue["D"])
             return r, g, b, R.GearScore.Quality[(i + 1) * BRACKET_SIZE].Description
         end
     end
@@ -134,9 +139,15 @@ function R.GearScore:GetItemScore(itemLink)
             itemLevel = 187.05
         end
 
+        if itemLevel > 120 then
+            formula = R.GearScore.Formula["A"]
+        else
+            formula = R.GearScore.Formula["B"]
+        end
+
         if rarity >= 2 and rarity <= 4 then
-            local r, g, b = R.GearScore:GetQuality((floor(((itemLevel - R.GearScore.Formula[rarity].A) / R.GearScore.Formula[rarity].B) * 1 * scale)) * 11.25)
-            score = floor(((itemLevel - R.GearScore.Formula[rarity].A) / R.GearScore.Formula[rarity].B) * R.GearScore.ItemTypes[itemEquipLoc].SlotMOD * scale * qualityScale)
+            local r, g, b = R.GearScore:GetQuality((floor(((itemLevel - formula[rarity].A) / formula[rarity].B) * 1 * scale)) * 11.25)
+            score = floor(((itemLevel - formula[rarity].A) / formula[rarity].B) * R.GearScore.ItemTypes[itemEquipLoc].SlotMOD * scale * qualityScale)
             if (itemLevel == 187.05) then
                 itemLevel = 0
             end
