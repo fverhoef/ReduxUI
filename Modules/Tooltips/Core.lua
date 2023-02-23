@@ -393,9 +393,11 @@ function TT:AddDetails(tooltip, unit)
     if TT.config.showPlayerTalents then
         local talents = unit == "player" and R:GetPlayerTalents() or R.Inspect.TalentCache[UnitGUID(unit)]
         if talents then
-            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Primary Talents"], R:Hex(1, 1, 1), talents[1].spec, talents[1][1].count, talents[1][2].count, talents[1][3].count,
+            local color1 = talents.activeTalents == 1 and { 1, 1, 1 } or { 0.5, 0.5, 0.5 }
+            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Primary Talents"], R:Hex(color1), talents[1].spec, talents[1][1].count, talents[1][2].count, talents[1][3].count,
                                           talents.activeTalents == 1 and " (active)" or ""))
-            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Secondary Talents"], R:Hex(1, 1, 1), talents[2].spec, talents[2][1].count, talents[2][2].count, talents[2][3].count,
+            local color2 = talents.activeTalents == 2 and { 1, 1, 1 } or { 0.5, 0.5, 0.5 }
+            tooltip:AddLine(string.format("%s: %s%s (%i/%i/%i)|r", L["Secondary Talents"], R:Hex(color2), talents[2].spec, talents[2][1].count, talents[2][2].count, talents[2][3].count,
                                           talents.activeTalents == 2 and " (active)" or ""))
         end
     end
