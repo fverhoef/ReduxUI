@@ -78,8 +78,8 @@ R.media = {
             vanilla = {
                 border = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\Border",
                 minimapButtonHighlight = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\MinimapButton-Highlight",
-                starButton_Down = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Up",
-                starButton_Up = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Down",
+                starButton_Down = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Down",
+                starButton_Up = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\StarButton-Up",
                 zoneBorder = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\ZoneBorder",
                 mask = MEDIA_PREFIX .. "\\Textures\\Minimap\\Vanilla\\Mask"
             }
