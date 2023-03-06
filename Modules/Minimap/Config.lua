@@ -9,7 +9,7 @@ R:RegisterModuleConfig(MM, {
     enabled = true,
     point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -13, -13 },
     size = { 220, 220 },
-    style = MM.Styles.Modern,
+    style = MM.Styles.Vanilla,
     showNorthTag = true,
     showWorldMap = false,
     calendarText = { enabled = true, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "NORMAL", fontShadow = true, justifyH = "CENTER" },

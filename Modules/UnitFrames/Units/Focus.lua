@@ -170,7 +170,7 @@ function UF.FocusMixin:PostConfigure()
         self.Castbar:ClearAllPoints()
         self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
         self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
-    elseif self.config.style == UF.Styles.Modern then
+    elseif self.config.style == UF.Styles.Redux or self.config.style == UF.Styles.Modern then
         self:SetSize(192, 67)
 
         self.Border:Hide()
@@ -182,16 +182,26 @@ function UF.FocusMixin:PostConfigure()
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
-        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Artwork:SetTexCoord(0.375, 0.75, 0, 0.26171875)
+        if self.config.style == UF.Styles.Redux then
+            self.Artwork:SetTexture(R.media.textures.unitFrames.redux.unitFrame)
+            self.Artwork:SetTexCoord(0, 0.75, 0, 0.26171875)
+        else
+            self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Artwork:SetTexCoord(0.375, 0.75, 0, 0.26171875)
+        end
         self.Artwork:Show()
 
         if not self.Flash then
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "OVERLAY", nil, 1)
         end
         self.Flash:SetDrawLayer("OVERLAY")
-        self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Flash:SetTexCoord(0.375, 0.75, 0.5234375, 0.78515625)
+        if self.config.style == UF.Styles.Redux then
+            self.Flash:SetTexture(R.media.textures.unitFrames.redux.unitFrame)
+            self.Flash:SetTexCoord(0, 0.75, 0.5234375, 0.78515625)
+        else
+            self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Flash:SetTexCoord(0.375, 0.75, 0.5234375, 0.78515625)
+        end
         self.Flash:ClearAllPoints()
         self.Flash:SetAllPoints()
         self.Flash:Hide()

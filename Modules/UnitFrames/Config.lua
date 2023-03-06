@@ -3,11 +3,11 @@ local R = _G.ReduxUI
 local UF = R.Modules.UnitFrames
 local oUF = ns.oUF or oUF
 
-UF.Styles = { Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern", Custom = "Custom" }
+UF.Styles = { Redux = "Redux", Vanilla = "Blizzard - Vanilla", Modern = "Blizzard - Modern", Custom = "Custom" }
 UF.CastbarStyles = { Modern = "Blizzard - Modern", ModernAnimated = "Blizzard - Modern (Animated)", Custom = "Custom" }
 UF.RuneStyles = { Icons = "Icons", Bars = "Bars" }
 
-local DEFAULT_STYLE = UF.Styles.Modern
+local DEFAULT_STYLE = UF.Styles.Redux
 
 local AURA_FILTER_WHITELIST = {
     Boss = false,

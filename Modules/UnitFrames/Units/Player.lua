@@ -42,7 +42,7 @@ end
 
 function UF.PlayerMixin:PostConfigure()
     self.Castbar:CreateMover("Player Castbar", self.defaults.castbar.point)
-    
+
     self:ConfigureAdditionalPower()
     self:ConfigurePowerPrediction()
     self:ConfigureCombatIndicator()
@@ -63,7 +63,7 @@ function UF.PlayerMixin:PostConfigure()
         self.Power.Mover:Unlock()
     else
         self.Power.Mover:Lock(true)
-    end    
+    end
     if self.config.castbar.detached then
         self.Castbar.Mover:Unlock()
     else
@@ -257,7 +257,7 @@ function UF.PlayerMixin:PostConfigure()
             self.RestingIndicator:SetPoint("BOTTOM", self, "TOPLEFT", 65, -15)
             self.RestingIndicator:SetSize(32, 32)
         end
-    elseif self.config.style == UF.Styles.Modern then
+    elseif self.config.style == UF.Styles.Redux or self.config.style == UF.Styles.Modern then
         self:SetSize(192, 67)
 
         self.Border:Hide()
@@ -269,8 +269,13 @@ function UF.PlayerMixin:PostConfigure()
         end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
-        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Artwork:SetTexCoord(0, 0.375, 0, 0.26171875)
+        if self.config.style == UF.Styles.Redux then
+            self.Artwork:SetTexture(R.media.textures.unitFrames.redux.unitFrame)
+            self.Artwork:SetTexCoord(0.75, 0, 0, 0.26171875)
+        else
+            self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Artwork:SetTexCoord(0, 0.375, 0, 0.26171875)
+        end
         self.Artwork:Show()
 
         if not self.Flash then
@@ -278,9 +283,13 @@ function UF.PlayerMixin:PostConfigure()
         end
 
         self.Flash:SetDrawLayer("OVERLAY")
-        self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625) -- Flash
-        --self.Flash:SetTexCoord(0, 0.375, 0.26171875, 0.5234375) -- Status 
+        if self.config.style == UF.Styles.Redux then
+            self.Flash:SetTexture(R.media.textures.unitFrames.redux.unitFrame)
+            self.Flash:SetTexCoord(0.75, 0, 0.5234375, 0.78515625)
+        else
+            self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Flash:SetTexCoord(0, 0.375, 0.5234375, 0.78515625)
+        end
         self.Flash:ClearAllPoints()
         self.Flash:SetAllPoints()
         self.Flash:Hide()
@@ -312,11 +321,18 @@ function UF.PlayerMixin:PostConfigure()
         self.PortraitHolder.Separator:Hide()
 
         self:DisableElement("Portrait")
-        self.Portrait = self.PortraitHolder.PortraitMasked
-        self.PortraitHolder:SetSize(60, 60)
-        self.PortraitHolder:ClearAllPoints()
-        self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 4, -2)
-        self.PortraitHolder.PortraitMaskedCornerIcon:Show()
+        if self.config.style == UF.Styles.Redux then
+            self.Portrait = self.PortraitHolder.PortraitRound
+            self.PortraitHolder:SetSize(60, 60)
+            self.PortraitHolder:ClearAllPoints()
+            self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 4, -2)
+        else
+            self.Portrait = self.PortraitHolder.PortraitMasked
+            self.PortraitHolder:SetSize(60, 60)
+            self.PortraitHolder:ClearAllPoints()
+            self.PortraitHolder:SetPoint("TOPLEFT", self, "TOPLEFT", 4, -2)
+            self.PortraitHolder.PortraitMaskedCornerIcon:Show()
+        end
         self:EnableElement("Portrait")
 
         self.Health:ClearAllPoints()
@@ -335,7 +351,11 @@ function UF.PlayerMixin:PostConfigure()
 
         self:EnableElement("Power")
         self.Power:ClearAllPoints()
-        self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 61, -45)
+        if self.config.style == UF.Styles.Redux then
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 52, -45)
+        else
+            self.Power:SetPoint("TOPLEFT", self, "TOPLEFT", 61, -45)
+        end
         self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, 11)
 
         self.Power.Value:SetFont(self.config.power.value.font, 9, "OUTLINE")
@@ -349,7 +369,7 @@ function UF.PlayerMixin:PostConfigure()
         self.Power.Percent:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
 
         self.Power.Mover:Lock(true)
-        
+
         self.Power.Border:Hide()
         self.Power.Separator:Hide()
 

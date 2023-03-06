@@ -116,6 +116,10 @@ R.media = {
             comboPointFill = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\ComboPointFill",
             restingFlipbook = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\RestingFlipbook",
             shield = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Shield",
+            redux = {
+                unitFrame = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Redux\\UnitFrame",
+                unitFrameSmall = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Redux\\UnitFrameSmall"
+            },
             modern = {
                 castingBar = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBar",
                 castingBarChannelMask = MEDIA_PREFIX .. "\\Textures\\UnitFrames\\Modern\\CastingBarChannelMask",

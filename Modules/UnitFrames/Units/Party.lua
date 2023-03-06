@@ -117,7 +117,7 @@ function UF.PartyMixin:PostConfigure()
         self.Castbar:ClearAllPoints()
         self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 5, -5)
         self.Castbar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, -16)
-    elseif self.config.style == UF.Styles.Modern then
+    elseif self.config.style == UF.Styles.Redux or self.config.style == UF.Styles.Modern then
         self:SetSize(138, 53)
 
         self.Border:Hide()
@@ -127,8 +127,13 @@ function UF.PartyMixin:PostConfigure()
         if not self.Artwork then
             self.Artwork = self.Overlay:CreateTexture("$parentArtwork", "BORDER", nil, 7)
         end
-        self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Artwork:SetTexCoord(0.75, 0.9794921875, 0, 0.173828125)
+        if self.config.style == UF.Styles.Redux then
+            self.Artwork:SetTexture(R.media.textures.unitFrames.redux.unitFrameSmall)
+            self.Artwork:SetTexCoord(0, 0.91796875, 0, 0.34765625)
+        else
+            self.Artwork:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Artwork:SetTexCoord(0.75, 0.9794921875, 0, 0.173828125)
+        end
         self.Artwork:ClearAllPoints()
         self.Artwork:SetAllPoints()
         self.Artwork:Show()
@@ -137,8 +142,13 @@ function UF.PartyMixin:PostConfigure()
             self.Flash = self.Overlay:CreateTexture("$parentFlash", "OVERLAY", nil, 1)
         end
         self.Flash:SetDrawLayer("OVERLAY")
-        self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
-        self.Flash:SetTexCoord(0.75, 0.9794921875, 0.173828125, 0.34765625)
+        if self.config.style == UF.Styles.Redux then
+            self.Flash:SetTexture(R.media.textures.unitFrames.redux.unitFrameSmall)
+            self.Flash:SetTexCoord(0, 0.91796875, 0.34765625, 0.6953125)
+        else
+            self.Flash:SetTexture(R.media.textures.unitFrames.modern.unitFrame)
+            self.Flash:SetTexCoord(0.75, 0.9794921875, 0.173828125, 0.34765625)
+        end
         self.Flash:ClearAllPoints()
         self.Flash:SetAllPoints()
         self.Flash:Hide()
