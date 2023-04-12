@@ -500,7 +500,7 @@ R:RegisterModuleConfig(UF, {
     focus = R:CopyTable(DEFAULT_UNIT_CONFIG, {
         style = DEFAULT_STYLE,
         largeHealth = true,
-        point = { "TOP", "UIParent", "TOP", 0, -250 },
+        point = { "BOTTOM", "UIParent", "BOTTOM", 380, 70 },
         health = { value = { point = { "LEFT", "LEFT", 5, 0 } }, percent = { point = { "BOTTOMLEFT", "TOPLEFT", 2, 0 } } },
         name = { point = { "BOTTOMRIGHT", "TOPRIGHT", -2, 0 }, justifyH = "RIGHT", tag = "[name:sub(20)] [difficultycolor][level][shortclassification]|r" },
         portrait = { point = "RIGHT" },
@@ -552,7 +552,7 @@ R:RegisterModuleConfig(UF, {
         pvpIndicator = { enabled = false },
         unitAnchorPoint = "LEFT",
         unitSpacing = 10,
-        groupAnchorPoint = "TOP",
+        groupAnchorPoint = "BOTTOM",
         showParty = false,
         showRaid = true
     }),

@@ -59,7 +59,7 @@ R:RegisterModuleConfig(AB, {
         showGrid = true,
         buttonStyle = R:CopyTable(DEFAULT_BUTTON_CONFIG, { type = "ACTIONBUTTON" }),
         pageButtonStyle = AB.Styles.Modern,
-        modernArt = { enabled = true },
+        modernArt = { enabled = false },
         vanillaArt = { enabled = false, stackBottomBars = false }
     },
     actionBar2 = {
