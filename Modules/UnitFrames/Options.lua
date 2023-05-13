@@ -99,34 +99,34 @@ function UF:CreateInputOption(unit, name, desc, order, hidden, get, set, disable
     end, disabled)
 end
 
-function UF:CreatePointOption(unit, order, get, set)
+function UF:CreatePointOption(unit, order, get, set, disabled)
     return R:CreateSelectOption(L["Point"], L["The anchor point on this element."], order, nil, R.ANCHOR_POINTS, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateAnchorOption(unit, order, hidden, get, set)
+function UF:CreateAnchorOption(unit, order, hidden, get, set, disabled)
     return R:CreateSelectOption(L["Anchor"], L["The frame to attach to."], order, hidden, R.ANCHORS, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateRelativePointOption(unit, order, get, set)
+function UF:CreateRelativePointOption(unit, order, get, set, disabled)
     return R:CreateSelectOption(L["Relative Point"], L["The point on the unit frame to attach to."], order, nil, R.ANCHOR_POINTS, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateOffsetXOption(unit, order, get, set)
+function UF:CreateOffsetXOption(unit, order, get, set, disabled)
     return R:CreateRangeOption(L["Offset (X)"], L["The horizontal offset from the anchor point."], order, nil, -500, nil, 500, 1, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
-function UF:CreateOffsetYOption(unit, order, get, set)
+function UF:CreateOffsetYOption(unit, order, get, set, disabled)
     return R:CreateRangeOption(L["Offset (Y)"], L["The vertical offset from the anchor point."], order, nil, -500, nil, 500, 1, get, set, function()
         UF:UpdateUnit(unit)
-    end)
+    end, disabled)
 end
 
 function UF:CreateFontFamilyOption(unit, order, get, set, disabled)
@@ -1452,19 +1452,26 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 name = L["Size"],
                 inline = true,
                 order = 3,
-                disabled = function()
-                    return not UF:UnitConfig(unit).castbar.enabled or IsBlizzardStyled(unit)
-                end,
                 args = {
-                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 1, not canDetach, 10, nil, 400, 1, function()
+                    overrideStyleSize = UF:CreateToggleOption(unit, L["Override Style Size"], L["Allow the settings below to take effect even when using a preset style."], 0, nil, nil, function()
+                        return UF:UnitConfig(unit).castbar.overrideStyleSize
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.overrideStyleSize = value
+                    end),
+                    lineBreak1 = { type = "description", name = "", order = 1 },
+                    width = UF:CreateRangeOption(unit, L["Width"], L["The width of the castbar."], 2, not canDetach, 10, nil, 400, 1, function()
                         return UF:UnitConfig(unit).castbar.size[1]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.size[1] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStyleSize)
                     end),
-                    height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 2, nil, 4, nil, 400, 1, function()
+                    height = UF:CreateRangeOption(unit, L["Height"], L["The height of the castbar."], 3, nil, 4, nil, 400, 1, function()
                         return UF:UnitConfig(unit).castbar.size[2]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.size[2] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStyleSize)
                     end)
                 }
             },
@@ -1473,36 +1480,49 @@ function UF:CreateUnitCastbarOption(unit, order, canDetach)
                 name = L["Position"],
                 inline = true,
                 order = 4,
-                disabled = function()
-                    return not UF:UnitConfig(unit).castbar.enabled or IsBlizzardStyled(unit)
-                end,
                 args = {
-                    point = UF:CreatePointOption(unit, 1, function()
+                    overrideStylePosition = UF:CreateToggleOption(unit, L["Override Style Position"], L["Allow the settings below to take effect even when using a preset style."], 0, nil, nil, function()
+                        return UF:UnitConfig(unit).castbar.overrideStylePosition
+                    end, function(value)
+                        UF:UnitConfig(unit).castbar.overrideStylePosition = value
+                    end),
+                    lineBreak1 = { type = "description", name = "", order = 1 },
+                    point = UF:CreatePointOption(unit, 2, function()
                         return UF:UnitConfig(unit).castbar.point[1]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.point[1] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStylePosition)
                     end),
-                    anchor = UF:CreateAnchorOption(unit, 2, function()
+                    anchor = UF:CreateAnchorOption(unit, 3, function()
                         return not UF:UnitConfig(unit).castbar.detached
                     end, function()
                         return UF:UnitConfig(unit).castbar.point[2]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.point[2] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStylePosition)
                     end),
-                    relativePoint = UF:CreateRelativePointOption(unit, 3, function()
+                    relativePoint = UF:CreateRelativePointOption(unit, 4, function()
                         return UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 2 or 3]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 2 or 3] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStylePosition)
                     end),
-                    offsetX = UF:CreateOffsetXOption(unit, 4, function()
+                    offsetX = UF:CreateOffsetXOption(unit, 5, function()
                         return UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 3 or 4]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 3 or 4] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStylePosition)
                     end),
-                    offsetY = UF:CreateOffsetYOption(unit, 5, function()
+                    offsetY = UF:CreateOffsetYOption(unit, 6, function()
                         return UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 4 or 5]
                     end, function(value)
                         UF:UnitConfig(unit).castbar.point[(not UF:UnitConfig(unit).castbar.detached) and 4 or 5] = value
+                    end, function()
+                        return not UF:UnitConfig(unit).castbar.enabled or (IsBlizzardStyled(unit) and not UF:UnitConfig(unit).castbar.overrideStylePosition)
                     end)
                 }
             },
