@@ -1880,6 +1880,21 @@ function UF:CreateUnitAurasOption(unit, order, name, setting, hidden)
                         return UF:UnitConfig(unit).auras[setting].numDebuffs
                     end, function(value)
                         UF:UnitConfig(unit).auras[setting].numDebuffs = value
+                    end),
+                    initialAnchor = UF:CreateSelectOption(unit, L["Initial Anchor"], L["Anchor point for the aura buttons."], 9, nil, R.ANCHOR_POINTS, function()
+                        return UF:UnitConfig(unit).auras[setting].initialAnchor
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].initialAnchor = value
+                    end),
+                    growthX = UF:CreateSelectOption(unit, L["Horizontal Growth Direction"], L["Horizontal growth direction."], 10, nil, { "LEFT", "RIGHT" }, function()
+                        return UF:UnitConfig(unit).auras[setting].growthX
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].growthX = value
+                    end),
+                    growthY = UF:CreateSelectOption(unit, L["Vertical Growth Direction"], L["Horizontal growth direction."], 11, nil, { "UP", "DOWN" }, function()
+                        return UF:UnitConfig(unit).auras[setting].growthY
+                    end, function(value)
+                        UF:UnitConfig(unit).auras[setting].growthY = value
                     end)
                 }
             },
