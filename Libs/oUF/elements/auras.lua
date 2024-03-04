@@ -268,7 +268,7 @@ local function SortAuras(a, b)
 		return a.canApplyAura
 	end
 
-	return a.auraInstanceID < b.auraInstanceID
+	return (a.auraInstanceID or 0) < (b.auraInstanceID or 0)
 end
 
 local function processData(element, unit, data)
