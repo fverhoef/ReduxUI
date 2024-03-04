@@ -3,6 +3,8 @@ local R = _G.ReduxUI
 local AB = R.Modules.ActionBars
 local L = R.L
 
+R.Libs.ActionButton:RegisterCallback(AB, "OnButtonUpdate")
+
 function AB:CreateActionBar(id)
     local bar = CreateFrame("Frame", addonName .. "_Bar" .. id, UIParent, "SecureHandlerStateTemplate", id)
     bar.id = id
@@ -41,6 +43,13 @@ function AB:CreateActionBar(id)
     bar:CreateMover(L["Action Bar " .. id], bar.defaults.point)
 
     return bar
+end
+
+function AB:OnButtonUpdate()
+    local button = self
+    if self.ApplyStyle then
+        self:ApplyStyle()
+    end
 end
 
 AB.ActionBarMixin = {}
