@@ -11,7 +11,7 @@ function UF:SpawnPartyHeader()
             _G.CompactPartyFrame:UnregisterAllEvents()
         end
 
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshPartyFrames = nop
             EditModeManagerFrame.AccountSettings.ResetPartyFrames = nop
         end

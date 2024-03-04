@@ -33,7 +33,9 @@ function MM:StyleMinimap()
     Minimap.MailFrame = MinimapCluster.MailFrame or MiniMapMailFrame
     Minimap.MailFrame.Border = MiniMapMailBorder or Minimap.MailFrame:CreateTexture("$parentBorder", "BACKGROUND") -- TODO: set vanilla border texture
     Minimap.Tracking = MinimapCluster.Tracking or MiniMapTracking
-    Minimap.Tracking.Button = Minimap.Tracking.Button or MiniMapTrackingButton
+    if Minimap.Tracking then
+        Minimap.Tracking.Button = Minimap.Tracking.Button or MiniMapTrackingButton
+    end
     Minimap.ZoneTextButton = MinimapCluster.ZoneTextButton or MinimapZoneTextButton
     Minimap.ZoomIn = Minimap.ZoomIn or MinimapZoomIn
     Minimap.ZoomOut = Minimap.ZoomOut or MinimapZoomOut
@@ -101,8 +103,12 @@ function MM:StyleMinimap()
         MM:SecureHookScript(MiniMapWorldMapButton, "OnLeave", MM.Minimap_OnLeave)
         MM:SecureHookScript(Minimap.MailFrame, "OnLeave", MM.Minimap_OnLeave)
         MM:SecureHookScript(Minimap.ButtonFrameToggleButton, "OnLeave", MM.Minimap_OnLeave)
-        MM:SecureHookScript(Minimap.InstanceDifficulty, "OnLeave", MM.Minimap_OnLeave)
-        MM:SecureHookScript(MiniMapTracking, "OnLeave", MM.Minimap_OnLeave)
+        if Minimap.InstanceDifficulty then
+            MM:SecureHookScript(Minimap.InstanceDifficulty, "OnLeave", MM.Minimap_OnLeave)
+        end
+        if Minimap.MiniMapTracking then
+            MM:SecureHookScript(MiniMapTracking, "OnLeave", MM.Minimap_OnLeave)
+        end
         MM:SecureHookScript(MiniMapBattlefieldFrame, "OnLeave", MM.Minimap_OnLeave)
         MM:SecureHookScript(MiniMapLFGFrame, "OnLeave", MM.Minimap_OnLeave)
     end
@@ -182,9 +188,11 @@ function MM:UpdateMinimap()
     end
 
     x, y = R:PolarToXY(-35, radius)
-    Minimap.InstanceDifficulty:ClearAllPoints()
-    Minimap.InstanceDifficulty:SetPoint("TOPRIGHT", Minimap.BorderTop, "TOPRIGHT", 0, -15)
-
+    if Minimap.InstanceDifficulty then
+        Minimap.InstanceDifficulty:ClearAllPoints()
+        Minimap.InstanceDifficulty:SetPoint("TOPRIGHT", Minimap.BorderTop, "TOPRIGHT", 0, -15)
+    end
+    
     if not R.isRetail then
         x, y = R:PolarToXY(-72, radius)
         MiniMapBattlefieldFrame:ClearAllPoints()
@@ -254,6 +262,10 @@ function MM:UpdateZoom(radius)
 end
 
 function MM:UpdateTracking(radius)
+    if not Minimap.Tracking then
+        return
+    end
+
     local x, y
     if MM.config.style == MM.Styles.Vanilla then
         x, y = R:PolarToXY(-55, radius)
@@ -380,7 +392,9 @@ function MM:UpdateCalendar(radius)
         GameTimeFrame:SetPoint("CENTER", Minimap, "CENTER", x, y)
         GameTimeFrame:SetSize(40, 40)
         GameTimeFrame:SetHitRectInsets(6, 0, 5, 10)
-        GameTimeFrame:SetNormalFontObject(GameFontBlack)
+        if GameTimeFrame.SetNormalFontObject then
+            GameTimeFrame:SetNormalFontObject(GameFontBlack)
+        end
 
         if GameTimeFrame.NormalTexture then
             GameTimeFrame:SetNormalTexture([[Interface\Calendar\UI-Calendar-Button]])
@@ -397,10 +411,10 @@ function MM:UpdateCalendar(radius)
         if GameTimeFrame.Background then
             GameTimeFrame.Background:Hide()
         end
-        if GameTimeCalendarInvitesGlow.Texture then
+        if GameTimeCalendarInvitesGlow and GameTimeCalendarInvitesGlow.Texture then
             GameTimeCalendarInvitesGlow:SetTexture(GameTimeCalendarInvitesGlow.Texture)
         end
-        if GameTimeCalendarEventAlarmTexture.Texture then
+        if GameTimeCalendarEventAlarmTexture and GameTimeCalendarEventAlarmTexture.Texture then
             GameTimeCalendarEventAlarmTexture:SetTexture(GameTimeCalendarEventAlarmTexture.Texture)
         end
     elseif MM.config.style == MM.Styles.Modern then
@@ -430,10 +444,14 @@ function MM:UpdateCalendar(radius)
         GameTimeFrame.Background:SetPoint("BOTTOMRIGHT", 1, -2)
         GameTimeFrame.Background:Show()
 
-        GameTimeCalendarInvitesGlow.Texture = GameTimeCalendarInvitesGlow.Texture or GameTimeCalendarInvitesGlow:GetTexture()
-        GameTimeCalendarInvitesGlow:SetTexture()
-        GameTimeCalendarEventAlarmTexture.Texture = GameTimeCalendarEventAlarmTexture.Texture or GameTimeCalendarEventAlarmTexture:GetTexture()
-        GameTimeCalendarEventAlarmTexture:SetTexture()
+        if GameTimeCalendarInvitesGlow then
+            GameTimeCalendarInvitesGlow.Texture = GameTimeCalendarInvitesGlow.Texture or GameTimeCalendarInvitesGlow:GetTexture()
+            GameTimeCalendarInvitesGlow:SetTexture()
+        end
+        if GameTimeCalendarEventAlarmTexture then
+            GameTimeCalendarEventAlarmTexture.Texture = GameTimeCalendarEventAlarmTexture.Texture or GameTimeCalendarEventAlarmTexture:GetTexture()
+            GameTimeCalendarEventAlarmTexture:SetTexture()
+        end
     end
 end
 

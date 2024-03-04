@@ -10,6 +10,9 @@ R.shortcut = "rui"
 R.debug = false
 R.version = GetAddOnMetadata(addonName, "Version")
 
+R.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+R.isTbc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+R.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 R.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 R.Libs = {}

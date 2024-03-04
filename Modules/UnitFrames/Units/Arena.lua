@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnArenaHeader()
     if UF.config.arena.enabled then
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshArenaFrames = nop
         end
     end

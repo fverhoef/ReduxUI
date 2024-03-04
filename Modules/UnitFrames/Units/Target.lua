@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnTarget()
     if UF.config.target.enabled then
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshTargetAndFocus = nop
             EditModeManagerFrame.AccountSettings.ResetTargetAndFocus = nop
         end

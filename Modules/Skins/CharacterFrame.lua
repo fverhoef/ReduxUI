@@ -54,7 +54,9 @@ function S:StyleCharacterFrame()
 
     CharacterResistanceFrame:SetFrameLevel(11)
     PaperDollItemsFrame:SetFrameLevel(11)
-    PlayerTitleDropDown:SetFrameLevel(11)
+    if PlayerTitleDropDown then
+        PlayerTitleDropDown:SetFrameLevel(11)
+    end
 
     CharacterAttributesFrame:Hide()
 
@@ -396,6 +398,10 @@ function S:CreateCharacterStatsPane_Enhancements(parent, anchor)
 end
 
 function S:HandleStat(stat, parent, showBackground, point1, point2)
+    if not stat then
+        return
+    end
+
     stat:SetHeight(STAT_HEIGHT)
     stat:ClearAllPoints()
     stat:SetParent(parent)

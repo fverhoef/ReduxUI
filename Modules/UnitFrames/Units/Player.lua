@@ -7,7 +7,7 @@ local STATUS_REFRESH_RATE = 0.05
 
 function UF:SpawnPlayer()
     if UF.config.player.enabled and UF.config.player.castbar.enabled then
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshCastBar = nop
         end
     end

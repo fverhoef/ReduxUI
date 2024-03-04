@@ -19,7 +19,7 @@ function UF:SpawnRaidHeader()
             _G.CompactRaidFrameManager:SetParent(R.HiddenFrame)
         end
 
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshRaidFrames = nop
             EditModeManagerFrame.AccountSettings.ResetRaidFrames = nop
         end

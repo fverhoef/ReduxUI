@@ -5,7 +5,7 @@ local oUF = ns.oUF or oUF
 
 function UF:SpawnBossHeader()
     if UF.config.boss.enabled then
-        if EditModeManagerFrame then
+        if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshBossFrames = nop
         end
     end

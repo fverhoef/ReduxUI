@@ -29,7 +29,7 @@ function UF:StyleAuraFrames()
 
     UF:SecureHook(nil, "UIParent_UpdateTopFramePositions", UF.UIParent_UpdateTopFramePositions)
 
-    if EditModeManagerFrame then
+    if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
         EditModeManagerFrame.AccountSettings.RefreshAuraFrame = nop
     end
 end

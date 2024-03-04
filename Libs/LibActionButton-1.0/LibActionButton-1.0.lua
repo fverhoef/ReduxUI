@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 104
+local MINOR_VERSION = 110
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -286,10 +286,13 @@ function SetupSecureSnippets(button)
 			local pressAndHold = false
 			if type == "action" then
 				self:SetAttribute("typerelease", "actionrelease")
-				local actionType, id = GetActionInfo(action)
+				local actionType, id, subType = GetActionInfo(action)
 				if actionType == "spell" then
 					pressAndHold = IsPressHoldReleaseSpell(id)
 				elseif actionType == "macro" then
+					if subType == "spell" then
+						pressAndHold = IsPressHoldReleaseSpell(id)
+					end
 					-- GetMacroSpell is not in the restricted environment
 					--[=[
 						local spellID = GetMacroSpell(id)
@@ -743,6 +746,13 @@ if UseCustomFlyout then
 			local slotButton = self:GetFrameRef("flyoutButton" .. i)
 			if slotButton then
 				slotButton:Hide()
+
+				-- unset its action, so it stops updating
+				slotButton:SetAttribute("labtype-0", "empty")
+				slotButton:SetAttribute("labaction-0", nil)
+
+				slotButton:CallMethod("SetStateFromHandlerInsecure", 0, "empty")
+				slotButton:CallMethod("UpdateAction")
 			end
 		end
 
@@ -938,6 +948,14 @@ if UseCustomFlyout then
 			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
 		end
 
+		-- hide flyout frame
+		GetFlyoutHandler():Hide()
+
+		-- ensure buttons are cleared, they will be filled when the flyout is shown
+		for i = 1, #lib.FlyoutButtons do
+			lib.FlyoutButtons[i]:SetState(0, "empty")
+		end
+
 		InSync = false
 	end
 
@@ -1098,12 +1116,8 @@ function Generic:PostClick(button, down)
 		ClearNewActionHighlight(self._state_action, false, false)
 	end
 
-	if down and button ~= "Keybind" then
+	if down and IsMouseButtonDown() then
 		self:RegisterEvent("GLOBAL_MOUSE_UP")
-	end
-
-	if self.config.clickOnDown then
-		self:GetPushedTexture():SetAlpha(down and 1 or 0)
 	end
 end
 
@@ -1660,6 +1674,36 @@ function Update(self)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 		self.rangeTimer = - 1
+		if WoWRetail then
+			if not self.MasqueSkinned then
+				self.SlotBackground:Hide()
+				if self.config.hideElements.border then
+					self.NormalTexture:SetTexture()
+					self.icon:RemoveMaskTexture(self.IconMask)
+					self.HighlightTexture:SetSize(52, 51)
+					self.HighlightTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
+					self.CheckedTexture:SetSize(52, 51)
+					self.CheckedTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
+					self.cooldown:ClearAllPoints()
+					self.cooldown:SetAllPoints()
+				else
+					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
+					self.icon:AddMaskTexture(self.IconMask)
+					self.HighlightTexture:SetSize(46, 45)
+					self.HighlightTexture:SetPoint("TOPLEFT")
+					self.CheckedTexture:SetSize(46, 45)
+					self.CheckedTexture:SetPoint("TOPLEFT")
+					self.cooldown:ClearAllPoints()
+					self.cooldown:SetPoint("TOPLEFT", self, "TOPLEFT", 3, -2)
+					self.cooldown:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -3, 3)
+				end
+			end
+		else
+			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
+			if not self.LBFSkinned and not self.MasqueSkinned then
+				self.NormalTexture:SetTexCoord(0, 0, 0, 0)
+			end
+		end
 	else
 		self.icon:Hide()
 		self.cooldown:Hide()
@@ -1668,6 +1712,21 @@ function Update(self)
 			self.HotKey:Hide()
 		else
 			self.HotKey:SetVertexColor(unpack(self.config.text.hotkey.color))
+		end
+		if WoWRetail then
+			if not self.MasqueSkinned then
+				self.SlotBackground:Show()
+				if self.config.hideElements.borderIfEmpty then
+					self.NormalTexture:SetTexture()
+				else
+					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
+				end
+			end
+		else
+			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
+			if not self.LBFSkinned and not self.MasqueSkinned then
+				self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
+			end
 		end
 	end
 
@@ -1997,28 +2056,24 @@ end
 hooksecurefunc("UpdateOnBarHighlightMarksBySpell", function(spellID)
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = "spell"
 	lib.ON_BAR_HIGHLIGHT_MARK_ID = tonumber(spellID)
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
 
 hooksecurefunc("UpdateOnBarHighlightMarksByFlyout", function(flyoutID)
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = "flyout"
 	lib.ON_BAR_HIGHLIGHT_MARK_ID = tonumber(flyoutID)
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
 
 hooksecurefunc("ClearOnBarHighlightMarks", function()
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = nil
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
+
+if ActionBarController_UpdateAllSpellHighlights then
+	hooksecurefunc("ActionBarController_UpdateAllSpellHighlights", function()
+		for button in next, ButtonRegistry do
+			UpdateSpellHighlight(button)
+		end
+	end)
+end
 
 function UpdateSpellHighlight(self)
 	local shown = false
@@ -2205,15 +2260,19 @@ Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._
 Action.IsUnitInRange           = function(self, unit) return IsActionInRange(self._state_action, unit) end
 Action.SetTooltip              = function(self) return GameTooltip:SetAction(self._state_action) end
 Action.GetSpellId              = function(self)
-	local actionType, id, _subType = GetActionInfo(self._state_action)
+	local actionType, id, subType = GetActionInfo(self._state_action)
 	if actionType == "spell" then
 		return id
 	elseif actionType == "macro" then
-		return (GetMacroSpell(id))
+		if subType == "spell" then
+			return id
+		else
+			return (GetMacroSpell(id))
+		end
 	end
 end
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end
-if C_UnitAuras then
+if C_UnitAuras and C_UnitAuras.GetCooldownAuraBySpellID and C_ActionBar and C_ActionBar.GetItemActionOnEquipSpellID then
 	Action.GetPassiveCooldownSpellID = function(self)
 		local _actionType, actionID = GetActionInfo(self._state_action)
 		local onEquipPassiveSpellID
@@ -2256,13 +2315,13 @@ Spell.GetTexture              = function(self) return GetSpellTexture(self._stat
 Spell.GetCharges              = function(self) return GetSpellCharges(self._state_action) end
 Spell.GetCount                = function(self) return GetSpellCount(self._state_action) end
 Spell.GetCooldown             = function(self) return GetSpellCooldown(self._state_action) end
-Spell.IsAttack                = function(self) return IsAttackSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
+Spell.IsAttack                = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAttackSpell(slot, "spell") or nil end -- needs spell book id as of 4.0.1.13066
 Spell.IsEquipped              = function(self) return nil end
 Spell.IsCurrentlyActive       = function(self) return IsCurrentSpell(self._state_action) end
-Spell.IsAutoRepeat            = function(self) return IsAutoRepeatSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
+Spell.IsAutoRepeat            = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAutoRepeatSpell(slot, "spell") or nil end -- needs spell book id as of 4.0.1.13066
 Spell.IsUsable                = function(self) return IsUsableSpell(self._state_action) end
 Spell.IsConsumableOrStackable = function(self) return IsConsumableSpell(self._state_action) end
-Spell.IsUnitInRange           = function(self, unit) return IsSpellInRange(FindSpellBookSlotBySpellID(self._state_action), "spell", unit) end -- needs spell book id as of 4.0.1.13066
+Spell.IsUnitInRange           = function(self, unit) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsSpellInRange(slot, "spell", unit) or nil end -- needs spell book id as of 4.0.1.13066
 Spell.SetTooltip              = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId              = function(self) return self._state_action end
 Spell.GetLossOfControlCooldown = function(self) return GetSpellLossOfControlCooldown(self._state_action) end
@@ -2292,7 +2351,7 @@ Item.IsCurrentlyActive       = function(self) return IsCurrentItem(self._state_a
 Item.IsAutoRepeat            = function(self) return nil end
 Item.IsUsable                = function(self) return IsUsableItem(self._state_action) end
 Item.IsConsumableOrStackable = function(self) return IsConsumableItem(self._state_action) end
-Item.IsUnitInRange           = function(self, unit) return IsItemInRange(self._state_action, unit) end
+--Item.IsUnitInRange           = function(self, unit) return IsItemInRange(self._state_action, unit) end
 Item.SetTooltip              = function(self) return GameTooltip:SetHyperlink(self._state_action) end
 Item.GetSpellId              = function(self) return nil end
 Item.GetPassiveCooldownSpellID = function(self) return nil end

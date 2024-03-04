@@ -110,7 +110,7 @@ function R:DisableEditMode(frame, isBar)
     end
 
     if not skipEditMode and EditModeManagerFrame then
-        for _, registeredFrame in ipairs(EditModeManagerFrame.registeredSystemFrames) do
+        for _, registeredFrame in ipairs(EditModeManagerFrame.registeredSystemFrames or {}) do
             if frame == registeredFrame then
                 for _, method in ipairs(EDIT_MODE_METHODS) do
                     frame[method] = nop

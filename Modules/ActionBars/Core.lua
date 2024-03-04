@@ -151,9 +151,11 @@ function AB:DisableBlizzardBars()
         R:DisableEditMode(StanceBarFrame, true)
         R:DisableEditMode(MainMenuBarVehicleLeaveButton, true)
 
-        EditModeManagerFrame.AccountSettings.RefreshVehicleLeaveButton = nop
-        EditModeManagerFrame.AccountSettings.RefreshActionBarShown = nop
-        EditModeManagerFrame.AccountSettings.RefreshEncounterBar = nop
+        if EditModeManagerFrame.AccountSettings then
+            EditModeManagerFrame.AccountSettings.RefreshVehicleLeaveButton = nop
+            EditModeManagerFrame.AccountSettings.RefreshActionBarShown = nop
+            EditModeManagerFrame.AccountSettings.RefreshEncounterBar = nop
+        end
     end
 end
 
