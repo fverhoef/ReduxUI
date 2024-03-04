@@ -13,7 +13,7 @@ R:RegisterModuleConfig(S, {
         unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
         chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free")
     },
-    character = { enabled = true, style = S.Styles.Vanilla, showGearScore = true },
+    character = { enabled = true, style = S.Styles.Vanilla, showGearScore = true, selectedEnhancement = "PLAYERSTAT_MELEE_COMBAT" },
     durability = { enabled = true, point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260 } },
     friends = { enabled = true },
     guild = { enabled = true },

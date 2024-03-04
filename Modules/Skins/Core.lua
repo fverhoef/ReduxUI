@@ -29,13 +29,18 @@ function S:Enable()
     S:StyleWorldMapFrame()
 
     S:RegisterEvent("ADDON_LOADED")
+    if IsAddOnLoaded("Blizzard_EngravingUI") then
+        S:StyleEngravingFrame()
+    end
     if IsAddOnLoaded("Blizzard_TradeSkillUI") then
         S:StyleTradeSkillFrame()
     end
 end
 
 function S:ADDON_LOADED(event, addon)
-    if addon == "Blizzard_TradeSkillUI" then
+    if addon == "Blizzard_EngravingUI" then
+        S:StyleEngravingFrame()
+    elseif addon == "Blizzard_TradeSkillUI" then
         S:StyleTradeSkillFrame()
     end
 end
