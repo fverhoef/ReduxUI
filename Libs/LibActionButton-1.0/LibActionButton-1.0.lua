@@ -1698,7 +1698,7 @@ function Update(self)
 					self.cooldown:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -3, 3)
 				end
 			end
-		else
+		elseif not self.ignoreNormalTexture then
 			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
 			if not self.LBFSkinned and not self.MasqueSkinned then
 				self.NormalTexture:SetTexCoord(0, 0, 0, 0)
@@ -1722,7 +1722,7 @@ function Update(self)
 					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
 				end
 			end
-		else
+		elseif not self.ignoreNormalTexture then
 			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
 			if not self.LBFSkinned and not self.MasqueSkinned then
 				self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)

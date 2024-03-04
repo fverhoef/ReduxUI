@@ -7,7 +7,7 @@ UF.Styles = { Redux = "Redux", Vanilla = "Blizzard - Vanilla", Modern = "Blizzar
 UF.CastbarStyles = { Modern = "Blizzard - Modern", ModernAnimated = "Blizzard - Modern (Animated)", Custom = "Custom" }
 UF.RuneStyles = { Icons = "Icons", Bars = "Bars" }
 
-local DEFAULT_STYLE = UF.Styles.Redux
+local DEFAULT_STYLE = UF.Styles.Vanilla
 
 local AURA_FILTER_WHITELIST = {
     Boss = false,
