@@ -268,7 +268,16 @@ local function SortAuras(a, b)
 		return a.canApplyAura
 	end
 
-	return (a.auraInstanceID or 0) < (b.auraInstanceID or 0)
+	local numA = tonumber(a.auraInstanceID)
+	local numB = tonumber(b.auraInstanceID)
+
+	if(numA and numB) then
+		return numA < numB
+	elseif(numA) then
+		return true
+	else
+		return false
+	end
 end
 
 local function processData(element, unit, data)
