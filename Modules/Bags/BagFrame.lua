@@ -63,7 +63,7 @@ function B.BagFrameMixin:Update()
     end
 
     local width = math.max(0, config.columns * config.slotSize + 20)
-    local height = math.max(self.isBank and 500 or 300, config.slotSize * row + 94)
+    local height = math.max(self.isBank and 500 or 350, config.slotSize * row + 94)
     self:SetSize(width, height)
 end
 
