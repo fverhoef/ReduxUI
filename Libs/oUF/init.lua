@@ -2,6 +2,9 @@ local _, ns = ...
 ns.oUF = {}
 ns.oUF.Private = {}
 
+ns.oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+ns.oUF.isTbc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+ns.oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 if not ns.oUF.isRetail then
@@ -116,7 +119,7 @@ if not ns.oUF.isRetail then
     if not _G.C_UnitAuras then
         _G.C_UnitAuras = {}
     end
-    if not _G.C_UnitAuras.GetAuraDataBySlot then
+    --if not _G.C_UnitAuras.GetAuraDataBySlot then
         _G.C_UnitAuras.GetAuraDataBySlot = function(unit, slot, filter)
             --print("GetAuraDataBySlot(" .. unit .. "," .. slot .. "," .. filter .. ")")
             local name, icon, applications, debuffType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll,
@@ -149,7 +152,7 @@ if not ns.oUF.isRetail then
                 points = nil
             }
         end
-    end
+    --end
 
     if not _G.HasLFGRestrictions then
         _G.HasLFGRestrictions = function()

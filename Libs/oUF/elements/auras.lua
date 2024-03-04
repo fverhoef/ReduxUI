@@ -235,7 +235,7 @@ local function updateAura(element, unit, data, position)
 	button:Show()
 
 	if not oUF.isRetail then
-		button:SetID(data.slot)
+		button:SetID(data.slot or 0)
 	end
 
 	--[[ Callback: Auras:PostUpdateButton(unit, button, data, position)
