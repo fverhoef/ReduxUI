@@ -12,12 +12,12 @@ R:RegisterModuleConfig(MM, {
     style = MM.Styles.Vanilla,
     showNorthTag = true,
     showWorldMap = false,
-    calendarText = { enabled = true, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 10, fontOutline = "NORMAL", fontShadow = true, justifyH = "CENTER" },
-    timeText = { enabled = true, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "NORMAL", fontShadow = true, justifyH = "CENTER" },
+    calendarText = { enabled = true, font = R.media.defaultFont, fontSize = 10, fontOutline = "NORMAL", fontShadow = true, justifyH = "CENTER" },
+    timeText = { enabled = true, font = R.media.defaultFont, fontSize = 12, fontOutline = "NORMAL", fontShadow = true, justifyH = "CENTER" },
     zonePanel = {
         enabled = true,
         showBorder = true,
-        zoneText = { enabled = true, font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"), fontSize = 12, fontOutline = "NORMAL", fontShadow = true, justifyH = "LEFT" }
+        zoneText = { enabled = true, font = R.media.defaultFont, fontSize = 12, fontOutline = "NORMAL", fontShadow = true, justifyH = "LEFT" }
     },
     buttonFrame = { enabled = true, iconSize = 28, buttonSpacing = 3, collapsed = true, showBorder = true, fader = R.config.faders.onShow }
 })

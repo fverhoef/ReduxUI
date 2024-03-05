@@ -172,3 +172,5 @@ R.Libs.SharedMedia:Register("statusbar", "Castbar - Crafting", R.media.textures.
 R.Libs.SharedMedia:Register("statusbar", "Castbar - Empowering", R.media.textures.statusBars.castbarEmpowering)
 R.Libs.SharedMedia:Register("statusbar", "Castbar - Interrupted", R.media.textures.statusBars.castbarInterrupted)
 R.Libs.SharedMedia:Register("statusbar", "Castbar - Uninterruptable", R.media.textures.statusBars.castbarUninterruptable)
+
+R.media.defaultFont = R.Libs.SharedMedia:Fetch("font", "Friz Quadrata TT")

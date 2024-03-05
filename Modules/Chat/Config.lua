@@ -6,7 +6,7 @@ R:RegisterModuleConfig(C, {
     enabled = true,
     size = { 488, 210 },
     point = { "BOTTOMLEFT", "UIParent", "BOTTOMLEFT", 20, 20 },
-    font = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+    font = R.media.defaultFont,
     fontSize = 12,
     fontOutline = "OUTLINE",
     fontShadow = false,

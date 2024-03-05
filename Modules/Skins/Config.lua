@@ -10,8 +10,8 @@ R:RegisterModuleConfig(S, {
     fonts = {
         enabled = true,
         damage = R.Libs.SharedMedia:Fetch("font", "Adventure"),
-        unitName = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
-        chatBubble = R.Libs.SharedMedia:Fetch("font", "Expressway Free")
+        unitName = R.media.defaultFont,
+        chatBubble = R.media.defaultFont
     },
     character = { enabled = true, style = S.Styles.Vanilla, showGearScore = true, selectedEnhancement = "PLAYERSTAT_MELEE_COMBAT" },
     durability = { enabled = true, point = { "TOPRIGHT", "UIParent", "TOPRIGHT", -13, -260 } },

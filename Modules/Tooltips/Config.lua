@@ -21,7 +21,7 @@ R:RegisterModuleConfig(TT, {
         mount = {220 / 255, 195 / 255, 30 / 255},
     },
     scale = 1,
-    fontFamily = R.Libs.SharedMedia:Fetch("font", "Expressway Free"),
+    fontFamily = R.media.defaultFont,
     fontSize = 12,
     headerFontSize = 14,
     smallFontSize = 11,
