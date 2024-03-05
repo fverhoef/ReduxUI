@@ -73,7 +73,7 @@ R:RegisterModuleOptions(S, {
                 character = S:CreateEnabledOption(L["Style Character Frame"], L["Style the Character frame, enlarging it and showing attributes in an embedded panel to the right."], 1, R.isRetail,
                                                   "character", true),
                 showGearScore = R:CreateToggleOption(L["Show Gear Score"], L["Whether to show Gear Score on the Character frame."], 2, "double", function()
-                    return not S.config.character.enabled
+                    return not R.isClassic or not S.config.character.enabled
                 end, function()
                     return S.config.character.showGearScore
                 end, function(value)
