@@ -197,7 +197,9 @@ function S:CreateCharacterStatsPane()
     frame.Inset:SetPoint("BOTTOMRIGHT", -5, 0)
 
     frame.ItemLevel = S:CreateCharacterStatsPane_ItemLevel(frame, frame.Inset)
-    frame.GearScore = S:CreateCharacterStatsPane_GearScore(frame, frame.Inset)
+    if not R.isClassic then
+        frame.GearScore = S:CreateCharacterStatsPane_GearScore(frame, frame.Inset)
+    end
     frame.Attributes = S:CreateCharacterStatsPane_Attributes(frame, frame.Inset)
     frame.Enhancements = S:CreateCharacterStatsPane_Enhancements(frame, frame.Inset)
 
@@ -485,7 +487,9 @@ function S:UpdateCharacterStatsPane()
     end
 
     S:UpdateAverageItemLevel()
-    S:UpdateGearScore()
+    if not R.isClassic then
+        S:UpdateGearScore()
+    end
     SetCVar("playerStatLeftDropdown", "PLAYERSTAT_BASE_STATS")
     PaperDollFrame_UpdateStats()
 end
@@ -566,7 +570,7 @@ if R.isClassic then
     CR_HASTE_RANGED = 19;
     CR_HASTE_SPELL = 20;
     CR_EXPERTISE = 24;
-    
+
     ATTACK_POWER_MAGIC_NUMBER = 14;
     BLOCK_PER_STRENGTH = 0.05;
     HEALTH_PER_STAMINA = 10;
@@ -583,202 +587,202 @@ if R.isClassic then
         local stat4 = _G["PlayerStatFrameRight4"];
         local stat5 = _G["PlayerStatFrameRight5"];
         local stat6 = _G["PlayerStatFrameRight6"];
-    
+
         -- reset any OnEnter scripts that may have been changed
         stat1:SetScript("OnEnter", S.PaperDollStatTooltip);
         stat2:SetScript("OnEnter", S.PaperDollStatTooltip);
         stat4:SetScript("OnEnter", S.PaperDollStatTooltip);
-    
+
         stat6:Show();
-    
+
         local current = S:GetSelectedEnhancement()
-        if ( current == "PLAYERSTAT_MELEE_COMBAT" ) then
+        if (current == "PLAYERSTAT_MELEE_COMBAT") then
             S:SetDamage(stat1);
-            stat1:SetScript("OnEnter", CharacterDamageFrame_OnEnter);
+            stat1:SetScript("OnEnter", S.CharacterDamageFrame_OnEnter);
             S:SetAttackSpeed(stat2);
             S:SetAttackPower(stat3);
             S:SetRating(stat4, CR_HIT_MELEE);
             S:SetMeleeCritChance(stat5);
             stat6:Hide();
-            --S:SetExpertise(stat6);
-        elseif ( current == "PLAYERSTAT_RANGED_COMBAT" ) then
+            -- S:SetExpertise(stat6);
+        elseif (current == "PLAYERSTAT_RANGED_COMBAT") then
             S:SetRangedDamage(stat1);
-            stat1:SetScript("OnEnter", CharacterRangedDamageFrame_OnEnter);
+            stat1:SetScript("OnEnter", S.CharacterRangedDamageFrame_OnEnter);
             S:SetRangedAttackSpeed(stat2);
             S:SetRangedAttackPower(stat3);
             S:SetRating(stat4, CR_HIT_RANGED);
             S:SetRangedCritChance(stat5);
             stat6:Hide();
-        elseif ( current == "PLAYERSTAT_SPELL_COMBAT" ) then
+        elseif (current == "PLAYERSTAT_SPELL_COMBAT") then
             S:SetSpellBonusDamage(stat1);
-            stat1:SetScript("OnEnter", CharacterSpellBonusDamage_OnEnter);
+            stat1:SetScript("OnEnter", S.CharacterSpellBonusDamage_OnEnter);
             S:SetSpellBonusHealing(stat2);
             S:SetRating(stat3, CR_HIT_SPELL);
             S:SetSpellCritChance(stat4);
-            stat4:SetScript("OnEnter", CharacterSpellCritChance_OnEnter);
+            stat4:SetScript("OnEnter", S.CharacterSpellCritChance_OnEnter);
             S:SetManaRegen(stat5);
-            --S:SetSpellHaste(stat5);
-            --S:SetManaRegen(stat6);
+            -- S:SetSpellHaste(stat5);
+            -- S:SetManaRegen(stat6);
             stat6:Hide();
-        elseif ( current == "PLAYERSTAT_DEFENSES" ) then
+        elseif (current == "PLAYERSTAT_DEFENSES") then
             S:SetArmor(stat1);
             S:SetDefense(stat2);
             S:SetDodge(stat3);
             S:SetParry(stat4);
             S:SetBlock(stat5);
             stat6:Hide();
-            --S:SetResilience(stat6);
+            -- S:SetResilience(stat6);
         end
     end
 
     function S:SetLabelAndText(statFrame, label, text, isPercentage)
-        getglobal(statFrame:GetName().."Label"):SetText(label..":");
-        if ( isPercentage ) then
+        getglobal(statFrame:GetName() .. "Label"):SetText(label .. ":");
+        if (isPercentage) then
             text = format("%.2f%%", text);
         end
-        getglobal(statFrame:GetName().."StatText"):SetText(text);
+        getglobal(statFrame:GetName() .. "StatText"):SetText(text);
     end
 
     function S:SetRating(statFrame, ratingIndex)
-        local label = getglobal(statFrame:GetName().."Label");
-        local text = getglobal(statFrame:GetName().."StatText");
-        local statName = getglobal("COMBAT_RATING_NAME"..ratingIndex);
-        label:SetText(statName..":");
+        local label = getglobal(statFrame:GetName() .. "Label");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+        local statName = getglobal("COMBAT_RATING_NAME" .. ratingIndex);
+        label:SetText(statName .. ":");
         local rating = GetCombatRating(ratingIndex);
         local ratingBonus = GetCombatRatingBonus(ratingIndex);
         text:SetText(rating);
 
         -- Set the tooltip text
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..statName.." "..rating..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. statName .. " " .. rating .. FONT_COLOR_CODE_CLOSE;
         -- Can probably axe this if else tree if all rating tooltips follow the same format
-        if ( ratingIndex == CR_HIT_MELEE ) then
+        if (ratingIndex == CR_HIT_MELEE) then
             statFrame.tooltip2 = format(CR_HIT_MELEE_TOOLTIP, UnitLevel("player"), ratingBonus, GetArmorPenetration());
-        elseif ( ratingIndex == CR_HIT_RANGED ) then
+        elseif (ratingIndex == CR_HIT_RANGED) then
             statFrame.tooltip2 = format(CR_HIT_RANGED_TOOLTIP, UnitLevel("player"), ratingBonus, GetArmorPenetration());
-        elseif ( ratingIndex == CR_DODGE ) then
+        elseif (ratingIndex == CR_DODGE) then
             statFrame.tooltip2 = format(CR_DODGE_TOOLTIP, ratingBonus);
-        elseif ( ratingIndex == CR_PARRY ) then
+        elseif (ratingIndex == CR_PARRY) then
             statFrame.tooltip2 = format(CR_PARRY_TOOLTIP, ratingBonus);
-        elseif ( ratingIndex == CR_BLOCK ) then
+        elseif (ratingIndex == CR_BLOCK) then
             statFrame.tooltip2 = format(CR_PARRY_TOOLTIP, ratingBonus);
-        elseif ( ratingIndex == CR_HIT_SPELL ) then
+        elseif (ratingIndex == CR_HIT_SPELL) then
             statFrame.tooltip2 = format(CR_HIT_SPELL_TOOLTIP, UnitLevel("player"), ratingBonus, GetSpellPenetration(), GetSpellPenetration());
-        elseif ( ratingIndex == CR_CRIT_SPELL ) then
+        elseif (ratingIndex == CR_CRIT_SPELL) then
             local holySchool = 2;
             local minCrit = GetSpellCritChance(holySchool);
             statFrame.spellCrit = {};
             statFrame.spellCrit[holySchool] = minCrit;
             local spellCrit;
-            for i=(holySchool+1), MAX_SPELL_SCHOOLS do
+            for i = (holySchool + 1), MAX_SPELL_SCHOOLS do
                 spellCrit = GetSpellCritChance(i);
                 minCrit = min(minCrit, spellCrit);
                 statFrame.spellCrit[i] = spellCrit;
             end
             minCrit = format("%.2f%%", minCrit);
             statFrame.minCrit = minCrit;
-        elseif ( ratingIndex == CR_EXPERTISE ) then
+        elseif (ratingIndex == CR_EXPERTISE) then
             statFrame.tooltip2 = format(CR_EXPERTISE_TOOLTIP, ratingBonus);
         else
-            statFrame.tooltip2 = HIGHLIGHT_FONT_COLOR_CODE..getglobal("COMBAT_RATING_NAME"..ratingIndex).." "..rating;	
+            statFrame.tooltip2 = HIGHLIGHT_FONT_COLOR_CODE .. getglobal("COMBAT_RATING_NAME" .. ratingIndex) .. " " .. rating;
         end
     end
 
     function S:SetArmor(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
         local base, effectiveArmor, armor, posBuff, negBuff = UnitArmor(unit);
-        getglobal(statFrame:GetName().."Label"):SetText(ARMOR_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
-    
+        getglobal(statFrame:GetName() .. "Label"):SetText(ARMOR_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
+
         PaperDollFormatStat(ARMOR, base, posBuff, negBuff, statFrame, text);
         local armorReduction = S:GetArmorReduction(effectiveArmor, UnitLevel(unit));
         statFrame.tooltip2 = format(DEFAULT_STATARMOR_TOOLTIP, armorReduction);
-        
-        if ( unit == "player" ) then
-            local petBonus = ComputePetBonus("PET_BONUS_ARMOR", effectiveArmor );
-            if( petBonus > 0 ) then
+
+        if (unit == "player") then
+            local petBonus = S:ComputePetBonus("PET_BONUS_ARMOR", effectiveArmor);
+            if (petBonus > 0) then
                 statFrame.tooltip2 = statFrame.tooltip2 .. "\n" .. format(PET_BONUS_TOOLTIP_ARMOR, petBonus);
             end
         end
     end
-    
+
     function S:SetDefense(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
         local base, modifier = UnitDefense(unit);
         local posBuff = 0;
         local negBuff = 0;
-        if ( modifier > 0 ) then
+        if (modifier > 0) then
             posBuff = modifier;
-        elseif ( modifier < 0 ) then
+        elseif (modifier < 0) then
             negBuff = modifier;
         end
-        getglobal(statFrame:GetName().."Label"):SetText(DEFENSE_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
-    
+        getglobal(statFrame:GetName() .. "Label"):SetText(DEFENSE_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
+
         PaperDollFormatStat(DEFENSE, base, posBuff, negBuff, statFrame, text);
-        local defensePercent = GetDodgeBlockParryChanceFromDefense();
+        local defensePercent = S:GetDodgeBlockParryChanceFromDefense();
         statFrame.tooltip2 = format(DEFAULT_STATDEFENSE_TOOLTIP, GetCombatRating(CR_DEFENSE_SKILL), GetCombatRatingBonus(CR_DEFENSE_SKILL), defensePercent, defensePercent);
     end
-    
+
     function S:SetDodge(statFrame)
         local chance = GetDodgeChance();
         S:SetLabelAndText(statFrame, STAT_DODGE, chance, 1);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..getglobal("DODGE_CHANCE").." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. getglobal("DODGE_CHANCE") .. " " .. string.format("%.02f", chance) .. "%" .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_DODGE_TOOLTIP, GetCombatRating(CR_DODGE), GetCombatRatingBonus(CR_DODGE));
     end
-    
+
     function S:SetBlock(statFrame)
         local chance = GetBlockChance();
         S:SetLabelAndText(statFrame, STAT_BLOCK, chance, 1);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..getglobal("BLOCK_CHANCE").." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. getglobal("BLOCK_CHANCE") .. " " .. string.format("%.02f", chance) .. "%" .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_BLOCK_TOOLTIP, GetCombatRating(CR_BLOCK), GetCombatRatingBonus(CR_BLOCK), GetShieldBlock());
     end
-    
+
     function S:SetParry(statFrame)
         local chance = GetParryChance();
         S:SetLabelAndText(statFrame, STAT_PARRY, chance, 1);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..getglobal("PARRY_CHANCE").." "..string.format("%.02f", chance).."%"..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. getglobal("PARRY_CHANCE") .. " " .. string.format("%.02f", chance) .. "%" .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_PARRY_TOOLTIP, GetCombatRating(CR_PARRY), GetCombatRatingBonus(CR_PARRY));
     end
-    
-    function GetDodgeBlockParryChanceFromDefense()
+
+    function S:GetDodgeBlockParryChanceFromDefense()
         local base, modifier = UnitDefense("player");
-        --local defensePercent = DODGE_PARRY_BLOCK_PERCENT_PER_DEFENSE * modifier;
-        local defensePercent = DODGE_PARRY_BLOCK_PERCENT_PER_DEFENSE * ((base + modifier) - (UnitLevel("player")*5));
+        -- local defensePercent = DODGE_PARRY_BLOCK_PERCENT_PER_DEFENSE * modifier;
+        local defensePercent = DODGE_PARRY_BLOCK_PERCENT_PER_DEFENSE * ((base + modifier) - (UnitLevel("player") * 5));
         defensePercent = max(defensePercent, 0);
         return defensePercent;
     end
-    
+
     function S:SetResilience(statFrame)
         local resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN);
         local bonus = GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN);
-    
+
         S:SetLabelAndText(statFrame, STAT_RESILIENCE, resilience);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..STAT_RESILIENCE.." "..resilience..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. STAT_RESILIENCE .. " " .. resilience .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(RESILIENCE_TOOLTIP, bonus, min(bonus * 2, 25.00), bonus);
     end
-    
+
     function S:SetDamage(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
-        getglobal(statFrame:GetName().."Label"):SetText(DAMAGE_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
+        getglobal(statFrame:GetName() .. "Label"):SetText(DAMAGE_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local speed, offhandSpeed = UnitAttackSpeed(unit);
         local minDamage;
-        local maxDamage; 
+        local maxDamage;
         local minOffHandDamage;
-        local maxOffHandDamage; 
+        local maxOffHandDamage;
         local physicalBonusPos;
         local physicalBonusNeg;
         local percent;
         minDamage, maxDamage, minOffHandDamage, maxOffHandDamage, physicalBonusPos, physicalBonusNeg, percent = UnitDamage(unit);
-        local displayMin = max(floor(minDamage),1);
-        local displayMax = max(ceil(maxDamage),1);
-    
+        local displayMin = max(floor(minDamage), 1);
+        local displayMax = max(ceil(maxDamage), 1);
+
         if (percent == 0) then
             minDamage = 0;
             maxDamage = 0;
@@ -786,7 +790,7 @@ if R.isClassic then
             minDamage = (minDamage / percent) - physicalBonusPos - physicalBonusNeg;
             maxDamage = (maxDamage / percent) - physicalBonusPos - physicalBonusNeg;
         end
-    
+
         local baseDamage = (minDamage + maxDamage) * 0.5;
         local fullDamage = (baseDamage + physicalBonusPos + physicalBonusNeg) * percent;
         local totalBonus = (fullDamage - baseDamage);
@@ -794,78 +798,78 @@ if R.isClassic then
         if speed == 0 then
             damagePerSecond = 0;
         else
-            damagePerSecond = (max(fullDamage,1) / speed);
+            damagePerSecond = (max(fullDamage, 1) / speed);
         end
-        local damageTooltip = max(floor(minDamage),1).." - "..max(ceil(maxDamage),1);
-        
+        local damageTooltip = max(floor(minDamage), 1) .. " - " .. max(ceil(maxDamage), 1);
+
         local colorPos = "|cff20ff20";
         local colorNeg = "|cffff2020";
-    
+
         -- epsilon check
-        if ( totalBonus < 0.1 and totalBonus > -0.1 ) then
+        if (totalBonus < 0.1 and totalBonus > -0.1) then
             totalBonus = 0.0;
         end
-    
-        if ( totalBonus == 0 ) then
-            if ( ( displayMin < 100 ) and ( displayMax < 100 ) ) then 
-                text:SetText(displayMin.." - "..displayMax);	
+
+        if (totalBonus == 0) then
+            if ((displayMin < 100) and (displayMax < 100)) then
+                text:SetText(displayMin .. " - " .. displayMax);
             else
-                text:SetText(displayMin.."-"..displayMax);
+                text:SetText(displayMin .. "-" .. displayMax);
             end
         else
-            
+
             local color;
-            if ( totalBonus > 0 ) then
+            if (totalBonus > 0) then
                 color = colorPos;
             else
                 color = colorNeg;
             end
-            if ( ( displayMin < 100 ) and ( displayMax < 100 ) ) then 
-                text:SetText(color..displayMin.." - "..displayMax.."|r");	
+            if ((displayMin < 100) and (displayMax < 100)) then
+                text:SetText(color .. displayMin .. " - " .. displayMax .. "|r");
             else
-                text:SetText(color..displayMin.."-"..displayMax.."|r");
+                text:SetText(color .. displayMin .. "-" .. displayMax .. "|r");
             end
-            if ( physicalBonusPos > 0 ) then
-                damageTooltip = damageTooltip..colorPos.." +"..physicalBonusPos.."|r";
+            if (physicalBonusPos > 0) then
+                damageTooltip = damageTooltip .. colorPos .. " +" .. physicalBonusPos .. "|r";
             end
-            if ( physicalBonusNeg < 0 ) then
-                damageTooltip = damageTooltip..colorNeg.." "..physicalBonusNeg.."|r";
+            if (physicalBonusNeg < 0) then
+                damageTooltip = damageTooltip .. colorNeg .. " " .. physicalBonusNeg .. "|r";
             end
-            if ( percent > 1 ) then
-                damageTooltip = damageTooltip..colorPos.." x"..floor(percent*100+0.5).."%|r";
-            elseif ( percent < 1 ) then
-                damageTooltip = damageTooltip..colorNeg.." x"..floor(percent*100+0.5).."%|r";
+            if (percent > 1) then
+                damageTooltip = damageTooltip .. colorPos .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
+            elseif (percent < 1) then
+                damageTooltip = damageTooltip .. colorNeg .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
             end
-            
+
         end
         statFrame.damage = damageTooltip;
         statFrame.attackSpeed = speed;
         statFrame.dps = damagePerSecond;
-        
+
         -- If there's an offhand speed then add the offhand info to the tooltip
-        if ( offhandSpeed ) then
+        if (offhandSpeed) then
             minOffHandDamage = (minOffHandDamage / percent) - physicalBonusPos - physicalBonusNeg;
             maxOffHandDamage = (maxOffHandDamage / percent) - physicalBonusPos - physicalBonusNeg;
-    
+
             local offhandBaseDamage = (minOffHandDamage + maxOffHandDamage) * 0.5;
             local offhandFullDamage = (offhandBaseDamage + physicalBonusPos + physicalBonusNeg) * percent;
             local offhandDamagePerSecond;
             if offhandSpeed == 0 then
                 offhandDamagePerSecond = 0;
             else
-                offhandDamagePerSecond = (max(offhandFullDamage,1) / offhandSpeed);
+                offhandDamagePerSecond = (max(offhandFullDamage, 1) / offhandSpeed);
             end
-            local offhandDamageTooltip = max(floor(minOffHandDamage),1).." - "..max(ceil(maxOffHandDamage),1);
-            if ( physicalBonusPos > 0 ) then
-                offhandDamageTooltip = offhandDamageTooltip..colorPos.." +"..physicalBonusPos.."|r";
+            local offhandDamageTooltip = max(floor(minOffHandDamage), 1) .. " - " .. max(ceil(maxOffHandDamage), 1);
+            if (physicalBonusPos > 0) then
+                offhandDamageTooltip = offhandDamageTooltip .. colorPos .. " +" .. physicalBonusPos .. "|r";
             end
-            if ( physicalBonusNeg < 0 ) then
-                offhandDamageTooltip = offhandDamageTooltip..colorNeg.." "..physicalBonusNeg.."|r";
+            if (physicalBonusNeg < 0) then
+                offhandDamageTooltip = offhandDamageTooltip .. colorNeg .. " " .. physicalBonusNeg .. "|r";
             end
-            if ( percent > 1 ) then
-                offhandDamageTooltip = offhandDamageTooltip..colorPos.." x"..floor(percent*100+0.5).."%|r";
-            elseif ( percent < 1 ) then
-                offhandDamageTooltip = offhandDamageTooltip..colorNeg.." x"..floor(percent*100+0.5).."%|r";
+            if (percent > 1) then
+                offhandDamageTooltip = offhandDamageTooltip .. colorPos .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
+            elseif (percent < 1) then
+                offhandDamageTooltip = offhandDamageTooltip .. colorNeg .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
             end
             statFrame.offhandDamage = offhandDamageTooltip;
             statFrame.offhandAttackSpeed = offhandSpeed;
@@ -874,157 +878,161 @@ if R.isClassic then
             statFrame.offhandAttackSpeed = nil;
         end
     end
-    
+
     function S:SetAttackSpeed(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
         local speed, offhandSpeed = UnitAttackSpeed(unit);
         speed = format("%.2f", speed);
-        if ( offhandSpeed ) then
+        if (offhandSpeed) then
             offhandSpeed = format("%.2f", offhandSpeed);
         end
-        local text;	
-        if ( offhandSpeed ) then
-            text = speed.." / "..offhandSpeed;
+        local text;
+        if (offhandSpeed) then
+            text = speed .. " / " .. offhandSpeed;
         else
             text = speed;
         end
         S:SetLabelAndText(statFrame, WEAPON_SPEED, text);
-    
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..ATTACK_SPEED.." "..text..FONT_COLOR_CODE_CLOSE;
+
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. ATTACK_SPEED .. " " .. text .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_HASTE_RATING_TOOLTIP, GetCombatRating(CR_HASTE_MELEE), GetCombatRatingBonus(CR_HASTE_MELEE));
     end
-    
+
     function S:SetAttackPower(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
-        end	
-        getglobal(statFrame:GetName().."Label"):SetText(ATTACK_POWER_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
+        end
+        getglobal(statFrame:GetName() .. "Label"):SetText(ATTACK_POWER_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local base, posBuff, negBuff = UnitAttackPower(unit);
-    
+
         PaperDollFormatStat(MELEE_ATTACK_POWER, base, posBuff, negBuff, statFrame, text);
-        statFrame.tooltip2 = format(MELEE_ATTACK_POWER_TOOLTIP, max((base+posBuff+negBuff), 0)/ATTACK_POWER_MAGIC_NUMBER);
+        statFrame.tooltip2 = format(MELEE_ATTACK_POWER_TOOLTIP, max((base + posBuff + negBuff), 0) / ATTACK_POWER_MAGIC_NUMBER);
     end
-    
+
     function S:SetAttackBothHands(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
         local mainHandAttackBase, mainHandAttackMod, offHandAttackBase, offHandAttackMod = UnitAttackBothHands(unit);
-    
-        getglobal(statFrame:GetName().."Label"):SetText(COMBAT_RATING_NAME1..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-    
-        if( mainHandAttackMod == 0 ) then
+
+        getglobal(statFrame:GetName() .. "Label"):SetText(COMBAT_RATING_NAME1 .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+
+        if (mainHandAttackMod == 0) then
             text:SetText(mainHandAttackBase);
         else
             local color = RED_FONT_COLOR_CODE;
-            if( mainHandAttackMod > 0 ) then
+            if (mainHandAttackMod > 0) then
                 color = GREEN_FONT_COLOR_CODE;
             end
-            text:SetText(color..(mainHandAttackBase + mainHandAttackMod)..FONT_COLOR_CODE_CLOSE);
+            text:SetText(color .. (mainHandAttackBase + mainHandAttackMod) .. FONT_COLOR_CODE_CLOSE);
         end
-    
-        if( mainHandAttackMod == 0 ) then
-            statFrame.weaponSkill = COMBAT_RATING_NAME1.." "..mainHandAttackBase;
+
+        if (mainHandAttackMod == 0) then
+            statFrame.weaponSkill = COMBAT_RATING_NAME1 .. " " .. mainHandAttackBase;
         else
             local color = RED_FONT_COLOR_CODE;
-            statFrame.weaponSkill = COMBAT_RATING_NAME1.." "..(mainHandAttackBase + mainHandAttackMod).." ("..mainHandAttackBase..color.." "..mainHandAttackMod..")";
-            if( mainHandAttackMod > 0 ) then
+            statFrame.weaponSkill = COMBAT_RATING_NAME1 .. " " .. (mainHandAttackBase + mainHandAttackMod) .. " (" .. mainHandAttackBase .. color .. " " .. mainHandAttackMod .. ")";
+            if (mainHandAttackMod > 0) then
                 color = GREEN_FONT_COLOR_CODE;
-                statFrame.weaponSkill = COMBAT_RATING_NAME1.." "..(mainHandAttackBase + mainHandAttackMod).." ("..mainHandAttackBase..color.." +"..mainHandAttackMod..FONT_COLOR_CODE_CLOSE..")";
+                statFrame.weaponSkill = COMBAT_RATING_NAME1 .. " " .. (mainHandAttackBase + mainHandAttackMod) .. " (" .. mainHandAttackBase .. color .. " +" .. mainHandAttackMod ..
+                                            FONT_COLOR_CODE_CLOSE .. ")";
             end
         end
-    
+
         local total = GetCombatRating(CR_WEAPON_SKILL) + GetCombatRating(CR_WEAPON_SKILL_MAINHAND);
         statFrame.weaponRating = format(WEAPON_SKILL_RATING, total);
-        if ( total > 0 ) then
-            statFrame.weaponRating = statFrame.weaponRating..format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_MAINHAND));
+        if (total > 0) then
+            statFrame.weaponRating = statFrame.weaponRating .. format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_MAINHAND));
         end
-    
+
         local speed, offhandSpeed = UnitAttackSpeed(unit);
-        if ( offhandSpeed ) then
-            if( offHandAttackMod == 0 ) then
-                statFrame.offhandSkill = COMBAT_RATING_NAME1.." "..offHandAttackBase;
+        if (offhandSpeed) then
+            if (offHandAttackMod == 0) then
+                statFrame.offhandSkill = COMBAT_RATING_NAME1 .. " " .. offHandAttackBase;
             else
                 local color = RED_FONT_COLOR_CODE;
-                statFrame.offhandSkill = COMBAT_RATING_NAME1.." "..(offHandAttackBase + offHandAttackMod).." ("..offHandAttackBase..color.." "..offHandAttackMod..")";
-                if( offHandAttackMod > 0 ) then
+                statFrame.offhandSkill = COMBAT_RATING_NAME1 .. " " .. (offHandAttackBase + offHandAttackMod) .. " (" .. offHandAttackBase .. color .. " " .. offHandAttackMod .. ")";
+                if (offHandAttackMod > 0) then
                     color = GREEN_FONT_COLOR_CODE;
-                    statFrame.offhandSkill = COMBAT_RATING_NAME1.." "..(offHandAttackBase + offHandAttackMod).." ("..offHandAttackBase..color.." +"..offHandAttackMod..FONT_COLOR_CODE_CLOSE..")";
+                    statFrame.offhandSkill = COMBAT_RATING_NAME1 .. " " .. (offHandAttackBase + offHandAttackMod) .. " (" .. offHandAttackBase .. color .. " +" .. offHandAttackMod ..
+                                                 FONT_COLOR_CODE_CLOSE .. ")";
                 end
             end
-    
+
             total = GetCombatRating(CR_WEAPON_SKILL) + GetCombatRating(CR_WEAPON_SKILL_OFFHAND);
             statFrame.offhandRating = format(WEAPON_SKILL_RATING, total);
-            if ( total > 0 ) then
-                statFrame.offhandRating = statFrame.offhandRating..format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_OFFHAND));
+            if (total > 0) then
+                statFrame.offhandRating = statFrame.offhandRating .. format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_OFFHAND));
             end
         else
             statFrame.offhandSkill = nil;
         end
     end
-    
+
     function S:SetRangedAttack(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
-        elseif ( unit == "pet" ) then
+        elseif (unit == "pet") then
             return;
         end
-    
+
         local hasRelic = UnitHasRelicSlot(unit);
         local rangedAttackBase, rangedAttackMod = UnitRangedAttack(unit);
-        getglobal(statFrame:GetName().."Label"):SetText(COMBAT_RATING_NAME1..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-    
+        getglobal(statFrame:GetName() .. "Label"):SetText(COMBAT_RATING_NAME1 .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+
         -- If no ranged texture then set stats to n/a
         local rangedTexture = GetInventoryItemTexture("player", 18);
-        if ( rangedTexture and not hasRelic ) then
+        if (rangedTexture and not hasRelic) then
             PaperDollFrame.noRanged = nil;
         else
             text:SetText(NOT_APPLICABLE);
             PaperDollFrame.noRanged = 1;
             statFrame.tooltip = nil;
         end
-        if ( not rangedTexture or hasRelic ) then
+        if (not rangedTexture or hasRelic) then
             return;
         end
-        
-        if( rangedAttackMod == 0 ) then
+
+        if (rangedAttackMod == 0) then
             text:SetText(rangedAttackBase);
-            statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..COMBAT_RATING_NAME1.." "..rangedAttackBase..FONT_COLOR_CODE_CLOSE;
+            statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. COMBAT_RATING_NAME1 .. " " .. rangedAttackBase .. FONT_COLOR_CODE_CLOSE;
         else
             local color = RED_FONT_COLOR_CODE;
-            if( rangedAttackMod > 0 ) then
-                  color = GREEN_FONT_COLOR_CODE;
-                statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..COMBAT_RATING_NAME1.." "..(rangedAttackBase + rangedAttackMod).." ("..rangedAttackBase..color.." +"..rangedAttackMod..FONT_COLOR_CODE_CLOSE..HIGHLIGHT_FONT_COLOR_CODE..")";
+            if (rangedAttackMod > 0) then
+                color = GREEN_FONT_COLOR_CODE;
+                statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. COMBAT_RATING_NAME1 .. " " .. (rangedAttackBase + rangedAttackMod) .. " (" .. rangedAttackBase .. color .. " +" .. rangedAttackMod ..
+                                        FONT_COLOR_CODE_CLOSE .. HIGHLIGHT_FONT_COLOR_CODE .. ")";
             else
-                statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..COMBAT_RATING_NAME1.." "..(rangedAttackBase + rangedAttackMod).." ("..rangedAttackBase..color.." "..rangedAttackMod..FONT_COLOR_CODE_CLOSE..HIGHLIGHT_FONT_COLOR_CODE..")";
+                statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. COMBAT_RATING_NAME1 .. " " .. (rangedAttackBase + rangedAttackMod) .. " (" .. rangedAttackBase .. color .. " " .. rangedAttackMod ..
+                                        FONT_COLOR_CODE_CLOSE .. HIGHLIGHT_FONT_COLOR_CODE .. ")";
             end
-            text:SetText(color..(rangedAttackBase + rangedAttackMod)..FONT_COLOR_CODE_CLOSE);
+            text:SetText(color .. (rangedAttackBase + rangedAttackMod) .. FONT_COLOR_CODE_CLOSE);
         end
         local total = GetCombatRating(CR_WEAPON_SKILL) + GetCombatRating(CR_WEAPON_SKILL_RANGED);
         statFrame.tooltip2 = format(WEAPON_SKILL_RATING, total);
-        if ( total > 0 ) then
-            statFrame.tooltip2 = statFrame.tooltip2..format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_RANGED));
+        if (total > 0) then
+            statFrame.tooltip2 = statFrame.tooltip2 .. format(WEAPON_SKILL_RATING_BONUS, GetCombatRatingBonus(CR_WEAPON_SKILL) + GetCombatRatingBonus(CR_WEAPON_SKILL_RANGED));
         end
     end
-    
+
     function S:SetRangedDamage(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
-        elseif ( unit == "pet" ) then
+        elseif (unit == "pet") then
             return;
         end
-        getglobal(statFrame:GetName().."Label"):SetText(DAMAGE_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
-    
+        getglobal(statFrame:GetName() .. "Label"):SetText(DAMAGE_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
+
         -- If no ranged attack then set to n/a
-        local hasRelic = UnitHasRelicSlot(unit);	
+        local hasRelic = UnitHasRelicSlot(unit);
         local rangedTexture = GetInventoryItemTexture("player", 18);
-        if ( rangedTexture and not hasRelic ) then
+        if (rangedTexture and not hasRelic) then
             PaperDollFrame.noRanged = nil;
         else
             text:SetText(NOT_APPLICABLE);
@@ -1032,129 +1040,129 @@ if R.isClassic then
             statFrame.damage = nil;
             return;
         end
-    
+
         local rangedAttackSpeed, minDamage, maxDamage, physicalBonusPos, physicalBonusNeg, percent = UnitRangedDamage(unit);
-        local displayMin = max(floor(minDamage),1);
-        local displayMax = max(ceil(maxDamage),1);
-    
+        local displayMin = max(floor(minDamage), 1);
+        local displayMax = max(ceil(maxDamage), 1);
+
         local baseDamage;
         local fullDamage;
         local totalBonus;
         local damagePerSecond;
         local tooltip;
-    
-        if ( HasWandEquipped() ) then
+
+        if (HasWandEquipped()) then
             baseDamage = (minDamage + maxDamage) * 0.5;
             fullDamage = baseDamage * percent;
             totalBonus = 0;
-            damagePerSecond = (max(fullDamage,1) / rangedAttackSpeed);
-            tooltip = max(floor(minDamage),1).." - "..max(ceil(maxDamage),1);
+            damagePerSecond = (max(fullDamage, 1) / rangedAttackSpeed);
+            tooltip = max(floor(minDamage), 1) .. " - " .. max(ceil(maxDamage), 1);
         else
             minDamage = (minDamage / percent) - physicalBonusPos - physicalBonusNeg;
             maxDamage = (maxDamage / percent) - physicalBonusPos - physicalBonusNeg;
-    
+
             baseDamage = (minDamage + maxDamage) * 0.5;
             fullDamage = (baseDamage + physicalBonusPos + physicalBonusNeg) * percent;
             totalBonus = (fullDamage - baseDamage);
             if (rangedAttackSpeed == 0) then
-            -- Egan's Blaster!!!
+                -- Egan's Blaster!!!
                 damagePerSecond = math.huge;
             else
-                damagePerSecond = (max(fullDamage,1) / rangedAttackSpeed);
+                damagePerSecond = (max(fullDamage, 1) / rangedAttackSpeed);
             end
-            tooltip = max(floor(minDamage),1).." - "..max(ceil(maxDamage),1);
+            tooltip = max(floor(minDamage), 1) .. " - " .. max(ceil(maxDamage), 1);
         end
-    
-        if ( totalBonus == 0 ) then
-            if ( ( displayMin < 100 ) and ( displayMax < 100 ) ) then 
-                text:SetText(displayMin.." - "..displayMax);	
+
+        if (totalBonus == 0) then
+            if ((displayMin < 100) and (displayMax < 100)) then
+                text:SetText(displayMin .. " - " .. displayMax);
             else
-                text:SetText(displayMin.."-"..displayMax);
+                text:SetText(displayMin .. "-" .. displayMax);
             end
         else
             local colorPos = "|cff20ff20";
             local colorNeg = "|cffff2020";
             local color;
-            if ( totalBonus > 0 ) then
+            if (totalBonus > 0) then
                 color = colorPos;
             else
                 color = colorNeg;
             end
-            if ( ( displayMin < 100 ) and ( displayMax < 100 ) ) then 
-                text:SetText(color..displayMin.." - "..displayMax.."|r");	
+            if ((displayMin < 100) and (displayMax < 100)) then
+                text:SetText(color .. displayMin .. " - " .. displayMax .. "|r");
             else
-                text:SetText(color..displayMin.."-"..displayMax.."|r");
+                text:SetText(color .. displayMin .. "-" .. displayMax .. "|r");
             end
-            if ( physicalBonusPos > 0 ) then
-                tooltip = tooltip..colorPos.." +"..physicalBonusPos.."|r";
+            if (physicalBonusPos > 0) then
+                tooltip = tooltip .. colorPos .. " +" .. physicalBonusPos .. "|r";
             end
-            if ( physicalBonusNeg < 0 ) then
-                tooltip = tooltip..colorNeg.." "..physicalBonusNeg.."|r";
+            if (physicalBonusNeg < 0) then
+                tooltip = tooltip .. colorNeg .. " " .. physicalBonusNeg .. "|r";
             end
-            if ( percent > 1 ) then
-                tooltip = tooltip..colorPos.." x"..floor(percent*100+0.5).."%|r";
-            elseif ( percent < 1 ) then
-                tooltip = tooltip..colorNeg.." x"..floor(percent*100+0.5).."%|r";
+            if (percent > 1) then
+                tooltip = tooltip .. colorPos .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
+            elseif (percent < 1) then
+                tooltip = tooltip .. colorNeg .. " x" .. floor(percent * 100 + 0.5) .. "%|r";
             end
-            statFrame.tooltip = tooltip.." "..format(DPS_TEMPLATE, damagePerSecond);
+            statFrame.tooltip = tooltip .. " " .. format(DPS_TEMPLATE, damagePerSecond);
         end
         statFrame.attackSpeed = rangedAttackSpeed;
         statFrame.damage = tooltip;
         statFrame.dps = damagePerSecond;
     end
-    
+
     function S:SetRangedAttackSpeed(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
-        elseif ( unit == "pet" ) then
+        elseif (unit == "pet") then
             return;
         end
         local text;
         -- If no ranged attack then set to n/a
-        if ( PaperDollFrame.noRanged ) then
+        if (PaperDollFrame.noRanged) then
             text = NOT_APPLICABLE;
             statFrame.tooltip = nil;
         else
             text = UnitRangedDamage(unit);
             text = format("%.2f", text);
-            statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..ATTACK_SPEED.." "..text..FONT_COLOR_CODE_CLOSE;
+            statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. ATTACK_SPEED .. " " .. text .. FONT_COLOR_CODE_CLOSE;
         end
         S:SetLabelAndText(statFrame, WEAPON_SPEED, text);
         statFrame.tooltip2 = format(CR_HASTE_RATING_TOOLTIP, GetCombatRating(CR_HASTE_RANGED), GetCombatRatingBonus(CR_HASTE_RANGED));
     end
-    
+
     function S:SetRangedAttackPower(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
-        end	
-        getglobal(statFrame:GetName().."Label"):SetText(ATTACK_POWER_COLON);
-        local text = getglobal(statFrame:GetName().."StatText");
+        end
+        getglobal(statFrame:GetName() .. "Label"):SetText(ATTACK_POWER_COLON);
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local base, posBuff, negBuff = UnitRangedAttackPower(unit);
-    
+
         PaperDollFormatStat(RANGED_ATTACK_POWER, base, posBuff, negBuff, statFrame, text);
-        local totalAP = base+posBuff+negBuff;
-        statFrame.tooltip2 = format(RANGED_ATTACK_POWER_TOOLTIP, max((totalAP), 0)/ATTACK_POWER_MAGIC_NUMBER);
-        local petAPBonus = ComputePetBonus( "PET_BONUS_RAP_TO_AP", totalAP );
-        if( petAPBonus > 0 ) then
+        local totalAP = base + posBuff + negBuff;
+        statFrame.tooltip2 = format(RANGED_ATTACK_POWER_TOOLTIP, max((totalAP), 0) / ATTACK_POWER_MAGIC_NUMBER);
+        local petAPBonus = S:ComputePetBonus("PET_BONUS_RAP_TO_AP", totalAP);
+        if (petAPBonus > 0) then
             statFrame.tooltip2 = statFrame.tooltip2 .. "\n" .. format(PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER, math.floor(petAPBonus));
         end
-        
-        local petSpellDmgBonus = ComputePetBonus( "PET_BONUS_RAP_TO_SPELLDMG", totalAP );
-        if( petSpellDmgBonus > 0 ) then
+
+        local petSpellDmgBonus = S:ComputePetBonus("PET_BONUS_RAP_TO_SPELLDMG", totalAP);
+        if (petSpellDmgBonus > 0) then
             statFrame.tooltip2 = statFrame.tooltip2 .. "\n" .. format(PET_BONUS_TOOLTIP_SPELLDAMAGE, math.floor(petSpellDmgBonus));
         end
     end
-    
+
     function S:SetSpellBonusDamage(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(BONUS_DAMAGE..":");
-        local text = getglobal(statFrame:GetName().."StatText");
+        getglobal(statFrame:GetName() .. "Label"):SetText(BONUS_DAMAGE .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local holySchool = 2;
         -- Start at 2 to skip physical damage
         local minModifier = GetSpellBonusDamage(holySchool);
         statFrame.bonusDamage = {};
         statFrame.bonusDamage[holySchool] = minModifier;
         local bonusDamage;
-        for i=(holySchool+1), MAX_SPELL_SCHOOLS do
+        for i = (holySchool + 1), MAX_SPELL_SCHOOLS do
             bonusDamage = GetSpellBonusDamage(i);
             minModifier = min(minModifier, bonusDamage);
             statFrame.bonusDamage[i] = bonusDamage;
@@ -1162,233 +1170,233 @@ if R.isClassic then
         text:SetText(minModifier);
         statFrame.minModifier = minModifier;
     end
-    
+
     function S:SetSpellCritChance(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(SPELL_CRIT_CHANCE..":");
-        local text = getglobal(statFrame:GetName().."StatText");
+        getglobal(statFrame:GetName() .. "Label"):SetText(SPELL_CRIT_CHANCE .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local holySchool = 2;
         -- Start at 2 to skip physical damage
         local minCrit = GetSpellCritChance(holySchool);
         statFrame.spellCrit = {};
         statFrame.spellCrit[holySchool] = minCrit;
         local spellCrit;
-        for i=(holySchool+1), MAX_SPELL_SCHOOLS do
+        for i = (holySchool + 1), MAX_SPELL_SCHOOLS do
             spellCrit = GetSpellCritChance(i);
             minCrit = min(minCrit, spellCrit);
             statFrame.spellCrit[i] = spellCrit;
         end
         -- Add agility contribution
-        --minCrit = minCrit + GetSpellCritChanceFromIntellect();
+        -- minCrit = minCrit + GetSpellCritChanceFromIntellect();
         minCrit = format("%.2f%%", minCrit);
         text:SetText(minCrit);
         statFrame.minCrit = minCrit;
     end
-    
+
     function S:SetMeleeCritChance(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(MELEE_CRIT_CHANCE..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-        local critChance = GetCritChance();-- + GetCritChanceFromAgility();
+        getglobal(statFrame:GetName() .. "Label"):SetText(MELEE_CRIT_CHANCE .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+        local critChance = GetCritChance(); -- + GetCritChanceFromAgility();
         critChance = format("%.2f%%", critChance);
         text:SetText(critChance);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..MELEE_CRIT_CHANCE.." "..critChance..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. MELEE_CRIT_CHANCE .. " " .. critChance .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE));
     end
-    
+
     function S:SetRangedCritChance(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(RANGED_CRIT_CHANCE..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-        local critChance = GetRangedCritChance();-- + GetCritChanceFromAgility();
+        getglobal(statFrame:GetName() .. "Label"):SetText(RANGED_CRIT_CHANCE .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+        local critChance = GetRangedCritChance(); -- + GetCritChanceFromAgility();
         critChance = format("%.2f%%", critChance);
         text:SetText(critChance);
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..RANGED_CRIT_CHANCE.." "..critChance..FONT_COLOR_CODE_CLOSE;
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. RANGED_CRIT_CHANCE .. " " .. critChance .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(CR_CRIT_RANGED_TOOLTIP, GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED));
     end
-    
+
     function S:SetSpellBonusHealing(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(BONUS_HEALING..":");
-        local text = getglobal(statFrame:GetName().."StatText");
+        getglobal(statFrame:GetName() .. "Label"):SetText(BONUS_HEALING .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
         local bonusHealing = GetSpellBonusHealing();
         text:SetText(bonusHealing);
         statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. BONUS_HEALING .. FONT_COLOR_CODE_CLOSE;
-        statFrame.tooltip2 =format(BONUS_HEALING_TOOLTIP, bonusHealing);
+        statFrame.tooltip2 = format(BONUS_HEALING_TOOLTIP, bonusHealing);
     end
-    
-    function S:SetSpellPenetration(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(SPELL_PENETRATION..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-        text:SetText(GetSpellPenetration());
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. SPELL_PENETRATION .. FONT_COLOR_CODE_CLOSE;
-        statFrame.tooltip2 = SPELL_PENETRATION_TOOLTIP;
-    end
-    
+
     function S:SetSpellHaste(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(SPELL_HASTE..":");
-        local text = getglobal(statFrame:GetName().."StatText");
+        getglobal(statFrame:GetName() .. "Label"):SetText(SPELL_HASTE .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
         text:SetText(GetCombatRating(CR_HASTE_SPELL));
         statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. SPELL_HASTE .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(SPELL_HASTE_TOOLTIP, GetCombatRatingBonus(CR_HASTE_SPELL));
     end
-    
+
     function S:SetManaRegen(statFrame)
-        getglobal(statFrame:GetName().."Label"):SetText(MANA_REGEN..":");
-        local text = getglobal(statFrame:GetName().."StatText");
-        if ( not UnitHasMana("player") ) then
+        getglobal(statFrame:GetName() .. "Label"):SetText(MANA_REGEN .. ":");
+        local text = getglobal(statFrame:GetName() .. "StatText");
+        if (not UnitHasMana("player")) then
             text:SetText(NOT_APPLICABLE);
             statFrame.tooltip = nil;
             return;
         end
-        
+
         local base, casting = GetManaRegen();
         -- All mana regen stats are displayed as mana/5 sec.
-        base = floor( base * 5.0 );
-        casting = floor( casting * 5.0 );
+        base = floor(base * 5.0);
+        casting = floor(casting * 5.0);
         text:SetText(base);
         statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. MANA_REGEN .. FONT_COLOR_CODE_CLOSE;
         statFrame.tooltip2 = format(MANA_REGEN_TOOLTIP, base, casting);
     end
-    
+
     function S:SetExpertise(statFrame, unit)
-        if ( not unit ) then
+        if (not unit) then
             unit = "player";
         end
         local expertise, offhandExpertise = GetExpertise();
         local speed, offhandSpeed = UnitAttackSpeed(unit);
         local text;
-        if( offhandSpeed ) then
-            text = expertise.." / "..offhandExpertise;
+        if (offhandSpeed) then
+            text = expertise .. " / " .. offhandExpertise;
         else
             text = expertise;
         end
         S:SetLabelAndText(statFrame, STAT_EXPERTISE, text);
-        
-        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..getglobal("COMBAT_RATING_NAME"..CR_EXPERTISE).." "..text..FONT_COLOR_CODE_CLOSE;
-        
+
+        statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE .. getglobal("COMBAT_RATING_NAME" .. CR_EXPERTISE) .. " " .. text .. FONT_COLOR_CODE_CLOSE;
+
         local expertisePercent, offhandExpertisePercent = GetExpertisePercent();
         expertisePercent = format("%.2f", expertisePercent);
-        if( offhandSpeed ) then
+        if (offhandSpeed) then
             offhandExpertisePercent = format("%.2f", offhandExpertisePercent);
-            text = expertisePercent.."% / "..offhandExpertisePercent.."%";
+            text = expertisePercent .. "% / " .. offhandExpertisePercent .. "%";
         else
-            text = expertisePercent.."%";
+            text = expertisePercent .. "%";
         end
         statFrame.tooltip2 = format(CR_EXPERTISE_TOOLTIP, text, GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE));
     end
-    
-    function CharacterSpellBonusDamage_OnEnter(self)
+
+    function S:CharacterSpellBonusDamage_OnEnter()
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-        GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..BONUS_DAMAGE.." "..self.minModifier..FONT_COLOR_CODE_CLOSE);
-        for i=2, MAX_SPELL_SCHOOLS do
-            GameTooltip:AddDoubleLine(getglobal("DAMAGE_SCHOOL"..i), self.bonusDamage[i], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-            GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon"..i);
+        GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE .. BONUS_DAMAGE .. " " .. self.minModifier .. FONT_COLOR_CODE_CLOSE);
+        for i = 2, MAX_SPELL_SCHOOLS do
+            GameTooltip:AddDoubleLine(getglobal("DAMAGE_SCHOOL" .. i), self.bonusDamage[i], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                      NORMAL_FONT_COLOR.b);
+            GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon" .. i);
         end
-        
+
         local petStr, damage;
-        if( self.bonusDamage[6] > self.bonusDamage[3] ) then
+        if (self.bonusDamage[6] > self.bonusDamage[3]) then
             petStr = PET_BONUS_TOOLTIP_WARLOCK_SPELLDMG_SHADOW;
             damage = self.bonusDamage[6];
         else
             petStr = PET_BONUS_TOOLTIP_WARLOCK_SPELLDMG_FIRE;
             damage = self.bonusDamage[3];
         end
-        
-        local petBonusAP = ComputePetBonus("PET_BONUS_SPELLDMG_TO_AP", damage );
-        local petBonusDmg = ComputePetBonus("PET_BONUS_SPELLDMG_TO_SPELLDMG", damage );
-        if( petBonusAP > 0 or petBonusDmg > 0 ) then
-            GameTooltip:AddLine("\n" .. format(petStr, petBonusAP, petBonusDmg), nil, nil, nil, 1 );
+
+        local petBonusAP = S:ComputePetBonus("PET_BONUS_SPELLDMG_TO_AP", damage);
+        local petBonusDmg = S:ComputePetBonus("PET_BONUS_SPELLDMG_TO_SPELLDMG", damage);
+        if (petBonusAP > 0 or petBonusDmg > 0) then
+            GameTooltip:AddLine("\n" .. format(petStr, petBonusAP, petBonusDmg), nil, nil, nil, 1);
         end
         GameTooltip:Show();
     end
-    
-    function CharacterSpellCritChance_OnEnter(self)
+
+    function S:CharacterSpellCritChance_OnEnter()
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-        GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..COMBAT_RATING_NAME11.." "..GetCombatRating(11)..FONT_COLOR_CODE_CLOSE);
+        GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE .. COMBAT_RATING_NAME11 .. " " .. GetCombatRating(11) .. FONT_COLOR_CODE_CLOSE);
         local spellCrit;
-        for i=2, MAX_SPELL_SCHOOLS do
+        for i = 2, MAX_SPELL_SCHOOLS do
             spellCrit = format("%.2f", self.spellCrit[i]);
-            spellCrit = spellCrit.."%";
-            GameTooltip:AddDoubleLine(getglobal("DAMAGE_SCHOOL"..i), spellCrit, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-            GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon"..i);
+            spellCrit = spellCrit .. "%";
+            GameTooltip:AddDoubleLine(getglobal("DAMAGE_SCHOOL" .. i), spellCrit, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                      NORMAL_FONT_COLOR.b);
+            GameTooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon" .. i);
         end
         GameTooltip:Show();
     end
-    
-    function CharacterDamageFrame_OnEnter(self)
+
+    function S:CharacterDamageFrame_OnEnter()
         -- Main hand weapon
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
         GameTooltip:SetText(INVTYPE_WEAPONMAINHAND, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-        GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.attackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.attackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                  NORMAL_FONT_COLOR.b);
         GameTooltip:AddDoubleLine(DAMAGE_COLON, self.damage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-        GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.dps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.dps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                  NORMAL_FONT_COLOR.b);
         -- Check for offhand weapon
-        if ( self.offhandAttackSpeed ) then
+        if (self.offhandAttackSpeed) then
             GameTooltip:AddLine(" "); -- Blank line.
             GameTooltip:AddLine(INVTYPE_WEAPONOFFHAND, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-            GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.offhandAttackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+            GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.offhandAttackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r,
+                                      NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
             GameTooltip:AddDoubleLine(DAMAGE_COLON, self.offhandDamage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-            GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.offhandDps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+            GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.offhandDps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                      NORMAL_FONT_COLOR.b);
         end
         GameTooltip:Show();
     end
-    
-    function ComputePetBonus(stat, value)
+
+    function S:CharacterRangedDamageFrame_OnEnter(self)
+        if (not self.damage) then
+            return;
+        end
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+        GameTooltip:SetText(INVTYPE_RANGED, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+        GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.attackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                  NORMAL_FONT_COLOR.b);
+        GameTooltip:AddDoubleLine(DAMAGE_COLON, self.damage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.dps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g,
+                                  NORMAL_FONT_COLOR.b);
+        GameTooltip:Show();
+    end
+
+    function S:ComputePetBonus(stat, value)
         local temp, unitClass = UnitClass("player");
         unitClass = strupper(unitClass);
-        if( unitClass == "WARLOCK" ) then
-            if( WARLOCK_PET_BONUS[stat] ) then
+        if (unitClass == "WARLOCK") then
+            if (WARLOCK_PET_BONUS[stat]) then
                 return value * WARLOCK_PET_BONUS[stat];
             else
                 return 0;
             end
-        elseif( unitClass == "HUNTER" ) then
-            if( HUNTER_PET_BONUS[stat] ) then 
+        elseif (unitClass == "HUNTER") then
+            if (HUNTER_PET_BONUS[stat]) then
                 return value * HUNTER_PET_BONUS[stat];
             else
                 return 0;
             end
         end
-        
+
         return 0;
     end
-    
-    function CharacterRangedDamageFrame_OnEnter(self)
-        if ( not self.damage ) then
-            return;
-        end
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-        GameTooltip:SetText(INVTYPE_RANGED, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-        GameTooltip:AddDoubleLine(ATTACK_SPEED_COLON, format("%.2F", self.attackSpeed), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-        GameTooltip:AddDoubleLine(DAMAGE_COLON, self.damage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-        GameTooltip:AddDoubleLine(DAMAGE_PER_SECOND, format("%.1F", self.dps), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
-        GameTooltip:Show();
-    end
-    
+
     function S:GetArmorReduction(armor, attackerLevel)
         local levelModifier = attackerLevel;
-        if ( levelModifier > 59 ) then
-            levelModifier = levelModifier + (4.5 * (levelModifier-59));
+        if (levelModifier > 59) then
+            levelModifier = levelModifier + (4.5 * (levelModifier - 59));
         end
-        local temp = 0.1*armor/(8.5*levelModifier + 40);
-        temp = temp/(1+temp);
-    
-        if ( temp > 0.75 ) then
+        local temp = 0.1 * armor / (8.5 * levelModifier + 40);
+        temp = temp / (1 + temp);
+
+        if (temp > 0.75) then
             return 75;
         end
-    
-        if ( temp < 0 ) then
+
+        if (temp < 0) then
             return 0;
         end
-    
-        return format("%.2f", (temp*100));
-    end    
+
+        return format("%.2f", (temp * 100));
+    end
 
     function S:PaperDollStatTooltip()
-        if ( not self.tooltip ) then
+        if (not self.tooltip) then
             return;
         end
-    
+
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
         GameTooltip:SetText(self.tooltip, 1.0, 1.0, 1.0);
-        if ( self.tooltip2 ) then
+        if (self.tooltip2) then
             GameTooltip:AddLine(self.tooltip2, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true);
         end
         GameTooltip:Show();

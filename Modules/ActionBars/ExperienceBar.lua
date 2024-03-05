@@ -47,30 +47,62 @@ function AB.ExperienceBarMixin:Update()
         return
     end
 
-    self:ClearAllPoints()
-    self:SetNormalizedPoint(self.config.point)
-    self:SetNormalizedSize(self.config.size)
-    self.Backdrop:SetShown(self.config.backdrop)
-    self.Border:SetShown(self.config.border)
-    self.Shadow:SetShown(self.config.shadow)
-    self.Mover:Unlock()
-    self:CreateFader(self.config.fader)
-
-    local showXP = UnitLevel("player") < GetMaxPlayerLevel()
-	local expMax = UnitXPMax("player")
-    local expValue = UnitXP("player")
-    local exhaustionThreshold = GetXPExhaustion()
-    local expText = string.format("%s: %i / %i", XP, expValue, expMax)
-    if exhaustionThreshold and exhaustionThreshold > 0 then
-        expText = string.format("%s (%i rested)", expText, GetXPExhaustion())
+    if not AB.config.actionBar1.vanillaArt.enabled then
+        self:ClearAllPoints()
+        self:SetNormalizedPoint(self.config.point)
+        self:SetNormalizedSize(self.config.size)
+        self.Backdrop:SetShown(self.config.backdrop)
+        self.Border:SetShown(self.config.border)
+        self.Shadow:SetShown(self.config.shadow)
+        self.Mover:Unlock()
+        self:CreateFader(self.config.fader)
     end
-    local restState = GetRestState()
-    self:SetStatusBarTexture(restState == 1 and R.media.textures.statusBars.experienceRested or R.media.textures.statusBars.experienceNormal)
-    self:SetMinMaxValues(0, expMax)
-    self:SetValue(expValue)
+
+    local showXP = UnitLevel("player") < GetMaxPlayerLevel() and not IsXPUserDisabled()
+    if showXP then
+        local isCapped = false
+        if GameLimitedMode_IsActive() then
+            local rLevel = GetRestrictedAccountData()
+            if UnitLevel("player") >= rLevel then
+                isCapped = true
+                MainMenuExpBar:SetMinMaxValues(0, 1)
+                MainMenuExpBar:SetValue(1)
+                MainMenuExpBar:SetStatusBarColor(0.58, 0.0, 0.55, 1.0)
+
+                local trialXP = UnitTrialXP("player")
+                local bankedLevels = UnitTrialBankedLevels("player")
+                if trialXP > 0 then
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                    local text = TRIAL_CAP_BANKED_XP_TOOLTIP
+                    if bankedLevels > 0 then
+                        text = TRIAL_CAP_BANKED_LEVELS_TOOLTIP:format(bankedLevels)
+                    end
+                    self.OverlayFrame.Text:SetText(text, nil, nil, nil, nil, true)
+                else
+                    self.OverlayFrame.Text:SetText(XP .. " " .. RED_FONT_COLOR_CODE .. CAP_REACHED_TRIAL .. "|r")
+                end
+
+                self.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+            end
+        end
+
+        if not isCapped then
+            local expMax = UnitXPMax("player")
+            local expValue = UnitXP("player")
+            local exhaustionThreshold = GetXPExhaustion()
+            local expText = string.format("%s: %i / %i", XP, expValue, expMax)
+            if exhaustionThreshold and exhaustionThreshold > 0 then
+                expText = string.format("%s (%i rested)", expText, exhaustionThreshold)
+            end
+            local restState = GetRestState()
+            self:SetStatusBarTexture(restState == 1 and R.media.textures.statusBars.experienceRested or R.media.textures.statusBars.experienceNormal)
+            self:SetMinMaxValues(math.min(0, expValue), expMax)
+            self:SetValue(expValue)
+            self.OverlayFrame.Text:SetText(expText)
+            self.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+        end
+    end
     self:SetShown(showXP)
-    self.OverlayFrame.Text:SetText(expText)
-    self.OverlayFrame.Text:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
 
     self:UpdateRested()
 end

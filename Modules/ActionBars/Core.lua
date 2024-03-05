@@ -36,9 +36,7 @@ function AB:Enable()
     AB.extraActionBar = AB:CreateExtraActionBar()
     AB.zoneBar = AB:CreateZoneBar()
 
-    if AB.config.actionBar1.vanillaArt.enabled then
-        AB:CreateVanillaArtFrame()
-    end
+    AB:CreateVanillaArtFrame()
     AB:CreateMicroButtonAndBagsBar()
 
     AB:ReassignBindings()

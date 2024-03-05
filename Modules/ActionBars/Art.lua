@@ -74,13 +74,13 @@ function AB.VanillaArtFrameMixin:Update()
     if not R.isRetail then
         AB.experienceBar:SetHeight(11)
         AB.experienceBar:ClearAllPoints()
-        AB.experienceBar:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, showRep and -19 or -13)
-        AB.experienceBar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, showRep and -19 or -13)
+        AB.experienceBar:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, AB.statusTrackingBar:IsShown() and -19 or -13)
+        AB.experienceBar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, AB.statusTrackingBar:IsShown() and -19 or -13)
 
-        AB.statusTrackingBar:SetHeight(showXP and 9 or 11)
+        AB.statusTrackingBar:SetHeight(AB.experienceBar:IsShown() and 9 or 11)
         AB.statusTrackingBar:ClearAllPoints()
-        AB.statusTrackingBar:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, showXP and -8 or -13)
-        AB.statusTrackingBar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, showXP and -8 or -13)
+        AB.statusTrackingBar:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, AB.experienceBar:IsShown() and -8 or -13)
+        AB.statusTrackingBar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, AB.experienceBar:IsShown() and -8 or -13)
     end
 
     local isLarge = not self.config.stackBottomBars and AB.config.actionBar4.enabled
@@ -113,7 +113,7 @@ function AB.VanillaArtFrameMixin:Update()
     self.TrackingBarLargeUpper:SetShown(numBars > 0 and isDouble and isLarge)
     self.TrackingBarSmall:SetShown(numBars > 0 and not isLarge)
     self.TrackingBarSmallUpper:SetShown(numBars > 0 and isDouble and not isLarge)
-     
+
     for i, button in ipairs(AB.bars[1].buttons) do
         button:SetSize(36, 36)
         button:ClearAllPoints()
