@@ -104,7 +104,7 @@ if not ns.oUF.isRetail then
     if not _G.PartyFrame.PartyMemberFramePool then
         local partyMemberFrames = {}
         for i = 1, (MAX_PARTY_MEMBERS or 4) do
-            tinsert(partyMemberFrames, _G['PartyMemberFrame' .. i])
+            partyMemberFrames[_G['PartyMemberFrame' .. i]] = true
         end
         _G.PartyFrame.PartyMemberFramePool = {}
         _G.PartyFrame.PartyMemberFramePool.EnumerateActive = function()
