@@ -1,5 +1,5 @@
 local parent, ns = ...
-local global = GetAddOnMetadata(parent, 'X-oUF')
+local global = C_AddOns.GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = '@project-version@'
 if(_VERSION:find('project%-version')) then
 	_VERSION = 'devel'
@@ -367,11 +367,6 @@ local function walkObject(object, unit)
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
 		return initObject(unit, style, styleFunc, header, object:GetChildren())
 	end
-	
-	-- Check if we should only process the main frame.
-	if(object:GetAttribute('oUF-onlyProcessRoot')) then
-		return initObject(unit, style, styleFunc, header, object)
-	end
 
 	return initObject(unit, style, styleFunc, header, object, object:GetChildren())
 end
@@ -629,7 +624,7 @@ do
 	                 for possible values.
 
 	In addition to the standard group headers, oUF implements some of its own attributes. These can be supplied by the
-	layout, but are optional.
+	layout, but are optional. PingableUnitFrameTemplate is inherited for Ping support.
 
 	* oUF-initialConfigFunction - can contain code that will be securely run at the end of the initial secure
 	                              configuration (string?)
@@ -644,7 +639,7 @@ do
 		local name = overrideName or generateName(nil, ...)
 		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
 		for i = 1, select('#', ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -724,7 +719,8 @@ Used to create a single unit frame and apply the currently active style to it.
                  (string?)
 * template     - the template to use (string?)
 
-oUF implements some of its own attributes. These can be supplied by the layout, but are optional.
+oUF implements some of its own attributes. These can be supplied by the layout, but are optional.  
+PingableUnitFrameTemplate is inherited for Ping support.
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
@@ -735,7 +731,7 @@ function oUF:Spawn(unit, overrideName, template)
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, PetBattleFrameHider, template or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, PetBattleFrameHider, template or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate'))
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -757,6 +753,8 @@ Used to create nameplates and apply the currently active style to them.
               (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
 * template  - the template to use (string?)
+
+PingableUnitFrameTemplate is inherited for Ping support.
 --]]
 function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars, template)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
@@ -771,11 +769,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars, temp
 	-- and because forbidden nameplates exist, we have to allow default nameplate
 	-- driver to create, update, and remove Blizz nameplates.
 	-- Disable only not forbidden nameplates.
-	NamePlateDriverFrame:HookScript('OnEvent', function(_, event, unit)
-		if(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
-			self:DisableBlizzard(unit)
-		end
-	end)
+	hooksecurefunc(NamePlateDriverFrame, 'AcquireUnitFrame', self.DisableNamePlate)
 
 	local eventHandler = CreateFrame('Frame', 'oUF_NamePlateDriver')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
@@ -817,7 +811,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars, temp
 			if(not nameplate.unitFrame) then
 				nameplate.style = style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, template)
+				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, template or oUF.isRetail and 'PingableUnitFrameTemplate')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 
@@ -829,6 +823,18 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars, temp
 			end
 
 			nameplate.unitFrame:SetAttribute('unit', unit)
+
+			if(nameplate.UnitFrame) then
+				if(nameplate.UnitFrame.WidgetContainer) then
+					nameplate.UnitFrame.WidgetContainer:SetParent(nameplate.unitFrame)
+					nameplate.unitFrame.WidgetContainer = nameplate.UnitFrame.WidgetContainer
+				end
+
+				if(nameplate.UnitFrame.SoftTargetFrame) then
+					nameplate.UnitFrame.SoftTargetFrame:SetParent(nameplate.unitFrame)
+					nameplate.unitFrame.SoftTargetFrame = nameplate.UnitFrame.SoftTargetFrame
+				end
+			end
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)

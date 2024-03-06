@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="TaintLess.xml"/>
+    <Include file="Libs\Libs.xml"/>
+    <Include file="Core\Core.xml"/>
+    <Include file="Media\Media.xml"/>
+    <Include file="Config\Config.xml"/>
+    <Include file="Modules\Modules.xml"/>
+</Ui>

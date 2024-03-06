@@ -116,7 +116,7 @@ local function Update(self, event, unit, powerType)
 		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints('player', 'target') or UnitPower(unit, powerID, true)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
-		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit) or {}
+		chargedPoints = GetUnitChargedPowerPoints(unit)
 
 		-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
 		powerType = powerType or ClassPowerType
@@ -125,7 +125,7 @@ local function Update(self, event, unit, powerType)
 		cur = mod == 0 and 0 or cur / mod
 
 		-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones
-		if oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
+		if(ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
 			cur = cur - cur % 1
 		end
 
@@ -183,11 +183,11 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if oUF.isRetail and UnitHasVehicleUI('player') then
+	if(UnitHasVehicleUI('player')) then
 		shouldEnable = PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
-		if(not RequireSpec or oUF.isRetail and (RequireSpec == GetSpecialization())) then
+		if(not RequireSpec or RequireSpec == GetSpecialization()) then
 			-- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if(not RequirePower or RequirePower == UnitPowerType('player')) then
 				if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
@@ -255,7 +255,7 @@ end
 do
 	function ClassPowerEnable(self)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
 		-- according to Blizz any class may receive this event due to specific spell auras
 		if oUF.isRetail then
@@ -274,7 +274,7 @@ do
 	end
 
 	function ClassPowerDisable(self)
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 

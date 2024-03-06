@@ -1,0 +1,9 @@
+## Interface: 30402
+## Author: Neya
+## Version: 0.41
+## Title: |cff00c3ffRedux|r |cffd78219UI|r
+## Notes: Redux UI: A complete user interface replacement.
+## DefaultState: Enabled
+## SavedVariables: ReduxUI_DB
+
+ReduxUI_Wrath.xml

@@ -8,6 +8,18 @@ function UF:SpawnArenaHeader()
         if EditModeManagerFrame and EditModeManagerFrame.AccountSettings then
             EditModeManagerFrame.AccountSettings.RefreshArenaFrames = nop
         end
+
+        if not R.isRetail then
+            SetCVar("showArenaEnemyFrames", "0")
+            SetCVar("showArenaEnemyPets", "0")
+
+            R:Disable(ArenaEnemyFramesContainer, false, true)
+            R:Disable(ArenaEnemyPrepFramesContainer, false, true)
+            R:Disable(ArenaEnemyMatchFramesContainer, false, true)
+
+            -- Blizzard_ArenaUI should not be loaded
+            _G.Arena_LoadUI = R.EmptyFunction
+        end
     end
     return UF:SpawnUnitFrameGroup("Arena", "arena", 5, UF.ArenaMixin, UF.config.arena, UF.defaults.arena)
 end
