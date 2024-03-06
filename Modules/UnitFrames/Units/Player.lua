@@ -125,7 +125,7 @@ function UF.PlayerMixin:PostConfigure()
         self.Level:SetShadowOffset(1, -1)
 
         self.Level:ClearAllPoints()
-        self.Level:SetSize(20, 20)
+        self.Level:SetSize(24, 20)
         self.Level:SetPoint("CENTER", self, "BOTTOMLEFT", 18, 19)
         self:Tag(self.Level, "[difficultycolor][level]|r")
 
