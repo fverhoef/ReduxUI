@@ -23,6 +23,7 @@ function S:Enable()
         S:StyleCharacterFrame()
         S:StyleFriendsFrame()
         S:StyleGuildFrame()
+        S:StyleQuestLogFrame()
         S:StyleWhoFrame()
     end
 

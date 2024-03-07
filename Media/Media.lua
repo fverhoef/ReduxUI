@@ -50,11 +50,15 @@ R.media = {
             modern = {
                 dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrame-Left",
                 dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrame-Right",
+                dualPaneFrameWithBook_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrameWithBook-Left",
+                dualPaneFrameWithBook_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\DualPaneFrameWithBook-Right",
                 paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Modern\\PaperDollInfoFrame"
             },
             vanilla = {
                 dualPaneFrame_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrame-Left",
                 dualPaneFrame_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrame-Right",
+                dualPaneFrameWithBook_Left = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrameWithBook-Left",
+                dualPaneFrameWithBook_Right = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\DualPaneFrameWithBook-Right",
                 paperDollInfoFrame = MEDIA_PREFIX .. "\\Textures\\Frames\\Vanilla\\PaperDollInfoFrame"
             }
         },

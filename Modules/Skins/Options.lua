@@ -73,7 +73,7 @@ R:RegisterModuleOptions(S, {
                 character = S:CreateEnabledOption(L["Style Character Frame"], L["Style the Character frame, enlarging it and showing attributes in an embedded panel to the right."], 1, R.isRetail,
                                                   "character", true),
                 showGearScore = R:CreateToggleOption(L["Show Gear Score"], L["Whether to show Gear Score on the Character frame."], 2, "double", function()
-                    return not R.isClassic or not S.config.character.enabled
+                    return not R.isWrath or not S.config.character.enabled
                 end, function()
                     return S.config.character.showGearScore
                 end, function(value)
@@ -81,11 +81,12 @@ R:RegisterModuleOptions(S, {
                 end, function()
                     S:UpdateCharacterStatsPane()
                 end),
-                friends = S:CreateEnabledOption(L["Style Friends Frame"], L["Style the Guild frame, adding class coloring and icons."], 3, R.isRetail, "friends", true),
+                friends = S:CreateEnabledOption(L["Style Friends Frame"], L["Style the Friends frame, adding class coloring and icons."], 3, R.isRetail, "friends", true),
                 guild = S:CreateEnabledOption(L["Style Guild Frame"], L["Style the Guild frame, adding class coloring and icons."], 4, R.isRetail, "guild", true),
-                tradeSkill = S:CreateEnabledOption(L["Style Trade Skill Frame"], L["Style the professions frame, making it larger and showing more items."], 5, R.isRetail, "worldMap", true),
-                who = S:CreateEnabledOption(L["Style Who Frame"], L["Style the Who frame, adding class coloring and icons."], 6, R.isRetail, "who", true),
-                worldMap = S:CreateEnabledOption(L["Style World Map"], L["Style the world map, no longer making it full screen, fading while moving and adding coordinates."], 7, R.isRetail,
+                questLog = S:CreateEnabledOption(L["Style Quest Log Frame"], L["Style the Quest Log frame, making it larger and showing more items."], 5, R.isRetail, "questLog", true),
+                tradeSkill = S:CreateEnabledOption(L["Style Trade Skill Frame"], L["Style the Professions frame, making it larger and showing more items."], 6, R.isRetail, "tradeSkill", true),
+                who = S:CreateEnabledOption(L["Style Who Frame"], L["Style the Who frame, adding class coloring and icons."], 7, R.isRetail, "who", true),
+                worldMap = S:CreateEnabledOption(L["Style World Map"], L["Style the World Map, no longer making it full screen, fading while moving and adding coordinates."], 8, R.isRetail,
                                                  "worldMap", true)
             }
         }
