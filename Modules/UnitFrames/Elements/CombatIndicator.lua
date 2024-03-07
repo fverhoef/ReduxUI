@@ -24,6 +24,7 @@ function UF:CreateCombatIndicator()
 
     self.CombatIndicator.PostUpdate = function(element, inCombat)
         self.inCombat = inCombat
+        self:UpdateHighlight()
     end
 
     return self.CombatIndicator

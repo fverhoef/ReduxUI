@@ -339,6 +339,14 @@ function S:GetSelectedEnhancement()
     end
 end
 
+function S:SetSelectedEnhancement(value)
+    if R.isClassic then
+        S.config.character.selectedEnhancement = value
+    else
+        SetCVar("playerStatRightDropdown", value)
+    end
+end
+
 function S:CreateCharacterStatsPane_Enhancements(parent, anchor)
     local frame = CreateFrame("Frame", addonName .. "CharacterStatsPaneEnhancements", parent)
     frame:SetHeight(CATEGORY_HEADER_HEIGHT + 6 * STAT_HEIGHT)
@@ -422,11 +430,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent, anchor)
         local current = S:GetSelectedEnhancement()
         for i, category in ipairs(ENHANCEMENT_CATEGORIES) do
             if category == current then
-                if R.isClassic then
-                    S.config.character.selectedEnhancement = ENHANCEMENT_CATEGORIES[(i == 1 and 4) or (i - 1)]
-                else
-                    SetCVar("playerStatRightDropdown", ENHANCEMENT_CATEGORIES[(i == 1 and 4) or (i - 1)])
-                end
+                SetSelectedEnhancement(ENHANCEMENT_CATEGORIES[(i == 1 and 4) or (i - 1)])
                 break
             end
         end
@@ -436,11 +440,7 @@ function S:CreateCharacterStatsPane_Enhancements(parent, anchor)
         local current = S:GetSelectedEnhancement()
         for i, category in ipairs(ENHANCEMENT_CATEGORIES) do
             if category == current then
-                if R.isClassic then
-                    S.config.character.selectedEnhancement = ENHANCEMENT_CATEGORIES[(i == 4 and 1) or (i + 1)]
-                else
-                    SetCVar("playerStatRightDropdown", ENHANCEMENT_CATEGORIES[(i == 4 and 1) or (i + 1)])
-                end
+                SetSelectedEnhancement(ENHANCEMENT_CATEGORIES[(i == 4 and 1) or (i + 1)])
                 break
             end
         end

@@ -63,7 +63,7 @@ function S:StyleTradeSkillFrame()
     regions[8]:Hide()
     regions[9]:Hide()
 
-    TradeSkillRankFrame:ClearAllPoints()    
+    TradeSkillRankFrame:ClearAllPoints()
     TradeSkillRankFrame:SetPoint("TOPLEFT", 75, -48)
 
     TradeSkillRankFrameSkillRank:ClearAllPoints()
@@ -85,18 +85,22 @@ function S:StyleTradeSkillFrame()
     TradeSkillSubClassDropDown:ClearAllPoints()
     TradeSkillSubClassDropDown:SetPoint("RIGHT", TradeSkillInvSlotDropDown, "LEFT", 0, 0)
 
-    TradeSkillFrameEditBox:ClearAllPoints()
-    TradeSkillFrameEditBox:SetPoint("BOTTOMLEFT", 25, 15)
-    TradeSkillFrameEditBox:SetSize(200, 18)
-    TradeSkillFrameEditBox:SetFrameLevel(3)
-    _G["TradeSkillFrameEditBoxLeft"]:SetHeight(18)
-    _G["TradeSkillFrameEditBoxRight"]:SetHeight(18)
-    _G["TradeSkillFrameEditBoxMiddle"]:SetHeight(18)
+    if TradeSkillFrameEditBox then
+        TradeSkillFrameEditBox:ClearAllPoints()
+        TradeSkillFrameEditBox:SetPoint("BOTTOMLEFT", 25, 15)
+        TradeSkillFrameEditBox:SetSize(200, 18)
+        TradeSkillFrameEditBox:SetFrameLevel(3)
+        _G["TradeSkillFrameEditBoxLeft"]:SetHeight(18)
+        _G["TradeSkillFrameEditBoxRight"]:SetHeight(18)
+        _G["TradeSkillFrameEditBoxMiddle"]:SetHeight(18)
+    end
 
-    TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
-    TradeSkillFrameAvailableFilterCheckButton:SetPoint("LEFT", TradeSkillFrameEditBox, "RIGHT", 5, 0)
+    if TradeSkillFrameAvailableFilterCheckButton then
+        TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
+        TradeSkillFrameAvailableFilterCheckButton:SetPoint("LEFT", TradeSkillFrameEditBox, "RIGHT", 5, 0)
 
-    TradeSkillFrameAvailableFilterCheckButtonText:SetWidth(110)
-    TradeSkillFrameAvailableFilterCheckButtonText:SetWordWrap(false)
-    TradeSkillFrameAvailableFilterCheckButtonText:SetJustifyH("LEFT")
+        TradeSkillFrameAvailableFilterCheckButtonText:SetWidth(110)
+        TradeSkillFrameAvailableFilterCheckButtonText:SetWordWrap(false)
+        TradeSkillFrameAvailableFilterCheckButtonText:SetJustifyH("LEFT")
+    end
 end

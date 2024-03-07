@@ -54,6 +54,12 @@ if not ns.oUF.isRetail then
         end
     end
 
+    if not _G.UnitIsMercenary then
+        _G.UnitIsMercenary = function()
+            return false
+        end
+    end
+
     if not _G.UnitHonorLevel then
         _G.UnitHonorLevel = function()
             return 0
