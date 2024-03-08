@@ -62,7 +62,19 @@ function S:StyleQuestLogFrame()
     QuestLogFrameTrackButton:SetPoint("LEFT", QuestFramePushQuestButton, "RIGHT", -3, 0)
     QuestLogFrameTrackButton:SetSize(100, 21)
     QuestLogFrameTrackButton:SetScript("OnClick", function(self)
-        _QuestLog_ToggleQuestWatch(GetQuestLogSelection())
+        local questIndex = GetQuestLogSelection()
+        
+        if IsQuestWatched(questIndex) then
+            RemoveQuestWatch(questIndex)
+        else
+            if (GetNumQuestWatches() >= MAX_WATCHABLE_QUESTS) then
+                UIErrorsFrame:AddMessage(format(QUEST_WATCH_TOO_MANY, MAX_WATCHABLE_QUESTS), 1.0, 0.1, 0.1, 1.0)
+                return
+            end
+            AddQuestWatch(questIndex)
+        end
+
+        QuestWatch_Update()
         QuestLog_Update()
     end)
 
@@ -72,20 +84,4 @@ function S:StyleQuestLogFrame()
     QuestFrameExitButton:SetPoint("BOTTOMRIGHT", QuestLogFrame, "BOTTOMRIGHT", -7, 14)
 
     QuestLogTrack:Hide()
-end
-
-if not _G._QuestLog_ToggleQuestWatch then
-    _G._QuestLog_ToggleQuestWatch = function(questIndex)
-        if IsQuestWatched(questIndex) then
-            RemoveQuestWatch(questIndex)
-            QuestWatch_Update()
-        else
-            if (GetNumQuestWatches() >= MAX_WATCHABLE_QUESTS) then
-                UIErrorsFrame:AddMessage(format(QUEST_WATCH_TOO_MANY, MAX_WATCHABLE_QUESTS), 1.0, 0.1, 0.1, 1.0)
-                return
-            end
-            AddQuestWatch(questIndex)
-            QuestWatch_Update()
-        end
-    end
 end
